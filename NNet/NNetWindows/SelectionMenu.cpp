@@ -16,12 +16,12 @@ import Win32_Util;
 
 void SelectionMenu::Start(HWND const hwndParent)
 {
-	PixelRect const pixRect(0_PIXEL, 0_PIXEL, 200_PIXEL, 140_PIXEL);
+	PixelRect const pixRect(0_PIXEL, 0_PIXEL, 290_PIXEL, 230_PIXEL);
 
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
-		CS_DROPSHADOW,
+		0,
 		L"ClassSelectionMenu",
 		WS_CHILD | WS_CAPTION | WS_OVERLAPPED,
 		&pixRect,
@@ -32,9 +32,13 @@ void SelectionMenu::Start(HWND const hwndParent)
 
 	m_hwndParent = hwndParent;
 
-	m_hwndDeselect = CreateButton(hwnd, L"Deselect [ESC]", 10, 10, 160, 20, IDM_DESELECT);
-	m_hwndCopy     = CreateButton(hwnd, L"Copy [Strg+C]",  10, 40, 160, 20, IDM_COPY_SELECTION);
-	m_hwndDelete   = CreateButton(hwnd, L"Delete [Entf]",  10, 70, 160, 20, IDM_DELETE_SELECTION);
+	m_hwndDeselect = CreateButton(hwnd, L"Deselect [ESC]", 10, 10, 250, 20, IDM_DESELECT);
+	m_hwndCopy     = CreateButton(hwnd, L"Copy [Strg+C]",  10, 40, 250, 20, IDM_COPY_SELECTION);
+	m_hwndDelete   = CreateButton(hwnd, L"Delete [Entf]",  10, 70, 250, 20, IDM_DELETE_SELECTION);
+	
+	CreateStaticField(hwnd, L" Move  [SHIFT+left mouse key]",       10, 100, 250, 20);
+	CreateStaticField(hwnd, L" Rotate [SHIFT+CTRL+left mouse key]", 10, 130, 250, 20);
+	CreateStaticField(hwnd, L" Size    [SHIFT+mouse wheel]",        10, 160, 250, 20);
 }
 
 void SelectionMenu::Stop()

@@ -117,5 +117,10 @@ private:
 			: 0._fPixel;
 	}
 
+	bool selectionCommand(WPARAM const wParam) 
+	{
+		return m_pNMRI->AnyNobsSelected() && (wParam & MK_SHIFT);
+	}
+
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

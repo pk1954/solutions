@@ -134,7 +134,7 @@ void ParameterDialog::Start(HWND const hwndParent)
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 180, iYpos, 50, 20, IDD_RESET);
 
-	SetWindowSize(270_PIXEL, 380_PIXEL, false);
+	SetWindowSize(280_PIXEL, 380_PIXEL, true);
 }
 
 void ParameterDialog::PaintGraphics()
