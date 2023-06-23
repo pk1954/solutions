@@ -32,8 +32,7 @@ public:
 		m_nrOfNobs = 0;
 		while (m_upNobs2Add->IsNotEmpty())
 		{
-			UPNob upNob { m_upNobs2Add->Pop() };
-			if (upNob)
+			if (UPNob upNob = m_upNobs2Add->Pop())
 			{
 				m_pNMWI->GetUPNobs().Push(move(upNob));
 				++m_nrOfNobs;

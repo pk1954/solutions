@@ -1,9 +1,9 @@
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\Tests\simple.mod"
+ReadModel "D:\SW-projects\Delivery\V4_9\BC30.mod"
 SetPerfMonMode OFF
-InputCablesVisibility 0
+InputCablesVisibility 1
 ShowScales OFF
-ShowArrows ON
-ShowSensorPoints ON
+ShowArrows OFF
+ShowSensorPoints OFF
 SetSound ON
-DescWinFontSize 18
+DescWinFontSize 20

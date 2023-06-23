@@ -236,7 +236,7 @@ void UPNobList::SelectAllNobs(bool const bOn) const
 void UPNobList::Move(MicroMeterPnt const& delta) const
 {
 	for (auto const & it : m_list)
-		if (it)
+		if (it && !it->IsPipe())
 			it->MoveNob(delta);
 }
 
