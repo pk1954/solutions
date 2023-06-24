@@ -134,11 +134,12 @@ public:
 
 	void Undo() final
 	{
+		Synapse * pSynapse { m_upSynapse.get() };
 		m_upOutputLine = m_pNMWI->PopFromModel<OutputLine>();
-		m_upOutputLine->GetPipe()->SetEndPnt(m_upSynapse.get());
+		m_upOutputLine->GetPipe()->SetEndPnt(pSynapse);
 		m_upKnot = m_pNMWI->ReplaceInModel<Knot>(move(m_upSynapse));
-		m_upKnot->GetOutgoing()->SetStartPnt(m_upSynapse.get());
-		m_upKnot->GetIncoming()->SetEndPnt  (m_upSynapse.get());
+		m_upKnot->GetOutgoing()->SetStartPnt(pSynapse);
+		m_upKnot->GetIncoming()->SetEndPnt  (pSynapse);
 	}
 
 private:
