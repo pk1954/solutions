@@ -45,6 +45,8 @@ public:
 		return m_bUnsavedChanges; 
 	}
 
+	inline static wstring const PRODUCT_NAME { L"NNetSimu 4.10" };
+
 private:
 	void setAppTitle()
 	{
@@ -52,7 +54,7 @@ private:
 		Util::SetApplicationTitle
 		(
 			m_hwndApp, 
-			L"NNetSimu",
+			PRODUCT_NAME,
 			m_pNMRI->GetModelFilePath() + wstr 
 		);
 	}
