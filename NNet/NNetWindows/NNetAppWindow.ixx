@@ -98,22 +98,17 @@ private:
 	void OnClose  ()                                             final;
 	void OnPaint  ()                                             final;
 
-	void configureStatusBar();
-	void adjustChildWindows();
-	void processScript() const;
-	void setModelInterface();
-	void replaceModel();
-	void newModel();
-
-	bool SaveModelAs();
-	bool SaveModel();
-	bool AskAndSave();
-	void WriteModel();
-
-	wstring AskModelFile(enum class tFileMode const mode) const
-	{
-		return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
-	}
+	void    configureStatusBar();
+	void    adjustChildWindows();
+	void    processScript() const;
+	void    setModelInterface();
+	void    replaceModel();
+	void    newModel();
+	bool    SaveModelAs();
+	bool    SaveModel();
+	bool    AskAndSave();
+	void    WriteModel();
+	wstring askModelFile(enum class tFileMode const) const;
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 

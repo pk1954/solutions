@@ -19,6 +19,8 @@ import Util;
 using std::wstring;
 using std::wostream;
 using std::numeric_limits;
+using std::is_integral_v;
+using std::is_floating_point_v;
 
 export template <typename T>
 struct TypeAttribute 
@@ -27,7 +29,13 @@ struct TypeAttribute
 	static const float   factor; 
 };
 
-export template <typename BASE_TYPE, typename Parameter>
+template <typename T>
+concept numeric_t = requires(T param)
+{
+	requires is_integral_v<T> || is_floating_point_v<T>;
+};
+
+export template <numeric_t BASE_TYPE, typename Parameter>
 class NamedType
 {
 public:

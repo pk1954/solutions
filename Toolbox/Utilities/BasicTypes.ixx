@@ -136,10 +136,10 @@ export MicroMeter Sin(Radian const r) { return MicroMeter(sinf(r.GetValue())); }
 
 export int     StepsOfThousand(float fValue);
 export wstring GetUnitPrefix(int const);
-export wstring Format2wstring(float fValue, streamsize prec = 2);
+export wstring Float2wstring(float fValue, streamsize prec = 2);
 
 export template<typename T>
 wstring Format2wstring(T const val, streamsize prec = 2)
 {
-	return Format2wstring(val.GetValue() / TypeAttribute<T>::factor, prec) + TypeAttribute<T>::unit;
+	return Float2wstring(val.GetValue() / TypeAttribute<T>::factor, prec) + TypeAttribute<T>::unit;
 }

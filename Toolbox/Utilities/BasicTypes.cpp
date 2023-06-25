@@ -22,7 +22,7 @@ void UpperCase(wstring& str)
 		c = toupper(c);
 }
 
-wstring Format2wstring(float fValue, streamsize prec)
+wstring Float2wstring(float fValue, streamsize prec)
 {
 	int iIndex { 0 };
 

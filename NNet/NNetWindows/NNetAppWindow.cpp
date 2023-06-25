@@ -403,6 +403,11 @@ void NNetAppWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	m_mainNNetWindow.OnChar(wParam, lParam);
 }
 
+wstring NNetAppWindow::askModelFile(enum class tFileMode const mode) const
+{
+	return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
+}
+
 bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);
@@ -484,7 +489,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_cmdStack.Clear();
 			m_modelIO.Import
 			(
-				AskModelFile(tFileMode::read), 
+				askModelFile(tFileMode::read), 
 				NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)
 			);
 			break;
@@ -492,7 +497,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_ADD_MODULE:
 			m_modelIO.Import
 			(
-				AskModelFile(tFileMode::read), 
+				askModelFile(tFileMode::read), 
 				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
 			);
 			break;
@@ -560,7 +565,7 @@ bool NNetAppWindow::SaveModelAs()
 	}
 	else
 	{
-		wstrModelPath = AskModelFile(tFileMode::write);
+		wstrModelPath = askModelFile(tFileMode::write);
 		bool const bRes = wstrModelPath != L"";
 		if (bRes)
 		{
