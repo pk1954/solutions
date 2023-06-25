@@ -11,7 +11,7 @@ export module BasePeak;
 using std::min;
 using std::max;
 
-export template <typename UNIT>
+export template <std::totally_ordered UNIT>
 class BasePeak
 {
 public:
