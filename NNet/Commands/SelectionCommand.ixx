@@ -25,5 +25,5 @@ public:
 	}
 
 private:
-	unique_ptr<vector<Nob *>> m_upSelectedNobs { m_pNMWI->GetSelection() };
+	unique_ptr<vector<Nob *>> m_upSelectedNobs { m_pNMWI->GetUPNobs().GetAllSelected() };
 };

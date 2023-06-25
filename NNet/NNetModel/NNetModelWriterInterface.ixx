@@ -70,7 +70,7 @@ public:
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
 
-    UPSigGenList      & GetSigGenList() { return m_pModel->GetSigGenList(); }
+    UPSigGenList  & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 
     void SetSigGenName(SigGenId const id, wstring const &n) { GetSigGenList().SetName(id, n); }
@@ -87,8 +87,6 @@ public:
     void AddIncoming(NobId const, Pipe *);
 
     PosNob & GetPosNob(NobId const);
-
-    MicroSensor* GetMicroSensor(Nob*);
 
     template <Nob_t T>
     T GetNobPtr(NobId const id)
