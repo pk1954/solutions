@@ -94,6 +94,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	);
 	InitializeNNetWrappers(&m_modelIO, &m_ScriptHook);
 	NNetCommand::Initialize(&m_sound);
+	CoordAnimationCmd::Initialize(&m_coordObservable);
 
 	MonitorScrollState* pMonitorScrollState { m_modelIO.Add<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);

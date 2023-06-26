@@ -79,10 +79,10 @@ public:
 	RectType<LOG_UNIT> Transform2logUnitRect(fPixelRect const & fPixRect) const
 	{ 
 		return RectType<LOG_UNIT>
-			(
-				Transform2logUnitPntPos(fPixRect.GetStartPoint()), 
-				Transform2logUnitPntPos(fPixRect.GetEndPoint  ()) 
-			);
+		(
+			Transform2logUnitPntPos(fPixRect.GetStartPoint()), 
+			Transform2logUnitPntPos(fPixRect.GetEndPoint  ()) 
+		);
 	}
 
 	fPixelRect Transform2fPixelRect(RectType<LOG_UNIT> const & umRect) const
@@ -97,10 +97,10 @@ public:
 	CircleType<LOG_UNIT> Transform2logUnitCircle(fPixelCircle const & fPixCircle) const
 	{
 		return CircleType<LOG_UNIT>
-			(
-				Transform2logUnitPntPos(fPixCircle.GetPos()),
-				Transform2logUnit      (fPixCircle.GetRadius  ())
-				);
+		(
+			Transform2logUnitPntPos(fPixCircle.GetPos()),
+			Transform2logUnit      (fPixCircle.GetRadius())
+		);
 	}
 
 	fPixelCircle Transform2fPixelCircle(CircleType<LOG_UNIT> const & umCircle) const
@@ -221,11 +221,6 @@ public:
 		m_yDim.SetOffset(fPixOffset.GetY(), false);
 		if (bNotify)
 			NotifyAll(true);
-	}
-
-	void Set(Uniform2D const & newVals) 
-	{ 
-		* this = newVals; 
 	}
 
 	void Move(PixelPoint const & pixPntDelta) 

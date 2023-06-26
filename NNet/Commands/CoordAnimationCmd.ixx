@@ -16,12 +16,19 @@ export class CoordAnimationCmd : public U2DAnimationCmd
 {
 public:
 
+    static void Initialize(Observable * const pObservable)
+    {
+        m_pCoordObservable = pObservable;
+    }
+
     using U2DAnimationCmd::U2DAnimationCmd;
 
     void UpdateUI() final
     {
         U2DAnimationCmd::UpdateUI();
         Command::UpdateUI();
+        if (m_pCoordObservable)
+            m_pCoordObservable->NotifyAll(false);
     }
 
     static void Register()
@@ -43,6 +50,8 @@ public:
 private:
 
     inline static const wstring NAME { L"CoordAnimation" };
+
+    inline static Observable* m_pCoordObservable { nullptr };
 
     inline static struct Wrapper : public ScriptFunctor
     {
