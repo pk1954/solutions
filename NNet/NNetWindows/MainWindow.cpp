@@ -28,6 +28,7 @@ import Types;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
+import Win32_Controls;
 import :NNetController;
 import :Preferences;
 
@@ -90,6 +91,7 @@ void MainWindow::Start
 	m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
 	m_upVertScale->SetAllowUnlock(true);
 	m_upVertScale->SetZoomAllowed(false);
+	m_upVertScale->DisplayUnit(false);
 
 	m_upTimer = make_unique<ThreadPoolTimer>();
 }
@@ -214,6 +216,7 @@ void MainWindow::adjustScales()
 
 	m_upHorzScale->Move(0_PIXEL, pixHeight, pixRectSize.GetX(),  pixScaleSize.GetY(), true);
 	m_upVertScale->Move(0_PIXEL, 0_PIXEL,   pixScaleSize.GetX(), pixHeight,           true);
+	m_upHorzScale->SetUnitOffset(fPixelPoint(5._fPixel-m_fPixScaleSize.GetX(), -3._fPixel));
 }
 
 bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -478,10 +481,18 @@ void MainWindow::centerAndZoomRect
 	CoordAnimationCmd::Push(GetCoord(), coordTarget);
 }
 
+bool MainWindow::OnCtlColorStatic(WPARAM const wParam, LPARAM const lParam)
+{
+	HDC  hdc = (HDC)wParam;
+	SetBkColor(hdc, D2D1::ColorF::Red);
+	HGDIOBJ brush { GetStockObject(DC_BRUSH) };
+	return (INT_PTR)brush;
+}
+
 void MainWindow::OnPaint()
 {
 	m_pDisplayTimer->TimerStart();
- 	NNetWindow::OnPaint();
+	NNetWindow::OnPaint();
 	m_pDisplayTimer->TimerStop();
 }
 

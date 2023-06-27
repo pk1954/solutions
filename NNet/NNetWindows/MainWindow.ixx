@@ -70,6 +70,7 @@ public:
 	void OnLButtonDblClick(WPARAM const, LPARAM const)                   final;
 	bool OnLButtonUp      (WPARAM const, LPARAM const)                   final;
 	bool OnLButtonDown    (WPARAM const, LPARAM const)                   final;
+	bool OnCtlColorStatic (WPARAM const, LPARAM const)                   final;
 	bool OnSize           (PIXEL  const, PIXEL  const)                   final;
 	bool OnMove           (PIXEL  const, PIXEL  const)                   final;
 

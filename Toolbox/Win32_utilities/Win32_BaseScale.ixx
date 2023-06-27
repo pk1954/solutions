@@ -52,11 +52,12 @@ public:
 	inline static bool const TICKS_LEFT  { true };
 
 	void SetTicksDir   (bool const);
-	void SetInverted   (bool const b)     { m_bInverted      = b; }
-	void SetZoomAllowed(bool const b)     { m_bZoomAllowed   = b; }
-	void SetAllowUnlock(bool const b)     { m_bUnlockAllowed = b; }
-	void SetBlock2Zero (bool const b)     { m_bLock2Zero     = b; }
-	void SetBlock2Zero (tBoolOp const op) { ApplyOp(m_bLock2Zero, op); }
+	void SetInverted   (bool const b)         { m_bInverted      = b; }
+	void SetZoomAllowed(bool const b)         { m_bZoomAllowed   = b; }
+	void SetAllowUnlock(bool const b)         { m_bUnlockAllowed = b; }
+	void SetBlock2Zero (bool const b)         { m_bLock2Zero     = b; }
+	void SetBlock2Zero (tBoolOp const op)     { ApplyOp(m_bLock2Zero, op); }
+	void SetUnitOffset (fPixelPoint const &p) { m_fPixUnitOffset = p; }
 
 	bool IsScaleLocked() const { return m_bLock2Zero; }
 	bool IsZoomAllowed() const { return m_bZoomAllowed; }
@@ -76,9 +77,9 @@ public:
 
 protected:
 
-	inline static fPixel const LONG_TICK   { 10._fPixel };
-	inline static fPixel const MIDDLE_TICK { 7._fPixel };
-	inline static fPixel const SMALL_TICK  { 5._fPixel };
+	inline static fPixel const LONG_TICK      { 10._fPixel };
+	inline static fPixel const MIDDLE_TICK    { 7._fPixel };
+	inline static fPixel const SMALL_TICK     { 5._fPixel };
 
 	void   display(fPixelRect const&, wstring const&) const;
 	void   display(fPixelRect const&, wstring const&, D2D1::ColorF const) const;
@@ -88,6 +89,8 @@ protected:
 
 	fPixel xPos(fPixel const x) const { return m_bInverted ? getClWidth() - x : x; }
 	fPixel yPos(fPixel const y) const { return m_bInverted ? getClHeight() - y : y; }
+
+	fPixelPoint m_fPixUnitOffset { fPP_NULL };
 
 private:
 

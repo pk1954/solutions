@@ -2,7 +2,7 @@ SetAutoOpen ON
 ReadModel "D:\SW-projects\Delivery\V4_9\BC30.mod"
 SetPerfMonMode OFF
 InputCablesVisibility 1
-ShowScales OFF
+ShowScales ON
 ShowArrows OFF
 ShowSensorPoints OFF
 SetSound ON

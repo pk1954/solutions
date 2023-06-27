@@ -57,9 +57,18 @@ HWND CreateOwnerDrawButton(HWND const hwndParent, int const x, int const y, int 
 	return hwnd;
 }
 
-HWND CreateStaticField(HWND const hwndParent, wchar_t const * const text, int const iXpos, int const iYpos, int const iWidth, int const height)
+HWND CreateStaticField
+(
+	HWND            const hwndParent, 
+	wchar_t const * const text, 
+	int             const iXpos, 
+	int             const iYpos, 
+	int             const iWidth, 
+	int             const height,
+	DWORD           const dwStyle
+)
 {
-	HWND hwnd = CreateWindow(WC_STATIC, text, WS_CHILD | WS_VISIBLE, iXpos, iYpos, iWidth, height, hwndParent, 0, GetModuleHandle(nullptr), 0);
+	HWND hwnd = CreateWindow(WC_STATIC, text, WS_CHILD|WS_VISIBLE|dwStyle, iXpos, iYpos, iWidth, height, hwndParent, 0, GetModuleHandle(nullptr), 0);
 	return hwnd;
 }
 

@@ -225,6 +225,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         OnScaleCommand(wParam, lParam);
         break;
 
+    case WM_CTLCOLORSTATIC:
+        OnCtlColorStatic(wParam, lParam);
+        break;
+
     default:
         break;
     }

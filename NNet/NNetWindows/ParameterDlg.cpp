@@ -214,7 +214,6 @@ bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 	if (message == WM_CTLCOLORSTATIC)
 	{
 		SetBkColor(hdc, D2D1::ColorF::LightBlue);
-//		SetDCBrushColor(hdc, COL_BACKGROUND);
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 		return (INT_PTR)brush;
 	}

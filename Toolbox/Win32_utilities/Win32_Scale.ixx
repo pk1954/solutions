@@ -112,10 +112,13 @@ public:
 			);
 	}
 
+	void DisplayUnit(bool const bOn) { m_bDisplayUnit = bOn; }
+
 private:
 
 	PixFpDimension<LogUnits>& m_pixCoord;
 
+	bool        m_bDisplayUnit   { true };
 	wstring     m_wstrUnit       {};
 	float       m_fUnitReduction {};
 	fPixelPoint m_fPixPntStart   {};
@@ -223,11 +226,14 @@ private:
 		);
 		fPixelPoint fPixPos
 		{
-			IsVertScale()
-			? fPixelPoint(0._fPixel, m_fPixPntEnd.GetY() - 16._fPixel)
-			: fPixelPoint(m_fPixPntStart.GetX() + 12._fPixel, -1._fPixel)
+			m_fPixUnitOffset.IsNotNull()
+				? m_fPixUnitOffset
+				: IsVertScale()
+					? fPixelPoint(0._fPixel, m_fPixPntEnd.GetY() - 16._fPixel)
+					: fPixelPoint(m_fPixPntStart.GetX() + 12._fPixel, -1._fPixel)
 		};
-		display(m_textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);
+		if (m_bDisplayUnit)
+			display(m_textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);
 	}
 
 	void setScaleParams()
@@ -235,8 +241,11 @@ private:
 		float const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
 		float const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
 		int   const iSteps    { StepsOfThousand(logDist10 / fFactor) };
-		m_wstrUnit       = GetUnitPrefix(iSteps);
-		m_wstrUnit      += TypeAttribute<LogUnits>::unit;
+		if (m_bDisplayUnit)
+		{
+			m_wstrUnit = GetUnitPrefix(iSteps);
+			m_wstrUnit += TypeAttribute<LogUnits>::unit;
+		}
 		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
 		m_fTickDist      = m_logTickDist.GetValue() / m_fUnitReduction;
 	}
