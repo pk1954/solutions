@@ -104,10 +104,9 @@ void ParameterDialog::Start(HWND const hwndParent)
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
 	D2D_driver * pGraphics = StartGraphics();
-
-	pGraphics->SetBackgroundColor(COL_BACKGROUND);
 	m_pTextFormatHeader = pGraphics->NewTextFormat(16.f);
 	m_pTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+	pGraphics->SetBackgroundColor(RGB(240, 240, 240));   // default background color of static control, can't change
 
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);
@@ -139,14 +138,11 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 void ParameterDialog::PaintGraphics()
 {
-	m_upGraphics->FillBackground();
-
 	m_fPixPosVert = 16._fPixel;
 	paintHeader(3, L"Neuron");
 	paintHeader(1, L"Synapse");
 	paintHeader(1, L"Dendrite");
 	paintHeader(2, L"General");
-
 	refreshParameters();
 }
 
@@ -168,7 +164,7 @@ void ParameterDialog::paintHeader
 	pGraphics->DrawRoundedRectangle(fPixelRect(9._fPixel, m_fPixPosVert, 240._fPixel, fPixBottom), COL, CORNERS, THICK);
 	
 	fPixelRect rect { 16._fPixel, m_fPixPosVert - VSIZE + 3._fPixel, 85._fPixel, m_fPixPosVert + VSIZE };
-	pGraphics->FillRectangle(rect, COL_BACKGROUND);
+	pGraphics->ClearRectangle(rect);
 	
 	rect.MoveHorz(2._fPixel);
 	pGraphics->DisplayText(rect, wstrText.c_str(), m_pTextFormatHeader);

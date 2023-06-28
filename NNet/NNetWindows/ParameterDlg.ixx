@@ -40,8 +40,6 @@ private:
 	static int const VERT_BLOCK_SPACE {  30 };
 	static int const HEIGHT           {  16 };
 
-	inline static COLORREF const COL_BACKGROUND { RGB(240, 240, 240) };
-
 	IDWriteTextFormat        * m_pTextFormatHeader { nullptr };
 	NNetModelWriterInterface * m_pNMWI             { nullptr };
 
