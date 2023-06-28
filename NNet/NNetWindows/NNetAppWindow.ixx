@@ -96,7 +96,6 @@ private:
 	void OnChar   (WPARAM const, LPARAM const)                   final;
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 	void OnClose  ()                                             final;
-	void OnPaint  ()                                             final;
 
 	void    configureStatusBar();
 	void    adjustChildWindows();

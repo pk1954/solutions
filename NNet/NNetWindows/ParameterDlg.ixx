@@ -42,10 +42,8 @@ private:
 
 	inline static COLORREF const COL_BACKGROUND { RGB(240, 240, 240) };
 
-	ID2D1SolidColorBrush * m_brushBackGround;
-	IDWriteTextFormat    * m_pTextFormatHeader;
-
-	NNetModelWriterInterface * m_pNMWI     { nullptr };
+	IDWriteTextFormat        * m_pTextFormatHeader { nullptr };
+	NNetModelWriterInterface * m_pNMWI             { nullptr };
 
 	fPixel m_fPixPosVert;      // helper for paintHeader
 

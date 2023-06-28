@@ -44,7 +44,7 @@ public:
 	void SetLeftBorder  (fPixel const b)   { m_fPixLeftBorder   = b; }
 	void SetOrthoOffset (fPixel const off) { m_fPixOrthoOffset  = off; }
 
-	D2D1::ColorF SetScaleColor(D2D1::ColorF const c) { return m_upGraphics->SetColor(c); }
+	D2D1::ColorF SetScaleColor(D2D1::ColorF const c) { return m_upGraphics->SetForegroundColor(c); }
 
 	inline static bool const TICKS_UP    { true };
 	inline static bool const TICKS_DOWN  { false };
@@ -72,9 +72,6 @@ public:
 
 	void Notify(bool const) override;
 
-	inline static D2D1::ColorF const COL_NORMAL      { D2D1::ColorF::AliceBlue };
-	inline static D2D1::ColorF const COL_HIGHLIGHTED { D2D1::ColorF::Aquamarine };
-
 protected:
 
 	inline static fPixel const LONG_TICK      { 10._fPixel };
@@ -82,7 +79,6 @@ protected:
 	inline static fPixel const SMALL_TICK     { 5._fPixel };
 
 	void   display(fPixelRect const&, wstring const&) const;
-	void   display(fPixelRect const&, wstring const&, D2D1::ColorF const) const;
 	void   setTextBox(fPixelRect& textBox) const;
 	fPixel getClHeight() const { return m_upGraphics->GetClRectHeight(); }
 	fPixel getClWidth () const { return m_upGraphics->GetClRectWidth (); }

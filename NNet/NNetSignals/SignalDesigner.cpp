@@ -109,7 +109,7 @@ void SignalDesigner::Initialize
 	for (int i = 0; i <= 1; ++i)
 	{
 		m_upArrowButton[i] = make_unique<ArrowButton>(GetWindowHandle(), IDM_SIGNAL_DESIGNER_TOGGLE);
-		m_upArrowButton[i]->SetBackgroundColor(BaseScale::COL_NORMAL);
+		m_upArrowButton[i]->SetBackgroundColor(m_upVertScaleFreq->GetBackgroundColor());
 		m_upArrowButton[i]->SetWindowWidth (V_SCALE_WIDTH,  false);
 		m_upArrowButton[i]->SetWindowHeight(H_SCALE_HEIGHT, false);
 	}

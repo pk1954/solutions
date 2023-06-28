@@ -61,6 +61,8 @@ MonitorControl::MonitorControl
 	m_pBrushNormal   = m_upGraphics->CreateBrush(ColorF::Black);
 	m_pBrushSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
 
+	m_upGraphics->SetBackgroundColor(COL_TRACK_EVEN);
+
 	m_pObservable = &observable;
 }
 
@@ -480,7 +482,7 @@ void MonitorControl::PaintGraphics()
 {
 	if (m_pMonitorData->NoTracks())
 	{
-		m_upGraphics->FillBackground(COL_TRACK_EVEN);
+		m_upGraphics->FillBackground();
 		return;
 	}
 

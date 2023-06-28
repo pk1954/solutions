@@ -58,7 +58,7 @@ void D2D_driver::createResources()
 
 	m_pTextFormat = NewTextFormat(12.0f);
 
-	SetColor(m_color);
+	SetForegroundColor(m_colForeground);
 }
 
 bool D2D_driver::startFrame()
@@ -99,7 +99,7 @@ void D2D_driver::discardResources()
 	SafeRelease(&m_pDWriteFactory);
 	SafeRelease(&m_pRenderTarget);
 	SafeRelease(&m_pTextFormat);
-	SafeRelease(&m_pBrush);
+	SafeRelease(&m_pBrushForeground);
 	SafeRelease(&m_pSink);
 }
 
@@ -203,7 +203,7 @@ void D2D_driver::DisplayText
 	IDWriteTextFormat* const  pTextFormat
 ) const
 {
-	DisplayText(rect, wstr, *m_pBrush, pTextFormat);
+	DisplayText(rect, wstr, *m_pBrushForeground, pTextFormat);
 }
 
 void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel const fPixWidth) const
@@ -224,6 +224,11 @@ void D2D_driver::FillRectangle(fPixelRect const& rect, D2D1::ColorF const colF) 
 	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
 	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
 	SafeRelease(&pBrush);
+}
+
+void D2D_driver::ClearRectangle(fPixelRect const& rect) const
+{
+	m_pRenderTarget->FillRectangle(convertD2D(rect), m_pBrushBackground);
 }
 
 void D2D_driver::DrawRoundedRectangle
@@ -384,7 +389,7 @@ void D2D_driver::DrawLine
 	fPixel      const   fpixWidth
 ) const
 {
-	DrawLine(fpp1, fpp2, fpixWidth, *m_pBrush);
+	DrawLine(fpp1, fpp2, fpixWidth, *m_pBrushForeground);
 }
 
 void D2D_driver::FillCircle
@@ -464,7 +469,7 @@ void D2D_driver::FillEllipse
 
 void D2D_driver::FillEllipse(fPixelEllipse const& fPE) const
 {
-	FillEllipse(fPE, m_pBrush);
+	FillEllipse(fPE, m_pBrushForeground);
 }
 
 void D2D_driver::DrawEllipse
@@ -495,7 +500,7 @@ void D2D_driver::DrawEllipse
 	fPixel        const  fPixWidth
 ) const
 {
-	DrawEllipse(fPE, m_pBrush, fPixWidth);
+	DrawEllipse(fPE, m_pBrushForeground, fPixWidth);
 }
 
 void D2D_driver::FillArrow
@@ -563,9 +568,9 @@ void D2D_driver::FillDiamond
 	DrawLine(ptStart, ptEnd, fPixSize * sqrtf(8.0f), colF);
 }
 
-void D2D_driver::FillBackground(D2D1::ColorF const d2dCol) const
+void D2D_driver::FillBackground() const
 {
-	m_pRenderTarget->Clear(d2dCol);
+	m_pRenderTarget->Clear(m_colBackground);
 }
 
 ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
@@ -576,12 +581,22 @@ ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 	return pBrush;
 }
 
-D2D1::ColorF D2D_driver::SetColor(D2D1::ColorF const d2dCol)
+D2D1::ColorF D2D_driver::SetForegroundColor(D2D1::ColorF const d2dCol)
 {
-	D2D1::ColorF colorOld = m_color;
-	m_color = d2dCol;
-	SafeRelease(&m_pBrush);
-	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(m_color, &m_pBrush);
+	D2D1::ColorF colorOld = m_colForeground;
+	m_colForeground = d2dCol;
+	SafeRelease(&m_pBrushForeground);
+	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(m_colForeground, &m_pBrushForeground);
+	assert(hres == S_OK);
+	return colorOld;
+}
+
+D2D1::ColorF D2D_driver::SetBackgroundColor(D2D1::ColorF const d2dCol)
+{
+	D2D1::ColorF colorOld = m_colBackground;
+	m_colBackground = d2dCol;
+	SafeRelease(&m_pBrushBackground);
+	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(m_colBackground, &m_pBrushBackground);
 	assert(hres == S_OK);
 	return colorOld;
 }
@@ -658,7 +673,7 @@ void D2D_driver::DrawBezier
 	fPixel      const  fPixWidth
 ) const
 {
-	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, m_pBrush, fPixWidth);
+	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, m_pBrushForeground, fPixWidth);
 }
 
 void D2D_driver::DrawBezier

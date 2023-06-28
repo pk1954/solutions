@@ -11,7 +11,9 @@ module;
 
 export module NNetModel:UPSigGenList;
 
+import SaveCast;
 import Observable;
+import Uniform2D;
 import Types;
 import Signals;
 import :StdSigGen;

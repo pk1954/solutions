@@ -26,11 +26,6 @@ public:
 		GraphicsWindow::Initialize(hwndParent, L"ArrowBotton", WS_CHILD | WS_VISIBLE);
 	}
 
-	void SetBackgroundColor(D2D1::ColorF const col)
-	{
-		m_colBackground = col;
-	}
-
 	void SetDirection(bool const bDir)
 	{
 		m_bArrowDirUp = bDir;
@@ -43,7 +38,7 @@ private:
 	{
 		fPixelRect rect { Convert2fPixelRect(GetClPixelRect()) };
 		rect = rect.ScaleRect(-2._fPixel);
-		m_upGraphics->FillBackground(m_colBackground);
+		m_upGraphics->FillBackground();
 		m_upGraphics->UpDownArrow(m_bArrowDirUp, rect, D2D1::ColorF::Black);
 		m_upGraphics->DrawRectangle(rect, D2D1::ColorF::Black, 1._fPixel);
 	};
@@ -59,7 +54,6 @@ private:
 		return true; 
 	};
 
-	D2D1::ColorF m_colBackground { D2D1::ColorF::White };
-	bool         m_bArrowDirUp   { true };
-	int          m_idCommand;
+	bool m_bArrowDirUp { true };
+	int   m_idCommand;
 };

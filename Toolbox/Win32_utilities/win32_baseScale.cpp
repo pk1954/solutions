@@ -34,6 +34,7 @@ BaseScale::BaseScale
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
+	m_upGraphics->SetBackgroundColor(D2D1::ColorF::AliceBlue);
 }
 
 void BaseScale::SetTicksDir(bool const bMode) 
@@ -85,18 +86,8 @@ void BaseScale::display
 	wstring    const& wstr
 ) const
 {
+	m_upGraphics->ClearRectangle(textBox);
 	m_upGraphics->DisplayText(textBox, wstr, m_pTextFormat);
-}
-
-void BaseScale::display
-(
-	fPixelRect   const& textBox,
-	wstring      const& wstr,
-	D2D1::ColorF const  col
-) const
-{
-	m_upGraphics->FillRectangle(textBox, col);
-	display(textBox, wstr);
 }
 
 void BaseScale::OnMouseLeave()

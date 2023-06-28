@@ -173,18 +173,17 @@ private:
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };
 
-		D2D1::ColorF const colBackGround  { CrsrInClientRect() ? COL_HIGHLIGHTED : COL_NORMAL };
-		LogUnits     const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
-		float        const log10          { log10f(logMinTickDist.GetValue()) };
-		float        const fExp           { floor(log10) };
-		float        const fFractPart     { log10 - fExp };
-		float        const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
+		LogUnits const logMinTickDist { m_pixCoord.Transform2logUnitSize(MIN_TICK_DIST) };
+		float    const log10          { log10f(logMinTickDist.GetValue()) };
+		float    const fExp           { floor(log10) };
+		float    const fFractPart     { log10 - fExp };
+		float    const fFactor        { (fFractPart >= log10f(5.f)) ? 10.f : (fFractPart >= log10f(2.f)) ? 5.f : 2.f };
 
 		fPixel fPixStart;
 		fPixel fPixEnd;
 		fPixel fPixPosOrtho;
 
-		m_upGraphics->FillBackground(colBackGround);
+		m_upGraphics->FillBackground();
 
 		if (IsVertScale())
 		{
@@ -209,10 +208,10 @@ private:
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
 
 		setScaleParams();
-		renderScale(colBackGround);
+		renderScale();
 	}
 
-	void renderScale(D2D1::ColorF const colBackGround)
+	void renderScale()
 	{
 		setTextBox(m_textBox);
 		Apply2AllTicks
@@ -233,7 +232,7 @@ private:
 					: fPixelPoint(m_fPixPntStart.GetX() + 12._fPixel, -1._fPixel)
 		};
 		if (m_bDisplayUnit)
-			display(m_textBox + (m_fPixPntStart + fPixPos), m_wstrUnit, colBackGround);
+			display(m_textBox + (m_fPixPntStart + fPixPos), m_wstrUnit);
 	}
 
 	void setScaleParams()
@@ -293,4 +292,3 @@ private:
 		display(m_textBox + fPos, m_wstrBuffer.str());
 	}
 };
-

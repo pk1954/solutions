@@ -51,6 +51,7 @@ public:
     void DisplayText         (fPixelRect    const&, wstring const&,                      IDWriteTextFormat* = nullptr) const;
     void DrawRectangle       (fPixelRect    const&, D2D1::ColorF const, fPixel const)                                  const;
     void FillRectangle       (fPixelRect    const&, D2D1::ColorF const)                                                const;
+    void ClearRectangle      (fPixelRect    const&)                                                const;
     void FillGradientRect    (fPixelRect    const&, D2D1::ColorF const, D2D1::ColorF const)                            const;
     void FillGradientEllipse (fPixelEllipse const&, D2D1::ColorF const, D2D1::ColorF const)                            const;
     void FillGradientCircle  (fPixelCircle  const&, D2D1::ColorF const, D2D1::ColorF const)                            const;
@@ -72,7 +73,7 @@ public:
     void DrawEllipse         (fPixelEllipse const&,                     fPixel const)                                  const;
     void FillArrow           (fPixelPoint const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const)    const;
     void FillDiamond         (fPixelPoint const, fPixel const, D2D1::ColorF const) const;
-    void FillBackground      (D2D1::ColorF const) const;
+    void FillBackground      () const;
     void DrawRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const, fPixel const) const;
     void FillRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const) const;
     void UpDownArrow         (bool  const, fPixelRect  const &, D2D1::ColorF const) const;
@@ -92,21 +93,27 @@ public:
 
     ID2D1SolidColorBrush* CreateBrush(D2D1::ColorF const) const;
         
-    D2D1::ColorF SetColor(D2D1::ColorF const);
+    D2D1::ColorF SetForegroundColor(D2D1::ColorF const);
+    D2D1::ColorF SetBackgroundColor(D2D1::ColorF const);
+
+    D2D1::ColorF GetForegroundColor() { return m_colForeground; }
+    D2D1::ColorF GetBackgroundColor() { return m_colBackground; }
 
 private:
     HWND m_hwnd { nullptr };
 
     mutable HRESULT m_hr { 0 };
 
-    mutable ID2D1GeometrySink * m_pSink      { nullptr };
+    mutable ID2D1GeometrySink * m_pSink        { nullptr };
 
-    ID2D1Factory          * m_pD2DFactory    { nullptr };
-    ID2D1HwndRenderTarget * m_pRenderTarget  { nullptr };
-    IDWriteFactory        * m_pDWriteFactory { nullptr };
-    IDWriteTextFormat     * m_pTextFormat    { nullptr };
-    ID2D1SolidColorBrush  * m_pBrush         { nullptr };
-    D2D1::ColorF            m_color          { D2D1::ColorF::Black };
+    ID2D1Factory          * m_pD2DFactory      { nullptr };
+    ID2D1HwndRenderTarget * m_pRenderTarget    { nullptr };
+    IDWriteFactory        * m_pDWriteFactory   { nullptr };
+    IDWriteTextFormat     * m_pTextFormat      { nullptr };
+    ID2D1SolidColorBrush  * m_pBrushForeground { nullptr };
+    ID2D1SolidColorBrush  * m_pBrushBackground { nullptr };
+    D2D1::ColorF            m_colForeground    { D2D1::ColorF::Black };
+    D2D1::ColorF            m_colBackground    { D2D1::ColorF::White };
 
     void createResources();
     void discardResources();

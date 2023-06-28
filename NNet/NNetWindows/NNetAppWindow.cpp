@@ -299,15 +299,6 @@ bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
 	return true;
 }
 
-void NNetAppWindow::OnPaint()
-{
-	static auto const CLR_GREY { RGB(128, 128, 128) };
-	PAINTSTRUCT   ps;
-	HDC           hDC { BeginPaint(&ps) };
-	FillBackground(hDC, CLR_GREY);
-	(void)EndPaint(&ps);
-}
-
 bool NNetAppWindow::UserProc
 (
 	UINT   const message, 

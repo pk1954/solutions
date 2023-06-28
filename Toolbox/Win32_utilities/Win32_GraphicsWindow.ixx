@@ -28,6 +28,12 @@ public:
 
 	virtual void Stop();
 
+	D2D1::ColorF SetForegroundColor(D2D1::ColorF const col) { return m_upGraphics->SetForegroundColor(col); }
+	D2D1::ColorF SetBackgroundColor(D2D1::ColorF const col) { return m_upGraphics->SetBackgroundColor(col); }
+
+	D2D1::ColorF GetForegroundColor() { return m_upGraphics->GetForegroundColor(); }
+	D2D1::ColorF GetBackgroundColor() { return m_upGraphics->GetBackgroundColor(); }
+
 protected:
 
 	HWND Initialize(HWND const, LPCTSTR const, DWORD const);

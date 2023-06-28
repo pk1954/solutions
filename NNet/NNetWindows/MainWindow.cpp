@@ -481,14 +481,6 @@ void MainWindow::centerAndZoomRect
 	CoordAnimationCmd::Push(GetCoord(), coordTarget);
 }
 
-bool MainWindow::OnCtlColorStatic(WPARAM const wParam, LPARAM const lParam)
-{
-	HDC  hdc = (HDC)wParam;
-	SetBkColor(hdc, D2D1::ColorF::Red);
-	HGDIOBJ brush { GetStockObject(DC_BRUSH) };
-	return (INT_PTR)brush;
-}
-
 void MainWindow::OnPaint()
 {
 	m_pDisplayTimer->TimerStart();
@@ -694,6 +686,27 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		break;
 
 	case IDM_ESCAPE:
+	{
+		CHOOSECOLOR cc;                 // common dialog box structure 
+		static COLORREF acrCustClr[16]; // array of custom colors 
+		HWND hwnd;                      // owner window
+		HBRUSH hbrush;                  // brush handle
+		static DWORD rgbCurrent;        // initial color selection
+
+		// Initialize CHOOSECOLOR 
+		ZeroMemory(&cc, sizeof(cc));
+		cc.lStructSize = sizeof(cc);
+		cc.hwndOwner = GetWindowHandle();
+		cc.lpCustColors = (LPDWORD)acrCustClr;
+		cc.rgbResult = rgbCurrent;
+		cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+
+		if (ChooseColor(&cc) == TRUE)
+		{
+			hbrush = CreateSolidBrush(cc.rgbResult);
+			rgbCurrent = cc.rgbResult;
+		}
+	}
 		m_nobIdTarget = NO_NOB;
 		m_nobIdHighlighted = NO_NOB;
 		break;

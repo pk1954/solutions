@@ -21,10 +21,11 @@ using std::wostream;
 using std::wstring;
 using std::wcout;
 using std::endl;
+using D2D1::ColorF;
 
 namespace Util
 {
-    export inline COLORREF GetColorRef(D2D1::ColorF col)
+    export inline COLORREF GetColorRef(ColorF const col)
     {
         COLORREF color =  RGB
         (
@@ -33,6 +34,18 @@ namespace Util
             static_cast<BYTE>(col.b * 255.0f)
         );
         return color;
+    }
+
+    export inline ColorF GetColorF(COLORREF const color)
+    {
+        ColorF colF
+        (
+            static_cast<float>(GetRValue(color)) / 255.0f,
+            static_cast<float>(GetGValue(color)) / 255.0f,
+            static_cast<float>(GetBValue(color)) / 255.0f,
+            1.0f
+        );
+        return colF;
     }
 
     export inline LONG_PTR GetUserDataPtr(HWND hwnd)

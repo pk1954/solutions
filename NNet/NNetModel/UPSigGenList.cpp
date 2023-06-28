@@ -12,6 +12,7 @@ module;
 
 module NNetModel:UPSigGenList;
 
+import SaveCast;
 import Signals;
 import :StdSigGen;
 import :SignalGenerator;
@@ -211,7 +212,12 @@ SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr, fPixel const fPi
         return NO_SIGGEN;
 
     if (fPixCrsr.GetX() <= areaWidth(fPixOffX) - GAP)
-        return SigGenId(Cast2Int(fPixCrsr.GetX() / SignalGenerator::SIGGEN_WIDTH) - 1);
+    {
+        fPixel   const fPixX { fPixCrsr.GetX() - fPixOffX };
+        SigGenId const id    { SigGenId(Cast2Int(fPixX / DIST) - 1) };
+        assert(IsValid(id));
+        return id;
+    }
 
     if (newSigGenButtonRect(fPixOffX).Includes(fPixCrsr))
         return ADD_SIGGEN;

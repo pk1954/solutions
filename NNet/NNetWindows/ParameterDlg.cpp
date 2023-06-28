@@ -105,7 +105,7 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 	D2D_driver * pGraphics = StartGraphics();
 
-	m_brushBackGround   = pGraphics->CreateBrush(COL_BACKGROUND);
+	pGraphics->SetBackgroundColor(COL_BACKGROUND);
 	m_pTextFormatHeader = pGraphics->NewTextFormat(16.f);
 	m_pTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
@@ -141,7 +141,7 @@ void ParameterDialog::PaintGraphics()
 {
 	if (D2D_driver * pGraphics { GetGraphics() })
 	{
-		pGraphics->FillBackground(COL_BACKGROUND);
+		pGraphics->FillBackground();
 		m_fPixPosVert = 16._fPixel;
 		paintHeader(3, L"Neuron");
 		paintHeader(1, L"Synapse");
@@ -168,7 +168,7 @@ void ParameterDialog::paintHeader
 	fPixel const fPixBottom      { m_fPixPosVert + fPixBlockHeight + 10._fPixel };
 	pGraphics->DrawRoundedRectangle(fPixelRect(9._fPixel, m_fPixPosVert, 240._fPixel, fPixBottom), COL, CORNERS, THICK);
 	
-	fPixelRect rect { 16._fPixel, m_fPixPosVert - VSIZE + 2._fPixel, 85._fPixel, m_fPixPosVert + VSIZE };
+	fPixelRect rect { 16._fPixel, m_fPixPosVert - VSIZE + 3._fPixel, 85._fPixel, m_fPixPosVert + VSIZE };
 	pGraphics->FillRectangle(rect, COL_BACKGROUND);
 	
 	rect.MoveHorz(2._fPixel);
@@ -209,15 +209,14 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 
 bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
-	HDC  hdc  = (HDC)wParam;
-	HWND hwnd = (HWND)lParam;
-	if (message == WM_CTLCOLORSTATIC)
-	{
-		SetBkColor(hdc, D2D1::ColorF::LightBlue);
-		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
-		return (INT_PTR)brush;
-	}
-	else if (message == WM_CTLCOLOREDIT)
+	HDC hdc = (HDC)wParam;
+	//if (message == WM_CTLCOLORSTATIC)   // is called, but no effect
+	//{
+	//	SetBkColor(hdc, D2D1::ColorF::Red);
+	//	HGDIOBJ brush { GetStockObject(DC_BRUSH) };
+	//	return (INT_PTR)brush;
+	//}
+	if (message == WM_CTLCOLOREDIT)
 	{
 		SetBkColor(hdc, D2D1::ColorF::LightGreen);
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };

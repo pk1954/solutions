@@ -39,6 +39,7 @@ void NNetWindow::Start
 		dwStyle
 	);
 	m_context.Start(m_upGraphics.get());
+	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
 	m_pController          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
 	m_fPixRadiusLimit      = fPixLimit;
@@ -180,7 +181,7 @@ void NNetWindow::drawSignalCable
 
 void NNetWindow::PaintGraphics()
 {
-	m_upGraphics->FillBackground(D2D1::ColorF::Ivory);
+	m_upGraphics->FillBackground();
 }
 
 bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)
