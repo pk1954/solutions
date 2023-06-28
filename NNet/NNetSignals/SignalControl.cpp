@@ -218,7 +218,6 @@ void SignalControl::paintEditControls() const
 
 void SignalControl::PaintGraphics()
 {
-	m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
 	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
 	{
 		if (!m_simuRunning.IsRunning())

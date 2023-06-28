@@ -492,7 +492,6 @@ void MainWindow::OnPaint()
 
 void MainWindow::PaintGraphics()
 {
-	NNetWindow::PaintGraphics();
 	//m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
 	//m_upVertScale->DrawAuxLines(*m_upGraphics.get());
 

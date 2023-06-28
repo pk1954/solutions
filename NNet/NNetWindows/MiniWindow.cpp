@@ -93,7 +93,6 @@ void MiniWindow::Notify(bool const bImmediately)
 
 void MiniWindow::PaintGraphics()
 {
-	NNetWindow::PaintGraphics();
 	if (m_pObservedNNetWindow)
 	{
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 

@@ -183,8 +183,6 @@ private:
 		fPixel fPixEnd;
 		fPixel fPixPosOrtho;
 
-		m_upGraphics->FillBackground();
-
 		if (IsVertScale())
 		{
 			fPixPosOrtho   = GetOrthoOffset();

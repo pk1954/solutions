@@ -139,15 +139,14 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 void ParameterDialog::PaintGraphics()
 {
-	if (D2D_driver * pGraphics { GetGraphics() })
-	{
-		pGraphics->FillBackground();
-		m_fPixPosVert = 16._fPixel;
-		paintHeader(3, L"Neuron");
-		paintHeader(1, L"Synapse");
-		paintHeader(1, L"Dendrite");
-		paintHeader(2, L"General");
-	}
+	m_upGraphics->FillBackground();
+
+	m_fPixPosVert = 16._fPixel;
+	paintHeader(3, L"Neuron");
+	paintHeader(1, L"Synapse");
+	paintHeader(1, L"Dendrite");
+	paintHeader(2, L"General");
+
 	refreshParameters();
 }
 

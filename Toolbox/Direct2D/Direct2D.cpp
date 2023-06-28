@@ -87,6 +87,7 @@ void D2D_driver::Display(function<void()> func)
 	BeginPaint(m_hwnd, &ps);
 	if (startFrame())
 	{
+		FillBackground();
 		func();
 		endFrame();
 	}

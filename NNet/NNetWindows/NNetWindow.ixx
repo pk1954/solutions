@@ -97,7 +97,6 @@ protected:
 
 	bool OnSize   (PIXEL  const, PIXEL  const)                   override;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
-	void PaintGraphics()                                         override;
 
 	void DrawSensors() const;
 

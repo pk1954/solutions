@@ -21,7 +21,7 @@ export class NNetTimeGraph : public TimeGraph
 public:
 	NNetTimeGraph
 	(
-		HWND                   const hwndParent,
+		HWND                  const hwndParent,
 		PixFpDimension<fMicroSecs>* pHorzCoord
 	)
 		:TimeGraph(hwndParent, pHorzCoord)

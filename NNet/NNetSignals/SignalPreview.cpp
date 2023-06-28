@@ -38,8 +38,6 @@ void SignalPreview::PaintGraphics()
 		SigGenDynamicData        dynData      { };
 		fMicroSecs       const   umPulseWidth { pParams->PulseWidth() };
 
-		m_upGraphics->FillRectangle(Convert2fPixelRect(GetClPixelRect()), D2D1::ColorF::Ivory);
-
 		dynData.StartStimulus();
 		PaintCurve
 		(

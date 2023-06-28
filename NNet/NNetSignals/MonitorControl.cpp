@@ -480,12 +480,6 @@ void MonitorControl::paintStimulusMarkers() const
 
 void MonitorControl::PaintGraphics()
 {
-	if (m_pMonitorData->NoTracks())
-	{
-		m_upGraphics->FillBackground();
-		return;
-	}
-
 	m_fPixMaxSignal = 0.0_fPixel;
 	m_pMonitorData->Apply2AllTracksC   ([this](TrackNr  const n ) { paintTrack (n); });
 	m_pMonitorData->Apply2AllSignalIdsC([this](SignalId const id) { paintSignal(id); });

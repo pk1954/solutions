@@ -179,11 +179,6 @@ void NNetWindow::drawSignalCable
 	);
 }
 
-void NNetWindow::PaintGraphics()
-{
-	m_upGraphics->FillBackground();
-}
-
 bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
