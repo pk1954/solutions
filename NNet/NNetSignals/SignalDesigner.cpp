@@ -30,7 +30,6 @@ using std::wstring;
 using std::unique_ptr;
 using std::make_unique;
 using std::bit_cast;
-using D2D1::ColorF;
 
 void SignalDesigner::Initialize
 (
@@ -105,7 +104,6 @@ void SignalDesigner::Initialize
 	// buttons
 
 	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
-
 	for (int i = 0; i <= 1; ++i)
 	{
 		m_upArrowButton[i] = make_unique<ArrowButton>(GetWindowHandle(), IDM_SIGNAL_DESIGNER_TOGGLE);

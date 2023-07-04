@@ -29,7 +29,7 @@ D2D_driver::~D2D_driver()
 	discardResources();
 }
 
-void D2D_driver::createResources() 
+void D2D_driver::createResources()
 {
 	m_hr = D2D1CreateFactory
 	(
@@ -58,7 +58,13 @@ void D2D_driver::createResources()
 
 	m_pTextFormat = NewTextFormat(12.0f);
 
-	SetForegroundColor(m_colForeground);
+	static D2D1::ColorF const COL_FOREGROUND { D2D1::ColorF::Black };
+	m_hr = m_pRenderTarget->CreateSolidColorBrush(COL_FOREGROUND, &m_pBrushForeground);
+	assert(SUCCEEDED(m_hr));
+
+	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::White };
+	m_hr = m_pRenderTarget->CreateSolidColorBrush(COL_BACKGROUND, &m_pBrushBackground);
+	assert(SUCCEEDED(m_hr));
 }
 
 bool D2D_driver::startFrame()
@@ -87,7 +93,8 @@ void D2D_driver::Display(function<void()> func)
 	BeginPaint(m_hwnd, &ps);
 	if (startFrame())
 	{
-		FillBackground();
+		D2D1_COLOR_F colBackground { m_pBrushBackground->GetColor() };
+		m_pRenderTarget->Clear(colBackground);
 		func();
 		endFrame();
 	}
@@ -569,11 +576,6 @@ void D2D_driver::FillDiamond
 	DrawLine(ptStart, ptEnd, fPixSize * sqrtf(8.0f), colF);
 }
 
-void D2D_driver::FillBackground() const
-{
-	m_pRenderTarget->Clear(m_colBackground);
-}
-
 ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 {
 	ID2D1SolidColorBrush* pBrush;
@@ -582,24 +584,38 @@ ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 	return pBrush;
 }
 
-D2D1::ColorF D2D_driver::SetForegroundColor(D2D1::ColorF const d2dCol)
+D2D1_COLOR_F D2D_driver::SetForegroundColor(D2D1_COLOR_F const d2dCol)
 {
-	D2D1::ColorF colorOld = m_colForeground;
-	m_colForeground = d2dCol;
-	SafeRelease(&m_pBrushForeground);
-	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(m_colForeground, &m_pBrushForeground);
-	assert(hres == S_OK);
+	D2D1_COLOR_F colorOld = GetForegroundColor();
+	m_pBrushForeground->SetColor(d2dCol);
 	return colorOld;
 }
 
-D2D1::ColorF D2D_driver::SetBackgroundColor(D2D1::ColorF const d2dCol)
+D2D1_COLOR_F D2D_driver::SetBackgroundColor(D2D1_COLOR_F const d2dCol)
 {
-	D2D1::ColorF colorOld = m_colBackground;
-	m_colBackground = d2dCol;
-	SafeRelease(&m_pBrushBackground);
-	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(m_colBackground, &m_pBrushBackground);
-	assert(hres == S_OK);
+	D2D1_COLOR_F colorOld = GetBackgroundColor();
+	m_pBrushBackground->SetColor(d2dCol);
 	return colorOld;
+}
+
+D2D1_COLOR_F D2D_driver::SetForegroundColor(COLORREF const col)
+{
+	return SetForegroundColor(Convert2ColorF(col));
+}
+
+D2D1_COLOR_F D2D_driver::SetBackgroundColor(COLORREF const col)
+{
+	return SetBackgroundColor(Convert2ColorF(col));
+}
+
+D2D1_COLOR_F D2D_driver::GetForegroundColor() const
+{ 
+	return m_pBrushForeground->GetColor();
+}
+
+D2D1_COLOR_F D2D_driver::GetBackgroundColor() const
+{
+	return m_pBrushBackground->GetColor();
 }
 
 void D2D_driver::SetRotation(float const fAngle, fPixelPoint const& ptCenter) const
@@ -691,3 +707,4 @@ void D2D_driver::DrawBezier
 	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, pBrush, fPixWidth);
 	SafeRelease(&pBrush);
 }
+

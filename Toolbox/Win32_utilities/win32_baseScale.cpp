@@ -159,7 +159,7 @@ bool BaseScale::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint c
 	default:
 		break;
 	}
-	return false;
+	return GraphicsWindow::OnCommand(wParam, lParam, pixPoint);
 }
 
 void BaseScale::Notify(bool const bImmediately)

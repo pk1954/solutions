@@ -33,7 +33,6 @@ namespace Util
 
 		void PostThreadMsg(UINT, WPARAM const = 0, LPARAM const = 0);
 
-		void Terminate(); // Waits until thread has stopped
 		void TerminateNoWait() const 
 		{ 
 			PostThreadMessage(m_threadId, WM_QUIT, 0, 0); // PostQuitMessage(0);  doesn't work
@@ -41,6 +40,7 @@ namespace Util
 
 		bool IsAsyncThread() const { return m_bAsync; }
 
+		virtual void Terminate(); // Waits until thread has stopped
 		virtual void ThreadStartupFunc() {};
 		virtual void ThreadMsgDispatcher(MSG const &) = 0;
 		virtual void ThreadShutDownFunc() {};

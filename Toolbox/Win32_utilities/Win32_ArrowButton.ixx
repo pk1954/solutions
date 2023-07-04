@@ -5,12 +5,15 @@
 module;
 
 #include "Windows.h"
+#include "d2d1helper.h"
 
 export module ArrowButton;
 
 import Direct2D;
 import Win32_Controls;
 import GraphicsWindow;
+
+using D2D1::ColorF;
 
 export class ArrowButton : public GraphicsWindow
 {

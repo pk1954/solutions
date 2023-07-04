@@ -47,15 +47,15 @@ void TextWindow::StartTextWindow
 
     HDC const hDC { GetDC(hwnd) };
     assert(hDC != nullptr);
-	m_hDC_Memory = CreateCompatibleDC(hDC);
-	m_hBitmap    = CreateCompatibleBitmap(hDC);
-	SelectObject(m_hDC_Memory, m_hBitmap);
+	HDC const hDC_Memory { CreateCompatibleDC(hDC) };
+	m_hBitmap = CreateCompatibleBitmap(hDC);
+	SelectObject(hDC_Memory, m_hBitmap);
 	ReleaseDC(hwnd, hDC);
 	Util::MakeLayered(hwnd, true, 0, uiAlpha);
 	PixelRectSize pixRectSize { rect.GetSize() };
 	m_upTextWindowThread = make_unique<TextWindowThread>
 	(
-		m_hDC_Memory, 
+		hDC_Memory, 
 		pixRectSize,
 		* this, 
 		szClass, 
@@ -70,9 +70,6 @@ void TextWindow::StopTextWindow()
 
 	DeleteObject(m_hBitmap);
 	m_hBitmap = nullptr;
-
-	DeleteDC(m_hDC_Memory);
-	m_hDC_Memory = nullptr;
 }
 
 void TextWindow::Trigger()
@@ -86,6 +83,21 @@ void TextWindow::OnPaint()
 	PAINTSTRUCT   ps;
 	HDC           hDC      { BeginPaint(&ps) };
 	PixelRectSize rectSize { GetClRectSize() };
-	BitBlt(hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), m_hDC_Memory, 0, 0, SRCCOPY);
+	BitBlt
+	(
+		hDC, 0, 0, rectSize.GetXvalue(), rectSize.GetYvalue(), 
+		m_upTextWindowThread->GetHDC_Memory(), 
+		0, 0, SRCCOPY
+	);
 	(void)EndPaint(&ps);
+}
+
+COLORREF TextWindow::SetBackgroundColorRef(COLORREF const c) 
+{ 
+	return m_upTextWindowThread->SetBackgroundColor(c); 
+}
+
+COLORREF TextWindow::GetBackgroundColorRef() const 
+{ 
+	return m_upTextWindowThread->GetBackgroundColor(); 
 }

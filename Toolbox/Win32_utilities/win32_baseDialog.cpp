@@ -38,14 +38,9 @@ HWND BaseDialog::StartBaseDialog
 
 	SetWindowHandle(hwnd);
 	StartRootWindow(visibilityCriterion);
+	m_upGraphics = D2D_driver::Create(hwnd);
 
 	return hwnd;
-}
-
-D2D_driver * BaseDialog::StartGraphics()
-{
-	m_upGraphics = D2D_driver::Create(GetWindowHandle());
-	return m_upGraphics.get();
 }
 
 void BaseDialog::Stop()
@@ -57,13 +52,6 @@ void BaseDialog::Stop()
 bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
 	return RootWindow::CommonMessageHandler(message, wParam, lParam);
-}
-
-bool BaseDialog::OnSize(PIXEL const width, PIXEL const height)
-{
-	if (D2D_driver * pGraphics { GetGraphics() })
-		pGraphics->Resize();
-	return true;
 }
 
 static INT_PTR CALLBACK BaseDialogProc

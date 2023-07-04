@@ -28,6 +28,7 @@ export inline int const IDM_BLOCK_UI            { 6 };
 export inline int const IDD_REFRESH_RATE_DIALOG { 9 };
 
 export inline int const IDD_EDIT_CTL            { 11 };
+export inline int const IDD_COLOR_CTL           { 12 };
 
 export inline int const IDM_WINDOW_ON           { 20 };
 export inline int const IDM_WINDOW_OFF          { 21 };

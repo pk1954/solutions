@@ -51,6 +51,7 @@ void GraphicsWindow::OnPaint()
 
 bool GraphicsWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	m_upGraphics->Resize();
+	if (m_upGraphics)
+		m_upGraphics->Resize();
 	return true;
 }

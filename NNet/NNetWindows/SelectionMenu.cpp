@@ -13,6 +13,7 @@ module NNetWin32:SelectionMenu;
 import Win32_Controls;
 import NNetModel;
 import Win32_Util;
+import Direct2D;
 
 void SelectionMenu::Start(HWND const hwndParent)
 {
@@ -39,6 +40,8 @@ void SelectionMenu::Start(HWND const hwndParent)
 	CreateStaticField(hwnd, L" Move  [SHIFT+left mouse key]",       10, 100, 250, 20);
 	CreateStaticField(hwnd, L" Rotate [SHIFT+CTRL+left mouse key]", 10, 130, 250, 20);
 	CreateStaticField(hwnd, L" Size    [SHIFT+mouse wheel]",        10, 160, 250, 20);
+
+	m_colBackground = Convert2COLORREF(NNetColors::INT_SELECTED);
 }
 
 void SelectionMenu::Stop()
@@ -53,9 +56,8 @@ bool SelectionMenu::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 void SelectionMenu::OnPaint()
 {
-	static auto const CLR_BACKGROUND { Util::GetColorRef(NNetColors::INT_SELECTED) };
 	PAINTSTRUCT   ps;
 	HDC           hDC { BeginPaint(&ps) };
-	FillBackground(hDC, CLR_BACKGROUND);
+	FillBackground(hDC, m_colBackground);
 	(void)EndPaint(&ps);
 }

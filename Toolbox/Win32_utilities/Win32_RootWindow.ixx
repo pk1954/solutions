@@ -107,7 +107,6 @@ public:
 	HDC  BeginPaint(LPPAINTSTRUCT lpPaint) const { return ::BeginPaint(m_hwnd, lpPaint); }
 	bool EndPaint  (LPPAINTSTRUCT lpPaint) const { return ::EndPaint(m_hwnd, lpPaint); }
 
-	void SetTrackBarPos(INT const, LONG const) const;
 	void SetTrackBarRange(INT const, LONG const, LONG const) const;
 
 	void CenterIn(HWND const, PIXEL const, PIXEL const) const;
@@ -309,6 +308,13 @@ public:
 
 	void SetParentContextMenueMode(bool const b) { m_bParentContextMenue = b; }
 
+	virtual COLORREF SetBackgroundColorRef(COLORREF const c) 
+	{ 
+		return RGB(0, 0, 0); 
+	}
+
+	virtual COLORREF GetBackgroundColorRef() const { return RGB(0, 0, 0); }
+
 protected:
 
 	void SetWindowHandle(HWND const);
@@ -336,6 +342,7 @@ private:
 	void addWinMenu(HMENU const, wstring const&) const;
 	void adjustWinMenu(HMENU const) const;
 	void contextMenu(PixelPoint const&);
+	void colorDialog();
 
 	void adjustVisibility(tOnOffAuto const onOffAuto) const
 	{

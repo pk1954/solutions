@@ -103,10 +103,9 @@ void ParameterDialog::Start(HWND const hwndParent)
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
-	D2D_driver * pGraphics = StartGraphics();
-	m_pTextFormatHeader = pGraphics->NewTextFormat(16.f);
+	m_pTextFormatHeader = m_upGraphics->NewTextFormat(16.f);
 	m_pTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
-	pGraphics->SetBackgroundColor(RGB(240, 240, 240));   // default background color of static control, can't change
+	m_upGraphics->SetBackgroundColor(RGB(240, 240, 240));   // default background color of static control, can't change
 
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);
@@ -152,8 +151,6 @@ void ParameterDialog::paintHeader
 	wstring const& wstrText
 )
 {
-	D2D_driver * pGraphics { GetGraphics() };
-
 	static fPixel   const THICK   { 2._fPixel };
 	static fPixel   const CORNERS { 5._fPixel };
 	static fPixel   const VSIZE   { fPixel(HEIGHT) };
@@ -161,13 +158,13 @@ void ParameterDialog::paintHeader
 
 	fPixel const fPixBlockHeight { fPixel(Cast2Float(HEIGHT + VERT_SPACE) * iNrOfLines) };
 	fPixel const fPixBottom      { m_fPixPosVert + fPixBlockHeight + 10._fPixel };
-	pGraphics->DrawRoundedRectangle(fPixelRect(9._fPixel, m_fPixPosVert, 240._fPixel, fPixBottom), COL, CORNERS, THICK);
+	m_upGraphics->DrawRoundedRectangle(fPixelRect(9._fPixel, m_fPixPosVert, 240._fPixel, fPixBottom), COL, CORNERS, THICK);
 	
 	fPixelRect rect { 16._fPixel, m_fPixPosVert - VSIZE + 3._fPixel, 85._fPixel, m_fPixPosVert + VSIZE };
-	pGraphics->ClearRectangle(rect);
+	m_upGraphics->ClearRectangle(rect);
 	
 	rect.MoveHorz(2._fPixel);
-	pGraphics->DisplayText(rect, wstrText.c_str(), m_pTextFormatHeader);
+	m_upGraphics->DisplayText(rect, wstrText.c_str(), m_pTextFormatHeader);
 
 	m_fPixPosVert += fPixBlockHeight + fPixel(VERT_BLOCK_SPACE);
 }

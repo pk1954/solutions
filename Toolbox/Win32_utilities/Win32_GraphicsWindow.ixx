@@ -28,11 +28,17 @@ public:
 
 	virtual void Stop();
 
-	D2D1::ColorF SetForegroundColor(D2D1::ColorF const col) { return m_upGraphics->SetForegroundColor(col); }
-	D2D1::ColorF SetBackgroundColor(D2D1::ColorF const col) { return m_upGraphics->SetBackgroundColor(col); }
+	D2D1_COLOR_F SetForegroundColor(D2D1_COLOR_F const c) { return m_upGraphics->SetForegroundColor(c); }
+	D2D1_COLOR_F SetBackgroundColor(D2D1_COLOR_F const c) { return m_upGraphics->SetBackgroundColor(c); }
 
-	D2D1::ColorF GetForegroundColor() { return m_upGraphics->GetForegroundColor(); }
-	D2D1::ColorF GetBackgroundColor() { return m_upGraphics->GetBackgroundColor(); }
+	D2D1_COLOR_F SetForegroundColor(COLORREF const c) { return m_upGraphics->SetForegroundColor(c); }
+	D2D1_COLOR_F SetBackgroundColor(COLORREF const c) { return m_upGraphics->SetBackgroundColor(c); }
+
+	D2D1_COLOR_F GetForegroundColor() const { return m_upGraphics->GetForegroundColor(); }
+	D2D1_COLOR_F GetBackgroundColor() const { return m_upGraphics->GetBackgroundColor(); }
+
+	COLORREF SetBackgroundColorRef(COLORREF const c) final { return Convert2COLORREF(SetBackgroundColor(c)); }
+	COLORREF GetBackgroundColorRef() const           final { return Convert2COLORREF(GetBackgroundColor()); }
 
 protected:
 

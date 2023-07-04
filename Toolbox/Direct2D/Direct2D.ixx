@@ -19,7 +19,28 @@ using std::function;
 using std::wstring;
 using std::unique_ptr;
 
-export class D2D1::ColorF;
+export inline COLORREF Convert2COLORREF(D2D1_COLOR_F const col)
+{
+    COLORREF color = RGB
+    (
+        static_cast<BYTE>(col.r * 255.0f),
+        static_cast<BYTE>(col.g * 255.0f),
+        static_cast<BYTE>(col.b * 255.0f)
+    );
+    return color;
+}
+
+export inline D2D1_COLOR_F Convert2ColorF(COLORREF const color)
+{
+    D2D1_COLOR_F colF
+    (
+       static_cast<float>(GetRValue(color)) / 255.0f,
+       static_cast<float>(GetGValue(color)) / 255.0f,
+       static_cast<float>(GetBValue(color)) / 255.0f,
+       1.0f
+    );
+    return colF;
+}
 
 export inline void SafeRelease(auto **ppInterfaceToRelease)
 {
@@ -73,7 +94,6 @@ public:
     void DrawEllipse         (fPixelEllipse const&,                     fPixel const)                                  const;
     void FillArrow           (fPixelPoint const, fPixelPoint const, fPixel const, fPixel const, D2D1::ColorF const)    const;
     void FillDiamond         (fPixelPoint const, fPixel const, D2D1::ColorF const) const;
-    void FillBackground      () const;
     void DrawRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const, fPixel const) const;
     void FillRoundedRectangle(fPixelRect const&, D2D1::ColorF const, fPixel const) const;
     void UpDownArrow         (bool  const, fPixelRect  const &, D2D1::ColorF const) const;
@@ -93,11 +113,14 @@ public:
 
     ID2D1SolidColorBrush* CreateBrush(D2D1::ColorF const) const;
         
-    D2D1::ColorF SetForegroundColor(D2D1::ColorF const);
-    D2D1::ColorF SetBackgroundColor(D2D1::ColorF const);
+    D2D1_COLOR_F SetForegroundColor(D2D1_COLOR_F const);
+    D2D1_COLOR_F SetBackgroundColor(D2D1_COLOR_F const);
 
-    D2D1::ColorF GetForegroundColor() { return m_colForeground; }
-    D2D1::ColorF GetBackgroundColor() { return m_colBackground; }
+    D2D1_COLOR_F SetForegroundColor(COLORREF const);
+    D2D1_COLOR_F SetBackgroundColor(COLORREF const);
+
+    D2D1_COLOR_F GetForegroundColor() const;
+    D2D1_COLOR_F GetBackgroundColor() const;
 
 private:
     HWND m_hwnd { nullptr };
@@ -112,8 +135,6 @@ private:
     IDWriteTextFormat     * m_pTextFormat      { nullptr };
     ID2D1SolidColorBrush  * m_pBrushForeground { nullptr };
     ID2D1SolidColorBrush  * m_pBrushBackground { nullptr };
-    D2D1::ColorF            m_colForeground    { D2D1::ColorF::Black };
-    D2D1::ColorF            m_colBackground    { D2D1::ColorF::White };
 
     void createResources();
     void discardResources();

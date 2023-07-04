@@ -123,6 +123,8 @@ void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in sc
 		adjustWinMenu(hPopupMenu);
 	}
 
+	AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL, L"Background color");
+
 	// TODO
 	//if (m_bShowRefreshRateDlg && (m_upRefreshRate->GetRefreshRate() > 0ms))
 	//{
@@ -226,6 +228,10 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		m_upRefreshRate->RefreshRateDialog(m_hwnd);
 		break;
 
+	case IDD_COLOR_CTL:
+		colorDialog();
+		break;
+
 	default:
 		if (RootWindow * pParentRootWin { GetParentRootWindow() })
 			return pParentRootWin->OnCommand(wParam, lParam, pixPoint);
@@ -234,6 +240,26 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	}
 
 	return true;
+}
+
+void RootWindow::colorDialog()
+{
+	CHOOSECOLOR cc;                 // common dialog box structure 
+	static COLORREF acrCustClr[16]; // array of custom colors 
+
+	// Initialize CHOOSECOLOR 
+	ZeroMemory(&cc, sizeof(cc));
+	cc.lStructSize  = sizeof(cc);
+	cc.hwndOwner    = m_hwnd;
+	cc.lpCustColors = (LPDWORD)acrCustClr;
+	cc.rgbResult    = GetBackgroundColorRef();
+	cc.Flags        = CC_FULLOPEN | CC_RGBINIT;
+
+	if (ChooseColor(&cc) == TRUE)
+	{
+		SetBackgroundColorRef(cc.rgbResult);
+		Trigger();
+	}
 }
 
 bool RootWindow::OnMenuCommand(UINT const uiIndex, HMENU const hMenu)

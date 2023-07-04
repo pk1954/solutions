@@ -44,14 +44,16 @@ public:
 
 	void Trigger() final;
 
+	COLORREF SetBackgroundColorRef(COLORREF const) final;
+	COLORREF GetBackgroundColorRef() const         final;
+
 private:
 
 	void OnPaint() final;
 
 	unique_ptr<TextWindowThread> m_upTextWindowThread;
 
-	HDC     m_hDC_Memory{ nullptr };
-	HBITMAP m_hBitmap{ nullptr };
+	HBITMAP m_hBitmap { nullptr };
 };
 
 class TextWindowThread : public Util::Thread
@@ -60,13 +62,13 @@ public:
 	TextWindowThread
 	(
 		HDC             hDC_Memory,
-		PixelRectSize& pixSize,
-		TextWindow& textWindow,
-		wstring const& strName,
+		PixelRectSize & pixSize,
+		TextWindow    & textWindow,
+		wstring const & strName,
 		bool            bAsync
 	) :
 		m_textWindow(textWindow),
-		m_hDC(hDC_Memory)
+		m_hDC_Memory(hDC_Memory)
 	{
 		m_pTextBuffer = make_unique<Win32_TextBuffer>(hDC_Memory, pixSize);
 		if (bAsync)
@@ -74,7 +76,17 @@ public:
 		PostThreadMsg(anyMessageWillDo);
 	}
 
-	~TextWindowThread()	override = default;
+	~TextWindowThread()	override
+	{
+		Terminate();
+	}
+
+	void Terminate() override
+	{
+		DeleteDC(m_hDC_Memory);
+		m_hDC_Memory = nullptr;
+		Util::Thread::Terminate();
+	}
 
 	virtual void Trigger()
 	{
@@ -88,10 +100,15 @@ public:
 		m_textWindow.Invalidate(false);
 	}
 
+	COLORREF SetBackgroundColor(COLORREF const c) { return m_pTextBuffer->SetBackgroundColor(c); }
+	COLORREF GetBackgroundColor() const           { return m_pTextBuffer->GetBackgroundColor(); };
+
+	HDC GetHDC_Memory() { return m_hDC_Memory; }
+
 private:
 	const unsigned int anyMessageWillDo = 42;
 
-	TextWindow& m_textWindow;
-	unique_ptr<TextBuffer> m_pTextBuffer;
-	HDC                    m_hDC;
+	TextWindow                 & m_textWindow;
+	unique_ptr<Win32_TextBuffer> m_pTextBuffer;
+	HDC                          m_hDC_Memory;
 };

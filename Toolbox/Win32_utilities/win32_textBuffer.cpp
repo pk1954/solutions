@@ -29,12 +29,18 @@ Win32_TextBuffer::Win32_TextBuffer(HDC const hdc, PixelRectSize const & pixSize)
 	PIXEL horRaster  = cxChar * 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2);
 	PIXEL vertRaster = PIXEL(PIXEL(textMetric.tmHeight + textMetric.tmExternalLeading));
 	Initialize(horRaster, vertRaster);
+	SetBackgroundColor(RGB(200, 200, 200));
+}
+
+COLORREF Win32_TextBuffer::SetBackgroundColor(COLORREF const c)
+{
+	COLORREF colOld { GetBkColor(m_hDC) };
+	SetBkColor(m_hDC, c);
+	return colOld;
 }
 
 void Win32_TextBuffer::StartPainting()
 {
-	COLORREF const CLR_BACK { RGB(200, 200, 200) };
-	SetBkColor(m_hDC, CLR_BACK);
 	Util::FastFill(m_hDC, m_pixRect);
 	TextBuffer::StartPainting();
 }
