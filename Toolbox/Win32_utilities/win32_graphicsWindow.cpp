@@ -40,7 +40,8 @@ HWND GraphicsWindow::Initialize
 void GraphicsWindow::Stop()
 {
 	BaseWindow::Stop();
-	m_upGraphics->ShutDown();
+	if (m_upGraphics)
+		m_upGraphics->ShutDown();
 }
 
 void GraphicsWindow::OnPaint()

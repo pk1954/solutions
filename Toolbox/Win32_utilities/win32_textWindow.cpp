@@ -65,11 +65,17 @@ void TextWindow::StartTextWindow
 
 void TextWindow::StopTextWindow()
 {
-    if (m_upTextWindowThread)
-	    m_upTextWindowThread->Terminate();
+	if (m_upTextWindowThread)
+	{
+		m_upTextWindowThread->Terminate();
+		m_upTextWindowThread.release();
+	}
 
-	DeleteObject(m_hBitmap);
-	m_hBitmap = nullptr;
+	if (m_hBitmap)
+	{
+		DeleteObject(m_hBitmap);
+		m_hBitmap = nullptr;
+	}
 }
 
 void TextWindow::Trigger()

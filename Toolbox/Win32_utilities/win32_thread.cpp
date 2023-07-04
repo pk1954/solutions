@@ -78,6 +78,7 @@ void Util::Thread::Terminate()   // to be called from different thread
 		TerminateNoWait();
 		WaitForSingleObject(m_handle, INFINITE);      // wait until thread has stopped
 		CloseHandle(m_handle);
+		m_handle = nullptr;
 	}
 }
 
