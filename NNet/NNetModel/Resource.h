@@ -75,7 +75,10 @@
 									         
 #define       IDD_SENSOR_PNTS_ON             321
 #define       IDD_SENSOR_PNTS_OFF            322
-									         
+
+#define       IDD_COLOR_MENU_ON              331
+#define       IDD_COLOR_MENU_OFF             332
+
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341
 #define       IDM_INPUT_CABLES_ACTIVE        342

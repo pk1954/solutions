@@ -61,4 +61,5 @@ private:
 	unique_ptr<OnOffPair> m_upOnOffAutoOpen;
 	unique_ptr<OnOffPair> m_upOnOffSensorPoints;
 	unique_ptr<OnOffPair> m_upOnOffPerfMonMode;
+	unique_ptr<OnOffPair> m_upOnOffColorMenu;
 };

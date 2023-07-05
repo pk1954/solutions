@@ -65,7 +65,8 @@ NNetAppMenu::NNetAppMenu()
     m_upOnOffSound       (make_unique<OnOffPair>(this, IDD_SOUND_ON,         IDD_SOUND_OFF        )),
     m_upOnOffAutoOpen    (make_unique<OnOffPair>(this, IDD_AUTO_OPEN_ON,     IDD_AUTO_OPEN_OFF    )),
     m_upOnOffSensorPoints(make_unique<OnOffPair>(this, IDD_SENSOR_PNTS_ON,   IDD_SENSOR_PNTS_OFF  )),
-    m_upOnOffPerfMonMode (make_unique<OnOffPair>(this, IDD_PERF_MON_MODE_ON, IDD_PERF_MON_MODE_OFF))
+    m_upOnOffPerfMonMode (make_unique<OnOffPair>(this, IDD_PERF_MON_MODE_ON, IDD_PERF_MON_MODE_OFF)),
+    m_upOnOffColorMenu   (make_unique<OnOffPair>(this, IDD_COLOR_MENU_ON,    IDD_COLOR_MENU_OFF   ))
 { }
 
 void NNetAppMenu::Start
@@ -141,7 +142,8 @@ void NNetAppMenu::Start
         }
         m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
         m_upOnOffScales      ->appendOnOffMenu(hMenuView, L"&Scales");
-        m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&SensorPoints");
+        m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&Sensor points");
+        m_upOnOffColorMenu   ->appendOnOffMenu(hMenuView, L"&Color menu");
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
     {

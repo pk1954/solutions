@@ -133,12 +133,12 @@ public:
     }
 };
 
-class WrapSetSound: public PrefWrapBase
+class WrapSetSound : public PrefWrapBase
 {
 public:
     using PrefWrapBase::PrefWrapBase;
 
-    void operator() (Script & script) const final
+    void operator() (Script& script) const final
     {
         bool bMode { script.ScrReadBool() };
         if (bMode)
@@ -147,9 +147,25 @@ public:
             m_pref.GetSound().Off();
     }
 
-    void Write(wostream & out) const final
+    void Write(wostream& out) const final
     {
         out << (m_pref.GetSound().IsOn() ? PREF_ON : PREF_OFF);
+    }
+};
+
+class WrapSetColorMenu : public PrefWrapBase
+{
+public:
+    using PrefWrapBase::PrefWrapBase;
+
+    void operator() (Script& script) const final
+    {
+        m_pref.SetColorMenu(script.ScrReadBool());
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << (m_pref.ColorMenuVisible() ? PREF_ON : PREF_OFF);
     }
 };
 
@@ -231,6 +247,7 @@ void Preferences::Initialize
     Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
     Add<WrapSetSound             >(L"SetSound");
+    Add<WrapSetColorMenu         >(L"SetColorMenu");
     Add<WrapDescWinFontSize      >(L"DescWinFontSize");
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
@@ -269,11 +286,6 @@ void Preferences::SetScales(bool const bOn, bool const bAnimation)
 {
     m_bScales = bOn;
     SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, bAnimation);
-}
-
-void Preferences::SetSensorPoints(bool const bOn)
-{
-    m_bSensorPoints = bOn;
 }
 
 bool Preferences::WritePreferences() const

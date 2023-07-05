@@ -179,12 +179,15 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         m_pWinManager->SetCaptions();
         break;
 
-    case IDD_PERF_MON_MODE_OFF:
-        BaseWindow::SetPerfMonMode(false);
-        m_pWinManager->SetCaptions();
+    case IDD_COLOR_MENU_ON:
+        m_pPreferences->SetColorMenu(true);
         break;
 
-    case IDM_INPUT_CABLES_ALL:   
+    case IDD_COLOR_MENU_OFF:
+        m_pPreferences->SetColorMenu(false);
+        break;
+
+    case IDM_INPUT_CABLES_ALL:
         m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::all);
         break;
 

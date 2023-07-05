@@ -180,7 +180,5 @@ LPARAM BaseScale::AddContextMenuEntries(HMENU const hPopupMenu)
 			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_LOCK2ZERO, L"Lock scale");
 	}
 
-//	AddColorCtlMenu(hPopupMenu);
-
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }

@@ -39,16 +39,15 @@ public:
 
 	void SetArrows      (bool const, bool const);
 	void SetScales      (bool const, bool const);
-	void SetSensorPoints(bool const);
+	void SetSensorPoints(bool const b) { m_bSensorPoints = b; }
+	void SetColorMenu   (bool const b) { m_bColorMenu    = b; }
 
+	bool ColorMenuVisible   () const { return m_bColorMenu; }
 	bool ScalesVisible      () const { return m_bScales; }
 	bool ArrowsVisible      () const { return m_bArrows; }
 	bool SensorPointsVisible() const { return m_bSensorPoints; }
 
-	enum class tInputCablesVisibility
-	{
-		all, nonStd, active, none
-	};
+	enum class tInputCablesVisibility { all, nonStd, active, none };
 
 	tInputCablesVisibility InputCablesVisibility() const { return m_inputCablesVisibility; }
 	void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
@@ -74,6 +73,7 @@ private:
 	bool                             m_bScales               { false };
 	bool                             m_bArrows               { false };
 	bool                             m_bSensorPoints         { false };
+	bool                             m_bColorMenu            { false };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 	vector<unique_ptr<WrapBase>>     m_prefVector;
 	wstring                          m_wstrPreferencesFile;
