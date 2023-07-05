@@ -66,4 +66,6 @@ private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 	bool UserProc(UINT const, WPARAM const, LPARAM const) final;
+
+	void AddColorCtlMenu(HMENU const) final {}
 };

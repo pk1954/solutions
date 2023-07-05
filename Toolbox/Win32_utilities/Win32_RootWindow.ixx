@@ -281,20 +281,13 @@ public:
 		return ::SendMessage(m_hwndApp, WM_COMMAND, wParam, lParam);
 	}
 
-	PIXEL CrsrXpos(LPARAM const lParam) const
-	{
-		return PIXEL(GET_X_LPARAM(lParam));
-	}
-
-	PIXEL CrsrYpos(LPARAM const lParam) const
-	{
-		return PIXEL(GET_Y_LPARAM(lParam));
-	}
-
 	PixelPoint GetCrsrPosFromLparam(LPARAM const lParam) const
 	{
 		return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) };
 	}
+
+	PIXEL CrsrXpos(LPARAM const lParam) const { return PIXEL(GET_X_LPARAM(lParam)); }
+	PIXEL CrsrYpos(LPARAM const lParam) const { return PIXEL(GET_Y_LPARAM(lParam)); }
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
 
@@ -308,18 +301,17 @@ public:
 
 	void SetParentContextMenueMode(bool const b) { m_bParentContextMenue = b; }
 
-	virtual COLORREF SetBackgroundColorRef(COLORREF const c) 
-	{ 
-		return RGB(0, 0, 0); 
-	}
+	virtual COLORREF SetBackgroundColorRef(COLORREF const c) { return RGB(0, 0, 0); }
+	virtual COLORREF GetBackgroundColorRef() const           { return RGB(0, 0, 0); }
 
-	virtual COLORREF GetBackgroundColorRef() const { return RGB(0, 0, 0); }
+	virtual void AddColorCtlMenu(HMENU const);
 
 protected:
 
 	void SetWindowHandle(HWND const);
 
 	virtual bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL());
+	virtual void OnContextMenu(WPARAM const, LPARAM const);
 	virtual bool OnMenuCommand(UINT   const, HMENU  const);
 	virtual bool OnSize(PIXEL const, PIXEL const);
 	virtual bool OnMove(PIXEL const, PIXEL const);
@@ -341,7 +333,6 @@ private:
 
 	void addWinMenu(HMENU const, wstring const&) const;
 	void adjustWinMenu(HMENU const) const;
-	void contextMenu(PixelPoint const&);
 	void colorDialog();
 
 	void adjustVisibility(tOnOffAuto const onOffAuto) const

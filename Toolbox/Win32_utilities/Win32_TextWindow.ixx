@@ -47,6 +47,8 @@ public:
 	COLORREF SetBackgroundColorRef(COLORREF const) final;
 	COLORREF GetBackgroundColorRef() const         final;
 
+	LPARAM AddContextMenuEntries(HMENU const) final;
+
 private:
 
 	void OnPaint() final;

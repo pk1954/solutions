@@ -105,53 +105,6 @@ void RootWindow::adjustWinMenu(HMENU const hMenu) const
 	EnableMenuItem(hMenu, IDM_WINDOW_OFF,  ((m_visibilityMode == tOnOffAuto::off      ) ? MF_GRAYED : MF_ENABLED));
 }
 
-void RootWindow::contextMenu(PixelPoint const & crsrPosScreen) // crsr pos in screen coordinates
-{
-	HMENU const hPopupMenu { CreatePopupMenu() };
-
-	LPARAM lParam = AddContextMenuEntries(hPopupMenu); // arbitrary parameter, forwarded as lParam  
-
-	if (m_bParentContextMenue)
-	{
-		if (RootWindow * pParentRootWin { GetParentRootWindow() })
-			pParentRootWin->AddContextMenuEntries(hPopupMenu);
-	}
-
-	if (m_visibilityCriterion)
-	{
-		addWinMenu(hPopupMenu, L"Show window");
-		adjustWinMenu(hPopupMenu);
-	}
-
-	AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL, L"Background color");
-
-	// TODO
-	//if (m_bShowRefreshRateDlg && (m_upRefreshRate->GetRefreshRate() > 0ms))
-	//{
-	//	(void)AppendMenu(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
-	//}
-
-	(void)SetForegroundWindow(GetWindowHandle());
-
-	auto const uiID = static_cast<UINT>
-	(
-		TrackPopupMenu
-	    (
-			hPopupMenu, 
-			TPM_TOPALIGN|TPM_LEFTALIGN|TPM_RETURNCMD|TPM_NONOTIFY, 
-			crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(), 
-			0, 
-			GetWindowHandle(),
-			nullptr 
-	    )
-	);
-
-	DestroyMenu(hPopupMenu);
-
-	if (uiID != 0)
-		OnCommand(uiID, lParam, Screen2Client(crsrPosScreen));
-}
-
 void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height) const
 {
 	PixelRect rect { Util::GetWindowRect(hwnd) };
@@ -208,9 +161,78 @@ void RootWindow::SetWindowVisibility(tOnOffAuto const mode)
 	Show(ApplyAutoCriterion(m_visibilityMode, m_visibilityCriterion));
 }
 
+void RootWindow::colorDialog()
+{
+	static COLORREF acrCustClr[16]; // array of custom colors 
+	CHOOSECOLOR cc;                 // common dialog box structure 
+	ZeroMemory(&cc, sizeof(cc));
+	cc.lStructSize  = sizeof(cc);
+	cc.hwndOwner    = m_hwnd;
+	cc.lpCustColors = (LPDWORD)acrCustClr;
+	cc.rgbResult    = GetBackgroundColorRef();
+	cc.Flags        = CC_FULLOPEN | CC_RGBINIT;
+
+	if (ChooseColor(&cc) == TRUE)
+	{
+		SetBackgroundColorRef(cc.rgbResult);
+		Trigger();
+	}
+}
+
+void RootWindow::AddColorCtlMenu(HMENU const hPopupMenu)
+{
+	AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL, L"Background color");
+}
+
+void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr pos in screen coordinates
+{
+	PixelPoint const& crsrPosScreen { GetCrsrPosFromLparam(lParam) };
+	HMENU      const  hPopupMenu    { CreatePopupMenu() };
+
+	LPARAM lParamNew = AddContextMenuEntries(hPopupMenu); // arbitrary parameter, forwarded as lParam  
+
+	if (m_bParentContextMenue)
+	{
+		if (RootWindow * pParentRootWin { GetParentRootWindow() })
+			pParentRootWin->AddContextMenuEntries(hPopupMenu);
+	}
+
+	if (m_visibilityCriterion)
+	{
+		addWinMenu(hPopupMenu, L"Show window");
+		adjustWinMenu(hPopupMenu);
+	}
+
+	// TODO
+	//if (m_bShowRefreshRateDlg && (m_upRefreshRate->GetRefreshRate() > 0ms))
+	//{
+	//	(void)AppendMenu(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
+	//}
+
+	(void)SetForegroundWindow(GetWindowHandle());
+
+	auto const uiID = static_cast<UINT>
+	(
+		TrackPopupMenu
+		(
+			hPopupMenu,
+			TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD | TPM_NONOTIFY,
+			crsrPosScreen.GetXvalue(), crsrPosScreen.GetYvalue(),
+			0,
+			GetWindowHandle(),
+			nullptr
+		)
+	);
+
+	DestroyMenu(hPopupMenu);
+
+	if (uiID != 0)
+		OnCommand(uiID, lParamNew, Screen2Client(crsrPosScreen));
+}
+
 bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (UINT const uiCmdId { LOWORD(wParam) } )
+	switch (UINT const uiCmdId { LOWORD(wParam) })
 	{
 	case IDM_WINDOW_ON:
 		SetWindowVisibility(tOnOffAuto::on);
@@ -240,26 +262,6 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	}
 
 	return true;
-}
-
-void RootWindow::colorDialog()
-{
-	CHOOSECOLOR cc;                 // common dialog box structure 
-	static COLORREF acrCustClr[16]; // array of custom colors 
-
-	// Initialize CHOOSECOLOR 
-	ZeroMemory(&cc, sizeof(cc));
-	cc.lStructSize  = sizeof(cc);
-	cc.hwndOwner    = m_hwnd;
-	cc.lpCustColors = (LPDWORD)acrCustClr;
-	cc.rgbResult    = GetBackgroundColorRef();
-	cc.Flags        = CC_FULLOPEN | CC_RGBINIT;
-
-	if (ChooseColor(&cc) == TRUE)
-	{
-		SetBackgroundColorRef(cc.rgbResult);
-		Trigger();
-	}
 }
 
 bool RootWindow::OnMenuCommand(UINT const uiIndex, HMENU const hMenu)
@@ -292,7 +294,7 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 	{
 
 	case WM_CONTEXTMENU:
-		contextMenu(GetCrsrPosFromLparam(lParam));
+		OnContextMenu(wParam, lParam);
 		return true;
 
 	case WM_COMMAND:

@@ -107,3 +107,9 @@ COLORREF TextWindow::GetBackgroundColorRef() const
 { 
 	return m_upTextWindowThread->GetBackgroundColor(); 
 }
+
+LPARAM TextWindow::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	AddColorCtlMenu(hPopupMenu);
+	return 0;
+}

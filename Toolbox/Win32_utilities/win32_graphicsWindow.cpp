@@ -56,3 +56,9 @@ bool GraphicsWindow::OnSize(PIXEL const width, PIXEL const height)
 		m_upGraphics->Resize();
 	return true;
 }
+
+LPARAM GraphicsWindow::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	AddColorCtlMenu(hPopupMenu);
+	return 0;
+}

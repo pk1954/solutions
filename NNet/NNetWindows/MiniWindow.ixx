@@ -29,8 +29,6 @@ public:
 	void   OnLButtonDblClick(WPARAM const, LPARAM const) final { };
 	void   OnMouseMove      (WPARAM const, LPARAM const) final;
 
-	LPARAM AddContextMenuEntries(HMENU const) final { return 0; }
-
 	void   Notify(bool const) final;
 
 	void   ObservedNNetWindow(MainWindow * const);

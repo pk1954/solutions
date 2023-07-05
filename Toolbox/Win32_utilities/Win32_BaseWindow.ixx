@@ -67,7 +67,6 @@ protected:
 	fPixel GetClientHeight() const { return Convert2fPixel(GetClientWindowHeight()); }
 	fPixel GetClientWidth () const { return Convert2fPixel(GetClientWindowWidth()); }
 
-//	bool OnMove(PIXEL const, PIXEL const) override { return false; };
 	bool OnSize(PIXEL const, PIXEL const) override { return false; };
 
 private:

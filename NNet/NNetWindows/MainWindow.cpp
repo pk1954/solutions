@@ -184,6 +184,8 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 
+	NNetWindow::AddContextMenuEntries(hPopupMenu);
+
 	return static_cast<LPARAM>(m_nobIdHighlighted.GetValue()); // will be forwarded to HandleContextMenuCommand
 }
 

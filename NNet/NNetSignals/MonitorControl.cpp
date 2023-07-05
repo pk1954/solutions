@@ -105,6 +105,8 @@ LPARAM MonitorControl::AddContextMenuEntries(HMENU const hPopupMenu)
 
 	AppendMenu(hPopupMenu, MF_STRING, IDD_SCALE_EEG_SIGNALS, L"Auto scale");
 	
+	NNetTimeGraph::AddContextMenuEntries(hPopupMenu);
+
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 

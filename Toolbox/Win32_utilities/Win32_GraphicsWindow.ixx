@@ -40,6 +40,8 @@ public:
 	COLORREF SetBackgroundColorRef(COLORREF const c) final { return Convert2COLORREF(SetBackgroundColor(c)); }
 	COLORREF GetBackgroundColorRef() const           final { return Convert2COLORREF(GetBackgroundColor()); }
 
+	LPARAM AddContextMenuEntries(HMENU const) override;
+
 protected:
 
 	HWND Initialize(HWND const, LPCTSTR const, DWORD const);
