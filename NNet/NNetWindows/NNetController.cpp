@@ -28,7 +28,7 @@ import AutoOpen;
 import NNetModel;
 import :ComputeThread;
 import :MainWindow;
-import :Preferences;
+import :NNetPreferences;
 
 using std::to_wstring;
 using std::wcout;
@@ -40,7 +40,7 @@ void NNetController::Initialize
     ComputeThread   * const pComputeThread,
     SlowMotionRatio * const pSlowMotionRatio,
     Sound           * const pSound,
-    Preferences     * const pPreferences,
+    NNetPreferences * const pPreferences,
     CommandStack    * const pCommandStack,
     MonitorWindow   * const pMonitorWindow
 ) 
@@ -141,8 +141,8 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         m_pPreferences->SetScales(true, true);
         break;
 
-    case IDD_SCALES:       //Sent by Preferences
-    case IDD_ARROWS:       //Sent by Preferences
+    case IDD_SCALES:       //Sent by NNetPreferences
+    case IDD_ARROWS:       //Sent by NNetPreferences
         ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, lParam);
         break;
 
@@ -188,19 +188,19 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDM_INPUT_CABLES_ALL:
-        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::all);
+        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::all);
         break;
 
     case IDM_INPUT_CABLES_NONSTD:
-        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::nonStd);
+        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::nonStd);
         break;
 
     case IDM_INPUT_CABLES_ACTIVE:
-        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::active);
+        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::active);
         break;
 
     case IDM_INPUT_CABLES_NONE:
-        m_pPreferences->SetInputCablesVisibility(Preferences::tInputCablesVisibility::none);
+        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::none);
         break;
 
     default:

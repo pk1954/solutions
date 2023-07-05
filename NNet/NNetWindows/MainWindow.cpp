@@ -30,7 +30,7 @@ import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
 import :NNetController;
-import :Preferences;
+import :NNetPreferences;
 
 using std::bit_cast;
 using std::unordered_map;
@@ -48,7 +48,7 @@ void MainWindow::Start
 	HWND          const   hwndApp, 
 	bool          const   bShowRefreshRateDialog,
 	fPixel        const   fPixBeaconLimit,
-	Preferences         & preferences,
+	NNetPreferences     & preferences,
 	NNetController      & controller,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,  
@@ -556,7 +556,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 	bool         const  bActive   { list.IsSelected(idSigGen) };
 	switch (m_pPreferences->InputCablesVisibility())
 	{
-		using enum Preferences::tInputCablesVisibility;
+		using enum NNetPreferences::tInputCablesVisibility;
 		case all:                                              break;
 		case nonStd: if (IsStandardSigGenId(idSigGen)) return; break;
 		case active: if (!bActive)                     return; break;

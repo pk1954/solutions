@@ -39,7 +39,7 @@ import NNetCommands;
 import NNetSignals;
 import :StatusBar;
 import :PerformanceWindow;
-import :Preferences;
+import :NNetPreferences;
 import :UndoRedoMenu;
 import :NNetInputOutputUI;
 import :NNetWindow;

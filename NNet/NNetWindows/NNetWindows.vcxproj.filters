@@ -21,7 +21,7 @@
     <ClCompile Include="NNetController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Preferences.cpp">
+    <ClCompile Include="NNetPreferences.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetAppMenu.cpp">
@@ -93,7 +93,7 @@
     <ClCompile Include="ScriptHook.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Preferences.ixx">
+    <ClCompile Include="NNetPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CrsrWindow.ixx">

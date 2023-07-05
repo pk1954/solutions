@@ -20,7 +20,7 @@ import Commands;
 import AutoOpen;
 import NNetModel;
 import :ComputeThread;
-import :Preferences;
+import :NNetPreferences;
 
 using std::make_unique;
 
@@ -71,12 +71,12 @@ NNetAppMenu::NNetAppMenu()
 
 void NNetAppMenu::Start
 (
-	HWND          const   hwndApp,
-	ComputeThread const & computeThread,
-	WinManager    const & winManager,
-	CommandStack  const & commandStack,
-	Sound         const & sound,
-    Preferences   const & preferences
+	HWND            const   hwndApp,
+	ComputeThread   const & computeThread,
+	WinManager      const & winManager,
+	CommandStack    const & commandStack,
+	Sound           const & sound,
+    NNetPreferences const & preferences
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);

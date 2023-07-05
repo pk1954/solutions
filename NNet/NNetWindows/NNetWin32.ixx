@@ -22,7 +22,7 @@ export import :NNetWindow;
 export import :NNetWrappers;
 export import :ParameterDialog;
 export import :PerformanceWindow;
-export import :Preferences;
+export import :NNetPreferences;
 export import :ScriptHook;
 export import :SelectionMenu;
 export import :SlowMotionControl;

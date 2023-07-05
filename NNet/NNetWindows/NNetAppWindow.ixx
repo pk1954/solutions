@@ -35,7 +35,7 @@ import :StatusBar;
 import :SlowMotionControl;
 import :DescriptionWindow;
 import :CrsrWindow;
-import :Preferences;
+import :NNetPreferences;
 import :ScriptHook;
 import :UndoRedoMenu;
 import :SlowMotionDisplay;
@@ -145,7 +145,7 @@ private:
 	Observable               m_activeSigGenObservable;
 	ParameterDialog          m_parameterDlg;
 	PerformanceWindow        m_performanceWindow;
-	Preferences              m_preferences;
+	NNetPreferences          m_preferences;
 	ScriptFile               m_scriptFile;
 	ScriptHook               m_ScriptHook;
 	SignalDesigner           m_signalDesigner;

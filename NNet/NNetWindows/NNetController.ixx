@@ -21,7 +21,7 @@ import Commands;
 import NNetModel;
 import NNetSignals;
 import :ComputeThread;
-import :Preferences;
+import :NNetPreferences;
 
 using std::wostream;
 using std::wcout;
@@ -37,7 +37,7 @@ public:
 		ComputeThread   * const,
 		SlowMotionRatio * const,
 		Sound           * const,
-		Preferences     * const,
+		NNetPreferences * const,
 		CommandStack    * const,
 		MonitorWindow   * const
 	);
@@ -64,7 +64,7 @@ private:
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
-	Preferences              * m_pPreferences           { nullptr };
+	NNetPreferences          * m_pPreferences           { nullptr };
 	CommandStack             * m_pCommandStack          { nullptr };
 	MonitorWindow            * m_pMonitorWindow         { nullptr };
 	Observable               * m_pStaticModelObservable { nullptr };

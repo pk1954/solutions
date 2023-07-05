@@ -1,4 +1,4 @@
-// Preferences.ixx
+// NNetPreferences.ixx
 //
 // NNetWindows
 
@@ -10,7 +10,7 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module NNetWin32:Preferences;
+export module NNetWin32:NNetPreferences;
 
 import SoundInterface;
 import WrapBase;
@@ -23,7 +23,7 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-export class Preferences
+export class NNetPreferences
 {
 public:
 	void Initialize
@@ -58,13 +58,13 @@ public:
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 	DescriptionWindow              &GetDescWin()              { return *m_pDescWin; }
 
+
+private:
 	template <Wrap_t WRAPPER>
 	void Add(wstring const& name)
 	{
 		m_prefVector.push_back(make_unique<WRAPPER>(name, *this));
 	}
-
-private:
 	HWND                             m_hwndApp               { nullptr };
 	Sound                          * m_pSound                { nullptr };
 	NNetModelIO                    * m_pModelIO              { nullptr };

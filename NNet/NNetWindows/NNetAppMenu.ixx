@@ -17,7 +17,7 @@ import Win32_Util;
 import Commands;
 import NNetModel;
 import :ComputeThread;
-import :Preferences;
+import :NNetPreferences;
 
 using std::wstring;
 using std::unique_ptr;
@@ -30,12 +30,12 @@ public:
 
 	void Start
 	(
-		HWND          const, 
-		ComputeThread const &, 
-		WinManager    const &,
-		CommandStack  const &,
-		Sound         const &,
-		Preferences   const &
+		HWND            const, 
+		ComputeThread   const &, 
+		WinManager      const &,
+		CommandStack    const &,
+		Sound           const &,
+		NNetPreferences const &
 	);
 	void AdjustUndoRedo();
 	void Notify(bool const) final;
@@ -46,14 +46,14 @@ private:
 
 	void enable(unsigned int const, bool const);
 
-	HWND                             m_hwndApp        { nullptr };
-	HMENU                            m_hMenu          { nullptr };
-	HMENU                            m_hMenuSigGen    { nullptr };
-	ComputeThread            const * m_pComputeThread { nullptr };
-	Preferences              const * m_pPreferences   { nullptr };
-	WinManager               const * m_pWinManager    { nullptr };
-	CommandStack             const * m_pCommandStack  { nullptr };
-	Sound                    const * m_pSound         { nullptr };
+	HWND                    m_hwndApp        { nullptr };
+	HMENU                   m_hMenu          { nullptr };
+	HMENU                   m_hMenuSigGen    { nullptr };
+	ComputeThread   const * m_pComputeThread { nullptr };
+	NNetPreferences const * m_pPreferences   { nullptr };
+	WinManager      const * m_pWinManager    { nullptr };
+	CommandStack    const * m_pCommandStack  { nullptr };
+	Sound           const * m_pSound         { nullptr };
 
 	unique_ptr<OnOffPair> m_upOnOffScales;
 	unique_ptr<OnOffPair> m_upOnOffArrows;

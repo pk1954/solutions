@@ -1,4 +1,4 @@
-// Preferences.cpp
+// NNetPreferences.cpp
 //
 // NNetWindows
 
@@ -11,7 +11,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module NNetWin32:Preferences;
+module NNetWin32:NNetPreferences;
 
 import SoundInterface;
 import Win32_Util;
@@ -38,15 +38,15 @@ class PrefWrapBase : public WrapBase
 public:
     PrefWrapBase
     (
-        wstring const& wstrName, 
-        Preferences  & pref
+        wstring const   & wstrName, 
+        NNetPreferences & pref
     )
       : WrapBase(wstrName),
         m_pref(pref)
     {}
 
 protected:
-    Preferences& m_pref;
+    NNetPreferences& m_pref;
 };
 
 class WrapShowScales : public PrefWrapBase
@@ -192,7 +192,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        m_pref.SetInputCablesVisibility(static_cast<Preferences::tInputCablesVisibility>(script.ScrReadInt()));
+        m_pref.SetInputCablesVisibility(static_cast<NNetPreferences::tInputCablesVisibility>(script.ScrReadInt()));
     }
 
     void Write(wostream& out) const final
@@ -221,7 +221,7 @@ public:
     }
 };
 
-void Preferences::Initialize
+void NNetPreferences::Initialize
 (
     DescriptionWindow & descWin,
     Sound             & sound, 
@@ -254,7 +254,7 @@ void Preferences::Initialize
     SymbolTable::ScrDefConst(PREF_ON,  1L);
 }
 
-bool Preferences::ReadPreferences() const
+bool NNetPreferences::ReadPreferences() const
 {
     if (exists(m_wstrPreferencesFile))
     {
@@ -265,30 +265,30 @@ bool Preferences::ReadPreferences() const
     }
     else 
     {
-        wcout << Scanner::COMMENT_SYMBOL << L" +++ Preferences file " << m_wstrPreferencesFile << L" not found" << endl;
+        wcout << Scanner::COMMENT_SYMBOL << L" +++ NNetPreferences file " << m_wstrPreferencesFile << L" not found" << endl;
         wcout << Scanner::COMMENT_SYMBOL << L" +++ Using defaults" << endl;
         return false;
     }
 }
 
-void Preferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
+void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
 {
     m_pNMRI = pNMRI;
 }
 
-void Preferences::SetArrows(bool const bOn, bool const bAnimation)
+void NNetPreferences::SetArrows(bool const bOn, bool const bAnimation)
 {
     m_bArrows = bOn;
     SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, bAnimation);
 }
 
-void Preferences::SetScales(bool const bOn, bool const bAnimation)
+void NNetPreferences::SetScales(bool const bOn, bool const bAnimation)
 {
     m_bScales = bOn;
     SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, bAnimation);
 }
 
-bool Preferences::WritePreferences() const
+bool NNetPreferences::WritePreferences() const
 {
     wofstream prefFile(m_wstrPreferencesFile);
     for (auto const& it : m_prefVector)
