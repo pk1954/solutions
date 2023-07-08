@@ -171,6 +171,8 @@
     <ClCompile Include="ErrHndl.ixx" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Input.ixx" />
+    <ClCompile Include="Preferences.cpp" />
+    <ClCompile Include="Preferences.ixx" />
     <ClCompile Include="Scanner.ixx" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scanner.cpp" />

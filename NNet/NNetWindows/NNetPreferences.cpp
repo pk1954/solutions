@@ -17,6 +17,7 @@ import SoundInterface;
 import Win32_Util;
 import AutoOpen;
 import Script;
+import Symtab;
 import NNetModelIO;
 import :DescriptionWindow;
 import :NNetInputOutputUI;
@@ -33,13 +34,13 @@ using std::filesystem::path;
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
 
-class PrefWrapBase : public WrapBase
+class NNetWrapBase : public WrapBase
 {
 public:
-    PrefWrapBase
+    NNetWrapBase
     (
-        wstring const   & wstrName, 
-        NNetPreferences & pref
+        wstring const& wstrName,
+        NNetPreferences& pref
     )
       : WrapBase(wstrName),
         m_pref(pref)
@@ -49,10 +50,10 @@ protected:
     NNetPreferences& m_pref;
 };
 
-class WrapShowScales : public PrefWrapBase
+class WrapShowScales : public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -65,10 +66,10 @@ public:
     }
 };
 
-class WrapShowArrows : public PrefWrapBase
+class WrapShowArrows : public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -81,10 +82,10 @@ public:
     }
 };
 
-class WrapShowSensorPoints: public PrefWrapBase
+class WrapShowSensorPoints: public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script & script) const final
     {
@@ -97,10 +98,10 @@ public:
     }
 };
 
-class WrapSetAutoOpen: public PrefWrapBase
+class WrapSetAutoOpen: public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script & script) const final
     {
@@ -117,10 +118,10 @@ public:
     }
 };
 
-class WrapSetPerfMonMode: public PrefWrapBase
+class WrapSetPerfMonMode: public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script & script) const final
     {
@@ -133,10 +134,10 @@ public:
     }
 };
 
-class WrapSetSound : public PrefWrapBase
+class WrapSetSound : public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -153,26 +154,10 @@ public:
     }
 };
 
-class WrapSetColorMenu : public PrefWrapBase
+class WrapDescWinFontSize : public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        m_pref.SetColorMenu(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << (m_pref.ColorMenuVisible() ? PREF_ON : PREF_OFF);
-    }
-};
-
-class WrapDescWinFontSize : public PrefWrapBase
-{
-public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -185,10 +170,10 @@ public:
     }
 };
 
-class WrapInputCablesVisibility : public PrefWrapBase
+class WrapInputCablesVisibility : public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -201,21 +186,21 @@ public:
     }
 };
 
-class WrapReadModel: public PrefWrapBase
+class WrapReadModel : public NNetWrapBase
 {
 public:
-    using PrefWrapBase::PrefWrapBase;
+    using NNetWrapBase::NNetWrapBase;
 
-    void operator() (Script & script) const final
+    void operator() (Script& script) const final
     {
         wstring wstrFile { script.ScrReadString() };
         if (!m_pref.GetModelIO().Import(wstrFile, NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
         {
             SendMessage(m_pref.GetHwndApp(), WM_COMMAND, IDM_NEW_MODEL, 0);
         }
-     }
+    }
 
-    void Write(wostream & out) const final
+    void Write(wostream& out) const final
     {
         out << L"\"" << m_pref.GetModelInterface()->GetModelFilePath() << L"\"";
     }
@@ -229,46 +214,22 @@ void NNetPreferences::Initialize
     HWND                hwndApp
 )
 {
-    static wstring const PREFERENCES_FILE_NAME { L"NNetSimu_UserPreferences.txt" };
+    Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
 
     m_hwndApp  = hwndApp;
     m_pSound   = &sound;
     m_pModelIO = &modelIO;
     m_pDescWin = &descWin;
 
-    m_wstrPreferencesFile = Util::GetCurrentDir();
-    m_wstrPreferencesFile += L"\\" + PREFERENCES_FILE_NAME;
-    
-    Add<WrapSetAutoOpen          >(L"SetAutoOpen");
-    Add<WrapReadModel            >(L"ReadModel");
-    Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
-    Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    Add<WrapShowScales           >(L"ShowScales");
-    Add<WrapShowArrows           >(L"ShowArrows");
-    Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
-    Add<WrapSetSound             >(L"SetSound");
-    Add<WrapSetColorMenu         >(L"SetColorMenu");
-    Add<WrapDescWinFontSize      >(L"DescWinFontSize");
-
-    SymbolTable::ScrDefConst(PREF_OFF, 0L);
-    SymbolTable::ScrDefConst(PREF_ON,  1L);
-}
-
-bool NNetPreferences::ReadPreferences() const
-{
-    if (exists(m_wstrPreferencesFile))
-    {
-        wcout << Scanner::COMMENT_START << L"Read preferences file " << m_wstrPreferencesFile << endl;
-        Script script;
-        script.SetEcho(false);
-        return script.ScrProcess(m_wstrPreferencesFile);
-    }
-    else 
-    {
-        wcout << Scanner::COMMENT_SYMBOL << L" +++ NNetPreferences file " << m_wstrPreferencesFile << L" not found" << endl;
-        wcout << Scanner::COMMENT_SYMBOL << L" +++ Using defaults" << endl;
-        return false;
-    }
+    AddNNetWrapper<WrapSetAutoOpen          >(L"SetAutoOpen");
+    AddNNetWrapper<WrapReadModel            >(L"ReadModel");
+    AddNNetWrapper<WrapSetPerfMonMode       >(L"SetPerfMonMode");
+    AddNNetWrapper<WrapInputCablesVisibility>(L"InputCablesVisibility");
+    AddNNetWrapper<WrapShowScales           >(L"ShowScales");
+    AddNNetWrapper<WrapShowArrows           >(L"ShowArrows");
+    AddNNetWrapper<WrapShowSensorPoints     >(L"ShowSensorPoints");
+    AddNNetWrapper<WrapSetSound             >(L"SetSound");
+    AddNNetWrapper<WrapDescWinFontSize      >(L"DescWinFontSize");
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
@@ -286,18 +247,4 @@ void NNetPreferences::SetScales(bool const bOn, bool const bAnimation)
 {
     m_bScales = bOn;
     SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, bAnimation);
-}
-
-bool NNetPreferences::WritePreferences() const
-{
-    wofstream prefFile(m_wstrPreferencesFile);
-    for (auto const& it : m_prefVector)
-    {
-        it->WriteCmdName(prefFile);
-        it->Write(prefFile);
-        prefFile << endl;
-    }
-    prefFile.close();
-    wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
-    return true;
 }

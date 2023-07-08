@@ -54,6 +54,7 @@ using std::make_unique;
 using std::wostringstream;
 using std::filesystem::path;
 using std::source_location;
+using std::wostream;
 
 using namespace std::chrono;
 using std::to_wstring;
@@ -133,8 +134,10 @@ void NNetAppWindow::Start(MessagePump & pump)
 	);
 
 	NNetInputOutputUI::Initialize(m_hwndApp);
-	m_appTitle      .Initialize(m_hwndApp);
-	m_preferences   .Initialize(m_descWindow, m_sound, m_modelIO, m_hwndApp);
+	m_appTitle.Initialize(m_hwndApp);
+
+	m_preferences.Initialize(m_descWindow, m_sound, m_modelIO, m_hwndApp);
+
 	m_signalDesigner.Initialize
 	(
 		m_hwndApp, 

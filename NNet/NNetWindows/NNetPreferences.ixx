@@ -16,6 +16,7 @@ import SoundInterface;
 import WrapBase;
 import NNetModelIO;
 import NNetModel;
+import Preferences;
 import :DescriptionWindow;
 
 using std::wstring;
@@ -23,26 +24,22 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-export class NNetPreferences
+export class NNetPreferences: public Preferences
 {
 public:
 	void Initialize
 	(
 		DescriptionWindow &,
 		Sound &, 
-		NNetModelIO &, 
+		NNetModelIO&, 
 		HWND const
 	);
 	void SetModelInterface(NNetModelReaderInterface const *);
-	bool ReadPreferences () const;
-	bool WritePreferences() const;
 
 	void SetArrows      (bool const, bool const);
 	void SetScales      (bool const, bool const);
 	void SetSensorPoints(bool const b) { m_bSensorPoints = b; }
-	void SetColorMenu   (bool const b) { m_bColorMenu    = b; }
 
-	bool ColorMenuVisible   () const { return m_bColorMenu; }
 	bool ScalesVisible      () const { return m_bScales; }
 	bool ArrowsVisible      () const { return m_bArrows; }
 	bool SensorPointsVisible() const { return m_bSensorPoints; }
@@ -58,13 +55,14 @@ public:
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 	DescriptionWindow              &GetDescWin()              { return *m_pDescWin; }
 
-
 private:
+
 	template <Wrap_t WRAPPER>
-	void Add(wstring const& name)
+	void AddNNetWrapper(wstring const& name)
 	{
-		m_prefVector.push_back(make_unique<WRAPPER>(name, *this));
+		AddWrapper(make_unique<WRAPPER>(name, *this));
 	}
+
 	HWND                             m_hwndApp               { nullptr };
 	Sound                          * m_pSound                { nullptr };
 	NNetModelIO                    * m_pModelIO              { nullptr };
@@ -73,8 +71,5 @@ private:
 	bool                             m_bScales               { false };
 	bool                             m_bArrows               { false };
 	bool                             m_bSensorPoints         { false };
-	bool                             m_bColorMenu            { false };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
-	vector<unique_ptr<WrapBase>>     m_prefVector;
-	wstring                          m_wstrPreferencesFile;
 };
