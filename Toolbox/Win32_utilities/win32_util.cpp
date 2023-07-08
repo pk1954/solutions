@@ -107,17 +107,6 @@ ULONGLONG Util::GetPhysicalMemory()  // in bytes
     return ramKB * 1024;                                // compute number of bytes
 }
 
-wstring Util::GetCurrentDateAndTime()
-{
-    __time64_t long_time;  
-    _time64(& long_time); 
-    static int const SIZE { 128 };
-    wchar_t buffer[SIZE];
-    errno_t err = _wctime64_s(buffer, SIZE, & long_time);
-    assert(! err);
-    return wstring(buffer);
-}
-
 wstring Util::GetComputerName()
 {
     static int const SIZE { 128 };
@@ -147,14 +136,6 @@ void Util::SetApplicationTitle
     if (wstrAdd != L"")
         newTitle += L" -" + wstrAdd;
     SetWindowText(hwndApp, newTitle.c_str());
-}
-
-wstring Util::GetCurrentDir()
-{
-    static wchar_t szBuffer[MAX_PATH];
-    DWORD const dwRes = GetCurrentDirectory(MAX_PATH, szBuffer);
-    assert(dwRes > 0);
-    return wstring(szBuffer);
 }
 
 void Util::StdOutConsole()

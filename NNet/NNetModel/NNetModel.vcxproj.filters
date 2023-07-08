@@ -95,9 +95,6 @@
     <ClCompile Include="UPSigGenList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AutoOpen.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tHighlightType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

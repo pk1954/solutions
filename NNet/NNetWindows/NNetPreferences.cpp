@@ -13,9 +13,7 @@ module;
 
 module NNetWin32:NNetPreferences;
 
-import SoundInterface;
 import Win32_Util;
-import AutoOpen;
 import Script;
 import Symtab;
 import NNetModelIO;
@@ -98,26 +96,6 @@ public:
     }
 };
 
-class WrapSetAutoOpen: public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script & script) const final
-    {
-        bool bMode { script.ScrReadBool() };
-        if (bMode)
-            AutoOpen::On();
-        else
-            AutoOpen::Off();
-    }
-
-    void Write(wostream & out) const final
-    {
-        out << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF);
-    }
-};
-
 class WrapSetPerfMonMode: public NNetWrapBase
 {
 public:
@@ -131,26 +109,6 @@ public:
     void Write(wostream & out) const final
     {
         out << (BaseWindow::PerfMonMode() ? PREF_ON : PREF_OFF);
-    }
-};
-
-class WrapSetSound : public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        bool bMode { script.ScrReadBool() };
-        if (bMode)
-            m_pref.GetSound().On();
-        else
-            m_pref.GetSound().Off();
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << (m_pref.GetSound().IsOn() ? PREF_ON : PREF_OFF);
     }
 };
 
@@ -209,27 +167,24 @@ public:
 void NNetPreferences::Initialize
 (
     DescriptionWindow & descWin,
-    Sound             & sound, 
+    Sound             & sound,
     NNetModelIO       & modelIO,
     HWND                hwndApp
 )
 {
-    Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
+    Preferences::Initialize(L"NNetSimu_UserPreferences.txt", &sound);
 
     m_hwndApp  = hwndApp;
-    m_pSound   = &sound;
     m_pModelIO = &modelIO;
     m_pDescWin = &descWin;
 
-    AddNNetWrapper<WrapSetAutoOpen          >(L"SetAutoOpen");
-    AddNNetWrapper<WrapReadModel            >(L"ReadModel");
-    AddNNetWrapper<WrapSetPerfMonMode       >(L"SetPerfMonMode");
-    AddNNetWrapper<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    AddNNetWrapper<WrapShowScales           >(L"ShowScales");
-    AddNNetWrapper<WrapShowArrows           >(L"ShowArrows");
-    AddNNetWrapper<WrapShowSensorPoints     >(L"ShowSensorPoints");
-    AddNNetWrapper<WrapSetSound             >(L"SetSound");
-    AddNNetWrapper<WrapDescWinFontSize      >(L"DescWinFontSize");
+    Add<WrapReadModel            >(L"ReadModel");
+    Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
+    Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
+    Add<WrapShowScales           >(L"ShowScales");
+    Add<WrapShowArrows           >(L"ShowArrows");
+    Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
+    Add<WrapDescWinFontSize      >(L"DescWinFontSize");
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

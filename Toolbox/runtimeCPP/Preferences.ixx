@@ -11,6 +11,7 @@ module;
 
 export module Preferences;
 
+import SoundInterface;
 import WrapBase;
 
 using std::wstring;
@@ -21,7 +22,11 @@ using std::make_unique;
 export class Preferences
 {
 public:
-	void Initialize(wstring const&);
+	void Initialize
+	(
+		wstring const&,
+		Sound*
+	);
 
 	bool ReadPreferences() const;
 	bool WritePreferences() const;
@@ -29,19 +34,24 @@ public:
 	bool ColorMenuVisible() const { return m_bColorMenu; }
 	void SetColorMenu(bool const b) { m_bColorMenu = b; }
 
+	Sound& GetSound() { return *m_pSound; }
+
 	void AddWrapper(unique_ptr<WrapBase> upWrapper)
 	{
 		m_prefVector.push_back(move(upWrapper));
 	}
 
-	//template <Wrap_t WRAPPER>
-	//void Add(wstring const& name)
-	//{
-	//	m_prefVector.push_back(make_unique<WRAPPER>(name, *this));
-	//}
-
 private:
+
+	template <Wrap_t WRAPPER>
+	void Add(wstring const& name)
+	{
+		AddWrapper(make_unique<WRAPPER>(name, *this));
+	}
+
+	size_t                       m_iNrOfToolboxEntries { 0 };
 	vector<unique_ptr<WrapBase>> m_prefVector;
 	wstring                      m_wstrPreferencesFile;
 	bool                         m_bColorMenu { false };
+	Sound                      * m_pSound     { nullptr };
 };

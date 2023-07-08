@@ -51,20 +51,18 @@ public:
 
 	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
 	HWND                            GetHwndApp()        const { return m_hwndApp; }
-	Sound                          &GetSound  ()              { return *m_pSound; }
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 	DescriptionWindow              &GetDescWin()              { return *m_pDescWin; }
 
 private:
 
 	template <Wrap_t WRAPPER>
-	void AddNNetWrapper(wstring const& name)
+	void Add(wstring const& name)
 	{
 		AddWrapper(make_unique<WRAPPER>(name, *this));
 	}
 
 	HWND                             m_hwndApp               { nullptr };
-	Sound                          * m_pSound                { nullptr };
 	NNetModelIO                    * m_pModelIO              { nullptr };
 	DescriptionWindow              * m_pDescWin              { nullptr };
 	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };

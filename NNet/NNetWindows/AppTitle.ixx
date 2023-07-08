@@ -59,7 +59,7 @@ private:
 		);
 	}
 
-	HWND                             m_hwndApp        { nullptr };
-	NNetModelReaderInterface const * m_pNMRI          { nullptr };
-	bool                             m_bUnsavedChanges{ false }; 
+	HWND                             m_hwndApp         { nullptr };
+	NNetModelReaderInterface const * m_pNMRI           { nullptr };
+	bool                             m_bUnsavedChanges { false }; 
 };

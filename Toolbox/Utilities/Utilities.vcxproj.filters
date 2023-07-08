@@ -117,5 +117,8 @@
     <ClCompile Include="FixedPipeline.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AutoOpen.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

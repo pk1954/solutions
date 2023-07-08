@@ -10,6 +10,8 @@ module;
 #include <limits>
 #include <vector>
 #include <streambuf>
+#include <chrono>
+#include <ctime>
 
 export module Util;
 
@@ -17,6 +19,9 @@ using std::vector;
 using std::function;
 using std::wstring;
 using std::abs;
+using std::wstringstream;
+using std::chrono::system_clock;
+using std::time_t;
 
 export extern void UpperCase(wstring &);
 
@@ -91,4 +96,15 @@ export bool ApplyAutoCriterion
 		return crit();
 	else
 		return onOffAuto == tOnOffAuto::on;
+}
+
+export wstring GetCurrentDateAndTime()
+{
+	auto   now      { system_clock::now() };
+	time_t now_time { system_clock::to_time_t(now) };
+	char buffer[26];
+	ctime_s(buffer, sizeof(buffer), &now_time);
+	wstringstream wss;
+	wss << buffer;
+	return wss.str();
 }

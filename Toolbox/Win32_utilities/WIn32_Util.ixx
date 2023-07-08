@@ -98,10 +98,8 @@ namespace Util
 
     export DWORD     GetNrOfCPUs();
     export ULONGLONG GetPhysicalMemory();
-    export wstring   GetCurrentDateAndTime();
     export wstring   GetComputerName();
     export wstring   GetUserName();
-    export wstring   GetCurrentDir();
     export void      SetApplicationTitle(HWND const, wstring const&, wstring const & = L"");
     export void      StdOutConsole();
     export bool      EscapeKeyPressed();

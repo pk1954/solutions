@@ -56,7 +56,7 @@ int APIENTRY wWinMain
 
 	SwitchWcoutTo(L"main_trace.out");
 
-	wcout << Scanner::COMMENT_START << L"Application start at " << Util::GetCurrentDateAndTime();
+	wcout << Scanner::COMMENT_START << L"Application start at " << GetCurrentDateAndTime();
 	wcout << Scanner::COMMENT_START << L"Version:       "       << AppTitle::PRODUCT_NAME  << endl;
 	wcout << Scanner::COMMENT_START << L"Build date:    "       << COMPILE_TIMESTAMP       << endl;
 	wcout << Scanner::COMMENT_START << L"Computer name: "       << Util::GetComputerName() << endl;

@@ -21,6 +21,7 @@ import Observable;
 import ErrHndl;
 import Scanner;
 import Symtab;
+import Util;
 import Types;
 import Thread;
 import ScriptFile;
@@ -275,7 +276,7 @@ unique_ptr<Model> NNetModelIO::GetImportedModel()
 void NNetModelIO::writeHeader(wostream & out) const
 {
     out << Scanner::COMMENT_SYMBOL << L" NNetModel"       << endl;
-    out << Scanner::COMMENT_SYMBOL << L" Created "        << Util::GetCurrentDateAndTime() << endl;
+    out << Scanner::COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime() << endl;
     out << Scanner::COMMENT_SYMBOL << L" Computer name: " << Util::GetComputerName()       << endl;
     out << Scanner::COMMENT_SYMBOL << L" User name: "     << Util::GetUserName()           << endl; 
     out << endl;
