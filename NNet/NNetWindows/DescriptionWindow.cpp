@@ -4,8 +4,10 @@
 
 module;
 
+#include <memory>
 #include <string>
 #include <array>
+#include <iostream>
 #include <Windows.h>
 #include <windowsx.h>
 #include <CommCtrl.h>
@@ -13,11 +15,41 @@ module;
 
 module NNetWin32:DescriptionWindow;
 
+import Preferences;
+
 using std::array;
 using std::bit_cast;
 using std::wstring;
+using std::wostream;
+using std::make_unique;
 
 static WORD const ID_EDIT_CTRL { 2 };
+
+class WrapDescWinFontSize : public WrapBase
+{
+public:
+    WrapDescWinFontSize
+    (
+        wstring const& wstrName,
+        DescriptionWindow& descWin
+    )
+        : WrapBase(wstrName),
+        m_descWin(descWin)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        m_descWin.SetFontSize(script.ScrReadInt());
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << m_descWin.GetFontSize();
+    }
+
+private:
+    DescriptionWindow& m_descWin;
+};
 
 static LRESULT CALLBACK OwnerDrawEditBox
 (
@@ -61,7 +93,11 @@ bool DescriptionWindow::SetFontSize(int const iSize)
     return bResult;
 }
 
-void DescriptionWindow::Start(HWND const hwndParent)
+void DescriptionWindow::Start
+(
+    HWND const hwndParent,
+    Preferences &pref
+)
 {
     PixelRect rect(100_PIXEL, 100_PIXEL, 200_PIXEL, 200_PIXEL);
 
@@ -95,6 +131,7 @@ void DescriptionWindow::Start(HWND const hwndParent)
 
     (void)SetWindowSubclass(m_hwndEdit, OwnerDrawEditBox, 0, (DWORD_PTR)this) ;
 
+    pref.AddWrapper(make_unique<WrapDescWinFontSize>(L"DescWinFontSize", *this));
     fontSize();
 }
 

@@ -9,7 +9,6 @@ module;
 #include <sstream>
 #include <iostream>
 #include <Windows.h>
-#include "d2d1.h"
 
 export module Win32_Util;
 
@@ -17,11 +16,7 @@ import BoolOp;
 import Types;
 
 using std::wostringstream;
-using std::wostream;
 using std::wstring;
-using std::wcout;
-using std::endl;
-using D2D1::ColorF;
 
 namespace Util
 {

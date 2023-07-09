@@ -11,6 +11,7 @@ module;
 export module NNetWin32:DescriptionWindow;
 
 import Types;
+import Preferences;
 import BaseWindow;
 import NNetModel;
 
@@ -19,7 +20,7 @@ using std::wstring;
 export class DescriptionWindow : public BaseWindow, public DescriptionUI
 {
 public:
-	void Start(HWND const);
+	void Start(HWND const, Preferences &);
 	void Stop();
 
 	bool SetFontSize(int const);

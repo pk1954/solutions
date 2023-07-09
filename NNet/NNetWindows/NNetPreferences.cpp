@@ -112,22 +112,6 @@ public:
     }
 };
 
-class WrapDescWinFontSize : public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        m_pref.GetDescWin().SetFontSize(script.ScrReadInt());
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << m_pref.GetDescWin().GetFontSize();
-    }
-};
-
 class WrapInputCablesVisibility : public NNetWrapBase
 {
 public:
@@ -166,17 +150,15 @@ public:
 
 void NNetPreferences::Initialize
 (
-    DescriptionWindow & descWin,
-    Sound             & sound,
-    NNetModelIO       & modelIO,
-    HWND                hwndApp
+    Sound       & sound,
+    NNetModelIO & modelIO,
+    HWND          hwndApp
 )
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt", &sound);
 
     m_hwndApp  = hwndApp;
     m_pModelIO = &modelIO;
-    m_pDescWin = &descWin;
 
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
@@ -184,7 +166,6 @@ void NNetPreferences::Initialize
     Add<WrapShowScales           >(L"ShowScales");
     Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
-    Add<WrapDescWinFontSize      >(L"DescWinFontSize");
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

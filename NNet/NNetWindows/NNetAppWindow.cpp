@@ -136,7 +136,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle.Initialize(m_hwndApp);
 
-	m_preferences.Initialize(m_descWindow, m_sound, m_modelIO, m_hwndApp);
+	m_preferences.Initialize(m_sound, m_modelIO, m_hwndApp);
 
 	m_signalDesigner.Initialize
 	(
@@ -160,7 +160,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_appMenu          .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_preferences);
 	m_statusBar        .Start(m_hwndApp);
-	m_descWindow       .Start(m_hwndApp);
+	m_descWindow       .Start(m_hwndApp, m_preferences);
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);

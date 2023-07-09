@@ -29,7 +29,6 @@ export class NNetPreferences: public Preferences
 public:
 	void Initialize
 	(
-		DescriptionWindow &,
 		Sound &, 
 		NNetModelIO&, 
 		HWND const
@@ -52,7 +51,6 @@ public:
 	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
 	HWND                            GetHwndApp()        const { return m_hwndApp; }
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
-	DescriptionWindow              &GetDescWin()              { return *m_pDescWin; }
 
 private:
 
@@ -64,7 +62,6 @@ private:
 
 	HWND                             m_hwndApp               { nullptr };
 	NNetModelIO                    * m_pModelIO              { nullptr };
-	DescriptionWindow              * m_pDescWin              { nullptr };
 	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
 	bool                             m_bScales               { false };
 	bool                             m_bArrows               { false };

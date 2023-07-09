@@ -11,8 +11,9 @@ module;
 
 export module Preferences;
 
+export import WrapBase;
+
 import SoundInterface;
-import WrapBase;
 
 using std::wstring;
 using std::vector;
