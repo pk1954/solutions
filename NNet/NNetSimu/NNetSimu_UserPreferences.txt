@@ -1,6 +1,6 @@
 # ***  User preferences
 # ***  Toolbox 
-SetColorMenu OFF
+SetColorMenu ON
 SetSound ON
 SetAutoOpen ON
 # ***  Application
@@ -10,5 +10,6 @@ InputCablesVisibility 1
 ShowScales OFF
 ShowArrows OFF
 ShowSensorPoints OFF
+SetSound ON
 DescWinFontSize 20
 # ***  End of Preferences

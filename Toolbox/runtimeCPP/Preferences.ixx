@@ -32,8 +32,8 @@ public:
 	bool ReadPreferences() const;
 	bool WritePreferences() const;
 
-	bool ColorMenuVisible() const { return m_bColorMenu; }
-	void SetColorMenu(bool const b) { m_bColorMenu = b; }
+	static bool ColorMenuVisible() { return m_bColorMenu; }
+	static void SetColorMenu(bool const b) { m_bColorMenu = b; }
 
 	Sound& GetSound() { return *m_pSound; }
 
@@ -53,6 +53,7 @@ private:
 	size_t                       m_iNrOfToolboxEntries { 0 };
 	vector<unique_ptr<WrapBase>> m_prefVector;
 	wstring                      m_wstrPreferencesFile;
-	bool                         m_bColorMenu { false };
 	Sound                      * m_pSound     { nullptr };
+
+	inline static bool m_bColorMenu { false };
 };

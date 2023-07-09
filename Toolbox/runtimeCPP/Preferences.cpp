@@ -52,12 +52,12 @@ public:
 
     void operator() (Script& script) const final
     {
-        m_pref.SetColorMenu(script.ScrReadBool());
+        Preferences::SetColorMenu(script.ScrReadBool());
     }
 
     void Write(wostream& out) const final
     {
-        out << (m_pref.ColorMenuVisible() ? PREF_ON : PREF_OFF);
+        out << (Preferences::ColorMenuVisible() ? PREF_ON : PREF_OFF);
     }
 };
 

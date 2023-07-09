@@ -15,8 +15,9 @@ module;
 
 module RootWindow;
 
-import Win32_Util_Resource;
 import Types;
+import Preferences;
+import Win32_Util_Resource;
 import BaseRefreshRate;
 
 using std::vector;
@@ -181,7 +182,8 @@ void RootWindow::colorDialog()
 
 void RootWindow::AddColorCtlMenu(HMENU const hPopupMenu)
 {
-	AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL, L"Background color");
+	if (Preferences::ColorMenuVisible())
+		AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL, L"Background color");
 }
 
 void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr pos in screen coordinates

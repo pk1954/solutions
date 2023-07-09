@@ -128,6 +128,26 @@ public:
     }
 };
 
+class WrapSetSound : public NNetWrapBase
+{
+public:
+    using NNetWrapBase::NNetWrapBase;
+
+    void operator() (Script& script) const final
+    {
+        bool bMode { script.ScrReadBool() };
+        if (bMode)
+            m_pref.GetSound().On();
+        else
+            m_pref.GetSound().Off();
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << (m_pref.GetSound().IsOn() ? PREF_ON : PREF_OFF);
+    }
+};
+
 class WrapReadModel : public NNetWrapBase
 {
 public:
@@ -157,8 +177,9 @@ void NNetPreferences::Initialize
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt", &sound);
 
-    m_hwndApp  = hwndApp;
+    m_pSound   = &sound;
     m_pModelIO = &modelIO;
+    m_hwndApp  = hwndApp;
 
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
@@ -166,6 +187,7 @@ void NNetPreferences::Initialize
     Add<WrapShowScales           >(L"ShowScales");
     Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
+    Add<WrapSetSound             >(L"SetSound");
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

@@ -43,6 +43,8 @@ public:
 	bool ArrowsVisible      () const { return m_bArrows; }
 	bool SensorPointsVisible() const { return m_bSensorPoints; }
 
+	Sound& GetSound() { return *m_pSound; }
+
 	enum class tInputCablesVisibility { all, nonStd, active, none };
 
 	tInputCablesVisibility InputCablesVisibility() const { return m_inputCablesVisibility; }
@@ -67,4 +69,5 @@ private:
 	bool                             m_bArrows               { false };
 	bool                             m_bSensorPoints         { false };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
+	Sound                          * m_pSound                { nullptr };
 };
