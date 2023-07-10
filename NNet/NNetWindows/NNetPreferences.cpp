@@ -13,6 +13,7 @@ module;
 
 module NNetWin32:NNetPreferences;
 
+import IoUtil;
 import Win32_Util;
 import Script;
 import Symtab;
@@ -164,8 +165,37 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << L"\"" << m_pref.GetModelInterface()->GetModelFilePath() << L"\"";
+        out << DOUBLE_QUOTE << m_pref.GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
     }
+};
+
+class WrapColor : public WrapBase
+{
+public:
+    WrapColor
+    (
+        wstring const& wstrName,
+        RootWindow & rootWin,
+        NNetPreferences& pref
+    )
+      : WrapBase(wstrName),
+        m_rootWin(rootWin),
+        m_pref(pref)
+    {
+    }
+
+    void operator() (Script& script) const final
+    {
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << DOUBLE_QUOTE << m_pref.GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
+    }
+
+protected:
+    RootWindow     & m_rootWin;
+    NNetPreferences& m_pref;
 };
 
 void NNetPreferences::Initialize

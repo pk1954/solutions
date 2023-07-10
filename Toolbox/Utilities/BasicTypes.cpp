@@ -67,7 +67,7 @@ wstring GetUnitPrefix(int const iSteps)
 	static int     const iMaxIndex { sizeof(prefix) / sizeof(prefix[0]) - 1 };
 	int iIndex { iSteps + 3 }; // 3 is index of L' '
 	wchar_t const wchPrefix { IsInRange(iIndex, 0, iMaxIndex) ? prefix[iIndex] : L'?' };
-	wstring wstrRes { L" " };
+	wstring wstrRes { L' ' };
 	if (wchPrefix != L' ')
 		wstrRes += wchPrefix;
 	return wstrRes;

@@ -9,6 +9,7 @@ module;
 
 module NNetModel:ParamType;
 
+import IoUtil;
 import Types;
 
 using std::unordered_map;
@@ -60,6 +61,6 @@ wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 
 wostream& operator<<(wostream& out, ParamType::Value const p)
 {
-	out << L" " << ParamType::GetName(p);
+	out << SPACE << ParamType::GetName(p);
 	return out;
 }

@@ -278,7 +278,7 @@ void WinManager::dumpMonitorConfiguration() const
 	
 	DUMP_MON_STRUCT monStruct = { 0, & ostr };
 
-    ostr << L"MonitorConfiguration  \"" << m_strWindowConfigurationFile << L"\"" << endl;
+    ostr << L"MonitorConfiguration  \"" << m_strWindowConfigurationFile << DOUBLE_QUOTE << endl;
     EnumDisplayMonitors(nullptr, nullptr, DumpMonitorInfo, (LPARAM)&monStruct);
     ostr << L"0   # end of MonitorConfiguration" << endl << endl;
 
@@ -296,7 +296,7 @@ void WinManager::dumpWindowCoordinates() const
 			HWND hwnd = value.m_hwnd;
 			if (hwnd != nullptr)
 			{
-                ostr << L"MoveWindow "
+                ostr << L"MoveWindow" << SPACE
 					 << value.m_wstr 
 					 << Util::GetWindowLeftPos(hwnd)
 					 << Util::GetWindowTop    (hwnd)
@@ -304,8 +304,8 @@ void WinManager::dumpWindowCoordinates() const
 				     << Util::GetWindowHeight (hwnd)
                      << endl;
 
-				ostr << L"ShowWindow " 
-					<< value.m_wstr << L" "
+				ostr << L"ShowWindow" << SPACE
+					<< value.m_wstr << SPACE
 					<< (
                         IsWindowVisible(hwnd) 
 						? (IsZoomed(hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")

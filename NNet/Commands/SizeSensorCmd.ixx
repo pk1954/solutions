@@ -12,6 +12,7 @@ export module NNetCommands:SizeSensorCmd;
 import :NNetCommand;
 import NNetModel;
 import SaveCast;
+import IoUtil;
 
 export class SizeSensorCmd : public NNetCommand
 {
@@ -56,7 +57,7 @@ public:
 	static void Push(SensorId id, float const fFactor)
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << id << L" " << fFactor << endl;
+			TraceStream() << NAME << id << SPACE << fFactor << endl;
 		PushCommand(make_unique<SizeSensorCmd>(id, fFactor));
 	}
 

@@ -11,6 +11,7 @@ module;
 export module NNetModel:NobType;
 
 import Debug;
+import IoUtil;
 
 using std::wostream;
 using std::wstring;
@@ -70,7 +71,7 @@ public:
 		(
 			[&wstrList](NobType::Value const& t)
 			{
-				wstrList += NobType::GetName(t) + L" ";
+				wstrList += NobType::GetName(t) + SPACE;
 			}
 		);
 		return wstrList;

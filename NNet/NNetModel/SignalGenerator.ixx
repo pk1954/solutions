@@ -10,6 +10,7 @@ module;
 
 export module NNetModel:SignalGenerator;
 
+import IoUtil;
 import ObserverInterface;
 import Direct2D;
 import Types;
@@ -60,7 +61,7 @@ public:
 
 	void           SetNewName(wstring const& name) { m_name = name; }
 	wstring const& GetName()                const { return m_name; }
-	void           WriteName(wostream& out) const { out << L"\"" << m_name << "\" "; }
+	void           WriteName(wostream& out) const { out << DOUBLE_QUOTE << m_name << DOUBLE_QUOTE + SPACE; }
 
 	void ClearDynamicData() { m_dynData.Reset(); }
 	void Prepare(NNetParameters const&);

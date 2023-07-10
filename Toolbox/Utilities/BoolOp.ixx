@@ -83,6 +83,6 @@ export wchar_t const * GetBoolOpName(tBoolOp const op)
 
 export wostream & operator<< (wostream & out, tBoolOp const op)
 {
-    out << L" " << std:: wstring(GetBoolOpName(op));
+    out << L" " << std::wstring(GetBoolOpName(op));
     return out;
 }
