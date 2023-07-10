@@ -333,19 +333,15 @@ void WinManager::StoreWindowConfiguration()
 
 WinManager::WinManager()
 {
-    #define DEF_WINMAN_FUNC(name) SymbolTable::ScrDefConst(L#name, new Wrap##name##(this))
-
-    DEF_WINMAN_FUNC(MoveWindow);
-    DEF_WINMAN_FUNC(ShowWindow);
-    DEF_WINMAN_FUNC(MonitorConfiguration);
+    SymbolTable::ScrDefConst(L"MoveWindow",           new WrapMoveWindow(this));
+    SymbolTable::ScrDefConst(L"ShowWindow",           new WrapShowWindow(this));
+    SymbolTable::ScrDefConst(L"MonitorConfiguration", new WrapMonitorConfiguration(this));
 
     SymbolTable::ScrDefConst(L"SW_RESTORE",    static_cast<unsigned long>(SW_RESTORE   ));
     SymbolTable::ScrDefConst(L"SW_SHOWNORMAL", static_cast<unsigned long>(SW_SHOWNORMAL));
     SymbolTable::ScrDefConst(L"SW_MAXIMIZE",   static_cast<unsigned long>(SW_MAXIMIZE  ));
     SymbolTable::ScrDefConst(L"SW_SHOW",       static_cast<unsigned long>(SW_SHOW      ));
     SymbolTable::ScrDefConst(L"SW_HIDE",       static_cast<unsigned long>(SW_HIDE      ));
-
-    #undef DEF_WINMAN_FUNC
 }
 
 void WinManager::addWindow
