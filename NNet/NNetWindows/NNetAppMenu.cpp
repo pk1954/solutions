@@ -161,9 +161,9 @@ void NNetAppMenu::Start
     assert(bRes);
 }
 
-void NNetAppMenu::enable(unsigned int const id, bool const bCrit)
+void NNetAppMenu::enable(int const id, bool const bCrit)
 {
-    EnableMenuItem(m_hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
+    EnableMenuItem(m_hMenu, Cast2UnsignedInt(id), bCrit ? MF_ENABLED : MF_GRAYED);
 }
 
 void NNetAppMenu::Notify(bool const bImmediately)
@@ -171,13 +171,13 @@ void NNetAppMenu::Notify(bool const bImmediately)
     enable(IDM_FORWARD,            ! m_pComputeThread->IsRunning());
     enable(IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
 
-    enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(IDM_DESC_WINDOW   ));
-    enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(IDM_CRSR_WINDOW   ));
-    enable(IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible(IDM_MINI_WINDOW   ));
-    enable(IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(IDM_MONITOR_WINDOW));
-    enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(IDM_PARAM_WINDOW  ));
-    enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(IDM_PERF_WINDOW   ));
-    enable(IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(IDM_SIG_DESIGNER  ));
+    enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_DESC_WINDOW   )));
+    enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
+    enable(IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_MINI_WINDOW   )));
+    enable(IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
+    enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
+    enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_PERF_WINDOW   )));
+    enable(IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
 
     m_upOnOffScales      ->enableOnOff(m_pPreferences->ScalesVisible());
     m_upOnOffArrows      ->enableOnOff(m_pPreferences->ArrowsVisible());

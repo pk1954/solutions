@@ -1,15 +1,17 @@
-// win32_winManager.ixx
+// Win32_WinManager.ixx
 //
 // Win32_utilities
 
 module;
 
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <Windows.h>
 
 export module WinManager;
 
+import Types;
+import BoolOp;
 import Win32_Util_Resource;
 import ErrHndl;
 import BaseDialog;
@@ -19,7 +21,9 @@ import Win32_PIXEL;
 import RootWindow;
 
 using std::wstring;
-using std::unordered_map;
+using std::map;
+
+export using RootWinId = NamedType<int, struct RootWinId_Parameter>;
 
 export class WinManager
 {
@@ -27,12 +31,12 @@ public:
 
 	WinManager();
 
-	void AddWindow(wstring const &, UINT const, HWND,         bool const, bool const);
-	void AddWindow(wstring const &, UINT const, BaseWindow &, bool const, bool const);
-	void AddWindow(wstring const &, UINT const, BaseDialog &, bool const, bool const);
+	void AddWindow(wstring const &, RootWinId const, HWND,         bool const, bool const);
+	void AddWindow(wstring const &, RootWinId const, BaseWindow &, bool const, bool const);
+	void AddWindow(wstring const &, RootWinId const, BaseDialog &, bool const, bool const);
 
-	void RemoveWindow(UINT const id) { m_map.erase(id);	}
-	void RemoveAll   ()              { m_map.clear(); }
+	void RemoveWindow(RootWinId const id) { m_map.erase(id); }
+	void RemoveAll   ()                   { m_map.clear(); }
 	void SetCaptions () 
 	{
 		Apply2All
@@ -52,62 +56,62 @@ public:
 		}
 	}                        
 
-	wstring GetWindowName(UINT const id) const // can throw out_of_range exception
+	wstring GetWindowName(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_wstr;
 	}
 
-	HWND GetHWND(UINT const id) const // can throw out_of_range exception
+	HWND GetHWND(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_hwnd;
 	}
 
-	void BringToTop(UINT const id) const
+	void BringToTop(RootWinId const id) const
 	{
 		HWND hwnd { GetHWND(id) };
 		BringWindowToTop(hwnd);
 		ShowWindow(hwnd, SW_SHOWNORMAL);
 	}
 
-	void AdjustRight(UINT const id, PIXEL const pixYpos = 0_PIXEL) const
+	void AdjustRight(RootWinId const id, PIXEL const pixYpos = 0_PIXEL) const
 	{
 		Util::AdjustRight(GetHWND(id), pixYpos);
 	}
 
-	void AdjustLeft(UINT const id, PIXEL const pixYpos = 0_PIXEL) const
+	void AdjustLeft(RootWinId const id, PIXEL const pixYpos = 0_PIXEL) const
 	{
 		Util::AdjustLeft(GetHWND(id), pixYpos);
 	}
 
-	BaseWindow const * GetBaseWindow(UINT const id) const // can throw out_of_range exception
+	BaseWindow const * GetBaseWindow(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_pBaseWindow;
 	}
 
-	INT GetIdFromRootWindow(HWND const hwnd) const
+	RootWinId GetIdFromRootWindow(HWND const hwnd) const
 	{
 		for (const auto & [key, value] : m_map)
 			if (value.m_hwnd == hwnd)
 				return key; 
-		return -1;
+		return RootWinId(-1);
 	}
 
-	bool IsMoveable(UINT const id) const // can throw out_of_range exception
+	bool IsMoveable(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_bTrackPosition;
 	}
 
-	bool IsSizeable(UINT const id) const // can throw out_of_range exception
+	bool IsSizeable(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_bTrackSize;
 	}
 
-	bool IsVisible(UINT const id) const // can throw out_of_range exception
+	bool IsVisible(RootWinId const id) const // can throw out_of_range exception
 	{
 		return IsWindowVisible(GetHWND(id));
 	}
 
-	void Show(UINT const id, tBoolOp const op) const
+	void Show(RootWinId const id, tBoolOp const op) const
 	{
 		Util::Show(GetHWND(id), op);
 	}
@@ -138,7 +142,7 @@ private:
 		bool    const m_bTrackSize;     // if true, winManager sets window size from config file
 	};
 
-	unordered_map<UINT, MAP_ELEMENT> m_map;
+	map<RootWinId, MAP_ELEMENT> m_map;
 
 	wstring m_strWindowConfigurationFile { L"" };
 	int     m_iNrOfMonitorConfigurations { 0 };
@@ -151,7 +155,7 @@ private:
 	void addWindow
 	(
 		wstring      const &,
-		UINT         const,
+		RootWinId    const,
 		HWND         const,
 		BaseWindow * const,
 		bool         const,

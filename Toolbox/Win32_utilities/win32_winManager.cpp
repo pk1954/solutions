@@ -9,19 +9,21 @@
 #include <string>
 
 import Scanner;
+import Symtab;
+import Script;
+import WrapBase;
 import IoUtil;
 import WinManager;
 import ErrHndl;
-import Symtab;
 import Win32_Util;
 import Win32_PIXEL;
-import Script;
 import BaseWindow;
 import BaseDialog;
 
 using std::endl;
 using std::pair;
 using std::wcout;
+using std::wostream;
 using std::wofstream;
 using std::to_wstring;
 using std::wstring;
@@ -30,23 +32,32 @@ using Util::operator==;
 using Util::operator!=;
 using Util::operator<<; 
 
-class WrapMoveWindow : public ScriptFunctor
+class WrapMoveWindow : public ScriptFunctor // WrapBase
 {
 public:
-    explicit WrapMoveWindow(WinManager * pWinManager) :
+    //explicit WrapMoveWindow
+    //(
+    //    wstring const wstrName,
+    //    WinManager * pWinManager
+    //) 
+    //  : WrapBase(wstrName),
+    //    m_pWinManager(pWinManager)
+    //{ };
+
+    explicit WrapMoveWindow(WinManager* pWinManager) :
         m_pWinManager(pWinManager)
     { };
 
     void operator() (Script & script) const final
     {
-	    UINT uiResId = script.ScrReadUint();
-		if (uiResId > 0)
+	    RootWinId id(script.ScrReadInt());
+		if (id.GetValue() > 0)
 		{
 			PixelRect pixRect = ScrReadPixelRect(script);
-			if (m_pWinManager->IsMoveable(uiResId))
+			if (m_pWinManager->IsMoveable(id))
 			{
-				HWND const hwnd = m_pWinManager->GetHWND(uiResId);
-                if (m_pWinManager->IsSizeable(uiResId))
+				HWND const hwnd = m_pWinManager->GetHWND(id);
+                if (m_pWinManager->IsSizeable(id))
                 {
                     bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect, true);
                     assert(bRes);
@@ -61,7 +72,25 @@ public:
 		}
     }
 
+    //void Write(wostream& out) const final
+    //{
+    //    out << NAME << SPACE
+    //        << m_pWinManager->GetWindowName()
+    //        << Util::GetWindowLeftPos(hwnd)
+    //        << Util::GetWindowTop(hwnd)
+    //        << Util::GetWindowWidth(hwnd)
+    //        << Util::GetWindowHeight(hwnd)
+    //        << endl;
+    //}
+
+    //static void Register()
+    //{
+    //    SymbolTable::ScrDefConst(NAME, this);
+    //}
+
 private:
+    inline static const wstring NAME { L"MoveWindow" };
+
     WinManager * m_pWinManager;
 };
 
@@ -74,10 +103,10 @@ public:
 
     void operator() (Script & script) const final
     {
-	    UINT const uiResId  = script.ScrReadUint();
-		INT const  iCmdShow = script.ScrReadInt();  // WM_HIDE, WM_SHOW, ...
-		if (uiResId > 0)
-			ShowWindow(m_pWinManager->GetHWND(uiResId), iCmdShow);
+	    RootWinId const id      (script.ScrReadInt());
+		INT       const iCmdShow(script.ScrReadInt());  // WM_HIDE, WM_SHOW, ...
+		if (id.GetValue() > 0)
+			ShowWindow(m_pWinManager->GetHWND(id), iCmdShow);
     }
 
 private:
@@ -347,40 +376,40 @@ WinManager::WinManager()
 void WinManager::addWindow
 (
     wstring      const & wstrName, 
-    UINT         const   id, 
+    RootWinId    const   id, 
     HWND         const   hwnd, 
     BaseWindow * const   pBaseWindow,
     bool         const   bTrackPosition,
     bool         const   bTrackSize
 )
 {
-    if (id != 0)
+    if (id.GetValue() > 0)
     {
         m_map.try_emplace(id, MAP_ELEMENT(pBaseWindow, wstrName, hwnd, bTrackPosition, bTrackSize));
-        SymbolTable::ScrDefConst(wstrName, static_cast<ULONG>(id));
+        SymbolTable::ScrDefConst(wstrName, static_cast<unsigned long>(id.GetValue()));
     }
 }
 
 void WinManager::AddWindow
 (
-    wstring const & wstrName, 
-    UINT    const   id, 
-    HWND    const   hwnd, 
-	bool    const   bTrackPosition,
-	bool    const   bTrackSize
+    wstring   const & wstrName, 
+    RootWinId const   id, 
+    HWND      const   hwnd, 
+	bool      const   bTrackPosition,
+	bool      const   bTrackSize
 )
 {
-	if (hwnd )
+	if (hwnd)
         addWindow(wstrName, id, hwnd, nullptr, bTrackPosition, bTrackSize);
 }
 
 void WinManager::AddWindow
 (
-	wstring const & wstrName, 
-	UINT    const   id, 
-	BaseWindow    & baseWindow,
-	bool    const   bTrackPosition,
-	bool    const   bTrackSize
+	wstring   const & wstrName, 
+	RootWinId const   id, 
+	BaseWindow      & baseWindow,
+	bool      const   bTrackPosition,
+	bool      const   bTrackSize
 )
 {
     addWindow(wstrName, id, baseWindow.GetWindowHandle(), & baseWindow, bTrackPosition, bTrackSize);
@@ -388,11 +417,11 @@ void WinManager::AddWindow
 
 void WinManager::AddWindow
 (
-	wstring const & wstrName, 
-	UINT    const   id, 
-	BaseDialog    & baseDialog,
-	bool    const   bTrackPosition,
-	bool    const   bTrackSize
+	wstring   const & wstrName, 
+	RootWinId const   id, 
+	BaseDialog      & baseDialog,
+	bool      const   bTrackPosition,
+	bool      const   bTrackSize
 )
 {
     addWindow(wstrName, id, baseDialog.GetWindowHandle(), nullptr, bTrackPosition, bTrackSize);

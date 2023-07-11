@@ -120,7 +120,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     case IDM_MINI_WINDOW:
     case IDM_MONITOR_WINDOW:
     case IDM_PARAM_WINDOW:
-        ::SendMessage(m_pWinManager->GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
+        ::SendMessage(m_pWinManager->GetHWND(RootWinId(wmId)), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
     case IDM_SLOWER:
@@ -143,7 +143,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 
     case IDD_SCALES:       //Sent by NNetPreferences
     case IDD_ARROWS:       //Sent by NNetPreferences
-        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, lParam);
+        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, lParam);
         break;
 
     case IDD_ARROWS_ON:
@@ -216,17 +216,17 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     {
     case IDD_NEW_SIGNAL_GENERATOR:
         NewSigGenCmd::Push();
-        ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
+        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_SIG_DESIGNER)), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
         SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)));
-        ::SendMessage(m_pWinManager->GetHWND(IDM_SIG_DESIGNER), WM_COMMAND, IDM_WINDOW_ON, 0);
+        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_SIG_DESIGNER)), WM_COMMAND, IDM_WINDOW_ON, 0);
         break;
 
     case IDM_COPY_SELECTION:
     case IDM_DELETE:   // keyboard delete key
-        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, 0);
+        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, 0);
         break;
 
     case IDM_UNDO:
@@ -259,7 +259,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_ESCAPE:
-        ::SendMessage(m_pWinManager->GetHWND(IDM_MAIN_WINDOW), WM_COMMAND, wmId, 0);
+        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, 0);
         Script::StopProcessing();
         break;
 

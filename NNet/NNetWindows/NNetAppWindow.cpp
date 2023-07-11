@@ -190,16 +190,16 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main grid window
 
-	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    IDM_APPL_WINDOW,    m_hwndApp,                      true,  true );
-	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     IDM_STATUS_BAR,     m_statusBar.GetWindowHandle(),  false, false);
-	m_WinManager.AddWindow(L"IDM_CRSR_WINDOW",    IDM_CRSR_WINDOW,    m_crsrWindow,                   true,  false);
-	m_WinManager.AddWindow(L"IDM_DESC_WINDOW",    IDM_DESC_WINDOW,    m_descWindow.GetWindowHandle(), true,  true );
-	m_WinManager.AddWindow(L"IDM_MAIN_WINDOW",    IDM_MAIN_WINDOW,    m_mainNNetWindow,               true,  false);
-	m_WinManager.AddWindow(L"IDM_MINI_WINDOW",    IDM_MINI_WINDOW,    m_miniNNetWindow,               true,  true );
-	m_WinManager.AddWindow(L"IDM_MONITOR_WINDOW", IDM_MONITOR_WINDOW, m_monitorWindow,                true,  true );
-	m_WinManager.AddWindow(L"IDM_PARAM_WINDOW",   IDM_PARAM_WINDOW,   m_parameterDlg,                 true,  false);
-	m_WinManager.AddWindow(L"IDM_PERF_WINDOW",    IDM_PERF_WINDOW,    m_performanceWindow,            true,  false);
-	m_WinManager.AddWindow(L"IDM_SIG_DESIGNER",   IDM_SIG_DESIGNER,   m_signalDesigner,               true,  true );
+	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    RootWinId(IDM_APPL_WINDOW   ), m_hwndApp,                      true,  true );
+	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     RootWinId(IDM_STATUS_BAR    ), m_statusBar.GetWindowHandle(),  false, false);
+	m_WinManager.AddWindow(L"IDM_CRSR_WINDOW",    RootWinId(IDM_CRSR_WINDOW   ), m_crsrWindow,                   true,  false);
+	m_WinManager.AddWindow(L"IDM_DESC_WINDOW",    RootWinId(IDM_DESC_WINDOW   ), m_descWindow.GetWindowHandle(), true,  true );
+	m_WinManager.AddWindow(L"IDM_MAIN_WINDOW",    RootWinId(IDM_MAIN_WINDOW   ), m_mainNNetWindow,               true,  false);
+	m_WinManager.AddWindow(L"IDM_MINI_WINDOW",    RootWinId(IDM_MINI_WINDOW   ), m_miniNNetWindow,               true,  true );
+	m_WinManager.AddWindow(L"IDM_MONITOR_WINDOW", RootWinId(IDM_MONITOR_WINDOW), m_monitorWindow,                true,  true );
+	m_WinManager.AddWindow(L"IDM_PARAM_WINDOW",   RootWinId(IDM_PARAM_WINDOW  ), m_parameterDlg,                 true,  false);
+	m_WinManager.AddWindow(L"IDM_PERF_WINDOW",    RootWinId(IDM_PERF_WINDOW   ), m_performanceWindow,            true,  false);
+	m_WinManager.AddWindow(L"IDM_SIG_DESIGNER",   RootWinId(IDM_SIG_DESIGNER  ), m_signalDesigner,               true,  true );
 
 	configureStatusBar();
 	adjustChildWindows();

@@ -44,7 +44,7 @@ private:
 
 	class OnOffPair;
 
-	void enable(unsigned int const, bool const);
+	void enable(int const, bool const);
 
 	HWND                    m_hwndApp        { nullptr };
 	HMENU                   m_hMenu          { nullptr };
