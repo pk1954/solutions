@@ -190,7 +190,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << DOUBLE_QUOTE << m_pref.GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
+        //out << DOUBLE_QUOTE << m_pref.GetWinManager() << DOUBLE_QUOTE;
     }
 
 protected:
@@ -202,14 +202,16 @@ void NNetPreferences::Initialize
 (
     Sound       & sound,
     NNetModelIO & modelIO,
+    WinManager &  winMan,
     HWND          hwndApp
 )
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt", &sound);
 
-    m_pSound   = &sound;
-    m_pModelIO = &modelIO;
-    m_hwndApp  = hwndApp;
+    m_pSound      = &sound;
+    m_pModelIO    = &modelIO;
+    m_pWinManager = &winMan;
+    m_hwndApp     = hwndApp;
 
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");

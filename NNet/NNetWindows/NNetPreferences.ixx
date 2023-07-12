@@ -14,6 +14,7 @@ export module NNetWin32:NNetPreferences;
 
 import SoundInterface;
 import WrapBase;
+import WinManager;
 import NNetModelIO;
 import NNetModel;
 import Preferences;
@@ -30,7 +31,8 @@ public:
 	void Initialize
 	(
 		Sound &, 
-		NNetModelIO&, 
+		NNetModelIO&,
+		WinManager&,
 		HWND const
 	);
 	void SetModelInterface(NNetModelReaderInterface const *);
@@ -54,6 +56,8 @@ public:
 	HWND                            GetHwndApp()        const { return m_hwndApp; }
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 
+	WinManager& GetWinManager() { return *m_pWinManager; }
+
 private:
 
 	template <Wrap_t WRAPPER>
@@ -70,4 +74,5 @@ private:
 	bool                             m_bSensorPoints         { false };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 	Sound                          * m_pSound                { nullptr };
+	WinManager                     * m_pWinManager           { nullptr };
 };
