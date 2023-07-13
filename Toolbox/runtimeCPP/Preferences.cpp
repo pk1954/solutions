@@ -116,8 +116,6 @@ void Preferences::Initialize
     Add<WrapSetSound    >(L"SetSound"    );
     Add<WrapSetAutoOpen >(L"SetAutoOpen" );
 
-    m_iNrOfToolboxEntries = m_prefVector.size();
-
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON, 1L);
 }
@@ -143,16 +141,14 @@ bool Preferences::WritePreferences() const
 {
     wofstream prefFile(m_wstrPreferencesFile);
     prefFile << Scanner::COMMENT_START << L" User preferences" << endl;
-    prefFile << Scanner::COMMENT_START << L" Toolbox " << endl;
     size_t i = 0;
     for (auto const& it : m_prefVector)
     {
         it->WriteCmdName(prefFile);
         it->Write(prefFile);
         prefFile << endl;
-        if (++i == m_iNrOfToolboxEntries)
-            prefFile << Scanner::COMMENT_START << L" Application" << endl;
     }
+    WriteAppPreferences(prefFile);
     prefFile << Scanner::COMMENT_START << L" End of Preferences" << endl;
     prefFile.close();
     wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;

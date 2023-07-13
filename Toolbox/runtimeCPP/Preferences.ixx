@@ -6,6 +6,7 @@ module;
 
 #include <compare>
 #include <string>
+#include <iostream>
 #include <vector>
 #include <memory>
 
@@ -15,6 +16,7 @@ export import WrapBase;
 
 import SoundInterface;
 
+using std::wostream;
 using std::wstring;
 using std::vector;
 using std::unique_ptr;
@@ -31,6 +33,8 @@ public:
 
 	bool ReadPreferences() const;
 	bool WritePreferences() const;
+	
+	virtual void WriteAppPreferences(wostream&) const {};
 
 	static bool ColorMenuVisible() { return m_bColorMenu; }
 	static void SetColorMenu(bool const b) { m_bColorMenu = b; }
@@ -50,7 +54,6 @@ private:
 		AddWrapper(make_unique<WRAPPER>(name, *this));
 	}
 
-	size_t                       m_iNrOfToolboxEntries { 0 };
 	vector<unique_ptr<WrapBase>> m_prefVector;
 	wstring                      m_wstrPreferencesFile;
 	Sound                      * m_pSound     { nullptr };

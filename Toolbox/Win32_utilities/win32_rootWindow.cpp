@@ -177,6 +177,7 @@ void RootWindow::colorDialog()
 	{
 		SetBackgroundColorRef(cc.rgbResult);
 		Trigger();
+		SendCommand2Application(IDM_APP_DATA_CHANGED, 0);
 	}
 }
 

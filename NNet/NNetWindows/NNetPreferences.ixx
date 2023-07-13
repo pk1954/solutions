@@ -5,6 +5,7 @@
 module;
 
 #include <compare>
+#include <iostream>
 #include <string>
 #include <vector>
 #include <memory>
@@ -20,6 +21,7 @@ import NNetModel;
 import Preferences;
 import :DescriptionWindow;
 
+using std::wostream;
 using std::wstring;
 using std::vector;
 using std::unique_ptr;
@@ -35,6 +37,7 @@ public:
 		WinManager&,
 		HWND const
 	);
+
 	void SetModelInterface(NNetModelReaderInterface const *);
 
 	void SetArrows      (bool const, bool const);
@@ -59,6 +62,8 @@ public:
 	WinManager& GetWinManager() { return *m_pWinManager; }
 
 private:
+
+	void WriteAppPreferences(wostream&) const final;
 
 	template <Wrap_t WRAPPER>
 	void Add(wstring const& name)

@@ -70,5 +70,6 @@ export inline int const IDM_MAX_SPEED           { 88 };
 export inline int const IDM_SIMULATION_SPEED    { 89 };
 
 export inline int const IDM_MOVE                { 90 };
+export inline int const IDM_APP_DATA_CHANGED    { 91 };
 
 // application identifiers start at 100

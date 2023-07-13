@@ -31,8 +31,7 @@ export fMicroSecs       ScrReadfMicroSecs      (Script&);
 export MicroMeter       ScrReadMicroMeter      (Script&);
 export MicroMeterPnt    ScrReadMicroMeterPnt   (Script&);
 export MicroMeterCircle ScrReadMicroMeterCircle(Script&);
-
-export tBoolOp       ScrReadBoolOp       (Script &);
+export tBoolOp          ScrReadBoolOp          (Script&);
 
 export template <typename T>
 T ScrRead(Script& script)

@@ -23,6 +23,7 @@ public:
 		m_colBackground = col;
 		return colOld;
 	}
+
 	COLORREF GetBackgroundColorRef() const final 
 	{ 
 		return m_colBackground; 

@@ -466,6 +466,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_preferences.WritePreferences();
 			break;
 
+		case IDM_APP_DATA_CHANGED:
+			m_appTitle.SetUnsavedChanges(true);
+			break;
+
 		case IDD_TRIGGER_SIGNAL_DESIGNER:
 			m_signalDesigner.Trigger();
 			break;
@@ -647,6 +651,7 @@ void NNetAppWindow::WriteModel()
 {
 	SetCursor(m_hCrsrWait);
 	m_modelIO.Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0));
+	m_preferences.WritePreferences();
 	m_appTitle.SetUnsavedChanges(false);
 	m_statusBar.ClearPart(m_statusMessagePart);
 	SetCursor(m_hCrsrArrow);

@@ -8,6 +8,7 @@ module;
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
 #include <Windows.h>
 #include "Resource.h"
 
@@ -29,6 +30,7 @@ using std::wcout;
 using std::endl;
 using std::filesystem::exists;
 using std::filesystem::path;
+using std::make_unique;
 
 static wstring const PREF_ON  { L"ON"  };
 static wstring const PREF_OFF { L"OFF" };
@@ -169,33 +171,31 @@ public:
     }
 };
 
-class WrapColor : public WrapBase
+class WrapColor : public ScriptFunctor
 {
 public:
-    WrapColor
-    (
-        wstring const& wstrName,
-        RootWindow & rootWin,
-        NNetPreferences& pref
-    )
-      : WrapBase(wstrName),
-        m_rootWin(rootWin),
-        m_pref(pref)
-    {
-    }
+    WrapColor(WinManager &winMan)
+      : m_winMan(winMan)
+    {}
 
     void operator() (Script& script) const final
     {
-    }
-
-    void Write(wostream& out) const final
-    {
-        //out << DOUBLE_QUOTE << m_pref.GetWinManager() << DOUBLE_QUOTE;
+        RootWinId id(script.ScrReadInt());
+        script.ScrReadString(L"RGB");
+        script.ScrReadSpecial(OPEN_BRACKET);
+        unsigned short usRed   { script.ScrReadUshort() };
+        script.ScrReadSpecial(ID_SEPARATOR);
+        unsigned short usGreen { script.ScrReadUshort() };
+        script.ScrReadSpecial(ID_SEPARATOR);
+        unsigned short usBlue  { script.ScrReadUshort() };
+        script.ScrReadSpecial(CLOSE_BRACKET);
+        COLORREF          col { RGB(usRed, usGreen, usBlue) };
+        BaseWindow * pBaseWin { m_winMan.GetBaseWindow(id) };
+        pBaseWin->SetBackgroundColorRef(col);
     }
 
 protected:
-    RootWindow     & m_rootWin;
-    NNetPreferences& m_pref;
+    WinManager & m_winMan;
 };
 
 void NNetPreferences::Initialize
@@ -220,6 +220,33 @@ void NNetPreferences::Initialize
     Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
     Add<WrapSetSound             >(L"SetSound");
+
+    SymbolTable::ScrDefConst(L"SetBKColor", new WrapColor(*m_pWinManager));
+}
+
+void NNetPreferences::WriteAppPreferences(wostream & out) const
+{
+    m_pWinManager->Apply2All
+    (
+        [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
+        {
+            if (elem.m_pBaseWindow)
+            {
+                COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
+                out << L"SetBKColor" << SPACE
+                    << elem.m_wstr << SPACE
+                    << L"RGB"
+                    << OPEN_BRACKET
+                    << GetRValue(col)
+                    << ID_SEPARATOR
+                    << GetGValue(col)
+                    << ID_SEPARATOR
+                    << GetBValue(col)
+                    << CLOSE_BRACKET
+                    << endl;
+            }
+        }
+    );
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

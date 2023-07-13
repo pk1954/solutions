@@ -5,6 +5,7 @@
 module;
 
 #include <string>
+#include <fstream>
 #include <map>
 #include <Windows.h>
 
@@ -21,6 +22,7 @@ import Win32_PIXEL;
 import RootWindow;
 
 using std::wstring;
+using std::wofstream;
 using std::map;
 
 export using RootWinId = NamedType<int, struct RootWinId_Parameter>;
@@ -39,21 +41,14 @@ public:
 	void RemoveAll   ()                   { m_map.clear(); }
 	void SetCaptions () 
 	{
-		Apply2All
-		(
-			[](BaseWindow &b)
-			{ ::SendMessage(b.GetWindowHandle(), WM_APP_CAPTION, 0, 0); }
-		);
+		for (const auto& [key, value] : m_map)
+			::SendMessage(value.m_hwnd, WM_APP_CAPTION, 0, 0);
 	}
 
 	void Apply2All(auto const & f) const
 	{
 		for (const auto & [key, value] : m_map)
-		{
-			BaseWindow * const pBaseWindow { value.m_pBaseWindow };
-			if (pBaseWindow)
-				f(*pBaseWindow);
-		}
+			f(key, value);
 	}                        
 
 	wstring GetWindowName(RootWinId const id) const // can throw out_of_range exception
@@ -83,7 +78,7 @@ public:
 		Util::AdjustLeft(GetHWND(id), pixYpos);
 	}
 
-	BaseWindow const * GetBaseWindow(RootWinId const id) const // can throw out_of_range exception
+	BaseWindow * GetBaseWindow(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_pBaseWindow;
 	}
@@ -129,10 +124,6 @@ public:
 	bool GetWindowConfiguration() const;
 	void StoreWindowConfiguration();
 
-private:
-	wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
-	wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
-
 	struct MAP_ELEMENT
 	{
 		BaseWindow  * m_pBaseWindow;    // Normally WinManager handles BaseWindows
@@ -142,6 +133,10 @@ private:
 		bool    const m_bTrackSize;     // if true, winManager sets window size from config file
 	};
 
+private:
+	wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
+	wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
+
 	map<RootWinId, MAP_ELEMENT> m_map;
 
 	wstring m_strWindowConfigurationFile { L"" };
@@ -150,7 +145,7 @@ private:
 	ScriptErrorHandler::ScriptException m_errorInfo {};
 
 	void dumpMonitorConfiguration() const;
-	void dumpWindowCoordinates() const;
+	void dumpWindowCoordinates(wofstream &, MAP_ELEMENT const&) const;
 
 	void addWindow
 	(

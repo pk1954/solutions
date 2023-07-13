@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map>
 
 import Scanner;
 import Symtab;
@@ -35,15 +36,6 @@ using Util::operator<<;
 class WrapMoveWindow : public ScriptFunctor // WrapBase
 {
 public:
-    //explicit WrapMoveWindow
-    //(
-    //    wstring const wstrName,
-    //    WinManager * pWinManager
-    //) 
-    //  : WrapBase(wstrName),
-    //    m_pWinManager(pWinManager)
-    //{ };
-
     explicit WrapMoveWindow(WinManager* pWinManager) :
         m_pWinManager(pWinManager)
     { };
@@ -71,22 +63,6 @@ public:
             }
 		}
     }
-
-    //void Write(wostream& out) const final
-    //{
-    //    out << NAME << SPACE
-    //        << m_pWinManager->GetWindowName()
-    //        << Util::GetWindowLeftPos(hwnd)
-    //        << Util::GetWindowTop(hwnd)
-    //        << Util::GetWindowWidth(hwnd)
-    //        << Util::GetWindowHeight(hwnd)
-    //        << endl;
-    //}
-
-    //static void Register()
-    //{
-    //    SymbolTable::ScrDefConst(NAME, this);
-    //}
 
 private:
     inline static const wstring NAME { L"MoveWindow" };
@@ -314,38 +290,35 @@ void WinManager::dumpMonitorConfiguration() const
     ostr.close();
 }
 
-void WinManager::dumpWindowCoordinates() const
+void WinManager::dumpWindowCoordinates
+(
+    wofstream & ostr,
+    MAP_ELEMENT const &elem
+) const
 {
-    wofstream ostr(m_strWindowConfigurationFile, wofstream::out);
-    
-    for (const auto & [key, value] : m_map )
-	{
-		if (value.m_bTrackPosition)
-		{
-			HWND hwnd = value.m_hwnd;
-			if (hwnd != nullptr)
-			{
-                ostr << L"MoveWindow" << SPACE
-					 << value.m_wstr 
-					 << Util::GetWindowLeftPos(hwnd)
-					 << Util::GetWindowTop    (hwnd)
-				     << Util::GetWindowWidth  (hwnd)
-				     << Util::GetWindowHeight (hwnd)
-                     << endl;
+    if (elem.m_bTrackPosition)
+    {
+        HWND hwnd = elem.m_hwnd;
+        if (hwnd != nullptr)
+        {
+           ostr << L"MoveWindow" << SPACE
+                << elem.m_wstr
+                << Util::GetWindowLeftPos(hwnd)
+                << Util::GetWindowTop(hwnd)
+                << Util::GetWindowWidth(hwnd)
+                << Util::GetWindowHeight(hwnd)
+                << endl;
 
-				ostr << L"ShowWindow" << SPACE
-					<< value.m_wstr << SPACE
-					<< (
-                        IsWindowVisible(hwnd) 
-						? (IsZoomed(hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
-						: L"SW_HIDE"
-                       )
-                   << endl;
-			}
-		}
-	}
-
-    ostr.close();
+           ostr << L"ShowWindow" << SPACE
+                << elem.m_wstr << SPACE
+                << (
+                      IsWindowVisible(hwnd)
+                      ? (IsZoomed(hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
+                      : L"SW_HIDE"
+                   )
+                << endl;
+        }
+    }
 }
 
 void WinManager::StoreWindowConfiguration()
@@ -353,11 +326,13 @@ void WinManager::StoreWindowConfiguration()
     if (m_strWindowConfigurationFile.empty())
     {
         m_strWindowConfigurationFile = WINDOW_CONFIG_FILE_STUB + to_wstring(++m_iNrOfMonitorConfigurations) + L".cnf";
-
         dumpMonitorConfiguration();
     }
 
-    dumpWindowCoordinates();    // Write window configuration to window configuration file
+    wofstream ostr(m_strWindowConfigurationFile, wofstream::out);
+    for (const auto& [key, value] : m_map)
+        dumpWindowCoordinates(ostr, value);
+    ostr.close();
 }
 
 WinManager::WinManager()
