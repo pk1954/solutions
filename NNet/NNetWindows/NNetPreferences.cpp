@@ -158,11 +158,8 @@ public:
 
     void operator() (Script& script) const final
     {
-        wstring wstrFile { script.ScrReadString() };
-        if (!m_pref.GetModelIO().Import(wstrFile, NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
-        {
-            SendMessage(m_pref.GetHwndApp(), WM_COMMAND, IDM_NEW_MODEL, 0);
-        }
+        m_pref.GetModelIO().SetModelFileName(script.ScrReadString());
+        PostMessage(m_pref.GetHwndApp(), WM_COMMAND, IDM_IMPORT_MODEL, 0);
     }
 
     void Write(wostream& out) const final

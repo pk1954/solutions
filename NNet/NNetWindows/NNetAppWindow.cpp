@@ -466,6 +466,12 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_preferences.WritePreferences();
 			break;
 
+		case IDM_IMPORT_MODEL:
+			m_cmdStack.Clear();
+			if (!m_modelIO.Import(m_modelIO.GetModelFileName(),	NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
+				SendCommand(IDM_NEW_MODEL, 0);
+			break;
+
 		case IDM_APP_DATA_CHANGED:
 			m_appTitle.SetUnsavedChanges(true);
 			break;
@@ -489,11 +495,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_modelIO.Import
 			(
 				askModelFile(tFileMode::read), 
-				NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)
+				NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL)
 			);
 			break;
 
-		case IDM_ADD_MODULE:
+		case IDM_ADD_MODULE: 
 			m_modelIO.Import
 			(
 				askModelFile(tFileMode::read), 
@@ -513,9 +519,14 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_statusBar.WriteProgressReport(m_statusMessagePart, *bit_cast<wstring const *>(lParam));
 			break;
 
-		case IDX_REPLACE_MODEL:  //no user command, only internal usage
+		case IDX_ASK_REPLACE_MODEL:  //no user command, only internal usage
 			if (AskAndSave())
 				replaceModel();
+			m_statusBar.ClearPart(m_statusMessagePart);
+			break;
+
+		case IDX_REPLACE_MODEL:  //no user command, only internal usage
+			replaceModel();
 			m_statusBar.ClearPart(m_statusMessagePart);
 			break;
 

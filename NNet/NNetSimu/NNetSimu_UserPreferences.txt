@@ -2,7 +2,7 @@
 SetColorMenu ON
 SetSound ON
 SetAutoOpen ON
-ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
+ReadModel "D:\SW-projects\Delivery\V4_9\std.mod"
 SetPerfMonMode OFF
 InputCablesVisibility 1
 ShowScales OFF

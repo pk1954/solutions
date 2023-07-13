@@ -38,6 +38,7 @@ public:
 
 	unique_ptr<Model> GetImportedModel();
 	wstring const& GetModelFileName() const { return m_wstrFile2Read; }
+	void SetModelFileName(wstring const& name) { m_wstrFile2Read = name; }
 
 	NNetModelWriterInterface& GetImportNMWI() { return *m_upImportedNMWI; }
 

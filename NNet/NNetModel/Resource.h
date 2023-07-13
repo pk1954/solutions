@@ -35,8 +35,9 @@
 #define       IDX_READ_PROGRESS_REPORT       160
 #define       IDX_WRITE_PROGRESS_REPORT      161
 #define       IDX_REPLACE_MODEL              162
-#define       IDX_FILE_NOT_FOUND             163
-#define       IDX_ERROR_IN_FILE              164
+#define       IDX_ASK_REPLACE_MODEL          163
+#define       IDX_FILE_NOT_FOUND             164
+#define       IDX_ERROR_IN_FILE              165
 
 #define       IDM_SAVE_MODEL                 170
 #define       IDM_ASK_AND_SAVE_MODEL         171
@@ -44,7 +45,8 @@
 #define       IDM_OPEN_MODEL                 173
 #define       IDM_ADD_MODULE                 174
 #define       IDM_NEW_MODEL                  175
-#define       IDM_ADD_IMPORTED_MODEL         176
+#define       IDM_IMPORT_MODEL               176
+#define       IDM_ADD_IMPORTED_MODEL         177
 
 #define       IDD_SCALES                     260
 #define       IDD_SCALES_ON                  261
