@@ -29,6 +29,8 @@ public:
 	virtual bool ZoomCoordFactor(float const, fPixel const) = 0;
 	virtual void MoveCoord(PIXEL const) = 0;
 
+	void SetDefaultBackgroundColor() override;
+
 	bool   IsInverted     () const { return m_bInverted; }
 	bool   IsVertScale    () const { return m_bVertScale; }
 	bool   GetTicksDir    () const { return m_bTicksDir; }

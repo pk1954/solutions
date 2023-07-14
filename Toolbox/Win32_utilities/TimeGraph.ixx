@@ -27,6 +27,8 @@ public:
 
 	~TimeGraph() override;
 
+	void SetDefaultBackgroundColor() override;
+
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
 protected:

@@ -16,7 +16,7 @@ export inline int const WM_APP_SCALE_COMMAND { WM_APP + 2 };
 
 // message ids for WM_APP_SCALE_COMMAND
 
-export inline int const SC_LBUTTONDBLCLK     { 1 };
+export inline int const SC_LBUTTONDBLCLK        { 1 };
 
 // identifiers below 100 are reserved for win32_utilities
 
@@ -71,5 +71,6 @@ export inline int const IDM_SIMULATION_SPEED    { 89 };
 
 export inline int const IDM_MOVE                { 90 };
 export inline int const IDM_APP_DATA_CHANGED    { 91 };
+export inline int const IDM_DEFAULT_BK_COLOR    { 92 };
 
 // application identifiers start at 100

@@ -131,6 +131,18 @@ void RootWindow::Notify(bool const bImmediately)
 	m_upRefreshRate->Notify(bImmediately);
 }
 
+void RootWindow::DestroyWindow()
+{
+	::DestroyWindow(m_hwnd);
+	m_hwnd = nullptr;
+}
+
+HBITMAP RootWindow::CreateCompatibleBitmap(HDC const hDC) const
+{
+	PixelRectSize const rectSize = GetClRectSize();
+	return ::CreateCompatibleBitmap(hDC, rectSize.GetXvalue(), rectSize.GetYvalue());
+}
+
 bool RootWindow::IsOutOfClientRect(PixelPoint const &pnt) const
 {
 	PixelRect rect    { GetClPixelRect() };
@@ -177,8 +189,36 @@ void RootWindow::colorDialog()
 	{
 		SetBackgroundColorRef(cc.rgbResult);
 		Trigger();
-		SendCommand2Application(IDM_APP_DATA_CHANGED, 0);
+		SendCommand2Application(IDM_APP_DATA_CHANGED);
 	}
+}
+
+void RootWindow::Move(PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIXEL const height, bool const bRedraw) const
+{
+	::MoveWindow(m_hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
+}
+
+void RootWindow::Move(PixelPoint const pos, PixelRectSize const size, bool const bRedraw) const
+{
+	Move(pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw);
+}
+
+void RootWindow::UpdateImmediately() const
+{
+	Invalidate(false);
+	::UpdateWindow(m_hwnd);
+}
+
+void RootWindow::Invalidate(bool const bRedraw) const
+{
+	if (m_hwnd != nullptr)
+		::InvalidateRect(m_hwnd, nullptr, bRedraw);
+}
+
+void RootWindow::FillBackground(HDC const hDC, COLORREF const col) const
+{
+	SetBkColor(hDC, col);
+	Util::FastFill(hDC, m_hwnd);
 }
 
 void RootWindow::AddColorCtlMenu(HMENU const hPopupMenu)
@@ -255,6 +295,10 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDD_COLOR_CTL:
 		colorDialog();
+		break;
+
+	case IDM_DEFAULT_BK_COLOR:
+		SetDefaultBackgroundColor();
 		break;
 
 	default:

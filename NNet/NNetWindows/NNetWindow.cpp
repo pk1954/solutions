@@ -39,7 +39,7 @@ void NNetWindow::Start
 		dwStyle
 	);
 	m_context.Start(m_upGraphics.get());
-	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
+	SetDefaultBackgroundColor();
 	m_pController          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
 	m_fPixRadiusLimit      = fPixLimit;
@@ -52,6 +52,11 @@ NNetWindow::~NNetWindow()
 {
 	m_pNMRI       = nullptr;
 	m_pController = nullptr;
+}
+
+void NNetWindow::SetDefaultBackgroundColor()
+{
+	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
 }
 
 void NNetWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)

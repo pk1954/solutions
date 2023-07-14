@@ -35,6 +35,8 @@ public:
 
 	void Notify(bool const) final;
 
+	void SetDefaultBackgroundColor() override;
+
 	void   SetModelInterface(NNetModelWriterInterface * const) final;
 	LPARAM AddContextMenuEntries(HMENU const) final;
 

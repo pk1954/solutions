@@ -28,8 +28,13 @@ TimeGraph::TimeGraph
 	);
 	assert(m_pHorzCoord);
 	m_pHorzCoord->RegisterObserver(*this); 
-	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
+	SetDefaultBackgroundColor();
 };
+
+void TimeGraph::SetDefaultBackgroundColor()
+{
+	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
+}
 
 TimeGraph::~TimeGraph()
 {

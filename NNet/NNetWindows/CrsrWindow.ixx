@@ -32,6 +32,7 @@ public:
 	void Start(HWND const, MainWindow const * const);
 	void Stop();
 	void SetModelInterface(NNetModelReaderInterface * const);
+
 	void PaintText(TextBuffer &) final;
 
 private:
@@ -40,8 +41,8 @@ private:
 
 	wstring GetCaption() const final { return L"CrsrWindow"; }
 
-	void printPositionInfo(TextBuffer &, MicroMeterPnt const &)                 const;
-	void printNobInfo     (TextBuffer &, MicroMeterPnt const &, NobId    const) const;
+	void printPositionInfo(TextBuffer &, MicroMeterPnt const &)              const;
+	void printNobInfo     (TextBuffer &, MicroMeterPnt const &, NobId const) const;
 	void printSignalInfo  (TextBuffer &, SignalId const) const;
 
 	void printMicroMeter(TextBuffer &, MicroMeter const) const;

@@ -61,9 +61,14 @@ MonitorControl::MonitorControl
 	m_pBrushNormal   = m_upGraphics->CreateBrush(ColorF::Black);
 	m_pBrushSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
 
-	m_upGraphics->SetBackgroundColor(COL_TRACK_EVEN);
+	SetDefaultBackgroundColor();
 
 	m_pObservable = &observable;
+}
+
+void MonitorControl::SetDefaultBackgroundColor()
+{
+	m_upGraphics->SetBackgroundColor(COL_TRACK_EVEN);
 }
 
 void MonitorControl::SetModelInterface(NNetModelWriterInterface * const pNMWI)
@@ -516,7 +521,7 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_SIGNAL:
-		PostCommand2Application(wmId, 0);
+		PostCommand2Application(wmId);
 		break;
 
 	case IDD_ADD_TRACK:

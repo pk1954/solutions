@@ -186,7 +186,7 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	{
 	case IDD_APPLY:
 		applyParameters();
-		SendCommand2Application(IDM_RESET_DYNAMIC_DATA, 0);
+		SendCommand2Application(IDM_RESET_DYNAMIC_DATA);
 		return true;
 
 	case IDD_RESET:

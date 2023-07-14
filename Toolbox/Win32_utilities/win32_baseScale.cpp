@@ -34,7 +34,12 @@ BaseScale::BaseScale
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
-	m_upGraphics->SetBackgroundColor(D2D1::ColorF::AliceBlue);
+	SetDefaultBackgroundColor();
+}
+
+void BaseScale::SetDefaultBackgroundColor()
+{ 
+	m_upGraphics->SetBackgroundColor(D2D1::ColorF::AliceBlue); 
 }
 
 void BaseScale::SetTicksDir(bool const bMode) 
@@ -44,7 +49,6 @@ void BaseScale::SetTicksDir(bool const bMode)
 		m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
 	else
 		m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
-
 };
 
 void BaseScale::setTextBox(fPixelRect & textBox) const

@@ -389,7 +389,7 @@ bool MainWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
 	SigGenId const idSigGen { getSigGenId(lParam) };
 	if (idSigGen == ADD_SIGGEN)
-		SendCommand2Application(IDD_NEW_SIGNAL_GENERATOR, 0);
+		SendCommand2Application(IDD_NEW_SIGNAL_GENERATOR);
 	else if (!selectSigGen(idSigGen))
 		SetCapture();
 	return NNetWindow::OnLButtonDown(wParam, lParam);

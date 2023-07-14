@@ -35,6 +35,8 @@ public:
 		MonitorWindow const *
 	);
 
+	void SetDefaultBackgroundColor() final;
+
 	void SetModelInterface(NNetModelReaderInterface* const);
 
 	MicroMeterRect GetViewRect() const;

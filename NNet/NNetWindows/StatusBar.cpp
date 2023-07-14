@@ -33,7 +33,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar
 	{
 
 	case WM_COMMAND:
-		pStatusBar->PostCommand2Application(LOWORD(wParam), 0);
+		pStatusBar->PostCommand2Application(LOWORD(wParam));
 		return true;
 
 	default: 
