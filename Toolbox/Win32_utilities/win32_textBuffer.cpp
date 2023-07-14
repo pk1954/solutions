@@ -29,7 +29,6 @@ Win32_TextBuffer::Win32_TextBuffer(HDC const hdc, PixelRectSize const & pixSize)
 	PIXEL horRaster  = cxChar * 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2);
 	PIXEL vertRaster = PIXEL(PIXEL(textMetric.tmHeight + textMetric.tmExternalLeading));
 	Initialize(horRaster, vertRaster);
-	SetBackgroundColor(RGB(200, 200, 200));
 }
 
 COLORREF Win32_TextBuffer::SetBackgroundColor(COLORREF const c)

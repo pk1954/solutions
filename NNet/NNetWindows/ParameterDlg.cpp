@@ -105,7 +105,6 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 	m_pTextFormatHeader = m_upGraphics->NewTextFormat(16.f);
 	m_pTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
-	m_upGraphics->SetBackgroundColor(RGB(240, 240, 240));   // default background color of static control, can't change
 
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_3DLOOK|DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);

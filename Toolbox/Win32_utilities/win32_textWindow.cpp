@@ -61,6 +61,12 @@ void TextWindow::StartTextWindow
 		szClass, 
 		bAsync 
 	);
+	SetDefaultBackgroundColor();
+}
+
+void TextWindow::SetDefaultBackgroundColor()
+{
+	m_upTextWindowThread->SetBackgroundColor(RGB(240, 240, 240));  // default background color of static control, can't change
 }
 
 void TextWindow::StopTextWindow()

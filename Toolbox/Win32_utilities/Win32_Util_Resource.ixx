@@ -29,6 +29,7 @@ export inline int const IDD_REFRESH_RATE_DIALOG { 9 };
 
 export inline int const IDD_EDIT_CTL            { 11 };
 export inline int const IDD_COLOR_CTL           { 12 };
+export inline int const IDM_DEFAULT_BK_COLOR    { 13 };
 
 export inline int const IDM_WINDOW_ON           { 20 };
 export inline int const IDM_WINDOW_OFF          { 21 };
@@ -71,6 +72,5 @@ export inline int const IDM_SIMULATION_SPEED    { 89 };
 
 export inline int const IDM_MOVE                { 90 };
 export inline int const IDM_APP_DATA_CHANGED    { 91 };
-export inline int const IDM_DEFAULT_BK_COLOR    { 92 };
 
 // application identifiers start at 100

@@ -224,7 +224,10 @@ void RootWindow::FillBackground(HDC const hDC, COLORREF const col) const
 void RootWindow::AddColorCtlMenu(HMENU const hPopupMenu)
 {
 	if (Preferences::ColorMenuVisible())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL, L"Background color");
+	{
+		AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL,        L"Choose background color");
+		AppendMenu(hPopupMenu, MF_STRING, IDM_DEFAULT_BK_COLOR, L"Default background color");
+	}
 }
 
 void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr pos in screen coordinates
@@ -299,6 +302,8 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 	case IDM_DEFAULT_BK_COLOR:
 		SetDefaultBackgroundColor();
+		Trigger();
+		SendCommand2Application(IDM_APP_DATA_CHANGED);
 		break;
 
 	default:
