@@ -245,22 +245,21 @@ bool NNetModelIO::Import
     unique_ptr<InputOutputUI> upInputUI
 )
 {
-    if (wstrPath.empty())
-        return false;
+    wstring wstrNewPath { wstrPath.empty() ? m_wstrFile2Read : wstrPath };
 
-    if (m_upImportedModel.get()) 
+    if (m_upImportedModel.get())
         return false;       // another import is already running
 
-    if (! exists(wstrPath))
+    if (! exists(wstrNewPath))
     {
-        upInputUI->JobFinished(InputOutputUI::Result::fileNotFound, wstrPath);
+        upInputUI->JobFinished(InputOutputUI::Result::fileNotFound, wstrNewPath);
         return false;
     }
 
+    m_wstrFile2Read   = wstrNewPath;
     m_upImportUI      = move(upInputUI);
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
     m_upImportedModel = m_upImportedNMWI->CreateNewModel();
-    m_wstrFile2Read   = wstrPath;
     Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
     return true;
 }

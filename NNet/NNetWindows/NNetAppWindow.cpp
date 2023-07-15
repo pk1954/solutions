@@ -456,9 +456,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return false;
 
 		case IDM_NEW_MODEL:
-			if (MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\nContinue?", L"Warning", MB_YESNO) == IDYES)
-				if (AskAndSave())
-					newModel();
+			if (AskNotUndoable() && AskAndSave())
+				newModel();
 			break;
 
 		case IDM_SAVE_MODEL:
@@ -494,12 +493,20 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_cmdStack.Clear();
 			m_modelIO.Import
 			(
-				askModelFile(tFileMode::read), 
+				askModelFile(tFileMode::read),
 				NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL)
 			);
 			break;
 
-		case IDM_ADD_MODULE: 
+		case IDM_RELOAD_MODEL:
+			if (AskNotUndoable())
+			{
+				m_cmdStack.Clear();
+				m_modelIO.Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL));
+			}
+			break;
+
+		case IDM_ADD_MODULE:
 			m_modelIO.Import
 			(
 				askModelFile(tFileMode::read), 
@@ -611,6 +618,16 @@ bool NNetAppWindow::AskAndSave()
 			return true;
 		else if (iRes == IDCANCEL)
 			return false;
+	}
+	return true;
+}
+
+bool NNetAppWindow::AskNotUndoable()
+{
+	if (m_appTitle.AnyUnsavedChanges())
+	{
+		int iRes = MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\nContinue?", L"Warning", MB_YESNO);
+		return iRes == IDYES;
 	}
 	return true;
 }

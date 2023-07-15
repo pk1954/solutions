@@ -106,6 +106,7 @@ private:
 	bool    SaveModelAs();
 	bool    SaveModel();
 	bool    AskAndSave();
+	bool    AskNotUndoable();
 	void    WriteModel();
 	wstring askModelFile(enum class tFileMode const) const;
 

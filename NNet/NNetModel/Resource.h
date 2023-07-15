@@ -47,6 +47,7 @@
 #define       IDM_NEW_MODEL                  175
 #define       IDM_IMPORT_MODEL               176
 #define       IDM_ADD_IMPORTED_MODEL         177
+#define       IDM_RELOAD_MODEL               178
 
 #define       IDD_SCALES                     260
 #define       IDD_SCALES_ON                  261
