@@ -186,6 +186,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
     m_upOnOffAutoOpen    ->enableOnOff(AutoOpen::IsOn());
     m_upOnOffSensorPoints->enableOnOff(m_pPreferences->SensorPointsVisible());
     m_upOnOffPerfMonMode ->enableOnOff(BaseWindow::PerfMonMode());
+    m_upOnOffColorMenu   ->enableOnOff(m_pPreferences->ColorMenuVisible());
 
     DrawMenuBar(m_hwndApp);
 }

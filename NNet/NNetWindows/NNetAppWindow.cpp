@@ -188,7 +188,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_miniNNetWindow.Start(m_hwndApp, true,	5._fPixel, m_NNetController);
 
-	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main grid window
+	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main window
 
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    RootWinId(IDM_APPL_WINDOW   ), m_hwndApp,                      true,  true );
 	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     RootWinId(IDM_STATUS_BAR    ), m_statusBar.GetWindowHandle(),  false, false);

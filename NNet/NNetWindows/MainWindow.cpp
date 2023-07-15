@@ -92,8 +92,6 @@ void MainWindow::Start
 	m_upVertScale->SetAllowUnlock(true);
 	m_upVertScale->SetZoomAllowed(false);
 	m_upVertScale->DisplayUnit(false);
-
-	m_upTimer = make_unique<ThreadPoolTimer>();
 }
 
 void MainWindow::Stop()
@@ -494,12 +492,15 @@ void MainWindow::OnPaint()
 
 void MainWindow::PaintGraphics()
 {
-	//m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
-	//m_upVertScale->DrawAuxLines(*m_upGraphics.get());
-
 	PixelRect   const  pixRect         { GetClPixelRect() };
 	DrawContext const& context         { GetDrawContextC() };
 	Sensor      const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
+
+	if (m_fPixScaleSize != fPP_ZERO)
+	{
+		m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
+		m_upVertScale->DrawAuxLines(*m_upGraphics.get());
+	}
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -571,6 +572,18 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		: m_pBrushSensorNormal
 	};
 	list.DrawInputCable(graphics, coord, sigGenOffset(), idSigGen, inputLine, pBrush);
+}
+
+fPixel MainWindow::sigGenOffset() const
+{
+	return m_pPreferences->ScalesVisible()
+		? m_upVertScale->GetOrthoOffset()
+		: 0._fPixel;
+}
+
+bool MainWindow::selectionCommand(WPARAM const wParam)
+{
+	return m_pNMRI->AnyNobsSelected() && (wParam & MK_SHIFT);
 }
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)

@@ -12,7 +12,6 @@ export module NNetWin32:MainWindow;
 
 import Types;
 import ActionTimer;
-import ThreadPoolTimer;
 import NNetModel;
 import NNetSignals;
 import :NNetPreferences;
@@ -95,8 +94,6 @@ private:
 	SensorId         m_sensorIdSelected       { SensorId::NULL_VAL() };
 	SelectionMenu    m_SelectionMenu;
 
-	unique_ptr<ThreadPoolTimer> m_upTimer;
-
 	NobId    findTargetNob(MicroMeterPnt const&);
 	bool     setHighlightedNob   (MicroMeterPnt const&);
 	bool     setHighlightedSensor(MicroMeterPnt const&);
@@ -110,17 +107,8 @@ private:
 	void     drawInputCable(InputLine const &) const;
 	void     connect(NobId const, NobId const);
 	void     adjustScales();
-	fPixel   sigGenOffset() const
-	{ 
-		return m_pPreferences->ScalesVisible()
-			? m_upVertScale->GetOrthoOffset()
-			: 0._fPixel;
-	}
-
-	bool selectionCommand(WPARAM const wParam) 
-	{
-		return m_pNMRI->AnyNobsSelected() && (wParam & MK_SHIFT);
-	}
+	fPixel   sigGenOffset() const;
+	bool     selectionCommand(WPARAM const);
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };
