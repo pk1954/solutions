@@ -25,6 +25,7 @@ import NNetSignals;
 import Observable;
 import RootWindow;
 import Types;
+import OnOffPair;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
@@ -78,8 +79,9 @@ void MainWindow::Start
 	PixFpDimension<MicroMeter> & coordX { coord.GetXdim() };
 	PixFpDimension<MicroMeter> & coordY { coord.GetYdim() };
 
-	m_upHorzScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), false, coordX);
-	m_upVertScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), true,  coordY);
+	m_upHorzScale   = make_unique<Scale<MicroMeter>>(GetWindowHandle(), false, coordX);
+	m_upVertScale   = make_unique<Scale<MicroMeter>>(GetWindowHandle(), true,  coordY);
+	m_upOnOffScales = make_unique<OnOffPair>(IDD_SCALES_ON, IDD_SCALES_OFF);
 
 	m_pCoordObservable->RegisterObserver(*m_upHorzScale.get());
 	m_pCoordObservable->RegisterObserver(*m_upVertScale.get());
@@ -181,6 +183,9 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
+
+	m_upOnOffScales->AppendOnOffMenu(hPopupMenu, L"&Scales");
+	m_upOnOffScales->EnableOnOff(hPopupMenu, m_pPreferences->ScalesVisible());
 
 	NNetWindow::AddContextMenuEntries(hPopupMenu);
 

@@ -11,6 +11,7 @@ module;
 export module NNetWin32:MainWindow;
 
 import Types;
+import OnOffPair;
 import ActionTimer;
 import NNetModel;
 import NNetSignals;
@@ -77,8 +78,9 @@ private:
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 
-	unique_ptr<Scale<MicroMeter>> m_upHorzScale { };
-	unique_ptr<Scale<MicroMeter>> m_upVertScale { };
+	unique_ptr<Scale<MicroMeter>> m_upHorzScale   {};
+	unique_ptr<Scale<MicroMeter>> m_upVertScale   {};
+	unique_ptr<OnOffPair>         m_upOnOffScales {};
 
 	MicroMeterPnt    m_umDelta                { NP_ZERO };
 	fPixelPoint      m_fPixScaleSize          { fPP_ZERO };

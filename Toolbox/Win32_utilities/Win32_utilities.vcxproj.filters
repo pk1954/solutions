@@ -201,5 +201,8 @@
     <ClCompile Include="ThreadPoolTimer.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="OnOffPair.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

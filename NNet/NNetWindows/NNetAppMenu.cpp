@@ -16,6 +16,7 @@ import SoundInterface;
 import WinManager;
 import BaseWindow;
 import Win32_Util;
+import OnOffPair;
 import Commands;
 import AutoOpen;
 import NNetModel;
@@ -24,50 +25,16 @@ import :NNetPreferences;
 
 using std::make_unique;
 
-NNetAppMenu::~NNetAppMenu() = default;
-
-class NNetAppMenu::OnOffPair
-{
-public:
-    OnOffPair
-    (
-        NNetAppMenu      * pMenu,
-        unsigned int const iOn, 
-        unsigned int const iOff 
-    )
-      :	m_pAppMenu(pMenu),
-        m_iOn     (iOn),
-        m_iOff    (iOff)
-    { }
-
-    void appendOnOffMenu(HMENU hMenu, LPCTSTR const title) const
-    {
-        HMENU hMenuPopup = Util::PopupMenu(hMenu, title);
-        Util::AddMenu(hMenuPopup, MF_STRING, m_iOn,  L"o&n");
-        Util::AddMenu(hMenuPopup, MF_STRING, m_iOff, L"o&ff");
-    }
-
-    void enableOnOff(bool const bCrit)
-    {
-        m_pAppMenu->enable(m_iOn, ! bCrit);
-        m_pAppMenu->enable(m_iOff,  bCrit);
-    }
-
-private:
-    NNetAppMenu * m_pAppMenu;
-    unsigned int  m_iOn;
-    unsigned int  m_iOff;
-};
-
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffScales      (make_unique<OnOffPair>(this, IDD_SCALES_ON,        IDD_SCALES_OFF       )),
-    m_upOnOffArrows      (make_unique<OnOffPair>(this, IDD_ARROWS_ON,        IDD_ARROWS_OFF       )),
-    m_upOnOffSound       (make_unique<OnOffPair>(this, IDD_SOUND_ON,         IDD_SOUND_OFF        )),
-    m_upOnOffAutoOpen    (make_unique<OnOffPair>(this, IDD_AUTO_OPEN_ON,     IDD_AUTO_OPEN_OFF    )),
-    m_upOnOffSensorPoints(make_unique<OnOffPair>(this, IDD_SENSOR_PNTS_ON,   IDD_SENSOR_PNTS_OFF  )),
-    m_upOnOffPerfMonMode (make_unique<OnOffPair>(this, IDD_PERF_MON_MODE_ON, IDD_PERF_MON_MODE_OFF)),
-    m_upOnOffColorMenu   (make_unique<OnOffPair>(this, IDD_COLOR_MENU_ON,    IDD_COLOR_MENU_OFF   ))
+  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS_ON,        IDD_ARROWS_OFF       )),
+    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND_ON,         IDD_SOUND_OFF        )),
+    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN_ON,     IDD_AUTO_OPEN_OFF    )),
+    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS_ON,   IDD_SENSOR_PNTS_OFF  )),
+    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE_ON, IDD_PERF_MON_MODE_OFF)),
+    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU_ON,    IDD_COLOR_MENU_OFF   ))
 { }
+
+NNetAppMenu::~NNetAppMenu() = default;
 
 void NNetAppMenu::Start
 (
@@ -141,16 +108,15 @@ void NNetAppMenu::Start
             Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ACTIVE, L"Show active");
             Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONE,   L"Show none");
         }
-        m_upOnOffArrows      ->appendOnOffMenu(hMenuView, L"&Arrows");
-        m_upOnOffScales      ->appendOnOffMenu(hMenuView, L"&Scales");
-        m_upOnOffSensorPoints->appendOnOffMenu(hMenuView, L"&Sensor points");
-        m_upOnOffColorMenu   ->appendOnOffMenu(hMenuView, L"&Color menu");
+        m_upOnOffArrows      ->AppendOnOffMenu(hMenuView, L"&Arrows");
+        m_upOnOffSensorPoints->AppendOnOffMenu(hMenuView, L"&Sensor points");
+        m_upOnOffColorMenu   ->AppendOnOffMenu(hMenuView, L"&Color menu");
     }
     HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
     {
-        m_upOnOffSound      ->appendOnOffMenu(hMenuOptions, L"&Sound");
-        m_upOnOffAutoOpen   ->appendOnOffMenu(hMenuOptions, L"Auto&Open");
-        m_upOnOffPerfMonMode->appendOnOffMenu(hMenuOptions, L"&PerformanceMonitor");
+        m_upOnOffSound      ->AppendOnOffMenu(hMenuOptions, L"&Sound");
+        m_upOnOffAutoOpen   ->AppendOnOffMenu(hMenuOptions, L"Auto&Open");
+        m_upOnOffPerfMonMode->AppendOnOffMenu(hMenuOptions, L"&PerformanceMonitor");
     }
     HMENU hMenuHelp = Util::PopupMenu(m_hMenu, L"&Help");
     {
@@ -162,38 +128,32 @@ void NNetAppMenu::Start
     assert(bRes);
 }
 
-void NNetAppMenu::enable(int const id, bool const bCrit)
-{
-    EnableMenuItem(m_hMenu, Cast2UnsignedInt(id), bCrit ? MF_ENABLED : MF_GRAYED);
-}
-
 void NNetAppMenu::Notify(bool const bImmediately)
 {
-    enable(IDM_FORWARD,            ! m_pComputeThread->IsRunning());
-    enable(IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
+    Util::Enable(m_hMenu, IDM_FORWARD,            ! m_pComputeThread->IsRunning());
+    Util::Enable(m_hMenu, IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
 
-    enable(IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_DESC_WINDOW   )));
-    enable(IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
-    enable(IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_MINI_WINDOW   )));
-    enable(IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
-    enable(IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
-    enable(IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_PERF_WINDOW   )));
-    enable(IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
+    Util::Enable(m_hMenu, IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_DESC_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_MINI_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
+    Util::Enable(m_hMenu, IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
+    Util::Enable(m_hMenu, IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_PERF_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
 
-    m_upOnOffScales      ->enableOnOff(m_pPreferences->ScalesVisible());
-    m_upOnOffArrows      ->enableOnOff(m_pPreferences->ArrowsVisible());
-    m_upOnOffSound       ->enableOnOff(m_pSound->IsOn());
-    m_upOnOffAutoOpen    ->enableOnOff(AutoOpen::IsOn());
-    m_upOnOffSensorPoints->enableOnOff(m_pPreferences->SensorPointsVisible());
-    m_upOnOffPerfMonMode ->enableOnOff(BaseWindow::PerfMonMode());
-    m_upOnOffColorMenu   ->enableOnOff(m_pPreferences->ColorMenuVisible());
+    m_upOnOffArrows      ->EnableOnOff(m_hMenu, m_pPreferences->ArrowsVisible());
+    m_upOnOffSound       ->EnableOnOff(m_hMenu, m_pSound->IsOn());
+    m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, AutoOpen::IsOn());
+    m_upOnOffSensorPoints->EnableOnOff(m_hMenu, m_pPreferences->SensorPointsVisible());
+    m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow::PerfMonMode());
+    m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, m_pPreferences->ColorMenuVisible());
 
     DrawMenuBar(m_hwndApp);
 }
 
 void NNetAppMenu::AdjustUndoRedo()
 {
-    enable(IDM_UNDO, ! m_pCommandStack->UndoStackEmpty());
-    enable(IDM_REDO, ! m_pCommandStack->RedoStackEmpty());
+    Util::Enable(m_hMenu, IDM_UNDO, ! m_pCommandStack->UndoStackEmpty());
+    Util::Enable(m_hMenu, IDM_REDO, ! m_pCommandStack->RedoStackEmpty());
     DrawMenuBar(m_hwndApp);
 }

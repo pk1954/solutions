@@ -14,6 +14,7 @@ import ObserverInterface;
 import SoundInterface;
 import WinManager;
 import Win32_Util;
+import OnOffPair;
 import Commands;
 import NNetModel;
 import :ComputeThread;
@@ -42,10 +43,6 @@ public:
 
 private:
 
-	class OnOffPair;
-
-	void enable(int const, bool const);
-
 	HWND                    m_hwndApp        { nullptr };
 	HMENU                   m_hMenu          { nullptr };
 	HMENU                   m_hMenuSigGen    { nullptr };
@@ -55,7 +52,6 @@ private:
 	CommandStack    const * m_pCommandStack  { nullptr };
 	Sound           const * m_pSound         { nullptr };
 
-	unique_ptr<OnOffPair> m_upOnOffScales;
 	unique_ptr<OnOffPair> m_upOnOffArrows;
 	unique_ptr<OnOffPair> m_upOnOffSound;
 	unique_ptr<OnOffPair> m_upOnOffAutoOpen;
