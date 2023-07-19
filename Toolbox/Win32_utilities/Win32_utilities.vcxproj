@@ -167,6 +167,7 @@
     <ClCompile Include="Commands.ixx" />
     <ClCompile Include="IncludeCommand.ixx" />
     <ClCompile Include="OnOffPair.ixx" />
+    <ClCompile Include="ScaleMenu.ixx" />
     <ClCompile Include="ThreadPoolTimer.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
     <ClCompile Include="TimeGraph.ixx" />

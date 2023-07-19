@@ -65,6 +65,12 @@ public:
 		}
 	}
 
+	void Notify(bool const bImmediately) final
+	{
+		prepare();
+		BaseScale::Notify(bImmediately);
+	}
+
 	void DrawAuxLines(D2D_driver& graphics)
 	{
 		DrawAuxLines(graphics,  1, D2D1::ColorF::LightGray);  // 0xD3D3D3
@@ -88,8 +94,8 @@ public:
 					if (iTick % iStep == 0)
 						graphics.DrawLine
 						(
-							fPixelPoint(0._fPixel,       fPix),
-							fPixelPoint(fPixSize.GetX(), fPix),
+							fPixelPoint(0._fPixel,       yPos(fPix)),
+							fPixelPoint(fPixSize.GetX(), yPos(fPix)),
 							1._fPixel,
 							col
 						);
@@ -113,6 +119,10 @@ public:
 	}
 
 	void DisplayUnit(bool const bOn) { m_bDisplayUnit = bOn; }
+
+	PixFpDimension<LogUnits> & GetDimension() { return m_pixCoord; }
+
+	LogUnits GetRaster() const { return m_logTickDist; }
 
 private:
 
@@ -169,7 +179,7 @@ private:
 		m_pixCoord.Move(pixDelta);
 	}
 
-	void PaintGraphics() final
+	void prepare()
 	{
 		static fPixel const MIN_TICK_DIST { 6._fPixel };
 
@@ -197,7 +207,7 @@ private:
 			fPixStart      = GetLeftBorder();
 			fPixEnd        = getClWidth() - GetRightBorder();
 			m_fPixPntStart = fPixelPoint(fPixStart, fPixPosOrtho);
-			m_fPixPntEnd   = fPixelPoint(fPixEnd,   fPixPosOrtho);
+			m_fPixPntEnd   = fPixelPoint(fPixEnd, fPixPosOrtho);
 		}
 
 		m_logStart     = m_pixCoord.Transform2logUnitPos(fPixStart);
@@ -206,10 +216,23 @@ private:
 		m_fPixTickDist = m_pixCoord.Transform2fPixelSize(m_logTickDist);
 
 		setScaleParams();
-		renderScale();
 	}
 
-	void renderScale()
+	void setScaleParams()
+	{
+		float const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
+		float const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
+		int   const iSteps    { StepsOfThousand(logDist10 / fFactor) };
+		if (m_bDisplayUnit)
+		{
+			m_wstrUnit = GetUnitPrefix(iSteps);
+			m_wstrUnit += TypeAttribute<LogUnits>::unit;
+		}
+		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
+		m_fTickDist      = m_logTickDist.GetValue() / m_fUnitReduction;
+	}
+
+	void PaintGraphics() final
 	{
 		setTextBox(m_textBox);
 		Apply2AllTicks
@@ -231,20 +254,6 @@ private:
 		};
 		if (m_bDisplayUnit)
 			display(m_textBox + (m_fPixPntStart + fPixPos), m_wstrUnit);
-	}
-
-	void setScaleParams()
-	{
-		float const fFactor   { TypeAttribute<LogUnits>::factor }; // numbers every 10 ticks (factor 10)
-		float const logDist10 { m_logTickDist.GetValue() * 100 };  // allow one decimal place (another factor 10)             
-		int   const iSteps    { StepsOfThousand(logDist10 / fFactor) };
-		if (m_bDisplayUnit)
-		{
-			m_wstrUnit = GetUnitPrefix(iSteps);
-			m_wstrUnit += TypeAttribute<LogUnits>::unit;
-		}
-		m_fUnitReduction = fFactor * powf(1e-3f, static_cast<float>(iSteps));
-		m_fTickDist      = m_logTickDist.GetValue() / m_fUnitReduction;
 	}
 
 	void displayTick

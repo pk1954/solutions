@@ -71,10 +71,6 @@ void SignalDesigner::Initialize
 	m_upSignalControl[0] = makeSignalControl(runObservable, dynamicModelObservable);
 	m_upSignalControl[1] = makeSignalControl(runObservable, dynamicModelObservable);
 
-	m_upSignalControl[0]->SetVertCoordFreq(&m_vertCoordFreq);
-	m_upSignalControl[1]->SetVertCoordVolt(&m_vertCoordVolt);
-	m_upSignalControl[1]->SetVertCoordFreq(nullptr);
-
 	m_upSignalPreview = make_unique<SignalPreview>(*this, m_horzCoord, m_vertCoordVolt);
 	m_upSignalPreview->SetParentContextMenueMode(true);
 
@@ -100,6 +96,13 @@ void SignalDesigner::Initialize
 		m_upVertScaleVolt[i]->SetScaleColor(COLOR_VOLT[i]);
 		m_upVertScaleVolt[i]->Show(false);
 	}
+
+	m_upSignalControl[0]->SetVertScaleFreq(m_upVertScaleFreq.get());
+	m_upSignalControl[1]->SetVertScaleVolt(m_upVertScaleVolt[0].get());
+	m_upSignalControl[1]->SetVertScaleFreq(nullptr);
+
+	m_upSignalControl[0]->SetHorzScale(m_upHorzScale[0].get());
+	m_upSignalControl[1]->SetHorzScale(m_upHorzScale[1].get());
 
 	// buttons
 
@@ -335,7 +338,7 @@ void SignalDesigner::adjustLayout
 	{
 		pixControlWidth -= V_SCALE_WIDTH;
 
-		m_upSignalControl[0]->SetVertCoordVolt(&m_vertCoordVolt);
+		m_upSignalControl[0]->SetVertScaleVolt(m_upVertScaleVolt[0].get());
 		m_upVertScaleVolt[0]->SetOrthoOffset(0._fPixel);
 		m_upVertScaleVolt[0]->SetTicksDir(BaseScale::TICKS_RIGHT);
 
@@ -344,7 +347,7 @@ void SignalDesigner::adjustLayout
 	}
 	else
 	{
-		m_upSignalControl[0]->SetVertCoordVolt(nullptr);
+		m_upSignalControl[0]->SetVertScaleVolt(nullptr);
 		m_upVertScaleVolt[0]->SetOrthoOffset(Convert2fPixel(V_SCALE_WIDTH));
 		m_upVertScaleVolt[0]->SetTicksDir(BaseScale::TICKS_LEFT);
 		m_upVertScaleVolt[0]->Show(true);
@@ -370,10 +373,9 @@ void SignalDesigner::adjustLayout
 		m_upSignalPreview   ->Move(V_SCALE_WIDTH, pixClientHeight - pixTileHeight,  pixClientWidth, pixControlHeight, true);
 		m_upVertScaleVolt[1]->Move(0_PIXEL,       pixClientHeight - pixTileHeight,  V_SCALE_WIDTH,  pixControlHeight, true);
 		m_upHorzScale    [2]->Move(V_SCALE_WIDTH, pixClientHeight - H_SCALE_HEIGHT, pixClientWidth, H_SCALE_HEIGHT,   true);
-
-		m_upSignalPreview->Show(true);
 	}
 
+	m_upSignalPreview   ->Show(m_bPreview);
 	m_upVertScaleVolt[1]->Show(m_bPreview);
 	m_upHorzScale    [2]->Show(m_bPreview);
 

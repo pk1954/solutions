@@ -77,8 +77,8 @@ private:
 	fPixel      calcTrackHeight () const;
 	fPixelPoint calcDiamondPos  () const;
 
-	fMicroSecs pixel2scaleTime (fPixel     const fPix)    const { return m_horzCoord.Transform2logUnitPos(fPix); }
-	fPixel     scale2pixelTime (fMicroSecs const usScale) const { return m_horzCoord.Transform2fPixelPos(usScale); }
+	fMicroSecs pixel2scaleTime (fPixel     const fPix)    const { return GetHorzCoordC()->Transform2logUnitPos(fPix); }
+	fPixel     scale2pixelTime (fMicroSecs const usScale) const { return GetHorzCoordC()->Transform2fPixelPos(usScale); }
 
 	fMicroSecs scale2simuTime  (fMicroSecs const usScale) const { return usScale + SimulationTime::Get(); }
 	fMicroSecs simu2scaleTime  (fMicroSecs const usSimu)  const { return usSimu  - SimulationTime::Get(); }
@@ -97,13 +97,12 @@ private:
 	inline static HCURSOR m_hCrsrWE { nullptr };
 	inline static HCURSOR m_hCrsrNS { nullptr };
 
-	PixFpDimension<fMicroSecs> & m_horzCoord;
-	PixFpDimension<mV>         & m_vertCoord;
-	Sound                      & m_sound;        
-	MonitorData                * m_pMonitorData { nullptr };
-	IDWriteTextFormat          * m_pTextFormat  { nullptr };
-	Observable                 * m_pObservable  { nullptr };
-	Measurement                  m_measurement;
+	PixFpDimension<mV>& m_vertCoord;
+	Sound             & m_sound;        
+	MonitorData       * m_pMonitorData { nullptr };
+	IDWriteTextFormat * m_pTextFormat  { nullptr };
+	Observable        * m_pObservable  { nullptr };
+	Measurement         m_measurement;
 
 	ID2D1SolidColorBrush* m_pBrushNormal;
 	ID2D1SolidColorBrush* m_pBrushSelected;

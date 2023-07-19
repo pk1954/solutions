@@ -81,12 +81,12 @@ private:
 	PixFpDimension<fHertz>     m_vertCoordFreq;
 	PixFpDimension<mV>         m_vertCoordVolt;
 
-	array<unique_ptr<Scale<fMicroSecs>>, 3> m_upHorzScale;
-	array<unique_ptr<Scale<mV>>,         2> m_upVertScaleVolt;
-	array<unique_ptr<SignalControl>,     2> m_upSignalControl;
-	
 	unique_ptr<Scale<fHertz>>  m_upVertScaleFreq;
 	unique_ptr<SignalPreview>  m_upSignalPreview;
+
+	array<unique_ptr<Scale<fMicroSecs>>, 3> m_upHorzScale;
+	array<unique_ptr<Scale<mV>>,         2> m_upVertScaleVolt;
+	array<unique_ptr<SignalControl>,     2> m_upSignalControl; // create first, destroy last
 	
 	array<unique_ptr<ArrowButton>, 2> m_upArrowButton;
 	HWND                              m_hwndPreviewButton;

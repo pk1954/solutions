@@ -47,6 +47,10 @@ export inline int const IDM_MINI_WINDOW         { 39 };
 export inline int const IDM_BEEP                { 40 };
 export inline int const IDM_SCALE_UNLOCK        { 41 };
 export inline int const IDM_SCALE_LOCK2ZERO     { 42 };
+export inline int const IDM_SCALE_OFF           { 43 };
+export inline int const IDM_SCALE_ON            { 44 };
+export inline int const IDM_SCALE_GRID          { 45 };
+export inline int const IDM_SCALE_SNAP2GRID     { 46 };
 
 export inline int const IDM_NEXT_SCRIPT_CMD     { 50 };
 

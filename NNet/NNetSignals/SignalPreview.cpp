@@ -2,6 +2,10 @@
 //
 // NNetSignals
 
+module;
+
+#include <compare>
+
 module NNetSignals:SignalPreview;
 
 import Types;
@@ -18,10 +22,11 @@ SignalPreview::SignalPreview
 	PixFpDimension<fMicroSecs> & horzCoord,
 	PixFpDimension<mV>         & vertCoord
 )
-  : NNetTimeGraph(baseWinParent.GetWindowHandle(), &horzCoord),
+  : NNetTimeGraph(baseWinParent.GetWindowHandle()),
 	m_vertCoord(vertCoord)
 {
 	m_vertCoord.RegisterObserver(*this);
+	SetHorzCoord(&horzCoord);
 };
 
 SignalPreview::~SignalPreview()

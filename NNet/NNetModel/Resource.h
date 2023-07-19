@@ -49,9 +49,6 @@
 #define       IDM_ADD_IMPORTED_MODEL         177
 #define       IDM_RELOAD_MODEL               178
 
-#define       IDD_SCALES                     260
-#define       IDD_SCALES_ON                  261
-#define       IDD_SCALES_OFF                 262
 #define       IDD_ADJUST_SCALES              263
 
 #define       IDD_ARROWS                     270

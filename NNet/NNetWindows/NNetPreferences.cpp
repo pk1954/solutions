@@ -51,22 +51,6 @@ protected:
     NNetPreferences& m_pref;
 };
 
-class WrapShowScales : public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        m_pref.SetScales(script.ScrReadBool(), false);
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << (m_pref.ScalesVisible() ? PREF_ON : PREF_OFF);
-    }
-};
-
 class WrapShowArrows : public NNetWrapBase
 {
 public:
@@ -195,11 +179,31 @@ protected:
     WinManager & m_winMan;
 };
 
+class WrapShowScales : public ScriptFunctor
+{
+public:
+    WrapShowScales(WinManager& winMan)
+        : m_winMan(winMan)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        unsigned int uiWinId { script.ScrReadUint() };
+        unsigned int uiState { script.ScrReadUint() };
+        BaseWindow *pBaseWin { m_winMan.GetBaseWindow(RootWinId(uiWinId)) };
+        pBaseWin->SendCommand(uiWinId, false);
+    }
+
+protected:
+    WinManager& m_winMan;
+};
+
 void NNetPreferences::Initialize
 (
     Sound       & sound,
     NNetModelIO & modelIO,
-    WinManager &  winMan,
+    WinManager  & winMan,
+    MainWindow  & mainWin,
     HWND          hwndApp
 )
 {
@@ -208,12 +212,13 @@ void NNetPreferences::Initialize
     m_pSound      = &sound;
     m_pModelIO    = &modelIO;
     m_pWinManager = &winMan;
+    m_pMainWindow = &mainWin;
     m_hwndApp     = hwndApp;
 
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
     Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    Add<WrapShowScales           >(L"ShowScales");
+    //Add<WrapShowScales           >(L"ShowScales");
     Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
     Add<WrapSetSound             >(L"SetSound");
@@ -244,6 +249,14 @@ void NNetPreferences::WriteAppPreferences(wostream & out) const
             }
         }
     );
+
+    //{
+    //    unsigned int const uiScaleMode { m_pMainWindow->GetScaleMode() };
+    //    out << L"ShowScales" << SPACE
+    //        << IDM_MAIN_WINDOW << SPACE
+    //        << uiScaleMode
+    //        << endl;
+    //}
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
@@ -255,10 +268,4 @@ void NNetPreferences::SetArrows(bool const bOn, bool const bAnimation)
 {
     m_bArrows = bOn;
     SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, bAnimation);
-}
-
-void NNetPreferences::SetScales(bool const bOn, bool const bAnimation)
-{
-    m_bScales = bOn;
-    SendMessage(m_hwndApp, WM_COMMAND, IDD_SCALES, bAnimation);
 }

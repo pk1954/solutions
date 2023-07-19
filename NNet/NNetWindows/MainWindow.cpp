@@ -25,7 +25,7 @@ import NNetSignals;
 import Observable;
 import RootWindow;
 import Types;
-import OnOffPair;
+import ScaleMenu;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
@@ -73,15 +73,14 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
-	m_SelectionMenu.Start(GetWindowHandle());
+	m_selectionMenu.Start(GetWindowHandle());
 
 	Uniform2D<MicroMeter>      & coord  { GetCoord() };
 	PixFpDimension<MicroMeter> & coordX { coord.GetXdim() };
 	PixFpDimension<MicroMeter> & coordY { coord.GetYdim() };
 
-	m_upHorzScale   = make_unique<Scale<MicroMeter>>(GetWindowHandle(), false, coordX);
-	m_upVertScale   = make_unique<Scale<MicroMeter>>(GetWindowHandle(), true,  coordY);
-	m_upOnOffScales = make_unique<OnOffPair>(IDD_SCALES_ON, IDD_SCALES_OFF);
+	m_upHorzScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), false, coordX);
+	m_upVertScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), true,  coordY);
 
 	m_pCoordObservable->RegisterObserver(*m_upHorzScale.get());
 	m_pCoordObservable->RegisterObserver(*m_upVertScale.get());
@@ -99,7 +98,7 @@ void MainWindow::Start
 void MainWindow::Stop()
 {
 	Reset();
-	m_SelectionMenu.Stop();
+	m_selectionMenu.Stop();
 	NNetWindow::Stop();
 }
 
@@ -119,8 +118,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_CREATE_SYNAPSE,         L"Create synapse"                 },
 		{ IDD_CREATE_FORK,            L"Create fork"                    },
 		{ IDD_ADD_EEG_SENSOR,         L"New EEG sensor" 		        },
-		{ IDD_SCALES_OFF,             L"Scale off"                      },
-		{ IDD_SCALES_ON,              L"Scale on"                       },
 		{ IDD_ARROWS_OFF,             L"Arrows off"                     },
 		{ IDD_ARROWS_ON,              L"Arrows on"                      },
 		{ IDD_ATTACH_SIG_GEN_TO_LINE, L"Attach active signal generator" },
@@ -184,8 +181,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 
-	m_upOnOffScales->AppendOnOffMenu(hPopupMenu, L"&Scales");
-	m_upOnOffScales->EnableOnOff(hPopupMenu, m_pPreferences->ScalesVisible());
+	m_scaleMenu.AppendScaleMenu(hPopupMenu, L"&Scales");
 
 	NNetWindow::AddContextMenuEntries(hPopupMenu);
 
@@ -321,7 +317,7 @@ void MainWindow::select(NobId const idNob)
 {
 	SelectAllConnectedCmd::Push(idNob);
 	m_nobIdHighlighted = NO_NOB;
-	m_SelectionMenu.Move(GetRelativeCrsrPosition());
+	m_selectionMenu.Move(GetRelativeCrsrPosition());
 }
 
 void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
@@ -501,7 +497,7 @@ void MainWindow::PaintGraphics()
 	DrawContext const& context         { GetDrawContextC() };
 	Sensor      const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
 
-	if (m_fPixScaleSize != fPP_ZERO)
+	if (m_scaleMenu.IsGridVisible())
 	{
 		m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
 		m_upVertScale->DrawAuxLines(*m_upGraphics.get());
@@ -552,7 +548,7 @@ void MainWindow::PaintGraphics()
 	if (m_pPreferences->SensorPointsVisible() && pSensorSelected)
 		pSensorSelected->DrawDataPoints(m_context);
 
-	m_SelectionMenu.Show(m_pNMRI->AnyNobsSelected());
+	m_selectionMenu.Show(m_pNMRI->AnyNobsSelected());
 }
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const
@@ -581,7 +577,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 
 fPixel MainWindow::sigGenOffset() const
 {
-	return m_pPreferences->ScalesVisible()
+	return m_scaleMenu.IsScaleVisible()
 		? m_upVertScale->GetOrthoOffset()
 		: 0._fPixel;
 }
@@ -738,8 +734,19 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_EXTEND_INPUTLINE:        ExtendInputLineCmd    ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:       ExtendOutputLineCmd   ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
 	case IDD_STOP_ON_TRIGGER:         ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);           		      break;
-	case IDD_SCALES:                  ScalesAnimationCmd    ::Push(m_fPixScaleSize, m_pPreferences->ScalesVisible(), lParam); break;
 	case IDD_ARROWS:                  ArrowAnimationCmd     ::Push(m_umArrowSize,   m_pPreferences->ArrowsVisible(), lParam); break;
+
+	case IDM_SCALE_OFF:
+	case IDM_SCALE_ON:
+	case IDM_SCALE_GRID:
+	//case IDM_SCALE_SNAP2GRID:
+		{
+			bool bOldVal { m_scaleMenu.IsScaleVisible() };
+			m_scaleMenu.SetState(wmId);
+			if (m_scaleMenu.IsScaleVisible() != bOldVal)
+				ScalesAnimationCmd::Push(m_fPixScaleSize, m_scaleMenu.IsScaleVisible(), lParam);
+		}
+		break;
 
 	case IDD_ADJUST_SCALES:
 		adjustScales();

@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <compare>
 #include <math.h>
 #include <Windows.h>
 
@@ -12,6 +13,7 @@ export module TimeGraph;
 
 import Types;
 import SaveCast;
+import Scale;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
@@ -19,17 +21,21 @@ import GraphicsWindow;
 export class TimeGraph : public GraphicsWindow
 {
 public:
-	TimeGraph
-	(
-		HWND                   const hwndParent,
-		PixFpDimension<fMicroSecs> * pHorzCoord
-	);
+	TimeGraph(HWND const hwndParent);
 
 	~TimeGraph() override;
 
 	void SetDefaultBackgroundColor() override;
 
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
+
+	virtual void SetHorzCoord(PixFpDimension<fMicroSecs>*);
+	virtual void SetHorzScale(Scale         <fMicroSecs>*);
+
+	Scale         <fMicroSecs>       * GetHorzScale ()       { return m_pHorzScale; }
+	Scale         <fMicroSecs> const * GetHorzScaleC() const { return m_pHorzScale; }
+	PixFpDimension<fMicroSecs>       * GetHorzCoord ()       { return m_pHorzCoord; }
+	PixFpDimension<fMicroSecs> const * GetHorzCoordC() const { return m_pHorzCoord; }
 
 protected:
 
@@ -106,7 +112,8 @@ protected:
 
 private:
 
-	PixFpDimension<fMicroSecs>* m_pHorzCoord { nullptr };
+	Scale         <fMicroSecs> * m_pHorzScale { nullptr };
+	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
 
 	fPixel m_fPixRightBorder { 0.0_fPixel };
 	fPixel m_fPixRight       { 0.0_fPixel };

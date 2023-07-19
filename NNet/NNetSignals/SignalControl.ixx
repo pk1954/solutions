@@ -4,12 +4,14 @@
 
 module;
 
+#include <cmath>
 #include <array>
 #include <Windows.h>
 
 export module NNetSignals:SignalControl;
 
 import Types;
+import Scale;
 import PixFpDimension;
 import Direct2D;
 import NNetModel;
@@ -17,6 +19,7 @@ import :NNetTimeGraph;
 import :SimuRunning;
 
 using std::array;
+using std::round;
 
 export class SignalControl : public NNetTimeGraph
 {
@@ -39,8 +42,9 @@ public:
 		m_colTable[static_cast<int>(type)] = col;
 	}
 
-	void SetVertCoordFreq(PixFpDimension<fHertz>*);
-	void SetVertCoordVolt(PixFpDimension<mV>*);
+	void SetVertScaleFreq(Scale<fHertz>*);
+	void SetVertScaleVolt(Scale<mV>*);
+	void SetHorzScale    (Scale<fMicroSecs>*) final;
 
 	float ScaleFactorTimeCoord() const;
 	float ScaleFactorFreqCoord() const;
@@ -73,12 +77,13 @@ private:
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
 
-	PixFpDimension<fHertz>* m_pVertCoordFreq { nullptr };
-	PixFpDimension<mV>    * m_pVertCoordVolt { nullptr };
-	SimuRunning     const & m_simuRunning;
-	Observable            & m_runObservable;
-	Observable            & m_dynamicModelObservable;
-	tPos                    m_moveMode { tPos::NONE };
+	Scale<fHertz> * m_pVertScaleFreq { nullptr };
+	Scale<mV>     * m_pVertScaleVolt { nullptr };
+
+	SimuRunning const & m_simuRunning;
+	Observable        & m_runObservable;
+	Observable        & m_dynamicModelObservable;
+	tPos                m_moveMode { tPos::NONE };
 
 	void PaintGraphics() final;
 
@@ -89,13 +94,33 @@ private:
 
 	fPixel getY(fPixel const fPix) const { return yBottom() - fPix; }
 
-	fHertz getFreq(fPixel      const fPixY) const { return m_pVertCoordFreq->Transform2logUnitPos(getY(fPixY)); }
-	fHertz getFreq(fPixelPoint const & p  ) const { return getFreq(p.GetY()); }
-	mV     getVolt(fPixel      const fPixY) const { return m_pVertCoordVolt->Transform2logUnitPos(getY(fPixY)); }
-	mV     getVolt(fPixelPoint const & p  ) const { return getVolt(p.GetY()); }
+	PixFpDimension<fHertz>    & vertCoordFreq() { return m_pVertScaleFreq->GetDimension(); }
+	PixFpDimension<mV>        & vertCoordVolt() { return m_pVertScaleVolt->GetDimension(); }
 
-	fPixel yFreq(fHertz const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
-	fPixel yVolt(mV     const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
+	PixFpDimension<fHertz> const& vertCoordFreqC() const { return m_pVertScaleFreq->GetDimension(); }
+	PixFpDimension<mV>     const& vertCoordVoltC() const { return m_pVertScaleVolt->GetDimension(); }
+
+	fHertz getFreq(fPixel const fPixY) const 
+	{ 
+		fHertz fRaw    { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };
+		fHertz fRaster { m_pVertScaleFreq->GetRaster() };
+		fHertz fRes    { fRaster * round(fRaw / fRaster) };
+		return fRes;
+	}
+	
+	mV getVolt(fPixel const fPixY) const 
+	{ 
+		mV fRaw    { vertCoordVoltC().Transform2logUnitPos(getY(fPixY)) };
+		mV fRaster { m_pVertScaleVolt->GetRaster() };
+		mV fRes    { fRaster * round(fRaw / fRaster) };
+		return fRes;
+	}
+
+	fHertz getFreq(fPixelPoint const& p) const { return getFreq(p.GetY()); }
+	mV     getVolt(fPixelPoint const& p) const { return getVolt(p.GetY()); }
+
+	fPixel yFreq(fHertz const freq) const { return getY(vertCoordFreqC().Transform2fPixelPos(freq)); }
+	fPixel yVolt(mV     const volt) const { return getY(vertCoordVoltC().Transform2fPixelPos(volt)); }
 
 	fPixel xPeak      () const { return xTime(GetSigGenStaticData()->GetPeakTime()); }
 	fPixel aPeakAmplit() const { return yVolt(GetSigGenStaticData()->GetAmplitude().Peak()); }

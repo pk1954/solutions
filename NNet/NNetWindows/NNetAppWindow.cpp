@@ -136,7 +136,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle.Initialize(m_hwndApp);
 
-	m_preferences.Initialize(m_sound, m_modelIO, m_WinManager, m_hwndApp);
+	m_preferences.Initialize(m_sound, m_modelIO, m_WinManager, m_mainNNetWindow, m_hwndApp);
 
 	m_signalDesigner.Initialize
 	(

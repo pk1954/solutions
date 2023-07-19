@@ -38,11 +38,11 @@ MonitorControl::MonitorControl
 	PixFpDimension<mV>         & vertCoord,
 	Observable                 & observable
 )
-  : NNetTimeGraph(hwndParent, &horzCoord),
-	m_horzCoord(horzCoord),
+  : NNetTimeGraph(hwndParent),
 	m_vertCoord(vertCoord),
 	m_sound    (sound)
 {
+	SetHorzCoord(&horzCoord);
 	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
 	m_measurement.Initialize(m_upGraphics.get());
 	m_pTextFormat = m_upGraphics->NewTextFormat(16.f);
@@ -55,7 +55,7 @@ MonitorControl::MonitorControl
 	m_vertCoord.SetPixelSize(0.2_mV);
 	m_vertCoord.SetZoomFactor(1.3f);
 
-	m_horzCoord.RegisterObserver(*this);
+	horzCoord  .RegisterObserver(*this);
 	m_vertCoord.RegisterObserver(*this);
 
 	m_pBrushNormal   = m_upGraphics->CreateBrush(ColorF::Black);
@@ -496,7 +496,7 @@ void MonitorControl::PaintGraphics()
 
 	paintStimulusMarkers();
 
-	m_measurement.DisplayDynamicScale(fMicroSecs(m_horzCoord.GetPixelSize()));
+	m_measurement.DisplayDynamicScale(fMicroSecs(GetHorzCoord()->GetPixelSize()));
 
 	if (m_measurement.TrackingActive())
 	{
@@ -669,8 +669,8 @@ void MonitorControl::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
 	{
 		bResult = bShiftKey 
-			? m_horzCoord.ZoomDir(bDirection, 0.0_fPixel)
-			: m_vertCoord.ZoomDir(bDirection, 0.0_fPixel);
+			? GetHorzCoord()->ZoomDir(bDirection, 0.0_fPixel)
+			: m_vertCoord    .ZoomDir(bDirection, 0.0_fPixel);
 	}
 	if (!bResult)
 		MessageBeep(MB_ICONWARNING);

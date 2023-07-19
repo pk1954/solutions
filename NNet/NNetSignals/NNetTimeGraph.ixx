@@ -5,12 +5,14 @@
 module;
 
 #include <cassert>
+#include <compare>
 #include <math.h>
 #include <Windows.h>
 
 export module NNetSignals:NNetTimeGraph;
 
 import Types;
+import Scale;
 import PixFpDimension;
 import Direct2D;
 import TimeGraph;
@@ -19,12 +21,8 @@ import NNetModel;
 export class NNetTimeGraph : public TimeGraph
 {
 public:
-	NNetTimeGraph
-	(
-		HWND                  const hwndParent,
-		PixFpDimension<fMicroSecs>* pHorzCoord
-	)
-		:TimeGraph(hwndParent, pHorzCoord)
+	NNetTimeGraph(HWND const hwndParent)
+		:TimeGraph(hwndParent)
 	{}
 
 	virtual void SetModelInterface(NNetModelWriterInterface* const p)

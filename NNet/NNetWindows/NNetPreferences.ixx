@@ -27,6 +27,8 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
+class MainWindow;
+
 export class NNetPreferences: public Preferences
 {
 public:
@@ -35,16 +37,15 @@ public:
 		Sound &, 
 		NNetModelIO&,
 		WinManager&,
+		MainWindow&,
 		HWND const
 	);
 
 	void SetModelInterface(NNetModelReaderInterface const *);
 
 	void SetArrows      (bool const, bool const);
-	void SetScales      (bool const, bool const);
 	void SetSensorPoints(bool const b) { m_bSensorPoints = b; }
 
-	bool ScalesVisible      () const { return m_bScales; }
 	bool ArrowsVisible      () const { return m_bArrows; }
 	bool SensorPointsVisible() const { return m_bSensorPoints; }
 
@@ -74,10 +75,10 @@ private:
 	HWND                             m_hwndApp               { nullptr };
 	NNetModelIO                    * m_pModelIO              { nullptr };
 	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
-	bool                             m_bScales               { false };
 	bool                             m_bArrows               { false };
 	bool                             m_bSensorPoints         { false };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 	Sound                          * m_pSound                { nullptr };
 	WinManager                     * m_pWinManager           { nullptr };
+	MainWindow                     * m_pMainWindow           { nullptr };
 };

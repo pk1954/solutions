@@ -133,15 +133,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
             MessageBeep(MB_ICONWARNING);
         break;
 
-    case IDD_SCALES_OFF:
-        m_pPreferences->SetScales(false, true);
-        break;
-
-    case IDD_SCALES_ON:
-        m_pPreferences->SetScales(true, true);
-        break;
-
-    case IDD_SCALES:       //Sent by NNetPreferences
     case IDD_ARROWS:       //Sent by NNetPreferences
         ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, lParam);
         break;

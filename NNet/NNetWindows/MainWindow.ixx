@@ -11,7 +11,7 @@ module;
 export module NNetWin32:MainWindow;
 
 import Types;
-import OnOffPair;
+import ScaleMenu;
 import ActionTimer;
 import NNetModel;
 import NNetSignals;
@@ -58,6 +58,8 @@ public:
 	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
 	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
 
+	unsigned int GetScaleMode() const { return m_scaleMenu.GetState(); }
+
 	void CenterModel();
 	void CenterSelection();
 
@@ -78,9 +80,8 @@ private:
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 
-	unique_ptr<Scale<MicroMeter>> m_upHorzScale   {};
-	unique_ptr<Scale<MicroMeter>> m_upVertScale   {};
-	unique_ptr<OnOffPair>         m_upOnOffScales {};
+	unique_ptr<Scale<MicroMeter>> m_upHorzScale {};
+	unique_ptr<Scale<MicroMeter>> m_upVertScale {};
 
 	MicroMeterPnt    m_umDelta                { NP_ZERO };
 	fPixelPoint      m_fPixScaleSize          { fPP_ZERO };
@@ -94,7 +95,8 @@ private:
 	NobId            m_nobIdTarget            { NO_NOB };
 	SigGenId         m_idSigGenUnderCrsr      { NO_SIGGEN };
 	SensorId         m_sensorIdSelected       { SensorId::NULL_VAL() };
-	SelectionMenu    m_SelectionMenu;
+	SelectionMenu    m_selectionMenu;
+	ScaleMenu        m_scaleMenu;
 
 	NobId    findTargetNob(MicroMeterPnt const&);
 	bool     setHighlightedNob   (MicroMeterPnt const&);

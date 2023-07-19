@@ -14,7 +14,6 @@ export module Win32_Util;
 
 import BoolOp;
 import Types;
-import SaveCast;
 
 using std::wostringstream;
 using std::wstring;
@@ -38,9 +37,9 @@ namespace Util
         ::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
     }
 
-    export void Enable(HMENU hMenu, int const id, bool const bCrit)
+    export void Enable(HMENU hMenu, unsigned int const id, bool const bCrit)
     {
-        EnableMenuItem(hMenu, Cast2UnsignedInt(id), bCrit ? MF_ENABLED : MF_GRAYED);
+        EnableMenuItem(hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
     }
 
     export bool Evaluate(wstring &, float &);
