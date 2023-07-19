@@ -246,6 +246,11 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		AddSigGen2MonitorCmd::Push(TrackNr(0));
 		return true;
 
+	case IDM_SCALE_GRID:
+		m_upSignalControl[0]->ToggleShowGrid();
+		m_upSignalControl[1]->ToggleShowGrid();
+		return true;
+
 	default:
 		break;
 	}

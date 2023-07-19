@@ -11,6 +11,7 @@ module;
 
 module NNetSignals:SignalControl;
 
+import Win32_Util_Resource;
 import Types;
 import NNetModel;
 import NNetCommands;
@@ -50,6 +51,12 @@ SignalControl::~SignalControl()
 		vertCoordVolt().UnregisterObserver(*this);
 }
 
+void SignalControl::ShowGrid(bool const b) 
+{ 
+	m_bShowGrid = b; 
+	Trigger();   // cause repaint
+}
+
 void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
 {
 	if (m_pVertScaleFreq)
@@ -70,11 +77,47 @@ void SignalControl::SetVertScaleVolt(Scale<mV> * pScale)
 
 void SignalControl::SetHorzScale(Scale<fMicroSecs>* pScale)
 {
-	if (GetHorzCoord())
-		GetHorzCoord()->UnregisterObserver(*this);
-	NNetTimeGraph::SetHorzScale(pScale);
-	if (GetHorzCoord())
-		GetHorzCoord()->RegisterObserver(*this);
+	if (m_pHorzScale)
+		m_pHorzScale->GetDimension().UnregisterObserver(*this);
+	m_pHorzScale = pScale;
+	if (m_pHorzScale)
+	{
+		SetHorzCoord(&m_pHorzScale->GetDimension());
+		m_pHorzScale->GetDimension().RegisterObserver(*this);
+	}
+}
+
+fHertz SignalControl::getFreq(fPixel const fPixY) const
+{
+	fHertz fRes { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };
+	if (m_bShowGrid)
+	{
+		fHertz const fRaster { m_pVertScaleFreq->GetRaster() };
+		fRes = fRaster * round(fRes / fRaster);
+	}
+	return fRes;
+}
+
+mV SignalControl::getVolt(fPixel const fPixY) const
+{
+	mV fRes { vertCoordVoltC().Transform2logUnitPos(getY(fPixY)) };
+	if (m_bShowGrid)
+	{
+		mV const fRaster { m_pVertScaleVolt->GetRaster() };
+		fRes = fRaster * round(fRes / fRaster);
+	}
+	return fRes;
+}
+
+fMicroSecs SignalControl::getTime(fPixelPoint const &p) const
+{
+	fMicroSecs fRes { NNetTimeGraph::GetTime(p.GetX()) };
+	if (m_bShowGrid)
+	{
+		fMicroSecs const fRaster { m_pHorzScale->GetRaster() };
+		fRes = fRaster * round(fRes / fRaster);
+	}
+	return fRes;
 }
 
 void SignalControl::drawLine
@@ -233,12 +276,14 @@ void SignalControl::paintEditControls() const
 
 void SignalControl::PaintGraphics()
 {
+	if (m_bShowGrid)
 	{
 		if (m_pVertScaleFreq)
 			m_pVertScaleFreq->DrawAuxLines(*m_upGraphics.get());
 		if (m_pVertScaleVolt && !m_pVertScaleFreq)
 			m_pVertScaleVolt->DrawAuxLines(*m_upGraphics.get());
-		GetHorzScale()->DrawAuxLines(*m_upGraphics.get());
+		if (m_pHorzScale)
+			m_pHorzScale->DrawAuxLines(*m_upGraphics.get());
 	}
 
 	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
@@ -258,7 +303,7 @@ void SignalControl::PaintGraphics()
 			(
 				[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
 				0.0_MicroSecs,
-				getTime(xRight()),
+				GetTime(xRight()),
 				m_upGraphics->CreateBrush(getColor(tColor::FREQ)),
 				STD_WIDTH
 			);
@@ -267,7 +312,7 @@ void SignalControl::PaintGraphics()
 			(
 				[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
 				0.0_MicroSecs,
-				getTime(xRight()),
+				GetTime(xRight()),
 				m_upGraphics->CreateBrush(getColor(tColor::VOLT)),
 				STD_WIDTH
 			);
@@ -333,6 +378,31 @@ void SignalControl::testPos
 		fPixDistBest = fPixCandidate;
 		m_moveMode   = tPosTest;
 	}
+}
+
+LPARAM SignalControl::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_GRID, L"Grid on/off");
+	NNetTimeGraph::AddContextMenuEntries(hPopupMenu);
+	return 0L; // will be forwarded to HandleContextMenuCommand
+}
+
+bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
+{
+	bool bRes = false;
+
+	switch (int const wmId = LOWORD(wParam))
+	{
+	case IDM_SCALE_GRID:
+		SendCommand2Parent(wParam, lParam);
+		break;
+
+	default:
+		bRes = BaseWindow::OnCommand(wParam, lParam, pixPoint);
+		break;
+	}
+
+	return bRes;
 }
 
 void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)

@@ -36,19 +36,21 @@ public:
 	~SignalControl() final;
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
+	void SetColor(tColor const t, D2D1::ColorF const c) { m_colTable[static_cast<int>(t)] = c; }
 
-	void SetColor(tColor const type, D2D1::ColorF const col)
-	{
-		m_colTable[static_cast<int>(type)] = col;
-	}
+	LPARAM AddContextMenuEntries(HMENU const) final;
 
 	void SetVertScaleFreq(Scale<fHertz>*);
 	void SetVertScaleVolt(Scale<mV>*);
-	void SetHorzScale    (Scale<fMicroSecs>*) final;
+	void SetHorzScale    (Scale<fMicroSecs>*);
 
 	float ScaleFactorTimeCoord() const;
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
+
+	void ShowGrid(bool const);
+	void ToggleShowGrid()       { ShowGrid(!m_bShowGrid); }
+	bool IsGridVisible() const  { return m_bShowGrid; }
 
 private:
 
@@ -77,44 +79,36 @@ private:
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
 
-	Scale<fHertz> * m_pVertScaleFreq { nullptr };
-	Scale<mV>     * m_pVertScaleVolt { nullptr };
+	Scale<fHertz>     * m_pVertScaleFreq { nullptr };
+	Scale<mV>         * m_pVertScaleVolt { nullptr };
+	Scale<fMicroSecs> * m_pHorzScale     { nullptr };
 
 	SimuRunning const & m_simuRunning;
 	Observable        & m_runObservable;
 	Observable        & m_dynamicModelObservable;
-	tPos                m_moveMode { tPos::NONE };
+	tPos                m_moveMode  { tPos::NONE };
+	bool                m_bShowGrid { false };
 
 	void PaintGraphics() final;
 
+	bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 	void OnMouseMove  (WPARAM const, LPARAM const) final;
 	bool OnLButtonDown(WPARAM const, LPARAM const) final;
 	bool OnLButtonUp  (WPARAM const, LPARAM const) final;
-	void OnMouseLeave() final;
+	void OnMouseLeave () final;
+
+	fMicroSecs getTime(fPixelPoint const &) const;
 
 	fPixel getY(fPixel const fPix) const { return yBottom() - fPix; }
 
-	PixFpDimension<fHertz>    & vertCoordFreq() { return m_pVertScaleFreq->GetDimension(); }
-	PixFpDimension<mV>        & vertCoordVolt() { return m_pVertScaleVolt->GetDimension(); }
+	PixFpDimension<fHertz>      & vertCoordFreq()        { return m_pVertScaleFreq->GetDimension(); }
+	PixFpDimension<mV>          & vertCoordVolt()        { return m_pVertScaleVolt->GetDimension(); }
 
 	PixFpDimension<fHertz> const& vertCoordFreqC() const { return m_pVertScaleFreq->GetDimension(); }
 	PixFpDimension<mV>     const& vertCoordVoltC() const { return m_pVertScaleVolt->GetDimension(); }
 
-	fHertz getFreq(fPixel const fPixY) const 
-	{ 
-		fHertz fRaw    { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };
-		fHertz fRaster { m_pVertScaleFreq->GetRaster() };
-		fHertz fRes    { fRaster * round(fRaw / fRaster) };
-		return fRes;
-	}
-	
-	mV getVolt(fPixel const fPixY) const 
-	{ 
-		mV fRaw    { vertCoordVoltC().Transform2logUnitPos(getY(fPixY)) };
-		mV fRaster { m_pVertScaleVolt->GetRaster() };
-		mV fRes    { fRaster * round(fRaw / fRaster) };
-		return fRes;
-	}
+	fHertz getFreq(fPixel const) const;
+	mV     getVolt(fPixel const) const;
 
 	fHertz getFreq(fPixelPoint const& p) const { return getFreq(p.GetY()); }
 	mV     getVolt(fPixelPoint const& p) const { return getVolt(p.GetY()); }

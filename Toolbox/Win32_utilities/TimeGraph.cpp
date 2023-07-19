@@ -36,13 +36,6 @@ void TimeGraph::SetHorzCoord(PixFpDimension<fMicroSecs>* pHorzCoord)
 	m_pHorzCoord->RegisterObserver(*this);
 }
 
-void TimeGraph::SetHorzScale(Scale<fMicroSecs>* pHorzScale)
-{
-	m_pHorzScale = pHorzScale;
-	assert(m_pHorzScale);
-	SetHorzCoord(&m_pHorzScale->GetDimension());
-}
-
 void TimeGraph::SetDefaultBackgroundColor()
 {
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
@@ -54,27 +47,21 @@ TimeGraph::~TimeGraph()
 		m_pHorzCoord->UnregisterObserver(*this);
 }
 
-fMicroSecs TimeGraph::getTime(fPixelPoint const & p) const 
+fMicroSecs TimeGraph::GetTime(fPixelPoint const & p) const 
 { 
-	return getTime(p.GetX()); 
+	return GetTime(p.GetX()); 
 }
 
-fMicroSecs TimeGraph::getTime(fPixel const fPixX) const 
+fMicroSecs TimeGraph::GetTime(fPixel const fPixX) const 
 { 
 	assert(m_pHorzCoord);
-	fMicroSecs fRes { m_pHorzCoord->Transform2logUnitPos(fPixX) };
-	if (m_pHorzScale)
-	{
-		fMicroSecs const fRaster { m_pHorzScale->GetRaster() };
-		fRes = fRaster * round(fRes / fRaster);
-	}
-	return fRes;
+	return m_pHorzCoord->Transform2logUnitPos(fPixX);
 }
 
 fPixel TimeGraph::xTime(fMicroSecs const time) const 
 { 
 	assert(m_pHorzCoord);
-	return fPixel(m_pHorzCoord->Transform2fPixelPos(time));
+	return m_pHorzCoord->Transform2fPixelPos(time);
 }
 
 bool TimeGraph::OnSize(PIXEL const width, PIXEL const height)

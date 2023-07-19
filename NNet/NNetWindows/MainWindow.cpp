@@ -739,7 +739,6 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_SCALE_OFF:
 	case IDM_SCALE_ON:
 	case IDM_SCALE_GRID:
-	//case IDM_SCALE_SNAP2GRID:
 		{
 			bool bOldVal { m_scaleMenu.IsScaleVisible() };
 			m_scaleMenu.SetState(wmId);

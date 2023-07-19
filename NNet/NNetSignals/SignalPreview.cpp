@@ -52,7 +52,7 @@ void SignalPreview::PaintGraphics()
 				return pixPntVolt(stimuTime, voltage); 
 			}, 
 			0.0_MicroSecs,
-			getTime(xRight()),
+			GetTime(xRight()),
 			m_upGraphics->CreateBrush(D2D1::ColorF::Black),
 			STD_WIDTH
 		);

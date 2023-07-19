@@ -30,10 +30,7 @@ public:
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
 	virtual void SetHorzCoord(PixFpDimension<fMicroSecs>*);
-	virtual void SetHorzScale(Scale         <fMicroSecs>*);
 
-	Scale         <fMicroSecs>       * GetHorzScale ()       { return m_pHorzScale; }
-	Scale         <fMicroSecs> const * GetHorzScaleC() const { return m_pHorzScale; }
 	PixFpDimension<fMicroSecs>       * GetHorzCoord ()       { return m_pHorzCoord; }
 	PixFpDimension<fMicroSecs> const * GetHorzCoordC() const { return m_pHorzCoord; }
 
@@ -99,8 +96,9 @@ protected:
 
 	bool OnSize(PIXEL const, PIXEL const) override;
 
-	fMicroSecs getTime(fPixelPoint const &) const;
-	fMicroSecs getTime(fPixel      const  ) const;
+	virtual fMicroSecs GetTime(fPixel const) const;
+
+	fMicroSecs GetTime(fPixelPoint const &) const;
 	fPixel     xTime  (fMicroSecs  const  ) const;
 
 	fPixel xLeft       () const { return m_fPixLeft;   }
@@ -108,11 +106,10 @@ protected:
 	fPixel xRightBorder() const { return m_fPixRightBorder; }
 	fPixel yBottom     () const { return m_fPixBottom; }
 
-	fMicroSecs getMaxTime() const { return getTime(xRight()); }
+	fMicroSecs getMaxTime() const { return GetTime(xRight()); }
 
 private:
 
-	Scale         <fMicroSecs> * m_pHorzScale { nullptr };
 	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
 
 	fPixel m_fPixRightBorder { 0.0_fPixel };
