@@ -25,7 +25,6 @@ import :MicroSensor;
 import :NobType;
 import :NobId;
 
-using D2D1::ColorF;
 using std::is_base_of;
 using std::remove_pointer_t;
 using std::remove_pointer;
@@ -136,9 +135,9 @@ public:
 
 	void  SetId(NobId const id) { m_identifier = id; }
 
-	ColorF GetExteriorColor(tHighlight const) const;
-	ColorF GetInteriorColor(tHighlight const, mV const) const;
-	ColorF GetInteriorColor(mV const) const;
+	Color GetExteriorColor(tHighlight const) const;
+	Color GetInteriorColor(tHighlight const, mV const) const;
+	Color GetInteriorColor(mV const) const;
 
 	NNetParameters const * GetParam() const { return m_pParameters; }
 

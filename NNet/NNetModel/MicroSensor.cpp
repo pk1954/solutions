@@ -54,7 +54,7 @@ void MicroSensor::Draw
 
     MicroMeter       const umRadius { context.GetCoordC().Transform2logUnit(30._fPixel) };
     MicroMeterCircle const umCircle { GetPosition(), umRadius };
-    D2D1::ColorF     const col      { bHighlight ? NNetColors::MICRO_SENSOR_HIGH : NNetColors::MICRO_SENSOR };
+    Color            const col      { bHighlight ? NNetColors::MICRO_SENSOR_HIGH : NNetColors::MICRO_SENSOR };
     context.DrawCircle
     (
         umCircle, 

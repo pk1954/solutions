@@ -20,7 +20,7 @@ import :NNetController;
 
 using std::function;
 
-static ColorF const EEG_SIGNAL_HIGH { 1.0f, 0.5f, 0.0f, 1.0f };
+static Color const EEG_SIGNAL_HIGH { 1.0f, 0.5f, 0.0f, 1.0f };
 
 void NNetWindow::Start
 (

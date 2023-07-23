@@ -230,9 +230,9 @@ bool Synapse::Apply2AllOutPipesB(PipeCrit const& c) const
 
 void Synapse::drawSynapse
 (
-	DrawContext  const& context, 
-	MicroMeter   const  umRadius,
-	D2D1::ColorF const  col
+	DrawContext const& context, 
+	MicroMeter  const  umRadius,
+	Color       const  col
 ) const
 {
 	context.FillCircle(MicroMeterCircle(m_umPntTop,   umRadius), col);
@@ -269,14 +269,14 @@ void Synapse::drawSynapse
 
 void Synapse::DrawExterior(DrawContext const& context, tHighlight const type) const
 {
-	ColorF col { GetExteriorColor(type) };
+	Color col { GetExteriorColor(type) };
 	drawSynapse(context, RADIUS, col);
 	context.FillCircle(m_circle, col);
 }
 
 void Synapse::DrawInterior(DrawContext const& context, tHighlight const type) const
 { 
-	D2D1::ColorF const col { GetInteriorColor(type, m_mVaddInput) };
+	Color const col { GetInteriorColor(type, m_mVaddInput) };
 	drawSynapse(context, RADIUS * PIPE_INTERIOR, col);
 	if (m_bBlockActive)
 		FillInternalCircle(context, tHighlight::blocked);

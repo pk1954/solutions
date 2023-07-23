@@ -40,6 +40,7 @@ export import :DeselectModuleCmd;
 export import :DiscIoConnectorCmd;
 export import :ExtendInputLineCmd;
 export import :ExtendOutputLineCmd;
+export import :GridAnimationCmd;
 export import :InsertKnotCommand;
 export import :InsertNeuronCommand;
 export import :InsertTrackCommand;

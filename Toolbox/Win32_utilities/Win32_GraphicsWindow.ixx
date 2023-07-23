@@ -28,17 +28,11 @@ public:
 
 	virtual void Stop();
 
-	D2D1_COLOR_F SetForegroundColor(D2D1_COLOR_F const c) { return m_upGraphics->SetForegroundColor(c); }
-	D2D1_COLOR_F SetBackgroundColor(D2D1_COLOR_F const c) { return m_upGraphics->SetBackgroundColor(c); }
+	Color SetForegroundColor(Color const c) { return m_upGraphics->SetForegroundColor(c); }
+	Color SetBackgroundColor(Color const c) { return m_upGraphics->SetBackgroundColor(c); }
 
-	D2D1_COLOR_F SetForegroundColor(COLORREF const c) { return m_upGraphics->SetForegroundColor(c); }
-	D2D1_COLOR_F SetBackgroundColor(COLORREF const c) { return m_upGraphics->SetBackgroundColor(c); }
-
-	D2D1_COLOR_F GetForegroundColor() const { return m_upGraphics->GetForegroundColor(); }
-	D2D1_COLOR_F GetBackgroundColor() const { return m_upGraphics->GetBackgroundColor(); }
-
-	COLORREF SetBackgroundColorRef(COLORREF const c) final { return Convert2COLORREF(SetBackgroundColor(c)); }
-	COLORREF GetBackgroundColorRef() const           final { return Convert2COLORREF(GetBackgroundColor()); }
+	Color GetForegroundColor() const { return m_upGraphics->GetForegroundColor(); }
+	Color GetBackgroundColor() const { return m_upGraphics->GetBackgroundColor(); }
 
 	LPARAM AddContextMenuEntries(HMENU const) override;
 

@@ -25,6 +25,7 @@
     <ClCompile Include="BasicTypes.ixx" />
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="CircleType.ixx" />
+    <ClCompile Include="Color.ixx" />
     <ClCompile Include="Debug.ixx">
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>

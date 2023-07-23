@@ -36,7 +36,7 @@ public:
 	~SignalControl() final;
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
-	void SetColor(tColor const t, D2D1::ColorF const c) { m_colTable[static_cast<int>(t)] = c; }
+	void SetColor(tColor const t, Color const c) { m_colTable[static_cast<int>(t)] = c; }
 
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
@@ -48,9 +48,10 @@ public:
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
 
-	void ShowGrid(bool const);
-	void ToggleShowGrid()       { ShowGrid(!m_bShowGrid); }
-	bool IsGridVisible() const  { return m_bShowGrid; }
+	void Snap2Grid(bool const);
+	bool Snap2Grid() const { return m_bSnap2Grid; }
+
+	void SetGridDimFactor(float const);
 
 private:
 
@@ -63,7 +64,7 @@ private:
 		return m_handles[static_cast<int>(mode)];
 	}
 
-	array<D2D1::ColorF, 4> m_colTable
+	array<Color, 4> m_colTable
 	{
 		D2D1::ColorF::Black, // FREQ
 		D2D1::ColorF::Black, // VOLT
@@ -71,7 +72,7 @@ private:
 		D2D1::ColorF::Red    // HIGH
 	};
 
-	D2D1::ColorF getColor(tColor const type) const
+	Color getColor(tColor const type) const
 	{
 		return m_colTable[static_cast<int>(type)];
 	}
@@ -86,8 +87,9 @@ private:
 	SimuRunning const & m_simuRunning;
 	Observable        & m_runObservable;
 	Observable        & m_dynamicModelObservable;
-	tPos                m_moveMode  { tPos::NONE };
-	bool                m_bShowGrid { false };
+	tPos                m_moveMode       { tPos::NONE };
+	bool                m_bSnap2Grid     { false };
+	float               m_fGridDimFactor { 0.0f };
 
 	void PaintGraphics() final;
 

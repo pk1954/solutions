@@ -73,7 +73,7 @@ void Nob::SetPosDir(MicroMeterPosDir const & umPosDir)
 	SetPos(umPosDir.GetPos());
 };
 
-ColorF Nob::GetInteriorColor(mV const voltage) const
+Color Nob::GetInteriorColor(mV const voltage) const
 {
 	mV    const threshold      { mV(GetParam()->GetParameterValue(ParamType::Value::threshold)) };
 	float const colorComponent { min(voltage / threshold, 1.0f)};
@@ -81,10 +81,10 @@ ColorF Nob::GetInteriorColor(mV const voltage) const
 	if (IsEmphasized() && (colorComponent < 0.01f))
 		return NNetColors::INT_EMPHASIZED;
 	else 
-		return ColorF(colorComponent, 0.0f, 0.0f, fAlphaChannel);
+		return Color(colorComponent, 0.0f, 0.0f, fAlphaChannel);
 }
 
-ColorF Nob::GetExteriorColor(tHighlight const type) const
+Color Nob::GetExteriorColor(tHighlight const type) const
 {
 	if (type == tHighlight::highlighted) 
 		return NNetColors::EXT_HIGHLIGHTED;
@@ -92,7 +92,7 @@ ColorF Nob::GetExteriorColor(tHighlight const type) const
 		return IsEmphasized() ? NNetColors::EXT_EMPHASIZED : NNetColors::EXT_NORMAL;
 };
 
-ColorF Nob::GetInteriorColor(tHighlight const type, mV const voltage) const
+Color Nob::GetInteriorColor(tHighlight const type, mV const voltage) const
 {
 	Nob const * pNob { this };
 	while (pNob->HasParentNob())

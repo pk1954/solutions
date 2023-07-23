@@ -104,6 +104,11 @@ void SignalDesigner::Initialize
 	m_upSignalControl[0]->SetHorzScale(m_upHorzScale[0].get());
 	m_upSignalControl[1]->SetHorzScale(m_upHorzScale[1].get());
 
+	m_gridObservable.RegisterObserver(*m_upSignalControl[0].get());
+	m_gridObservable.RegisterObserver(*m_upSignalControl[1].get());
+
+	GridAnimationCmd::Initialize(this);
+
 	// buttons
 
 	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
@@ -247,8 +252,23 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		return true;
 
 	case IDM_SCALE_GRID:
-		m_upSignalControl[0]->ToggleShowGrid();
-		m_upSignalControl[1]->ToggleShowGrid();
+		if (m_upSignalControl[0]->Snap2Grid())
+		{
+			m_upSignalControl[0]->Snap2Grid(false);
+			m_upSignalControl[1]->Snap2Grid(false);
+			GridAnimationCmd::Push(m_fGridDimFactor, 0.0f);
+		}
+		else
+		{
+			m_upSignalControl[0]->Snap2Grid(true);
+			m_upSignalControl[1]->Snap2Grid(true);
+			GridAnimationCmd::Push(m_fGridDimFactor, 1.0f);
+		}
+		return true;
+
+	case IDM_GRID_UPDATE:
+		m_upSignalControl[0]->SetGridDimFactor(m_fGridDimFactor);
+		m_upSignalControl[1]->SetGridDimFactor(m_fGridDimFactor);
 		return true;
 
 	default:

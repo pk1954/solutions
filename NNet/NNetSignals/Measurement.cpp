@@ -74,7 +74,7 @@ void Measurement::verticalLine(fPixel const fPixPosX) const
 		fPixelPoint(fPixPosX, 0._fPixel), 
 		fPixelPoint(fPixPosX, m_fPixClientHeight), 
 		1._fPixel, 
-		RGB(0, 0, 0)  
+		D2D1::ColorF::Black
 	);
 }
 

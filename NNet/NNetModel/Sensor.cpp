@@ -94,8 +94,8 @@ void Sensor::DrawDataPoints(DrawContext const & context) const
 {
     for (auto const& it : m_dataPoints)
     {
-        mV     const voltage { it.m_pPipe->GetVoltage(it.m_segNr) };
-        ColorF const col     { it.m_pPipe->GetInteriorColor(voltage) };
+        mV    const voltage { it.m_pPipe->GetVoltage(it.m_segNr) };
+        Color const col     { it.m_pPipe->GetInteriorColor(voltage) };
         context.FillCircle(it.dataPointCircle(), col);
     }
 }

@@ -234,5 +234,8 @@
     <ClCompile Include="AnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GridAnimationCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

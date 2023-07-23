@@ -14,6 +14,7 @@ module;
 
 module Direct2D;
 
+import Color;
 import Util;
 import Win32_PIXEL;
 
@@ -58,11 +59,11 @@ void D2D_driver::createResources()
 
 	m_pTextFormat = NewTextFormat(12.0f);
 
-	static D2D1::ColorF const COL_FOREGROUND { D2D1::ColorF::Black };
+	static Color const COL_FOREGROUND { D2D1::ColorF::Black };
 	m_hr = m_pRenderTarget->CreateSolidColorBrush(COL_FOREGROUND, &m_pBrushForeground);
 	assert(SUCCEEDED(m_hr));
 
-	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::White };
+	static Color const COL_BACKGROUND { D2D1::ColorF::White };
 	m_hr = m_pRenderTarget->CreateSolidColorBrush(COL_BACKGROUND, &m_pBrushBackground);
 	assert(SUCCEEDED(m_hr));
 }
@@ -93,8 +94,7 @@ void D2D_driver::Display(function<void()> func)
 	BeginPaint(m_hwnd, &ps);
 	if (startFrame())
 	{
-		D2D1_COLOR_F colBackground { m_pBrushBackground->GetColor() };
-		m_pRenderTarget->Clear(colBackground);
+		m_pRenderTarget->Clear(m_pBrushBackground->GetColor());
 		func();
 		endFrame();
 	}
@@ -195,7 +195,7 @@ void D2D_driver::DisplayText
 (
 	fPixelRect         const& rect,
 	wstring            const& wstr,
-	D2D1::ColorF       const  colF,
+	Color              const  colF,
 	IDWriteTextFormat* const  pTextFormat
 ) const
 {
@@ -214,7 +214,7 @@ void D2D_driver::DisplayText
 	DisplayText(rect, wstr, *m_pBrushForeground, pTextFormat);
 }
 
-void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, fPixel const fPixWidth) const
+void D2D_driver::DrawRectangle(fPixelRect const& rect, Color const colF, fPixel const fPixWidth) const
 {
 	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
 	m_pRenderTarget->DrawRectangle
@@ -227,7 +227,7 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, D2D1::ColorF const colF, 
 	SafeRelease(& pBrush);
 }
 
-void D2D_driver::FillRectangle(fPixelRect const& rect, D2D1::ColorF const colF) const
+void D2D_driver::FillRectangle(fPixelRect const& rect, Color const colF) const
 {
 	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
 	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
@@ -242,7 +242,7 @@ void D2D_driver::ClearRectangle(fPixelRect const& rect) const
 void D2D_driver::DrawRoundedRectangle
 (
 	fPixelRect   const& rect, 
-	D2D1::ColorF const  colF, 
+	Color        const  colF, 
 	fPixel       const  fPixRadius,
 	fPixel       const  fPixStrokeWidth
 ) const
@@ -256,7 +256,7 @@ void D2D_driver::DrawRoundedRectangle
 void D2D_driver::FillRoundedRectangle
 (
 	fPixelRect   const& rect, 
-	D2D1::ColorF const  colF, 
+	Color const  colF, 
 	fPixel       const  fPixRadius
 ) const
 {
@@ -268,8 +268,8 @@ void D2D_driver::FillRoundedRectangle
 
 ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
 (
-	D2D1::ColorF const colF1,
-	D2D1::ColorF const colF2 
+	Color const colF1,
+	Color const colF2 
 ) const
 {
 	HRESULT hr;
@@ -283,8 +283,8 @@ ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
 void D2D_driver::FillGradientRect
 (
 	fPixelRect   const & rect, 
-	D2D1::ColorF const   colF1,
-	D2D1::ColorF const   colF2 
+	Color const   colF1,
+	Color const   colF2 
 ) const
 {
 	ID2D1GradientStopCollection * pGradientStopColl { simpleGradientStopCollection(colF1, colF2) };
@@ -307,8 +307,8 @@ void D2D_driver::FillGradientRect
 void D2D_driver::FillGradientEllipse
 (
 	fPixelEllipse const & fPE, 
-	D2D1::ColorF  const   colF1,
-	D2D1::ColorF  const   colF2 
+	Color  const   colF1,
+	Color  const   colF2 
 ) const
 {
 	ID2D1GradientStopCollection * pGradientStopColl { simpleGradientStopCollection(colF1, colF2) };
@@ -337,8 +337,8 @@ void D2D_driver::FillGradientEllipse
 void D2D_driver::FillGradientCircle
 (
 	fPixelCircle const & circle, 
-	D2D1::ColorF const   colF1,
-	D2D1::ColorF const   colF2 
+	Color const   colF1,
+	Color const   colF2 
 ) const
 {
 	FillGradientEllipse(fPixelEllipse { circle }, colF1, colF2);
@@ -364,7 +364,7 @@ void D2D_driver::DrawLine
 (
 	fPixelPoint const& fpp1,
 	fPixelPoint const& fpp2,
-	fPixel      const   fpixWidth,
+	fPixel      const  fpixWidth,
 	ID2D1Brush  const& brush
 ) const
 {
@@ -382,7 +382,7 @@ void D2D_driver::DrawLine
 	fPixelPoint  const& fpp1,
 	fPixelPoint  const& fpp2,
 	fPixel       const  fpixWidth,
-	D2D1::ColorF const  colF
+	Color const  colF
 ) const
 {
 	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
@@ -412,7 +412,7 @@ void D2D_driver::FillCircle
 void D2D_driver::FillCircle
 (
 	fPixelCircle const& circle,
-	D2D1::ColorF const   colF
+	Color const   colF
 ) const
 {
 	FillEllipse(fPixelEllipse { circle }, colF);
@@ -439,7 +439,7 @@ void D2D_driver::DrawCircle
 void D2D_driver::DrawCircle
 (
 	fPixelCircle const& circle,
-	D2D1::ColorF const  colF,
+	Color const  colF,
 	fPixel       const  fPixWidth
 ) const
 {
@@ -467,7 +467,7 @@ void D2D_driver::FillEllipse
 void D2D_driver::FillEllipse
 (
 	fPixelEllipse const& fPE,
-	D2D1::ColorF  const  colF
+	Color  const  colF
 ) const
 {
 	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
@@ -493,7 +493,7 @@ void D2D_driver::DrawEllipse
 void D2D_driver::DrawEllipse
 (
 	fPixelEllipse const& fPE,
-	D2D1::ColorF  const   colF,
+	Color  const   colF,
 	fPixel        const   fPixWidth
 ) const
 {
@@ -517,7 +517,7 @@ void D2D_driver::FillArrow
 	fPixelPoint  const ptVector,
 	fPixel       const fPixSize,  
 	fPixel       const fPixWidth, 
-	D2D1::ColorF const colF
+	Color const colF
 ) const
 {
 	if (! ptVector.IsCloseToZero())
@@ -536,7 +536,7 @@ void D2D_driver::UpDownArrow
 (
 	bool         const   bUpArrow, 
 	fPixelRect   const & fPixRect, 
-	D2D1::ColorF const   color
+	Color        const   color
 ) const 
 { 
 	fPixel       const fPixHorCenter { fPixRect.GetWidth() / 2 };
@@ -567,7 +567,7 @@ void D2D_driver::FillDiamond
 (
 	fPixelPoint  const ptPos,
 	fPixel       const fPixSize,  
-	D2D1::ColorF const colF
+	Color const colF
 ) const
 {
 	fPixelPoint const ptOffset(fPixSize, fPixSize);
@@ -576,7 +576,7 @@ void D2D_driver::FillDiamond
 	DrawLine(ptStart, ptEnd, fPixSize * sqrtf(8.0f), colF);
 }
 
-ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
+ID2D1SolidColorBrush* D2D_driver::CreateBrush(Color const d2dCol) const
 {
 	ID2D1SolidColorBrush* pBrush;
 	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, &pBrush);
@@ -584,38 +584,30 @@ ID2D1SolidColorBrush* D2D_driver::CreateBrush(D2D1::ColorF const d2dCol) const
 	return pBrush;
 }
 
-D2D1_COLOR_F D2D_driver::SetForegroundColor(D2D1_COLOR_F const d2dCol)
+Color D2D_driver::SetForegroundColor(Color const d2dCol)
 {
-	D2D1_COLOR_F colorOld = GetForegroundColor();
+	Color colorOld = GetForegroundColor();
 	m_pBrushForeground->SetColor(d2dCol);
 	return colorOld;
 }
 
-D2D1_COLOR_F D2D_driver::SetBackgroundColor(D2D1_COLOR_F const d2dCol)
+Color D2D_driver::SetBackgroundColor(Color const d2dCol)
 {
-	D2D1_COLOR_F colorOld = GetBackgroundColor();
+	Color colorOld = GetBackgroundColor();
 	m_pBrushBackground->SetColor(d2dCol);
 	return colorOld;
 }
 
-D2D1_COLOR_F D2D_driver::SetForegroundColor(COLORREF const col)
-{
-	return SetForegroundColor(Convert2ColorF(col));
-}
-
-D2D1_COLOR_F D2D_driver::SetBackgroundColor(COLORREF const col)
-{
-	return SetBackgroundColor(Convert2ColorF(col));
-}
-
-D2D1_COLOR_F D2D_driver::GetForegroundColor() const
+Color D2D_driver::GetForegroundColor() const
 { 
-	return m_pBrushForeground->GetColor();
+	D2D1_COLOR_F colF = m_pBrushForeground->GetColor();
+	return *reinterpret_cast<Color *>(&colF);
 }
 
-D2D1_COLOR_F D2D_driver::GetBackgroundColor() const
+Color D2D_driver::GetBackgroundColor() const
 {
-	return m_pBrushBackground->GetColor();
+	D2D1_COLOR_F colF = m_pBrushBackground->GetColor();
+	return *reinterpret_cast<Color*>(&colF);
 }
 
 void D2D_driver::SetRotation(float const fAngle, fPixelPoint const& ptCenter) const
@@ -699,7 +691,7 @@ void D2D_driver::DrawBezier
 	fPixelPoint  const& fPixPnt1,
 	fPixelPoint  const& fPixPnt2,
 	fPixelPoint  const& fPixPnt3,
-	D2D1::ColorF const  col,
+	Color const  col,
 	fPixel       const  fPixWidth
 ) const
 {

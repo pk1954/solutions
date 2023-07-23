@@ -11,6 +11,8 @@ export module NNetCommands:ScalesAnimationCmd;
 
 import :AnimationCmd;
 
+using std::wstring;
+
 using fPixelPointAnimationCmd = AnimationCmd<fPixelPoint>;
 
 export class ScalesAnimationCmd : public fPixelPointAnimationCmd

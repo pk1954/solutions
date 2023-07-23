@@ -90,7 +90,7 @@ private:
 	void paintStimulusMarkers() const;
 	void paintSignal(SignalId const &);
 	void paintTrack(TrackNr const) const;
-	void paintNumber(fPixel const, fPixel const, int const, D2D1::ColorF const) const;
+	void paintNumber(fPixel const, fPixel const, int const, Color const) const;
 
 	void PaintGraphics() final;
 

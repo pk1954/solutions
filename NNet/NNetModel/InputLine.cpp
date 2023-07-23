@@ -95,10 +95,10 @@ MicroMeterPnt InputLine::getCenter() const
 
 void InputLine::drawSocket
 (
-	DrawContext  const & context, 
-	float        const   M,       // overall width/height                        
-	float        const   VEM,     // vertical offset of end point middle section 
-	D2D1::ColorF const   colF
+	DrawContext const & context, 
+	float       const   M,       // overall width/height                        
+	float       const   VEM,     // vertical offset of end point middle section 
+	Color       const   colF
 ) const
 {
 	MicroMeterPnt  const umDirVector   { GetDirVector() * M };

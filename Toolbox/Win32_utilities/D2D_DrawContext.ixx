@@ -30,7 +30,7 @@ public:
 		MicroMeterPnt const &, 
 		MicroMeterPnt const &,
 		MicroMeter    const,
-		D2D1::ColorF  const,
+		Color         const,
 		fPixel        const = 1._fPixel
 	) const override;
 
@@ -38,35 +38,35 @@ public:
 	(
 		MicroMeterLine const &, 
 		MicroMeter     const,
-		D2D1::ColorF   const  
+		Color          const  
 	) const override;
 
 	void FillCircle
 	(
 		MicroMeterCircle const &,
-		D2D1::ColorF     const,
+		Color            const,
 		fPixel           const = 1._fPixel
 	) const override;
 
 	void FillGradientCircle
 	(
 		MicroMeterCircle const &,
-		D2D1::ColorF     const,  
-		D2D1::ColorF     const  
+		Color            const,  
+		Color            const  
 	) const override;
 
 	void DrawCircle(MicroMeterCircle const&, ID2D1SolidColorBrush* const, fPixel const) const override;
-	void DrawCircle(MicroMeterCircle const&, D2D1::ColorF const,          fPixel const) const override;
+	void DrawCircle(MicroMeterCircle const&, Color const,                 fPixel const) const override;
 	void DrawCircle(MicroMeterCircle const&,                              fPixel const) const override;
 
 	void FillEllipse(MicroMeterEllipse const&, ID2D1SolidColorBrush* const) const override;
-	void FillEllipse(MicroMeterEllipse const&, D2D1::ColorF const) const override;
+	void FillEllipse(MicroMeterEllipse const&, Color const) const override;
 	void FillEllipse(MicroMeterEllipse const&) const override;
 
 	void DrawEllipse
 	(
 		MicroMeterEllipse const &,
-		D2D1::ColorF      const,
+		Color             const,
 		MicroMeter        const   
 	) const override;
 
@@ -76,12 +76,12 @@ public:
 		MicroMeterPnt const &,
 		MicroMeter    const,
 		MicroMeter    const,
-		D2D1::ColorF  const  
+		Color         const  
 	) const override;
 
-	void FillRectangle       (MicroMeterRect const&, D2D1::ColorF)                   const override;
-	void FillRoundedRectangle(MicroMeterRect const&, D2D1::ColorF, MicroMeter const) const override;
-	void DrawTranspRect      (MicroMeterRect const&, D2D1::ColorF)                   const override;
+	void FillRectangle       (MicroMeterRect const&, Color)                   const override;
+	void FillRoundedRectangle(MicroMeterRect const&, Color, MicroMeter const) const override;
+	void DrawTranspRect      (MicroMeterRect const&, Color)                   const override;
 
 	void DisplayText
 	(
@@ -97,7 +97,7 @@ public:
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
 		ID2D1SolidColorBrush*,
-		fPixel const = 1._fPixel
+		fPixel        const = 1._fPixel
 	) const override;
 
 	void DrawBezier
@@ -106,7 +106,7 @@ public:
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
-		fPixel const = 1._fPixel
+		fPixel        const = 1._fPixel
 	) const override;
 
 	void DrawBezier
@@ -115,8 +115,8 @@ public:
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
-		D2D1::ColorF  const,
-		fPixel const = 1._fPixel
+		Color         const,
+		fPixel        const = 1._fPixel
 	) const override;
 
 	D2D_driver* GetGraphics() {	return m_pGraphics; }

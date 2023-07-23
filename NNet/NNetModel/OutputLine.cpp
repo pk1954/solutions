@@ -91,10 +91,10 @@ bool OutputLine::Includes(MicroMeterPnt const & point) const
 
 void OutputLine::drawPlug
 (
-	DrawContext  const & context, 
-	float        const   M,       // overall width/height                        
-	float        const   V,
-	D2D1::ColorF const   colF
+	DrawContext const & context, 
+	float       const   M,       // overall width/height                        
+	float       const   V,
+	Color       const   colF
 ) const
 {
 	MicroMeterPnt const umDirVector { GetDirVector() };

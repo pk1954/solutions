@@ -51,10 +51,16 @@ SignalControl::~SignalControl()
 		vertCoordVolt().UnregisterObserver(*this);
 }
 
-void SignalControl::ShowGrid(bool const b) 
+void SignalControl::Snap2Grid(bool const b) 
 { 
-	m_bShowGrid = b; 
+	m_bSnap2Grid = b; 
 	Trigger();   // cause repaint
+}
+
+void SignalControl::SetGridDimFactor(float const f)
+{
+	m_fGridDimFactor = f;
+	Trigger();
 }
 
 void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
@@ -90,7 +96,7 @@ void SignalControl::SetHorzScale(Scale<fMicroSecs>* pScale)
 fHertz SignalControl::getFreq(fPixel const fPixY) const
 {
 	fHertz fRes { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };
-	if (m_bShowGrid)
+	if (m_bSnap2Grid)
 	{
 		fHertz const fRaster { m_pVertScaleFreq->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -101,7 +107,7 @@ fHertz SignalControl::getFreq(fPixel const fPixY) const
 mV SignalControl::getVolt(fPixel const fPixY) const
 {
 	mV fRes { vertCoordVoltC().Transform2logUnitPos(getY(fPixY)) };
-	if (m_bShowGrid)
+	if (m_bSnap2Grid)
 	{
 		mV const fRaster { m_pVertScaleVolt->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -112,7 +118,7 @@ mV SignalControl::getVolt(fPixel const fPixY) const
 fMicroSecs SignalControl::getTime(fPixelPoint const &p) const
 {
 	fMicroSecs fRes { NNetTimeGraph::GetTime(p.GetX()) };
-	if (m_bShowGrid)
+	if (m_bSnap2Grid)
 	{
 		fMicroSecs const fRaster { m_pHorzScale->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -132,8 +138,8 @@ void SignalControl::drawLine
 
 	if (fPixPntStart.IsNotNull() && fPixPntEnd.IsNotNull())
 	{
-		fPixel       width { (colType == tColor::HIGH) ? HIGH_WIDTH : STD_WIDTH };
-		D2D1::ColorF col   { getColor(colType) };
+		fPixel width { (colType == tColor::HIGH) ? HIGH_WIDTH : STD_WIDTH };
+		Color  col   { getColor(colType) };
 		col.a = 0.2f;
 
 		if ((fPixPntStart.GetX() != fPixPntEnd.GetX()) && (fPixPntStart.GetY() != fPixPntEnd.GetY()))
@@ -154,8 +160,8 @@ void SignalControl::drawDiam
 	fPixelPoint const fPixPnt { getPos(pos) };
 	if (fPixPnt.IsNotNull())
 	{
-		fPixel       const size { (colType == tColor::HIGH) ? HIGH_DIAMOND : STD_DIAMOND };
-		D2D1::ColorF const col  { getColor(colType) };
+		fPixel const size { (colType == tColor::HIGH) ? HIGH_DIAMOND : STD_DIAMOND };
+		Color  const col  { getColor(colType) };
 		m_upGraphics->FillDiamond(fPixPnt, size, col);
 	}
 }
@@ -276,14 +282,14 @@ void SignalControl::paintEditControls() const
 
 void SignalControl::PaintGraphics()
 {
-	if (m_bShowGrid)
+	if (m_fGridDimFactor > 0.0f)
 	{
 		if (m_pVertScaleFreq)
-			m_pVertScaleFreq->DrawAuxLines(*m_upGraphics.get());
+			m_pVertScaleFreq->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
 		if (m_pVertScaleVolt && !m_pVertScaleFreq)
-			m_pVertScaleVolt->DrawAuxLines(*m_upGraphics.get());
+			m_pVertScaleVolt->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
 		if (m_pHorzScale)
-			m_pHorzScale->DrawAuxLines(*m_upGraphics.get());
+			m_pHorzScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
 	}
 
 	if (SignalGenerator const * pSigGen { GetSigGenSelected() })

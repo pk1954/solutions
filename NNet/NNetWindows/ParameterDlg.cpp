@@ -150,10 +150,10 @@ void ParameterDialog::paintHeader
 	wstring const& wstrText
 )
 {
-	static fPixel   const THICK   { 2._fPixel };
-	static fPixel   const CORNERS { 5._fPixel };
-	static fPixel   const VSIZE   { fPixel(HEIGHT) };
-	static COLORREF const COL     { D2D1::ColorF::Black };
+	static fPixel const THICK   { 2._fPixel };
+	static fPixel const CORNERS { 5._fPixel };
+	static fPixel const VSIZE   { fPixel(HEIGHT) };
+	static Color  const COL     { D2D1::ColorF::Black };
 
 	fPixel const fPixBlockHeight { fPixel(Cast2Float(HEIGHT + VERT_SPACE) * iNrOfLines) };
 	fPixel const fPixBottom      { m_fPixPosVert + fPixBlockHeight + 10._fPixel };

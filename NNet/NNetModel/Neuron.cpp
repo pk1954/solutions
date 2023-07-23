@@ -151,7 +151,7 @@ void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) co
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
 { 
-	D2D1::ColorF const color
+	Color const color
 	{
 		(m_bTriggered && (m_usSpikeTime < GetParam()->PulseWidth()))
 		? NNetColors::INT_TRIGGER

@@ -99,7 +99,7 @@ private:
     inline static MicroMeter const RADIUS    { PIPE_HALF };
     inline static MicroMeter const EXTENSION { PIPE_WIDTH * 0.5f };
 
-    void drawSynapse(DrawContext const&, MicroMeter const, D2D1::ColorF const) const;
+    void drawSynapse(DrawContext const&, MicroMeter const, Color const) const;
     void recalcPosition() const;
 
     MicroMeterCircle m_circle;  // inpipe and outpipe meet here

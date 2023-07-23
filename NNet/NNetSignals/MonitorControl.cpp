@@ -21,14 +21,14 @@ import NNetCommands;
 using std::vector;
 using std::to_wstring;
 
-static ColorF const COL_DIAMOND       { 0.0f, 1.0f, 0.0f, 1.0f };
-static ColorF const COL_STIMULUS_LINE { 0.5f, 0.1f, 0.1f, 1.0f };
-static ColorF const COL_TRACK_EVEN    { 0.9f, 0.9f, 0.9f, 1.0f };
-static ColorF const COL_TRACK_EVEN_H  { 0.9f, 0.9f, 1.0f, 1.0f };
-static ColorF const COL_TRACK_ODD     { 0.8f, 0.8f, 0.8f, 1.0f };
-static ColorF const COL_TRACK_ODD_H   { 0.8f, 0.8f, 0.9f, 1.0f };
-static ColorF const COL_WARNING       { 0.8f, 0.0f, 0.0f, 0.3f };
-static ColorF const EEG_SIGNAL_HIGH   { 1.0f, 0.5f, 0.0f, 1.0f };
+static Color const COL_DIAMOND       { 0.0f, 1.0f, 0.0f, 1.0f };
+static Color const COL_STIMULUS_LINE { 0.5f, 0.1f, 0.1f, 1.0f };
+static Color const COL_TRACK_EVEN    { 0.9f, 0.9f, 0.9f, 1.0f };
+static Color const COL_TRACK_EVEN_H  { 0.9f, 0.9f, 1.0f, 1.0f };
+static Color const COL_TRACK_ODD     { 0.8f, 0.8f, 0.8f, 1.0f };
+static Color const COL_TRACK_ODD_H   { 0.8f, 0.8f, 0.9f, 1.0f };
+static Color const COL_WARNING       { 0.8f, 0.0f, 0.0f, 0.3f };
+static Color const EEG_SIGNAL_HIGH   { 1.0f, 0.5f, 0.0f, 1.0f };
 
 MonitorControl::MonitorControl
 (
@@ -421,10 +421,10 @@ void MonitorControl::ScaleSignals()
 
 void MonitorControl::paintNumber
 (
-	fPixel       const xPos,
-	fPixel       const yPos,
-	int          const iNr,
-	D2D1::ColorF const col
+	fPixel const xPos,
+	fPixel const yPos,
+	int    const iNr,
+	Color  const col
 ) const
 {
 	m_upGraphics->DisplayText
@@ -442,7 +442,7 @@ void MonitorControl::paintNumber
 
 void MonitorControl::paintTrack(TrackNr const trackNr) const
 {
-	ColorF const col 
+	Color const col 
 	{
 		(trackNr.GetValue() % 2)
 		? ((trackNr == m_trackNrHighlighted) ? COL_TRACK_ODD_H  : COL_TRACK_ODD)

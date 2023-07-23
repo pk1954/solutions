@@ -58,9 +58,9 @@ private:
 	inline static PIXEL const STIMULUS_BUTTON_WIDTH  { 90_PIXEL };
 	inline static PIXEL const STIMULUS_BUTTON_HEIGHT { 30_PIXEL };
 
-	inline static D2D1::ColorF COLOR_FREQ { D2D1::ColorF::Green };
+	inline static Color COLOR_FREQ { D2D1::ColorF::Green };
 
-	inline static array<D2D1::ColorF, 2> COLOR_VOLT 
+	inline static array<Color, 2> COLOR_VOLT 
 	{ 
 		D2D1::ColorF::Blue, 
 		D2D1::ColorF::Black 
@@ -73,9 +73,9 @@ private:
 	unique_ptr<SignalControl>     makeSignalControl(Observable &, Observable &);
 	unique_ptr<Scale<fMicroSecs>> makeHorzScale();
 
-	bool OnSize             (PIXEL const, PIXEL const)                     final;
-	bool OnCommand          (WPARAM const, LPARAM const, PixelPoint const) final;
-	void OnScaleCommand     (WPARAM const, LPARAM const)                   final;
+	bool OnSize        (PIXEL const, PIXEL const)                     final;
+	bool OnCommand     (WPARAM const, LPARAM const, PixelPoint const) final;
+	void OnScaleCommand(WPARAM const, LPARAM const)                   final;
 
 	PixFpDimension<fMicroSecs> m_horzCoord;
 	PixFpDimension<fHertz>     m_vertCoordFreq;
@@ -92,10 +92,12 @@ private:
 	HWND                              m_hwndPreviewButton;
 	unique_ptr<StimulusButton>        m_upStimulusButton;
 	
-	SimuRunning        const * m_pSimuRunning { nullptr };
-	NNetModelWriterInterface * m_pNMWI        { nullptr };
-	HMENU                      m_hMenu        { nullptr };
-	bool                       m_bIntegrated  { false };
-	bool                       m_bPreview     { false };
-	int                        m_iNrOfTiles   { 2 };
+	SimuRunning        const * m_pSimuRunning   { nullptr };
+	NNetModelWriterInterface * m_pNMWI          { nullptr };
+	HMENU                      m_hMenu          { nullptr };
+	bool                       m_bIntegrated    { false };
+	bool                       m_bPreview       { false };
+	int                        m_iNrOfTiles     { 2 };
+	float                      m_fGridDimFactor { 0.0f };
+	Observable                 m_gridObservable;
 };

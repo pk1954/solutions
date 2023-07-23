@@ -71,51 +71,27 @@ public:
 		BaseScale::Notify(bImmediately);
 	}
 
-	void DrawAuxLines(D2D_driver& graphics)
-	{
-		DrawAuxLines(graphics,  1, D2D1::ColorF::LightGray);  // 0xD3D3D3
-		DrawAuxLines(graphics,  5, D2D1::ColorF::DarkGray);   // 0xA9A9A9
-		DrawAuxLines(graphics, 10, D2D1::ColorF::Gray);       // 0x808080
-	}
-
-	void DrawAuxLines
+	Color colAnimated
 	(
-		D2D_driver       & graphics,
-		int          const iStep,
-		D2D1::ColorF const col
+		Color const colBase,
+		Color const colTarget,
+		float const fFactor
 	)
 	{
-		fPixelRectSize const fPixSize { graphics.GetClRectSize() };
-		if (IsVertScale())
-			Apply2AllTicks
-			(
-				[this, &graphics, &fPixSize, iStep, col](fPixel const fPix, int const iTick)
-				{
-					if (iTick % iStep == 0)
-						graphics.DrawLine
-						(
-							fPixelPoint(0._fPixel,       yPos(fPix)),
-							fPixelPoint(fPixSize.GetX(), yPos(fPix)),
-							1._fPixel,
-							col
-						);
-				}
-			);
-		else
-			Apply2AllTicks
-			(
-				[this, &graphics, &fPixSize, iStep, col](fPixel const fPix, int const iTick)
-				{
-					if (iTick % iStep == 0)
-						graphics.DrawLine
-						(
-							fPixelPoint(fPix, 0._fPixel),
-							fPixelPoint(fPix, fPixSize.GetY()),
-							1._fPixel,
-							col
-						);
-				}
-			);
+		Color const colorfRes
+		(
+			colBase.r + (colTarget.r - colBase.r) * fFactor,
+			colBase.g + (colTarget.g - colBase.g) * fFactor,
+			colBase.b + (colTarget.b - colBase.b) * fFactor
+		);
+		return colorfRes;
+	}
+
+	void DrawAuxLines(D2D_driver& graphics,	float const fFactor = 1.0f)
+	{
+		drawAuxLines(graphics,  1, colAnimated(graphics.GetBackgroundColor(), D2D1::ColorF::LightGray, fFactor));  // 0xD3D3D3
+		drawAuxLines(graphics,  5, colAnimated(graphics.GetBackgroundColor(), D2D1::ColorF::DarkGray,  fFactor));  // 0xA9A9A9
+		drawAuxLines(graphics, 10, colAnimated(graphics.GetBackgroundColor(), D2D1::ColorF::Gray,      fFactor));  // 0x808080
 	}
 
 	void DisplayUnit(bool const bOn) { m_bDisplayUnit = bOn; }
@@ -144,6 +120,46 @@ private:
 	mutable wostringstream m_wstrBuffer;
 
 	// private functions
+
+	void drawAuxLines
+	(
+		D2D_driver& graphics,
+		int    const iStep,
+		Color  const col
+	)
+	{
+		fPixelRectSize const fPixSize { graphics.GetClRectSize() };
+		if (IsVertScale())
+			Apply2AllTicks
+			(
+				[this, &graphics, &fPixSize, iStep, col](fPixel const fPix, int const iTick)
+				{
+					if (iTick % iStep == 0)
+						graphics.DrawLine
+						(
+							fPixelPoint(0._fPixel, yPos(fPix)),
+							fPixelPoint(fPixSize.GetX(), yPos(fPix)),
+							1._fPixel,
+							col
+						);
+				}
+		);
+		else
+			Apply2AllTicks
+			(
+				[this, &graphics, &fPixSize, iStep, col](fPixel const fPix, int const iTick)
+				{
+					if (iTick % iStep == 0)
+						graphics.DrawLine
+						(
+							fPixelPoint(fPix, 0._fPixel),
+							fPixelPoint(fPix, fPixSize.GetY()),
+							1._fPixel,
+							col
+						);
+				}
+		);
+	}
 
 	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
 	{

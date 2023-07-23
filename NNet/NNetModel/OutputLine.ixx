@@ -75,10 +75,10 @@ private:
 
 	void drawPlug
 	(
-		DrawContext  const&,
-		float        const,
-		float        const,
-		D2D1::ColorF const
+		DrawContext const&,
+		float       const,
+		float       const,
+		Color       const
 	) const;
 };
 

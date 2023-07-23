@@ -10,6 +10,7 @@ module;
 module D2D_DrawContext;
 
 import Direct2D;
+import Color;
 import Types;
 
 using std::wstring;
@@ -43,7 +44,7 @@ void D2D_DrawContext::DrawLine
 	MicroMeterPnt const& umStartPoint,
 	MicroMeterPnt const& umEndPoint,
 	MicroMeter    const   umWidth,
-	ColorF        const   col,
+	Color         const   col,
 	fPixel        const   fPixMin
 ) const
 {
@@ -64,7 +65,7 @@ void D2D_DrawContext::DrawLine
 (
 	MicroMeterLine const & umLine, 
 	MicroMeter     const   umWidth, 
-	ColorF         const   col
+	Color          const   col
 ) const
 {
 	DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), umWidth, col	);
@@ -73,7 +74,7 @@ void D2D_DrawContext::DrawLine
 void D2D_DrawContext::FillCircle
 (
 	MicroMeterCircle const & umC,
-	ColorF           const   col,
+	Color            const   col,
 	fPixel           const   fPixMin
 ) const
 {
@@ -85,8 +86,8 @@ void D2D_DrawContext::FillCircle
 void D2D_DrawContext::FillGradientCircle
 (
 	MicroMeterCircle const & umCircle,
-	ColorF           const   col1,  
-	ColorF           const   col2  
+	Color            const   col1,  
+	Color            const   col2  
 ) const
 {
 	m_pGraphics->FillGradientCircle(m_coord.Transform2fPixelCircle(umCircle), col1, col2);
@@ -105,7 +106,7 @@ void D2D_DrawContext::DrawCircle
 void D2D_DrawContext::DrawCircle
 (
 	MicroMeterCircle const& umCircle,
-	ColorF           const  col,
+	Color            const  col,
 	fPixel           const  fPixWidth
 ) const
 {
@@ -133,7 +134,7 @@ void D2D_DrawContext::FillEllipse
 void D2D_DrawContext::FillEllipse
 (
 	MicroMeterEllipse const& umEllipse,
-	ColorF            const   col
+	Color             const   col
 ) const
 {
 	m_pGraphics->FillEllipse
@@ -151,7 +152,7 @@ void D2D_DrawContext::FillEllipse(MicroMeterEllipse const& umEllipse) const
 void D2D_DrawContext::DrawEllipse
 (
 	MicroMeterEllipse const & umEllipse,
-	ColorF            const   col,
+	Color             const   col,
 	MicroMeter        const   umWidth
 ) const
 {
@@ -190,7 +191,7 @@ void D2D_DrawContext::DrawBezier
 	MicroMeterPnt const& umPnt1,
 	MicroMeterPnt const& umPnt2,
 	MicroMeterPnt const& umPnt3,
-	D2D1::ColorF  const  col,
+	Color         const  col,
 	fPixel        const  fPixWidth
 ) const
 {
@@ -230,7 +231,7 @@ void D2D_DrawContext::FillArrow
 	MicroMeterPnt const & umVector, 
 	MicroMeter    const   umSize, 
 	MicroMeter    const   umWidth, 
-	ColorF        const   col
+	Color         const   col
 ) const
 {
 	m_pGraphics->FillArrow
@@ -243,17 +244,17 @@ void D2D_DrawContext::FillArrow
 	);
 }
 
-void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, ColorF col) const
+void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, Color col) const
 {
 	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), col);
 }
 
-void D2D_DrawContext::FillRoundedRectangle(MicroMeterRect const& umRect, ColorF col, MicroMeter const umRadius) const
+void D2D_DrawContext::FillRoundedRectangle(MicroMeterRect const& umRect, Color col, MicroMeter const umRadius) const
 {
 	m_pGraphics->FillRoundedRectangle(m_coord.Transform2fPixelRect(umRect), col, m_coord.Transform2fPixel(umRadius));
 }
 
-void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, ColorF col) const
+void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, Color col) const
 {
 	if (IsTooSmall(umRect))
 	{
