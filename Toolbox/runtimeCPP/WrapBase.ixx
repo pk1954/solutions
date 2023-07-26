@@ -83,6 +83,7 @@ public:
 
     void Write(wostream& out) const final
     {
+        WriteCmdName(out);
         PrefOnOff(out, m_boolType.Get());
     }
 

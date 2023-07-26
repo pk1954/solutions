@@ -107,6 +107,8 @@ public:
 	};
 
 private:
+	WinManager() {}  // static class
+
 	static inline wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
 	static inline wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
 

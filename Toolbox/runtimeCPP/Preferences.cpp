@@ -78,7 +78,6 @@ bool Preferences::WritePreferences() const
     size_t i = 0;
     for (auto const& it : m_prefVector)
     {
-        it->WriteCmdName(prefFile);
         it->Write(prefFile);
         prefFile << endl;
     }

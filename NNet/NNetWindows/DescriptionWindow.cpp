@@ -44,6 +44,7 @@ public:
 
     void Write(wostream& out) const final
     {
+        WriteCmdName(out);
         out << m_descWin.GetFontSize();
     }
 

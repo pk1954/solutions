@@ -4,6 +4,7 @@
 
 module;
 
+#include "Resource.h"
 #include <compare>
 #include <iostream>
 #include <string>
@@ -13,6 +14,7 @@ module;
 
 export module NNetWin32:NNetPreferences;
 
+import Win32_Util_Resource;
 import BoolType;
 import SoundInterface;
 import WrapBase;
@@ -28,14 +30,18 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-//export class ShowArrows : public BoolType
-//{
-//	bool Set(bool const bShow) final
-//	{
-//		bool const bOld = BoolType::Set(bShow);
-//		return bOld;
-//	}
-//};
+export class ShowArrowsBoolType : public BoolType
+{
+public:
+	using BoolType::BoolType;
+
+	bool Animate(bool const bShow)
+	{
+		bool const bOld = BoolType::Set(bShow);
+		WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, true);
+		return bOld;
+	}
+};
 
 export class NNetPreferences: public Preferences
 {
@@ -43,8 +49,6 @@ public:
 	void Initialize(NNetModelIO&);
 
 	void SetModelInterface(NNetModelReaderInterface const *);
-
-	void SetArrows(bool const, bool const);
 
 	enum class tInputCablesVisibility { all, nonStd, active, none };
 
@@ -54,8 +58,8 @@ public:
 	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 
-	BoolType m_bArrows       { false };
-	BoolType m_bSensorPoints { false };
+	ShowArrowsBoolType m_bArrows       { false };
+	BoolType           m_bSensorPoints { false };
 
 private:
 

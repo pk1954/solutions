@@ -51,22 +51,6 @@ protected:
     NNetPreferences& m_pref;
 };
 
-class WrapShowArrows : public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        m_pref.SetArrows(script.ScrReadBool(), false);
-    }
-
-    void Write(wostream& out) const final
-    {
-        PrefOnOff(out, m_pref.m_bArrows.Get());
-    }
-};
-
 class WrapInputCablesVisibility : public NNetWrapBase
 {
 public:
@@ -79,6 +63,7 @@ public:
 
     void Write(wostream& out) const final
     {
+        WriteCmdName(out);
         out << static_cast<int>(m_pref.InputCablesVisibility());
     }
 };
@@ -96,6 +81,7 @@ public:
 
     void Write(wostream& out) const final
     {
+        WriteCmdName(out);
         out << DOUBLE_QUOTE << m_pref.GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
     }
 };
@@ -130,8 +116,8 @@ public:
                 if (elem.m_pBaseWindow)
                 {
                     COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
-                    out << L"SetBKColor" << SPACE
-                        << elem.m_wstr << SPACE
+                    WriteCmdName(out);
+                    out << elem.m_wstr << SPACE
                         << L"RGB"
                         << OPEN_BRACKET
                         << GetRValue(col)
@@ -167,6 +153,7 @@ public:
         BaseWindow const* pBaseWin { WinManager::GetBaseWindow(idWinId) };
         MainWindow const* pMainWin { static_cast<MainWindow const *>(pBaseWin) };
 
+        WriteCmdName(out);
         out << wstrName << SPACE << pMainWin->GetScaleMode();
     }
 };
@@ -180,20 +167,14 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
     Add<WrapShowScales           >(L"ShowScales");
-    Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapColor                >(L"SetBKColor");
 
+    AddBoolWrapper(L"ShowArrows",       m_bArrows);
     AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
-    AddBoolWrapper(L"SetPerfMonMode", BaseWindow::m_bPerfMonMode);
+    AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
 {
     m_pNMRI = pNMRI;
-}
-
-void NNetPreferences::SetArrows(bool const bOn, bool const bAnimation)
-{
-    m_bArrows.Set(bOn);
-    WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, bAnimation);
 }
