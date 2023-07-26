@@ -135,7 +135,6 @@ private:
 	NNetModelIO              m_modelIO;
 	NNetModelWriterInterface m_nmwi;
 	NNetSimuRunning          m_simuRunning;
-	Observable               m_soundOnObservable;
 	Observable               m_highlightSigObservable;
 	Observable               m_cursorPosObservable;
 	Observable               m_staticModelObservable;

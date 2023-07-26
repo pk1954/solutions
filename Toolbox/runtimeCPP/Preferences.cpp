@@ -13,8 +13,8 @@ module Preferences;
 
 import Symtab;
 import Scanner;
+import WrapBase;
 import SoundInterface;
-import AutoOpen;
 
 using std::wofstream;
 using std::wostream;
@@ -25,9 +25,6 @@ using std::make_unique;
 using std::filesystem::exists;
 using std::filesystem::path;
 using std::filesystem::current_path;
-
-static wstring const PREF_ON  { L"ON"  };
-static wstring const PREF_OFF { L"OFF" };
 
 class WrapPrefBase : public WrapBase
 {
@@ -45,80 +42,16 @@ protected:
     Preferences& m_pref;
 };
 
-class WrapSetColorMenu : public WrapPrefBase
+void Preferences::Initialize(wstring const & wstrPrefFile)
 {
-public:
-    using WrapPrefBase::WrapPrefBase;
-
-    void operator() (Script& script) const final
-    {
-        Preferences::SetColorMenu(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        PrefOnOff(out, Preferences::ColorMenuVisible());
-    }
-};
-
-class WrapSetSound : public WrapPrefBase
-{
-public:
-    using WrapPrefBase::WrapPrefBase;
-
-    void operator() (Script& script) const final
-    {
-        m_pref.GetSound().Set(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        PrefOnOff(out, m_pref.GetSound().IsOn());
-    }
-};
-
-class WrapSetAutoOpen : public WrapPrefBase
-{
-public:
-    using WrapPrefBase::WrapPrefBase;
-
-    void operator() (Script& script) const final
-    {
-        bool bMode { script.ScrReadBool() };
-        if (bMode)
-            AutoOpen::On();
-        else
-            AutoOpen::Off();
-    }
-
-    void Write(wostream& out) const final
-    {
-        PrefOnOff(out, AutoOpen::IsOn());
-    }
-};
-
-void Preferences::Initialize
-(
-    wstring const & wstrPrefFile,
-    Sound         * pSound
-)
-{
-    m_pSound = pSound;
-
     m_wstrPreferencesFile = current_path().wstring();
     m_wstrPreferencesFile += L"\\" + wstrPrefFile;
 
-    Add<WrapSetColorMenu>(L"SetColorMenu");
-    Add<WrapSetSound    >(L"SetSound"    );
-    Add<WrapSetAutoOpen >(L"SetAutoOpen" );
+    WrapBaseBool::Initialize();
 
-    SymbolTable::ScrDefConst(PREF_OFF, 0L);
-    SymbolTable::ScrDefConst(PREF_ON, 1L);
-}
-
-void PrefOnOff(wostream& out, bool const bOn)
-{
-    out << (bOn ? PREF_ON : PREF_OFF);
+    AddBoolWrapper(L"SetSound",     m_bSound);
+    AddBoolWrapper(L"SetColorMenu", m_bColorMenu);
+    AddBoolWrapper(L"SetAutoOpen",  m_bAutoOpen);
 }
 
 bool Preferences::ReadPreferences() const

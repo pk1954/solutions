@@ -1,14 +1,12 @@
 # ***  User preferences
-SetColorMenu OFF
 SetSound ON
-SetAutoOpen ON
+SetColorMenu OFF
+SetAutoOpen OFF
 ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
-SetPerfMonMode OFF
 InputCablesVisibility 1
-ShowScales  31 43
+ShowScales IDM_MAIN_WINDOW 43
 
 ShowArrows ON
-ShowSensorPoints OFF
 SetBKColor SetBKColor IDM_MAIN_WINDOW RGB(0,0,0)
 SetBKColor IDM_MINI_WINDOW RGB(0,0,0)
 SetBKColor IDM_MONITOR_WINDOW RGB(0,0,0)
@@ -16,5 +14,7 @@ SetBKColor IDM_CRSR_WINDOW RGB(240,240,240)
 SetBKColor IDM_PERF_WINDOW RGB(240,240,240)
 SetBKColor IDM_SIG_DESIGNER RGB(0,0,0)
 
+ShowSensorPoints OFF
+SetPerfMonMode OFF
 DescWinFontSize 20
 # ***  End of Preferences

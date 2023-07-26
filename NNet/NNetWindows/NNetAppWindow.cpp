@@ -31,7 +31,6 @@ import BaseWindow;
 import Win32_Util;
 import Win32_PIXEL;
 import ScriptStack;
-import AutoOpen;
 import Signals;
 import Script;
 import NNetModel;
@@ -74,7 +73,6 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	Command        ::Initialize(&m_mainNNetWindow, & m_cmdStack);
 	m_modelIO       .Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
-	m_sound         .Initialize(&m_soundOnObservable);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize
 	(
@@ -136,7 +134,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle.Initialize(m_hwndApp);
 
-	m_preferences.Initialize(m_sound, m_modelIO, m_WinManager, m_mainNNetWindow, m_hwndApp);
+	m_preferences.Initialize(m_modelIO, m_WinManager);
 
 	m_signalDesigner.Initialize
 	(
@@ -244,7 +242,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_SlowMotionRatio       .RegisterObserver(m_slowMotionDisplay);
 	m_nmwi.GetParams()      .RegisterObserver(m_parameterDlg);
 	m_nmwi.GetParams()      .RegisterObserver(m_computeThread);
-	m_soundOnObservable     .RegisterObserver(m_appMenu);
+	m_preferences.m_bSound  .RegisterObserver(m_appMenu);
 	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
 	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
 	m_activeSigGenObservable.RegisterObserver(m_mainNNetWindow);
@@ -257,7 +255,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 //	::CreateWindowToolTip(m_statusBar.GetWindowHandle(), L"blah blah");
 
-	if (! AutoOpen::IsOn() || ! m_preferences.ReadPreferences())
+	if (!m_preferences.m_bAutoOpen.Get() || ! m_preferences.ReadPreferences())
 	{
 		ResetModelCmd::Push();
 		CreateInitialNobsCmd::Push();
@@ -290,7 +288,6 @@ void NNetAppWindow::Stop()
 	m_runObservable         .UnregisterAllObservers();
 	m_SlowMotionRatio       .UnregisterAllObservers();
 	m_nmwi.GetParams()      .UnregisterAllObservers();
-	m_soundOnObservable     .UnregisterAllObservers();
 
 	m_WinManager.RemoveAll();
 	m_nmwi.SetModel(nullptr);

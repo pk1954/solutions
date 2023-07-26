@@ -11,6 +11,7 @@ module;
 export module Win32_Sound;
 
 import Types;
+import Preferences;
 import SoundInterface;
 
 using std::wstring;
@@ -21,25 +22,29 @@ public:
 
 	void Play(wstring const & sound) const final
 	{
-		if (IsOn())
+		if (Preferences::m_bSound.Get())
 			::PlaySound(sound.c_str(), GetModuleHandle(NULL), SND_RESOURCE|SND_ASYNC|SND_NOSTOP); 
 	}
 
 	void Beep(SoundDescr const & desc) const final
 	{
 		if (
-			IsOn() && desc.m_bOn && 
+			Preferences::m_bSound.Get() && desc.m_bOn &&
 			(desc.m_frequency >= 37_Hertz) &&  // winapi limit 37 Hertz
 			(desc.m_duration > 0_MilliSecs) 
 		   ) 
 		{
-			::Beep(static_cast<DWORD>(desc.m_frequency.GetValue()), static_cast<DWORD>(desc.m_duration.GetValue()));
+			::Beep
+			(
+				desc.m_frequency.GetValue(), 
+				desc.m_duration .GetValue()
+			);
 		}
 	}
 
 	void Warning() const final
 	{
-		if (IsOn())
+		if (Preferences::m_bSound.Get())
 			MessageBeep(MB_ICONWARNING);
 	}
 };

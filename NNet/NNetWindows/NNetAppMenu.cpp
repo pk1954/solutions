@@ -18,7 +18,6 @@ import BaseWindow;
 import Win32_Util;
 import OnOffPair;
 import Commands;
-import AutoOpen;
 import NNetModel;
 import :ComputeThread;
 import :NNetPreferences;
@@ -141,12 +140,12 @@ void NNetAppMenu::Notify(bool const bImmediately)
     Util::Enable(m_hMenu, IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_PERF_WINDOW   )));
     Util::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
 
-    m_upOnOffArrows      ->EnableOnOff(m_hMenu, m_pPreferences->ArrowsVisible());
-    m_upOnOffSound       ->EnableOnOff(m_hMenu, m_pSound->IsOn());
-    m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, AutoOpen::IsOn());
+    m_upOnOffArrows      ->EnableOnOff(m_hMenu, m_pPreferences->m_bArrows.Get());
+    m_upOnOffSound       ->EnableOnOff(m_hMenu, m_pPreferences->m_bSound.Get());
+    m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, m_pPreferences->m_bAutoOpen.Get());
     m_upOnOffSensorPoints->EnableOnOff(m_hMenu, m_pPreferences->m_bSensorPoints.Get());
+    m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, m_pPreferences->m_bColorMenu.Get());
     m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow::m_bPerfMonMode.Get());
-    m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, m_pPreferences->ColorMenuVisible());
 
     DrawMenuBar(m_hwndApp);
 }

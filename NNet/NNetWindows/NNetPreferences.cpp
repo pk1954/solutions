@@ -16,6 +16,7 @@ module NNetWin32:NNetPreferences;
 
 import BoolType;
 import IoUtil;
+import WrapBase;
 import Win32_Util;
 import Win32_Util_Resource;
 import Script;
@@ -53,32 +54,6 @@ protected:
     WinManager& m_winMan;
 };
 
-class WrapBaseBool : public WrapBase
-{
-public:
-    WrapBaseBool
-    (
-        wstring const& wstrName,
-        BoolType     & boolType
-    )
-        : WrapBase(wstrName),
-          m_boolType(boolType)
-    {}
-
-    void operator() (Script& script) const final
-    {
-        m_boolType.Set(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        PrefOnOff(out, m_boolType.Get());
-    }
-
-protected:
-    BoolType& m_boolType;
-};
-
 class WrapShowArrows : public NNetWrapBase
 {
 public:
@@ -91,7 +66,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        PrefOnOff(out, m_pref.ArrowsVisible());
+        PrefOnOff(out, m_pref.m_bArrows.Get());
     }
 };
 
@@ -119,7 +94,7 @@ public:
     void operator() (Script& script) const final
     {
         m_pref.GetModelIO().SetModelFileName(script.ScrReadString());
-        PostMessage(m_pref.GetHwndApp(), WM_COMMAND, IDM_IMPORT_MODEL, 0);
+        m_pref.GetWinManager().PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
     }
 
     void Write(wostream& out) const final
@@ -190,7 +165,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        RootWinId  const   idWinId  { RootWinId(IDM_MAIN_WINDOW) };
+        RootWinId  const  idWinId  { RootWinId(IDM_MAIN_WINDOW) };
         wstring    const& wstrName { m_winMan.GetWindowName(idWinId) };
         BaseWindow const* pBaseWin { m_winMan.GetBaseWindow(idWinId) };
         MainWindow const* pMainWin { static_cast<MainWindow const *>(pBaseWin) };
@@ -199,26 +174,16 @@ public:
     }
 };
 
-void NNetPreferences::AddBool(wstring const& name, BoolType& boolType)
-{
-    AddWrapper(make_unique<WrapBaseBool>(name, boolType));
-}
-
 void NNetPreferences::Initialize
 (
-    Sound       & sound,
     NNetModelIO & modelIO,
-    WinManager  & winMan,
-    MainWindow  & mainWin,
-    HWND          hwndApp
+    WinManager  & winMan
 )
 {
-    Preferences::Initialize(L"NNetSimu_UserPreferences.txt", &sound);
+    Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
 
-    m_pSound      = &sound;
     m_pModelIO    = &modelIO;
     m_pWinManager = &winMan;
-    m_hwndApp     = hwndApp;
 
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
@@ -226,8 +191,8 @@ void NNetPreferences::Initialize
     Add<WrapShowArrows           >(L"ShowArrows");
     Add<WrapColor                >(L"SetBKColor");
 
-    AddBool(L"ShowSensorPoints", m_bSensorPoints);
-    AddBool(L"SetPerfMonMode", BaseWindow::m_bPerfMonMode);
+    AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
+    AddBoolWrapper(L"SetPerfMonMode", BaseWindow::m_bPerfMonMode);
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

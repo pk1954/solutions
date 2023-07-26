@@ -24,7 +24,6 @@ import ScriptFile;
 import Win32_Util;
 import NNetCommands;
 import Commands;
-import AutoOpen;
 import NNetModel;
 import :ComputeThread;
 import :MainWindow;
@@ -154,11 +153,11 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_SOUND_ON:
-        m_pSound->Set(true);
+        m_pPreferences->m_bSound.Set(true);
         break;
 
     case IDD_SOUND_OFF:
-        m_pSound->Set(false);
+        m_pPreferences->m_bSound.Set(false);
         break;
 
     case IDD_PERF_MON_MODE_ON:
@@ -167,11 +166,11 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_COLOR_MENU_ON:
-        m_pPreferences->SetColorMenu(true);
+        m_pPreferences->m_bColorMenu.Set(true);
         break;
 
     case IDD_COLOR_MENU_OFF:
-        m_pPreferences->SetColorMenu(false);
+        m_pPreferences->m_bColorMenu.Set(false);
         break;
 
     case IDM_INPUT_CABLES_ALL:

@@ -14,6 +14,7 @@ export module Preferences;
 
 export import WrapBase;
 
+import BoolType;
 import SoundInterface;
 
 using std::wostream;
@@ -22,33 +23,29 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-export void PrefOnOff(wostream&, bool const);
-
 export class Preferences
 {
 public:
-	void Initialize
-	(
-		wstring const&,
-		Sound*
-	);
+	void Initialize(wstring const&);
 
 	bool ReadPreferences() const;
 	bool WritePreferences() const;
 	
 	virtual void WriteAppPreferences(wostream&) const {};
 
-	static bool ColorMenuVisible() { return m_bColorMenu; }
-	static void SetColorMenu(bool const b) { m_bColorMenu = b; }
-
-	Sound& GetSound() { return *m_pSound; }
-
 	void AddWrapper(unique_ptr<WrapBase> upWrapper)
 	{
 		m_prefVector.push_back(move(upWrapper));
 	}
 
-	void PrefOnOff(wostream& out, bool const bOn) const;
+	void AddBoolWrapper(wstring const& name, BoolType& boolType)
+	{
+		AddWrapper(make_unique<WrapBaseBool>(name, boolType));
+	}
+
+	inline static BoolType m_bColorMenu { false };
+	inline static BoolType m_bAutoOpen  { false };
+	inline static BoolType m_bSound     { false };
 
 private:
 
@@ -61,6 +58,4 @@ private:
 	vector<unique_ptr<WrapBase>> m_prefVector;
 	wstring                      m_wstrPreferencesFile;
 	Sound                      * m_pSound     { nullptr };
-
-	inline static bool m_bColorMenu { false };
 };

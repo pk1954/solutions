@@ -9,6 +9,7 @@ module;
 export module SoundInterface;
 
 import Observable;
+import BoolType;
 import Types;
 
 using std::wstring;
@@ -25,25 +26,10 @@ export class Sound
 public:
 	virtual ~Sound() = default;
 
-	void Initialize(Observable * const pObservable) const
-	{
-		m_pObservable = pObservable;
-	}
-
 	virtual void Play(wstring    const &) const = 0;
 	virtual void Beep(SoundDescr const &) const = 0;
 	virtual void Warning()                const = 0;
 
-	void Set(bool const bActive)
-	{
-		m_bActive = bActive;
-		m_pObservable->NotifyAll(true);
-	}
-
-	bool IsOn() const { return m_bActive; }
-
 private:
 
-	inline static Observable * m_pObservable { nullptr };
-	inline static bool         m_bActive     { true };
 };

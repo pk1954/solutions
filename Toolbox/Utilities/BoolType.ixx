@@ -4,7 +4,9 @@
 
 export module BoolType;
 
-export class BoolType
+import Observable;
+
+export class BoolType: public Observable
 {
 public:
     BoolType(bool const bValue)
@@ -15,6 +17,7 @@ public:
     {
         bool const bOld { m_bValue };
         m_bValue = bNew;
+        NotifyAll(true);
         return bOld;
     }
 

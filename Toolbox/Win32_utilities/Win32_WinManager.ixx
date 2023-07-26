@@ -92,8 +92,13 @@ public:
 	}
 
 	LRESULT SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0) const
-	{ 
+	{
 		return GetBaseWindow(id)->SendCommand(wParam, lParam);
+	}
+
+	LRESULT PostCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0) const
+	{
+		return GetBaseWindow(id)->PostCommand(wParam, lParam);
 	}
 
 	bool IsMoveable(RootWinId const id) const // can throw out_of_range exception
