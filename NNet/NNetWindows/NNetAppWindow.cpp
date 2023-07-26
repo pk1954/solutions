@@ -71,12 +71,12 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
 	Command        ::Initialize(&m_mainNNetWindow, & m_cmdStack);
+	WinManager     ::Initialize();
 	m_modelIO       .Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize
 	(
-		& m_WinManager,
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_sound,
@@ -134,7 +134,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle.Initialize(m_hwndApp);
 
-	m_preferences.Initialize(m_modelIO, m_WinManager);
+	m_preferences.Initialize(m_modelIO);
 
 	m_signalDesigner.Initialize
 	(
@@ -156,7 +156,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_statusBar        .SetRefreshRate(300ms);
 
-	m_appMenu          .Start(m_hwndApp, m_computeThread, m_WinManager, m_cmdStack, m_sound, m_preferences);
+	m_appMenu          .Start(m_hwndApp, m_computeThread, m_cmdStack, m_sound, m_preferences);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp, m_preferences);
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
@@ -188,16 +188,16 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main window
 
-	m_WinManager.AddWindow(L"IDM_APPL_WINDOW",    RootWinId(IDM_APPL_WINDOW   ), m_hwndApp,                      true,  true );
-	m_WinManager.AddWindow(L"IDM_STATUS_BAR",     RootWinId(IDM_STATUS_BAR    ), m_statusBar.GetWindowHandle(),  false, false);
-	m_WinManager.AddWindow(L"IDM_CRSR_WINDOW",    RootWinId(IDM_CRSR_WINDOW   ), m_crsrWindow,                   true,  false);
-	m_WinManager.AddWindow(L"IDM_DESC_WINDOW",    RootWinId(IDM_DESC_WINDOW   ), m_descWindow.GetWindowHandle(), true,  true );
-	m_WinManager.AddWindow(L"IDM_MAIN_WINDOW",    RootWinId(IDM_MAIN_WINDOW   ), m_mainNNetWindow,               true,  false);
-	m_WinManager.AddWindow(L"IDM_MINI_WINDOW",    RootWinId(IDM_MINI_WINDOW   ), m_miniNNetWindow,               true,  true );
-	m_WinManager.AddWindow(L"IDM_MONITOR_WINDOW", RootWinId(IDM_MONITOR_WINDOW), m_monitorWindow,                true,  true );
-	m_WinManager.AddWindow(L"IDM_PARAM_WINDOW",   RootWinId(IDM_PARAM_WINDOW  ), m_parameterDlg,                 true,  false);
-	m_WinManager.AddWindow(L"IDM_PERF_WINDOW",    RootWinId(IDM_PERF_WINDOW   ), m_performanceWindow,            true,  false);
-	m_WinManager.AddWindow(L"IDM_SIG_DESIGNER",   RootWinId(IDM_SIG_DESIGNER  ), m_signalDesigner,               true,  true );
+	WinManager::AddWindow(L"IDM_APPL_WINDOW",    RootWinId(IDM_APPL_WINDOW   ), m_hwndApp,                      true,  true );
+	WinManager::AddWindow(L"IDM_STATUS_BAR",     RootWinId(IDM_STATUS_BAR    ), m_statusBar.GetWindowHandle(),  false, false);
+	WinManager::AddWindow(L"IDM_CRSR_WINDOW",    RootWinId(IDM_CRSR_WINDOW   ), m_crsrWindow,                   true,  false);
+	WinManager::AddWindow(L"IDM_DESC_WINDOW",    RootWinId(IDM_DESC_WINDOW   ), m_descWindow.GetWindowHandle(), true,  true );
+	WinManager::AddWindow(L"IDM_MAIN_WINDOW",    RootWinId(IDM_MAIN_WINDOW   ), m_mainNNetWindow,               true,  false);
+	WinManager::AddWindow(L"IDM_MINI_WINDOW",    RootWinId(IDM_MINI_WINDOW   ), m_miniNNetWindow,               true,  true );
+	WinManager::AddWindow(L"IDM_MONITOR_WINDOW", RootWinId(IDM_MONITOR_WINDOW), m_monitorWindow,                true,  true );
+	WinManager::AddWindow(L"IDM_PARAM_WINDOW",   RootWinId(IDM_PARAM_WINDOW  ), m_parameterDlg,                 true,  false);
+	WinManager::AddWindow(L"IDM_PERF_WINDOW",    RootWinId(IDM_PERF_WINDOW   ), m_performanceWindow,            true,  false);
+	WinManager::AddWindow(L"IDM_SIG_DESIGNER",   RootWinId(IDM_SIG_DESIGNER  ), m_signalDesigner,               true,  true );
 
 	configureStatusBar();
 	adjustChildWindows();
@@ -217,7 +217,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_descWindow       .Show(true);
 	m_signalDesigner   .Show(true);
 
-	if (! m_WinManager.GetWindowConfiguration())
+	if (! WinManager::GetWindowConfiguration())
 		Util::Show(m_hwndApp, true);
 
 	m_dynamicModelObservable.RegisterObserver(m_mainNNetWindow);
@@ -289,7 +289,7 @@ void NNetAppWindow::Stop()
 	m_SlowMotionRatio       .UnregisterAllObservers();
 	m_nmwi.GetParams()      .UnregisterAllObservers();
 
-	m_WinManager.RemoveAll();
+	WinManager::RemoveAll();
 	m_nmwi.SetModel(nullptr);
 }
 
@@ -378,7 +378,7 @@ void NNetAppWindow::OnClose()
 		m_computeThread.StopComputation();
 		if (! AskAndSave())
 			return;
-		m_WinManager.StoreWindowConfiguration();
+		WinManager::StoreWindowConfiguration();
 		Stop();
 	}
 }

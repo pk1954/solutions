@@ -7,6 +7,7 @@ module;
 #include <string>
 #include <fstream>
 #include <map>
+#include <memory>
 #include <Windows.h>
 
 export module WinManager;
@@ -23,6 +24,7 @@ import RootWindow;
 
 using std::wstring;
 using std::wofstream;
+using std::unique_ptr;
 using std::map;
 
 export using RootWinId = NamedType<int, struct RootWinId_Parameter>;
@@ -31,108 +33,69 @@ export class WinManager
 {
 public:
 
-	WinManager();
+	static void Initialize();
 
-	void AddWindow(wstring const &, RootWinId const, HWND,         bool const, bool const);
-	void AddWindow(wstring const &, RootWinId const, BaseWindow &, bool const, bool const);
-	void AddWindow(wstring const &, RootWinId const, BaseDialog &, bool const, bool const);
+	static void AddWindow(wstring const &, RootWinId const, HWND,         bool const, bool const);
+	static void AddWindow(wstring const &, RootWinId const, BaseWindow &, bool const, bool const);
+	static void AddWindow(wstring const &, RootWinId const, BaseDialog &, bool const, bool const);
 
-	void RemoveWindow(RootWinId const id) { m_map.erase(id); }
-	void RemoveAll   ()                   { m_map.clear(); }
-	void SetCaptions () 
+	static void RemoveWindow(RootWinId const id) { m_upMap->erase(id); }
+	static void RemoveAll   ()                   { m_upMap->clear(); }
+	static void SetCaptions ()
 	{
-		for (const auto& [key, value] : m_map)
+		for (const auto& [key, value] : *m_upMap.get())
 			::SendMessage(value.m_hwnd, WM_APP_CAPTION, 0, 0);
 	}
 
-	void Apply2All(auto const & f) const
+	static void Apply2All(auto const & f)
 	{
-		for (const auto & [key, value] : m_map)
+		for (const auto & [key, value] : *m_upMap.get())
 			f(key, value);
 	}                        
 
-	wstring const & GetWindowName(RootWinId const id) const // can throw out_of_range exception
-	{
-		return m_map.at(id).m_wstr;
-	}
-
-	HWND GetHWND(RootWinId const id) const // can throw out_of_range exception
-	{
-		return m_map.at(id).m_hwnd;
-	}
-
-	void BringToTop(RootWinId const id) const
+	static void BringToTop(RootWinId const id)
 	{
 		HWND hwnd { GetHWND(id) };
 		BringWindowToTop(hwnd);
 		ShowWindow(hwnd, SW_SHOWNORMAL);
 	}
 
-	void AdjustRight(RootWinId const id, PIXEL const pixYpos = 0_PIXEL) const
-	{
-		Util::AdjustRight(GetHWND(id), pixYpos);
-	}
+	static void AdjustRight(RootWinId const id, PIXEL const p = 0_PIXEL) { Util::AdjustRight(GetHWND(id), p); }
+	static void AdjustLeft (RootWinId const id, PIXEL const p = 0_PIXEL) { Util::AdjustLeft(GetHWND(id), p);	}
 
-	void AdjustLeft(RootWinId const id, PIXEL const pixYpos = 0_PIXEL) const
-	{
-		Util::AdjustLeft(GetHWND(id), pixYpos);
-	}
+	static wstring const& GetWindowName(RootWinId const id) { return m_upMap->at(id).m_wstr; }
+	static HWND           GetHWND      (RootWinId const id) { return m_upMap->at(id).m_hwnd; }
+	static BaseWindow   * GetBaseWindow(RootWinId const id) { return m_upMap->at(id).m_pBaseWindow; }
+	static bool           IsMoveable   (RootWinId const id) { return m_upMap->at(id).m_bTrackPosition; }
+	static bool           IsSizeable   (RootWinId const id) { return m_upMap->at(id).m_bTrackSize; }
+	static bool           IsVisible    (RootWinId const id) { return IsWindowVisible(GetHWND(id)); }
 
-	BaseWindow * GetBaseWindow(RootWinId const id) const // can throw out_of_range exception
+	static RootWinId GetIdFromRootWindow(HWND const hwnd)
 	{
-		return m_map.at(id).m_pBaseWindow;
-	}
-
-	RootWinId GetIdFromRootWindow(HWND const hwnd) const
-	{
-		for (const auto & [key, value] : m_map)
+		for (const auto & [key, value] : *m_upMap.get())
 			if (value.m_hwnd == hwnd)
 				return key; 
 		return RootWinId(-1);
 	}
 
-	LRESULT SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0) const
+	static LRESULT SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0)
 	{
 		return GetBaseWindow(id)->SendCommand(wParam, lParam);
 	}
 
-	LRESULT PostCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0) const
+	static LRESULT PostCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0)
 	{
 		return GetBaseWindow(id)->PostCommand(wParam, lParam);
 	}
 
-	bool IsMoveable(RootWinId const id) const // can throw out_of_range exception
-	{
-		return m_map.at(id).m_bTrackPosition;
-	}
+	static void Show(RootWinId const id, tBoolOp const op) { Util::Show(GetHWND(id), op);	}
 
-	bool IsSizeable(RootWinId const id) const // can throw out_of_range exception
-	{
-		return m_map.at(id).m_bTrackSize;
-	}
+	static void SetWindowConfigurationFile(wstring const& n) { m_strWindowConfigurationFile = n; };
 
-	bool IsVisible(RootWinId const id) const // can throw out_of_range exception
-	{
-		return IsWindowVisible(GetHWND(id));
-	}
+	static void IncNrOfMonitorConfigurations() { ++m_iNrOfMonitorConfigurations; };
 
-	void Show(RootWinId const id, tBoolOp const op) const
-	{
-		Util::Show(GetHWND(id), op);
-	}
-
-	void SetWindowConfigurationFile(wstring const & fileName) 
-	{ 
-		m_strWindowConfigurationFile = fileName; 
-	};
-
-	void IncNrOfMonitorConfigurations() 
-	{ 
-		++m_iNrOfMonitorConfigurations; 
-	};
-
-	bool GetWindowConfiguration() const;
-	void StoreWindowConfiguration();
+	static bool GetWindowConfiguration();
+	static void StoreWindowConfiguration();
 
 	struct MAP_ELEMENT
 	{
@@ -144,20 +107,20 @@ public:
 	};
 
 private:
-	wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
-	wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
+	static inline wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
+	static inline wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
 
-	map<RootWinId, MAP_ELEMENT> m_map;
+	static inline unique_ptr<map<RootWinId, MAP_ELEMENT>> m_upMap;
 
-	wstring m_strWindowConfigurationFile { L"" };
-	int     m_iNrOfMonitorConfigurations { 0 };
+	static inline wstring m_strWindowConfigurationFile { L"" };
+	static inline int     m_iNrOfMonitorConfigurations { 0 };
 
-	ScriptErrorHandler::ScriptException m_errorInfo {};
+	static inline ScriptErrorHandler::ScriptException m_errorInfo {};
 
-	void dumpMonitorConfiguration() const;
-	void dumpWindowCoordinates(wofstream &, MAP_ELEMENT const&) const;
+	static void dumpMonitorConfiguration();
+	static void dumpWindowCoordinates(wofstream &, MAP_ELEMENT const&);
 
-	void addWindow
+	static void addWindow
 	(
 		wstring      const &,
 		RootWinId    const,

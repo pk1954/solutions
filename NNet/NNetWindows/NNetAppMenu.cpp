@@ -39,7 +39,6 @@ void NNetAppMenu::Start
 (
 	HWND            const   hwndApp,
 	ComputeThread   const & computeThread,
-	WinManager      const & winManager,
 	CommandStack    const & commandStack,
 	Sound           const & sound,
     NNetPreferences const & preferences
@@ -49,7 +48,6 @@ void NNetAppMenu::Start
 
 	m_hwndApp        = hwndApp;
 	m_pComputeThread = & computeThread;
-	m_pWinManager    = & winManager;
 	m_pCommandStack  = & commandStack;
 	m_pSound         = & sound;
     m_pPreferences   = & preferences;
@@ -132,13 +130,13 @@ void NNetAppMenu::Notify(bool const bImmediately)
     Util::Enable(m_hMenu, IDM_FORWARD,            ! m_pComputeThread->IsRunning());
     Util::Enable(m_hMenu, IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
 
-    Util::Enable(m_hMenu, IDM_DESC_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_DESC_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_CRSR_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_MINI_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_MINI_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_MONITOR_WINDOW, ! m_pWinManager->IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
-    Util::Enable(m_hMenu, IDM_PARAM_WINDOW,   ! m_pWinManager->IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
-    Util::Enable(m_hMenu, IDM_PERF_WINDOW,    ! m_pWinManager->IsVisible(RootWinId(IDM_PERF_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! m_pWinManager->IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
+    Util::Enable(m_hMenu, IDM_DESC_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_DESC_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_CRSR_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_MINI_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_MINI_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_MONITOR_WINDOW, ! WinManager::IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
+    Util::Enable(m_hMenu, IDM_PARAM_WINDOW,   ! WinManager::IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
+    Util::Enable(m_hMenu, IDM_PERF_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_PERF_WINDOW   )));
+    Util::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
 
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, m_pPreferences->m_bArrows.Get());
     m_upOnOffSound       ->EnableOnOff(m_hMenu, m_pPreferences->m_bSound.Get());

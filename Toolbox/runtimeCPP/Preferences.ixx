@@ -57,5 +57,4 @@ private:
 
 	vector<unique_ptr<WrapBase>> m_prefVector;
 	wstring                      m_wstrPreferencesFile;
-	Sound                      * m_pSound     { nullptr };
 };

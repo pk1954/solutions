@@ -156,7 +156,6 @@ private:
 	StatusBarDisplayFunctor  m_statusBarDispFunctor;
 	TimeDisplay              m_timeDisplay;
 	UndoRedoMenu             m_undoRedoMenu;
-	WinManager               m_WinManager;
 	WinSound                 m_sound;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;

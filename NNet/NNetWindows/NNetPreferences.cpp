@@ -41,17 +41,14 @@ public:
     NNetWrapBase
     (
         wstring const& wstrName,
-        NNetPreferences& pref,
-        WinManager& winMan
+        NNetPreferences& pref
     )
         : WrapBase(wstrName),
-        m_pref(pref),
-        m_winMan(winMan)
+        m_pref(pref)
     {}
 
 protected:
     NNetPreferences& m_pref;
-    WinManager& m_winMan;
 };
 
 class WrapShowArrows : public NNetWrapBase
@@ -94,7 +91,7 @@ public:
     void operator() (Script& script) const final
     {
         m_pref.GetModelIO().SetModelFileName(script.ScrReadString());
-        m_pref.GetWinManager().PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
+        WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
     }
 
     void Write(wostream& out) const final
@@ -120,13 +117,13 @@ public:
         unsigned short usBlue  { script.ScrReadUshort() };
         script.ScrReadSpecial(CLOSE_BRACKET);
         COLORREF          col { RGB(usRed, usGreen, usBlue) };
-        BaseWindow * pBaseWin { m_winMan.GetBaseWindow(id) };
+        BaseWindow * pBaseWin { WinManager::GetBaseWindow(id) };
         pBaseWin->SetBackgroundColorRef(col);
     }
 
     void Write(wostream& out) const final
     {
-        m_winMan.Apply2All
+        WinManager::Apply2All
         (
             [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
             {
@@ -159,31 +156,26 @@ public:
     {
         unsigned int uiWinId { script.ScrReadUint() };
         unsigned int uiState { script.ScrReadUint() };
-        BaseWindow *pBaseWin { m_winMan.GetBaseWindow(RootWinId(uiWinId)) };
+        BaseWindow *pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
         pBaseWin->SendCommand(uiWinId, false);
     }
 
     void Write(wostream& out) const final
     {
         RootWinId  const  idWinId  { RootWinId(IDM_MAIN_WINDOW) };
-        wstring    const& wstrName { m_winMan.GetWindowName(idWinId) };
-        BaseWindow const* pBaseWin { m_winMan.GetBaseWindow(idWinId) };
+        wstring    const& wstrName { WinManager::GetWindowName(idWinId) };
+        BaseWindow const* pBaseWin { WinManager::GetBaseWindow(idWinId) };
         MainWindow const* pMainWin { static_cast<MainWindow const *>(pBaseWin) };
 
-        out << wstrName << SPACE << pMainWin->GetScaleMode() << endl;
+        out << wstrName << SPACE << pMainWin->GetScaleMode();
     }
 };
 
-void NNetPreferences::Initialize
-(
-    NNetModelIO & modelIO,
-    WinManager  & winMan
-)
+void NNetPreferences::Initialize(NNetModelIO & modelIO)
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
 
-    m_pModelIO    = &modelIO;
-    m_pWinManager = &winMan;
+    m_pModelIO = &modelIO;
 
     Add<WrapReadModel            >(L"ReadModel");
     Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
@@ -203,5 +195,5 @@ void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
 void NNetPreferences::SetArrows(bool const bOn, bool const bAnimation)
 {
     m_bArrows.Set(bOn);
-    m_pWinManager->SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, bAnimation);
+    WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, bAnimation);
 }

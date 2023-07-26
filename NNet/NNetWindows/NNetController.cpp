@@ -14,6 +14,7 @@ module NNetWin32:NNetController;
 
 import Win32_Util_Resource;
 import SlowMotionRatio;
+import Scanner;
 import SaveCast;
 import Observable;
 import Win32_Sound;
@@ -35,7 +36,6 @@ using std::endl;
 
 void NNetController::Initialize
 (
-    WinManager      * const pWinManager,
     ComputeThread   * const pComputeThread,
     SlowMotionRatio * const pSlowMotionRatio,
     Sound           * const pSound,
@@ -44,7 +44,6 @@ void NNetController::Initialize
     MonitorWindow   * const pMonitorWindow
 ) 
 {
-    m_pWinManager      = pWinManager;
     m_pSlowMotionRatio = pSlowMotionRatio;
     m_pComputeThread   = pComputeThread;
     m_pSound           = pSound;
@@ -56,7 +55,6 @@ void NNetController::Initialize
 
 NNetController::~NNetController()
 {
-    m_pWinManager      = nullptr;
     m_pNMRI            = nullptr;
     m_pSlowMotionRatio = nullptr;
     m_pComputeThread   = nullptr;
@@ -119,7 +117,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     case IDM_MINI_WINDOW:
     case IDM_MONITOR_WINDOW:
     case IDM_PARAM_WINDOW:
-        m_pWinManager->SendCommand(RootWinId(wmId), IDM_WINDOW_ON);
+        WinManager::SendCommand(RootWinId(wmId), IDM_WINDOW_ON);
         break;
 
     case IDM_SLOWER:
@@ -162,7 +160,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 
     case IDD_PERF_MON_MODE_ON:
         BaseWindow::m_bPerfMonMode.Set(true);
-        m_pWinManager->SetCaptions();
+        WinManager::SetCaptions();
         break;
 
     case IDD_COLOR_MENU_ON:
@@ -202,18 +200,18 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     {
     case IDD_NEW_SIGNAL_GENERATOR:
         NewSigGenCmd::Push();
-        m_pWinManager->SendCommand(RootWinId(IDM_SIG_DESIGNER),IDM_WINDOW_ON);
+        WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER),IDM_WINDOW_ON);
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
         SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)));
-        m_pWinManager->SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
+        WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
         break;
 
     case IDM_COPY_SELECTION:
     case IDM_DELETE:   // keyboard delete key
     case IDM_ESCAPE:
-        m_pWinManager->SendCommand(RootWinId(IDM_MAIN_WINDOW), wmId);
+        WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), wmId);
         Script::StopProcessing();
         break;
 

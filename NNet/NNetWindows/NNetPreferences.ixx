@@ -28,14 +28,19 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
+//export class ShowArrows : public BoolType
+//{
+//	bool Set(bool const bShow) final
+//	{
+//		bool const bOld = BoolType::Set(bShow);
+//		return bOld;
+//	}
+//};
+
 export class NNetPreferences: public Preferences
 {
 public:
-	void Initialize
-	(
-		NNetModelIO&,
-		WinManager&
-	);
+	void Initialize(NNetModelIO&);
 
 	void SetModelInterface(NNetModelReaderInterface const *);
 
@@ -49,8 +54,6 @@ public:
 	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 
-	WinManager& GetWinManager() { return *m_pWinManager; }
-
 	BoolType m_bArrows       { false };
 	BoolType m_bSensorPoints { false };
 
@@ -59,11 +62,10 @@ private:
 	template <Wrap_t WRAPPER>
 	void Add(wstring const& name)
 	{
-		AddWrapper(make_unique<WRAPPER>(name, *this, *m_pWinManager));
+		AddWrapper(make_unique<WRAPPER>(name, *this));
 	}
 
 	NNetModelIO                    * m_pModelIO              { nullptr };
 	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
-	WinManager                     * m_pWinManager           { nullptr };
 };

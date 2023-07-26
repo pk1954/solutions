@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <memory>
 #include <map>
 
 import Scanner;
@@ -28,6 +29,8 @@ using std::wostream;
 using std::wofstream;
 using std::to_wstring;
 using std::wstring;
+using std::make_unique;
+using std::map;
 
 using Util::operator==;
 using Util::operator!=;
@@ -36,20 +39,16 @@ using Util::operator<<;
 class WrapMoveWindow : public ScriptFunctor // WrapBase
 {
 public:
-    explicit WrapMoveWindow(WinManager* pWinManager) :
-        m_pWinManager(pWinManager)
-    { };
-
     void operator() (Script & script) const final
     {
 	    RootWinId id(script.ScrReadInt());
 		if (id.GetValue() > 0)
 		{
 			PixelRect pixRect = ScrReadPixelRect(script);
-			if (m_pWinManager->IsMoveable(id))
+			if (WinManager::IsMoveable(id))
 			{
-				HWND const hwnd = m_pWinManager->GetHWND(id);
-                if (m_pWinManager->IsSizeable(id))
+				HWND const hwnd = WinManager::GetHWND(id);
+                if (WinManager::IsSizeable(id))
                 {
                     bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect, true);
                     assert(bRes);
@@ -66,27 +65,18 @@ public:
 
 private:
     inline static const wstring NAME { L"MoveWindow" };
-
-    WinManager * m_pWinManager;
 };
 
 class WrapShowWindow : public ScriptFunctor
 {
 public:
-    explicit WrapShowWindow(WinManager * pWinManager) :
-        m_pWinManager(pWinManager)
-    { };
-
     void operator() (Script & script) const final
     {
 	    RootWinId const id      (script.ScrReadInt());
 		INT       const iCmdShow(script.ScrReadInt());  // WM_HIDE, WM_SHOW, ...
 		if (id.GetValue() > 0)
-			ShowWindow(m_pWinManager->GetHWND(id), iCmdShow);
+			ShowWindow(WinManager::GetHWND(id), iCmdShow);
     }
-
-private:
-    WinManager * m_pWinManager;
 };
 
 //
@@ -170,10 +160,6 @@ static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwD
 class WrapMonitorConfiguration : public ScriptFunctor
 {
 public:
-    explicit WrapMonitorConfiguration(WinManager * pWinManager) :
-        m_pWinManager(pWinManager)
-    { };
-    
     void operator() (Script & script) const final     // process one monitor configuration
     {
         CHECK_MON_STRUCT monStruct;
@@ -200,16 +186,13 @@ public:
         }
 
         if (monStruct.m_bCheckResult)
-            m_pWinManager->SetWindowConfigurationFile(wstrFileName);
+            WinManager::SetWindowConfigurationFile(wstrFileName);
 
-        m_pWinManager->IncNrOfMonitorConfigurations();
+        WinManager::IncNrOfMonitorConfigurations();
     }
-
-private:
-    WinManager * m_pWinManager;
 };
 
-bool WinManager::GetWindowConfiguration() const
+bool WinManager::GetWindowConfiguration()
 {
     bool bRes { false };
 
@@ -277,7 +260,7 @@ static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwDa
     return true;
 }
 
-void WinManager::dumpMonitorConfiguration() const
+void WinManager::dumpMonitorConfiguration()
 {
     wofstream ostr(MONITOR_CONFIG_FILE, wofstream::app);
 	
@@ -294,7 +277,7 @@ void WinManager::dumpWindowCoordinates
 (
     wofstream & ostr,
     MAP_ELEMENT const &elem
-) const
+)
 {
     if (elem.m_bTrackPosition)
     {
@@ -330,22 +313,24 @@ void WinManager::StoreWindowConfiguration()
     }
 
     wofstream ostr(m_strWindowConfigurationFile, wofstream::out);
-    for (const auto& [key, value] : m_map)
+    for (const auto& [key, value] : *m_upMap.get())
         dumpWindowCoordinates(ostr, value);
     ostr.close();
 }
 
-WinManager::WinManager()
+void WinManager::Initialize()
 {
-    SymbolTable::ScrDefConst(L"MoveWindow",           new WrapMoveWindow(this));
-    SymbolTable::ScrDefConst(L"ShowWindow",           new WrapShowWindow(this));
-    SymbolTable::ScrDefConst(L"MonitorConfiguration", new WrapMonitorConfiguration(this));
+    SymbolTable::ScrDefConst(L"MoveWindow",           new WrapMoveWindow());
+    SymbolTable::ScrDefConst(L"ShowWindow",           new WrapShowWindow());
+    SymbolTable::ScrDefConst(L"MonitorConfiguration", new WrapMonitorConfiguration());
 
     SymbolTable::ScrDefConst(L"SW_RESTORE",    static_cast<unsigned long>(SW_RESTORE   ));
     SymbolTable::ScrDefConst(L"SW_SHOWNORMAL", static_cast<unsigned long>(SW_SHOWNORMAL));
     SymbolTable::ScrDefConst(L"SW_MAXIMIZE",   static_cast<unsigned long>(SW_MAXIMIZE  ));
     SymbolTable::ScrDefConst(L"SW_SHOW",       static_cast<unsigned long>(SW_SHOW      ));
     SymbolTable::ScrDefConst(L"SW_HIDE",       static_cast<unsigned long>(SW_HIDE      ));
+
+    m_upMap = make_unique<map<RootWinId, MAP_ELEMENT>>();
 }
 
 void WinManager::addWindow
@@ -360,7 +345,7 @@ void WinManager::addWindow
 {
     if (id.GetValue() > 0)
     {
-        m_map.try_emplace(id, MAP_ELEMENT(pBaseWindow, wstrName, hwnd, bTrackPosition, bTrackSize));
+        m_upMap->try_emplace(id, MAP_ELEMENT(pBaseWindow, wstrName, hwnd, bTrackPosition, bTrackSize));
         SymbolTable::ScrDefConst(wstrName, static_cast<unsigned long>(id.GetValue()));
     }
 }

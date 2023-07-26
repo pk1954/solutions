@@ -33,7 +33,6 @@ public:
 	(
 		HWND            const, 
 		ComputeThread   const &, 
-		WinManager      const &,
 		CommandStack    const &,
 		Sound           const &,
 		NNetPreferences const &
@@ -48,7 +47,6 @@ private:
 	HMENU                   m_hMenuSigGen    { nullptr };
 	ComputeThread   const * m_pComputeThread { nullptr };
 	NNetPreferences const * m_pPreferences   { nullptr };
-	WinManager      const * m_pWinManager    { nullptr };
 	CommandStack    const * m_pCommandStack  { nullptr };
 	Sound           const * m_pSound         { nullptr };
 

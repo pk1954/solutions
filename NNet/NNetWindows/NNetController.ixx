@@ -33,7 +33,6 @@ public:
 
 	void Initialize
 	(
-		WinManager      * const,
 		ComputeThread   * const,
 		SlowMotionRatio * const,
 		Sound           * const,
@@ -60,7 +59,6 @@ private:
 	bool                       m_bBlockedUI             { false };
 	HCURSOR                    m_hCrsrWait              { nullptr };
 	Sound                    * m_pSound                 { nullptr };
-	WinManager               * m_pWinManager            { nullptr };
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
