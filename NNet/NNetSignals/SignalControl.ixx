@@ -12,6 +12,7 @@ export module NNetSignals:SignalControl;
 
 import Types;
 import Scale;
+import Color;
 import PixFpDimension;
 import Direct2D;
 import NNetModel;

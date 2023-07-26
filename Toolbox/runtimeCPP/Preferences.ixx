@@ -22,6 +22,8 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
+export void PrefOnOff(wostream&, bool const);
+
 export class Preferences
 {
 public:
@@ -45,6 +47,8 @@ public:
 	{
 		m_prefVector.push_back(move(upWrapper));
 	}
+
+	void PrefOnOff(wostream& out, bool const bOn) const;
 
 private:
 

@@ -13,6 +13,7 @@ module;
 
 export module NNetWin32:NNetPreferences;
 
+import BoolType;
 import SoundInterface;
 import WrapBase;
 import WinManager;
@@ -43,11 +44,8 @@ public:
 
 	void SetModelInterface(NNetModelReaderInterface const *);
 
-	void SetArrows      (bool const, bool const);
-	void SetSensorPoints(bool const b) { m_bSensorPoints = b; }
-
-	bool ArrowsVisible      () const { return m_bArrows; }
-	bool SensorPointsVisible() const { return m_bSensorPoints; }
+	void SetArrows(bool const, bool const);
+	bool ArrowsVisible() const { return m_bArrows.Get(); }
 
 	Sound& GetSound() { return *m_pSound; }
 
@@ -62,23 +60,23 @@ public:
 
 	WinManager& GetWinManager() { return *m_pWinManager; }
 
-private:
+	BoolType m_bArrows       { false };
+	BoolType m_bSensorPoints { false };
 
-	void WriteAppPreferences(wostream&) const final;
+private:
 
 	template <Wrap_t WRAPPER>
 	void Add(wstring const& name)
 	{
-		AddWrapper(make_unique<WRAPPER>(name, *this));
+		AddWrapper(make_unique<WRAPPER>(name, *this, *m_pWinManager));
 	}
+
+	void AddBool(wstring const&, BoolType&);
 
 	HWND                             m_hwndApp               { nullptr };
 	NNetModelIO                    * m_pModelIO              { nullptr };
 	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
-	bool                             m_bArrows               { false };
-	bool                             m_bSensorPoints         { false };
 	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 	Sound                          * m_pSound                { nullptr };
 	WinManager                     * m_pWinManager           { nullptr };
-	MainWindow                     * m_pMainWindow           { nullptr };
 };

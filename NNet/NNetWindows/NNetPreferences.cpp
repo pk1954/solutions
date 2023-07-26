@@ -14,8 +14,10 @@ module;
 
 module NNetWin32:NNetPreferences;
 
+import BoolType;
 import IoUtil;
 import Win32_Util;
+import Win32_Util_Resource;
 import Script;
 import Symtab;
 import NNetModelIO;
@@ -32,23 +34,49 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
 
-static wstring const PREF_ON  { L"ON"  };
-static wstring const PREF_OFF { L"OFF" };
-
 class NNetWrapBase : public WrapBase
 {
 public:
     NNetWrapBase
     (
         wstring const& wstrName,
-        NNetPreferences& pref
+        NNetPreferences& pref,
+        WinManager& winMan
     )
-      : WrapBase(wstrName),
-        m_pref(pref)
+        : WrapBase(wstrName),
+        m_pref(pref),
+        m_winMan(winMan)
     {}
 
 protected:
     NNetPreferences& m_pref;
+    WinManager& m_winMan;
+};
+
+class WrapBaseBool : public WrapBase
+{
+public:
+    WrapBaseBool
+    (
+        wstring const& wstrName,
+        BoolType     & boolType
+    )
+        : WrapBase(wstrName),
+          m_boolType(boolType)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        m_boolType.Set(script.ScrReadBool());
+    }
+
+    void Write(wostream& out) const final
+    {
+        PrefOnOff(out, m_boolType.Get());
+    }
+
+protected:
+    BoolType& m_boolType;
 };
 
 class WrapShowArrows : public NNetWrapBase
@@ -63,39 +91,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << (m_pref.ArrowsVisible() ? PREF_ON : PREF_OFF);
-    }
-};
-
-class WrapShowSensorPoints: public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script & script) const final
-    {
-        m_pref.SetSensorPoints(script.ScrReadBool());
-    }
-
-    void Write(wostream & out) const final
-    {
-        out << (m_pref.SensorPointsVisible() ? PREF_ON : PREF_OFF);
-    }
-};
-
-class WrapSetPerfMonMode: public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script & script) const final
-    {
-        BaseWindow::SetPerfMonMode(script.ScrReadBool());
-    }
-
-    void Write(wostream & out) const final
-    {
-        out << (BaseWindow::PerfMonMode() ? PREF_ON : PREF_OFF);
+        PrefOnOff(out, m_pref.ArrowsVisible());
     }
 };
 
@@ -112,26 +108,6 @@ public:
     void Write(wostream& out) const final
     {
         out << static_cast<int>(m_pref.InputCablesVisibility());
-    }
-};
-
-class WrapSetSound : public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        bool bMode { script.ScrReadBool() };
-        if (bMode)
-            m_pref.GetSound().On();
-        else
-            m_pref.GetSound().Off();
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << (m_pref.GetSound().IsOn() ? PREF_ON : PREF_OFF);
     }
 };
 
@@ -152,12 +128,10 @@ public:
     }
 };
 
-class WrapColor : public ScriptFunctor
+class WrapColor : public NNetWrapBase
 {
 public:
-    WrapColor(WinManager &winMan)
-      : m_winMan(winMan)
-    {}
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -175,16 +149,36 @@ public:
         pBaseWin->SetBackgroundColorRef(col);
     }
 
-protected:
-    WinManager & m_winMan;
+    void Write(wostream& out) const final
+    {
+        m_winMan.Apply2All
+        (
+            [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
+            {
+                if (elem.m_pBaseWindow)
+                {
+                    COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
+                    out << L"SetBKColor" << SPACE
+                        << elem.m_wstr << SPACE
+                        << L"RGB"
+                        << OPEN_BRACKET
+                        << GetRValue(col)
+                        << ID_SEPARATOR
+                        << GetGValue(col)
+                        << ID_SEPARATOR
+                        << GetBValue(col)
+                        << CLOSE_BRACKET
+                        << endl;
+                }
+            }
+        );
+    }
 };
 
-class WrapShowScales : public ScriptFunctor
+class WrapShowScales : public NNetWrapBase
 {
 public:
-    WrapShowScales(WinManager& winMan)
-        : m_winMan(winMan)
-    {}
+    using NNetWrapBase::NNetWrapBase;
 
     void operator() (Script& script) const final
     {
@@ -194,9 +188,21 @@ public:
         pBaseWin->SendCommand(uiWinId, false);
     }
 
-protected:
-    WinManager& m_winMan;
+    void Write(wostream& out) const final
+    {
+        RootWinId  const   idWinId  { RootWinId(IDM_MAIN_WINDOW) };
+        wstring    const& wstrName { m_winMan.GetWindowName(idWinId) };
+        BaseWindow const* pBaseWin { m_winMan.GetBaseWindow(idWinId) };
+        MainWindow const* pMainWin { static_cast<MainWindow const *>(pBaseWin) };
+
+        out << wstrName << SPACE << pMainWin->GetScaleMode() << endl;
+    }
 };
+
+void NNetPreferences::AddBool(wstring const& name, BoolType& boolType)
+{
+    AddWrapper(make_unique<WrapBaseBool>(name, boolType));
+}
 
 void NNetPreferences::Initialize
 (
@@ -212,51 +218,16 @@ void NNetPreferences::Initialize
     m_pSound      = &sound;
     m_pModelIO    = &modelIO;
     m_pWinManager = &winMan;
-    m_pMainWindow = &mainWin;
     m_hwndApp     = hwndApp;
 
     Add<WrapReadModel            >(L"ReadModel");
-    Add<WrapSetPerfMonMode       >(L"SetPerfMonMode");
     Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    //Add<WrapShowScales           >(L"ShowScales");
+    Add<WrapShowScales           >(L"ShowScales");
     Add<WrapShowArrows           >(L"ShowArrows");
-    Add<WrapShowSensorPoints     >(L"ShowSensorPoints");
-    Add<WrapSetSound             >(L"SetSound");
+    Add<WrapColor                >(L"SetBKColor");
 
-    SymbolTable::ScrDefConst(L"SetBKColor", new WrapColor(*m_pWinManager));
-}
-
-void NNetPreferences::WriteAppPreferences(wostream & out) const
-{
-    m_pWinManager->Apply2All
-    (
-        [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
-        {
-            if (elem.m_pBaseWindow)
-            {
-                COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
-                out << L"SetBKColor" << SPACE
-                    << elem.m_wstr << SPACE
-                    << L"RGB"
-                    << OPEN_BRACKET
-                    << GetRValue(col)
-                    << ID_SEPARATOR
-                    << GetGValue(col)
-                    << ID_SEPARATOR
-                    << GetBValue(col)
-                    << CLOSE_BRACKET
-                    << endl;
-            }
-        }
-    );
-
-    //{
-    //    unsigned int const uiScaleMode { m_pMainWindow->GetScaleMode() };
-    //    out << L"ShowScales" << SPACE
-    //        << IDM_MAIN_WINDOW << SPACE
-    //        << uiScaleMode
-    //        << endl;
-    //}
+    AddBool(L"ShowSensorPoints", m_bSensorPoints);
+    AddBool(L"SetPerfMonMode", BaseWindow::m_bPerfMonMode);
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
@@ -266,6 +237,6 @@ void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
 
 void NNetPreferences::SetArrows(bool const bOn, bool const bAnimation)
 {
-    m_bArrows = bOn;
-    SendMessage(m_hwndApp, WM_COMMAND, IDD_ARROWS, bAnimation);
+    m_bArrows.Set(bOn);
+    m_pWinManager->SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, bAnimation);
 }

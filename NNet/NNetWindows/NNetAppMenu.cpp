@@ -144,8 +144,8 @@ void NNetAppMenu::Notify(bool const bImmediately)
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, m_pPreferences->ArrowsVisible());
     m_upOnOffSound       ->EnableOnOff(m_hMenu, m_pSound->IsOn());
     m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, AutoOpen::IsOn());
-    m_upOnOffSensorPoints->EnableOnOff(m_hMenu, m_pPreferences->SensorPointsVisible());
-    m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow::PerfMonMode());
+    m_upOnOffSensorPoints->EnableOnOff(m_hMenu, m_pPreferences->m_bSensorPoints.Get());
+    m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow::m_bPerfMonMode.Get());
     m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, m_pPreferences->ColorMenuVisible());
 
     DrawMenuBar(m_hwndApp);

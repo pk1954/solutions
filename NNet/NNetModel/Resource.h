@@ -51,7 +51,7 @@
 
 #define       IDD_ADJUST_SCALES              263
 
-#define       IDD_ARROWS                     270
+#define       IDD_ARROW_ANIMATION            270
 #define       IDD_ARROWS_ON                  271
 #define       IDD_ARROWS_OFF                 272
 

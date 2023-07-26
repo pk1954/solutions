@@ -120,7 +120,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
     case IDM_MINI_WINDOW:
     case IDM_MONITOR_WINDOW:
     case IDM_PARAM_WINDOW:
-        ::SendMessage(m_pWinManager->GetHWND(RootWinId(wmId)), WM_COMMAND, IDM_WINDOW_ON, 0);
+        m_pWinManager->SendCommand(RootWinId(wmId), IDM_WINDOW_ON);
         break;
 
     case IDM_SLOWER:
@@ -133,10 +133,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
             MessageBeep(MB_ICONWARNING);
         break;
 
-    case IDD_ARROWS:       //Sent by NNetPreferences
-        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, lParam);
-        break;
-
     case IDD_ARROWS_ON:
         m_pPreferences->SetArrows(true, true);
         break;
@@ -146,11 +142,11 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_SENSOR_PNTS_ON:
-        m_pPreferences->SetSensorPoints(true);
+        m_pPreferences->m_bSensorPoints.Set(true);
         break;
 
     case IDD_SENSOR_PNTS_OFF:
-        m_pPreferences->SetSensorPoints(false);
+        m_pPreferences->m_bSensorPoints.Set(false);
         break;
 
     case IDX_PLAY_SOUND:
@@ -158,15 +154,15 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_SOUND_ON:
-        m_pSound->On();
+        m_pSound->Set(true);
         break;
 
     case IDD_SOUND_OFF:
-        m_pSound->Off();
+        m_pSound->Set(false);
         break;
 
     case IDD_PERF_MON_MODE_ON:
-        BaseWindow::SetPerfMonMode(true);
+        BaseWindow::m_bPerfMonMode.Set(true);
         m_pWinManager->SetCaptions();
         break;
 
@@ -207,17 +203,19 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     {
     case IDD_NEW_SIGNAL_GENERATOR:
         NewSigGenCmd::Push();
-        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_SIG_DESIGNER)), WM_COMMAND, IDM_WINDOW_ON, 0);
+        m_pWinManager->SendCommand(RootWinId(IDM_SIG_DESIGNER),IDM_WINDOW_ON);
         break;
 
     case IDD_SELECT_SIGNAL_GENERATOR:
         SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)));
-        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_SIG_DESIGNER)), WM_COMMAND, IDM_WINDOW_ON, 0);
+        m_pWinManager->SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
         break;
 
     case IDM_COPY_SELECTION:
     case IDM_DELETE:   // keyboard delete key
-        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, 0);
+    case IDM_ESCAPE:
+        m_pWinManager->SendCommand(RootWinId(IDM_MAIN_WINDOW), wmId);
+        Script::StopProcessing();
         break;
 
     case IDM_UNDO:
@@ -247,11 +245,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_DELETE_TRACK:
         DeleteTrackCommand::Push(TrackNr(Cast2Int(lParam)));
-        break;
-
-    case IDM_ESCAPE:
-        ::SendMessage(m_pWinManager->GetHWND(RootWinId(IDM_MAIN_WINDOW)), WM_COMMAND, wmId, 0);
-        Script::StopProcessing();
         break;
 
     case IDM_TRIGGER_STIMULUS:

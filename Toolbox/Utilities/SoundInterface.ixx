@@ -34,15 +34,9 @@ public:
 	virtual void Beep(SoundDescr const &) const = 0;
 	virtual void Warning()                const = 0;
 
-	void On() const
-	{ 
-		m_bActive = true;
-		m_pObservable->NotifyAll(true);
-	}
-
-	void Off() const
-	{ 
-		m_bActive = false; 
+	void Set(bool const bActive)
+	{
+		m_bActive = bActive;
 		m_pObservable->NotifyAll(true);
 	}
 

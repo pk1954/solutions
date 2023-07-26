@@ -10,6 +10,7 @@ module;
 export module BaseWindow;
 
 import Types;
+import BoolType;
 import HiResTimer;
 import RootWindow;
 
@@ -37,8 +38,7 @@ public:
 
 	virtual wstring GetCaption() const;
 
-	static void SetPerfMonMode(bool const b) { m_bPerfMonMode = b; }
-	static bool PerfMonMode() { return m_bPerfMonMode; }
+	inline static BoolType m_bPerfMonMode { false };
 
 protected:
 
@@ -72,8 +72,6 @@ protected:
 private:
 
 	void trackMouse(bool const) const;
-
-	inline static bool m_bPerfMonMode { false };
 
 	friend static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
 

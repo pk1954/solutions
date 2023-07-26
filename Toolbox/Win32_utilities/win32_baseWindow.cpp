@@ -119,7 +119,7 @@ wstring BaseWindow::GetCaption() const
 
 void BaseWindow::SetCaption() const
 {
-    wstring const caption { m_bPerfMonMode ? Format2wstring(m_usPaintTime, 1) : GetCaption() };
+    wstring const caption { BaseWindow::m_bPerfMonMode.Get() ? Format2wstring(m_usPaintTime, 1) : GetCaption() };
     if (WindowHasCaption())
     {
         SetWindowText(caption);
@@ -160,7 +160,7 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
         return false;
 
     case WM_PAINT:
-        if (m_bPerfMonMode)
+        if (m_bPerfMonMode.Get())
         {
             m_paintTimer.Start();
             OnPaint();

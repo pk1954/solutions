@@ -24,6 +24,7 @@
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BasicTypes.ixx" />
     <ClCompile Include="BoolOp.ixx" />
+    <ClCompile Include="BoolType.ixx" />
     <ClCompile Include="CircleType.ixx" />
     <ClCompile Include="Color.ixx" />
     <ClCompile Include="Debug.ixx">

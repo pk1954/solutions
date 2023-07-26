@@ -51,7 +51,7 @@ public:
 			f(key, value);
 	}                        
 
-	wstring GetWindowName(RootWinId const id) const // can throw out_of_range exception
+	wstring const & GetWindowName(RootWinId const id) const // can throw out_of_range exception
 	{
 		return m_map.at(id).m_wstr;
 	}
@@ -89,6 +89,11 @@ public:
 			if (value.m_hwnd == hwnd)
 				return key; 
 		return RootWinId(-1);
+	}
+
+	LRESULT SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam = 0) const
+	{ 
+		return GetBaseWindow(id)->SendCommand(wParam, lParam);
 	}
 
 	bool IsMoveable(RootWinId const id) const // can throw out_of_range exception

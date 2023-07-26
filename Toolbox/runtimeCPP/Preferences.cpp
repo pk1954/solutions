@@ -57,7 +57,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << (Preferences::ColorMenuVisible() ? PREF_ON : PREF_OFF);
+        PrefOnOff(out, Preferences::ColorMenuVisible());
     }
 };
 
@@ -68,16 +68,12 @@ public:
 
     void operator() (Script& script) const final
     {
-        bool bMode { script.ScrReadBool() };
-        if (bMode)
-            m_pref.GetSound().On();
-        else
-            m_pref.GetSound().Off();
+        m_pref.GetSound().Set(script.ScrReadBool());
     }
 
     void Write(wostream& out) const final
     {
-        out << (m_pref.GetSound().IsOn() ? PREF_ON : PREF_OFF);
+        PrefOnOff(out, m_pref.GetSound().IsOn());
     }
 };
 
@@ -97,7 +93,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << (AutoOpen::IsOn() ? PREF_ON : PREF_OFF);
+        PrefOnOff(out, AutoOpen::IsOn());
     }
 };
 
@@ -118,6 +114,11 @@ void Preferences::Initialize
 
     SymbolTable::ScrDefConst(PREF_OFF, 0L);
     SymbolTable::ScrDefConst(PREF_ON, 1L);
+}
+
+void PrefOnOff(wostream& out, bool const bOn)
+{
+    out << (bOn ? PREF_ON : PREF_OFF);
 }
 
 bool Preferences::ReadPreferences() const
@@ -148,7 +149,6 @@ bool Preferences::WritePreferences() const
         it->Write(prefFile);
         prefFile << endl;
     }
-    WriteAppPreferences(prefFile);
     prefFile << Scanner::COMMENT_START << L" End of Preferences" << endl;
     prefFile.close();
     wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
