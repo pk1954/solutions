@@ -9,7 +9,7 @@ import Observable;
 export class BoolType: public Observable
 {
 public:
-    BoolType(bool const bValue)
+    explicit BoolType(bool const bValue)
         : m_bValue(bValue)
     {}
 
@@ -19,6 +19,12 @@ public:
         m_bValue = bNew;
         NotifyAll(true);
         return bOld;
+    }
+
+    virtual void Toggle()
+    {
+        Set(!m_bValue);
+        NotifyAll(true);
     }
 
     virtual bool Get() const

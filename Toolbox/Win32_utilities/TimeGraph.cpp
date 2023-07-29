@@ -36,11 +36,6 @@ void TimeGraph::SetHorzCoord(PixFpDimension<fMicroSecs>* pHorzCoord)
 	m_pHorzCoord->RegisterObserver(*this);
 }
 
-void TimeGraph::SetDefaultBackgroundColor()
-{
-	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
-}
-
 TimeGraph::~TimeGraph()
 {
 	if (m_pHorzCoord)

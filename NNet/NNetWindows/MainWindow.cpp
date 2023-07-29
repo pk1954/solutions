@@ -118,8 +118,6 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_CREATE_SYNAPSE,         L"Create synapse"                 },
 		{ IDD_CREATE_FORK,            L"Create fork"                    },
 		{ IDD_ADD_EEG_SENSOR,         L"New EEG sensor" 		        },
-		{ IDD_ARROWS_OFF,             L"Arrows off"                     },
-		{ IDD_ARROWS_ON,              L"Arrows on"                      },
 		{ IDD_ATTACH_SIG_GEN_TO_LINE, L"Attach active signal generator" },
 		{ IDD_ATTACH_SIG_GEN_TO_CONN, L"Attach active signal generator" },
 		{ IDD_DELETE_NOB,             L"Delete"                         },

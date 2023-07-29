@@ -36,17 +36,23 @@ public:
 	void StimulusTriggered() const;
 	void ResetHorzCoord();
 
-	PixelPoint GetTrackPosScreen
-	(
-		SignalId const id, 
-		tHorzDir const dir
-	)  const 
+	PixelPoint GetTrackPosScreen(SignalId const id, tHorzDir const dir)  const 
 	{ 
 		return m_upMonitorControl->GetTrackPosScreen(id, dir); 
 	}
 
-	void MoveHighlightedSignal(PIXEL const pix) const { m_upMonitorControl->MoveHighlightedSignal(pix); }
-	void DropSignal           ()                const { m_upMonitorControl->DropSignal(); }
+	COLORREF GetBackgroundColorRef() const final
+	{
+		return m_upMonitorControl->GetBackgroundColorRef();
+	}
+
+	void SetBackgroundColorRef(COLORREF const c) final
+	{ 
+		m_upMonitorControl->SetBackgroundColor(Color(c)); 
+	}
+
+	void MoveHighlightedSignal(PIXEL const pix) const  { m_upMonitorControl->MoveHighlightedSignal(pix); }
+	void DropSignal           ()                const  { m_upMonitorControl->DropSignal(); }
 
 	PixFpDimension<fMicroSecs> & HorzCoord() { return m_horzCoord; }
 	PixFpDimension<mV>         & VertCoord() { return m_vertCoord; }

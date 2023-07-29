@@ -25,8 +25,6 @@ public:
 
 	~TimeGraph() override;
 
-	void SetDefaultBackgroundColor() override;
-
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
 	virtual void SetHorzCoord(PixFpDimension<fMicroSecs>*);

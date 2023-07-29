@@ -28,5 +28,5 @@ public:
 
 private:
 
-	NNetAppMenu * m_pAppMenu  { nullptr };
+	NNetAppMenu * m_pAppMenu { nullptr };
 };

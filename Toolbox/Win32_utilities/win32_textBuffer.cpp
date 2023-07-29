@@ -31,11 +31,9 @@ Win32_TextBuffer::Win32_TextBuffer(HDC const hdc, PixelRectSize const & pixSize)
 	Initialize(horRaster, vertRaster);
 }
 
-COLORREF Win32_TextBuffer::SetBackgroundColor(COLORREF const c)
+void Win32_TextBuffer::SetBackgroundColor(COLORREF const c)
 {
-	COLORREF colOld { GetBkColor(m_hDC) };
 	SetBkColor(m_hDC, c);
-	return colOld;
 }
 
 void Win32_TextBuffer::StartPainting()

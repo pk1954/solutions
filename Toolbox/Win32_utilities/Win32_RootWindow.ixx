@@ -143,7 +143,7 @@ public:
 	virtual void SetDefaultBackgroundColor() {};
 	virtual void AddColorCtlMenu(HMENU const);
 
-	virtual COLORREF SetBackgroundColorRef(COLORREF const c) { return RGB(0, 0, 0); }
+	virtual void     SetBackgroundColorRef(COLORREF const c) {}
 	virtual COLORREF GetBackgroundColorRef() const           { return RGB(0, 0, 0); }
 
 	void Notify(bool const) override;

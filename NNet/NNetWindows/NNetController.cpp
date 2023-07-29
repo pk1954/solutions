@@ -130,45 +130,29 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
             MessageBeep(MB_ICONWARNING);
         break;
 
-    case IDD_ARROWS_ON:
-        m_pPreferences->m_bArrows.Animate(true);
+    case IDD_ARROWS:  // comes from menu
+        m_pPreferences->m_bArrows.Toggle(); // with animation
         break;
 
-    case IDD_ARROWS_OFF:
-        m_pPreferences->m_bArrows.Animate(false);
+    case IDD_SENSOR_PNTS:
+        m_pPreferences->m_bSensorPoints.Toggle();
         break;
 
-    case IDD_SENSOR_PNTS_ON:
-        m_pPreferences->m_bSensorPoints.Set(true);
+    case IDD_SOUND:
+        m_pPreferences->m_bSound.Toggle();
         break;
 
-    case IDD_SENSOR_PNTS_OFF:
-        m_pPreferences->m_bSensorPoints.Set(false);
+    case IDD_PERF_MON_MODE:
+        BaseWindow::m_bPerfMonMode.Toggle();
+        WinManager::SetCaptions();
+        break;
+
+    case IDD_COLOR_MENU:
+        m_pPreferences->m_bColorMenu.Toggle();
         break;
 
     case IDX_PLAY_SOUND:
         m_pSound->Play(reinterpret_cast<wchar_t *>(lParam)); 
-        break;
-
-    case IDD_SOUND_ON:
-        m_pPreferences->m_bSound.Set(true);
-        break;
-
-    case IDD_SOUND_OFF:
-        m_pPreferences->m_bSound.Set(false);
-        break;
-
-    case IDD_PERF_MON_MODE_ON:
-        BaseWindow::m_bPerfMonMode.Set(true);
-        WinManager::SetCaptions();
-        break;
-
-    case IDD_COLOR_MENU_ON:
-        m_pPreferences->m_bColorMenu.Set(true);
-        break;
-
-    case IDD_COLOR_MENU_OFF:
-        m_pPreferences->m_bColorMenu.Set(false);
         break;
 
     case IDM_INPUT_CABLES_ALL:

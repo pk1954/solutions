@@ -28,7 +28,7 @@ public:
 	void AlignLeft () override;
 	void AlignRight() override;
 
-	COLORREF SetBackgroundColor(COLORREF const);
+	void     SetBackgroundColor(COLORREF const);
 	COLORREF GetBackgroundColor() const { return GetBkColor(m_hDC); }
 
 private:

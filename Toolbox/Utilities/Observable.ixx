@@ -2,35 +2,54 @@
 //
 // Toolbox\Utilities
 
+module;
+
+#include <cassert>
+#include <algorithm>
+#include <vector>
+
 export module Observable;
 
-import ViewCollection;
 import ObserverInterface;
+
+using std::vector;
+using std::ranges::count;
 
 export class Observable
 {
 public:
+	virtual ~Observable() = default;
 
 	void RegisterObserver(ObserverInterface & observer)
 	{
-		m_observers.Register(observer);
+		if (count(m_observers, &observer) == 0)
+			m_observers.push_back(&observer);
 	}
 
 	void UnregisterObserver(ObserverInterface const & observer)
 	{
-		m_observers.Unregister(observer);
+		for (auto it = m_observers.begin(); it != m_observers.end();)
+		{
+			if (*it == &observer)
+				it = m_observers.erase(it);
+			else
+				++it;
+		}
 	}
 
 	void UnregisterAllObservers()
 	{
-		m_observers.Clear();
+		m_observers.clear();
 	}
 
 	void NotifyAll(bool const bImmediately)
 	{
-		m_observers.NotifyAll(bImmediately);
+		for (auto& v : m_observers)
+		{
+			v->Notify(bImmediately);
+		}
 	}
 
 private:
-	ViewCollection m_observers;
+	vector<ObserverInterface*> m_observers;
 };

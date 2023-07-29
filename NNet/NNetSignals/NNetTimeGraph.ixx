@@ -34,6 +34,16 @@ public:
 		GetParams()->RegisterObserver(*this);
 	}
 
+	void SetBackgroundColorRef(COLORREF const c) override
+	{
+		GetParentRootWindow()->SetBackgroundColorRef(c);
+	}
+
+	void SetDefaultBackgroundColor() override 
+	{ 
+		SetBackgroundColorRef(D2D1::ColorF::Ivory); 
+	}
+
 protected:
 
 	fPixel const STD_WIDTH  { 1.0_fPixel };

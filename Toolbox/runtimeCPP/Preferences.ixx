@@ -44,7 +44,7 @@ public:
 	}
 
 	inline static BoolType m_bColorMenu { false };
-	inline static BoolType m_bAutoOpen  { false };
+	inline static BoolType m_bAutoOpen  { true };
 	inline static BoolType m_bSound     { false };
 
 private:

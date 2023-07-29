@@ -54,10 +54,10 @@ Radian IoLine::GetDir() const
 		   : m_posDir.GetDir();
 };
 
-//void IoLine::MoveNob(MicroMeterPnt const& delta)
-//{
-//	m_posDir.SetPos(GetPos() + delta);
-//}
+void IoLine::MoveNob(MicroMeterPnt const& delta)
+{
+	m_posDir.SetPos(GetPos() + delta);
+}
 
 void IoLine::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 {

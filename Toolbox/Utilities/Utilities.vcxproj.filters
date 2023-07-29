@@ -45,9 +45,6 @@
     <ClCompile Include="SlowMotionRatio.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ViewCollection.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NamedType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

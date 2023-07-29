@@ -25,12 +25,12 @@ import :NNetPreferences;
 using std::make_unique;
 
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS_ON,        IDD_ARROWS_OFF       )),
-    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND_ON,         IDD_SOUND_OFF        )),
-    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN_ON,     IDD_AUTO_OPEN_OFF    )),
-    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS_ON,   IDD_SENSOR_PNTS_OFF  )),
-    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE_ON, IDD_PERF_MON_MODE_OFF)),
-    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU_ON,    IDD_COLOR_MENU_OFF   ))
+  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS       )),
+    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND        )),
+    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN    )),
+    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS  )),
+    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE)),
+    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU   ))
 { }
 
 NNetAppMenu::~NNetAppMenu() = default;

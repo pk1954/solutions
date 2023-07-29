@@ -41,6 +41,19 @@ public:
 		Observable &
 	);
 
+	COLORREF GetBackgroundColorRef() const final
+	{
+		return m_upSignalPreview->GetBackgroundColorRef();
+	}
+
+	void SetBackgroundColorRef(COLORREF const c) final
+	{
+		Color const color { c };
+		m_upSignalPreview   ->SetBackgroundColor(color);
+		m_upSignalControl[0]->SetBackgroundColor(color);
+		m_upSignalControl[1]->SetBackgroundColor(color);
+	}
+
 	LPARAM  AddContextMenuEntries(HMENU const) final;
 	wstring GetCaption()                 const final;
 	void    Trigger()                          final;

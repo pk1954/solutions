@@ -40,7 +40,7 @@ public:
 	void Recalc     ()                                   final;
 	void SetPosNoFix(MicroMeterPnt const&)               final;
 	void SetDir     (Radian const)                       final;
-	//void MoveNob    (MicroMeterPnt const&)               final;
+	void MoveNob    (MicroMeterPnt const&)               final;
 	void RotateNob  (MicroMeterPnt const&, Radian const) final;
 	void Link       (Nob const&, Nob2NobFunc const&)     final;
 

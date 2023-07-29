@@ -17,11 +17,9 @@ public:
 	void Start(HWND const);
 	void Stop();
 
-	COLORREF SetBackgroundColorRef(COLORREF const col) final
+	void SetBackgroundColorRef(COLORREF const col) final
 	{
-		COLORREF const colOld { m_colBackground };
 		m_colBackground = col;
-		return colOld;
 	}
 
 	COLORREF GetBackgroundColorRef() const final 

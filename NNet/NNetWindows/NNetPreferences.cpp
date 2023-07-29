@@ -102,9 +102,7 @@ public:
         script.ScrReadSpecial(ID_SEPARATOR);
         unsigned short usBlue  { script.ScrReadUshort() };
         script.ScrReadSpecial(CLOSE_BRACKET);
-        COLORREF          col { RGB(usRed, usGreen, usBlue) };
-        BaseWindow * pBaseWin { WinManager::GetBaseWindow(id) };
-        pBaseWin->SetBackgroundColorRef(col);
+        WinManager::GetBaseWindow(id)->SetBackgroundColorRef(RGB(usRed, usGreen, usBlue));
     }
 
     void Write(wostream& out) const final
@@ -148,13 +146,12 @@ public:
 
     void Write(wostream& out) const final
     {
-        RootWinId  const  idWinId  { RootWinId(IDM_MAIN_WINDOW) };
-        wstring    const& wstrName { WinManager::GetWindowName(idWinId) };
-        BaseWindow const* pBaseWin { WinManager::GetBaseWindow(idWinId) };
-        MainWindow const* pMainWin { static_cast<MainWindow const *>(pBaseWin) };
-
+        RootWinId  const  idWinId    { RootWinId(IDM_MAIN_WINDOW) };
+        wstring    const& wstrWindow { WinManager::GetWindowName(idWinId) };
+        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(idWinId) };
+        MainWindow const* pMainWin   { static_cast<MainWindow const *>(pBaseWin) };
         WriteCmdName(out);
-        out << wstrName << SPACE << pMainWin->GetScaleMode();
+        out << wstrWindow << SPACE << pMainWin->GetScaleMode();
     }
 };
 

@@ -30,15 +30,23 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-export class ShowArrowsBoolType : public BoolType
+export class ShowArrows : public BoolType
 {
 public:
-	using BoolType::BoolType;
+	ShowArrows()
+	  : BoolType(false)
+	{}
 
-	bool Animate(bool const bShow)
+	void Toggle() final // comes from menu
 	{
-		bool const bOld = BoolType::Set(bShow);
+		BoolType::Toggle();
 		WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, true);
+	}
+
+	bool Set(bool const bActive) final  // comes from preferences script
+	{
+		bool const bOld = BoolType::Set(bActive);
+		WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, false);
 		return bOld;
 	}
 };
@@ -58,8 +66,8 @@ public:
 	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
 	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
 
-	ShowArrowsBoolType m_bArrows       { false };
-	BoolType           m_bSensorPoints { false };
+	ShowArrows m_bArrows;
+	BoolType   m_bSensorPoints { false };
 
 private:
 

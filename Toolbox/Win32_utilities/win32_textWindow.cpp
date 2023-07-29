@@ -104,9 +104,9 @@ void TextWindow::OnPaint()
 	(void)EndPaint(&ps);
 }
 
-COLORREF TextWindow::SetBackgroundColorRef(COLORREF const c) 
+void TextWindow::SetBackgroundColorRef(COLORREF const c) 
 { 
-	return m_upTextWindowThread->SetBackgroundColor(c); 
+	m_upTextWindowThread->SetBackgroundColor(c); 
 }
 
 COLORREF TextWindow::GetBackgroundColorRef() const 

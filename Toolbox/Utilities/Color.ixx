@@ -24,17 +24,17 @@ export inline COLORREF Convert2COLORREF(D2D1_COLOR_F const col)
 	return color;
 }
 
-//export inline D2D1_COLOR_F Convert2ColorF(COLORREF const color)
-//{
-//	D2D1_COLOR_F colF
-//	(
-//		static_cast<float>(GetRValue(color)) / 255.0f,
-//		static_cast<float>(GetGValue(color)) / 255.0f,
-//		static_cast<float>(GetBValue(color)) / 255.0f,
-//		1.0f
-//	);
-//	return colF;
-//}
+export inline D2D1_COLOR_F Convert2ColorF(COLORREF const color)
+{
+	D2D1_COLOR_F colF
+	(
+		static_cast<float>(GetRValue(color)) / 255.0f,
+		static_cast<float>(GetGValue(color)) / 255.0f,
+		static_cast<float>(GetBValue(color)) / 255.0f,
+		1.0f
+	);
+	return colF;
+}
 
 export struct Color : public D2D1_COLOR_F
 {
@@ -65,6 +65,14 @@ export struct Color : public D2D1_COLOR_F
 		r = static_cast<float>(GetBValue(rgb)) / 255.0f;
 		g = static_cast<float>(GetGValue(rgb)) / 255.0f;
 		b = static_cast<float>(GetRValue(rgb)) / 255.0f;
+		a = 1.0f;
+	}
+
+	Color(COLORREF rgb)
+	{
+		r = static_cast<float>(GetRValue(rgb)) / 255.0f;
+		g = static_cast<float>(GetGValue(rgb)) / 255.0f;
+		b = static_cast<float>(GetBValue(rgb)) / 255.0f;
 		a = 1.0f;
 	}
 

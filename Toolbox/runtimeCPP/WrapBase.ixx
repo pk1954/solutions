@@ -16,76 +16,28 @@ import Script;
 
 using std::wostream;
 using std::wstring;
-using std::endl;
 using std::is_base_of;
 using std::remove_pointer_t;
 
-export inline wstring const PREF_ON  { L"ON"  };
-export inline wstring const PREF_OFF { L"OFF" };
-
-export void PrefOnOff(wostream& out, bool const bOn)
-{
-    out << (bOn ? PREF_ON : PREF_OFF);
-}
+export void PrefOnOff(wostream&, bool const);
 
 export class WrapBase : public ScriptFunctor
 {
 public:
-    virtual ~WrapBase() = default;
-
-    explicit WrapBase(wstring const& wstrName)
-    {
-        SymbolTable::ScrDefConst(wstrName, this);
-    }
-
-    virtual void Write(wostream& out) const = 0;
-
-    wstring const& GetName() const
-    {
-        return SymbolTable::GetSymbolName(Symbol(this));
-    }
-
-    void WriteCmdName(wostream& out) const
-    {
-        out << GetName() << L' ';
-    }
-
-    void Write2(wostream& out) const
-    {
-        WriteCmdName(out);
-        Write(out);
-        out << endl;
-    }
+    explicit       WrapBase(wstring const&);
+    virtual       ~WrapBase() = default;
+    virtual void   Write(wostream& out) const = 0;
+    void           WriteCmdName(wostream&) const;
+    wstring const& GetName() const;
 };
 
 export class WrapBaseBool : public WrapBase
 {
 public:
-    static void Initialize()
-    {
-        SymbolTable::ScrDefConst(PREF_OFF, 0L);
-        SymbolTable::ScrDefConst(PREF_ON, 1L);
-    }
-
-    WrapBaseBool
-    (
-        wstring const& wstrName,
-        BoolType& boolType
-    )
-        : WrapBase(wstrName),
-        m_boolType(boolType)
-    {}
-
-    void operator() (Script& script) const final
-    {
-        m_boolType.Set(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        WriteCmdName(out);
-        PrefOnOff(out, m_boolType.Get());
-    }
+    static void Initialize();
+    WrapBaseBool(wstring const&, BoolType&);
+    void operator() (Script&) const final;
+    void Write(wostream&)     const final;
 
 protected:
     BoolType& m_boolType;

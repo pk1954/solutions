@@ -46,7 +46,7 @@ public:
 	void SetLeftBorder  (fPixel const b)   { m_fPixLeftBorder   = b; }
 	void SetOrthoOffset (fPixel const off) { m_fPixOrthoOffset  = off; }
 
-	Color SetScaleColor(Color const c) { return m_upGraphics->SetForegroundColor(c); }
+	void SetScaleColor(Color const c) { m_upGraphics->SetForegroundColor(c); }
 
 	inline static bool const TICKS_UP    { true };
 	inline static bool const TICKS_DOWN  { false };

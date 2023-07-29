@@ -44,7 +44,7 @@ public:
 
 	void Trigger() final;
 
-	COLORREF SetBackgroundColorRef(COLORREF const) final;
+	void     SetBackgroundColorRef(COLORREF const) final;
 	COLORREF GetBackgroundColorRef() const         final;
 
 	void SetDefaultBackgroundColor() override;
@@ -104,7 +104,7 @@ public:
 		m_textWindow.Invalidate(false);
 	}
 
-	COLORREF SetBackgroundColor(COLORREF const c) { return m_pTextBuffer->SetBackgroundColor(c); }
+	void     SetBackgroundColor(COLORREF const c) { m_pTextBuffer->SetBackgroundColor(c); }
 	COLORREF GetBackgroundColor() const           { return m_pTextBuffer->GetBackgroundColor(); };
 
 	HDC GetHDC_Memory() { return m_hDC_Memory; }

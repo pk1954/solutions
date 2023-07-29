@@ -91,8 +91,8 @@ public:
 
     ID2D1SolidColorBrush* CreateBrush(Color const) const;
         
-    Color SetForegroundColor(Color const);
-    Color SetBackgroundColor(Color const);
+    void SetForegroundColor(Color const);
+    void SetBackgroundColor(Color const);
 
     Color GetForegroundColor() const;
     Color GetBackgroundColor() const;

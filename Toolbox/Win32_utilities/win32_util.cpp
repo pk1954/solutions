@@ -210,6 +210,16 @@ void Util::AddMenu
     SetMenuItemData(hMenu, GetMenuItemCount(hMenu) - 1, uIDNewItem);
 }
 
+void Util::CheckMenuItem
+(
+    HMENU const hMenu,
+    UINT  const idItem,
+    bool  const bChecked
+)
+{
+    ::CheckMenuItem(hMenu, idItem, bChecked ? MF_CHECKED : MF_UNCHECKED);
+}
+
 void Util::InsertMenuItem
 (
     HMENU    const   hMenu,

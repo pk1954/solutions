@@ -17,6 +17,7 @@ import WrapBase;
 import IoUtil;
 import WinManager;
 import ErrHndl;
+import Win32_Util_Resource;
 import Win32_Util;
 import Win32_PIXEL;
 import BaseWindow;
@@ -333,6 +334,19 @@ void WinManager::Initialize()
     m_upMap = make_unique<map<RootWinId, MAP_ELEMENT>>();
 }
 
+void WinManager::SetCaptions()
+{
+    for (const auto& [key, value] : *m_upMap.get())
+        ::SendMessage(value.m_hwnd, WM_APP_CAPTION, 0, 0);
+}
+
+void WinManager::BringToTop(RootWinId const id)
+{
+    HWND hwnd { GetHWND(id) };
+    BringWindowToTop(hwnd);
+    ShowWindow(hwnd, SW_SHOWNORMAL);
+}
+
 void WinManager::addWindow
 (
     wstring      const & wstrName, 
@@ -385,4 +399,22 @@ void WinManager::AddWindow
 )
 {
     addWindow(wstrName, id, baseDialog.GetWindowHandle(), nullptr, bTrackPosition, bTrackSize);
+}
+
+RootWinId WinManager::GetIdFromRootWindow(HWND const hwnd)
+{
+    for (const auto& [key, value] : *m_upMap.get())
+        if (value.m_hwnd == hwnd)
+            return key;
+    return RootWinId(-1);
+}
+
+LRESULT WinManager::SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)
+{
+    return ::SendMessage(GetHWND(id), WM_COMMAND, wParam, lParam);
+}
+
+LRESULT WinManager::PostCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)
+{
+    return ::PostMessage(GetHWND(id), WM_COMMAND, wParam, lParam);
 }

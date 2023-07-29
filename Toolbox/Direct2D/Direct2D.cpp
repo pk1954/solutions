@@ -52,7 +52,7 @@ void D2D_driver::createResources()
 	m_hr = m_pD2DFactory->CreateHwndRenderTarget
 	(
 		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(m_hwnd, D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)	),
+		D2D1::HwndRenderTargetProperties(m_hwnd, D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)),
 		& m_pRenderTarget
 	);
 	assert(SUCCEEDED(m_hr));
@@ -584,18 +584,14 @@ ID2D1SolidColorBrush* D2D_driver::CreateBrush(Color const d2dCol) const
 	return pBrush;
 }
 
-Color D2D_driver::SetForegroundColor(Color const d2dCol)
+void D2D_driver::SetForegroundColor(Color const d2dCol)
 {
-	Color colorOld = GetForegroundColor();
 	m_pBrushForeground->SetColor(d2dCol);
-	return colorOld;
 }
 
-Color D2D_driver::SetBackgroundColor(Color const d2dCol)
+void D2D_driver::SetBackgroundColor(Color const d2dCol)
 {
-	Color colorOld = GetBackgroundColor();
 	m_pBrushBackground->SetColor(d2dCol);
-	return colorOld;
 }
 
 Color D2D_driver::GetForegroundColor() const

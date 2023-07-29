@@ -52,32 +52,22 @@
 #define       IDD_ADJUST_SCALES              263
 
 #define       IDD_ARROW_ANIMATION            270
-#define       IDD_ARROWS_ON                  271
-#define       IDD_ARROWS_OFF                 272
 
-#define       IDD_RULER_ON                   283
-#define       IDD_RULER_OFF                  284
 #define       IDD_MEASUREMENT_ON             285
 #define       IDD_MEASUREMENT_OFF            286
 #define       IDD_ADD_TRACK                  287
 #define       IDD_DELETE_TRACK               288
 #define       IDD_EMPHASIZE                  289
-#define       IDD_PERF_MON_MODE_ON           290
-#define       IDD_PERF_MON_MODE_OFF          291
 #define       IDD_DELETE_EMPTY_TRACKS        292
 
-#define       IDD_SOUND_ON                   300
-#define       IDD_SOUND_OFF                  302
-#define       IDX_PLAY_SOUND                 303
+#define       IDX_PLAY_SOUND                 300
 								   	         
-#define       IDD_AUTO_OPEN_ON               310
-#define       IDD_AUTO_OPEN_OFF              311
-									         
-#define       IDD_SENSOR_PNTS_ON             321
-#define       IDD_SENSOR_PNTS_OFF            322
-
-#define       IDD_COLOR_MENU_ON              331
-#define       IDD_COLOR_MENU_OFF             332
+#define       IDD_ARROWS                     310
+#define       IDD_SOUND                      311
+#define       IDD_AUTO_OPEN                  312
+#define       IDD_SENSOR_PNTS                313
+#define       IDD_PERF_MON_MODE              314
+#define       IDD_COLOR_MENU                 315
 
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341

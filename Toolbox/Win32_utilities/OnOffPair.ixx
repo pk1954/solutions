@@ -15,27 +15,21 @@ export class OnOffPair
 public:
     OnOffPair
     (
-        unsigned int const uiOn,
-        unsigned int const uiOff
+        unsigned int const uiCmdId
     )
-      : m_uiOn(uiOn),
-        m_uiOff(uiOff)
+      : m_uiCmdId(uiCmdId)
     { }
 
     void AppendOnOffMenu(HMENU hMenu, LPCTSTR const title) const
     {
-        HMENU hMenuPopup = Util::PopupMenu(hMenu, title);
-        Util::AddMenu(hMenuPopup, MF_STRING, m_uiOn,  L"o&n");
-        Util::AddMenu(hMenuPopup, MF_STRING, m_uiOff, L"o&ff");
+        Util::AddMenu(hMenu, MF_STRING, m_uiCmdId, title);
     }
 
     void EnableOnOff(HMENU hMenu, bool const bCrit)
     {
-        Util::Enable(hMenu, m_uiOn, !bCrit);
-        Util::Enable(hMenu, m_uiOff, bCrit);
+        Util::CheckMenuItem(hMenu, m_uiCmdId, bCrit);
     }
 
 private:
-    unsigned int m_uiOn;
-    unsigned int m_uiOff;
+    unsigned int m_uiCmdId;
 };

@@ -59,7 +59,6 @@
     <ClCompile Include="U64Bit.ixx" />
     <ClCompile Include="Uniform2D.ixx" />
     <ClCompile Include="Util.ixx" />
-    <ClCompile Include="ViewCollection.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D6E82F0A-C93F-4FA0-AACF-910EF2F59FDC}</ProjectGuid>

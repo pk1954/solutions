@@ -28,8 +28,20 @@ public:
 
 	virtual void Stop();
 
-	Color SetForegroundColor(Color const c) { return m_upGraphics->SetForegroundColor(c); }
-	Color SetBackgroundColor(Color const c) { return m_upGraphics->SetBackgroundColor(c); }
+	void     SetBackgroundColorRef(COLORREF const c) override { SetBackgroundColor(Color(c)); }
+	COLORREF GetBackgroundColorRef() const           override { return Convert2COLORREF(GetBackgroundColor()); }
+
+	void SetForegroundColor(Color const c) 
+	{ 
+		m_upGraphics->SetForegroundColor(c);
+		Trigger();
+	}
+
+	void SetBackgroundColor(Color const c) 
+	{ 
+		m_upGraphics->SetBackgroundColor(c);
+		Trigger();
+	}
 
 	Color GetForegroundColor() const { return m_upGraphics->GetForegroundColor(); }
 	Color GetBackgroundColor() const { return m_upGraphics->GetBackgroundColor(); }

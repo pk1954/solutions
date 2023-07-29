@@ -108,5 +108,7 @@ namespace Util
     export void      SetMenuItemData(HMENU const, UINT const, UINT_PTR const);
     export UINT_PTR  GetMenuItemData(HMENU const, UINT const);
     export void      AddMenu(HMENU const, UINT const, UINT_PTR const, LPCWSTR const);
+    export void      CheckMenuItem(HMENU const, UINT const, bool const);
+    export void      ModifyMenuItem(HMENU const, UINT const, UINT const, LPCWSTR const);
     export void      InsertMenuItem(HMENU const, UINT const, UINT_PTR const, wstring const&);
 };
