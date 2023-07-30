@@ -107,8 +107,6 @@ void SignalDesigner::Initialize
 	m_gridObservable.RegisterObserver(*m_upSignalControl[0].get());
 	m_gridObservable.RegisterObserver(*m_upSignalControl[1].get());
 
-	GridAnimationCmd::Initialize(this);
-
 	// buttons
 
 	m_upStimulusButton = make_unique<StimulusButton>(GetWindowHandle());
@@ -256,13 +254,13 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		{
 			m_upSignalControl[0]->Snap2Grid(false);
 			m_upSignalControl[1]->Snap2Grid(false);
-			GridAnimationCmd::Push(m_fGridDimFactor, 0.0f);
+			GridAnimationCmd::Push(this, m_fGridDimFactor, 0.0f);
 		}
 		else
 		{
 			m_upSignalControl[0]->Snap2Grid(true);
 			m_upSignalControl[1]->Snap2Grid(true);
-			GridAnimationCmd::Push(m_fGridDimFactor, 1.0f);
+			GridAnimationCmd::Push(this, m_fGridDimFactor, 1.0f);
 		}
 		return true;
 

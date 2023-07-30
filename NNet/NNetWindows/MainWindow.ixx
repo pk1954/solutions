@@ -85,6 +85,7 @@ private:
 
 	MicroMeterPnt    m_umDelta                { NP_ZERO };
 	fPixelPoint      m_fPixScaleSize          { fPP_ZERO };
+	float            m_fGridDimFactor         { 0.0f };
 	MicroMeter       m_umArrowSize            { 0._MicroMeter };
 	NNetPreferences *m_pPreferences           { nullptr };
 	ActionTimer     *m_pDisplayTimer          { nullptr };

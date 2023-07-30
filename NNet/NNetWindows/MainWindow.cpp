@@ -495,10 +495,10 @@ void MainWindow::PaintGraphics()
 	DrawContext const& context         { GetDrawContextC() };
 	Sensor      const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
 
-	if (m_scaleMenu.IsGridVisible())
+	if (m_fGridDimFactor > 0.0f)
 	{
-		m_upHorzScale->DrawAuxLines(*m_upGraphics.get());
-		m_upVertScale->DrawAuxLines(*m_upGraphics.get());
+		m_upHorzScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
+		m_upVertScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
 	}
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
@@ -738,12 +738,19 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_SCALE_ON:
 	case IDM_SCALE_GRID:
 		{
-			bool bOldVal { m_scaleMenu.IsScaleVisible() };
+			bool bScaleStateOld { m_scaleMenu.IsScaleVisible() };
+			bool bGridStateOld  { m_scaleMenu.IsGridVisible() };
 			m_scaleMenu.SetState(wmId);
-			if (m_scaleMenu.IsScaleVisible() != bOldVal)
+			if (m_scaleMenu.IsScaleVisible() != bScaleStateOld)
 				ScalesAnimationCmd::Push(m_fPixScaleSize, m_scaleMenu.IsScaleVisible(), lParam);
+			if (m_scaleMenu.IsGridVisible() != bGridStateOld)
+				GridAnimationCmd::Push(this, m_fGridDimFactor, m_scaleMenu.IsGridVisible() ? 1.0f : 0.0f);
 		}
 		break;
+
+	case IDM_GRID_UPDATE:
+		Notify(true);
+		return true;
 
 	case IDD_ADJUST_SCALES:
 		adjustScales();

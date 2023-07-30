@@ -4,7 +4,7 @@ SetColorMenu ON
 SetAutoOpen OFF
 ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
 InputCablesVisibility 0
-ShowScales IDM_MAIN_WINDOW 43
+ShowScales IDM_MAIN_WINDOW 45
 SetBKColor IDM_MAIN_WINDOW RGB(255,255,240)
 SetBKColor IDM_MINI_WINDOW RGB(255,255,240)
 SetBKColor IDM_MONITOR_WINDOW RGB(229,229,229)
