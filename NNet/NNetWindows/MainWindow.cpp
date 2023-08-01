@@ -737,22 +737,16 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_SCALE_OFF:
 	case IDM_SCALE_ON:
 	case IDM_SCALE_GRID:
-		{
-			bool bScaleStateOld { m_scaleMenu.IsScaleVisible() };
-			bool bGridStateOld  { m_scaleMenu.IsGridVisible() };
-			m_scaleMenu.SetState(wmId);
-			if (m_scaleMenu.IsScaleVisible() != bScaleStateOld)
-				ScalesAnimationCmd::Push(m_fPixScaleSize, m_scaleMenu.IsScaleVisible(), lParam);
-			if (m_scaleMenu.IsGridVisible() != bGridStateOld)
-				GridAnimationCmd::Push(this, m_fGridDimFactor, m_scaleMenu.IsGridVisible() ? 1.0f : 0.0f);
-		}
+		m_scaleMenu.SetState(wmId);
+		SetScales(m_scaleMenu.IsScaleVisible(), true);
+		SetGrid  (m_scaleMenu.IsGridVisible (), true);
 		break;
 
-	case IDM_GRID_UPDATE:
+	case IDD_GRID_UPDATE:
 		Notify(true);
 		return true;
 
-	case IDD_ADJUST_SCALES:
+	case IDD_SCALES_UPDATE:
 		adjustScales();
 		return true;
 

@@ -52,10 +52,10 @@ public:
 	NNetModelReaderInterface const& GetExportNMRI() const { return *m_pExportNMRI; }
 
 	template <Wrap_t WRAPPER>
-	WRAPPER * Add(wstring const& name)
+	WRAPPER * AddModelWrapper(wstring const& name)
 	{
 		unique_ptr upWrapper { make_unique<WRAPPER>(name, *this) };
-		WRAPPER  * pWrapper { upWrapper.get() };
+		WRAPPER  * pWrapper  { upWrapper.get() };
 		m_wrapVector.push_back(move(upWrapper));
 		return pWrapper;
 	}

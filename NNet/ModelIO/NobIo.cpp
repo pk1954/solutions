@@ -301,7 +301,7 @@ UPNob NobIo::createNeuron(Script& script) const
     for (int iElem { 0 };;)
     {
         Pipe * const pPipeIn { getPipePtr(ScrReadNobId(script)) };
-        pipeListIn.Add(*pPipeIn);
+        pipeListIn.AddNNetPrefRapper(*pPipeIn);
         if (++iElem == iNrOfElements)
             break;
         script.ScrReadSpecial(ID_SEPARATOR);

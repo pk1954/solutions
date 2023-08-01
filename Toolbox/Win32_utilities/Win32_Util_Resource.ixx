@@ -51,7 +51,6 @@ export inline int const IDM_SCALE_OFF           { 43 };
 export inline int const IDM_SCALE_ON            { 44 };
 export inline int const IDM_SCALE_GRID          { 45 };
 export inline int const IDM_SCALE_SNAP2GRID     { 46 };
-export inline int const IDM_GRID_UPDATE         { 47 };
 
 export inline int const IDM_NEXT_SCRIPT_CMD     { 50 };
 

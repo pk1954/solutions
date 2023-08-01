@@ -119,7 +119,7 @@
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />
-    <ClCompile Include="GridAnimationCmd.ixx" />
+    <ClCompile Include="SetGridCmd.ixx" />
     <ClCompile Include="InsertKnotCommand.ixx" />
     <ClCompile Include="InsertNeuronCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
@@ -145,7 +145,7 @@
     <ClCompile Include="RotateSelectionCommand.ixx" />
     <ClCompile Include="RotationCommand.ixx" />
     <ClCompile Include="DeselectModuleCmd.ixx" />
-    <ClCompile Include="ScalesAnimationCmd.ixx" />
+    <ClCompile Include="SetScalesCmd.ixx" />
     <ClCompile Include="SelectAllConnectedCmd.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SetActiveSigGenCmd.ixx" />

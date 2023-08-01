@@ -51,18 +51,6 @@ SignalControl::~SignalControl()
 		vertCoordVolt().UnregisterObserver(*this);
 }
 
-void SignalControl::Snap2Grid(bool const b) 
-{ 
-	m_bSnap2Grid = b; 
-	Trigger();   // cause repaint
-}
-
-void SignalControl::SetGridDimFactor(float const f)
-{
-	m_fGridDimFactor = f;
-	Trigger();
-}
-
 void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
 {
 	if (m_pVertScaleFreq)
@@ -96,7 +84,7 @@ void SignalControl::SetHorzScale(Scale<fMicroSecs>* pScale)
 fHertz SignalControl::getFreq(fPixel const fPixY) const
 {
 	fHertz fRes { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };
-	if (m_bSnap2Grid)
+	if (snap2Grid())
 	{
 		fHertz const fRaster { m_pVertScaleFreq->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -107,7 +95,7 @@ fHertz SignalControl::getFreq(fPixel const fPixY) const
 mV SignalControl::getVolt(fPixel const fPixY) const
 {
 	mV fRes { vertCoordVoltC().Transform2logUnitPos(getY(fPixY)) };
-	if (m_bSnap2Grid)
+	if (snap2Grid())
 	{
 		mV const fRaster { m_pVertScaleVolt->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -118,7 +106,7 @@ mV SignalControl::getVolt(fPixel const fPixY) const
 fMicroSecs SignalControl::getTime(fPixelPoint const &p) const
 {
 	fMicroSecs fRes { NNetTimeGraph::GetTime(p.GetX()) };
-	if (m_bSnap2Grid)
+	if (snap2Grid())
 	{
 		fMicroSecs const fRaster { m_pHorzScale->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -402,6 +390,10 @@ bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	case IDM_SCALE_GRID:
 		SendCommand2Parent(wParam, lParam);
 		break;
+
+	case IDD_GRID_UPDATE:
+		Notify(true);
+		return true;
 
 	default:
 		bRes = BaseWindow::OnCommand(wParam, lParam, pixPoint);

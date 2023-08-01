@@ -228,13 +228,13 @@
     <ClCompile Include="AddModuleCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScalesAnimationCmd.ixx">
+    <ClCompile Include="SetScalesCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GridAnimationCmd.ixx">
+    <ClCompile Include="SetGridCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

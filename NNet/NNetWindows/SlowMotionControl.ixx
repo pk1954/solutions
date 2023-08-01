@@ -16,7 +16,7 @@ export class SlowMotionControl
 {
 public:
 
-	static void Add(StatusBar & statusBar)
+	static void AddNNetPrefRapper(StatusBar & statusBar)
 	{ 
 		statusBar.AddButton(L" Slower ", IDM_SLOWER, BS_PUSHBUTTON); 
 		statusBar.AddButton(L" Faster ", IDM_FASTER, BS_PUSHBUTTON); 

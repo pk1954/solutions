@@ -16,6 +16,7 @@ import Color;
 import PixFpDimension;
 import Direct2D;
 import NNetModel;
+import NNetCommands;
 import :NNetTimeGraph;
 import :SimuRunning;
 
@@ -49,10 +50,10 @@ public:
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
 
-	void Snap2Grid(bool const);
-	bool Snap2Grid() const { return m_bSnap2Grid; }
+	void SetGrid(bool const bOn, bool const bAnim) final { SetGridCmd::Push(*this, m_fGridDimFactor, bOn, bAnim); }
 
-	void SetGridDimFactor(float const);
+	bool HasScales() const final { return true; }
+	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 
 private:
 
@@ -73,10 +74,7 @@ private:
 		D2D1::ColorF::Red    // HIGH
 	};
 
-	Color getColor(tColor const type) const
-	{
-		return m_colTable[static_cast<int>(type)];
-	}
+	Color getColor(tColor const type) const	{ return m_colTable[static_cast<int>(type)]; }
 
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
@@ -89,8 +87,9 @@ private:
 	Observable        & m_runObservable;
 	Observable        & m_dynamicModelObservable;
 	tPos                m_moveMode       { tPos::NONE };
-	bool                m_bSnap2Grid     { false };
 	float               m_fGridDimFactor { 0.0f };
+
+	bool snap2Grid() const { return m_fGridDimFactor > 0.0f; }
 
 	void PaintGraphics() final;
 

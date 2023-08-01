@@ -31,7 +31,7 @@ public:
 
     void Notify(bool const bImmediate) final // called by compute thread!
     {
-        Add(m_sigSrc.GetSignalValue());
+        AddNNetPrefRapper(m_sigSrc.GetSignalValue());
     }
 
 private:

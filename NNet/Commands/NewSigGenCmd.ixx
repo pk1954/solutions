@@ -11,6 +11,8 @@ module;
 export module NNetCommands:NewSigGenCmd;
 
 import IoUtil;
+import WinManager;
+import Win32_Util_Resource;
 import :NNetCommand;
 
 export class NewSigGenCmd : public NNetCommand
@@ -24,7 +26,7 @@ public:
 	void Do() final 
 	{ 
 		m_sigGenIdNew = m_pNMWI->PushSigGen(move(m_upSigGen));
-		PostCmd2Application(IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
+		WinManager::PostCommand(RootWinId(IDM_SIG_DESIGNER), IDD_REGISTER_SIG_GEN, m_sigGenIdNew.GetValue());
         m_sigGenIdOld = m_pNMWI->SetSigGenActive(m_sigGenIdNew);
 	}
 

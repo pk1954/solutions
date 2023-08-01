@@ -49,7 +49,8 @@
 #define       IDM_ADD_IMPORTED_MODEL         177
 #define       IDM_RELOAD_MODEL               178
 
-#define       IDD_ADJUST_SCALES              263
+#define       IDD_SCALES_UPDATE              263
+#define       IDD_GRID_UPDATE                264
 
 #define       IDD_ARROW_ANIMATION            270
 

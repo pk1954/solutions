@@ -81,7 +81,7 @@ public:
     void CallUI(bool const); // called by Animation
     void TargetReached() { (m_targetReachedFunc)(); }
 
-    static void Initialize(RootWindow* const, CommandStack* const);
+    static void Initialize(CommandStack* const);
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
     static void NextScriptCommand();
     static void PushCommand(unique_ptr<Command> cmd) { m_pStack->PushCommand(move(cmd)); }
@@ -96,14 +96,13 @@ protected:
     static bool      IsTraceOn()   { return m_bTrace; }
     static wostream& TraceStream() { return wcout; }
 
-    static LRESULT PostCmd2Application(WPARAM const, LPARAM const);
-    static LRESULT SendCmd2Application(WPARAM const, LPARAM const);
-    static LRESULT PostCmd2MainWin    (WPARAM const, LPARAM const);
-    static LRESULT SendCmd2MainWin    (WPARAM const, LPARAM const);
+    static LRESULT PostCmd2Application(WPARAM const, LPARAM const = 0);
+    static LRESULT SendCmd2Application(WPARAM const, LPARAM const = 0);
+    static LRESULT PostCmd2MainWin    (WPARAM const, LPARAM const = 0);
+    static LRESULT SendCmd2MainWin    (WPARAM const, LPARAM const = 0);
 
 private:
 
-    inline static RootWindow   * m_pWin   { nullptr };
     inline static bool           m_bTrace { true };
     inline static CommandStack * m_pStack { nullptr };
 

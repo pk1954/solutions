@@ -102,7 +102,13 @@ public:
         script.ScrReadSpecial(ID_SEPARATOR);
         unsigned short usBlue  { script.ScrReadUshort() };
         script.ScrReadSpecial(CLOSE_BRACKET);
-        WinManager::GetBaseWindow(id)->SetBackgroundColorRef(RGB(usRed, usGreen, usBlue));
+        BaseWindow* pBaseWin { WinManager::GetBaseWindow(id) };
+        if (pBaseWin)
+            pBaseWin->SetBackgroundColorRef(RGB(usRed, usGreen, usBlue));
+        else
+        {
+            //TODO: Error message
+        }
     }
 
     void Write(wostream& out) const final
@@ -138,10 +144,15 @@ public:
 
     void operator() (Script& script) const final
     {
-        unsigned int uiWinId { script.ScrReadUint() };
-        unsigned int uiState { script.ScrReadUint() };
-        BaseWindow *pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-        pBaseWin->SendCommand(uiWinId, false);
+        unsigned int const uiWinId  { script.ScrReadUint() };
+        bool         const bActive  { script.ScrReadBool() };
+        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
+        if (pBaseWin)
+            pBaseWin->SetScales(bActive, false);
+        else
+        {
+            //TODO: Error message
+        }
     }
 
     void Write(wostream& out) const final
@@ -149,10 +160,50 @@ public:
         RootWinId  const  idWinId    { RootWinId(IDM_MAIN_WINDOW) };
         wstring    const& wstrWindow { WinManager::GetWindowName(idWinId) };
         BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(idWinId) };
-        MainWindow const* pMainWin   { static_cast<MainWindow const *>(pBaseWin) };
+        MainWindow const* pMainWin   { static_cast<MainWindow const*>(pBaseWin) };
         WriteCmdName(out);
-        out << wstrWindow << SPACE << pMainWin->GetScaleMode();
+        out << wstrWindow;
+        PrefOnOff(out, pBaseWin->HasScales());
     }
+};
+
+class WrapShowGrid : public NNetWrapBase
+{
+public:
+    WrapShowGrid
+    (
+        wstring const& wstrName,
+        NNetPreferences& pref,
+        unsigned int uiWinId
+    )
+      : NNetWrapBase(wstrName, pref),
+        m_idWin(RootWinId(uiWinId))
+    {}
+
+    void operator() (Script& script) const final
+    {
+        unsigned int const uiWinId  { script.ScrReadUint() };
+        bool         const bActive  { script.ScrReadBool() };
+        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
+        if (pBaseWin)
+            pBaseWin->SetGrid(bActive, false);
+        else
+        {
+            //Todo Error message
+        }
+    }
+
+    void Write(wostream& out) const final
+    {
+        wstring    const& wstrWindow { WinManager::GetWindowName(m_idWin) };
+        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(m_idWin) };
+        WriteCmdName(out);
+        out << wstrWindow;
+        PrefOnOff(out, pBaseWin->HasGrid());
+    }
+
+private:
+    RootWinId const m_idWin;
 };
 
 void NNetPreferences::Initialize(NNetModelIO & modelIO)
@@ -161,14 +212,17 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
 
     m_pModelIO = &modelIO;
 
-    Add<WrapReadModel            >(L"ReadModel");
-    Add<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    Add<WrapShowScales           >(L"ShowScales");
-    Add<WrapColor                >(L"SetBKColor");
+    AddNNetPrefRapper<WrapReadModel            >(L"ReadModel");
+    AddNNetPrefRapper<WrapInputCablesVisibility>(L"InputCablesVisibility");
+    AddNNetPrefRapper<WrapShowScales           >(L"ShowScales");
+    AddNNetPrefRapper<WrapColor                >(L"SetBKColor");
 
     AddBoolWrapper(L"ShowArrows",       m_bArrows);
     AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
     AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
+
+    AddWrapper(make_unique<WrapShowGrid>(L"ShowGrid", *this, IDM_MAIN_WINDOW));
+    AddWrapper(make_unique<WrapShowGrid>(L"ShowGrid", *this, IDM_SIG_DESIGNER));
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

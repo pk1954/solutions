@@ -54,15 +54,19 @@ public:
 
 	static wstring const& GetWindowName(RootWinId const id) { return m_upMap->at(id).m_wstr; }
 	static HWND           GetHWND      (RootWinId const id) { return m_upMap->at(id).m_hwnd; }
-	static BaseWindow   * GetBaseWindow(RootWinId const id) { return m_upMap->at(id).m_pBaseWindow; }
 	static bool           IsMoveable   (RootWinId const id) { return m_upMap->at(id).m_bTrackPosition; }
 	static bool           IsSizeable   (RootWinId const id) { return m_upMap->at(id).m_bTrackSize; }
 	static bool           IsVisible    (RootWinId const id) { return IsWindowVisible(GetHWND(id)); }
 
-	static RootWinId GetIdFromRootWindow(HWND const);
-	
+	static BaseWindow* GetBaseWindow(RootWinId const);
+	static RootWinId   GetIdFromBaseWindow(BaseWindow const &);
+	static RootWinId   GetIdFromHWND(HWND const);
+
 	static LRESULT SendCommand(RootWinId const, WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand(RootWinId const, WPARAM const, LPARAM const = 0);
+
+	static LRESULT SendMessage(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
+	static LRESULT PostMessage(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
 
 	static void Show(RootWinId const id, tBoolOp const op) { Util::Show(GetHWND(id), op);	}
 

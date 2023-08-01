@@ -70,7 +70,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
-	Command        ::Initialize(&m_mainNNetWindow, & m_cmdStack);
+	Command        ::Initialize(&m_cmdStack);
 	WinManager     ::Initialize();
 	m_modelIO       .Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
@@ -95,7 +95,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	NNetCommand::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 
-	MonitorScrollState* pMonitorScrollState { m_modelIO.Add<MonitorScrollState>(L"MonitorScrollState") };
+	MonitorScrollState* pMonitorScrollState { m_modelIO.AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
 };
 
@@ -336,7 +336,7 @@ void NNetAppWindow::configureStatusBar()
 	iPart = m_statusBar.NewPart();
 	m_slowMotionDisplay.Initialize(& m_statusBar, & m_SlowMotionRatio, iPart);
 
-	SlowMotionControl::Add(m_statusBar);
+	SlowMotionControl::AddNNetPrefRapper(m_statusBar);
 
 	iPart = m_statusBar.NewPart();
 	m_ScriptHook.Initialize(& m_statusBar, iPart);
@@ -474,10 +474,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDD_TRIGGER_SIGNAL_DESIGNER:
 			m_signalDesigner.Trigger();
-			break;
-
-		case IDD_REGISTER_SIG_GEN:
-			m_signalDesigner.RegisterAtSigGen(SigGenId(Cast2Int(lParam)));
 			break;
 
 		case IDM_SAVE_MODEL_AS:

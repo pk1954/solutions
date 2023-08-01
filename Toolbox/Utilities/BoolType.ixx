@@ -24,7 +24,6 @@ public:
     virtual void Toggle()
     {
         Set(!m_bValue);
-        NotifyAll(true);
     }
 
     virtual bool Get() const

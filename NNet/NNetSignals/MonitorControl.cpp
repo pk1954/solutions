@@ -103,7 +103,7 @@ LPARAM MonitorControl::AddContextMenuEntries(HMENU const hPopupMenu)
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_EMPTY_TRACKS, L"Delete empty tracks");
 
 	if (m_trackNrHighlighted.IsNotNull())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"Add track");
+		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"AddNNetPrefRapper track");
 
 	if (m_pMonitorData->IsAnySignalSelected())
 		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal");

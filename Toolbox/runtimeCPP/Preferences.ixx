@@ -49,12 +49,6 @@ public:
 
 private:
 
-	template <Wrap_t WRAPPER>
-	void Add(wstring const& name)
-	{
-		AddWrapper(make_unique<WRAPPER>(name, *this));
-	}
-
 	vector<unique_ptr<WrapBase>> m_prefVector;
 	wstring                      m_wstrPreferencesFile;
 };

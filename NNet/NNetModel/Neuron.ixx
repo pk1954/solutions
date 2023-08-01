@@ -75,7 +75,7 @@ public:
 	void ReplaceOutgoing(Pipe* const, Pipe* const) final;
 
 	void AddOutgoing(Pipe* pPipe) final { SetAxon(pPipe); }
-	void AddIncoming(Pipe* pPipe) final { m_inPipes.Add(*pPipe); }
+	void AddIncoming(Pipe* pPipe) final { m_inPipes.AddNNetPrefRapper(*pPipe); }
 
 	void AddIncoming(Neuron const *);
 

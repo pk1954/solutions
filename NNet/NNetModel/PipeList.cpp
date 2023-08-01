@@ -37,7 +37,7 @@ void PipeList::Check() const
 	}
 }
 
-void PipeList::Add(Pipe & pipe)
+void PipeList::AddNNetPrefRapper(Pipe & pipe)
 { 
 	if (find(m_list, &pipe) == end(m_list))
 		m_list.push_back(&pipe); 

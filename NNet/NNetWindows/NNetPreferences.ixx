@@ -72,7 +72,7 @@ public:
 private:
 
 	template <Wrap_t WRAPPER>
-	void Add(wstring const& name)
+	void AddNNetPrefRapper(wstring const& name)
 	{
 		AddWrapper(make_unique<WRAPPER>(name, *this));
 	}

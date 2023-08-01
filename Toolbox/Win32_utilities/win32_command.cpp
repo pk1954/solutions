@@ -12,6 +12,7 @@ module;
 module Commands;
 
 import Win32_Util_Resource;
+import WinManager;
 import SaveCast;
 import RootWindow;
 import ScriptStack;
@@ -21,25 +22,21 @@ using std::unique_ptr;
 
 class CommandStack;
 
-void Command::Initialize
-(
-    RootWindow   * const pWin,
-    CommandStack * const pStack
-)
+void Command::Initialize(CommandStack * const pStack)
 {
-    m_pWin = pWin;
     m_pStack = pStack;
 }
 
 void Command::UpdateUI() 
 { 
-    m_pWin->Notify(false); 
+    WinManager::GetBaseWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
 };
 
 void Command::CallUI(bool const bTargetReached)  // runs in animation thread
 {
-    m_pWin->PostMessage
+    WinManager::PostMessage
     (
+        RootWinId(IDM_MAIN_WINDOW),
         WM_APP_UI_CALL,            // calls DoCall from UI thread
         static_cast<WPARAM>(bTargetReached), 
         bit_cast<LPARAM>(this)
@@ -107,7 +104,7 @@ void Command::AddPhase(unique_ptr<Command> upCmd)
 
 void Command::blockUI() const
 { 
-    m_pWin->SendCommand2Application(IDM_BLOCK_UI, true);  
+    PostCmd2Application(IDM_BLOCK_UI, true);
 };
 
 void Command::unblockUI() const
@@ -124,20 +121,20 @@ void Command::NextScriptCommand()
 
 LRESULT Command::PostCmd2Application(WPARAM const wParam, LPARAM const lParam)
 {
-    return m_pWin->PostCommand2Application(wParam, lParam);
+    return WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
 }
 
 LRESULT Command::SendCmd2Application(WPARAM const wParam, LPARAM const lParam)
 {
-    return m_pWin->SendCommand2Application(wParam, lParam);
+    return WinManager::SendCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
 }
 
 LRESULT Command::PostCmd2MainWin(WPARAM const wParam, LPARAM const lParam)
 {
-    return m_pWin->PostCommand(wParam, lParam);
+    return WinManager::PostCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
 }
 
 LRESULT Command::SendCmd2MainWin(WPARAM const wParam, LPARAM const lParam)
 {
-    return m_pWin->SendCommand(wParam, lParam);
+    return WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
 }

@@ -18,7 +18,7 @@ wstring const PREF_OFF { L"OFF" };
 
 void PrefOnOff(wostream& out, bool const bOn)
 {
-    out << (bOn ? PREF_ON : PREF_OFF);
+    out << L' ' << (bOn ? PREF_ON : PREF_OFF);
 }
 
 WrapBase::WrapBase(wstring const& wstrName)

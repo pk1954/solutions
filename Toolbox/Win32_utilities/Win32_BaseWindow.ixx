@@ -37,6 +37,11 @@ public:
 	void SetCaption() const;
 
 	virtual wstring GetCaption() const;
+	virtual void    SetGrid  (bool const, bool const) {}
+	virtual void    SetScales(bool const, bool const) {}
+
+	virtual bool HasGrid  () const { return false; }
+	virtual bool HasScales() const { return false; }
 
 	inline static BoolType m_bPerfMonMode { false };
 

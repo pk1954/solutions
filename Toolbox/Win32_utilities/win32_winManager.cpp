@@ -3,6 +3,7 @@
 // Win32_utilities
 
 #include <cassert>
+#include <stdexcept>
 #include <Windows.h>
 #include <iostream>
 #include <fstream>
@@ -32,6 +33,7 @@ using std::to_wstring;
 using std::wstring;
 using std::make_unique;
 using std::map;
+using std::out_of_range;
 
 using Util::operator==;
 using Util::operator!=;
@@ -401,7 +403,7 @@ void WinManager::AddWindow
     addWindow(wstrName, id, baseDialog.GetWindowHandle(), nullptr, bTrackPosition, bTrackSize);
 }
 
-RootWinId WinManager::GetIdFromRootWindow(HWND const hwnd)
+RootWinId WinManager::GetIdFromHWND(HWND const hwnd)
 {
     for (const auto& [key, value] : *m_upMap.get())
         if (value.m_hwnd == hwnd)
@@ -409,12 +411,39 @@ RootWinId WinManager::GetIdFromRootWindow(HWND const hwnd)
     return RootWinId(-1);
 }
 
+RootWinId WinManager::GetIdFromBaseWindow(BaseWindow const & baseWin)
+{
+    return GetIdFromHWND(baseWin.GetWindowHandle());
+}
+
+BaseWindow* WinManager::GetBaseWindow(RootWinId const id) 
+{ 
+    try
+    { 
+        return m_upMap->at(id).m_pBaseWindow;
+    }
+    catch (const out_of_range&)
+    {
+        return nullptr;
+    }
+}
+
+LRESULT WinManager::SendMessage(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
+{
+    return ::SendMessage(GetHWND(id), msg, wParam, lParam);
+}
+
+LRESULT WinManager::PostMessage(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
+{
+    return ::PostMessage(GetHWND(id), msg, wParam, lParam);
+}
+
 LRESULT WinManager::SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)
 {
-    return ::SendMessage(GetHWND(id), WM_COMMAND, wParam, lParam);
+    return SendMessage(id, WM_COMMAND, wParam, lParam);
 }
 
 LRESULT WinManager::PostCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)
 {
-    return ::PostMessage(GetHWND(id), WM_COMMAND, wParam, lParam);
+    return PostMessage(id, WM_COMMAND, wParam, lParam);
 }

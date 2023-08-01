@@ -41,22 +41,16 @@ public:
 		Observable &
 	);
 
-	COLORREF GetBackgroundColorRef() const final
-	{
-		return m_upSignalPreview->GetBackgroundColorRef();
-	}
+	COLORREF GetBackgroundColorRef() const final { return m_upSignalPreview->GetBackgroundColorRef(); }
 
-	void SetBackgroundColorRef(COLORREF const c) final
-	{
-		Color const color { c };
-		m_upSignalPreview   ->SetBackgroundColor(color);
-		m_upSignalControl[0]->SetBackgroundColor(color);
-		m_upSignalControl[1]->SetBackgroundColor(color);
-	}
+	void    SetBackgroundColorRef(COLORREF const) final;
+	LPARAM  AddContextMenuEntries(HMENU const)    final;
+	wstring GetCaption()                    const final;
+	void    Trigger()                             final;
+	void    SetGrid(bool const, bool const)       final;
 
-	LPARAM  AddContextMenuEntries(HMENU const) final;
-	wstring GetCaption()                 const final;
-	void    Trigger()                          final;
+	bool    HasScales() const final { return true; }
+	bool    HasGrid  () const final { return m_upSignalControl[0]->HasGrid(); }
 
 	void    SetModelInterface(NNetModelWriterInterface * const);
 	void    RegisterAtSigGen(SigGenId const);
@@ -111,6 +105,5 @@ private:
 	bool                       m_bIntegrated    { false };
 	bool                       m_bPreview       { false };
 	int                        m_iNrOfTiles     { 2 };
-	float                      m_fGridDimFactor { 0.0f };
 	Observable                 m_gridObservable;
 };

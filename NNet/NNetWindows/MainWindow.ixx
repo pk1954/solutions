@@ -15,6 +15,7 @@ import ScaleMenu;
 import ActionTimer;
 import NNetModel;
 import NNetSignals;
+import NNetCommands;
 import :NNetPreferences;
 import :SelectionMenu;
 import :NNetWindow;
@@ -58,7 +59,11 @@ public:
 	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
 	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
 
-	unsigned int GetScaleMode() const { return m_scaleMenu.GetState(); }
+	bool HasScales() const final { return m_scaleMenu.IsScaleVisible(); }
+	bool HasGrid  () const final { return m_scaleMenu.IsGridVisible(); }
+
+	void SetGrid  (bool const bOn, bool const bAnim) { SetGridCmd  ::Push(*this, m_fGridDimFactor, bOn, bAnim); }
+	void SetScales(bool const bOn, bool const bAnim) { SetScalesCmd::Push(*this, m_fPixScaleSize,  bOn, bAnim); }
 
 	void CenterModel();
 	void CenterSelection();

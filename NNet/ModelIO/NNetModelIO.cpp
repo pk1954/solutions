@@ -62,20 +62,20 @@ NNetModelIO::~NNetModelIO() = default;
 
 void NNetModelIO::Initialize()
 {
-    Add<WrapProtocol       >(L"Protocol");
-    Add<WrapDescription    >(L"Description");
-    Add<WrapGlobalParameter>(L"GlobalParameter");
-    Add<WrapNrOfNobs       >(L"NrOfNobs");
-    Add<NobIo              >(L"CreateNob");
-    Add<WrapVoltage        >(L"Voltage");
-    Add<WrapEmphasized     >(L"Emphasized");
-    Add<WrapSignalGenerator>(L"SignalGenerator");
-    Add<WrapSetSigGen      >(L"SetSigGen");
-    Add<WrapActiveSigGen   >(L"ActiveSigGen");
-    Add<WrapNrOfTracks     >(L"NrOfTracks");
-    Add<WrapSignalInfo     >(L"SignalInfo");
-    Add<WrapSignalData     >(L"SignalData");
-    Add<WrapSimulationTime >(L"SimulationTime");
+    AddModelWrapper<WrapProtocol       >(L"Protocol");
+    AddModelWrapper<WrapDescription    >(L"Description");
+    AddModelWrapper<WrapGlobalParameter>(L"GlobalParameter");
+    AddModelWrapper<WrapNrOfNobs       >(L"NrOfNobs");
+    AddModelWrapper<NobIo              >(L"CreateNob");
+    AddModelWrapper<WrapVoltage        >(L"Voltage");
+    AddModelWrapper<WrapEmphasized     >(L"Emphasized");
+    AddModelWrapper<WrapSignalGenerator>(L"SignalGenerator");
+    AddModelWrapper<WrapSetSigGen      >(L"SetSigGen");
+    AddModelWrapper<WrapActiveSigGen   >(L"ActiveSigGen");
+    AddModelWrapper<WrapNrOfTracks     >(L"NrOfTracks");
+    AddModelWrapper<WrapSignalInfo     >(L"SignalInfo");
+    AddModelWrapper<WrapSignalData     >(L"SignalData");
+    AddModelWrapper<WrapSimulationTime >(L"SimulationTime");
 
     NobType::Apply2All
     (

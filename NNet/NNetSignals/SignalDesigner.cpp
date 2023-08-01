@@ -148,6 +148,14 @@ void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 	m_pNMWI = p;
 }
 
+void SignalDesigner::SetBackgroundColorRef(COLORREF const c)
+{
+	Color const color { c };
+	m_upSignalPreview->SetBackgroundColor(color);
+	m_upSignalControl[0]->SetBackgroundColor(color);
+	m_upSignalControl[1]->SetBackgroundColor(color);
+}
+
 void SignalDesigner::AddSigGenMenu
 (
 	HMENU    const hPopupMenu,
@@ -249,30 +257,24 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		AddSigGen2MonitorCmd::Push(TrackNr(0));
 		return true;
 
-	case IDM_SCALE_GRID:
-		if (m_upSignalControl[0]->Snap2Grid())
-		{
-			m_upSignalControl[0]->Snap2Grid(false);
-			m_upSignalControl[1]->Snap2Grid(false);
-			GridAnimationCmd::Push(this, m_fGridDimFactor, 0.0f);
-		}
-		else
-		{
-			m_upSignalControl[0]->Snap2Grid(true);
-			m_upSignalControl[1]->Snap2Grid(true);
-			GridAnimationCmd::Push(this, m_fGridDimFactor, 1.0f);
-		}
-		return true;
+	case IDD_REGISTER_SIG_GEN:
+		RegisterAtSigGen(SigGenId(Cast2Int(lParam)));
+		break;
 
-	case IDM_GRID_UPDATE:
-		m_upSignalControl[0]->SetGridDimFactor(m_fGridDimFactor);
-		m_upSignalControl[1]->SetGridDimFactor(m_fGridDimFactor);
+	case IDM_SCALE_GRID:
+		SetGrid(!HasGrid(), true);
 		return true;
 
 	default:
 		break;
 	}
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
+}
+
+void SignalDesigner::SetGrid(bool const bOn, bool const bAnim)
+{
+	m_upSignalControl[0]->SetGrid(bOn, bAnim);
+	m_upSignalControl[1]->SetGrid(bOn, bAnim);
 }
 
 void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)
@@ -443,5 +445,4 @@ void SignalDesigner::adjustLayout
 		0, 0,
 		SWP_NOSIZE | SWP_SHOWWINDOW
 	);
-
 }
