@@ -10,16 +10,18 @@ module;
 export module WrapSetScales;
 
 import Win32_Util_Resource;
-import NNetWrapBase;
+import WrapBaseBool;
+import BaseWindow;
+import WrapBase;
 import WinManager;
 
 using std::wostream;
 using std::wstring;
 
-export class WrapSetScales : public NNetWrapBase
+export class WrapSetScales : public WrapBase
 {
 public:
-    using NNetWrapBase::NNetWrapBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {

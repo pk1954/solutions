@@ -145,7 +145,6 @@ private:
 	Observable               m_activeSigGenObservable;
 	ParameterDialog          m_parameterDlg;
 	PerformanceWindow        m_performanceWindow;
-	NNetPreferences          m_preferences;
 	ScriptFile               m_scriptFile;
 	ScriptHook               m_ScriptHook;
 	SignalDesigner           m_signalDesigner;

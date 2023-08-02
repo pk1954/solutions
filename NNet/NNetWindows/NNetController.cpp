@@ -26,6 +26,7 @@ import Win32_Util;
 import NNetCommands;
 import Commands;
 import NNetModel;
+import Preferences;
 import NNetPreferences;
 import :ComputeThread;
 import :MainWindow;
@@ -39,7 +40,6 @@ void NNetController::Initialize
     ComputeThread   * const pComputeThread,
     SlowMotionRatio * const pSlowMotionRatio,
     Sound           * const pSound,
-    NNetPreferences * const pPreferences,
     CommandStack    * const pCommandStack,
     MonitorWindow   * const pMonitorWindow
 ) 
@@ -47,7 +47,6 @@ void NNetController::Initialize
     m_pSlowMotionRatio = pSlowMotionRatio;
     m_pComputeThread   = pComputeThread;
     m_pSound           = pSound;
-    m_pPreferences     = pPreferences;
     m_pCommandStack    = pCommandStack;
     m_pMonitorWindow   = pMonitorWindow;
     m_hCrsrWait        = LoadCursor(NULL, IDC_WAIT);
@@ -60,7 +59,6 @@ NNetController::~NNetController()
     m_pComputeThread   = nullptr;
     m_hCrsrWait        = nullptr;
     m_pSound           = nullptr;
-    m_pPreferences     = nullptr;
     m_pCommandStack    = nullptr;
     m_pMonitorWindow   = nullptr;
 }
@@ -131,15 +129,15 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_ARROWS:  // comes from menu
-        m_pPreferences->m_bArrows.Toggle(); // with animation
+        NNetPreferences::m_bArrows.Toggle(); // with animation
         break;
 
     case IDD_SENSOR_PNTS:
-        m_pPreferences->m_bSensorPoints.Toggle();
+        NNetPreferences::m_bSensorPoints.Toggle();
         break;
 
     case IDD_SOUND:
-        m_pPreferences->m_bSound.Toggle();
+        Preferences::m_bSound.Toggle();
         break;
 
     case IDD_PERF_MON_MODE:
@@ -148,7 +146,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDD_COLOR_MENU:
-        m_pPreferences->m_bColorMenu.Toggle();
+        Preferences::m_bColorMenu.Toggle();
         break;
 
     case IDX_PLAY_SOUND:
@@ -156,19 +154,19 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDM_INPUT_CABLES_ALL:
-        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::all);
+        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::all);
         break;
 
     case IDM_INPUT_CABLES_NONSTD:
-        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::nonStd);
+        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::nonStd);
         break;
 
     case IDM_INPUT_CABLES_ACTIVE:
-        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::active);
+        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::active);
         break;
 
     case IDM_INPUT_CABLES_NONE:
-        m_pPreferences->SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::none);
+        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::none);
         break;
 
     default:

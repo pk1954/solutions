@@ -22,7 +22,6 @@ import Win32_Util_Resource;
 import Script;
 import Symtab;
 import NNetModelIO;
-import NNetWrapBase;
 import WrapSetScales;
 import WrapSetGrid;
 
@@ -35,45 +34,45 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
 
-class WrapInputCablesVisibility : public NNetWrapBase
+class WrapInputCablesVisibility : public WrapBase
 {
 public:
-    using NNetWrapBase::NNetWrapBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        m_pref.SetInputCablesVisibility(static_cast<NNetPreferences::tInputCablesVisibility>(script.ScrReadInt()));
+        NNetPreferences::SetInputCablesVisibility(static_cast<NNetPreferences::tInputCablesVisibility>(script.ScrReadInt()));
     }
 
     void Write(wostream& out) const final
     {
         WriteCmdName(out);
-        out << static_cast<int>(m_pref.InputCablesVisibility());
+        out << static_cast<int>(NNetPreferences::InputCablesVisibility());
     }
 };
 
-class WrapReadModel : public NNetWrapBase
+class WrapReadModel : public WrapBase
 {
 public:
-    using NNetWrapBase::NNetWrapBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        m_pref.GetModelIO().SetModelFileName(script.ScrReadString());
+        NNetPreferences::GetModelIO().SetModelFileName(script.ScrReadString());
         WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
     }
 
     void Write(wostream& out) const final
     {
         WriteCmdName(out);
-        out << DOUBLE_QUOTE << m_pref.GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
+        out << DOUBLE_QUOTE << NNetPreferences::GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
     }
 };
 
-class WrapColor : public NNetWrapBase
+class WrapColor : public WrapBase
 {
 public:
-    using NNetWrapBase::NNetWrapBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
@@ -127,17 +126,15 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
 
     m_pModelIO = &modelIO;
 
-//    AddWrapper(make_unique<WRAPPER>(name, *this));
+    Preferences::AddWrapper(make_unique<WrapReadModel            >(L"ReadModel"));
+    Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>(L"InputCablesVisibility"));
+    Preferences::AddWrapper(make_unique<WrapSetScales            >(L"SetScales"));
+    Preferences::AddWrapper(make_unique<WrapColor                >(L"SetBKColor"));
+    Preferences::AddWrapper(make_unique<WrapSetGrid              >(L"SetGrid"));
 
-    AddNNetPrefRapper<WrapReadModel            >(L"ReadModel");
-    AddNNetPrefRapper<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    AddNNetPrefRapper<WrapSetScales            >(L"SetScales");
-    AddNNetPrefRapper<WrapColor                >(L"SetBKColor");
-    AddNNetPrefRapper<WrapSetGrid              >(L"SetGrid");
-
-    AddBoolWrapper(L"ShowArrows",       m_bArrows);
-    AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
-    AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
+    Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
+    Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
+    Preferences::AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

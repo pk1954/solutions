@@ -34,21 +34,19 @@ public:
 		HWND            const, 
 		ComputeThread   const &, 
 		CommandStack    const &,
-		Sound           const &,
-		NNetPreferences const &
+		Sound           const &
 	);
 	void AdjustUndoRedo();
 	void Notify(bool const) final;
 
 private:
 
-	HWND                    m_hwndApp        { nullptr };
-	HMENU                   m_hMenu          { nullptr };
-	HMENU                   m_hMenuSigGen    { nullptr };
-	ComputeThread   const * m_pComputeThread { nullptr };
-	NNetPreferences const * m_pPreferences   { nullptr };
-	CommandStack    const * m_pCommandStack  { nullptr };
-	Sound           const * m_pSound         { nullptr };
+	HWND                  m_hwndApp        { nullptr };
+	HMENU                 m_hMenu          { nullptr };
+	HMENU                 m_hMenuSigGen    { nullptr };
+	ComputeThread const * m_pComputeThread { nullptr };
+	CommandStack  const * m_pCommandStack  { nullptr };
+	Sound         const * m_pSound         { nullptr };
 
 	unique_ptr<OnOffPair> m_upOnOffArrows;
 	unique_ptr<OnOffPair> m_upOnOffSound;

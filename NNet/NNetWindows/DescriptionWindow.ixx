@@ -20,7 +20,7 @@ using std::wstring;
 export class DescriptionWindow : public BaseWindow, public DescriptionUI
 {
 public:
-	void Start(HWND const, Preferences &);
+	void Start(HWND const);
 	void Stop();
 
 	bool SetFontSize(int const);

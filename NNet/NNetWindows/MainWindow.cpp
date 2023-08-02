@@ -49,7 +49,6 @@ void MainWindow::Start
 	HWND          const   hwndApp, 
 	bool          const   bShowRefreshRateDialog,
 	fPixel        const   fPixBeaconLimit,
-	NNetPreferences     & preferences,
 	NNetController      & controller,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,  
@@ -69,7 +68,6 @@ void MainWindow::Start
 		pMonitorWindow
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
-	m_pPreferences         = & preferences;
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
@@ -543,7 +541,7 @@ void MainWindow::PaintGraphics()
 	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get(), sigGenOffset());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
 
-	if (m_pPreferences->m_bSensorPoints.Get() && pSensorSelected)
+	if (NNetPreferences::m_bSensorPoints.Get() && pSensorSelected)
 		pSensorSelected->DrawDataPoints(m_context);
 
 	m_selectionMenu.Show(m_pNMRI->AnyNobsSelected());
@@ -554,7 +552,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 	UPSigGenList const& list      { m_pNMRI->GetSigGenList() };
 	SigGenId     const  idSigGen  { list.GetSigGenId(*inputLine.GetSigGenC()) };
 	bool         const  bActive   { list.IsSelected(idSigGen) };
-	switch (m_pPreferences->InputCablesVisibility())
+	switch (NNetPreferences::InputCablesVisibility())
 	{
 		using enum NNetPreferences::tInputCablesVisibility;
 		case all:                                              break;
@@ -732,7 +730,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_EXTEND_INPUTLINE:        ExtendInputLineCmd    ::Push(m_nobIdHighlighted, umPoint - STD_OFFSET); break; // case 10
 	case IDD_EXTEND_OUTPUTLINE:       ExtendOutputLineCmd   ::Push(m_nobIdHighlighted, umPoint + STD_OFFSET); break; // case 11
 	case IDD_STOP_ON_TRIGGER:         ToggleStopOnTriggerCmd::Push(m_nobIdHighlighted);           		      break;
-	case IDD_ARROW_ANIMATION:         ArrowAnimationCmd     ::Push(m_umArrowSize, m_pPreferences->m_bArrows.Get(), lParam); break;
+	case IDD_ARROW_ANIMATION:         ArrowAnimationCmd     ::Push(m_umArrowSize, NNetPreferences::m_bArrows.Get(), lParam); break;
 
 	case IDM_SCALE_OFF:
 	case IDM_SCALE_ON:

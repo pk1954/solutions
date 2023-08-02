@@ -31,7 +31,6 @@ public:
 		HWND   const,
 		bool   const,
 		fPixel const,
-		NNetPreferences&,
 		NNetController&,
 		Observable&,
 		Observable&,
@@ -92,7 +91,6 @@ private:
 	fPixelPoint      m_fPixScaleSize          { fPP_ZERO };
 	float            m_fGridDimFactor         { 0.0f };
 	MicroMeter       m_umArrowSize            { 0._MicroMeter };
-	NNetPreferences *m_pPreferences           { nullptr };
 	ActionTimer     *m_pDisplayTimer          { nullptr };
 	Observable      *m_pCoordObservable       { nullptr };
 	Observable      *m_pCursorPosObservable   { nullptr };

@@ -19,6 +19,7 @@ import Win32_Util;
 import OnOffPair;
 import Commands;
 import NNetModel;
+import Preferences;
 import NNetPreferences;
 import :ComputeThread;
 
@@ -40,8 +41,7 @@ void NNetAppMenu::Start
 	HWND            const   hwndApp,
 	ComputeThread   const & computeThread,
 	CommandStack    const & commandStack,
-	Sound           const & sound,
-    NNetPreferences const & preferences
+	Sound           const & sound
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
@@ -50,7 +50,6 @@ void NNetAppMenu::Start
 	m_pComputeThread = & computeThread;
 	m_pCommandStack  = & commandStack;
 	m_pSound         = & sound;
-    m_pPreferences   = & preferences;
 
     SendMessage(m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NNETSIMU)));
     SendMessage(m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL   )));
@@ -138,11 +137,11 @@ void NNetAppMenu::Notify(bool const bImmediately)
     Util::Enable(m_hMenu, IDM_PERF_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_PERF_WINDOW   )));
     Util::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
 
-    m_upOnOffArrows      ->EnableOnOff(m_hMenu, m_pPreferences->m_bArrows.Get());
-    m_upOnOffSound       ->EnableOnOff(m_hMenu, m_pPreferences->m_bSound.Get());
-    m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, m_pPreferences->m_bAutoOpen.Get());
-    m_upOnOffSensorPoints->EnableOnOff(m_hMenu, m_pPreferences->m_bSensorPoints.Get());
-    m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, m_pPreferences->m_bColorMenu.Get());
+    m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
+    m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());
+    m_upOnOffSound       ->EnableOnOff(m_hMenu, Preferences::m_bSound.Get());
+    m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, Preferences::m_bAutoOpen.Get());
+    m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, Preferences::m_bColorMenu.Get());
     m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow::m_bPerfMonMode.Get());
 
     DrawMenuBar(m_hwndApp);

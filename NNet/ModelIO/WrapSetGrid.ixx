@@ -11,28 +11,24 @@ module;
 export module WrapSetGrid;
 
 import Win32_Util_Resource;
-import NNetWrapBase;
+import WrapBaseBool;
+import BaseWindow;
+import WrapBase;
 import WinManager;
 
 using std::wostream;
 using std::wstring;
 
-export class WrapSetGrid : public NNetWrapBase
+export class WrapSetGrid : public WrapBase
 {
 public:
-    WrapSetGrid
-    (
-        wstring const& wstrName,
-        NNetPreferences& pref
-    )
-        : NNetWrapBase(wstrName, pref)
-    {}
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        unsigned int const uiWinId { script.ScrReadUint() };
-        bool         const bActive { script.ScrReadBool() };
-        BaseWindow* const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
+        unsigned int const uiWinId  { script.ScrReadUint() };
+        bool         const bActive  { script.ScrReadBool() };
+        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
         if (pBaseWin)
             pBaseWin->SetGrid(bActive, false);
         else

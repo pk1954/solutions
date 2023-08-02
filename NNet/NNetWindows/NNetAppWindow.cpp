@@ -80,7 +80,6 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_computeThread,
 		& m_SlowMotionRatio,
 		& m_sound,
-		& m_preferences,
 		& m_cmdStack,
 		& m_monitorWindow
 	);
@@ -115,7 +114,7 @@ void NNetAppWindow::setModelInterface()
 	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
 	m_performanceWindow.SetModelInterface(m_pNMRI);
-	m_preferences      .SetModelInterface(m_pNMRI);
+	NNetPreferences   ::SetModelInterface(m_pNMRI);
 	Nob::SetParams(&m_pNMRI->GetParamsC());
 }
 
@@ -134,7 +133,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle.Initialize(m_hwndApp);
 
-	m_preferences.Initialize(m_modelIO);
+	NNetPreferences::Initialize(m_modelIO);
 
 	m_signalDesigner.Initialize
 	(
@@ -156,9 +155,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_statusBar        .SetRefreshRate(300ms);
 
-	m_appMenu          .Start(m_hwndApp, m_computeThread, m_cmdStack, m_sound, m_preferences);
+	m_appMenu          .Start(m_hwndApp, m_computeThread, m_cmdStack, m_sound);
 	m_statusBar        .Start(m_hwndApp);
-	m_descWindow       .Start(m_hwndApp, m_preferences);
+	m_descWindow       .Start(m_hwndApp);
 	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
@@ -175,7 +174,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_hwndApp, 
 		false,
 		30._fPixel,
-		m_preferences,
 		m_NNetController,
 		m_cursorPosObservable,
 		m_coordObservable,
@@ -242,7 +240,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_SlowMotionRatio       .RegisterObserver(m_slowMotionDisplay);
 	m_nmwi.GetParams()      .RegisterObserver(m_parameterDlg);
 	m_nmwi.GetParams()      .RegisterObserver(m_computeThread);
-	m_preferences.m_bSound  .RegisterObserver(m_appMenu);
+	Preferences::m_bSound   .RegisterObserver(m_appMenu);
 	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
 	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
 	m_activeSigGenObservable.RegisterObserver(m_mainNNetWindow);
@@ -255,7 +253,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 //	::CreateWindowToolTip(m_statusBar.GetWindowHandle(), L"blah blah");
 
-	if (!m_preferences.m_bAutoOpen.Get() || ! m_preferences.ReadPreferences())
+	if (!Preferences::m_bAutoOpen.Get() || !Preferences::ReadPreferences())
 	{
 		ResetModelCmd::Push();
 		CreateInitialNobsCmd::Push();
@@ -459,7 +457,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_SAVE_MODEL:
 			if (SaveModel())
-				m_preferences.WritePreferences();
+				Preferences::WritePreferences();
 			break;
 
 		case IDM_IMPORT_MODEL:
@@ -479,7 +477,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_SAVE_MODEL_AS:
 			m_computeThread.StopComputation();
 			if (SaveModelAs())
-				m_preferences.WritePreferences();
+				Preferences::WritePreferences();
 			break;
 
 		case IDM_OPEN_MODEL:
@@ -672,7 +670,7 @@ void NNetAppWindow::WriteModel()
 {
 	SetCursor(m_hCrsrWait);
 	m_modelIO.Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0));
-	m_preferences.WritePreferences();
+	Preferences::WritePreferences();
 	m_appTitle.SetUnsavedChanges(false);
 	m_statusBar.ClearPart(m_statusMessagePart);
 	SetCursor(m_hCrsrArrow);

@@ -94,11 +94,7 @@ bool DescriptionWindow::SetFontSize(int const iSize)
     return bResult;
 }
 
-void DescriptionWindow::Start
-(
-    HWND const hwndParent,
-    Preferences &pref
-)
+void DescriptionWindow::Start(HWND const hwndParent)
 {
     PixelRect rect(100_PIXEL, 100_PIXEL, 200_PIXEL, 200_PIXEL);
 
@@ -132,7 +128,7 @@ void DescriptionWindow::Start
 
     (void)SetWindowSubclass(m_hwndEdit, OwnerDrawEditBox, 0, (DWORD_PTR)this) ;
 
-    pref.AddWrapper(make_unique<WrapDescWinFontSize>(L"DescWinFontSize", *this));
+    Preferences::AddWrapper(make_unique<WrapDescWinFontSize>(L"DescWinFontSize", *this));
     fontSize();
 }
 

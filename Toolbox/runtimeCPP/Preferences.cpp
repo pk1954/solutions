@@ -38,7 +38,7 @@ void Preferences::Initialize(wstring const & wstrPrefFile)
     AddBoolWrapper(L"SetAutoOpen",  m_bAutoOpen);
 }
 
-bool Preferences::ReadPreferences() const
+bool Preferences::ReadPreferences()
 {
     if (exists(m_wstrPreferencesFile))
     {
@@ -55,7 +55,7 @@ bool Preferences::ReadPreferences() const
     }
 }
 
-bool Preferences::WritePreferences() const
+bool Preferences::WritePreferences()
 {
     wofstream prefFile(m_wstrPreferencesFile);
     prefFile << Scanner::COMMENT_START << L" User preferences" << endl;

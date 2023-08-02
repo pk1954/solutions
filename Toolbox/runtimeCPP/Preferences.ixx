@@ -25,19 +25,17 @@ using std::make_unique;
 export class Preferences
 {
 public:
-	void Initialize(wstring const&);
+	static void Initialize(wstring const&);
 
-	bool ReadPreferences() const;
-	bool WritePreferences() const;
+	static bool ReadPreferences();
+	static bool WritePreferences();
 	
-	virtual void WriteAppPreferences(wostream&) const {};
-
-	void AddWrapper(unique_ptr<WrapBase> upWrapper)
+	static void AddWrapper(unique_ptr<WrapBase> upWrapper)
 	{
 		m_prefVector.push_back(move(upWrapper));
 	}
 
-	void AddBoolWrapper(wstring const& name, BoolType& boolType)
+	static void AddBoolWrapper(wstring const& name, BoolType& boolType)
 	{
 		AddWrapper(make_unique<WrapBaseBool>(name, boolType));
 	}
@@ -48,6 +46,6 @@ public:
 
 private:
 
-	vector<unique_ptr<WrapBase>> m_prefVector;
-	wstring                      m_wstrPreferencesFile;
+	inline static vector<unique_ptr<WrapBase>> m_prefVector;
+	inline static wstring                      m_wstrPreferencesFile;
 };

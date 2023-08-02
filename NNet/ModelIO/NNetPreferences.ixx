@@ -29,7 +29,7 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-export class ShowArrows : public BoolType
+class ShowArrows : public BoolType
 {
 public:
 	ShowArrows()
@@ -50,33 +50,27 @@ public:
 	}
 };
 
-export class NNetPreferences: public Preferences
+export class NNetPreferences
 {
 public:
-	void Initialize(NNetModelIO&);
+	static void Initialize(NNetModelIO&);
 
-	void SetModelInterface(NNetModelReaderInterface const *);
+	static void SetModelInterface(NNetModelReaderInterface const *);
 
 	enum class tInputCablesVisibility { all, nonStd, active, none };
 
-	tInputCablesVisibility InputCablesVisibility() const { return m_inputCablesVisibility; }
-	void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
+	static tInputCablesVisibility InputCablesVisibility()   { return m_inputCablesVisibility; }
+	static void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
 
-	NNetModelReaderInterface const *GetModelInterface() const { return m_pNMRI; };
-	NNetModelIO                    &GetModelIO()              { return *m_pModelIO; }
+	static NNetModelReaderInterface const *GetModelInterface() { return m_pNMRI; };
+	static NNetModelIO                    &GetModelIO()        { return *m_pModelIO; }
 
-	ShowArrows m_bArrows;
-	BoolType   m_bSensorPoints { false };
+	inline static ShowArrows m_bArrows;
+	inline static BoolType   m_bSensorPoints { false };
 
 private:
 
-	template <Wrap_t WRAPPER>
-	void AddNNetPrefRapper(wstring const& name)
-	{
-		AddWrapper(make_unique<WRAPPER>(name, *this));
-	}
-
-	NNetModelIO                    * m_pModelIO              { nullptr };
-	tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
-	NNetModelReaderInterface const * m_pNMRI                 { nullptr };
+	inline static NNetModelIO                    * m_pModelIO              { nullptr };
+	inline static tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
+	inline static NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 };

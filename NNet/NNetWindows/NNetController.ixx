@@ -36,7 +36,6 @@ public:
 		ComputeThread   * const,
 		SlowMotionRatio * const,
 		Sound           * const,
-		NNetPreferences * const,
 		CommandStack    * const,
 		MonitorWindow   * const
 	);
@@ -62,7 +61,6 @@ private:
 	ComputeThread            * m_pComputeThread         { nullptr };
 	NNetModelReaderInterface * m_pNMRI                  { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio       { nullptr };
-	NNetPreferences          * m_pPreferences           { nullptr };
 	CommandStack             * m_pCommandStack          { nullptr };
 	MonitorWindow            * m_pMonitorWindow         { nullptr };
 	Observable               * m_pStaticModelObservable { nullptr };
