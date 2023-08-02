@@ -13,9 +13,12 @@ import SaveCast;
 import Win32_Util_Resource;
 import WinManager;
 import BaseWindow;
+import WrapBase;
+import WrapSetGrid;
 import :AnimationCmd;
 
 using std::wstring;
+using std::wostream;
 
 using FloatAnimationCmd = AnimationCmd<float>;
 
@@ -59,7 +62,7 @@ public:
         if (IsTraceOn())
         {
             RootWinId id { WinManager::GetIdFromBaseWindow(baseWin) };
-            TraceStream() << NAME << SPACE << id << SPACE << fAnimated << SPACE << fTarget << SPACE; //<< endl;
+            TraceStream() << NAME << SPACE << id << SPACE << baseWin.HasGrid() << SPACE; //<< endl;
         }
 
         if (bAnimation)
@@ -79,8 +82,10 @@ private:
 
     BaseWindow * m_pWin { nullptr };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static class Wrapper : public ScriptFunctor
     {
+    public:
+
         void operator() (Script& script) const final
         {
             unsigned int const uiWinId  { script.ScrReadUint() };
@@ -93,5 +98,6 @@ private:
                 //TODO: Error message
             }
         }
+
     } m_wrapper;
 };

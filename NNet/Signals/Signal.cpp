@@ -115,7 +115,7 @@ void Signal::Reserve(size_t const size)
     m_data.reserve(size);
 }
 
-void Signal::AddNNetPrefRapper(mV const val) 
+void Signal::Add(mV const val) 
 {
     m_data.push_back(val);
 }

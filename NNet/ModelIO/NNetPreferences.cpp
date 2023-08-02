@@ -24,6 +24,7 @@ import Symtab;
 import NNetModelIO;
 import NNetWrapBase;
 import WrapSetScales;
+import WrapSetGrid;
 
 using std::wofstream;
 using std::wostream;
@@ -120,45 +121,6 @@ public:
     }
 };
 
-class WrapShowGrid : public NNetWrapBase
-{
-public:
-    WrapShowGrid
-    (
-        wstring const& wstrName,
-        NNetPreferences& pref,
-        unsigned int uiWinId
-    )
-      : NNetWrapBase(wstrName, pref),
-        m_idWin(RootWinId(uiWinId))
-    {}
-
-    void operator() (Script& script) const final
-    {
-        unsigned int const uiWinId  { script.ScrReadUint() };
-        bool         const bActive  { script.ScrReadBool() };
-        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-        if (pBaseWin)
-            pBaseWin->SetGrid(bActive, false);
-        else
-        {
-            //Todo Error message
-        }
-    }
-
-    void Write(wostream& out) const final
-    {
-        wstring    const& wstrWindow { WinManager::GetWindowName(m_idWin) };
-        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(m_idWin) };
-        WriteCmdName(out);
-        out << wstrWindow;
-        PrefOnOff(out, pBaseWin->HasGrid());
-    }
-
-private:
-    RootWinId const m_idWin;
-};
-
 void NNetPreferences::Initialize(NNetModelIO & modelIO)
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
@@ -171,13 +133,11 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
     AddNNetPrefRapper<WrapInputCablesVisibility>(L"InputCablesVisibility");
     AddNNetPrefRapper<WrapSetScales            >(L"SetScales");
     AddNNetPrefRapper<WrapColor                >(L"SetBKColor");
+    AddNNetPrefRapper<WrapSetGrid              >(L"SetGrid");
 
     AddBoolWrapper(L"ShowArrows",       m_bArrows);
     AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
     AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
-
-    AddWrapper(make_unique<WrapShowGrid>(L"ShowGrid", *this, IDM_MAIN_WINDOW));
-    AddWrapper(make_unique<WrapShowGrid>(L"ShowGrid", *this, IDM_SIG_DESIGNER));
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

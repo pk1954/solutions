@@ -177,6 +177,7 @@
     <ClCompile Include="WrapNrOfNobs.ixx" />
     <ClCompile Include="WrapNrOfTracks.ixx" />
     <ClCompile Include="WrapProtocol.ixx" />
+    <ClCompile Include="WrapSetGrid.ixx" />
     <ClCompile Include="WrapSetSigGen.ixx" />
     <ClCompile Include="WrapSetScales.ixx" />
     <ClCompile Include="WrapSignalData.ixx" />

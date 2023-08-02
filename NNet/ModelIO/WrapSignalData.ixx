@@ -41,7 +41,7 @@ public:
         {
             mV value{ Cast2Float(script.ScrReadFloat()) };
             if (pSignal)
-                pSignal->AddNNetPrefRapper(value);
+                pSignal->Add(value);
         }
         script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     }

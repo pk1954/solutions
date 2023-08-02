@@ -36,7 +36,7 @@ public:
 
 	void Recalc() const;
 
-	void AddNNetPrefRapper(Pipe &);
+	void Add(Pipe &);
 	void Remove(Pipe &);
 	void Replace(Nob * const, Nob * const);
 

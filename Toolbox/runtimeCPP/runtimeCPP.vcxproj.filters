@@ -60,9 +60,6 @@
     <ClCompile Include="Preferences.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WrapBase.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="WrapBase.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

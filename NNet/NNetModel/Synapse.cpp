@@ -148,7 +148,7 @@ void Synapse::Dump() const
 	m_pPipeIn->Dump();
 	wcout << L" Out";
 	m_pPipeOut->Dump();
-	wcout << L" AddNNetPrefRapper";
+	wcout << L" Add";
 	m_pPipeAdd->Dump();
 	//if (m_bOutputBlocked)
 	//	wcout << L"blocked since " << m_usBlocked << L"µs" << endl;
