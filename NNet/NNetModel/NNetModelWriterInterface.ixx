@@ -15,6 +15,7 @@ export module NNetModel:NNetModelWriterInterface;
 import BoolOp;
 import Types;
 import Signals;
+import DescriptionUI;
 import :NNetModelReaderInterface;
 import :NNetParameters;
 import :ParamType;
@@ -26,7 +27,6 @@ import :NobId;
 import :Nob;
 import :PosNob;
 import :MicroSensor;
-import :DescriptionUI;
 import :UPSensorList;
 import :UPNobList;
 

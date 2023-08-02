@@ -64,6 +64,18 @@
     <ClCompile Include="NNetModelIO.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetPreferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetPreferences.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetWrapBase.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapSetScales.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

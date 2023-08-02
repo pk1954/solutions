@@ -583,8 +583,6 @@
     <ClCompile Include="NNetWrappers.cpp" />
     <ClCompile Include="NNetWrappers.ixx" />
     <ClCompile Include="ParameterDlg.ixx" />
-    <ClCompile Include="NNetPreferences.cpp" />
-    <ClCompile Include="NNetPreferences.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="SelectionMenu.ixx" />
     <ClCompile Include="SlowMotionDisplay.cpp" />

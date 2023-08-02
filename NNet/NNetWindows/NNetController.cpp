@@ -26,9 +26,9 @@ import Win32_Util;
 import NNetCommands;
 import Commands;
 import NNetModel;
+import NNetPreferences;
 import :ComputeThread;
 import :MainWindow;
-import :NNetPreferences;
 
 using std::to_wstring;
 using std::wcout;

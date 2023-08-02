@@ -9,7 +9,7 @@ module;
 
 export module NNetModel:ModelDescription;
 
-import :DescriptionUI;
+import DescriptionUI;
 
 using std::vector;
 using std::wstring;

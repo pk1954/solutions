@@ -21,9 +21,6 @@
     <ClCompile Include="NNetController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetPreferences.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NNetAppMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScriptHook.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CrsrWindow.ixx">

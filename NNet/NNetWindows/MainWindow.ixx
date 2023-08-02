@@ -16,7 +16,7 @@ import ActionTimer;
 import NNetModel;
 import NNetSignals;
 import NNetCommands;
-import :NNetPreferences;
+import NNetPreferences;
 import :SelectionMenu;
 import :NNetWindow;
 

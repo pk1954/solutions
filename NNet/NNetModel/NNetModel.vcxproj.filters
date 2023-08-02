@@ -125,9 +125,6 @@
     <ClCompile Include="NobId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DescriptionUI.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NNetColors.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

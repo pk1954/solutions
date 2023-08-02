@@ -1,12 +1,12 @@
 // DescriptionUI.ixx
 //
-// NNetModel
+// Toolbox\Utilities
 
 module;
 
 #include <string>
 
-export module NNetModel:DescriptionUI;
+export module DescriptionUI;
 
 using std::wstring;
 

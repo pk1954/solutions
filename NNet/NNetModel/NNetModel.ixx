@@ -9,7 +9,6 @@ module;
 export module NNetModel;
 
 export import :CopySelectedNobs;
-export import :DescriptionUI;
 export import :Fork;
 export import :InputConnector;
 export import :InputLine;

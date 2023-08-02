@@ -17,8 +17,8 @@ import Win32_Util;
 import OnOffPair;
 import Commands;
 import NNetModel;
+import NNetPreferences;
 import :ComputeThread;
-import :NNetPreferences;
 
 using std::wstring;
 using std::unique_ptr;

@@ -30,8 +30,8 @@ import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
+import NNetPreferences;
 import :NNetController;
-import :NNetPreferences;
 
 using std::bit_cast;
 using std::unordered_map;

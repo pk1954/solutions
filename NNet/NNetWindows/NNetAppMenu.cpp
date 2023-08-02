@@ -19,8 +19,8 @@ import Win32_Util;
 import OnOffPair;
 import Commands;
 import NNetModel;
+import NNetPreferences;
 import :ComputeThread;
-import :NNetPreferences;
 
 using std::make_unique;
 

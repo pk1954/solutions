@@ -182,6 +182,7 @@
     <ClCompile Include="Symtab.ixx" />
     <ClCompile Include="WrapBase.cpp" />
     <ClCompile Include="WrapBase.ixx" />
+    <ClCompile Include="WrapBaseBool.ixx" />
     <ClCompile Include="WrapInclude.cpp" />
   </ItemGroup>
   <ItemGroup>

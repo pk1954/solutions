@@ -54,9 +54,6 @@
     <ClCompile Include="Input.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WrapBase.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Preferences.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -64,6 +61,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="WrapBase.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapBase.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapBaseBool.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

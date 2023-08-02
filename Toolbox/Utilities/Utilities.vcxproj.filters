@@ -120,5 +120,8 @@
     <ClCompile Include="BoolType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DescriptionUI.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 // NNetPreferences.ixx
 //
-// NNetWindows
+// ModelIO
 
 module;
 
@@ -12,7 +12,7 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module NNetWin32:NNetPreferences;
+export module NNetPreferences;
 
 import Win32_Util_Resource;
 import BoolType;
@@ -22,7 +22,6 @@ import WinManager;
 import NNetModelIO;
 import NNetModel;
 import Preferences;
-import :DescriptionWindow;
 
 using std::wostream;
 using std::wstring;

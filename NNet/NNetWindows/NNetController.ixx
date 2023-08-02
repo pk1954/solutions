@@ -20,8 +20,8 @@ import WinManager;
 import Commands;
 import NNetModel;
 import NNetSignals;
+import NNetPreferences;
 import :ComputeThread;
-import :NNetPreferences;
 
 using std::wostream;
 using std::wcout;

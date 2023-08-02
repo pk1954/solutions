@@ -12,6 +12,7 @@ export module NNetCommands:SetScalesCmd;
 import Win32_Util_Resource;
 import BaseWindow;
 import WinManager;
+import WrapSetScales;
 import :AnimationCmd;
 
 using std::wstring;

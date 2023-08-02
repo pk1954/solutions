@@ -12,13 +12,13 @@ export module NNetModel:Model;
 import Observable;
 import Util;
 import Signals;
+import DescriptionUI;
 import :ParamType;
 import :ModelDescription;
 import :UPNobList;
 import :UPSigGenList;
 import :UPSensorList;
 import :PosNob;
-import :DescriptionUI;
 
 using std::unique_ptr;
 using std::wstring;

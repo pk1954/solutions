@@ -1,6 +1,6 @@
 // NNetPreferences.cpp
 //
-// NNetWindows
+// ModelIO
 
 module;
 
@@ -12,7 +12,7 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module NNetWin32:NNetPreferences;
+module NNetPreferences;
 
 import BoolType;
 import IoUtil;
@@ -22,9 +22,8 @@ import Win32_Util_Resource;
 import Script;
 import Symtab;
 import NNetModelIO;
-import :DescriptionWindow;
-import :NNetInputOutputUI;
-import :MainWindow;
+import NNetWrapBase;
+import WrapSetScales;
 
 using std::wofstream;
 using std::wostream;
@@ -34,22 +33,6 @@ using std::endl;
 using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
-
-class NNetWrapBase : public WrapBase
-{
-public:
-    NNetWrapBase
-    (
-        wstring const& wstrName,
-        NNetPreferences& pref
-    )
-        : WrapBase(wstrName),
-        m_pref(pref)
-    {}
-
-protected:
-    NNetPreferences& m_pref;
-};
 
 class WrapInputCablesVisibility : public NNetWrapBase
 {
@@ -137,36 +120,6 @@ public:
     }
 };
 
-class WrapShowScales : public NNetWrapBase
-{
-public:
-    using NNetWrapBase::NNetWrapBase;
-
-    void operator() (Script& script) const final
-    {
-        unsigned int const uiWinId  { script.ScrReadUint() };
-        bool         const bActive  { script.ScrReadBool() };
-        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-        if (pBaseWin)
-            pBaseWin->SetScales(bActive, false);
-        else
-        {
-            //TODO: Error message
-        }
-    }
-
-    void Write(wostream& out) const final
-    {
-        RootWinId  const  idWinId    { RootWinId(IDM_MAIN_WINDOW) };
-        wstring    const& wstrWindow { WinManager::GetWindowName(idWinId) };
-        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(idWinId) };
-        MainWindow const* pMainWin   { static_cast<MainWindow const*>(pBaseWin) };
-        WriteCmdName(out);
-        out << wstrWindow;
-        PrefOnOff(out, pBaseWin->HasScales());
-    }
-};
-
 class WrapShowGrid : public NNetWrapBase
 {
 public:
@@ -212,9 +165,11 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
 
     m_pModelIO = &modelIO;
 
+//    AddWrapper(make_unique<WRAPPER>(name, *this));
+
     AddNNetPrefRapper<WrapReadModel            >(L"ReadModel");
     AddNNetPrefRapper<WrapInputCablesVisibility>(L"InputCablesVisibility");
-    AddNNetPrefRapper<WrapShowScales           >(L"ShowScales");
+    AddNNetPrefRapper<WrapSetScales            >(L"SetScales");
     AddNNetPrefRapper<WrapColor                >(L"SetBKColor");
 
     AddBoolWrapper(L"ShowArrows",       m_bArrows);

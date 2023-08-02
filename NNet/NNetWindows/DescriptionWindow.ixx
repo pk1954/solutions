@@ -13,7 +13,7 @@ export module NNetWin32:DescriptionWindow;
 import Types;
 import Preferences;
 import BaseWindow;
-import NNetModel;
+import DescriptionUI;
 
 using std::wstring;
 

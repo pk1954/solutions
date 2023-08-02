@@ -26,22 +26,6 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::filesystem::current_path;
 
-class WrapPrefBase : public WrapBase
-{
-public:
-    WrapPrefBase
-    (
-        wstring const& wstrName,
-        Preferences& pref
-    )
-      : WrapBase(wstrName),
-        m_pref(pref)
-    {}
-
-protected:
-    Preferences& m_pref;
-};
-
 void Preferences::Initialize(wstring const & wstrPrefFile)
 {
     m_wstrPreferencesFile = current_path().wstring();

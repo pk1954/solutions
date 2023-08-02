@@ -12,9 +12,8 @@ module;
 
 export module Preferences;
 
-export import WrapBase;
+export import WrapBaseBool;
 
-import BoolType;
 import SoundInterface;
 
 using std::wostream;

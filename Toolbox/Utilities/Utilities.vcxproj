@@ -30,6 +30,7 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
+    <ClCompile Include="DescriptionUI.ixx" />
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="DrawContext.ixx" />
     <ClCompile Include="EllipseType.ixx" />
