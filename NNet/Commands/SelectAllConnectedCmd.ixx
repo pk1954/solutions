@@ -8,8 +8,9 @@ module;
 
 export module NNetCommands:SelectAllConnectedCmd;
 
-import :SelectionCommand;
 import IoUtil;
+import IoConstants;
+import :SelectionCommand;
 
 export class SelectAllConnectedCmd : public SelectionCommand
 {

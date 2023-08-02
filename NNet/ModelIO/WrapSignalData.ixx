@@ -10,6 +10,7 @@ export module WrapSignalData;
 
 import NNetWrapperBase;
 import IoUtil;
+import IoConstants;
 import SaveCast;
 import Types;
 import Script;

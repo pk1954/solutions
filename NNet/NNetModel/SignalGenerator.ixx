@@ -11,6 +11,7 @@ module;
 export module NNetModel:SignalGenerator;
 
 import IoUtil;
+import IoConstants;
 import ObserverInterface;
 import Direct2D;
 import Types;

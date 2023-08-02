@@ -10,7 +10,7 @@ module;
 export module IoUtil:IoUniform2D;
 
 import Uniform2D;
-import :IoConstants;
+import IoConstants;
 
 using std::wostream;
 

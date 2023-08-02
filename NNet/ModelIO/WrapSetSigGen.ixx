@@ -15,6 +15,7 @@ import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
 import IoUtil;
+import IoConstants;
 
 using std::wstring;
 using std::wostream;

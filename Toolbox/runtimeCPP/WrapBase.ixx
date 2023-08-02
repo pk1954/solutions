@@ -10,6 +10,7 @@ module;
 
 export module WrapBase;
 
+import IoConstants;
 import BoolType;
 import Script;
 import Symtab;
@@ -38,7 +39,7 @@ public:
 
     void WriteCmdName(wostream& out) const
     {
-        out << GetName() << L' ';
+        out << GetName() << SPACE;
     }
 };
 

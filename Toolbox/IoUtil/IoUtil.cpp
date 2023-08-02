@@ -17,7 +17,7 @@ import Trace;
 import Types;
 import Symtab;
 import Script;
-import :IoConstants;
+import IoConstants;
 
 using std::wostream;
 using std::setprecision;

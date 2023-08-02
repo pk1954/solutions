@@ -9,11 +9,11 @@ module;
 
 export module IoUtil;
 
-export import :IoConstants;
 export import :IoBasePeak;
 export import :IoPixFpDim;
 export import :IoPixelTypes;
 
+import IoConstants;
 import BoolOp;
 import SaveCast;
 import Types;

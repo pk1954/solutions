@@ -11,6 +11,7 @@ export module Signals:SignalId;
 
 import Types;
 import IoUtil;
+import IoConstants;
 import :TrackNr;
 import :SignalNr;
 

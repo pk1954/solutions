@@ -12,6 +12,7 @@ export module NNetCommands:SizeSensorCmd;
 import :NNetCommand;
 import NNetModel;
 import SaveCast;
+import IoConstants;
 import IoUtil;
 
 export class SizeSensorCmd : public NNetCommand

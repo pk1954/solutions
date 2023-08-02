@@ -12,7 +12,7 @@ export module IoUtil:IoBasePeak;
 import Types;
 import Script;
 import BasePeak;
-import :IoConstants;
+import IoConstants;
 
 using std::wostream;
 using std::setw;

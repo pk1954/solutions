@@ -12,8 +12,8 @@ export module IoUtil:IoPixFpDim;
 import Types;
 import Script;
 import PixFpDimension;
+import IoConstants;
 import :IoPixelTypes;
-import :IoConstants;
 
 using std::wostream;
 

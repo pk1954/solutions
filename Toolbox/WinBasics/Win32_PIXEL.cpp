@@ -11,7 +11,7 @@ module Win32_PIXEL;
 
 import Types;
 import Script;
-import IoUtil;
+import IoConstants;
 
 using std::wostream;
 

@@ -1,12 +1,12 @@
 // IoConstants.ixx
 //
-// ToolBox/IoUtil
+// ToolBox/Utilities
 
 module;
 
 #include <string>
 
-export module IoUtil:IoConstants;
+export module IoConstants;
 
 using std::wstring;
 

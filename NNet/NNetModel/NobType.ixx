@@ -12,6 +12,7 @@ export module NNetModel:NobType;
 
 import Debug;
 import IoUtil;
+import IoConstants;
 
 using std::wostream;
 using std::wstring;

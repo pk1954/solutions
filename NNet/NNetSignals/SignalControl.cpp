@@ -27,12 +27,14 @@ SignalControl::SignalControl
 	Observable                 & runObservable,
 	Observable                 & dynamicModelObservable,
 	SimuRunning          const & simuRunning,
-	PixFpDimension<fMicroSecs> * pHorzCoord
+	PixFpDimension<fMicroSecs> * pHorzCoord,
+	float                      & fGridDimFactor
 )
   : NNetTimeGraph(hwndParent),
 	m_runObservable(runObservable),
 	m_dynamicModelObservable(dynamicModelObservable),
-	m_simuRunning(simuRunning)
+	m_simuRunning(simuRunning),
+	m_fGridDimFactor(fGridDimFactor)
 {
 	m_runObservable         .RegisterObserver(*this);
 	m_dynamicModelObservable.RegisterObserver(*this);
@@ -390,10 +392,6 @@ bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	case IDM_SCALE_GRID:
 		SendCommand2Parent(wParam, lParam);
 		break;
-
-	case IDD_GRID_UPDATE:
-		Notify(true);
-		return true;
 
 	default:
 		bRes = BaseWindow::OnCommand(wParam, lParam, pixPoint);

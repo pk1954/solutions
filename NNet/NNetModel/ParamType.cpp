@@ -10,6 +10,7 @@ module;
 module NNetModel:ParamType;
 
 import IoUtil;
+import IoConstants;
 import Types;
 
 using std::unordered_map;

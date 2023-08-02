@@ -10,19 +10,17 @@ module;
 export module WrapSetScales;
 
 import Win32_Util_Resource;
+import Script;
 import WrapBaseBool;
 import BaseWindow;
-import WrapBase;
 import WinManager;
 
 using std::wostream;
 using std::wstring;
 
-export class WrapSetScales : public WrapBase
+export class SetScalesFunctor : public ScriptFunctor
 {
 public:
-    using WrapBase::WrapBase;
-
     void operator() (Script& script) const final
     {
         unsigned int const uiWinId  { script.ScrReadUint() };
@@ -35,14 +33,24 @@ public:
             //TODO: Error message
         }
     }
+};
+
+export class WrapSetScales : public WrapBase
+{
+public:
+    using WrapBase::WrapBase;
+
+    void operator() (Script& script) const final
+    {
+        SetScalesFunctor()(script);
+    }
 
     void Write(wostream& out) const final
     {
-        RootWinId  const  idWinId    { RootWinId(IDM_MAIN_WINDOW) };
-        wstring    const& wstrWindow { WinManager::GetWindowName(idWinId) };
-        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(idWinId) };
+        RootWinId  const  id         { RootWinId(IDM_MAIN_WINDOW) };
+        wstring    const& wstrWindow { WinManager::GetWindowName(id) };
+        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(id) };
         WriteCmdName(out);
-        out << wstrWindow;
-        PrefOnOff(out, pBaseWin->HasScales());
+        out << wstrWindow << PrefOnOff(pBaseWin->HasScales());
     }
 };

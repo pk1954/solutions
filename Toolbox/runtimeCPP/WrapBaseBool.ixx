@@ -12,6 +12,7 @@ export module WrapBaseBool;
 export import BoolType;
 export import WrapBase;
 
+import IoConstants;
 import Symtab;
 import Script;
 
@@ -21,9 +22,14 @@ using std::wstring;
 export inline wstring const PREF_ON  { L"ON" };
 export inline wstring const PREF_OFF { L"OFF" };
 
+export wstring PrefOnOff(bool const bOn)
+{
+    return SPACE + (bOn ? PREF_ON : PREF_OFF);
+}
+
 export void PrefOnOff(wostream& out, bool const bOn)
 {
-    out << L' ' << (bOn ? PREF_ON : PREF_OFF);
+    out << PrefOnOff(bOn);
 }
 
 export class WrapBaseBool : public WrapBase

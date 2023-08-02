@@ -37,6 +37,7 @@
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="FixedPipeline.ixx" />
     <ClCompile Include="Geometry.ixx" />
+    <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LineType.ixx" />
     <ClCompile Include="MoreTypes.ixx" />
     <ClCompile Include="NamedType.ixx" />

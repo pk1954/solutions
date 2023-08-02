@@ -10,6 +10,7 @@ module;
 export module WrapGlobalParameter;
 
 import IoUtil;
+import IoConstants;
 import SaveCast;
 import NNetWrapperBase;
 import Script;

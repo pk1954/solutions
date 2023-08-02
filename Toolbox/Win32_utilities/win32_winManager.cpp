@@ -16,6 +16,7 @@ import Symtab;
 import Script;
 import WrapBase;
 import IoUtil;
+import IoConstants;
 import WinManager;
 import ErrHndl;
 import Win32_Util_Resource;

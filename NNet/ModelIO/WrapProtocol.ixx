@@ -13,6 +13,7 @@ export module WrapProtocol;
 import NNetWrapperBase;
 import NNetModelStorage;
 import IoUtil;
+import IoConstants;
 
 using std::endl;
 using std::wstring;

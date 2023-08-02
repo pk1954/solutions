@@ -13,6 +13,7 @@ module;
 module NobIo;
 
 import IoUtil;
+import IoConstants;
 import NNetWrapperHelpers;
 import ErrHndl;
 

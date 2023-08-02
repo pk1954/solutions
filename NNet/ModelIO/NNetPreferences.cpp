@@ -16,6 +16,7 @@ module NNetPreferences;
 
 import BoolType;
 import IoUtil;
+import IoConstants;
 import WrapBase;
 import Win32_Util;
 import Win32_Util_Resource;

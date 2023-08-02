@@ -12,6 +12,7 @@ module NNetModel:MicroMeterPosDir;
 
 import Types;
 import IoUtil;
+import IoConstants;
 import :NNetParameters;
 
 using std::max;

@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:ArrowAnimationCmd;
 
+import IoConstants;
 import :AnimationCmd;
 
 using MicroMeterAnimationCmd = AnimationCmd<MicroMeter>;

@@ -14,6 +14,7 @@ import Script;
 import NNetModelIO;
 import NNetModel;
 import IoUtil;
+import IoConstants;
 
 using std::wostream;
 using std::endl;

@@ -32,7 +32,8 @@ public:
 		Observable&,
 		Observable&,
 		SimuRunning const&,
-		PixFpDimension<fMicroSecs>*
+		PixFpDimension<fMicroSecs>*,
+		float &
 	);
 
 	~SignalControl() final;
@@ -86,8 +87,8 @@ private:
 	SimuRunning const & m_simuRunning;
 	Observable        & m_runObservable;
 	Observable        & m_dynamicModelObservable;
+	float             & m_fGridDimFactor;
 	tPos                m_moveMode       { tPos::NONE };
-	float               m_fGridDimFactor { 0.0f };
 
 	bool snap2Grid() const { return m_fGridDimFactor > 0.0f; }
 

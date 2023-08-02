@@ -199,7 +199,8 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 		runObservable,
 		dynamicModelObservable,
 		*m_pSimuRunning,
-		&m_horzCoord 
+		&m_horzCoord,
+		m_fGridDimFactor
 	);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
 	upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT[0]);
@@ -265,6 +266,11 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		SetGrid(!HasGrid(), true);
 		return true;
 
+	case IDD_GRID_UPDATE:
+		m_upSignalControl[0]->Notify(true);
+		m_upSignalControl[1]->Notify(true);
+		return true;
+
 	default:
 		break;
 	}
@@ -273,8 +279,7 @@ bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 
 void SignalDesigner::SetGrid(bool const bOn, bool const bAnim)
 {
-	m_upSignalControl[0]->SetGrid(bOn, bAnim);
-	m_upSignalControl[1]->SetGrid(bOn, bAnim);
+	SetGridCmd::Push(*this, m_fGridDimFactor, bOn, bAnim);
 }
 
 void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)

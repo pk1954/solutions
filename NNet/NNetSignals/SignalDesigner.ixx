@@ -105,5 +105,6 @@ private:
 	bool                       m_bIntegrated    { false };
 	bool                       m_bPreview       { false };
 	int                        m_iNrOfTiles     { 2 };
+	float                      m_fGridDimFactor { 0.0f };
 	Observable                 m_gridObservable;
 };

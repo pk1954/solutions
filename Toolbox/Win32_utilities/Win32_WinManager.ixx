@@ -52,6 +52,8 @@ public:
 	static void AdjustRight(RootWinId const id, PIXEL const p = 0_PIXEL) { Util::AdjustRight(GetHWND(id), p); }
 	static void AdjustLeft (RootWinId const id, PIXEL const p = 0_PIXEL) { Util::AdjustLeft(GetHWND(id), p);	}
 
+	static wstring const& GetWindowName(BaseWindow const& w) { return GetWindowName(GetIdFromBaseWindow(w)); }
+
 	static wstring const& GetWindowName(RootWinId const id) { return m_upMap->at(id).m_wstr; }
 	static HWND           GetHWND      (RootWinId const id) { return m_upMap->at(id).m_hwnd; }
 	static bool           IsMoveable   (RootWinId const id) { return m_upMap->at(id).m_bTrackPosition; }

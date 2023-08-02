@@ -11,6 +11,7 @@ module;
 export module WrapSetGrid;
 
 import Win32_Util_Resource;
+import Script;
 import WrapBaseBool;
 import BaseWindow;
 import WrapBase;
@@ -18,12 +19,11 @@ import WinManager;
 
 using std::wostream;
 using std::wstring;
+using std::endl;
 
-export class WrapSetGrid : public WrapBase
+export class SetGridFunctor : public ScriptFunctor
 {
 public:
-    using WrapBase::WrapBase;
-
     void operator() (Script& script) const final
     {
         unsigned int const uiWinId  { script.ScrReadUint() };
@@ -33,8 +33,19 @@ public:
             pBaseWin->SetGrid(bActive, false);
         else
         {
-            //Todo Error message
+            //TODO: Error message
         }
+    }
+};
+
+export class WrapSetGrid : public WrapBase
+{
+public:
+    using WrapBase::WrapBase;
+
+    void operator() (Script& script) const final
+    {
+        SetGridFunctor()(script);
     }
 
     void Write(wostream& out) const final
@@ -49,7 +60,6 @@ public:
         wstring    const& wstrWindow { WinManager::GetWindowName(idWin) };
         BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(idWin) };
         WriteCmdName(out);
-        out << wstrWindow;
-        PrefOnOff(out, pBaseWin->HasGrid());
+        out << wstrWindow << PrefOnOff(pBaseWin->HasGrid()) << endl;
     }
 };

@@ -9,11 +9,11 @@ module;
 
 export module NNetCommands:SetGridCmd;
 
-import SaveCast;
+import IoConstants;
 import Win32_Util_Resource;
-import WinManager;
 import BaseWindow;
-import WrapBase;
+import WinManager;
+import WrapBaseBool;
 import WrapSetGrid;
 import :AnimationCmd;
 
@@ -61,8 +61,8 @@ public:
 
         if (IsTraceOn())
         {
-            RootWinId id { WinManager::GetIdFromBaseWindow(baseWin) };
-            TraceStream() << NAME << SPACE << id << SPACE << baseWin.HasGrid() << SPACE; //<< endl;
+            TraceStream() << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE;
+//            TraceStream() << std::endl;
         }
 
         if (bAnimation)
@@ -82,22 +82,5 @@ private:
 
     BaseWindow * m_pWin { nullptr };
 
-    inline static class Wrapper : public ScriptFunctor
-    {
-    public:
-
-        void operator() (Script& script) const final
-        {
-            unsigned int const uiWinId  { script.ScrReadUint() };
-            BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-            bool         const bOn      { script.ScrReadBool() };
-            if (pBaseWin)
-                pBaseWin->SetGrid(bOn, false);
-            else
-            {
-                //TODO: Error message
-            }
-        }
-
-    } m_wrapper;
+    inline static SetGridFunctor m_wrapper;
 };

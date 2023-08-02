@@ -10,6 +10,7 @@ module;
 export module NNetSignals:MonitorScrollState;
 
 import IoUtil;
+import IoConstants;
 import Script;
 import Symtab;
 import SaveCast;

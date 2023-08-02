@@ -9,9 +9,11 @@ module;
 
 export module NNetCommands:SetScalesCmd;
 
+import IoConstants;
 import Win32_Util_Resource;
 import BaseWindow;
 import WinManager;
+import WrapBaseBool;
 import WrapSetScales;
 import :AnimationCmd;
 
@@ -56,10 +58,7 @@ public:
             return;
 
         if (IsTraceOn())
-        {
-            RootWinId id { WinManager::GetIdFromBaseWindow(baseWin) };
-            TraceStream() << NAME << SPACE << id << SPACE << bOn << endl;
-        }
+            TraceStream() << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bOn) << endl;
 
         if (bAnimation)
             PushCommand(make_unique<SetScalesCmd>(&baseWin, umAnimated, umTarget));
@@ -76,19 +75,5 @@ private:
 
     BaseWindow * m_pWin { nullptr };
 
-    inline static struct Wrapper : public ScriptFunctor
-    {
-        void operator() (Script& script) const final
-        {
-            unsigned int const uiWinId  { script.ScrReadUint() };
-            bool         const bActive  { script.ScrReadBool() };
-            BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-            if (pBaseWin)
-                pBaseWin->SetScales(bActive, false);
-            else
-            {
-                //TODO: Error message
-            }
-        }
-    } m_wrapper;
+    inline static SetScalesFunctor m_wrapper;
 };
