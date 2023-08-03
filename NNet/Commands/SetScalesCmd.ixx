@@ -40,25 +40,20 @@ public:
         m_pWin->SendCommand(IDD_SCALES_UPDATE);
     }
 
-    static void Register()
-    {
-        SymbolTable::ScrDefConst(NAME, &m_wrapper);
-    }
-
     static void Push
     (
         BaseWindow  &baseWin,
         fPixelPoint &umAnimated,
-        bool  const bOn,
+        bool  const bActive,
         bool  const bAnimation
     )
     {
-        fPixelPoint const umTarget { bOn ? fPixelPoint(35._fPixel, 30._fPixel) : fPP_ZERO };
+        fPixelPoint const umTarget { bActive ? fPixelPoint(35._fPixel, 30._fPixel) : fPP_ZERO };
         if (umTarget == umAnimated)
             return;
 
         if (IsTraceOn())
-            TraceStream() << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bOn) << endl;
+            WrapSetScales::WriteSetScales(TraceStream(), baseWin, bActive);
 
         if (bAnimation)
             PushCommand(make_unique<SetScalesCmd>(&baseWin, umAnimated, umTarget));
@@ -71,9 +66,5 @@ public:
 
 private:
 
-    inline static const wstring NAME { L"SetScales" };
-
     BaseWindow * m_pWin { nullptr };
-
-    inline static SetScalesFunctor m_wrapper;
 };

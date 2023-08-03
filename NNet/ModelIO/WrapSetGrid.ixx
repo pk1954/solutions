@@ -35,7 +35,7 @@ public:
         bool       const  bActive
     )
     {
-        out << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE; // endl;
+        out << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE; // << endl;
     }
 
     void operator() (Script& script) const final

@@ -129,8 +129,8 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
 
     Preferences::AddWrapper(make_unique<WrapReadModel            >(L"ReadModel"));
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>(L"InputCablesVisibility"));
-    Preferences::AddWrapper(make_unique<WrapSetScales            >(L"SetScales"));
     Preferences::AddWrapper(make_unique<WrapColor                >(L"SetBKColor"));
+    Preferences::AddWrapper(make_unique<WrapSetScales            >());
     Preferences::AddWrapper(make_unique<WrapSetGrid              >());
 
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);

@@ -67,7 +67,6 @@ void InitializeNNetWrappers
     SetActiveSigGenCmd::Register();
     SetNobCommand::Register();
     SetParameterCommand::Register();
-    SetScalesCmd::Register();
     SetSigGenStaticDataCmd::Register();
     SizeSelectionCmd::Register();
     SizeSensorCmd::Register();

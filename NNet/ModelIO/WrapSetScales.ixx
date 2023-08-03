@@ -9,6 +9,7 @@ module;
 
 export module WrapSetScales;
 
+import Symtab;
 import IoConstants;
 import Script;
 import WrapBaseBool;
@@ -19,31 +20,26 @@ using std::wostream;
 using std::wstring;
 using std::endl;
 
-export class SetScalesFunctor : public ScriptFunctor
-{
-public:
-    void operator() (Script& script) const final
-    {
-        unsigned int const uiWinId  { script.ScrReadUint() };
-        bool         const bActive  { script.ScrReadBool() };
-        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-        if (pBaseWin)
-            pBaseWin->SetScales(bActive, false);
-        else
-        {
-            //TODO: Error message
-        }
-    }
-};
-
 export class WrapSetScales : public WrapBase
 {
 public:
-    using WrapBase::WrapBase;
+    WrapSetScales()
+        : WrapBase(NAME)
+    {}
+
+    static void WriteSetScales
+    (
+        wostream        & out,
+        BaseWindow const& baseWin,
+        bool       const  bActive
+    )
+    {
+        out << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE; // << endl;
+    }
 
     void operator() (Script& script) const final
     {
-        SetScalesFunctor()(script);
+        m_wrapper(script);
     }
 
     void Write(wostream& out) const final
@@ -54,9 +50,33 @@ public:
             { 
                 if (elem.m_pBaseWindow && elem.m_pBaseWindow->HasScales())
                 {
-                    out << GetName() << SPACE << elem.m_wstr << PrefOnOff(true) << endl;
+                    WriteSetScales(out, *elem.m_pBaseWindow, true);
                 }
             }
         );
     }
+
+private:
+    inline static const wstring NAME { L"SetScales" };
+
+    inline static struct Wrapper : public ScriptFunctor
+    {
+        Wrapper()
+        {
+            SymbolTable::ScrDefConst(NAME, this);
+        }
+
+        void operator() (Script& script) const final
+        {
+            unsigned int const uiWinId { script.ScrReadUint() };
+            bool         const bActive { script.ScrReadBool() };
+            BaseWindow* const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
+            if (pBaseWin)
+                pBaseWin->SetScales(bActive, false);
+            else
+            {
+                //TODO: Error message
+            }
+        }
+    } m_wrapper;
 };
