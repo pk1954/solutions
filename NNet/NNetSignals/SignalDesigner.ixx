@@ -49,7 +49,7 @@ public:
 	void    Trigger()                             final;
 	void    SetGrid(bool const, bool const)       final;
 
-	bool    HasScales() const final { return true; }
+	bool    HasScales() const final { return m_upSignalControl[0]->HasScales(); }
 	bool    HasGrid  () const final { return m_upSignalControl[0]->HasGrid(); }
 
 	void    SetModelInterface(NNetModelWriterInterface * const);

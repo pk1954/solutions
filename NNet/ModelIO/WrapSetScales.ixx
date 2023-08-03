@@ -9,7 +9,7 @@ module;
 
 export module WrapSetScales;
 
-import Win32_Util_Resource;
+import IoConstants;
 import Script;
 import WrapBaseBool;
 import BaseWindow;
@@ -17,6 +17,7 @@ import WinManager;
 
 using std::wostream;
 using std::wstring;
+using std::endl;
 
 export class SetScalesFunctor : public ScriptFunctor
 {
@@ -47,10 +48,15 @@ public:
 
     void Write(wostream& out) const final
     {
-        RootWinId  const  id         { RootWinId(IDM_MAIN_WINDOW) };
-        wstring    const& wstrWindow { WinManager::GetWindowName(id) };
-        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(id) };
-        WriteCmdName(out);
-        out << wstrWindow << PrefOnOff(pBaseWin->HasScales());
+        WinManager::Apply2All
+        (
+            [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem) 
+            { 
+                if (elem.m_pBaseWindow && elem.m_pBaseWindow->HasScales())
+                {
+                    out << GetName() << SPACE << elem.m_wstr << PrefOnOff(true) << endl;
+                }
+            }
+        );
     }
 };

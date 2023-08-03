@@ -65,7 +65,6 @@ void InitializeNNetWrappers
     RotateSelectionCommand::Register();
     SelectAllConnectedCmd::Register();
     SetActiveSigGenCmd::Register();
-    SetGridCmd::Register();
     SetNobCommand::Register();
     SetParameterCommand::Register();
     SetScalesCmd::Register();

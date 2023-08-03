@@ -6,11 +6,11 @@ module;
 
 #include <iostream>
 #include <string>
-#include "Resource.h"
 
 export module WrapSetGrid;
 
-import Win32_Util_Resource;
+import Symtab;
+import IoConstants;
 import Script;
 import WrapBaseBool;
 import BaseWindow;
@@ -21,45 +21,63 @@ using std::wostream;
 using std::wstring;
 using std::endl;
 
-export class SetGridFunctor : public ScriptFunctor
-{
-public:
-    void operator() (Script& script) const final
-    {
-        unsigned int const uiWinId  { script.ScrReadUint() };
-        bool         const bActive  { script.ScrReadBool() };
-        BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-        if (pBaseWin)
-            pBaseWin->SetGrid(bActive, false);
-        else
-        {
-            //TODO: Error message
-        }
-    }
-};
-
 export class WrapSetGrid : public WrapBase
 {
 public:
-    using WrapBase::WrapBase;
+    WrapSetGrid()
+     : WrapBase(NAME)
+    {}
+
+    static void WriteSetGrid
+    (
+        wostream        & out,
+        BaseWindow const& baseWin,
+        bool       const  bActive
+    )
+    {
+        out << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE; // endl;
+    }
 
     void operator() (Script& script) const final
     {
-        SetGridFunctor()(script);
+        m_wrapper(script);
     }
 
     void Write(wostream& out) const final
     {
-        WriteWinGridState(out, IDM_MAIN_WINDOW);
-        WriteWinGridState(out, IDM_SIG_DESIGNER);
+        WinManager::Apply2All
+        (
+            [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
+            {
+                if (elem.m_pBaseWindow && elem.m_pBaseWindow->HasGrid())
+                {
+                    WriteSetGrid(out, *elem.m_pBaseWindow, true);
+                }
+            }
+        );
     }
 
-    void WriteWinGridState(wostream& out, unsigned int const uiWinId) const
+private:
+    inline static const wstring NAME { L"SetGrid" };
+
+    inline static struct Wrapper : public ScriptFunctor
     {
-        RootWinId  const  idWin      { RootWinId(uiWinId) };
-        wstring    const& wstrWindow { WinManager::GetWindowName(idWin) };
-        BaseWindow const* pBaseWin   { WinManager::GetBaseWindow(idWin) };
-        WriteCmdName(out);
-        out << wstrWindow << PrefOnOff(pBaseWin->HasGrid()) << endl;
-    }
+        Wrapper()
+        {
+            SymbolTable::ScrDefConst(NAME, this);
+        }
+
+        void operator() (Script& script) const final
+        {
+            unsigned int const uiWinId  { script.ScrReadUint() };
+            bool         const bActive  { script.ScrReadBool() };
+            BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
+            if (pBaseWin)
+                pBaseWin->SetGrid(bActive, false);
+            else
+            {
+                //TODO: Error message
+            }
+        }
+    } m_wrapper;
 };

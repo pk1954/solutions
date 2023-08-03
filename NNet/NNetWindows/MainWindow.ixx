@@ -58,11 +58,11 @@ public:
 	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
 	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
 
-	bool HasScales() const final { return m_scaleMenu.IsScaleVisible(); }
-	bool HasGrid  () const final { return m_scaleMenu.IsGridVisible(); }
+	bool HasScales() const final { return m_fPixScaleSize.IsNotZero(); }
+	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 
-	void SetGrid  (bool const bOn, bool const bAnim) { SetGridCmd  ::Push(*this, m_fGridDimFactor, bOn, bAnim); }
-	void SetScales(bool const bOn, bool const bAnim) { SetScalesCmd::Push(*this, m_fPixScaleSize,  bOn, bAnim); }
+	void SetGrid  (bool const, bool const) final;
+	void SetScales(bool const, bool const) final;
 
 	void CenterModel();
 	void CenterSelection();
@@ -87,20 +87,20 @@ private:
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale {};
 	unique_ptr<Scale<MicroMeter>> m_upVertScale {};
 
-	MicroMeterPnt    m_umDelta                { NP_ZERO };
-	fPixelPoint      m_fPixScaleSize          { fPP_ZERO };
-	float            m_fGridDimFactor         { 0.0f };
-	MicroMeter       m_umArrowSize            { 0._MicroMeter };
-	ActionTimer     *m_pDisplayTimer          { nullptr };
-	Observable      *m_pCoordObservable       { nullptr };
-	Observable      *m_pCursorPosObservable   { nullptr };
-	Observable      *m_pStaticModelObservable { nullptr };
-	NobId            m_nobIdHighlighted       { NO_NOB };
-	NobId            m_nobIdTarget            { NO_NOB };
-	SigGenId         m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId         m_sensorIdSelected       { SensorId::NULL_VAL() };
-	SelectionMenu    m_selectionMenu;
-	ScaleMenu        m_scaleMenu;
+	MicroMeterPnt m_umDelta                { NP_ZERO };
+	fPixelPoint   m_fPixScaleSize          { fPP_ZERO };
+	float         m_fGridDimFactor         { 0.0f };
+	MicroMeter    m_umArrowSize            { 0._MicroMeter };
+	ActionTimer  *m_pDisplayTimer          { nullptr };
+	Observable   *m_pCoordObservable       { nullptr };
+	Observable   *m_pCursorPosObservable   { nullptr };
+	Observable   *m_pStaticModelObservable { nullptr };
+	NobId         m_nobIdHighlighted       { NO_NOB };
+	NobId         m_nobIdTarget            { NO_NOB };
+	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
+	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
+	SelectionMenu m_selectionMenu;
+	ScaleMenu     m_scaleMenu;
 
 	NobId    findTargetNob(MicroMeterPnt const&);
 	bool     setHighlightedNob   (MicroMeterPnt const&);

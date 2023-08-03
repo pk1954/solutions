@@ -177,7 +177,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 
-	m_scaleMenu.AppendScaleMenu(hPopupMenu, L"&Scales");
+	m_scaleMenu.AppendScaleMenu(hPopupMenu, L"&Scales", HasScales(), HasGrid());
 
 	NNetWindow::AddContextMenuEntries(hPopupMenu);
 
@@ -573,7 +573,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 
 fPixel MainWindow::sigGenOffset() const
 {
-	return m_scaleMenu.IsScaleVisible()
+	return HasScales()
 		? m_upVertScale->GetOrthoOffset()
 		: 0._fPixel;
 }
@@ -733,11 +733,18 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_ARROW_ANIMATION:         ArrowAnimationCmd     ::Push(m_umArrowSize, NNetPreferences::m_bArrows.Get(), lParam); break;
 
 	case IDM_SCALE_OFF:
+		SetScales(false, true);
+		SetGrid (false, true);
+		break;
+
 	case IDM_SCALE_ON:
+		SetScales(true,  true);
+		SetGrid (false, true);
+		break;
+
 	case IDM_SCALE_GRID:
-		m_scaleMenu.SetState(wmId);
-		SetScales(m_scaleMenu.IsScaleVisible(), true);
-		SetGrid  (m_scaleMenu.IsGridVisible (), true);
+		SetScales(true, true);
+		SetGrid (true, true);
 		break;
 
 	case IDD_GRID_UPDATE:
@@ -753,4 +760,14 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	}
 
 	return true;
+}
+
+void MainWindow::SetGrid(bool const bOn, bool const bAnim)
+{
+	SetGridCmd::Push(*this, m_fGridDimFactor, bOn, bAnim);
+}
+
+void MainWindow::SetScales(bool const bOn, bool const bAnim)
+{
+	SetScalesCmd::Push(*this, m_fPixScaleSize, bOn, bAnim);
 }

@@ -131,7 +131,7 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>(L"InputCablesVisibility"));
     Preferences::AddWrapper(make_unique<WrapSetScales            >(L"SetScales"));
     Preferences::AddWrapper(make_unique<WrapColor                >(L"SetBKColor"));
-    Preferences::AddWrapper(make_unique<WrapSetGrid              >(L"SetGrid"));
+    Preferences::AddWrapper(make_unique<WrapSetGrid              >());
 
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
     Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);

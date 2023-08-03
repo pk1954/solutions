@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <Windows.h>
 
 export module ScaleMenu;
@@ -15,29 +16,21 @@ export class ScaleMenu
 {
 public:
 
-    void AppendScaleMenu(HMENU hMenu, LPCTSTR const title) const
+    void AppendScaleMenu
+    (
+        HMENU         hMenu, 
+        LPCTSTR const title,
+        bool    const bScale,
+        bool    const bGrid
+    ) const
     {
         HMENU hMenuPopup = Util::PopupMenu(hMenu, title);
         Util::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF,  L"o&ff");
         Util::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON,   L"o&n");
         Util::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_GRID, L"&grid");
-        Util::Enable(hMenuPopup, IDM_SCALE_OFF,  m_uiState != IDM_SCALE_OFF);
-        Util::Enable(hMenuPopup, IDM_SCALE_ON,   m_uiState != IDM_SCALE_ON);
-        Util::Enable(hMenuPopup, IDM_SCALE_GRID, m_uiState != IDM_SCALE_GRID);
+        Util::Enable(hMenuPopup, IDM_SCALE_OFF,  bScale);
+        Util::Enable(hMenuPopup, IDM_SCALE_ON,   bGrid || !bScale);
+        Util::Enable(hMenuPopup, IDM_SCALE_GRID, !bGrid);
     }
 
-    unsigned int SetState(unsigned int const uiState)
-    {
-        unsigned int uiOldVal = m_uiState;
-        m_uiState = uiState;
-        return uiOldVal;
-    }
-
-    unsigned int GetState() const { return m_uiState; }
-
-    bool IsScaleVisible() const { return m_uiState >= IDM_SCALE_ON; }
-    bool IsGridVisible () const { return m_uiState >= IDM_SCALE_GRID; }
-
-private:
-    unsigned int m_uiState { IDM_SCALE_OFF };
 };

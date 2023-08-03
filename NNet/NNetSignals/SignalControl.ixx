@@ -51,8 +51,6 @@ public:
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
 
-	void SetGrid(bool const bOn, bool const bAnim) final { SetGridCmd::Push(*this, m_fGridDimFactor, bOn, bAnim); }
-
 	bool HasScales() const final { return true; }
 	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 

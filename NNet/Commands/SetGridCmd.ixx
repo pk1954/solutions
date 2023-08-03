@@ -42,11 +42,6 @@ public:
         m_pWin->SendCommand(IDD_GRID_UPDATE);
     }
 
-    static void Register()
-    {
-        SymbolTable::ScrDefConst(NAME, &m_wrapper);
-    }
-
     static void Push
     (
         BaseWindow &baseWin,
@@ -60,10 +55,7 @@ public:
             return;
 
         if (IsTraceOn())
-        {
-            TraceStream() << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE;
-//            TraceStream() << std::endl;
-        }
+            WrapSetGrid::WriteSetGrid(TraceStream(), baseWin, bActive);
 
         if (bAnimation)
         {
@@ -78,9 +70,5 @@ public:
 
 private:
 
-    inline static const wstring NAME { L"SetGrid" };
-
     BaseWindow * m_pWin { nullptr };
-
-    inline static SetGridFunctor m_wrapper;
 };
