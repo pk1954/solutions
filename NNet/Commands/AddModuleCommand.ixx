@@ -16,9 +16,6 @@ export class AddModuleCommand : public NNetCommand
 {
 public:
 
-	AddModuleCommand()
-	{}
-
 	static void Register()
 	{
 		SymbolTable::ScrDefConst(NAME, &m_wrapper);
@@ -28,8 +25,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << SPACE << DOUBLE_QUOTE << NNetModelIO::GetModelFileName() << DOUBLE_QUOTE << SPACE << endl;
-		unique_ptr<Model> upImportedModel { NNetModelIO::GetImportedModel() };
-		PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
+		PushCommand(make_unique<AddNobsCommand>(move(NNetModelIO::GetImportedModel()->MoveUPNobs())));
 	}
 
 private:

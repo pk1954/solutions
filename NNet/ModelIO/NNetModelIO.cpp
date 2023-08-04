@@ -261,12 +261,6 @@ bool NNetModelIO::Import
     return true;
 }
 
-unique_ptr<Model> NNetModelIO::GetImportedModel() 
-{ 
-    m_upImportedNMWI.release();
-    return move(m_upImportedModel);
-}
-
 //////////////// export ////////////////
 
 void NNetModelIO::writeHeader(wostream & out)

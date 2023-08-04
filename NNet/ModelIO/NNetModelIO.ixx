@@ -35,11 +35,10 @@ public:
 
 	static void CheckImportedNobId(Script&, UPNobList const&, NobId const);
 
-	static unique_ptr<Model> GetImportedModel();
-	static wstring const& GetModelFileName()  { return m_wstrFile2Read; }
-	static void SetModelFileName(wstring const& name) { m_wstrFile2Read = name; }
-
 	static NNetModelWriterInterface& GetImportNMWI() { return *m_upImportedNMWI; }
+	static unique_ptr<Model> GetImportedModel() { return move(m_upImportedModel); }
+	static wstring    const& GetModelFileName() { return m_wstrFile2Read; }
+	static void SetModelFileName(wstring const& name) { m_wstrFile2Read = name; }
 
 	/// export ///
 
