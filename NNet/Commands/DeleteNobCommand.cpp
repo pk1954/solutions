@@ -9,8 +9,6 @@ module;
 
 module NNetCommands:DeleteNobCommand;
 
-import IoUtil;
-import NNetModel;
 import :DeleteForkOutputCmd;
 import :DeleteNeuronInputCmd;
 import :DeletePipeCommand;

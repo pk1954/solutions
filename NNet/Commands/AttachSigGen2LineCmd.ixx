@@ -9,8 +9,6 @@ module;
 export module NNetCommands:AttachSigGen2LineCmd;
 
 import :NNetCommand;
-import IoUtil;
-import NNetModel;
 
 export class AttachSigGen2LineCmd : public NNetCommand
 {

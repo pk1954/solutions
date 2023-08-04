@@ -8,8 +8,6 @@ module;
 
 export module NNetCommands:AddSigGen2MonitorCmd;
 
-import IoUtil;
-import NNetModel;
 import :NNetCommand;
 
 export class AddSigGen2MonitorCmd : public NNetCommand

@@ -8,8 +8,6 @@ module;
 
 export module NNetCommands:DeleteNobCommand;
 
-import WrapBase;
-import IoUtil;
 import :NNetCommand;
 
 export class DeleteNobCommand : public NNetCommand

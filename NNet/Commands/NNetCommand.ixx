@@ -10,6 +10,7 @@ module;
 
 export module NNetCommands:NNetCommand;
 
+export import IoUtil;
 export import SoundInterface;
 export import WrapBase;
 export import Types;

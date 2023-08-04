@@ -9,10 +9,7 @@ module;
 
 export module NNetCommands:CreateInitialNobsCmd;
 
-import Types;
-import IoUtil;
 import :NNetCommand;
-import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;

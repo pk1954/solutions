@@ -8,8 +8,6 @@ module;
 
 export module NNetCommands:AddMicroSensorCmd;
 
-import IoUtil;
-import WrapBase;
 import :NNetCommand;
 
 export class AddMicroSensorCmd : public NNetCommand

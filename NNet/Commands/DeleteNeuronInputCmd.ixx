@@ -13,8 +13,6 @@ module;
 export module NNetCommands:DeleteNeuronInputCmd;
 
 import :NNetCommand;
-import IoUtil;
-import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;
