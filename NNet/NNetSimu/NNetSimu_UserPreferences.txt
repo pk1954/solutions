@@ -3,7 +3,7 @@ SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  OFF
 ReadModel "D:\SW-projects\Solutions\NNet\x64\Debug\std.mod"
-InputCablesVisibility 0
+InputCablesVisibility 1
 SetBKColor IDM_MAIN_WINDOW RGB(255,255,240)
 SetBKColor IDM_MINI_WINDOW RGB(255,255,240)
 SetBKColor IDM_MONITOR_WINDOW RGB(229,229,229)
@@ -12,7 +12,7 @@ SetBKColor IDM_PERF_WINDOW RGB(240,240,240)
 SetBKColor IDM_SIG_DESIGNER RGB(255,255,255)
 
 SetScales IDM_MAIN_WINDOW ON SetScales IDM_SIG_DESIGNER ON 
-SetGrid IDM_MAIN_WINDOW ON SetGrid IDM_SIG_DESIGNER ON 
+
 ShowArrows  OFF
 ShowSensorPoints  OFF
 SetPerfMonMode  OFF

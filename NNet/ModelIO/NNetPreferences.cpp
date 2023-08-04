@@ -38,7 +38,9 @@ using std::make_unique;
 class WrapInputCablesVisibility : public WrapBase
 {
 public:
-    using WrapBase::WrapBase;
+    WrapInputCablesVisibility()
+        : WrapBase(NAME)
+    {}
 
     void operator() (Script& script) const final
     {
@@ -47,15 +49,18 @@ public:
 
     void Write(wostream& out) const final
     {
-        WriteCmdName(out);
-        out << static_cast<int>(NNetPreferences::InputCablesVisibility());
+        out << NAME << SPACE << static_cast<int>(NNetPreferences::InputCablesVisibility());
     }
+
+    inline static const wstring NAME { L"InputCablesVisibility" };
 };
 
 class WrapReadModel : public WrapBase
 {
 public:
-    using WrapBase::WrapBase;
+    WrapReadModel()
+        : WrapBase(NAME)
+    {}
 
     void operator() (Script& script) const final
     {
@@ -65,9 +70,10 @@ public:
 
     void Write(wostream& out) const final
     {
-        WriteCmdName(out);
-        out << DOUBLE_QUOTE << NNetPreferences::GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
+        out << NAME << SPACE << DOUBLE_QUOTE << NNetPreferences::GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
     }
+
+    inline static const wstring NAME { L"ReadModel" };
 };
 
 class WrapColor : public WrapBase
@@ -135,8 +141,8 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
 
     m_pModelIO = &modelIO;
 
-    Preferences::AddWrapper(make_unique<WrapReadModel            >(L"ReadModel"));
-    Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>(L"InputCablesVisibility"));
+    Preferences::AddWrapper(make_unique<WrapReadModel>());
+    Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
     Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());
