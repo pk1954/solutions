@@ -8,22 +8,23 @@ module;
 
 export module WrapEmphasized;
 
-import NNetWrapperBase;
+import WrapBase;
 import NNetWrapperHelpers;
 import Script;
 import NNetModel;
+import NNetModelIO;
 
 using std::wostream;
 using std::endl;
 
-export class WrapEmphasized : public NNetWrapperBase
+export class WrapEmphasized : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        NNetModelWriterInterface& nmwi  { m_modelIO.GetImportNMWI() };
+        NNetModelWriterInterface& nmwi  { NNetModelIO::GetImportNMWI() };
         NobId               const idNob { ScrReadNobId(script) };
         Nob *               const pNob  { nmwi.GetNobPtr<Nob*>(idNob) };
         pNob->Emphasize(true);
@@ -31,14 +32,14 @@ public:
 
     void Write(wostream& out) const final
     {
-        m_modelIO.GetExportNMRI().Apply2AllC
+        NNetModelIO::GetExportNMRI().Apply2AllC
         (
             [this, &out](Nob const& nob) 
             { 
                 if (nob.IsEmphasized())
                 {
                     WriteCmdName(out);
-                    out << m_modelIO.GetCompactIdVal(nob.GetId()) << endl;
+                    out << NNetModelIO::GetCompactIdVal(nob.GetId()) << endl;
                 }
             }
         );

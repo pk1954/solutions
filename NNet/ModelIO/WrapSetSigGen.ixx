@@ -9,7 +9,7 @@ module;
 
 export module WrapSetSigGen;
 
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;
@@ -22,14 +22,14 @@ using std::wostream;
 using std::wcout;
 using std::endl;
 
-export class WrapSetSigGen : public NNetWrapperBase
+export class WrapSetSigGen : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        NNetModelWriterInterface & nmwi         { m_modelIO.GetImportNMWI() };
+        NNetModelWriterInterface & nmwi         { NNetModelIO::GetImportNMWI() };
         NobId                const idFromScript { ScrReadNobId(script) };
         wstring              const nameSigGen   { script.ScrReadString() };
         SignalGenerator          * pSigGen      { nmwi.GetSigGen(nameSigGen) };
@@ -53,7 +53,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        NNetModelReaderInterface const& nmri{ m_modelIO.GetExportNMRI() };
+        NNetModelReaderInterface const& nmri{ NNetModelIO::GetExportNMRI() };
         nmri.Apply2AllC<InputLine>
         (
             [this, nmri, &out](InputLine const& inputLine)
@@ -62,7 +62,7 @@ public:
                 if (pSigGen != StdSigGen::Get())
                 {
                     WriteCmdName(out);
-                    out << m_modelIO.GetCompactIdVal(inputLine.GetId()) << SPACE;
+                    out << NNetModelIO::GetCompactIdVal(inputLine.GetId()) << SPACE;
                     pSigGen->WriteName(out);
                     out << endl;
                 }

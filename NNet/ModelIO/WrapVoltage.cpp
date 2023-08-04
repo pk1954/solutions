@@ -59,7 +59,7 @@ void WrapVoltage::setPosNobVoltage
     NobId const idFromScript
 ) const
 {
-    PosNob & posNob { * m_modelIO.GetImportNMWI().GetNobPtr<PosNob*>(idFromScript) };
+    PosNob & posNob { * NNetModelIO::GetImportNMWI().GetNobPtr<PosNob*>(idFromScript) };
     posNob.SetVoltage(ScrReadVoltage(script));
 }
 
@@ -69,7 +69,7 @@ void WrapVoltage::setPipeVoltage
     NobId const idFromScript
 ) const
 {
-    Pipe & pipe { * m_modelIO.GetImportNMWI().GetNobPtr<Pipe*>(idFromScript) };
+    Pipe & pipe { * NNetModelIO::GetImportNMWI().GetNobPtr<Pipe*>(idFromScript) };
     script.ScrReadSpecial(OPEN_BRACKET);
     size_t const nrOfSegments { script.ScrReadUlong() };
     pipe.SetNrOfSegments(nrOfSegments);
@@ -106,7 +106,7 @@ void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const
     if (nob.IsDefined())
     {
         WriteCmdName(out);
-        out << m_modelIO.GetCompactIdVal(nob.GetId()) << SPACE << nob.GetTypeName() << SPACE;
+        out << NNetModelIO::GetCompactIdVal(nob.GetId()) << SPACE << nob.GetTypeName() << SPACE;
         switch (nob.GetNobType().GetValue())
         {
         case NobType::Value::inputLine:

@@ -8,7 +8,7 @@ module;
 
 export module WrapNrOfTracks;
 
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import NNetModelIO;
 import NNetModel;
@@ -16,21 +16,21 @@ import NNetModel;
 using std::wostream;
 using std::endl;
 
-export class WrapNrOfTracks : public NNetWrapperBase
+export class WrapNrOfTracks : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
         unsigned int const uiNrOfTracks{ script.ScrReadUint() };
         for (unsigned int ui = 0; ui < uiNrOfTracks; ++ui)
-            m_modelIO.GetImportNMWI().GetMonitorData().InsertTrack(TrackNr(0));
+            NNetModelIO::GetImportNMWI().GetMonitorData().InsertTrack(TrackNr(0));
     }
 
     void Write(wostream& out) const final
     {
         WriteCmdName(out);
-        out << m_modelIO.GetExportNMRI().GetMonitorDataC().GetNrOfTracks() << endl;
+        out << NNetModelIO::GetExportNMRI().GetMonitorDataC().GetNrOfTracks() << endl;
     };
 };

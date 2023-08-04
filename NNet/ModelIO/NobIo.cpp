@@ -29,13 +29,13 @@ using enum NobType::Value;
 
 Pipe* NobIo::getPipePtr(NobId const idNob) const
 {
-    Pipe* pPipe { m_modelIO.GetImportNMWI().GetNobPtr<Pipe*>(idNob) };
+    Pipe* pPipe { NNetModelIO::GetImportNMWI().GetNobPtr<Pipe*>(idNob) };
     if (pPipe == nullptr)
     {
         unique_ptr<Pipe> upPipe { make_unique<Pipe>() };
         pPipe = upPipe.get();
         pPipe->SetId(idNob);
-        m_modelIO.GetImportNMWI().GetUPNobs().SetNob2Slot(idNob, move(upPipe));
+        NNetModelIO::GetImportNMWI().GetUPNobs().SetNob2Slot(idNob, move(upPipe));
     }
     return pPipe;
 }
@@ -45,9 +45,9 @@ Pipe* NobIo::getPipePtr(NobId const idNob) const
 void NobIo::writePipe(wostream& out, Pipe const& pipe) const
 {
     out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(pipe.GetStartKnotId())
+        << NNetModelIO::GetCompactIdVal(pipe.GetStartKnotId())
         << PIPE_TO
-        << m_modelIO.GetCompactIdVal(pipe.GetEndKnotId())
+        << NNetModelIO::GetCompactIdVal(pipe.GetEndKnotId())
         << CLOSE_BRACKET;
 }
 
@@ -62,7 +62,7 @@ Pipe* NobIo::createPipe
     script.ScrReadSpecialString(PIPE_TO);
     NobId const idEnd { ScrReadNobId(script) };
     script.ScrReadSpecial(CLOSE_BRACKET);
-    UPNobList const& list { m_modelIO.GetImportNMWI().GetUPNobs() };
+    UPNobList const& list { NNetModelIO::GetImportNMWI().GetUPNobs() };
     NNetModelIO::CheckImportedNobId(script, list, idStart);
     NNetModelIO::CheckImportedNobId(script, list, idEnd);
     if (idStart == idEnd)
@@ -89,11 +89,11 @@ Pipe* NobIo::createPipe
 void NobIo::writeKnot(wostream& out, Knot const& knot) const
 {
     out << OPEN_BRACKET;
-    out << m_modelIO.GetCompactIdVal(knot.GetIncoming()->GetId());
+    out << NNetModelIO::GetCompactIdVal(knot.GetIncoming()->GetId());
     out << PIPE_TO;
     out << knot.GetPos();
     out << PIPE_TO;
-    out << m_modelIO.GetCompactIdVal(knot.GetOutgoing()->GetId());
+    out << NNetModelIO::GetCompactIdVal(knot.GetOutgoing()->GetId());
     out << CLOSE_BRACKET;
 }
 
@@ -117,13 +117,13 @@ UPNob NobIo::createKnot(Script& script) const
 void NobIo::writeFork(wostream& out, Fork const& fork) const
 {
     out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(fork.GetIncoming()->GetId())
+        << NNetModelIO::GetCompactIdVal(fork.GetIncoming()->GetId())
         << PIPE_TO
         << fork.GetPos()
         << PIPE_TO
-        << m_modelIO.GetCompactIdVal(fork.GetFirstOutgoing()->GetId())
+        << NNetModelIO::GetCompactIdVal(fork.GetFirstOutgoing()->GetId())
         << ID_SEPARATOR
-        << m_modelIO.GetCompactIdVal(fork.GetSecondOutgoing()->GetId())
+        << NNetModelIO::GetCompactIdVal(fork.GetSecondOutgoing()->GetId())
         << CLOSE_BRACKET;
 }
 
@@ -150,13 +150,13 @@ UPNob NobIo::createFork(Script& script) const
 void NobIo::writeSynapse(wostream& out, Synapse const& synapse) const
 {
     out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(synapse.GetAddPipe()->GetId())
+        << NNetModelIO::GetCompactIdVal(synapse.GetAddPipe()->GetId())
         << ID_SEPARATOR
-        << m_modelIO.GetCompactIdVal(synapse.GetInPipe()->GetId())
+        << NNetModelIO::GetCompactIdVal(synapse.GetInPipe()->GetId())
         << PIPE_TO
         << synapse.GetPos()
         << PIPE_TO
-        << m_modelIO.GetCompactIdVal(synapse.GetOutPipe()->GetId())
+        << NNetModelIO::GetCompactIdVal(synapse.GetOutPipe()->GetId())
         << CLOSE_BRACKET;
 }
 
@@ -186,7 +186,7 @@ void NobIo::writeIoConnector(wostream& out, IoConnector const& conn) const
     out << LIST_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
     for (size_t i = 0;; ++i)
     {
-        out << m_modelIO.GetCompactIdVal(conn.GetElem(i).GetId());
+        out << NNetModelIO::GetCompactIdVal(conn.GetElem(i).GetId());
         if (i == iLast)
             break;
         out << ID_SEPARATOR;
@@ -204,7 +204,7 @@ UPNob NobIo::createIoConnector(Script& script, NobType const nobType) const
     for (int iElem { 0 };;)
     {
         NobId const id      { ScrReadNobId(script) };
-        IoLine*     pIoLine { m_modelIO.GetImportNMWI().GetNobPtr<IoLine*>(id) };
+        IoLine*     pIoLine { NNetModelIO::GetImportNMWI().GetNobPtr<IoLine*>(id) };
         ioLineList.push_back(pIoLine);
         if (++iElem == iNrOfElements)
             break;
@@ -229,7 +229,7 @@ void NobIo::writeInputLine(wostream& out, InputLine const& inputLine) const
     out << OPEN_BRACKET
         << inputLine.GetPos()
         << PIPE_TO
-        << m_modelIO.GetCompactIdVal(inputLine.GetPipeC()->GetId())
+        << NNetModelIO::GetCompactIdVal(inputLine.GetPipeC()->GetId())
         << CLOSE_BRACKET;
 }
 
@@ -251,7 +251,7 @@ UPNob NobIo::createInputLine(Script& script) const
 void NobIo::writeOutputLine(wostream& out, OutputLine const& outputLine) const
 {
     out << OPEN_BRACKET
-        << m_modelIO.GetCompactIdVal(outputLine.GetPipeC()->GetId())
+        << NNetModelIO::GetCompactIdVal(outputLine.GetPipeC()->GetId())
         << PIPE_TO
         << outputLine.GetPos()
         << CLOSE_BRACKET;
@@ -279,7 +279,7 @@ void NobIo::writeNeuron(wostream& out, Neuron const& neuron) const
     out << LIST_OPEN_BRACKET << neuron.GetNrOfInConns() << NR_SEPARATOR;
     for (size_t i = 0;; ++i)
     {
-        out << m_modelIO.GetCompactIdVal(neuron.GetIncoming(i)->GetId());
+        out << NNetModelIO::GetCompactIdVal(neuron.GetIncoming(i)->GetId());
         if (i == iLast)
             break;
         out << ID_SEPARATOR;
@@ -288,7 +288,7 @@ void NobIo::writeNeuron(wostream& out, Neuron const& neuron) const
         << PIPE_TO
         << neuron.GetPos()
         << PIPE_TO
-        << m_modelIO.GetCompactIdVal(neuron.GetAxon()->GetId())
+        << NNetModelIO::GetCompactIdVal(neuron.GetAxon()->GetId())
         << CLOSE_BRACKET;
 }
 
@@ -326,7 +326,7 @@ void NobIo::writeNob(wostream& out, Nob const& nob) const
     if (nob.IsDefined())
     {
         WriteCmdName(out);
-        out << m_modelIO.GetCompactIdVal(nob.GetId()) << SPACE << nob.GetTypeName();
+        out << NNetModelIO::GetCompactIdVal(nob.GetId()) << SPACE << nob.GetTypeName();
         switch (nob.GetNobType().GetValue())
         {
         case inputLine:
@@ -410,7 +410,7 @@ Nob* NobIo::createNob(Script& script) const
     Nob* pNob { nullptr };
     if (upNob)
     {
-        UPNobList& list { m_modelIO.GetImportNMWI().GetUPNobs() };
+        UPNobList& list { NNetModelIO::GetImportNMWI().GetUPNobs() };
         upNob->SetId(idFromScript);
         pNob = upNob.get();
         list.SetNob2Slot(idFromScript, move(upNob));

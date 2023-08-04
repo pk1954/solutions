@@ -10,7 +10,7 @@ module;
 
 export module WrapProtocol;
 
-import NNetWrapperBase;
+import WrapBase;
 import NNetModelStorage;
 import IoUtil;
 import IoConstants;
@@ -20,10 +20,10 @@ using std::wstring;
 using std::wostream;
 using std::setprecision;
 
-export class WrapProtocol : public NNetWrapperBase
+export class WrapProtocol : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     inline static wstring const VERSION { L"version" };
 

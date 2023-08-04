@@ -9,7 +9,7 @@ module;
 
 export module WrapSignalGenerator;
 
-import NNetWrapperBase;
+import WrapBase;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
@@ -19,14 +19,14 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-export class WrapSignalGenerator : public NNetWrapperBase
+export class WrapSignalGenerator : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        NNetModelWriterInterface & nmwi       { m_modelIO.GetImportNMWI() };
+        NNetModelWriterInterface & nmwi       { NNetModelIO::GetImportNMWI() };
         wstring              const name       { script.ScrReadString() };
         SigGenStaticData     const sigGenData { ScrReadSigGenStaticData(script) };
         SigGenId             const sigGenId   { nmwi.FindSigGen(name) };
@@ -39,13 +39,13 @@ public:
         {
             UPSigGen upSigGen { nmwi.NewSigGen(name) };
             upSigGen->SetStaticData(sigGenData);
-            m_modelIO.GetImportNMWI().PushSigGen(move(upSigGen));
+            NNetModelIO::GetImportNMWI().PushSigGen(move(upSigGen));
         }
     }
 
     void Write(wostream & out) const final
     {
-        m_modelIO.GetExportNMRI().GetSigGenList().Apply2AllC
+        NNetModelIO::GetExportNMRI().GetSigGenList().Apply2AllC
         (
             [this, &out](auto const& pSigGen)
             {

@@ -19,17 +19,16 @@ public:
 	AddModuleCommand()
 	{}
 
-	static void Register(NNetModelIO* const pModelIO)
+	static void Register()
 	{
 		SymbolTable::ScrDefConst(NAME, &m_wrapper);
-		m_pModelIO = pModelIO;
 	}
 
 	static void Push()
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << SPACE << DOUBLE_QUOTE << m_pModelIO->GetModelFileName() << DOUBLE_QUOTE << SPACE << endl;
-		unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
+			TraceStream() << NAME << SPACE << DOUBLE_QUOTE << NNetModelIO::GetModelFileName() << DOUBLE_QUOTE << SPACE << endl;
+		unique_ptr<Model> upImportedModel { NNetModelIO::GetImportedModel() };
 		PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
 	}
 
@@ -45,6 +44,4 @@ private:
 			AddModuleCommand::Push();
 		}
 	} m_wrapper { NAME };
-
-	inline static NNetModelIO* m_pModelIO;
 };

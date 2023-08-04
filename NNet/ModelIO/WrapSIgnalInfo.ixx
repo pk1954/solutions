@@ -10,31 +10,29 @@ module;
 
 export module WrapSignalInfo;
 
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import Symtab;
 import ErrHndl;
 import Types;
 import IoUtil;
 import IoConstants;
+import Signals;
 import NNetWrapperHelpers;
 import NNetModel;
+import NNetModelIO;
 
 using std::wostream;
 using std::wstring;
 using std::endl;
 
-export class WrapSignalInfo : public NNetWrapperBase
+export class WrapSignalInfo : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
-    explicit WrapSignalInfo
-    (
-        wstring const& wstrName,
-        NNetModelIO& modelIO
-    )
-      : NNetWrapperBase(wstrName, modelIO)
+    explicit WrapSignalInfo(wstring const& wstrName)
+      : WrapBase(wstrName)
     {
         SymbolTable::ScrDefConst(L"circle", static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
         SymbolTable::ScrDefConst(L"nob",    static_cast<unsigned long>(Signal::SIGSRC_NOB));
@@ -50,13 +48,13 @@ public:
         if (ulSigSrc == Signal::SIGSRC_CIRCLE)
         {
             MicroMeterCircle umCircle = ScrReadMicroMeterCircle(script);
-            SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
+            SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), NNetModelIO::GetImportNMWI());
         }
         else if (ulSigSrc == Signal::SIGSRC_NOB)
         {
             NobId nobId { ScrReadNobId(script) };
             if (IsDefined(nobId))
-                SignalFactory::MakeMicroSensorSignal(nobId, signalId.GetTrackNr(), m_modelIO.GetImportNMWI());
+                SignalFactory::MakeMicroSensorSignal(nobId, signalId.GetTrackNr(), NNetModelIO::GetImportNMWI());
         }
         else
         {
@@ -66,7 +64,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        MonitorData const& monitorData{ m_modelIO.GetExportNMRI().GetMonitorDataC() };
+        MonitorData const& monitorData{ NNetModelIO::GetExportNMRI().GetMonitorDataC() };
         monitorData.Apply2AllSignalIdsC
         (
             [this, &out, &monitorData](SignalId const idSignal)
@@ -85,7 +83,7 @@ public:
                     {
                         MicroSensor const& microSensor  { static_cast<MicroSensor const&>(*pSigSrc) };
                         NobId       const  idNob        { microSensor.GetNobId() };
-                        NobId       const  idNobCompact { m_modelIO.GetCompactIdVal(idNob) };
+                        NobId       const  idNobCompact { NNetModelIO::GetCompactIdVal(idNob) };
                         out << Signal::SIGSRC_NOB << SPACE << idNobCompact << endl;
                     }
                     else

@@ -64,7 +64,7 @@ public:
 
     void operator() (Script& script) const final
     {
-        NNetPreferences::GetModelIO().SetModelFileName(script.ScrReadString());
+        NNetModelIO::SetModelFileName(script.ScrReadString());
         WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
     }
 
@@ -135,11 +135,9 @@ private:
     }
 };
 
-void NNetPreferences::Initialize(NNetModelIO & modelIO)
+void NNetPreferences::Initialize()
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
-
-    m_pModelIO = &modelIO;
 
     Preferences::AddWrapper(make_unique<WrapReadModel>());
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());

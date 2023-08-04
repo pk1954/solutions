@@ -8,21 +8,22 @@ module;
 
 export module WrapActiveSigGen;
 
-import NNetWrapperBase;
+import WrapBase;
 import Script;
+import NNetModelIO;
 import NNetModel;
 
 using std::wostream;
 using std::endl;
 
-export class WrapActiveSigGen : public NNetWrapperBase
+export class WrapActiveSigGen : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
-        NNetModelWriterInterface & nmwi { m_modelIO.GetImportNMWI() };
+        NNetModelWriterInterface & nmwi { NNetModelIO::GetImportNMWI() };
         SigGenId            const  id   { SigGenId(script.ScrReadInt()) };
         if (nmwi.IsValid(id))
             nmwi.SetSigGenActive(id);
@@ -31,6 +32,6 @@ public:
     void Write(wostream & out) const final
     {
         WriteCmdName(out);
-        out << m_modelIO.GetExportNMRI().GetSigGenIdSelected() << endl;
+        out << NNetModelIO::GetExportNMRI().GetSigGenIdSelected() << endl;
     };
 };

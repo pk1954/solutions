@@ -8,27 +8,29 @@ module;
 
 export module WrapSignalData;
 
-import NNetWrapperBase;
+import WrapBase;
 import IoUtil;
 import IoConstants;
 import SaveCast;
 import Types;
 import Script;
+import Signals;
 import NNetModel;
+import NNetModelIO;
 import NNetWrapperHelpers;
 
 using std::wostream;
 using std::endl;
 
-export class WrapSignalData : public NNetWrapperBase
+export class WrapSignalData : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
         SignalId   const signalId { ScrReadSignalId(script) };
-        Signal         * pSignal  { m_modelIO.GetImportNMWI().GetMonitorData().GetSignalPtr(signalId) };
+        Signal         * pSignal  { NNetModelIO::GetImportNMWI().GetMonitorData().GetSignalPtr(signalId) };
         { script.ScrReadString(L"StartTime"); };
         fMicroSecs const umStartTime{ Cast2Float(script.ScrReadFloat()) };
         if (pSignal)
@@ -49,7 +51,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        MonitorData const& monitorData{ m_modelIO.GetExportNMRI().GetMonitorDataC() };
+        MonitorData const& monitorData{ NNetModelIO::GetExportNMRI().GetMonitorDataC() };
         monitorData.Apply2AllSignalIdsC
         (
             [this, &out, &monitorData](SignalId const idSignal)

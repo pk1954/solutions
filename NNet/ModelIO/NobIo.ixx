@@ -9,19 +9,20 @@ module;
 
 export module NobIo;
 
-import NNetWrapperBase;
+import WrapBase;
 import Types;
 import Script;
 import NNetModel;
+import NNetModelIO;
 
 using std::wostream;
 using std::unique_ptr;
 using std::make_unique;
 
-export class NobIo : public NNetWrapperBase
+export class NobIo : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
@@ -30,7 +31,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        NNetModelReaderInterface const& nmri { m_modelIO.GetExportNMRI() };
+        NNetModelReaderInterface const& nmri { NNetModelIO::GetExportNMRI() };
         nmri.Apply2AllC<IoLine>     ([this, &out](Nob const& n) { writeNob(out, n); });
         nmri.Apply2AllC<IoConnector>([this, &out](Nob const& n) { writeNob(out, n); });
         nmri.Apply2AllC<Synapse>    ([this, &out](Nob const& n) { writeNob(out, n); });

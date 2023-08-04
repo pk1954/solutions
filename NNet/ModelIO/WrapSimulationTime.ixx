@@ -11,16 +11,16 @@ export module WrapSimulationTime;
 import SaveCast;
 import Types;
 import Signals;
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 
 using std::endl;
 using std::wostream;
 
-export class WrapSimulationTime : public NNetWrapperBase
+export class WrapSimulationTime : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {

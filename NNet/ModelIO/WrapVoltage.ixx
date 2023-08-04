@@ -8,17 +8,17 @@ module;
 
 export module WrapVoltage;
 
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import NNetModelIO;
 import NNetModel;
 
 using std::wostream;
 
-export class WrapVoltage : public NNetWrapperBase
+export class WrapVoltage : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script & script) const final
     {
@@ -27,7 +27,7 @@ public:
 
     void Write(wostream & out) const final
     {
-        NNetModelReaderInterface const& nmwi{ m_modelIO.GetExportNMRI() };
+        NNetModelReaderInterface const& nmwi{ NNetModelIO::GetExportNMRI() };
         nmwi.Apply2AllC<PosNob     >([this, &out](PosNob      const& s) { writeVoltage(out, s); });
         nmwi.Apply2AllC<Pipe       >([this, &out](Pipe        const& s) { writeVoltage(out, s); });
         nmwi.Apply2AllC<IoConnector>([this, &out](IoConnector const& s) { writeVoltage(out, s); });

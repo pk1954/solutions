@@ -30,7 +30,7 @@ import HiResTimer;
 import WrapVoltage;
 import WrapProtocol;
 import WrapSimulationTime;
-import NNetWrapperBase;
+import WrapBase;
 import NobIo;
 import WrapDescription;
 import WrapNrOfNobs;
@@ -57,8 +57,6 @@ using std::wstring;
 using std::bit_cast;
 using std::endl;
 using std::setprecision;
-
-NNetModelIO::~NNetModelIO() = default;
 
 void NNetModelIO::Initialize()
 {
@@ -188,7 +186,7 @@ void NNetModelIO::fixProblems()
     m_radDislocate = 0.3_Radian;
     m_upImportedNMWI->Apply2All<Pipe>
     (
-        [this](Pipe& pipe)
+        [](Pipe& pipe)
         {
             if ((pipe.GetEndPoint() - pipe.GetStartPoint()).IsCloseToZero())
             {
@@ -234,8 +232,7 @@ void NNetModelIO::CheckImportedNobId
 static unsigned int __stdcall importModelThreadProc(void * data) 
 {
     SetThreadDescription(GetCurrentThread(), L"ImportModel");
-    NNetModelIO * pModelIO { bit_cast<NNetModelIO *>(data) };
-    pModelIO->importModel();
+    NNetModelIO::importModel();
     return 0;
 }
 
@@ -260,7 +257,7 @@ bool NNetModelIO::Import
     m_upImportUI      = move(upInputUI);
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
     m_upImportedModel = m_upImportedNMWI->CreateNewModel();
-    Util::RunAsAsyncThread(importModelThreadProc, static_cast<void *>(this));
+    Util::RunAsAsyncThread(importModelThreadProc, nullptr);
     return true;
 }
 
@@ -272,7 +269,7 @@ unique_ptr<Model> NNetModelIO::GetImportedModel()
 
 //////////////// export ////////////////
 
-void NNetModelIO::writeHeader(wostream & out) const
+void NNetModelIO::writeHeader(wostream & out)
 {
     out << Scanner::COMMENT_SYMBOL << L" NNetModel"       << endl;
     out << Scanner::COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime() << endl;
@@ -290,12 +287,12 @@ void NNetModelIO::compress(NNetModelReaderInterface const & nmri)
     m_nrOfcompactIds = iCount;
 }
 
-int NNetModelIO::GetCompactIdVal(NobId const id) const
+int NNetModelIO::GetCompactIdVal(NobId const id)
 { 
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
 }
 
-size_t NNetModelIO::NrOfCompactIds() const 
+size_t NNetModelIO::NrOfCompactIds() 
 {
     return m_nrOfcompactIds;
 }

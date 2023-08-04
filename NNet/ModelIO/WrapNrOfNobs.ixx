@@ -9,7 +9,7 @@ module;
 
 export module WrapNrOfNobs;
 
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import NNetModelIO;
 import NNetModel;
@@ -19,16 +19,16 @@ import IoConstants;
 using std::wostream;
 using std::endl;
 
-export class WrapNrOfNobs : public NNetWrapperBase
+export class WrapNrOfNobs : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
         script.ScrReadSpecial(EQUALS);
         long       lNrOfNobs { script.ScrReadLong() };
-        UPNobList& list      { m_modelIO.GetImportNMWI().GetUPNobs() };
+        UPNobList& list      { NNetModelIO::GetImportNMWI().GetUPNobs() };
         assert(list.IsEmpty());
         list.IncreaseSize(lNrOfNobs);
     }
@@ -36,6 +36,6 @@ public:
     void Write(wostream& out) const final
     {
         WriteCmdName(out);
-        out << EQUALS << SPACE << m_modelIO.NrOfCompactIds() << endl;
+        out << EQUALS << SPACE << NNetModelIO::NrOfCompactIds() << endl;
     }
 };

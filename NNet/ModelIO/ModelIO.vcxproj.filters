@@ -13,9 +13,6 @@
     <ClCompile Include="WrapSimulationTime.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetWrapperBase.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NobIo.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

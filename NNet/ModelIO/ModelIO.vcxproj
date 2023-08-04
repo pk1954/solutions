@@ -167,7 +167,6 @@
     <ClCompile Include="NNetModelStorage.ixx" />
     <ClCompile Include="NNetPreferences.cpp" />
     <ClCompile Include="NNetPreferences.ixx" />
-    <ClCompile Include="NNetWrapperBase.ixx" />
     <ClCompile Include="NobIo.cpp" />
     <ClCompile Include="WrapActiveSigGen.ixx" />
     <ClCompile Include="NobIo.ixx" />

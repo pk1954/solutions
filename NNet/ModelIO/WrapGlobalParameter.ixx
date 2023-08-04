@@ -12,7 +12,7 @@ export module WrapGlobalParameter;
 import IoUtil;
 import IoConstants;
 import SaveCast;
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import ErrHndl;
 import NNetModelIO;
@@ -22,10 +22,10 @@ using std::setprecision;
 using std::wostream;
 using std::endl;
 
-export class WrapGlobalParameter : public NNetWrapperBase
+export class WrapGlobalParameter : public WrapBase
 {
 public:
-    using NNetWrapperBase::NNetWrapperBase;
+    using WrapBase::WrapBase;
 
     void operator() (Script& script) const final
     {
@@ -41,7 +41,7 @@ public:
         float const fValue{ Cast2Float(script.ScrReadFloat()) };
         if (bSuccess)
         {
-           m_modelIO.GetImportNMWI().SetParam(static_cast<ParamType::Value>(uiParam), fValue);
+           NNetModelIO::GetImportNMWI().SetParam(static_cast<ParamType::Value>(uiParam), fValue);
         }
     }
 
@@ -53,7 +53,7 @@ public:
             {
                 WriteCmdName(out);
                 out << par << SPACE << EQUALS << SPACE
-                    << setprecision(10) << m_modelIO.GetExportNMRI().GetParameter(par)
+                    << setprecision(10) << NNetModelIO::GetExportNMRI().GetParameter(par)
                     << endl;
             }
         );

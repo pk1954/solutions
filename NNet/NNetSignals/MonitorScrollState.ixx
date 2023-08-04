@@ -15,7 +15,7 @@ import Script;
 import Symtab;
 import SaveCast;
 import NNetModelIO;
-import NNetWrapperBase;
+import WrapBase;
 import NNetWrapperHelpers;
 import :MonitorWindow;
 
@@ -23,10 +23,10 @@ using std::endl;
 using std::wstring;
 using std::wostream;
 
-export class MonitorScrollState : public NNetWrapperBase
+export class MonitorScrollState : public WrapBase
 {
 public:
-	using NNetWrapperBase::NNetWrapperBase;
+	using WrapBase::WrapBase;
 
 	void SetMonitorWindow(MonitorWindow* const pMonitorWindow)
 	{

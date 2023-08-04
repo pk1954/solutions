@@ -53,7 +53,7 @@ public:
 export class NNetPreferences
 {
 public:
-	static void Initialize(NNetModelIO&);
+	static void Initialize();
 
 	static void SetModelInterface(NNetModelReaderInterface const *);
 
@@ -63,14 +63,12 @@ public:
 	static void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
 
 	static NNetModelReaderInterface const *GetModelInterface() { return m_pNMRI; };
-	static NNetModelIO                    &GetModelIO()        { return *m_pModelIO; }
 
 	inline static ShowArrows m_bArrows;
 	inline static BoolType   m_bSensorPoints { false };
 
 private:
 
-	inline static NNetModelIO                    * m_pModelIO              { nullptr };
 	inline static tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
 	inline static NNetModelReaderInterface const * m_pNMRI                 { nullptr };
 };

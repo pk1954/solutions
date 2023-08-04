@@ -70,7 +70,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
 	Command        ::Initialize(&m_cmdStack);
-	m_modelIO       .Initialize();
+	NNetModelIO    ::Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize
@@ -91,7 +91,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	NNetCommand::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 
-	MonitorScrollState* pMonitorScrollState { m_modelIO.AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
+	MonitorScrollState* pMonitorScrollState { NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
 };
 
@@ -129,7 +129,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_appTitle.Initialize(m_hwndApp);
 
-	NNetPreferences::Initialize(m_modelIO);
+	NNetPreferences::Initialize();
 
 	m_signalDesigner.Initialize
 	(
@@ -458,7 +458,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_IMPORT_MODEL:
 			m_cmdStack.Clear();
-			if (!m_modelIO.Import(m_modelIO.GetModelFileName(),	NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
+			if (!NNetModelIO::Import(NNetModelIO::GetModelFileName(),	NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
 				SendCommand(IDM_NEW_MODEL, 0);
 			break;
 
@@ -478,7 +478,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_OPEN_MODEL:
 			m_cmdStack.Clear();
-			m_modelIO.Import
+			NNetModelIO::Import
 			(
 				askModelFile(tFileMode::read),
 				NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL)
@@ -489,12 +489,12 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			if (AskNotUndoable())
 			{
 				m_cmdStack.Clear();
-				m_modelIO.Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL));
+				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL));
 			}
 			break;
 
 		case IDM_ADD_MODULE:
-			m_modelIO.Import
+			NNetModelIO::Import
 			(
 				askModelFile(tFileMode::read), 
 				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
@@ -635,7 +635,7 @@ void NNetAppWindow::replaceModel()
 {
 	m_computeThread.StopComputation();
 	m_mainNNetWindow.Reset();
-	m_upModel = m_modelIO.GetImportedModel();	
+	m_upModel = NNetModelIO::GetImportedModel();	
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
 	m_upModel->SetHighSigObservable     (m_highlightSigObservable);
 	m_nmwi.SetModel(m_upModel.get());
@@ -665,7 +665,7 @@ void NNetAppWindow::processScript() const
 void NNetAppWindow::WriteModel()
 {
 	SetCursor(m_hCrsrWait);
-	m_modelIO.Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0));
+	NNetModelIO::Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0));
 	Preferences::WritePreferences();
 	m_appTitle.SetUnsavedChanges(false);
 	m_statusBar.ClearPart(m_statusMessagePart);

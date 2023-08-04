@@ -11,7 +11,7 @@ export module WrapDescription;
 
 import IoUtil;
 import IoConstants;
-import NNetWrapperBase;
+import WrapBase;
 import Script;
 import NNetModelIO;
 import NNetModel;
@@ -20,15 +20,15 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-export class WrapDescription : public NNetWrapperBase
+export class WrapDescription : public WrapBase
 {
 public:
-	using NNetWrapperBase::NNetWrapperBase;
+	using WrapBase::WrapBase;
 
 	void operator() (Script& script) const final
 	{
 		wstring const wstrDescription{ script.ScrReadString() };
-		m_modelIO.GetImportNMWI().AddDescriptionLine(wstrDescription);
+		NNetModelIO::GetImportNMWI().AddDescriptionLine(wstrDescription);
 	}
 
 	void Write(wostream & out) const final
@@ -36,7 +36,7 @@ public:
 		wstring const& wstrCmdName{ GetName() };
 		wstring wstrLine;
 		int iLineNr = 0;
-		while (m_modelIO.GetExportNMRI().GetDescriptionLine(iLineNr++, wstrLine))
+		while (NNetModelIO::GetExportNMRI().GetDescriptionLine(iLineNr++, wstrLine))
 		{
 			WriteCmdName(out);
 			out << DOUBLE_QUOTE << wstrLine << DOUBLE_QUOTE << endl;
