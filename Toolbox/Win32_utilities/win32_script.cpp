@@ -17,6 +17,7 @@ module;
 module ScriptFile;
 
 import Script;
+import IoConstants;
 
 using std::wcout;
 using std::vector;
@@ -103,7 +104,9 @@ bool ScriptFile::setFileTypes
     HRESULT           hr     { pFileDlg->SetFileTypes(1, & rgSpec) };
     if (! SUCCEEDED(hr))
     {
-        wcout << L" +++ AskForFileName: SetFileTypes(1, {\"" << description.c_str() << L"\" , \"" << filter.c_str() << L"\" }) failed." << endl;
+        wcout << L" +++ AskForFileName: SetFileTypes(1, {" 
+              << DOUBLE_QUOTE << description.c_str() << DOUBLE_QUOTE << " , " 
+              << DOUBLE_QUOTE << filter.c_str() << DOUBLE_QUOTE << " }) failed." << endl;
         wcout << L" +++ error code : " << hr << endl;
         return false;
     }
@@ -119,7 +122,7 @@ bool ScriptFile::setDefaultExtension
     HRESULT hr { pFileDlg->SetDefaultExtension(extension.c_str()) };
     if (! SUCCEEDED(hr))
     {
-        wcout << L" +++ AskForFileName: SetDefaultExtension(\"" << extension.c_str() << L"\") failed." << endl;
+        wcout << L" +++ AskForFileName: SetDefaultExtension(" << DOUBLE_QUOTE << extension.c_str() << DOUBLE_QUOTE << ") failed." << endl;
         wcout << L" +++ error code : " << hr << endl;
         return false;
     }

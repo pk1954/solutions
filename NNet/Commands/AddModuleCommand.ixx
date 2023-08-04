@@ -28,7 +28,7 @@ public:
 	static void Push()
 	{
 		if (IsTraceOn())
-			TraceStream() << NAME << L" \"" << m_pModelIO->GetModelFileName() << L"\" " << endl;
+			TraceStream() << NAME << SPACE << DOUBLE_QUOTE << m_pModelIO->GetModelFileName() << DOUBLE_QUOTE << SPACE << endl;
 		unique_ptr<Model> upImportedModel { m_pModelIO->GetImportedModel() };
 		PushCommand(make_unique<AddNobsCommand>(upImportedModel->MoveUPNobs()));
 	}

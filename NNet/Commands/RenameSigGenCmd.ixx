@@ -50,7 +50,7 @@ public:
 	static void Push(SigGenId const id, wstring const& name)
 	{
 		//if (IsTraceOn())  //TODO: fix
-		//	TraceStream() << NAME << id.GetValue() << L" \"" << name << L"\" " << endl;
+		//	TraceStream() << NAME << id.GetValue() << SPACE << DOUBLE_QUOTE << name << DOUBLE_QUOTE << endl;
 		PushCommand(make_unique<RenameSigGenCmd>(id, name));
 	}
 

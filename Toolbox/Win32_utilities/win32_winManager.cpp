@@ -270,7 +270,7 @@ void WinManager::dumpMonitorConfiguration()
 	
 	DUMP_MON_STRUCT monStruct = { 0, & ostr };
 
-    ostr << L"MonitorConfiguration  \"" << m_strWindowConfigurationFile << DOUBLE_QUOTE << endl;
+    ostr << L"MonitorConfiguration  " << DOUBLE_QUOTE << m_strWindowConfigurationFile << DOUBLE_QUOTE << endl;
     EnumDisplayMonitors(nullptr, nullptr, DumpMonitorInfo, (LPARAM)&monStruct);
     ostr << L"0   # end of MonitorConfiguration" << endl << endl;
 
