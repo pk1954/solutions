@@ -58,9 +58,9 @@ private:
 
 	inline static const wstring NAME { L"RenameSigGen" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
-	public:
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SigGenId const id   { ScrReadSigGenId(script) };
@@ -69,7 +69,7 @@ private:
 			script.ScrReadSpecial(L'"');
 			RenameSigGenCmd::Push(id, name);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	SigGenId m_idSigGen;
 	wstring  m_wstrNameOld;

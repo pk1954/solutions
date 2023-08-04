@@ -52,8 +52,9 @@ private:
 
 	inline static const wstring NAME { L"RotateNob" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const idNob    { ScrReadNobId(script) };
@@ -61,7 +62,7 @@ private:
 			MicroMeterPnt const umPntNew { ScrReadMicroMeterPnt(script) };
 			RotateNobCommand::Push(idNob, umPntOld, umPntNew);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Nob & m_nob;
 };

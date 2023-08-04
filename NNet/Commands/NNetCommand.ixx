@@ -11,6 +11,7 @@ module;
 export module NNetCommands:NNetCommand;
 
 export import SoundInterface;
+export import WrapBase;
 export import Types;
 export import Symtab;
 export import Script;

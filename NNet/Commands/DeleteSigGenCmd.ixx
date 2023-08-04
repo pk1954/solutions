@@ -61,13 +61,14 @@ private:
 
 	inline static const wstring NAME { L"DeleteSigGen" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			DeleteSigGenCmd::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	SignalGenerator   * m_pSigGenActive { m_pNMWI->GetSigGenSelected() };
 	SigGenId            m_sigGenId      { m_pNMWI->GetSigGenIdSelected() };

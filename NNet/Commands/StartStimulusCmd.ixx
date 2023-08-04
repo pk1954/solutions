@@ -42,12 +42,13 @@ private:
 
 	inline static const wstring NAME { L"StartStimulus" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			StartStimulusCmd::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 };

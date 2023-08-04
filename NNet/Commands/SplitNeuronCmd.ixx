@@ -68,13 +68,14 @@ private:
 
     inline static const wstring NAME { L"SplitNeuron" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             SplitNeuronCmd::Push(ScrReadNobId(script));
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 
     Neuron               & m_neuron;
     unique_ptr<Neuron>     m_upNeuron     { };

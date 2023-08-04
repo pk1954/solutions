@@ -45,14 +45,15 @@ private:
 
 	inline static const wstring NAME { L"ToggleStopOnTrigger" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId const id { ScrReadNobId(script) };
 			ToggleStopOnTriggerCmd::Push(id);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	NobId const m_id;
 };

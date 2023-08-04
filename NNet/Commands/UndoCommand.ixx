@@ -31,12 +31,13 @@ private:
 
 	inline static const wstring NAME { L"Undo" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			UndoCommand::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 };

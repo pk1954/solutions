@@ -5,6 +5,7 @@
 module;
 
 #include <map>
+#include <memory>
 #include <cassert>
 #include <string>
 
@@ -13,7 +14,10 @@ module Symtab;
 import ErrHndl;
 import Script;
 
+using std::map;
 using std::wstring;
+using std::unique_ptr;
+using std::make_unique;
 
 bool Symbol::operator< (const Symbol & rhs) const
 {
@@ -47,9 +51,9 @@ bool Symbol::operator< (const Symbol & rhs) const
 
 Symbol const & SymbolTable::GetSymbolFromName(wstring const & wstrKey)
 {
-    auto const iter = m_SymbolTab.find(wstrKey);
+    auto const iter = m_upSymbolTab->find(wstrKey);
 
-    if (iter == m_SymbolTab.end())
+    if (iter == m_upSymbolTab->end())
         ScriptErrorHandler::symbolError(wstrKey);
 
     return iter->second;
@@ -57,21 +61,26 @@ Symbol const & SymbolTable::GetSymbolFromName(wstring const & wstrKey)
 
 wstring const & SymbolTable::GetSymbolName(Symbol const & symbol)
 {
-    auto const iter = m_ReverseTab.find(symbol);
+    auto const iter = m_upReverseTab->find(symbol);
 
-    assert(iter != m_ReverseTab.end());
+    assert(iter != m_upReverseTab->end());
 
     return iter->second;
 }
 
 void SymbolTable::addSymbol(wstring const & wstrName, Symbol const & sym)
 {
-    m_SymbolTab[wstrName] = sym;
-    m_ReverseTab[sym] = wstrName;
+    if (!m_upSymbolTab)
+    {
+        m_upSymbolTab  = make_unique<map <wstring, Symbol, std::less<>>>();
+        m_upReverseTab = make_unique<map <Symbol, wstring>>();
+    }
+    (*m_upSymbolTab.get())[wstrName] = sym;
+    (*m_upReverseTab.get())[sym] = wstrName;
 }
 
 void SymbolTable::Clear()
 {
-	m_SymbolTab.clear();
-	m_ReverseTab.clear();
+	m_upSymbolTab->clear();
+	m_upReverseTab->clear();
 }

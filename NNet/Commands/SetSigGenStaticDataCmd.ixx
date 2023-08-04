@@ -64,8 +64,9 @@ private:
 
 	inline static const wstring NAME { L"SetSigGenStaticData" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SigGenId          const id   { ScrReadSigGenId(script) };
@@ -73,7 +74,7 @@ private:
 			SigGenStaticData const& data { ScrReadSigGenStaticData(script) };
 			SetSigGenStaticDataCmd::Push(id, data);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	SignalGenerator      & m_sigGen;
 	SigGenStaticData       m_dataNew;

@@ -60,9 +60,6 @@
     <ClCompile Include="DescriptionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetWrappers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TimeDisplay.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -103,9 +100,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetInputOutputUI.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetWrappers.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MiniWindow.ixx">

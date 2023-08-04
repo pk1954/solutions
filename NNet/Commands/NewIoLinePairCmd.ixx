@@ -46,13 +46,14 @@ private:
 
 	inline static const wstring NAME { L"NewIoLinePair" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NewIoLinePairCmd::Push(ScrReadMicroMeterPnt(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	IoLinePair m_IoLinePair;
 };

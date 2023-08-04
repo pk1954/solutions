@@ -59,7 +59,6 @@ bool Preferences::WritePreferences()
 {
     wofstream prefFile(m_wstrPreferencesFile);
     prefFile << Scanner::COMMENT_START << L" User preferences" << endl;
-    size_t i = 0;
     for (auto const& it : m_prefVector)
     {
         it->Write(prefFile);

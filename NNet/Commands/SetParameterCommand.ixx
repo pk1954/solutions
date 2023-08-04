@@ -55,15 +55,16 @@ private:
 
 	inline static const wstring NAME { L"SetParameter" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			ParamType::Value const param  { static_cast<ParamType::Value>(script.ScrReadUlong()) };
 			float            const fValue { Cast2Float(script.ScrReadFloat()) };
 			SetParameterCommand::Push(param, fValue);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	ParamType::Value const m_param;
 	float            const m_fOldValue;

@@ -41,13 +41,14 @@ private:
 
 	inline static const wstring NAME { L"SelectAllConnected" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SelectAllConnectedCmd::Push(ScrReadNobId(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Nob& m_nobStart;
 	bool m_bOn;

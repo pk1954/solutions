@@ -5,6 +5,7 @@
 module;
 
 #include <map>
+#include <memory>
 #include <cassert>
 #include <string>
 
@@ -14,6 +15,7 @@ import Script;
 
 using std::map;
 using std::wstring;
+using std::unique_ptr;
 
 export enum class tSTYPE   // Type of symbolic value 
 { 
@@ -72,6 +74,6 @@ public:
 private:
     static void addSymbol(wstring const &, Symbol const &);
 
-    inline static map <wstring, Symbol, std::less<>> m_SymbolTab  {};
-    inline static map <Symbol,  wstring>             m_ReverseTab {};
+    inline static unique_ptr<map <wstring, Symbol, std::less<>>> m_upSymbolTab;
+    inline static unique_ptr<map <Symbol,  wstring>>             m_upReverseTab;
 };

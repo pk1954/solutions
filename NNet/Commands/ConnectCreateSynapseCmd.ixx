@@ -71,15 +71,16 @@ private:
 
 	inline static const wstring NAME { L"ConnectCreateSynapse" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId const idSrc { ScrReadNobId(script) };
 			NobId const idDst { ScrReadNobId(script) };
 			ConnectCreateSynapseCmd::Push(idSrc, idDst);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	NobId       const m_idOutputLine;
 	OutputLine* const m_pOutputLine;

@@ -19,7 +19,6 @@ export import :NNetAppWindow;
 export import :NNetController;
 export import :NNetInputOutputUI;
 export import :NNetWindow;
-export import :NNetWrappers;
 export import :ParameterDialog;
 export import :PerformanceWindow;
 export import :ScriptHook;

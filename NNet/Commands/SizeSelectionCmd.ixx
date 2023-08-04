@@ -42,13 +42,14 @@ private:
 
 	inline static const wstring NAME { L"SizeSelection" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SizeSelectionCmd::Push(Cast2Float(script.ScrReadFloat()));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	void sizeSelection(float const fFactor) const
 	{

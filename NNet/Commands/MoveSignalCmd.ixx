@@ -50,15 +50,16 @@ private:
 
 	inline static const wstring NAME { L"MoveSignal" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SignalId const id      { ScrReadSignalId(script) };
 			TrackNr  const trackNr { ScrReadTrackNr(script) };
 			MoveSignalCmd::Push(id, trackNr);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	SignalId const m_signalIdOld;
 	TrackNr  const m_trackNrNew;

@@ -38,13 +38,14 @@ private:
 
 	inline static const wstring NAME { L"AddModule" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			AddModuleCommand::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	inline static NNetModelIO* m_pModelIO;
 };

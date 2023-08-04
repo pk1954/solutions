@@ -64,15 +64,16 @@ private:
 
 	inline static const wstring NAME { L"Connect2Neuron" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId const id1 { ScrReadNobId(script) };
 			NobId const id2 { ScrReadNobId(script) };
 			Connect2NeuronCommand::Push(id1, id2);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	OutputLine & m_outputLineSrc;  // reference to original OutputLine
 	Neuron     & m_neuronDst;      // reference to original Neuron

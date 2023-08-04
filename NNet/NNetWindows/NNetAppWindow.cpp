@@ -42,7 +42,6 @@ import :PerformanceWindow;
 import :UndoRedoMenu;
 import :NNetInputOutputUI;
 import :NNetWindow;
-import :NNetWrappers;
 import :NNetSimuRunning;
 
 using std::endl;
@@ -90,7 +89,6 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_performanceObservable, 
 		& m_dynamicModelObservable
 	);
-	InitializeNNetWrappers(&m_modelIO, &m_ScriptHook);
 	NNetCommand::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 

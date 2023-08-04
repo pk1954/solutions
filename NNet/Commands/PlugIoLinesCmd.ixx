@@ -68,15 +68,16 @@ private:
 
     inline static const wstring NAME { L"PlugIoLines" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             NobId const id1 { ScrReadNobId(script) };
             NobId const id2 { ScrReadNobId(script) };
             PlugIoLinesCmd::Push(id1, id2);
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 
     IoLine           & m_nobTarget;
     IoLine           & m_nobAnimated;

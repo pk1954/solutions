@@ -580,8 +580,6 @@
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetSimuRunning.ixx" />
     <ClCompile Include="NNetWin32.ixx" />
-    <ClCompile Include="NNetWrappers.cpp" />
-    <ClCompile Include="NNetWrappers.ixx" />
     <ClCompile Include="ParameterDlg.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="SelectionMenu.ixx" />

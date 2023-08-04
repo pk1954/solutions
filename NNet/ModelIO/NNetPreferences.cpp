@@ -73,7 +73,9 @@ public:
 class WrapColor : public WrapBase
 {
 public:
-    using WrapBase::WrapBase;
+    WrapColor()
+        : WrapBase(NAME)
+    {}
 
     void operator() (Script& script) const final
     {
@@ -102,22 +104,28 @@ public:
             [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
             {
                 if (elem.m_pBaseWindow)
-                {
-                    COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
-                    WriteCmdName(out);
-                    out << elem.m_wstr << SPACE
-                        << L"RGB"
-                        << OPEN_BRACKET
-                        << GetRValue(col)
-                        << ID_SEPARATOR
-                        << GetGValue(col)
-                        << ID_SEPARATOR
-                        << GetBValue(col)
-                        << CLOSE_BRACKET
-                        << endl;
-                }
+                    WriteBackgroundColor(out, elem);
             }
         );
+    }
+
+private:
+
+    inline static const wstring NAME { L"SetBKColor" };
+
+    static void WriteBackgroundColor(wostream &out, WinManager::MAP_ELEMENT const& elem)
+    {
+        COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
+        out << NAME << SPACE << elem.m_wstr << SPACE
+            << L"RGB"
+            << OPEN_BRACKET
+            << GetRValue(col)
+            << ID_SEPARATOR
+            << GetGValue(col)
+            << ID_SEPARATOR
+            << GetBValue(col)
+            << CLOSE_BRACKET
+            << endl;
     }
 };
 
@@ -129,9 +137,9 @@ void NNetPreferences::Initialize(NNetModelIO & modelIO)
 
     Preferences::AddWrapper(make_unique<WrapReadModel            >(L"ReadModel"));
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>(L"InputCablesVisibility"));
-    Preferences::AddWrapper(make_unique<WrapColor                >(L"SetBKColor"));
-    Preferences::AddWrapper(make_unique<WrapSetScales            >());
-    Preferences::AddWrapper(make_unique<WrapSetGrid              >());
+    Preferences::AddWrapper(make_unique<WrapColor>());
+    Preferences::AddWrapper(make_unique<WrapSetScales>());
+    Preferences::AddWrapper(make_unique<WrapSetGrid>());
 
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
     Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);

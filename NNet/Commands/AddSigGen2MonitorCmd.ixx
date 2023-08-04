@@ -49,14 +49,14 @@ private:
 
 	inline static const wstring NAME { L"AddSigGen2Monitor" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
-	public:
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			AddSigGen2MonitorCmd(ScrReadTrackNr(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	SignalGenerator const * m_pSigGen;
 	TrackNr         const   m_trackNr;

@@ -9,6 +9,7 @@ module;
 export module NNetCommands:AddMicroSensorCmd;
 
 import IoUtil;
+import WrapBase;
 import :NNetCommand;
 
 export class AddMicroSensorCmd : public NNetCommand
@@ -38,11 +39,6 @@ public:
 		PlaySound(L"DISAPPEAR_SOUND");
 	};
 
-	static void Register()
-	{
-		SymbolTable::ScrDefConst(NAME, &m_wrapper);
-	}
-
 	static void Push
 	(
 		NobId   const nobId,
@@ -58,15 +54,16 @@ private:
 
 	inline static const wstring NAME { L"AddMicroSensor" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId   const nobId   { ScrReadNobId(script) };
 			TrackNr const trackNr { ScrReadTrackNr(script) };
 			AddMicroSensorCmd::Push(nobId, trackNr);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	NobId    const m_nobId;
 	TrackNr  const m_trackNr;

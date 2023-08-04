@@ -53,13 +53,14 @@ private:
 
 	inline static const wstring NAME { L"DiscIoConnector" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			DiscIoConnectorCmd::Push(ScrReadNobId(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
     IoConnector      const& m_connector;
     unique_ptr<IoConnector> m_upIoConnector {};

@@ -31,12 +31,13 @@ private:
 
 	inline static const wstring NAME { L"Redo" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			RedoCommand::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 };

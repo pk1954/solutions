@@ -57,13 +57,14 @@ private:
 
 	inline static const wstring NAME { L"DelMicroSensor" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			DelMicroSensorCmd::Push(ScrReadNobId(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Nob                   * m_pNob          { nullptr };
 	SignalId                m_signalId      {};

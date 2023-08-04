@@ -56,15 +56,16 @@ private:
 
     inline static const wstring NAME { L"ConnAnimation" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             NobId const id1 { ScrReadNobId(script) };
             NobId const id2 { ScrReadNobId(script) };
             ConnAnimationCommand::Push(id1, id2);
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 
     NobId m_id1;
     NobId m_id2;

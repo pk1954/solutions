@@ -10,10 +10,10 @@ module;
 
 export module WrapBase;
 
-import IoConstants;
-import BoolType;
-import Script;
-import Symtab;
+export import IoConstants;
+export import BoolType;
+export import Script;
+export import Symtab;
 
 using std::wostream;
 using std::wstring;
@@ -30,7 +30,7 @@ public:
 
     virtual ~WrapBase() = default;
 
-    virtual void Write(wostream& out) const = 0;
+    virtual void Write(wostream& out) const {};
 
     wstring const& GetName() const
     {

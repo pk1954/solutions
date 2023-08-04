@@ -73,16 +73,16 @@ private:
 
 	inline static const wstring NAME { L"ExtendInputLine" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
-	public:
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			ExtendInputLineCmd::Push(id, umPnt);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	InputLine           & m_inputLineOld;
 	unique_ptr<InputLine> m_upInputLineOld;

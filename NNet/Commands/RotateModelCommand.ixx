@@ -60,13 +60,14 @@ private:
 
 	inline static const wstring NAME { L"RotateModel" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			MicroMeterPnt const umPntOld { ScrReadMicroMeterPnt(script) };
 			MicroMeterPnt const umPntNew { ScrReadMicroMeterPnt(script) };
 			RotateModelCommand::Push(umPntOld, umPntNew);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 };

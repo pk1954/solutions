@@ -9,9 +9,7 @@ module;
 
 export module WrapSetScales;
 
-import Symtab;
-import IoConstants;
-import Script;
+import WrapBase;
 import WrapBaseBool;
 import BaseWindow;
 import WinManager;
@@ -59,13 +57,9 @@ public:
 private:
     inline static const wstring NAME { L"SetScales" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
-        Wrapper()
-        {
-            SymbolTable::ScrDefConst(NAME, this);
-        }
-
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             unsigned int const uiWinId { script.ScrReadUint() };
@@ -78,5 +72,5 @@ private:
                 //TODO: Error message
             }
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 };

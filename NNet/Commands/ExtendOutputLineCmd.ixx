@@ -73,15 +73,16 @@ private:
 
 	inline static const wstring NAME { L"ExtendOutputLine" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			ExtendOutputLineCmd::Push(id, umPnt);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	OutputLine           & m_outputLineOld;
 	unique_ptr<OutputLine> m_upOutputLineOld;

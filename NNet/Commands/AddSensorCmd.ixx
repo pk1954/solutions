@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:AddSensorCmd;
 
+import WrapBase;
 import IoUtil;
 import :NNetCommand;
 
@@ -58,15 +59,16 @@ private:
 
 	inline static const wstring NAME { L"AddSensorSignal" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
-		void operator() (Script& script) const final
+        using WrapBase::WrapBase;
+        void operator() (Script& script) const final
 		{
 			MicroMeterCircle const umCircle { ScrReadMicroMeterCircle(script) };
 			TrackNr          const trackNr  { ScrReadTrackNr(script) };
 			AddSensorCmd::Push(umCircle, trackNr);
 		}
-    } m_wrapper;
+    } m_wrapper { NAME };
 
     MicroMeterCircle const m_umCircle;
     TrackNr          const m_trackNr;

@@ -48,14 +48,14 @@ private:
 
 	inline static const wstring NAME { L"ToggleEmphMode" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
-	public:
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			ToggleEmphModeCmd::Push(ScrReadNobId(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Pipe * m_pPipe { nullptr };
 };

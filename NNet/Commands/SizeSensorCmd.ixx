@@ -66,15 +66,16 @@ private:
 
 	inline static const wstring NAME { L"SizeSensor" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SensorId const id      { script.ScrReadInt() };
 			float    const fFactor { Cast2Float(script.ScrReadFloat()) };
 			SizeSensorCmd::Push(id, fFactor);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Sensor * m_pSensor;
 	SensorId m_sensorId;

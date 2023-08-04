@@ -64,15 +64,16 @@ private:
 
 	inline static const wstring NAME { L"MoveSensor" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			SensorId      const id      { script.ScrReadInt() };
 			MicroMeterPnt const umDelta { ScrReadMicroMeterPnt(script) };
 			MoveSensorCmd::Push(id, umDelta);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Sensor * m_pSensor;
 	MicroMeterPnt m_delta;

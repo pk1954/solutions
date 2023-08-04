@@ -52,13 +52,14 @@ private:
 
     inline static const wstring NAME { L"NewSigGen" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             NewSigGenCmd::Push();
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 
     UPSigGen m_upSigGen;
 	SigGenId m_sigGenIdNew;

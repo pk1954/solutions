@@ -52,16 +52,16 @@ private:
 
 	inline static const wstring NAME { L"SetNob" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
-	public:
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId            const nobId    { ScrReadNobId(script) };
 			MicroMeterPosDir const umPosDir { ScrReadMicroMeterPosDir(script) };
 			SetNobCommand::Push(nobId, umPosDir);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	MicroMeterPosDir const m_posDir;
 	Nob                  & m_nob;

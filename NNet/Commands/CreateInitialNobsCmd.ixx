@@ -48,11 +48,12 @@ private:
 
 	inline static const wstring NAME { L"CreateInitialNobs" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			CreateInitialNobsCmd::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 };

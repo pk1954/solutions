@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:DelSensorCmd;
 
+import WrapBase;
 import Types;
 import IoUtil;
 import NNetModel;
@@ -58,14 +59,15 @@ private:
 
     inline static const wstring NAME { L"DeleteSensor" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             SensorId const id { script.ScrReadInt() };
             DelSensorCmd::Push(id);
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 
     SensorId           m_sensorId {};
     SignalId           m_signalId {};

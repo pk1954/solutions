@@ -54,13 +54,14 @@ private:
 
     inline static const wstring NAME { L"ArrowAnimation" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             MicroMeter animated { ScrReadMicroMeter(script) };
             bool       bOn      { script.ScrReadBool() };
             ArrowAnimationCmd::Push(animated, bOn, false);
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 };

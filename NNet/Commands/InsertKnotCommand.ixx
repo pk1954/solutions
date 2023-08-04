@@ -59,15 +59,16 @@ private:
 
 	inline static const wstring NAME { L"InsertKnot" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const idPipe       { ScrReadNobId(script) };
 			MicroMeterPnt const umSplitPoint { ScrReadMicroMeterPnt(script) };
 			InsertKnotCommand::Push(idPipe, umSplitPoint);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	unique_ptr<Knot> m_upInsertKnot;
 };

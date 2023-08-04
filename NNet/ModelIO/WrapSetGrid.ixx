@@ -9,12 +9,9 @@ module;
 
 export module WrapSetGrid;
 
-import Symtab;
-import IoConstants;
-import Script;
+import WrapBase;
 import WrapBaseBool;
 import BaseWindow;
-import WrapBase;
 import WinManager;
 
 using std::wostream;
@@ -60,13 +57,9 @@ public:
 private:
     inline static const wstring NAME { L"SetGrid" };
 
-    inline static struct Wrapper : public ScriptFunctor
+    inline static struct Wrapper : public WrapBase
     {
-        Wrapper()
-        {
-            SymbolTable::ScrDefConst(NAME, this);
-        }
-
+        using WrapBase::WrapBase;
         void operator() (Script& script) const final
         {
             unsigned int const uiWinId  { script.ScrReadUint() };
@@ -79,5 +72,5 @@ private:
                 //TODO: Error message
             }
         }
-    } m_wrapper;
+    } m_wrapper { NAME };
 };

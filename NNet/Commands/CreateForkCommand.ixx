@@ -66,15 +66,16 @@ private:
 
 	inline static const wstring NAME { L"CreateFork" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			CreateForkCommand::Push(id, umPnt);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	unique_ptr<Fork>       m_upFork;
 	unique_ptr<OutputLine> m_upOutputLine;

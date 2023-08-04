@@ -46,13 +46,14 @@ private:
 
 	inline static const wstring NAME { L"AttachSigGen2Con" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			AttachSigGen2ConCmd::Push(ScrReadNobId(script));
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	InputConnector  & m_inputConnector;
 	SignalGenerator * m_pSigGenOld;

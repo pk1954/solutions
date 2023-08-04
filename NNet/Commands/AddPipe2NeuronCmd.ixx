@@ -94,15 +94,16 @@ private:
 
 	inline static const wstring NAME { L"AddPipe2Neuron" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			AddPipe2NeuronCmd::Push(id, umPnt);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	Neuron              & m_neuronOld;
 	unique_ptr<Neuron>    m_upNeuronOld;

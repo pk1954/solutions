@@ -72,15 +72,16 @@ private:
 
 	inline static const wstring NAME { L"CreateSynapse" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			NobId         const id    { ScrReadNobId(script) };
 			MicroMeterPnt const umPnt { ScrReadMicroMeterPnt(script) };
 			CreateSynapseCommand::Push(id, umPnt);
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	unique_ptr<InputLine> m_upInputLine;
 	unique_ptr<Pipe>      m_upPipeAdd;

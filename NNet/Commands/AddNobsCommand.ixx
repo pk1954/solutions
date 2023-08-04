@@ -64,13 +64,14 @@ private:
 
 	inline static const wstring NAME { L"AddNobs" };
 
-	inline static struct Wrapper : public ScriptFunctor
+	inline static struct Wrapper : public WrapBase
 	{
+		using WrapBase::WrapBase;
 		void operator() (Script& script) const final
 		{
 			AddNobsCommand::Push();
 		}
-	} m_wrapper;
+	} m_wrapper { NAME };
 
 	unique_ptr<UPNobList> m_upNobs2Add;
 	size_t                m_nrOfNobs;
