@@ -127,7 +127,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	NNetInputOutputUI::Initialize(m_hwndApp);
 	m_appTitle.Initialize(m_hwndApp);
 
 	NNetPreferences::Initialize(m_modelIO);

@@ -448,3 +448,14 @@ LRESULT WinManager::PostCommand(RootWinId const id, WPARAM const wParam, LPARAM 
 {
     return PostMessage(id, WM_COMMAND, wParam, lParam);
 }
+
+LRESULT WinManager::SendCommand2App(WPARAM const wParam, LPARAM const lParam)
+{
+    return SendCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
+}
+
+LRESULT WinManager::PostCommand2App(WPARAM const wParam, LPARAM const lParam)
+{
+    return PostCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
+}
+

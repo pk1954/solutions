@@ -28,7 +28,7 @@ using std::map;
 
 export using RootWinId = NamedType<int, struct RootWinId_Parameter>;
 
-export class WinManager
+export class WinManager  // static class
 {
 public:
 	WinManager();
@@ -62,6 +62,9 @@ public:
 	static BaseWindow* GetBaseWindow(RootWinId const);
 	static RootWinId   GetIdFromBaseWindow(BaseWindow const &);
 	static RootWinId   GetIdFromHWND(HWND const);
+
+	static LRESULT SendCommand2App(WPARAM const, LPARAM const = 0);
+	static LRESULT PostCommand2App(WPARAM const, LPARAM const = 0);
 
 	static LRESULT SendCommand(RootWinId const, WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand(RootWinId const, WPARAM const, LPARAM const = 0);
