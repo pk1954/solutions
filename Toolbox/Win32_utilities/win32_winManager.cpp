@@ -459,3 +459,12 @@ LRESULT WinManager::PostCommand2App(WPARAM const wParam, LPARAM const lParam)
     return PostCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
 }
 
+LRESULT WinManager::PostCommand2MainWin(WPARAM const wParam, LPARAM const lParam)
+{
+    return PostCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
+}
+
+LRESULT WinManager::SendCommand2MainWin(WPARAM const wParam, LPARAM const lParam)
+{
+    return SendCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
+}

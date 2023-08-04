@@ -63,6 +63,9 @@ public:
 	static RootWinId   GetIdFromBaseWindow(BaseWindow const &);
 	static RootWinId   GetIdFromHWND(HWND const);
 
+	static LRESULT SendCommand2MainWin(WPARAM const, LPARAM const = 0);
+	static LRESULT PostCommand2MainWin(WPARAM const, LPARAM const = 0);
+
 	static LRESULT SendCommand2App(WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand2App(WPARAM const, LPARAM const = 0);
 

@@ -104,37 +104,17 @@ void Command::AddPhase(unique_ptr<Command> upCmd)
 
 void Command::blockUI() const
 { 
-    PostCmd2Application(IDM_BLOCK_UI, true);
+    WinManager::PostCommand2App(IDM_BLOCK_UI, true);
 };
 
 void Command::unblockUI() const
 { 
     NextScriptCommand();   // script continuation for async commands
-    PostCmd2Application(IDM_BLOCK_UI, false);
+    WinManager::PostCommand2App(IDM_BLOCK_UI, false);
 };
 
 void Command::NextScriptCommand()
 {
     if (ScriptStack::IsScriptActive() && !ScriptStack::SingleStepMode())
-        PostCmd2Application(IDM_NEXT_SCRIPT_CMD, 0);
-}
-
-LRESULT Command::PostCmd2Application(WPARAM const wParam, LPARAM const lParam)
-{
-    return WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
-}
-
-LRESULT Command::SendCmd2Application(WPARAM const wParam, LPARAM const lParam)
-{
-    return WinManager::SendCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
-}
-
-LRESULT Command::PostCmd2MainWin(WPARAM const wParam, LPARAM const lParam)
-{
-    return WinManager::PostCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
-}
-
-LRESULT Command::SendCmd2MainWin(WPARAM const wParam, LPARAM const lParam)
-{
-    return WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
+        WinManager::PostCommand2App(IDM_NEXT_SCRIPT_CMD, 0);
 }

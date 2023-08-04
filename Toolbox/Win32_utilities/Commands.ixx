@@ -96,11 +96,6 @@ protected:
     static bool      IsTraceOn()   { return m_bTrace; }
     static wostream& TraceStream() { return wcout; }
 
-    static LRESULT PostCmd2Application(WPARAM const, LPARAM const = 0);
-    static LRESULT SendCmd2Application(WPARAM const, LPARAM const = 0);
-    static LRESULT PostCmd2MainWin    (WPARAM const, LPARAM const = 0);
-    static LRESULT SendCmd2MainWin    (WPARAM const, LPARAM const = 0);
-
 private:
 
     inline static bool           m_bTrace { true };
