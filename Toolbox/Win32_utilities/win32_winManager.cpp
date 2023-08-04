@@ -322,7 +322,7 @@ void WinManager::StoreWindowConfiguration()
     ostr.close();
 }
 
-void WinManager::Initialize()
+WinManager::WinManager()
 {
     SymbolTable::ScrDefConst(L"MoveWindow",           new WrapMoveWindow());
     SymbolTable::ScrDefConst(L"ShowWindow",           new WrapShowWindow());

@@ -31,14 +31,13 @@ export using RootWinId = NamedType<int, struct RootWinId_Parameter>;
 export class WinManager
 {
 public:
+	WinManager();
 
 	static void Apply2All(auto const & f)
 	{
 		for (const auto & [key, value] : *m_upMap.get())
 			f(key, value);
 	}                        
-
-	static void Initialize();
 
 	static void AddWindow(wstring const &, RootWinId const, HWND,         bool const, bool const);
 	static void AddWindow(wstring const &, RootWinId const, BaseWindow &, bool const, bool const);
@@ -89,7 +88,6 @@ public:
 	};
 
 private:
-	WinManager() {}  // static class
 
 	static inline wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
 	static inline wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";

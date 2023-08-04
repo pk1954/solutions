@@ -70,7 +70,6 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
 	Command        ::Initialize(&m_cmdStack);
-	WinManager     ::Initialize();
 	m_modelIO       .Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
