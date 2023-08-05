@@ -33,6 +33,7 @@ import Win32_PIXEL;
 import ScriptStack;
 import Signals;
 import Script;
+import Symtab;
 import NNetModel;
 import NNetCommands;
 import NNetSignals;
@@ -416,6 +417,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_DUMP:
 			m_nmwi.DumpModel(__FILE__, __LINE__);
+			SymbolTable::Dump(wcout);
 			break;
 
 		case IDM_RESET_DYNAMIC_DATA:

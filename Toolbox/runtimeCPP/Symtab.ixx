@@ -8,6 +8,7 @@ module;
 #include <memory>
 #include <cassert>
 #include <string>
+#include <iostream>
 
 export module Symtab;
 
@@ -16,6 +17,7 @@ import Script;
 using std::map;
 using std::wstring;
 using std::unique_ptr;
+using std::wostream;
 
 export enum class tSTYPE   // Type of symbolic value 
 { 
@@ -57,6 +59,8 @@ private:
     double                m_dValue    { 0.0f };     // type: FloatConst  
 };
 
+wostream& operator<< (wostream& out, Symbol const& symbol); // { return out; }
+
 export class SymbolTable
 {
 public:
@@ -66,10 +70,17 @@ public:
         addSymbol(wstrName, Symbol(PARAM));
     }
 
+    static void Apply2All(auto const& func)
+    {
+        for (auto i : *m_upSymbolTab)
+            func(i);
+    }
+
     static Symbol  const & GetSymbolFromName(wstring const &);
     static wstring const & GetSymbolName    (Symbol  const &);
 
     static void Clear();
+    static void Dump(wostream&);
 
 private:
     static void addSymbol(wstring const &, Symbol const &);

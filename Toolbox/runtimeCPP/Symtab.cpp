@@ -8,16 +8,34 @@ module;
 #include <memory>
 #include <cassert>
 #include <string>
+#include <iostream>
+#include <iomanip>
 
 module Symtab;
 
+import IoConstants;
 import ErrHndl;
 import Script;
 
+using std::endl;
 using std::map;
 using std::wstring;
+using std::wostream;
 using std::unique_ptr;
 using std::make_unique;
+using std::setprecision;
+
+void SymbolTable::Dump(wostream& out)
+{
+    out << setprecision(20);
+    Apply2All
+    (
+        [&out](auto const i)
+        {
+            out << i.first << SPACE << i.second << endl;
+        }
+    );
+}
 
 bool Symbol::operator< (const Symbol & rhs) const
 {
@@ -45,6 +63,40 @@ bool Symbol::operator< (const Symbol & rhs) const
            assert(false);
     }
     return false;
+}
+
+wostream& operator<< (wostream& out, Symbol const& symbol)
+{
+    switch (symbol.GetSymbolType())
+    {
+    case tSTYPE::UnknownSTYPE:
+        assert(false);
+        break;
+
+    case tSTYPE::Function:
+        out << L"Function";
+        break;
+
+    case tSTYPE::ULongConst:
+        out << L"ULongConst  " << symbol.GetUlongConst();
+        break;
+
+    case tSTYPE::LongConst:
+        out << L"LongConst   " << symbol.GetLongConst();
+        break;
+
+    case tSTYPE::FloatConst:
+        out << L"FloatConst  " << symbol.GetFloatConst();
+        break;
+
+    case tSTYPE::StringConst:
+        out << L"StringConst " << DOUBLE_QUOTE << symbol.GetStringConst() << DOUBLE_QUOTE;
+        break;
+
+    default:
+        assert(false);
+    }
+    return out;
 }
 
 // GetSymbolFromName: Find symbol in symbol table with error handling
