@@ -12,13 +12,15 @@ module;
 
 export module Command;
 
+import BaseCommand;
+
 using std::unique_ptr;
 using std::wostream;
 using std::function;
 using std::vector;
 using std::wcout;
 
-export class Command
+export class Command: public BaseCommand
 {
 public:
 
@@ -26,13 +28,18 @@ public:
 
     virtual void Do();
     virtual void Undo();
-    virtual void UpdateUI();
+    
+    void UpdateUI() override;
 
     virtual bool CombineCommands(Command const& src) { return false; };
     virtual bool IsAsyncCommand() { return false; };
 
     void CallUI(bool const); // called by Animation
-    void TargetReached() { (m_targetReachedFunc)(); }
+    void TargetReached() 
+    {
+        if (m_targetReachedFunc)
+            (m_targetReachedFunc)();
+    }
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
     static void NextScriptCommand();

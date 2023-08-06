@@ -37,11 +37,11 @@ void Command::CallUI(bool const bTargetReached)  // runs in animation thread
 
 void Command::DoCall(WPARAM const wParam, LPARAM const lParam) // runs in UI thread
 {
-    Command* const pAnimCmd { bit_cast<Command* const>(lParam) };
-    bool      const bTargetReached { static_cast<bool const>(wParam) };
+    Command* const pAnimCmd       { bit_cast<Command* const>(lParam) };
+    bool     const bTargetReached { static_cast<bool const>(wParam) };
     pAnimCmd->UpdateUI();
-    if (bTargetReached && pAnimCmd->m_targetReachedFunc)
-        (pAnimCmd->m_targetReachedFunc)();
+    if (bTargetReached)
+        pAnimCmd->TargetReached();
 };
 
 void Command::doPhase() // runs in UI thread
