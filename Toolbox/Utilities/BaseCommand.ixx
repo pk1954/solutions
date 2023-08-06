@@ -28,6 +28,11 @@ public:
 
     virtual void UpdateUI() = 0;
 
+    virtual bool CombineCommands(BaseCommand const& src) { return false; };
+    virtual bool IsAsyncCommand()                        { return false; };
+
+    virtual void NextScriptCommand() const = 0;
+
     static void Initialize(Sound* const pSound)
     {
         m_pSound = pSound;

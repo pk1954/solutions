@@ -9,13 +9,12 @@ module;
 #include <memory>
 #include <iostream>
 #include <functional>
-#include <Windows.h>
 
 export module CommandStack;
 
 import Script;
 import Scanner;
-import Command;
+import BaseCommand;
 import Observable;
 import RootWindow;
 import ScriptStack;
@@ -37,8 +36,8 @@ public:
     void Initialize(Observable* const);
     bool UndoStackEmpty() const;
     bool RedoStackEmpty() const;
-    void Push(unique_ptr<Command>);
-    void PushStackCommand(unique_ptr<Command>);
+    void Push(unique_ptr<BaseCommand>);
+    void PushStackCommand(unique_ptr<BaseCommand>);
     bool UndoStackCommand();
     bool RedoStackCommand();
     void Clear();
@@ -47,20 +46,20 @@ public:
 
 private:
 
-    vector<unique_ptr<Command>> m_CommandStack { };
+    vector<unique_ptr<BaseCommand>> m_CommandStack { };
     size_t                      m_iIndex { 0 }; // index into m_Commandstack
 
     Observable* m_pStaticModelObservable { nullptr };
 
-    Command* getCmdPtr(size_t const) const;
-    Command& currentCmd() const;
-    Command& previousCmd() const;
+    BaseCommand* getCmdPtr(size_t const) const;
+    BaseCommand& currentCmd() const;
+    BaseCommand& previousCmd() const;
 
     void set2OlderCmd();
     void set2YoungerCmd();
 
     void notify() const;
     void clearRedoStack();
-    bool canBeCombined(Command const*) const;
+    bool canBeCombined(BaseCommand const*) const;
 };
 

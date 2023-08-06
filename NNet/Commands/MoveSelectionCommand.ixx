@@ -36,7 +36,7 @@ public:
 		);
 	}
 
-	bool CombineCommands(Command const & src) final
+	bool CombineCommands(BaseCommand const & src) final
 	{ 
 		MoveSelectionCommand const & srcCmd { static_cast<MoveSelectionCommand const &>(src) };
 		m_delta += srcCmd.m_delta;

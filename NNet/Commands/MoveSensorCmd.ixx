@@ -39,7 +39,7 @@ public:
 		m_pSensor->MoveSensor(m_pNMWI->GetUPNobsC(), -m_delta);
 	}
 
-	bool CombineCommands(Command const & src) final
+	bool CombineCommands(BaseCommand const & src) final
 	{ 
 		MoveSensorCmd const & cmdSrc { static_cast<MoveSensorCmd const &>(src) };
 		if (m_pSensor != cmdSrc.m_pSensor)

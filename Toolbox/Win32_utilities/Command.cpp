@@ -54,7 +54,7 @@ void Command::UnblockUI() const
     WinManager::PostCommand2App(IDM_BLOCK_UI, false);
 };
 
-void Command::NextScriptCommand()
+void Command::NextScriptCommand() const
 {
     if (ScriptStack::IsScriptActive() && !ScriptStack::SingleStepMode())
         WinManager::PostCommand2App(IDM_NEXT_SCRIPT_CMD, 0);

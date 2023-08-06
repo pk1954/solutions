@@ -12,7 +12,7 @@ export class RotationCommand : public NNetCommand
 {
 public:
 
-	bool CombineCommands(Command const& src) override
+	bool CombineCommands(BaseCommand const& src) override
 	{
 		RotationCommand const& srcCmd{ static_cast<RotationCommand const&>(src) };
 		m_radDelta += srcCmd.m_radDelta;

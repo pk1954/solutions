@@ -36,7 +36,7 @@ public:
 		m_sigGen.SetStaticData(m_dataOld);
 	}
 
-	bool CombineCommands(Command const & src) final
+	bool CombineCommands(BaseCommand const & src) final
 	{ 
 		SetSigGenStaticDataCmd const & srcCmd     { static_cast<SetSigGenStaticDataCmd const &>(src) };
 		SignalGenerator        const * pSigGenSrc { &srcCmd.m_sigGen };

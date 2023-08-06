@@ -204,6 +204,6 @@ void StartScript
     if (pScript && pScript->ScrOpen(wstrFile))
     {
         pScript->ScrSetNewLineHook(&scriptHook);
-        Command::NextScriptCommand();  // start reading script file
+  //      Command::NextScriptCommand();  // start reading script file
     }
 }

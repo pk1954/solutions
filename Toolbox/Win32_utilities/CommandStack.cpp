@@ -49,19 +49,19 @@ void CommandStack::clearRedoStack()
     assert(RedoStackEmpty());
 }
 
-Command* CommandStack::getCmdPtr(size_t const index) const
+BaseCommand* CommandStack::getCmdPtr(size_t const index) const
 {
-    Command* pCmd { m_CommandStack.at(index).get() };
+    BaseCommand* pCmd { m_CommandStack.at(index).get() };
     assert(pCmd != nullptr);
     return pCmd;
 }
 
-Command& CommandStack::currentCmd() const
+BaseCommand& CommandStack::currentCmd() const
 {
     return *getCmdPtr(m_iIndex);
 }
 
-Command& CommandStack::previousCmd() const
+BaseCommand& CommandStack::previousCmd() const
 {
     return *getCmdPtr(m_iIndex - 1);
 };
@@ -78,12 +78,12 @@ void CommandStack::set2YoungerCmd()
     ++m_iIndex;
 }
 
-bool CommandStack::canBeCombined(Command const * pCmd) const
+bool CommandStack::canBeCombined(BaseCommand const * pCmd) const
 {
     if (UndoStackEmpty())
         return false;
     
-    Command & prevCmd { previousCmd() };
+    BaseCommand& prevCmd { previousCmd() };
 
     if (! (typeid(prevCmd) == typeid(*pCmd)) )
         return false;
@@ -100,7 +100,7 @@ void CommandStack::notify() const
         m_pStaticModelObservable->NotifyAll(true);
 }
 
-void CommandStack::Push(unique_ptr<Command> pCmd)
+void CommandStack::Push(unique_ptr<BaseCommand> pCmd)
 {
     if (!canBeCombined(pCmd.get()))
     {
@@ -109,7 +109,7 @@ void CommandStack::Push(unique_ptr<Command> pCmd)
     }
 }
 
-void CommandStack::PushStackCommand(unique_ptr<Command> pCmd)
+void CommandStack::PushStackCommand(unique_ptr<BaseCommand> pCmd)
 {
     if (pCmd)
     {
@@ -117,13 +117,13 @@ void CommandStack::PushStackCommand(unique_ptr<Command> pCmd)
         pCmd->Do();
         Check();
         if (!pCmd->IsAsyncCommand())
-            Command::NextScriptCommand(); // script continuation for syncronous commands
+            pCmd->NextScriptCommand(); // script continuation for syncronous commands
         Push(move(pCmd));
         notify();
     }
     else
     {
-        Command::NextScriptCommand(); // script continuation for failed commands
+        pCmd->NextScriptCommand(); // script continuation for failed commands
     }
 }
 

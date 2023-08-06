@@ -41,7 +41,7 @@ public:
 		m_pSensor->SizeSensor(m_pNMWI->GetUPNobsC(), m_fFactor); 
 	}
 
-	bool CombineCommands(Command const & src) final
+	bool CombineCommands(BaseCommand const & src) final
 	{ 
 		SizeSensorCmd const & cmdSrc { static_cast<SizeSensorCmd const &>(src) };
 		if (m_sensorId != cmdSrc.m_sensorId)

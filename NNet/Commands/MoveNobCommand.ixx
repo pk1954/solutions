@@ -38,7 +38,7 @@ public:
 
 	NobId GetAffectedNob() const final { return m_nob.GetId(); }
 
-	bool CombineCommands(Command const & src) final
+	bool CombineCommands(BaseCommand const & src) final
 	{ 
 		MoveNobCommand const & srcCmd { static_cast<MoveNobCommand const &>(src) };
 		if (GetAffectedNob() != srcCmd.GetAffectedNob())

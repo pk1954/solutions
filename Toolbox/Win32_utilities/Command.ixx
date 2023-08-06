@@ -21,15 +21,12 @@ public:
 
     virtual ~Command() = default;
     
-    void UpdateUI() override;
-
-    virtual bool CombineCommands(Command const& src) { return false; };
-    virtual bool IsAsyncCommand() { return false; };
+    void UpdateUI()                override;
+    void NextScriptCommand() const final;
 
     void CallUI(bool const); // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
-    static void NextScriptCommand();
 
 private:
 
