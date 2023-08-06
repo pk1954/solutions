@@ -13,7 +13,6 @@ module Command;
 
 import Win32_Util_Resource;
 import WinManager;
-import SaveCast;
 import RootWindow;
 import ScriptStack;
 
@@ -44,62 +43,12 @@ void Command::DoCall(WPARAM const wParam, LPARAM const lParam) // runs in UI thr
         pAnimCmd->TargetReached();
 };
 
-void Command::doPhase() // runs in UI thread
-{
-    if (!m_phases.empty())
-    {
-        if (m_uiPhase == 0)
-            blockUI();
-        if (m_uiPhase < m_phases.size())
-        {
-            Command* const pAnimCmd { m_phases[m_uiPhase++].get() };
-            pAnimCmd->m_targetReachedFunc = [&]() { doPhase(); };
-            pAnimCmd->Do();
-        }
-        else
-            unblockUI();
-    }
-    UpdateUI();
-}
-
-void Command::undoPhase() // runs in UI thread
-{
-    if (m_uiPhase >= m_phases.size())
-        blockUI();
-    if (m_uiPhase > 0)
-    {
-        Command& animCmd { *m_phases[--m_uiPhase] };
-        animCmd.m_targetReachedFunc = [&]() { undoPhase(); };
-        animCmd.Undo();
-    }
-    else
-        unblockUI();
-    UpdateUI();
-}
-
-void Command::Do()
-{
-    m_uiPhase = 0;
-    doPhase();
-}
-
-void Command::Undo()
-{
-    m_uiPhase = Cast2UnsignedInt(m_phases.size());
-    undoPhase();
-}
-
-void Command::AddPhase(unique_ptr<Command> upCmd)
-{
-    m_phases.push_back(move(upCmd));
-}
-
-void Command::blockUI() const
+void Command::BlockUI() const
 {
     WinManager::PostCommand2App(IDM_BLOCK_UI, true);
 };
 
-void Command::unblockUI() const
+void Command::UnblockUI() const
 {
     NextScriptCommand();   // script continuation for async commands
     WinManager::PostCommand2App(IDM_BLOCK_UI, false);
