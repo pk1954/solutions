@@ -58,9 +58,9 @@ private:
 
 	inline static const wstring NAME { L"RenameSigGen" };
 
-	inline static struct Wrapper : public WrapBase
+	inline static struct myWrapper : public Wrapper
 	{
-		using WrapBase::WrapBase;
+		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
 			SigGenId const id   { ScrReadSigGenId(script) };

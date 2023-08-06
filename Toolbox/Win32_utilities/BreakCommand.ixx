@@ -11,7 +11,7 @@ export module BreakCommand;
 
 import Script;
 import Symtab;
-import WrapBase;
+import Wrapper;
 
 using std::wstring;
 
@@ -28,9 +28,9 @@ private:
 
 	inline static const wstring NAME { L"Break" };
 
-	inline static struct Wrapper : public WrapBase
+	inline static struct myWrapper : public Wrapper
 	{
-		using WrapBase::WrapBase;
+		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
 			int x = 42;

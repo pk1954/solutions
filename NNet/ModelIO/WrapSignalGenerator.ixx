@@ -9,7 +9,7 @@ module;
 
 export module WrapSignalGenerator;
 
-import WrapBase;
+import Wrapper;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
@@ -19,10 +19,10 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-export class WrapSignalGenerator : public WrapBase
+export class WrapSignalGenerator : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {

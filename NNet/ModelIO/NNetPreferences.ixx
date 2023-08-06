@@ -17,7 +17,7 @@ export module NNetPreferences;
 import Win32_Util_Resource;
 import BoolType;
 import SoundInterface;
-import WrapBase;
+import Wrapper;
 import WinManager;
 import NNetModelIO;
 import NNetModel;

@@ -9,7 +9,7 @@ module;
 
 export module NobIo;
 
-import WrapBase;
+import Wrapper;
 import Types;
 import Script;
 import NNetModel;
@@ -19,10 +19,10 @@ using std::wostream;
 using std::unique_ptr;
 using std::make_unique;
 
-export class NobIo : public WrapBase
+export class NobIo : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {

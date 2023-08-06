@@ -60,10 +60,10 @@
     <ClCompile Include="Preferences.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WrapBase.ixx">
+    <ClCompile Include="Wrapper.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WrapBaseBool.ixx">
+    <ClCompile Include="BoolWrapper.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

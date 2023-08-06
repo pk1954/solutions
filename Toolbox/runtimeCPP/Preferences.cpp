@@ -13,7 +13,7 @@ module Preferences;
 
 import Symtab;
 import Scanner;
-import WrapBase;
+import Wrapper;
 import SoundInterface;
 
 using std::wofstream;
@@ -31,7 +31,7 @@ void Preferences::Initialize(wstring const & wstrPrefFile)
     m_wstrPreferencesFile = current_path().wstring();
     m_wstrPreferencesFile += L"\\" + wstrPrefFile;
 
-    WrapBaseBool::Initialize();
+    BoolWrapper::Initialize();
 
     AddBoolWrapper(L"SetSound",     m_bSound);
     AddBoolWrapper(L"SetColorMenu", m_bColorMenu);

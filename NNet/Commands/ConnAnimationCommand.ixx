@@ -55,9 +55,9 @@ private:
 
     inline static const wstring NAME { L"ConnAnimation" };
 
-    inline static struct Wrapper : public WrapBase
+    inline static struct myWrapper : public Wrapper
     {
-        using WrapBase::WrapBase;
+        using Wrapper::Wrapper;
         void operator() (Script& script) const final
         {
             NobId const id1 { ScrReadNobId(script) };

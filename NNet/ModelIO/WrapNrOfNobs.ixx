@@ -9,7 +9,7 @@ module;
 
 export module WrapNrOfNobs;
 
-import WrapBase;
+import Wrapper;
 import Script;
 import NNetModelIO;
 import NNetModel;
@@ -19,10 +19,10 @@ import IoConstants;
 using std::wostream;
 using std::endl;
 
-export class WrapNrOfNobs : public WrapBase
+export class WrapNrOfNobs : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {

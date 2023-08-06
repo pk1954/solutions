@@ -25,7 +25,7 @@ using std::make_unique;
 
 static WORD const ID_EDIT_CTRL { 2 };
 
-class WrapDescWinFontSize : public WrapBase
+class WrapDescWinFontSize : public Wrapper
 {
 public:
     WrapDescWinFontSize
@@ -33,7 +33,7 @@ public:
         wstring const& wstrName,
         DescriptionWindow& descWin
     )
-        : WrapBase(wstrName),
+        : Wrapper(wstrName),
         m_descWin(descWin)
     {}
 

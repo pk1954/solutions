@@ -12,7 +12,7 @@ export module NNetCommands:NNetCommand;
 
 export import IoUtil;
 export import SoundInterface;
-export import WrapBase;
+export import Wrapper;
 export import Types;
 export import Symtab;
 export import Script;

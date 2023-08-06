@@ -12,7 +12,7 @@ export module WrapGlobalParameter;
 import IoUtil;
 import IoConstants;
 import SaveCast;
-import WrapBase;
+import Wrapper;
 import Script;
 import ErrHndl;
 import NNetModelIO;
@@ -22,10 +22,10 @@ using std::setprecision;
 using std::wostream;
 using std::endl;
 
-export class WrapGlobalParameter : public WrapBase
+export class WrapGlobalParameter : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {

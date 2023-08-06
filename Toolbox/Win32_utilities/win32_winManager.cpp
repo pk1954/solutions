@@ -14,7 +14,7 @@
 import Scanner;
 import Symtab;
 import Script;
-import WrapBase;
+import Wrapper;
 import IoUtil;
 import IoConstants;
 import WinManager;
@@ -40,7 +40,7 @@ using Util::operator==;
 using Util::operator!=;
 using Util::operator<<; 
 
-class WrapMoveWindow : public ScriptFunctor // WrapBase
+class WrapMoveWindow : public ScriptFunctor // Wrapper
 {
 public:
     void operator() (Script & script) const final

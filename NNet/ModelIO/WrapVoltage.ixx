@@ -8,17 +8,17 @@ module;
 
 export module WrapVoltage;
 
-import WrapBase;
+import Wrapper;
 import Script;
 import NNetModelIO;
 import NNetModel;
 
 using std::wostream;
 
-export class WrapVoltage : public WrapBase
+export class WrapVoltage : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script & script) const final
     {

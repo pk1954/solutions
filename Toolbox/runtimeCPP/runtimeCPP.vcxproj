@@ -180,8 +180,8 @@
     <ClCompile Include="ScriptStack.ixx" />
     <ClCompile Include="Symtab.cpp" />
     <ClCompile Include="Symtab.ixx" />
-    <ClCompile Include="WrapBase.ixx" />
-    <ClCompile Include="WrapBaseBool.ixx" />
+    <ClCompile Include="Wrapper.ixx" />
+    <ClCompile Include="BoolWrapper.ixx" />
     <ClCompile Include="WrapInclude.cpp" />
   </ItemGroup>
   <ItemGroup>

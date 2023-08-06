@@ -8,7 +8,7 @@ module;
 
 export module WrapSignalData;
 
-import WrapBase;
+import Wrapper;
 import IoUtil;
 import IoConstants;
 import SaveCast;
@@ -22,10 +22,10 @@ import NNetWrapperHelpers;
 using std::wostream;
 using std::endl;
 
-export class WrapSignalData : public WrapBase
+export class WrapSignalData : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {

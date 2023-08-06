@@ -47,9 +47,9 @@ private:
 
 	inline static const wstring NAME { L"AddSigGen2Monitor" };
 
-	inline static struct Wrapper : public WrapBase
+	inline static struct myWrapper : public Wrapper
 	{
-		using WrapBase::WrapBase;
+		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
 			AddSigGen2MonitorCmd(ScrReadTrackNr(script));

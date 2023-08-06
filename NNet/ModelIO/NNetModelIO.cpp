@@ -30,7 +30,7 @@ import HiResTimer;
 import WrapVoltage;
 import WrapProtocol;
 import WrapSimulationTime;
-import WrapBase;
+import Wrapper;
 import NobIo;
 import WrapDescription;
 import WrapNrOfNobs;

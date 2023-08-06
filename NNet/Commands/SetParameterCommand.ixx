@@ -55,9 +55,9 @@ private:
 
 	inline static const wstring NAME { L"SetParameter" };
 
-	inline static struct Wrapper : public WrapBase
+	inline static struct myWrapper : public Wrapper
 	{
-		using WrapBase::WrapBase;
+		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
 			ParamType::Value const param  { static_cast<ParamType::Value>(script.ScrReadUlong()) };

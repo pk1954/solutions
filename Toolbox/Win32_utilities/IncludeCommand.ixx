@@ -12,7 +12,7 @@ export module IncludeCommand;
 import Script;
 import Symtab;
 import Commands;
-import WrapBase;
+import Wrapper;
 
 using std::wstring;
 
@@ -30,9 +30,9 @@ private:
 
 	inline static const wstring NAME { L"Include" };
 
-	inline static struct Wrapper : public WrapBase
+	inline static struct myWrapper : public Wrapper
 	{
-		using WrapBase::WrapBase;
+		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
 			wstring const& wstrFile = script.ScrReadString();

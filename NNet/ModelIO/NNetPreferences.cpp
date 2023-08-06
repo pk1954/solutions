@@ -17,7 +17,7 @@ module NNetPreferences;
 import BoolType;
 import IoUtil;
 import IoConstants;
-import WrapBase;
+import Wrapper;
 import Win32_Util;
 import Win32_Util_Resource;
 import Script;
@@ -35,11 +35,11 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
 
-class WrapInputCablesVisibility : public WrapBase
+class WrapInputCablesVisibility : public Wrapper
 {
 public:
     WrapInputCablesVisibility()
-        : WrapBase(NAME)
+        : Wrapper(NAME)
     {}
 
     void operator() (Script& script) const final
@@ -55,11 +55,11 @@ public:
     inline static const wstring NAME { L"InputCablesVisibility" };
 };
 
-class WrapReadModel : public WrapBase
+class WrapReadModel : public Wrapper
 {
 public:
     WrapReadModel()
-        : WrapBase(NAME)
+        : Wrapper(NAME)
     {}
 
     void operator() (Script& script) const final
@@ -76,11 +76,11 @@ public:
     inline static const wstring NAME { L"ReadModel" };
 };
 
-class WrapColor : public WrapBase
+class WrapColor : public Wrapper
 {
 public:
     WrapColor()
-        : WrapBase(NAME)
+        : Wrapper(NAME)
     {}
 
     void operator() (Script& script) const final

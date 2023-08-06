@@ -11,7 +11,7 @@ module;
 
 export module NNetModelIO;
 
-import WrapBase;
+import Wrapper;
 import Script;
 import InputOutputUI;
 import NNetModel;
@@ -61,7 +61,7 @@ public:
 private:
 
 	inline static unique_ptr<InputOutputUI>    m_upImportUI;
-	inline static vector<unique_ptr<WrapBase>> m_wrapVector;
+	inline static vector<unique_ptr<Wrapper>> m_wrapVector;
 	inline static ThreadPoolTimer              m_timer;
 
 	/// import ///

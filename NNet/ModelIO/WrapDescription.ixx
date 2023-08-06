@@ -11,7 +11,7 @@ export module WrapDescription;
 
 import IoUtil;
 import IoConstants;
-import WrapBase;
+import Wrapper;
 import Script;
 import NNetModelIO;
 import NNetModel;
@@ -20,10 +20,10 @@ using std::wstring;
 using std::wostream;
 using std::endl;
 
-export class WrapDescription : public WrapBase
+export class WrapDescription : public Wrapper
 {
 public:
-	using WrapBase::WrapBase;
+	using Wrapper::Wrapper;
 
 	void operator() (Script& script) const final
 	{

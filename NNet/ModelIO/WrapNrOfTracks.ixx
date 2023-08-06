@@ -8,7 +8,7 @@ module;
 
 export module WrapNrOfTracks;
 
-import WrapBase;
+import Wrapper;
 import Script;
 import NNetModelIO;
 import NNetModel;
@@ -16,10 +16,10 @@ import NNetModel;
 using std::wostream;
 using std::endl;
 
-export class WrapNrOfTracks : public WrapBase
+export class WrapNrOfTracks : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {

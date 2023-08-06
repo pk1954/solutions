@@ -12,7 +12,7 @@ module;
 
 export module Preferences;
 
-export import WrapBaseBool;
+export import BoolWrapper;
 
 import SoundInterface;
 
@@ -30,14 +30,14 @@ public:
 	static bool ReadPreferences();
 	static bool WritePreferences();
 	
-	static void AddWrapper(unique_ptr<WrapBase> upWrapper)
+	static void AddWrapper(unique_ptr<Wrapper> upWrapper)
 	{
 		m_prefVector.push_back(move(upWrapper));
 	}
 
 	static void AddBoolWrapper(wstring const& name, BoolType& boolType)
 	{
-		AddWrapper(make_unique<WrapBaseBool>(name, boolType));
+		AddWrapper(make_unique<BoolWrapper>(name, boolType));
 	}
 
 	inline static BoolType m_bColorMenu { false };
@@ -46,6 +46,6 @@ public:
 
 private:
 
-	inline static vector<unique_ptr<WrapBase>> m_prefVector;
+	inline static vector<unique_ptr<Wrapper>> m_prefVector;
 	inline static wstring                      m_wstrPreferencesFile;
 };

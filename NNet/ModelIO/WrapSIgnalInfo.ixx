@@ -10,7 +10,7 @@ module;
 
 export module WrapSignalInfo;
 
-import WrapBase;
+import Wrapper;
 import Script;
 import Symtab;
 import ErrHndl;
@@ -26,13 +26,13 @@ using std::wostream;
 using std::wstring;
 using std::endl;
 
-export class WrapSignalInfo : public WrapBase
+export class WrapSignalInfo : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     explicit WrapSignalInfo(wstring const& wstrName)
-      : WrapBase(wstrName)
+      : Wrapper(wstrName)
     {
         SymbolTable::ScrDefConst(L"circle", static_cast<unsigned long>(Signal::SIGSRC_CIRCLE));
         SymbolTable::ScrDefConst(L"nob",    static_cast<unsigned long>(Signal::SIGSRC_NOB));

@@ -59,9 +59,9 @@ private:
 
 	inline static const wstring NAME { L"MoveSelection" };
 
-	inline static struct Wrapper : public WrapBase
+	inline static struct myWrapper : public Wrapper
 	{
-		using WrapBase::WrapBase;
+		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
 			MoveSelectionCommand::Push(ScrReadMicroMeterPnt(script));

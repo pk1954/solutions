@@ -9,8 +9,8 @@ module;
 
 export module WrapSetGrid;
 
-import WrapBase;
-import WrapBaseBool;
+import Wrapper;
+import BoolWrapper;
 import BaseWindow;
 import WinManager;
 
@@ -18,11 +18,11 @@ using std::wostream;
 using std::wstring;
 using std::endl;
 
-export class WrapSetGrid : public WrapBase
+export class WrapSetGrid : public Wrapper
 {
 public:
     WrapSetGrid()
-     : WrapBase(NAME)
+     : Wrapper(NAME)
     {}
 
     static void WriteSetGrid
@@ -57,9 +57,9 @@ public:
 private:
     inline static const wstring NAME { L"SetGrid" };
 
-    inline static struct Wrapper : public WrapBase
+    inline static struct myWrapper : public Wrapper
     {
-        using WrapBase::WrapBase;
+        using Wrapper::Wrapper;
         void operator() (Script& script) const final
         {
             unsigned int const uiWinId  { script.ScrReadUint() };

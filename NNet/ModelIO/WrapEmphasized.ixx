@@ -8,7 +8,7 @@ module;
 
 export module WrapEmphasized;
 
-import WrapBase;
+import Wrapper;
 import NNetWrapperHelpers;
 import Script;
 import NNetModel;
@@ -17,10 +17,10 @@ import NNetModelIO;
 using std::wostream;
 using std::endl;
 
-export class WrapEmphasized : public WrapBase
+export class WrapEmphasized : public Wrapper
 {
 public:
-    using WrapBase::WrapBase;
+    using Wrapper::Wrapper;
 
     void operator() (Script& script) const final
     {
