@@ -5,15 +5,18 @@
 module;
 
 #include <memory>
+#include <string>
 #include <iostream>
 #include <Windows.h>
 
 export module Command;
 
 import BaseCommand;
+import SoundInterface;
 
 using std::wostream;
 using std::wcout;
+using std::wstring;
 using std::unique_ptr;
 
 export class Command: public BaseCommand

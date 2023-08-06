@@ -7,20 +7,28 @@ module;
 #include <memory>
 #include <functional>
 #include <vector>
+#include <string>
 
 export module BaseCommand;
 
 import SaveCast;
+import SoundInterface;
 
 using std::function;
 using std::vector;
 using std::unique_ptr;
+using std::wstring;
 
 export class BaseCommand
 {
 public:
 
     virtual void UpdateUI() = 0;
+
+    static void Initialize(Sound* const pSound)
+    {
+        m_pSound = pSound;
+    }
 
     void TargetReached()
     {
@@ -39,6 +47,9 @@ public:
         m_uiPhase = Cast2UnsignedInt(m_phases.size());
         undoPhase();
     }
+
+    static void PlaySound(wstring const& sound) { m_pSound->Play(sound); }
+    static void PlayWarningSound() { m_pSound->Warning(); }
 
 protected:
 
@@ -88,4 +99,6 @@ private:
     function<void()>                m_targetReachedFunc { nullptr };
     vector<unique_ptr<BaseCommand>> m_phases            { };
     unsigned int                    m_uiPhase           { 0 };
+
+    inline static Sound* m_pSound { nullptr };
 };
