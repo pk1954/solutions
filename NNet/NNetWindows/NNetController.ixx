@@ -17,7 +17,7 @@ import SoundInterface;
 import SlowMotionRatio;
 import Types;
 import WinManager;
-import Commands;
+import CommandStack;
 import NNetModel;
 import NNetSignals;
 import NNetPreferences;

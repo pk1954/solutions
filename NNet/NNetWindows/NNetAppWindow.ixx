@@ -23,7 +23,6 @@ import ScriptFile;
 import MessagePump;
 import BaseWindow;
 import ScriptStack;
-import Commands;
 import Script;
 import NNetModelIO;
 import NNetModel;

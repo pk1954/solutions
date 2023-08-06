@@ -10,7 +10,6 @@ export module NNetCommands:SetSigGenStaticDataCmd;
 
 import Symtab;
 import Types;
-import Commands;
 import :NNetCommand;
 import NNetModel;
 

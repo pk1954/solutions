@@ -12,7 +12,7 @@ module;
 export module NNetCommands:SingleNobAnimation;
 
 import Types;
-import Commands;
+import StdStackCommand;
 import Animation;
 import NNetModel;
 
@@ -21,7 +21,7 @@ using std::function;
 using std::make_unique;
 using std::unique_ptr;
 
-export class SingleNobAnimation : public Command
+export class SingleNobAnimation : public StdStackCommand
 {
 public:
     SingleNobAnimation

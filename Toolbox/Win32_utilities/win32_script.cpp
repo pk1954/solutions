@@ -19,7 +19,7 @@ module ScriptFile;
 import Script;
 import Scanner;
 import ScriptStack;
-import Commands;
+import Command;
 import IoConstants;
 
 using std::wcout;

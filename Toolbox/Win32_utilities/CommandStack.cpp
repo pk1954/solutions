@@ -10,7 +10,7 @@ module;
 #include <ranges>
 #include <functional>
 
-module Commands;
+module CommandStack;
 
 import Observable;
 import Scanner;
@@ -109,7 +109,7 @@ void CommandStack::Push(unique_ptr<Command> pCmd)
     }
 }
 
-void CommandStack::PushCommand(unique_ptr<Command> pCmd)
+void CommandStack::PushStackCommand(unique_ptr<Command> pCmd)
 {
     if (pCmd)
     {
@@ -127,7 +127,7 @@ void CommandStack::PushCommand(unique_ptr<Command> pCmd)
     }
 }
 
-bool CommandStack::UndoCommand()
+bool CommandStack::UndoStackCommand()
 {
     if (UndoStackEmpty())
         return false;
@@ -138,7 +138,7 @@ bool CommandStack::UndoCommand()
     return true;
 }
 
-bool CommandStack::RedoCommand()
+bool CommandStack::RedoStackCommand()
 {
     if (RedoStackEmpty()) 
         return false;

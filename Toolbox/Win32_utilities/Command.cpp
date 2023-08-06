@@ -1,4 +1,4 @@
-// Win32_Command.cpp
+// Command.cpp
 //
 // Win32_utilities
 
@@ -9,7 +9,7 @@ module;
 #include <memory>
 #include <Windows.h>
 
-module Commands;
+module Command;
 
 import Win32_Util_Resource;
 import WinManager;
@@ -20,15 +20,8 @@ import ScriptStack;
 using std::bit_cast;
 using std::unique_ptr;
 
-class CommandStack;
-
-void Command::Initialize(CommandStack * const pStack)
+void Command::UpdateUI()
 {
-    m_pStack = pStack;
-}
-
-void Command::UpdateUI() 
-{ 
     WinManager::GetBaseWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
 };
 
@@ -38,18 +31,18 @@ void Command::CallUI(bool const bTargetReached)  // runs in animation thread
     (
         RootWinId(IDM_MAIN_WINDOW),
         WM_APP_UI_CALL,            // calls DoCall from UI thread
-        static_cast<WPARAM>(bTargetReached), 
+        static_cast<WPARAM>(bTargetReached),
         bit_cast<LPARAM>(this)
     );
 }
 
 void Command::DoCall(WPARAM const wParam, LPARAM const lParam) // runs in UI thread
 {
-    Command * const pAnimCmd       { bit_cast<Command * const>(lParam) };
+    Command* const pAnimCmd { bit_cast<Command* const>(lParam) };
     bool      const bTargetReached { static_cast<bool const>(wParam) };
     pAnimCmd->UpdateUI();
     if (bTargetReached && pAnimCmd->m_targetReachedFunc)
-        (pAnimCmd->m_targetReachedFunc)(); 
+        (pAnimCmd->m_targetReachedFunc)();
 };
 
 void Command::doPhase() // runs in UI thread
@@ -76,8 +69,8 @@ void Command::undoPhase() // runs in UI thread
         blockUI();
     if (m_uiPhase > 0)
     {
-        Command & animCmd { * m_phases[--m_uiPhase] };
-        animCmd.m_targetReachedFunc = [&](){ undoPhase(); };
+        Command& animCmd { *m_phases[--m_uiPhase] };
+        animCmd.m_targetReachedFunc = [&]() { undoPhase(); };
         animCmd.Undo();
     }
     else
@@ -103,12 +96,12 @@ void Command::AddPhase(unique_ptr<Command> upCmd)
 }
 
 void Command::blockUI() const
-{ 
+{
     WinManager::PostCommand2App(IDM_BLOCK_UI, true);
 };
 
 void Command::unblockUI() const
-{ 
+{
     NextScriptCommand();   // script continuation for async commands
     WinManager::PostCommand2App(IDM_BLOCK_UI, false);
 };

@@ -16,7 +16,7 @@ export import Wrapper;
 export import Types;
 export import Symtab;
 export import Script;
-export import Commands;
+export import StdStackCommand;
 export import NNetModel;
 export import NNetWrapperHelpers;
 
@@ -25,7 +25,7 @@ export using std::wstring;
 export using std::make_unique;
 export using std::unique_ptr;
 
-export class NNetCommand : public Command
+export class NNetCommand : public StdStackCommand
 {
 public:
     ~NNetCommand() override = default;

@@ -24,7 +24,7 @@ import FatalError;
 import ScriptFile;
 import Win32_Util;
 import NNetCommands;
-import Commands;
+import CommandStack;
 import NNetModel;
 import Preferences;
 import NNetPreferences;

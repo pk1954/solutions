@@ -23,7 +23,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << endl;
-		if (!Command::RedoCommand())
+		if (!StdStackCommand::RedoCommand())
 			PlayWarningSound();
 	}
 

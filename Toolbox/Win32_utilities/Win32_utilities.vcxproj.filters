@@ -69,9 +69,6 @@
     <ClCompile Include="Win32_Escape.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Command.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="D2D_DrawContext.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -183,9 +180,6 @@
     <ClCompile Include="CommandStack.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Commands.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="BreakCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -205,6 +199,18 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ScaleMenu.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandStack.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="StdStackCommand.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

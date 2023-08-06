@@ -4,7 +4,7 @@
 
 export module NNetCommands:NNetCommandStack;
 
-import Commands;
+import CommandStack;
 import NNetModel;
 
 export class NNetCommandStack : public CommandStack

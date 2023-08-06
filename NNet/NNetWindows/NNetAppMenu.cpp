@@ -17,7 +17,7 @@ import WinManager;
 import BaseWindow;
 import Win32_Util;
 import OnOffPair;
-import Commands;
+import CommandStack;
 import NNetModel;
 import Preferences;
 import NNetPreferences;

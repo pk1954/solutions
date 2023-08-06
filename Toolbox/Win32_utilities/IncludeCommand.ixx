@@ -12,7 +12,7 @@ export module IncludeCommand;
 import Script;
 import Symtab;
 import ScriptFile;
-import Commands;
+import Command;
 import Wrapper;
 
 using std::wstring;

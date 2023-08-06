@@ -10,7 +10,7 @@ module;
 
 export module Animation;
 
-import Commands;
+import Command;
 import SmoothMoveFp;
 import ThreadPoolTimer;
 

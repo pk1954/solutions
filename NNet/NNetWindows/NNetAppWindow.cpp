@@ -70,7 +70,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
-	Command        ::Initialize(&m_cmdStack);
+	StdStackCommand::Initialize(&m_cmdStack, &m_sound);
 	NNetModelIO    ::Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);

@@ -4,22 +4,19 @@
 
 module;
 
-#include <vector>
 #include <memory>
+#include <vector>
 #include <iostream>
 #include <functional>
 #include <Windows.h>
 
-export module Commands::Command;
+export module Command;
 
-import RootWindow;
-import ::CommandStack;
-
-using std::vector;
-using std::wcout;
+using std::unique_ptr;
 using std::wostream;
 using std::function;
-using std::unique_ptr;
+using std::vector;
+using std::wcout;
 
 export class Command
 {
@@ -32,11 +29,11 @@ public:
     virtual void UpdateUI();
 
     virtual bool CombineCommands(Command const& src) { return false; };
-    virtual bool IsAsyncCommand()                    { return false; };
+    virtual bool IsAsyncCommand() { return false; };
 
     void CallUI(bool const); // called by Animation
+    void TargetReached() { (m_targetReachedFunc)(); }
 
-    static void Initialize(RootWindow* const, CommandStack* const);
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
     static void NextScriptCommand();
 
@@ -44,23 +41,18 @@ protected:
 
     void AddPhase(unique_ptr<Command>);
 
-    function<void()> m_targetReachedFunc { nullptr };
-
-    static bool      IsTraceOn()   { return m_bTrace; }
+    static bool      IsTraceOn  () { return m_bTrace; }
     static wostream& TraceStream() { return wcout; }
-
-    static LRESULT PostCmd2Application(WPARAM const, LPARAM const);
-
-    inline static CommandStack* m_pStack { nullptr };
 
 private:
 
-    inline static RootWindow* m_pWin   { nullptr };
-    inline static bool        m_bTrace { true };
+    inline static bool m_bTrace { true };
 
-    vector<unique_ptr<Command>> m_phases    { };
-    unsigned int                m_uiPhase   { 0 };
-    bool                        m_bUndoMode { false };
+    function<void()>            m_targetReachedFunc { nullptr };
+    vector<unique_ptr<Command>> m_phases            { };
+    unsigned int                m_uiPhase           { 0 };
+
+    bool m_bUndoMode { false };
 
     void doPhase();
     void undoPhase();

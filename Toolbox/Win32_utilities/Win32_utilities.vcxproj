@@ -161,13 +161,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BreakCommand.ixx" />
+    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Command.ixx" />
     <ClCompile Include="CommandStack.cpp" />
+    <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
-    <ClCompile Include="Commands.ixx" />
     <ClCompile Include="IncludeCommand.ixx" />
     <ClCompile Include="OnOffPair.ixx" />
     <ClCompile Include="ScaleMenu.ixx" />
+    <ClCompile Include="StdStackCommand.ixx" />
     <ClCompile Include="ThreadPoolTimer.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
     <ClCompile Include="TimeGraph.ixx" />
@@ -181,7 +184,6 @@
     <ClCompile Include="Win32_BaseScale.cpp" />
     <ClCompile Include="Win32_BaseScale.ixx" />
     <ClCompile Include="Win32_BaseWindow.ixx" />
-    <ClCompile Include="Win32_Command.cpp" />
     <ClCompile Include="Win32_BaseDialog.cpp" />
     <ClCompile Include="Win32_BaseRefreshRate.cpp" />
     <ClCompile Include="Win32_BaseWindow.cpp" />
