@@ -66,8 +66,14 @@ public:
 	static LRESULT SendCommand2MainWin(WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand2MainWin(WPARAM const, LPARAM const = 0);
 
+	static LRESULT SendMessage2MainWin(UINT const, WPARAM const, LPARAM const = 0);
+	static LRESULT PostMessage2MainWin(UINT const, WPARAM const, LPARAM const = 0);
+
 	static LRESULT SendCommand2App(WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand2App(WPARAM const, LPARAM const = 0);
+
+	static LRESULT SendMessage2App(UINT const, WPARAM const, LPARAM const = 0);
+	static LRESULT PostMessage2App(UINT const, WPARAM const, LPARAM const = 0);
 
 	static LRESULT SendCommand(RootWinId const, WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand(RootWinId const, WPARAM const, LPARAM const = 0);

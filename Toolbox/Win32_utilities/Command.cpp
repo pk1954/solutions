@@ -27,9 +27,8 @@ void Command::UpdateUI()
 
 void Command::CallUI(bool const bTargetReached)  // runs in animation thread
 {
-    WinManager::PostMessage
+    WinManager::PostMessage2MainWin
     (
-        RootWinId(IDM_MAIN_WINDOW),
         WM_APP_UI_CALL,            // calls DoCall from UI thread
         static_cast<WPARAM>(bTargetReached),
         bit_cast<LPARAM>(this)

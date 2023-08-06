@@ -459,6 +459,16 @@ LRESULT WinManager::PostCommand2App(WPARAM const wParam, LPARAM const lParam)
     return PostCommand(RootWinId(IDM_APPL_WINDOW), wParam, lParam);
 }
 
+LRESULT WinManager::PostMessage2App(UINT const msg, WPARAM const wParam, LPARAM const lParam)
+{
+    return PostMessage(RootWinId(IDM_APPL_WINDOW), msg, wParam, lParam);
+}
+
+LRESULT WinManager::SendMessage2App(UINT const msg, WPARAM const wParam, LPARAM const lParam)
+{
+    return SendMessage(RootWinId(IDM_APPL_WINDOW), msg, wParam, lParam);
+}
+
 LRESULT WinManager::PostCommand2MainWin(WPARAM const wParam, LPARAM const lParam)
 {
     return PostCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
@@ -467,4 +477,14 @@ LRESULT WinManager::PostCommand2MainWin(WPARAM const wParam, LPARAM const lParam
 LRESULT WinManager::SendCommand2MainWin(WPARAM const wParam, LPARAM const lParam)
 {
     return SendCommand(RootWinId(IDM_MAIN_WINDOW), wParam, lParam);
+}
+
+LRESULT WinManager::PostMessage2MainWin(UINT const msg, WPARAM const wParam, LPARAM const lParam)
+{
+    return PostMessage(RootWinId(IDM_MAIN_WINDOW), msg, wParam, lParam);
+}
+
+LRESULT WinManager::SendMessage2MainWin(UINT const msg, WPARAM const wParam, LPARAM const lParam)
+{
+    return SendMessage(RootWinId(IDM_MAIN_WINDOW), msg, wParam, lParam);
 }
