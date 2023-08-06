@@ -11,6 +11,7 @@ export module IncludeCommand;
 
 import Script;
 import Symtab;
+import ScriptFile;
 import Commands;
 import Wrapper;
 
@@ -37,7 +38,7 @@ private:
 		{
 			wstring const& wstrFile = script.ScrReadString();
 			if (!wstrFile.empty())
-				::StartScript(wstrFile, *m_pScriptHook);
+				StartScript(wstrFile, *m_pScriptHook);
 		}
 	} m_wrapper { NAME };
 

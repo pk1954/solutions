@@ -113,18 +113,3 @@ private:
     void blockUI()   const;
     void unblockUI() const;
 };
-
-export void StartScript
-(
-    wstring       const& wstrFile,
-    ScriptFunctor const& scriptHook
-)
-{
-    wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
-    Script* pScript { ScriptStack::OpenScript() };
-    if (pScript && pScript->ScrOpen(wstrFile))
-    {
-        pScript->ScrSetNewLineHook(&scriptHook);
-        Command::NextScriptCommand();  // start reading script file
-    }
-}

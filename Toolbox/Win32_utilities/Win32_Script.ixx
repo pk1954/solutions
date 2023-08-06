@@ -13,6 +13,7 @@ module;
 export module ScriptFile;
 
 import Symtab;
+import Script;
 
 using std::wstring;
 
@@ -41,3 +42,5 @@ private:
 	static bool    setDefaultExtension(IFileDialog *, wstring const &);
 	static wstring getResult(IFileDialog * const);
 };
+
+export void StartScript(wstring const&, ScriptFunctor const&);
