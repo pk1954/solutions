@@ -167,6 +167,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandStack.cpp" />
+    <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="ErrHndl.cpp" />
     <ClCompile Include="ErrHndl.ixx" />
     <ClCompile Include="Input.cpp" />

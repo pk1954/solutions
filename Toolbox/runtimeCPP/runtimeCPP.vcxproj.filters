@@ -66,5 +66,11 @@
     <ClCompile Include="BoolWrapper.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="CommandStack.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandStack.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

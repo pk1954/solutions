@@ -203,7 +203,7 @@ void StartScript
     Script* pScript { ScriptStack::OpenScript() };
     if (pScript && pScript->ScrOpen(wstrFile))
     {
-        pScript->ScrSetNewLineHook(&scriptHook);
+        pScript->ScrSetNewLineHook(&scriptHook);  // TODO: check if NextScriptCommand needed
   //      Command::NextScriptCommand();  // start reading script file
     }
 }

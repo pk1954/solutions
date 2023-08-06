@@ -177,9 +177,6 @@
     <ClCompile Include="Win32_Util_Resource.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CommandStack.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="BreakCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -202,9 +199,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Command.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandStack.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="StdStackCommand.ixx">

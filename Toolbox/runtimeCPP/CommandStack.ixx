@@ -1,6 +1,6 @@
 // CommandStack.ixx
 //
-// Win32_utilities
+// Toolbox\runtimeCPP
 
 module;
 
@@ -16,7 +16,6 @@ import Script;
 import Scanner;
 import BaseCommand;
 import Observable;
-import RootWindow;
 import ScriptStack;
 
 using std::wstring;
