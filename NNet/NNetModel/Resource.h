@@ -61,8 +61,6 @@
 #define       IDD_EMPHASIZE                  289
 #define       IDD_DELETE_EMPTY_TRACKS        292
 
-#define       IDX_PLAY_SOUND                 300
-								   	         
 #define       IDD_ARROWS                     310
 #define       IDD_AUTO_OPEN                  312
 #define       IDD_SENSOR_PNTS                313

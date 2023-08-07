@@ -143,10 +143,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         WinManager::SetCaptions();
         break;
 
-    case IDX_PLAY_SOUND:
-        m_pSound->Play(reinterpret_cast<wchar_t *>(lParam)); 
-        break;
-
     case IDM_INPUT_CABLES_ALL:
         NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::all);
         break;

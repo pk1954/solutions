@@ -66,12 +66,107 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ModelIO\ModelIO.vcxproj">
+      <Project>{e33a1409-350a-457f-ba47-e84659426576}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
+      <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AddMicroSensorCmd.ixx" />
+    <ClCompile Include="AddModuleCommand.ixx" />
+    <ClCompile Include="AddNobsCommand.ixx" />
+    <ClCompile Include="AnimationCmd.ixx" />
+    <ClCompile Include="CreateInitialNobsCmd.ixx" />
+    <ClCompile Include="DeleteForkOutputCmd.ixx" />
+    <ClCompile Include="DeleteNeuronInputCmd.ixx" />
+    <ClCompile Include="DeleteNobCommand.cpp" />
+    <ClCompile Include="DeleteNobCommand.ixx" />
+    <ClCompile Include="DelSensorCmd.ixx" />
+    <ClCompile Include="DelMicroSensorCmd.ixx" />
+    <ClCompile Include="ExtendOutputLineCmd.ixx" />
+    <ClCompile Include="AddPipe2NeuronCmd.ixx" />
+    <ClCompile Include="AddSensorCmd.ixx" />
+    <ClCompile Include="AddSigGen2MonitorCmd.ixx" />
+    <ClCompile Include="ArrowAnimationCmd.ixx" />
+    <ClCompile Include="AttachSigGen2ConCmd.ixx" />
+    <ClCompile Include="AttachSigGen2LineCmd.ixx" />
+    <ClCompile Include="ConnAnimationCommand.cpp" />
+    <ClCompile Include="ConnAnimationCommand.ixx" />
+    <ClCompile Include="Connect2NeuronCommand.ixx" />
+    <ClCompile Include="ConnectCreateForkCmd.ixx" />
+    <ClCompile Include="ConnectCreateSynapseCmd.ixx" />
+    <ClCompile Include="CoordAnimationCmd.ixx" />
+    <ClCompile Include="CreateForkCommand.ixx" />
+    <ClCompile Include="CreateSynapseCommand.ixx" />
+    <ClCompile Include="DeletePipeCommand.ixx" />
+    <ClCompile Include="DeleteSelectionCommand.ixx" />
+    <ClCompile Include="DeleteSigGenCmd.ixx" />
+    <ClCompile Include="DeleteTrackCommand.ixx" />
+    <ClCompile Include="DiscIoConnectorCmd.ixx" />
+    <ClCompile Include="ExtendInputLineCmd.ixx" />
+    <ClCompile Include="SetGridCmd.ixx" />
+    <ClCompile Include="InsertKnotCommand.ixx" />
+    <ClCompile Include="InsertNeuronCommand.ixx" />
+    <ClCompile Include="InsertTrackCommand.ixx" />
+    <ClCompile Include="IoLinesAnimation.ixx" />
+    <ClCompile Include="LockDirectionCmd.ixx" />
+    <ClCompile Include="MakeConnAnimation.ixx" />
+    <ClCompile Include="MoveNobCommand.ixx" />
+    <ClCompile Include="MoveSelectionCommand.ixx" />
+    <ClCompile Include="MoveSensorCmd.ixx" />
+    <ClCompile Include="MoveSignalCmd.ixx" />
+    <ClCompile Include="NewIoLinePairCmd.ixx" />
+    <ClCompile Include="NewSigGenCmd.ixx" />
+    <ClCompile Include="NNetCommand.ixx" />
+    <ClCompile Include="NNetCommands.ixx" />
+    <ClCompile Include="NNetCommandStack.ixx" />
+    <ClCompile Include="PlugIoConnectorsCmd.ixx" />
+    <ClCompile Include="PlugIoLinesCmd.ixx" />
+    <ClCompile Include="RenameSigGenCmd.ixx" />
+    <ClCompile Include="ResetModelCmd.ixx" />
+    <ClCompile Include="RotateModelCommand.ixx" />
+    <ClCompile Include="RotateNobCommand.ixx" />
+    <ClCompile Include="RotateSelectionCommand.ixx" />
+    <ClCompile Include="RotationCommand.ixx" />
+    <ClCompile Include="DeselectModuleCmd.ixx" />
+    <ClCompile Include="SetScalesCmd.ixx" />
+    <ClCompile Include="SelectAllConnectedCmd.ixx" />
+    <ClCompile Include="SelectionCommand.ixx" />
+    <ClCompile Include="SetActiveSigGenCmd.ixx" />
+    <ClCompile Include="SetNobCommand.ixx" />
+    <ClCompile Include="SetParameterCommand.ixx" />
+    <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
+    <ClCompile Include="SingleNobAnimation.ixx" />
+    <ClCompile Include="SizeSelectionCmd.ixx" />
+    <ClCompile Include="SizeSensorCmd.ixx" />
+    <ClCompile Include="SplitNeuronCmd.ixx" />
+    <ClCompile Include="SplitPipeCommand.ixx" />
+    <ClCompile Include="StartStimulusCmd.ixx" />
+    <ClCompile Include="ToggleEmphModeCmd.ixx" />
+    <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{552A4922-9660-4144-9220-7F0D4E95A97D}</ProjectGuid>
-    <RootNamespace>NNetSignals</RootNamespace>
+    <ProjectGuid>{5f8877e6-8159-4cd4-84ac-53aa018885ac}</ProjectGuid>
+    <RootNamespace>Commands</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>NNetCommands</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -281,14 +376,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\ToolBox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)..\ToolBox\Win32_utilities;$(SolutionDir)NNetModel;$(SolutionDir)Commands;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)NNetModel;$(SolutionDir)ModelIO;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -451,6 +546,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -485,6 +582,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -515,15 +614,16 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
       <Optimization>Disabled</Optimization>
-      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -558,6 +658,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
@@ -573,51 +675,6 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
-      <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
-      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
-      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
-      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\ModelIO\ModelIO.vcxproj">
-      <Project>{e33a1409-350a-457f-ba47-e84659426576}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\NNetCommands\NNetCommands.vcxproj">
-      <Project>{5f8877e6-8159-4cd4-84ac-53aa018885ac}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
-      <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Signals\Signals.vcxproj">
-      <Project>{01f78e78-6cee-426b-adab-5c30d825201f}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Measurement.cpp" />
-    <ClCompile Include="Measurement.ixx" />
-    <ClCompile Include="MonitorControl.cpp" />
-    <ClCompile Include="MonitorControl.ixx" />
-    <ClCompile Include="MonitorScrollState.ixx" />
-    <ClCompile Include="MonitorWindow.cpp" />
-    <ClCompile Include="MonitorWindow.ixx" />
-    <ClCompile Include="NNetSignals.ixx" />
-    <ClCompile Include="NNetTimeGraph.ixx" />
-    <ClCompile Include="SignalControl.cpp" />
-    <ClCompile Include="SignalControl.ixx" />
-    <ClCompile Include="SignalDesigner.cpp" />
-    <ClCompile Include="SignalDesigner.ixx" />
-    <ClCompile Include="SignalPreview.cpp" />
-    <ClCompile Include="SignalPreview.ixx" />
-    <ClCompile Include="SimuRunning.ixx" />
-    <ClCompile Include="StimulusButton.ixx" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
