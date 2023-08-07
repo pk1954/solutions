@@ -33,9 +33,6 @@
     <ClCompile Include="Symtab.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WrapInclude.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="ErrHndl.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -52,18 +49,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Input.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Preferences.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Preferences.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Wrapper.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="BoolWrapper.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -171,8 +171,6 @@
     <ClCompile Include="ErrHndl.ixx" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Input.ixx" />
-    <ClCompile Include="Preferences.cpp" />
-    <ClCompile Include="Preferences.ixx" />
     <ClCompile Include="Scanner.ixx" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scanner.cpp" />
@@ -180,9 +178,6 @@
     <ClCompile Include="ScriptStack.ixx" />
     <ClCompile Include="Symtab.cpp" />
     <ClCompile Include="Symtab.ixx" />
-    <ClCompile Include="Wrapper.ixx" />
-    <ClCompile Include="BoolWrapper.ixx" />
-    <ClCompile Include="WrapInclude.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
