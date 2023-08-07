@@ -201,9 +201,6 @@
     <ClCompile Include="Command.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="StdStackCommand.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

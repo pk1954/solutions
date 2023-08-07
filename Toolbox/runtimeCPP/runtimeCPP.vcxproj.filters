@@ -72,5 +72,8 @@
     <ClCompile Include="CommandStack.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="StdStackCommand.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

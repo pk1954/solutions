@@ -1,10 +1,12 @@
 // StdStackCommand.ixx
 //
-// Win32_utilities
+// Toolbox\runtimeCPP
 
 module;
 
 #include <memory>
+#include <string>
+#include <iostream>
 
 export module StdStackCommand;
 
@@ -12,7 +14,13 @@ import BaseCommand;
 import CommandStack;
 import SoundInterface;
 
+export import Wrapper;
+export import Symtab;
+export import Script;
+
 export using std::unique_ptr;
+export using std::wstring;
+export using std::endl;
 
 export class StdStackCommand : public BaseCommand
 {

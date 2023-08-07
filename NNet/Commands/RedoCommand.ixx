@@ -5,12 +5,14 @@
 module;
 
 #include <iostream>
+#include <string>
+#include <iostream>
 
 export module NNetCommands:RedoCommand;
 
-import :NNetCommand;
+import StdStackCommand;
 
-export class RedoCommand : public NNetCommand
+export class RedoCommand : public StdStackCommand
 {
 public:
 
@@ -39,5 +41,4 @@ private:
 			RedoCommand::Push();
 		}
 	} m_wrapper { NAME };
-
 };

@@ -12,16 +12,11 @@ export module NNetCommands:NNetCommand;
 
 export import IoUtil;
 export import SoundInterface;
-export import Wrapper;
 export import Types;
-export import Symtab;
-export import Script;
 export import Command;
 export import NNetModel;
 export import NNetWrapperHelpers;
 
-export using std::endl;
-export using std::wstring;
 export using std::make_unique;
 export using std::unique_ptr;
 

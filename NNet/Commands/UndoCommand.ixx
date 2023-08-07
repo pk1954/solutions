@@ -5,12 +5,14 @@
 module;
 
 #include <iostream>
+#include <string>
+#include <iostream>
 
 export module NNetCommands:UndoCommand;
 
-import :NNetCommand;
+import StdStackCommand;
 
-export class UndoCommand : public NNetCommand
+export class UndoCommand : public StdStackCommand
 {
 public:
 
