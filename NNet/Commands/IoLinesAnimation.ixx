@@ -10,7 +10,7 @@ module;
 export module NNetCommands:IoLinesAnimation;
 
 import Types;
-import StdStackCommand;
+import Command;
 import Animation;
 import NNetModel;
 
@@ -18,7 +18,7 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 
-export class IoLinesAnimation : public StdStackCommand
+export class IoLinesAnimation : public Command
 {
     using ANIM_TYPE = MicroMeterPntVector;
     using ANIMATION = Animation<ANIM_TYPE>;

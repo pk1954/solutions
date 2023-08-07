@@ -10,17 +10,15 @@ module;
 
 export module Command;
 
-import BaseCommand;
+import StdStackCommand;
 import SoundInterface;
 
 using std::unique_ptr;
 
-export class Command: public BaseCommand
+export class Command: public StdStackCommand
 {
 public:
 
-    virtual ~Command() = default;
-    
     void UpdateUI()                override;
     void NextScriptCommand() const final;
 

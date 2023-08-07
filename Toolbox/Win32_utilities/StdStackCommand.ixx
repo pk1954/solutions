@@ -8,16 +8,15 @@ module;
 
 export module StdStackCommand;
 
-import Command;
+import BaseCommand;
 import CommandStack;
 import SoundInterface;
 
 export using std::unique_ptr;
 
-export class StdStackCommand : public Command
+export class StdStackCommand : public BaseCommand
 {
 public:
-    ~StdStackCommand() override = default;
 
     static void Initialize
     (
@@ -26,13 +25,13 @@ public:
     )
     {
         m_pStack = pStack; 
-        Command::Initialize(pSound);
+        BaseCommand::Initialize(pSound);
     }
 
-    static void PushCommand(unique_ptr<Command> cmd) { m_pStack->PushStackCommand(move(cmd)); }
-    static bool UndoCommand()                        { return m_pStack->UndoStackCommand(); }
-    static bool RedoCommand()                        { return m_pStack->RedoStackCommand(); }
-    static void ClearStack ()                        { m_pStack->Clear(); }
+    static void PushCommand(unique_ptr<StdStackCommand> cmd) { m_pStack->PushStackCommand(move(cmd)); }
+    static bool UndoCommand()                                { return m_pStack->UndoStackCommand(); }
+    static bool RedoCommand()                                { return m_pStack->RedoStackCommand(); }
+    static void ClearStack ()                                { m_pStack->Clear(); }
 
 private:
 

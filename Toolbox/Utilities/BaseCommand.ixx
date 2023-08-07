@@ -26,6 +26,8 @@ export class BaseCommand
 {
 public:
 
+    virtual ~BaseCommand() = default;
+
     virtual void UpdateUI() = 0;
 
     virtual bool CombineCommands(BaseCommand const& src) { return false; };

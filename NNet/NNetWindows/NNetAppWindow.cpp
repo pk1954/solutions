@@ -22,6 +22,7 @@ import Util;
 import Trace;
 import Direct2D;
 import ObserverInterface;
+import Command;
 import AboutBox;
 import IoUtil;
 import FatalError;
@@ -70,7 +71,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 	DefineUtilityWrapperFunctions();
 	SignalFactory  ::Initialize(m_dynamicModelObservable);
-	StdStackCommand::Initialize(&m_cmdStack, &m_sound);
+	Command        ::Initialize(&m_cmdStack, &m_sound);
 	NNetModelIO    ::Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
