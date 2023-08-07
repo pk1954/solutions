@@ -175,6 +175,7 @@
     <ClCompile Include="Input.ixx" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="Preferences.ixx" />
+    <ClCompile Include="RedoCommand.ixx" />
     <ClCompile Include="Scanner.ixx" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Scanner.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="StdStackCommand.ixx" />
     <ClCompile Include="Symtab.cpp" />
     <ClCompile Include="Symtab.ixx" />
+    <ClCompile Include="UndoCommand.ixx" />
     <ClCompile Include="Wrapper.ixx" />
     <ClCompile Include="BoolWrapper.ixx" />
     <ClCompile Include="WrapInclude.cpp" />

@@ -24,6 +24,8 @@ import FatalError;
 import ScriptFile;
 import Win32_Util;
 import NNetCommands;
+import UndoCommand;
+import RedoCommand;
 import CommandStack;
 import NNetModel;
 import Preferences;

@@ -75,5 +75,11 @@
     <ClCompile Include="StdStackCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RedoCommand.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="UndoCommand.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

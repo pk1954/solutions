@@ -1,6 +1,6 @@
-// RedoCommand.ixx
+// UndoCommand.ixx
 //
-// Commands
+// Toolbox\runtimeCPP
 
 module;
 
@@ -8,11 +8,11 @@ module;
 #include <string>
 #include <iostream>
 
-export module NNetCommands:RedoCommand;
+export module UndoCommand;
 
 import StdStackCommand;
 
-export class RedoCommand : public StdStackCommand
+export class UndoCommand : public StdStackCommand
 {
 public:
 
@@ -25,20 +25,21 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << endl;
-		if (!StdStackCommand::RedoCommand())
+		if (!StdStackCommand::UndoCommand())
 			PlayWarningSound();
 	}
 
 private:
 
-	inline static const wstring NAME { L"Redo" };
+	inline static const wstring NAME { L"Undo" };
 
 	inline static struct myWrapper : public Wrapper
 	{
 		using Wrapper::Wrapper;
 		void operator() (Script& script) const final
 		{
-			RedoCommand::Push();
+			UndoCommand::Push();
 		}
 	} m_wrapper { NAME };
+
 };

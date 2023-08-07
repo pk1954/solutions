@@ -219,12 +219,6 @@
     <ClCompile Include="StartStimulusCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UndoCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RedoCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AddModuleCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

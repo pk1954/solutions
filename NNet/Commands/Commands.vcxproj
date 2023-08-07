@@ -137,7 +137,6 @@
     <ClCompile Include="NNetCommandStack.ixx" />
     <ClCompile Include="PlugIoConnectorsCmd.ixx" />
     <ClCompile Include="PlugIoLinesCmd.ixx" />
-    <ClCompile Include="RedoCommand.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
     <ClCompile Include="ResetModelCmd.ixx" />
     <ClCompile Include="RotateModelCommand.ixx" />
@@ -160,7 +159,6 @@
     <ClCompile Include="StartStimulusCmd.ixx" />
     <ClCompile Include="ToggleEmphModeCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
-    <ClCompile Include="UndoCommand.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
