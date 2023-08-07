@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseCommand.ixx" />
     <ClCompile Include="BasePeak.ixx" />
     <ClCompile Include="BasicTypes.cpp" />
     <ClCompile Include="BasicTypes.ixx" />
