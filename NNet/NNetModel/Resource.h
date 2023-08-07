@@ -64,11 +64,9 @@
 #define       IDX_PLAY_SOUND                 300
 								   	         
 #define       IDD_ARROWS                     310
-#define       IDD_SOUND                      311
 #define       IDD_AUTO_OPEN                  312
 #define       IDD_SENSOR_PNTS                313
 #define       IDD_PERF_MON_MODE              314
-#define       IDD_COLOR_MENU                 315
 
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341

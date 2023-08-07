@@ -24,7 +24,8 @@ export inline int const IDM_ABOUT               { 3 };
 export inline int const IDM_DOCU                { 4 };
 export inline int const IDM_EXIT                { 5 };
 export inline int const IDM_BLOCK_UI            { 6 };
-
+export inline int const IDD_SOUND               { 7 };
+export inline int const IDD_COLOR_MENU          { 8 };
 export inline int const IDD_REFRESH_RATE_DIALOG { 9 };
 
 export inline int const IDD_EDIT_CTL            { 11 };
