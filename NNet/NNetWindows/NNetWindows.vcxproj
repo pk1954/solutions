@@ -615,6 +615,9 @@
     <ClCompile Include="StatusBar.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Commands\Commands.vcxproj">
+      <Project>{7f40ede9-bae2-4924-87d3-5cd19477b54a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
     </ProjectReference>
