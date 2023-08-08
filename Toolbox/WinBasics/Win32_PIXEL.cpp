@@ -15,7 +15,7 @@ import IoConstants;
 
 using std::wostream;
 
-RECT Util::ScrReadRECT(Script & script)
+RECT ScrReadRECT(Script & script)
 {
     RECT rect;
     rect.left   = script.ScrReadLong();
@@ -25,7 +25,7 @@ RECT Util::ScrReadRECT(Script & script)
     return rect;
 }
 
-wostream & Util::operator<< (wostream & out, RECT const & rect)
+wostream & operator<< (wostream & out, RECT const & rect)
 {
     out << rect.left << SPACE << rect.top << SPACE << rect.right << SPACE << rect.bottom;
     return out;
@@ -33,15 +33,15 @@ wostream & Util::operator<< (wostream & out, RECT const & rect)
 
 // CalcWindowRect: Calculates the required size of the window rectangle, based on the desired client-rectangle size. 
 
-PixelRect Util::CalcWindowRect(PixelRect pixRect, DWORD const dwStyle)
+PixelRect CalcWindowRect(PixelRect pixRect, DWORD const dwStyle)
 {
-	RECT rect = Util::PixelRect2RECT(pixRect);
+	RECT rect = ::PixelRect2RECT(pixRect);
 	(void)AdjustWindowRect(&rect, dwStyle, false);	
-	pixRect = Util::RECT2PixelRect(rect);
+	pixRect = ::RECT2PixelRect(rect);
 	return pixRect;
 }
 
-void Util::AdjustRight(HWND const hwnd, PIXEL const pixYpos)
+void AdjustRight(HWND const hwnd, PIXEL const pixYpos)
 {
 	HWND  const hwndParent     = GetParent(hwnd);
 	PIXEL const pixWidthParent = GetClientWindowWidth(hwndParent);
@@ -51,14 +51,14 @@ void Util::AdjustRight(HWND const hwnd, PIXEL const pixYpos)
 	(void)BringWindowToTop(hwnd);
 }
 
-void Util::AdjustLeft(HWND const hwnd, PIXEL const pixYpos)
+void AdjustLeft(HWND const hwnd, PIXEL const pixYpos)
 {
 	PixelRectSize pnt = GetWindowSize(hwnd);
 	MoveWindow(hwnd, 0_PIXEL, pixYpos, pnt.GetX(), pnt.GetY(), true);
 	(void)BringWindowToTop(hwnd);
 }
 
-bool Util::MoveWindowAbsolute  // move window to given screen coordinates and set size
+bool MoveWindowAbsolute  // move window to given screen coordinates and set size
 (
 	HWND      const   hwnd,
 	PixelRect const & pixRect,
@@ -80,7 +80,7 @@ bool Util::MoveWindowAbsolute  // move window to given screen coordinates and se
 	return bRes;
 }
 
-bool Util::MoveWindowAbsolute  // move window to given screen coordinates 
+bool MoveWindowAbsolute  // move window to given screen coordinates 
 (
 	HWND       const   hwnd,
 	PixelPoint const & pixPos,

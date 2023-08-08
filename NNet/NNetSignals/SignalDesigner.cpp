@@ -126,7 +126,7 @@ void SignalDesigner::Initialize
 		H_SCALE_HEIGHT.GetValue(),
 		IDM_SIGNAL_DESIGNER_PREVIEW
 	);
-	Util::Show(m_hwndPreviewButton, false);
+	::Show(m_hwndPreviewButton, false);
 }
 
 unique_ptr<Scale<fMicroSecs>> SignalDesigner::makeHorzScale()

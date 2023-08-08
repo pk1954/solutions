@@ -39,13 +39,7 @@
     <ClCompile Include="Trace.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SlowMotionRatio.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NamedType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextBuffer.ixx">
@@ -54,61 +48,16 @@
     <ClCompile Include="Geometry.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LineType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EllipseType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RectType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PixFpDimension.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Uniform2D.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Debug.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveCast.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelTypes.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoreTypes.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="U64Bit.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpeedType.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Percent.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DrawContext.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BasicTypes.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BasePeak.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Types.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FixedPipeline.ixx">

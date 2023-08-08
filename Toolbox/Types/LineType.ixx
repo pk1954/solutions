@@ -12,7 +12,6 @@ module;
 export module Types:LineType;
 
 import :PointType;
-import Geometry;
 
 using std::swap;
 

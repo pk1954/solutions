@@ -15,7 +15,7 @@ module NNetModel:Nob;
 
 import Debug;
 import Types;
-import Scanner;
+import IoConstants;
 import IoUtil;
 import :tHighlight;
 import :NNetColors;
@@ -128,7 +128,7 @@ void Nob::Check() const
 
 void Nob::Dump() const
 {
-	wcout << Scanner::COMMENT_SYMBOL;
+	wcout << COMMENT_SYMBOL;
 	wcout << (IsSelected() ? L'S' : SPACE);
 	wcout << *this;
 }

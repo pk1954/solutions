@@ -16,7 +16,7 @@ import Thread;
 import SlowMotionRatio;
 import NNetModel;
 
-export class ComputeThread: public Util::Thread, public ObserverInterface
+export class ComputeThread: public ::Thread, public ObserverInterface
 {
 public:
 

@@ -111,7 +111,7 @@ HWND CreateToolTipEx
 	TOOLINFO_REDEF ti = { 0 };
 
 	if (pRect)
-		ti.rect = Util::PixelRect2RECT(* pRect);
+		ti.rect = ::PixelRect2RECT(* pRect);
 	else
 		GetClientRect(hwndParent, &ti.rect);
 

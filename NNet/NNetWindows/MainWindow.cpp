@@ -630,7 +630,7 @@ bool MainWindow::UserProc
 	}
 	catch (NobException const & e)
 	{
-		wcout << Scanner::COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
+		wcout << COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DumpModel(__FILE__, __LINE__);
 		wcout << L"highlighted = " << m_nobIdHighlighted << endl;
 		wcout << L"target      = " << m_nobIdTarget << endl;

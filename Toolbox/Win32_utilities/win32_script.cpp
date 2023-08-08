@@ -199,7 +199,7 @@ void StartScript
     ScriptFunctor const& scriptHook
 )
 {
-    wcout << Scanner::COMMENT_START + L"Processing script file " << wstrFile << endl;
+    wcout << COMMENT_START + L"Processing script file " << wstrFile << endl;
     Script* pScript { ScriptStack::OpenScript() };
     if (pScript && pScript->ScrOpen(wstrFile))
     {

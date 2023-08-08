@@ -1,6 +1,6 @@
 // NamedType.ixx
 //
-// Toolbox\Utilities
+// Toolbox\Types
 //
 // Inspired by Jonathan Boccara
 // https://www.fluentcpp.com/

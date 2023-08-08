@@ -1,6 +1,6 @@
 // Types.ixx : 
 //
-// Toolbox\Utilities
+// Toolbox\Types
 
 export module Types;
 
@@ -12,6 +12,7 @@ export import :EllipseType;
 export import :PointType;
 export import :RectType;
 export import :LineType;
+export import :Percent;
 export import :PixelTypes;
 export import :SpeedType;
-export import :Percent;
+export import :U64Bit;

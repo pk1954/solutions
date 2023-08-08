@@ -1,6 +1,6 @@
 // Percent.ixx
 //
-// Utilities
+// Toolbox\Types
 
 export module Types:Percent;
 

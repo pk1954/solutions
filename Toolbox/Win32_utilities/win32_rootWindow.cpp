@@ -29,7 +29,7 @@ using namespace std::chrono;
 
 RootWindow * GetRootWindow(HWND const hwnd)
 {
-	auto pRootWin = bit_cast<RootWindow *>(Util::GetUserDataPtr(hwnd));
+	auto pRootWin = bit_cast<RootWindow *>(::GetUserDataPtr(hwnd));
 	return (pRootWin && pRootWin->GetWindowHandle())
 		? pRootWin
 		: nullptr;
@@ -108,7 +108,7 @@ void RootWindow::adjustWinMenu(HMENU const hMenu) const
 
 void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height) const
 {
-	PixelRect rect { Util::GetWindowRect(hwnd) };
+	PixelRect rect { ::GetWindowRect(hwnd) };
 	PIXEL     xPos { (rect.GetRight () + rect.GetLeft() - width ) / 2 };
 	PIXEL     yPos { (rect.GetBottom() + rect.GetTop () - height) / 2 };
 	Move(xPos, yPos, width, height, true);
@@ -218,7 +218,7 @@ void RootWindow::Invalidate(bool const bRedraw) const
 void RootWindow::FillBackground(HDC const hDC, COLORREF const col) const
 {
 	SetBkColor(hDC, col);
-	Util::FastFill(hDC, m_hwnd);
+	::FastFill(hDC, m_hwnd);
 }
 
 void RootWindow::AddColorCtlMenu(HMENU const hPopupMenu)
@@ -326,7 +326,7 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 
 bool RootWindow::OnMenuCommand(UINT const uiIndex, HMENU const hMenu)
 {
-	UINT_PTR data { Util::GetMenuItemData(hMenu, uiIndex) };
+	UINT_PTR data { ::GetMenuItemData(hMenu, uiIndex) };
 	return OnCommand(data, uiIndex);
 }
 

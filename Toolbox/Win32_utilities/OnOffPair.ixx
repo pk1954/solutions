@@ -22,12 +22,12 @@ public:
 
     void AppendOnOffMenu(HMENU hMenu, LPCTSTR const title) const
     {
-        Util::AddMenu(hMenu, MF_STRING, m_uiCmdId, title);
+        ::AddMenu(hMenu, MF_STRING, m_uiCmdId, title);
     }
 
     void EnableOnOff(HMENU hMenu, bool const bCrit)
     {
-        Util::CheckMenuItem(hMenu, m_uiCmdId, bCrit);
+        ::CheckMenuItem(hMenu, m_uiCmdId, bCrit);
     }
 
 private:

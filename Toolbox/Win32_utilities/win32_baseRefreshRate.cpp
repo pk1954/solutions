@@ -49,7 +49,7 @@ void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
 	m_fValue = static_cast<float>(GetRefreshRate().count());
 	wstring wstrValue = to_wstring(m_fValue);
 	EditLineBox dlgBox(wstrValue, L"Refresh Rate", L"ms");
-	if (dlgBox.Show(hwndParent) && Util::Evaluate(wstrValue, m_fValue))
+	if (dlgBox.Show(hwndParent) && ::Evaluate(wstrValue, m_fValue))
 	{
 		if (m_fValue < MIN_REFRESH_RATE)
 		{

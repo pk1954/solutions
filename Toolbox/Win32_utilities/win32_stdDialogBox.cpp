@@ -59,12 +59,12 @@ INT_PTR CALLBACK dialogProc
 	LPARAM const lParam 
 )
 {
-	auto pDlg = bit_cast<StdDialogBox *>(Util::GetUserDataPtr(hDlg));
+	auto pDlg = bit_cast<StdDialogBox *>(::GetUserDataPtr(hDlg));
 	switch (message)
 	{
 	case WM_INITDIALOG:
 		pDlg = bit_cast<StdDialogBox *>(lParam);
-		Util::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
+		::SetUserDataPtr(hDlg, bit_cast<LONG_PTR>(pDlg));
 		pDlg->OnInitDlg(hDlg, wParam, lParam);
 		break;
 

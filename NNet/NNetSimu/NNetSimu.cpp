@@ -56,11 +56,11 @@ int APIENTRY wWinMain
 
 	SwitchWcoutTo(L"main_trace.out");
 
-	wcout << Scanner::COMMENT_START << L"Application start at " << GetCurrentDateAndTime();
-	wcout << Scanner::COMMENT_START << L"Version:       "       << AppTitle::PRODUCT_NAME  << endl;
-	wcout << Scanner::COMMENT_START << L"Build date:    "       << COMPILE_TIMESTAMP       << endl;
-	wcout << Scanner::COMMENT_START << L"Computer name: "       << Util::GetComputerName() << endl;
-	wcout << Scanner::COMMENT_START << L"User name:     "       << Util::GetUserName()     << endl;
+	wcout << COMMENT_START << L"Application start at " << GetCurrentDateAndTime();
+	wcout << COMMENT_START << L"Version:       "       << AppTitle::PRODUCT_NAME  << endl;
+	wcout << COMMENT_START << L"Build date:    "       << COMPILE_TIMESTAMP       << endl;
+	wcout << COMMENT_START << L"Computer name: "       << ::GetComputerName() << endl;
+	wcout << COMMENT_START << L"User name:     "       << ::GetUserName()     << endl;
 
 	upApp = make_unique<NNetAppWindow>(AppTitle::PRODUCT_NAME);
 
@@ -72,7 +72,7 @@ int APIENTRY wWinMain
 	upApp->Start(pump);
 	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 
-	stopwatch.Stop(Scanner::COMMENT_START + L"App.Start");
+	stopwatch.Stop(COMMENT_START + L"App.Start");
 
 	int iRetVal = pump.Run();
 	return iRetVal;

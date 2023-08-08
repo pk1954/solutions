@@ -63,11 +63,11 @@ static INT_PTR CALLBACK BaseDialogProc
     LPARAM const lParam 
 )
 {
-	auto pDlg = bit_cast<BaseDialog*>(Util::GetUserDataPtr(hDlg));
+	auto pDlg = bit_cast<BaseDialog*>(::GetUserDataPtr(hDlg));
 	switch (message)
 	{
 		case WM_INITDIALOG:
-			Util::SetUserDataPtr(hDlg, lParam);
+			::SetUserDataPtr(hDlg, lParam);
 			return true;
 
 		case WM_PAINT:

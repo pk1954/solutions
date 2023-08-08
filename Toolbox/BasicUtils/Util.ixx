@@ -1,6 +1,6 @@
 // Util.ixx : 
 //
-// Toolbox\Utilities
+// Toolbox\BasicUtils
 
 module;
 
@@ -22,8 +22,6 @@ using std::abs;
 using std::wstringstream;
 using std::chrono::system_clock;
 using std::time_t;
-
-export extern void UpperCase(wstring &);
 
 export using VisCrit = function <bool()>;
 
@@ -107,4 +105,10 @@ export wstring GetCurrentDateAndTime()
 	wstringstream wss;
 	wss << buffer;
 	return wss.str();
+}
+
+export extern void UpperCase(wstring& str)
+{
+	for (auto& c : str)
+		c = toupper(c);
 }

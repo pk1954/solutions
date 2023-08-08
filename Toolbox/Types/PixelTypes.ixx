@@ -1,6 +1,6 @@
 // PixelTypes.ixx
 //
-// Utilities
+// Toolbox\Types
 
 export module Types:PixelTypes;
 

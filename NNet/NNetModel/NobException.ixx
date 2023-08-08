@@ -11,7 +11,7 @@ module;
 
 export module NNetModel:NobException;
 
-import Scanner;
+import IoConstants;
 import :NobId;
 import :NobType;
 
@@ -66,7 +66,7 @@ export struct NNetException : public exception
 
 export void NNetExceptionMessage(NNetException const& e)
 {
-    wcout << Scanner::COMMENT_SYMBOL << L"CheckModel failed" << endl;
-    wcout << Scanner::COMMENT_SYMBOL << L"File: " << e.m_szFile << endl;
-    wcout << Scanner::COMMENT_SYMBOL << L"Line: " << e.m_iLineNr << endl;
+    wcout << COMMENT_SYMBOL << L"CheckModel failed" << endl;
+    wcout << COMMENT_SYMBOL << L"File: " << e.m_szFile << endl;
+    wcout << COMMENT_SYMBOL << L"Line: " << e.m_iLineNr << endl;
 }

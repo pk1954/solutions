@@ -14,44 +14,41 @@ import Win32_Event;
 
 using std::wstring;
 
-namespace Util
+export HANDLE RunAsAsyncThread(unsigned int __stdcall (void *), void *, UINT * = nullptr);
+
+static unsigned int __stdcall ThreadProc(void *);
+
+export class Thread
 {
-	export HANDLE RunAsAsyncThread(unsigned int __stdcall (void *), void *, UINT * = nullptr);
+public:
 
-	static unsigned int __stdcall ThreadProc(void *);
+	virtual ~Thread() = default;
 
-	export class Thread
-	{
-	public:
+	void BeginThread(wstring const &);
+	void StartThread(wstring const &, bool const);
 
-		virtual ~Thread() = default;
+	void SetThreadAffinityMask(DWORD_PTR const);
 
-		void BeginThread(wstring const &);
-		void StartThread(wstring const &, bool const);
+	void PostThreadMsg(UINT, WPARAM const = 0, LPARAM const = 0);
 
-		void SetThreadAffinityMask(DWORD_PTR const);
+	void TerminateNoWait() const 
+	{ 
+		PostThreadMessage(m_threadId, WM_QUIT, 0, 0); // PostQuitMessage(0);  doesn't work
+	}
 
-		void PostThreadMsg(UINT, WPARAM const = 0, LPARAM const = 0);
+	bool IsAsyncThread() const { return m_bAsync; }
 
-		void TerminateNoWait() const 
-		{ 
-			PostThreadMessage(m_threadId, WM_QUIT, 0, 0); // PostQuitMessage(0);  doesn't work
-		}
+	virtual void Terminate(); // Waits until thread has stopped
+	virtual void ThreadStartupFunc() {};
+	virtual void ThreadMsgDispatcher(MSG const &) = 0;
+	virtual void ThreadShutDownFunc() {};
 
-		bool IsAsyncThread() const { return m_bAsync; }
+private:
+	HANDLE      m_handle             { nullptr };
+	UINT        m_threadId           { 0 };
+	bool        m_bAsync             { false };
+	Win32_Event m_eventThreadStarter { };
+	wstring     m_strThreadName      { };
 
-		virtual void Terminate(); // Waits until thread has stopped
-		virtual void ThreadStartupFunc() {};
-		virtual void ThreadMsgDispatcher(MSG const &) = 0;
-		virtual void ThreadShutDownFunc() {};
-
-	private:
-		HANDLE      m_handle             { nullptr };
-		UINT        m_threadId           { 0 };
-		bool        m_bAsync             { false };
-		Win32_Event m_eventThreadStarter { };
-		wstring     m_strThreadName      { };
-
-		friend static unsigned int __stdcall Util::ThreadProc(void *);
-	};
+	friend static unsigned int __stdcall ::ThreadProc(void *);
 };

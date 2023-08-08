@@ -13,7 +13,7 @@ module Thread;
 
 using std::wstring;
 
-HANDLE Util::RunAsAsyncThread
+HANDLE RunAsAsyncThread
 (
 	unsigned int __stdcall func(void *),
 	void * arg,
@@ -27,22 +27,22 @@ HANDLE Util::RunAsAsyncThread
 	return res;
 }
 
-void Util::Thread::BeginThread
+void Thread::BeginThread
 ( 
 	wstring const & strName // for debugging only
 )
 {
 	m_strThreadName = strName;
-	m_handle = RunAsAsyncThread(Util::ThreadProc, static_cast<void *>(this), & m_threadId);
+	m_handle = RunAsAsyncThread(::ThreadProc, static_cast<void *>(this), & m_threadId);
 	assert(m_handle != nullptr);
 }
 
-void Util::Thread::SetThreadAffinityMask(DWORD_PTR const mask)
+void Thread::SetThreadAffinityMask(DWORD_PTR const mask)
 {
 	::SetThreadAffinityMask(m_handle, mask);
 }
 
-void Util::Thread::StartThread
+void Thread::StartThread
 ( 
 	wstring const & strName, // for debugging only
 	bool    const   bAsync
@@ -56,7 +56,7 @@ void Util::Thread::StartThread
 	}
 }
 
-void Util::Thread::PostThreadMsg(UINT uiMsg, WPARAM const wParam, LPARAM const lParam)
+void Thread::PostThreadMsg(UINT uiMsg, WPARAM const wParam, LPARAM const lParam)
 {
 	if (m_bAsync)
 	{
@@ -71,7 +71,7 @@ void Util::Thread::PostThreadMsg(UINT uiMsg, WPARAM const wParam, LPARAM const l
 	}
 }
 
-void Util::Thread::Terminate()   // to be called from different thread
+void Thread::Terminate()   // to be called from different thread
 {
 	if (m_bAsync)
 	{
@@ -82,9 +82,9 @@ void Util::Thread::Terminate()   // to be called from different thread
 	}
 }
 
-static unsigned int __stdcall Util::ThreadProc(void * data) 
+static unsigned int __stdcall ThreadProc(void * data) 
 {
-    Util::Thread * const pThread = reinterpret_cast<Util::Thread *>(data);
+    ::Thread * const pThread = reinterpret_cast<::Thread *>(data);
     MSG msg;
 	INT iRes;
 

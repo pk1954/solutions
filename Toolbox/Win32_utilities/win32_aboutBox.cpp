@@ -18,7 +18,7 @@ using std::wstring;
 
 void AboutBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-    Util::SetWindowSize(hDlg, 340_PIXEL, 180_PIXEL, false);
+    ::SetWindowSize(hDlg, 340_PIXEL, 180_PIXEL, false);
     CreateStaticField  (hDlg, m_wstrProdName.c_str(), 42, 14, 200, 20);
     CreateStaticField  (hDlg, L"Compile time",        42, 40, 200, 20);
     CreateStaticField  (hDlg, COMPILE_TIMESTAMP,      42, 66, 200, 20);

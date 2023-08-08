@@ -47,7 +47,7 @@ void D2D_driver::createResources()
 	);
 	assert(SUCCEEDED(m_hr));
 
-	RECT rc { Util::GetClRect(m_hwnd) };
+	RECT rc { ::GetClRect(m_hwnd) };
 
 	m_hr = m_pD2DFactory->CreateHwndRenderTarget
 	(
@@ -123,24 +123,24 @@ void D2D_driver::Resize()
 {
 	if (m_pRenderTarget)
 	{
-		PixelRectSize const size { Util::GetClRectSize(m_hwnd) };
+		PixelRectSize const size { ::GetClRectSize(m_hwnd) };
 		m_pRenderTarget->Resize(D2D1::SizeU(size.GetXvalue(), size.GetYvalue()));
 	}
 }
 
 fPixelRectSize D2D_driver::GetClRectSize() const 
 { 
-	return Convert2fPixelRectSize(Util::GetClRectSize(m_hwnd));
+	return Convert2fPixelRectSize(::GetClRectSize(m_hwnd));
 }
 
 fPixel D2D_driver::GetClRectWidth() const
 {
-	return Convert2fPixel(Util::GetClientWindowWidth(m_hwnd));
+	return Convert2fPixel(::GetClientWindowWidth(m_hwnd));
 }
 
 fPixel D2D_driver::GetClRectHeight() const
 {
-	return Convert2fPixel(Util::GetClientWindowHeight(m_hwnd));
+	return Convert2fPixel(::GetClientWindowHeight(m_hwnd));
 }
 
 void D2D_driver::ShutDown()

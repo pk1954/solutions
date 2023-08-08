@@ -43,7 +43,7 @@ public:
 	{
 		PIXEL pixHorzPos 
 		{ 
-			(Util::GetWindowWidth(m_hwndParent) - STIMULUS_BUTTON_WIDTH) / 2 
+			(::GetWindowWidth(m_hwndParent) - STIMULUS_BUTTON_WIDTH) / 2 
 		};
 		::SetWindowPos
 		(

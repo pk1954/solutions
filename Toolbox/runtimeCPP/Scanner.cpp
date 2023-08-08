@@ -14,6 +14,7 @@ module Scanner;
 
 import ErrHndl;
 import Input;
+import IoConstants;
 
 using std::wstring;
 using std::wstring_view;

@@ -32,7 +32,7 @@ EditLineBox::EditLineBox
 
 bool EditLineBox::OnOK(HWND const hDlg)
 {
-	bool bOK { Util::Evaluate(m_hwndEditCtl, m_wstrValue) };
+	bool bOK { ::Evaluate(m_hwndEditCtl, m_wstrValue) };
 	if (bOK)
 		EndDialog(hDlg, IDOK);
 	else 
@@ -42,13 +42,13 @@ bool EditLineBox::OnOK(HWND const hDlg)
 
 void EditLineBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lParam)
 {
-	Util::SetWindowSize(hDlg, 340_PIXEL, 180_PIXEL, false);
+	::SetWindowSize(hDlg, 340_PIXEL, 180_PIXEL, false);
 	m_hwndEditCtl =
 	CreateEditField  (hDlg,                      42, 40, 150, 20);
 	CreateStaticField(hDlg, m_wstrUnit.c_str(), 195, 40, 200, 20);
 	CreateButton     (hDlg, L"OK",              100, 92,  50, 30, IDOK, WS_GROUP);
 	CreateButton     (hDlg, L"Cancel",          200, 92,  50, 30, IDOK, WS_GROUP);
-	Util::SetEditField(m_hwndEditCtl, m_wstrValue);
+	::SetEditField(m_hwndEditCtl, m_wstrValue);
 	::SetWindowText(hDlg, m_wstrTitle.c_str());
 	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
 	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);

@@ -1,6 +1,6 @@
 // BasicTypes.cpp
 //
-// Utilities
+// Toolbox\Types
 
 module;
 
@@ -15,12 +15,6 @@ using std::wostringstream;
 using std::streamsize;
 using std::setprecision;
 using std::fixed;
-
-void UpperCase(wstring& str)
-{
-	for (auto& c : str)
-		c = toupper(c);
-}
 
 wstring Float2wstring(float fValue, streamsize prec)
 {

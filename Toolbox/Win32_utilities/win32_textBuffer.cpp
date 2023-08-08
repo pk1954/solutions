@@ -38,7 +38,7 @@ void Win32_TextBuffer::SetBackgroundColor(COLORREF const c)
 
 void Win32_TextBuffer::StartPainting()
 {
-	Util::FastFill(m_hDC, m_pixRect);
+	::FastFill(m_hDC, m_pixRect);
 	TextBuffer::StartPainting();
 }
 

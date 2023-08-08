@@ -19,7 +19,7 @@ import NNetModelStorage;
 import WrapSignalGenerator;
 import Observable;
 import ErrHndl;
-import Scanner;
+import IoConstants;
 import Symtab;
 import Util;
 import Types;
@@ -257,7 +257,7 @@ bool NNetModelIO::Import
     m_upImportUI      = move(upInputUI);
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
     m_upImportedModel = m_upImportedNMWI->CreateNewModel();
-    Util::RunAsAsyncThread(importModelThreadProc, nullptr);
+    ::RunAsAsyncThread(importModelThreadProc, nullptr);
     return true;
 }
 
@@ -265,10 +265,10 @@ bool NNetModelIO::Import
 
 void NNetModelIO::writeHeader(wostream & out)
 {
-    out << Scanner::COMMENT_SYMBOL << L" NNetModel"       << endl;
-    out << Scanner::COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime() << endl;
-    out << Scanner::COMMENT_SYMBOL << L" Computer name: " << Util::GetComputerName()       << endl;
-    out << Scanner::COMMENT_SYMBOL << L" User name: "     << Util::GetUserName()           << endl; 
+    out << COMMENT_SYMBOL << L" NNetModel"       << endl;
+    out << COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime() << endl;
+    out << COMMENT_SYMBOL << L" Computer name: " << ::GetComputerName()       << endl;
+    out << COMMENT_SYMBOL << L" User name: "     << ::GetUserName()           << endl; 
     out << endl;
 }
 

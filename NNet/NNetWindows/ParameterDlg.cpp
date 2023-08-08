@@ -39,7 +39,7 @@ void ParameterDialog::resetParameter   // refresh edit field with data from mode
 	ParamType::Value const parameter
 ) const
 {
-	Util::SetEditField(hwndEditField, m_pNMWI->GetParams().GetParameterValue(parameter));
+	::SetEditField(hwndEditField, m_pNMWI->GetParams().GetParameterValue(parameter));
 }
 
 void ParameterDialog::applyParameter  // read out edit field and write data to model
@@ -50,7 +50,7 @@ void ParameterDialog::applyParameter  // read out edit field and write data to m
 {
 	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(parameter) }; 
 	float       fValue    { fOldValue }; 
-	bool  const bOK       { Util::Evaluate(hwndEditField, fValue) };
+	bool  const bOK       { ::Evaluate(hwndEditField, fValue) };
 	if (bOK && ! IsCloseToZero(fValue - fOldValue))
 		SetParameterCommand::Push(parameter, fValue);
 }

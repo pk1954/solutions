@@ -56,68 +56,68 @@ void NNetAppMenu::Start
 
     m_hMenu = CreateMenu();
 
-    Util::SetNotifyByPos(m_hMenu);
+    ::SetNotifyByPos(m_hMenu);
 
 	HBITMAP hBitmapUndo { LoadBitmap(hInstance, L"UNDO_BITMAP") };
 	HBITMAP hBitmapRedo { LoadBitmap(hInstance, L"REDO_BITMAP") };
 
-    HMENU hMenuFile = Util::PopupMenu(m_hMenu, L"&File");
+    HMENU hMenuFile = ::PopupMenu(m_hMenu, L"&File");
     {
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model" );
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_ADD_MODULE,    L"&Add module");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_RELOAD_MODEL,  L"&Reload model");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump");
-        Util::AddMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_NEW_MODEL,     L"&New model" );
+        ::AddMenu(hMenuFile, MF_STRING, IDM_OPEN_MODEL,    L"&Open model");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_ADD_MODULE,    L"&Add module");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_RELOAD_MODEL,  L"&Reload model");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
     }
 
-    Util::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
-    Util::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
+    ::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
+    ::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
 
-    HMENU hMenuAction = Util::PopupMenu(m_hMenu, L"&Action");
+    HMENU hMenuAction = ::PopupMenu(m_hMenu, L"&Action");
     {
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,            L"&Proceed single step");
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP,           L"&Run/Stop");
-        Util::AddMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL,       L"&Center model");
+        ::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
+        ::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,            L"&Proceed single step");
+        ::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP,           L"&Run/Stop");
+        ::AddMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL,       L"&Center model");
     }
 
-    HMENU hMenuView = Util::PopupMenu(m_hMenu, L"&View");
+    HMENU hMenuView = ::PopupMenu(m_hMenu, L"&View");
     {
-        HMENU hMenuWindows = Util::PopupMenu(hMenuView, L"&Windows");
+        HMENU hMenuWindows = ::PopupMenu(hMenuView, L"&Windows");
         {
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_SIG_DESIGNER,   L"Show &signal designer window");
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
-            Util::AddMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_SIG_DESIGNER,   L"Show &signal designer window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
         }
-        HMENU hMenuInputCables = Util::PopupMenu(hMenuView, L"&Input cables");
+        HMENU hMenuInputCables = ::PopupMenu(hMenuView, L"&Input cables");
         {
-            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ALL,    L"Show all");
-            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONSTD, L"Show non standard");
-            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ACTIVE, L"Show active");
-            Util::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONE,   L"Show none");
+            ::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ALL,    L"Show all");
+            ::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONSTD, L"Show non standard");
+            ::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ACTIVE, L"Show active");
+            ::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONE,   L"Show none");
         }
         m_upOnOffArrows      ->AppendOnOffMenu(hMenuView, L"&Arrows");
         m_upOnOffSensorPoints->AppendOnOffMenu(hMenuView, L"&Sensor points");
         m_upOnOffColorMenu   ->AppendOnOffMenu(hMenuView, L"&Color menu");
     }
-    HMENU hMenuOptions = Util::PopupMenu(m_hMenu, L"&Options");
+    HMENU hMenuOptions = ::PopupMenu(m_hMenu, L"&Options");
     {
         m_upOnOffSound      ->AppendOnOffMenu(hMenuOptions, L"&Sound");
         m_upOnOffAutoOpen   ->AppendOnOffMenu(hMenuOptions, L"Auto&Open");
         m_upOnOffPerfMonMode->AppendOnOffMenu(hMenuOptions, L"&PerformanceMonitor");
     }
-    HMENU hMenuHelp = Util::PopupMenu(m_hMenu, L"&Help");
+    HMENU hMenuHelp = ::PopupMenu(m_hMenu, L"&Help");
     {
-        Util::AddMenu(hMenuHelp, MF_STRING, IDM_DOCU,  L"&Documentation");
-        Util::AddMenu(hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info...");
+        ::AddMenu(hMenuHelp, MF_STRING, IDM_DOCU,  L"&Documentation");
+        ::AddMenu(hMenuHelp, MF_STRING, IDM_ABOUT, L"&Info...");
     }
 
     bool bRes = SetMenu(m_hwndApp, m_hMenu);
@@ -126,16 +126,16 @@ void NNetAppMenu::Start
 
 void NNetAppMenu::Notify(bool const bImmediately)
 {
-    Util::Enable(m_hMenu, IDM_FORWARD,            ! m_pComputeThread->IsRunning());
-    Util::Enable(m_hMenu, IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
+    ::Enable(m_hMenu, IDM_FORWARD,            ! m_pComputeThread->IsRunning());
+    ::Enable(m_hMenu, IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
 
-    Util::Enable(m_hMenu, IDM_DESC_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_DESC_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_CRSR_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_MINI_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_MINI_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_MONITOR_WINDOW, ! WinManager::IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
-    Util::Enable(m_hMenu, IDM_PARAM_WINDOW,   ! WinManager::IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
-    Util::Enable(m_hMenu, IDM_PERF_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_PERF_WINDOW   )));
-    Util::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
+    ::Enable(m_hMenu, IDM_DESC_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_DESC_WINDOW   )));
+    ::Enable(m_hMenu, IDM_CRSR_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_CRSR_WINDOW   )));
+    ::Enable(m_hMenu, IDM_MINI_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_MINI_WINDOW   )));
+    ::Enable(m_hMenu, IDM_MONITOR_WINDOW, ! WinManager::IsVisible(RootWinId(IDM_MONITOR_WINDOW)));
+    ::Enable(m_hMenu, IDM_PARAM_WINDOW,   ! WinManager::IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
+    ::Enable(m_hMenu, IDM_PERF_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_PERF_WINDOW   )));
+    ::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
 
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
     m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());
@@ -149,7 +149,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
 
 void NNetAppMenu::AdjustUndoRedo()
 {
-    Util::Enable(m_hMenu, IDM_UNDO, ! m_pCommandStack->UndoStackEmpty());
-    Util::Enable(m_hMenu, IDM_REDO, ! m_pCommandStack->RedoStackEmpty());
+    ::Enable(m_hMenu, IDM_UNDO, ! m_pCommandStack->UndoStackEmpty());
+    ::Enable(m_hMenu, IDM_REDO, ! m_pCommandStack->RedoStackEmpty());
     DrawMenuBar(m_hwndApp);
 }

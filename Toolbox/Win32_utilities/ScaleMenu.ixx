@@ -24,13 +24,13 @@ public:
         bool    const bGrid
     ) const
     {
-        HMENU hMenuPopup = Util::PopupMenu(hMenu, title);
-        Util::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF,  L"o&ff");
-        Util::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON,   L"o&n");
-        Util::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_GRID, L"&grid");
-        Util::Enable(hMenuPopup, IDM_SCALE_OFF,  bScale);
-        Util::Enable(hMenuPopup, IDM_SCALE_ON,   bGrid || !bScale);
-        Util::Enable(hMenuPopup, IDM_SCALE_GRID, !bGrid);
+        HMENU hMenuPopup = ::PopupMenu(hMenu, title);
+        ::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF,  L"o&ff");
+        ::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON,   L"o&n");
+        ::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_GRID, L"&grid");
+        ::Enable(hMenuPopup, IDM_SCALE_OFF,  bScale);
+        ::Enable(hMenuPopup, IDM_SCALE_ON,   bGrid || !bScale);
+        ::Enable(hMenuPopup, IDM_SCALE_GRID, !bGrid);
     }
 
 };

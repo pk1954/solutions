@@ -95,7 +95,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         }
         catch (NobException const & e)
         {
-            wcout << Scanner::COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
+            wcout << COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
             m_pNMRI->DumpModel(__FILE__, __LINE__);
             FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
         }

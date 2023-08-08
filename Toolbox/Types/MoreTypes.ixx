@@ -1,6 +1,6 @@
 // MoreTypes.ixx
 //
-// Toolbox\Utilities
+// Toolbox\Types
 
 module;
 

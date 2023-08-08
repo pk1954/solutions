@@ -51,7 +51,7 @@ private:
 	void setAppTitle()
 	{
 		wstring wstr { m_bUnsavedChanges ? L" * " : L"" };
-		Util::SetApplicationTitle
+		::SetApplicationTitle
 		(
 			m_hwndApp, 
 			PRODUCT_NAME,

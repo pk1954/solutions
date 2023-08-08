@@ -1,6 +1,6 @@
 // RectType.ixx
 //
-// Utilities
+// Toolbox\Types
 
 module;
 

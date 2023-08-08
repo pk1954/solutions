@@ -16,6 +16,7 @@ import SaveCast;
 import ErrHndl;
 import Symtab;
 import Scanner;
+import IoConstants;
 
 using std::endl;
 using std::wcout;
@@ -459,7 +460,7 @@ bool Script::ScrOpen(wstring const & wstrPath)
     {  
         m_scanner.OpenInputFile(wstrPath); // open script file 
         m_fileSize = file_size(wstrPath);
-        wcout << endl << Scanner::COMMENT_START << L"Reading file " << wstrPath << endl;
+        wcout << endl << COMMENT_START << L"Reading file " << wstrPath << endl;
     }
     catch (ScriptErrorHandler::ScriptException const & errInfo)
     {
@@ -520,7 +521,7 @@ bool Script::ScrClose()
         m_scanner.CloseInputFile();
         if (m_pWrapHook)
             (* m_pWrapHook)(* this);                // call hook function 
-        wcout << Scanner::COMMENT_START << L"End of file  " << GetActPath() << endl << endl;
+        wcout << COMMENT_START << L"End of file  " << GetActPath() << endl << endl;
     }
     catch (ScriptErrorHandler::ScriptException const& errInfo)
     {
@@ -536,7 +537,7 @@ class EchoScriptLine: public ScriptFunctor
 public:
     void operator() (Script & script) const final
     {
-        wcout << Scanner::COMMENT_SYMBOL << script.GetActLine();
+        wcout << COMMENT_SYMBOL << script.GetActLine();
     }
 };
 

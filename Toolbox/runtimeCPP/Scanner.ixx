@@ -32,9 +32,6 @@ export enum class tTOKEN    // Return value of NextToken
 export class Scanner
 {
 public:
-    inline static wchar_t const COMMENT_SYMBOL { L'#' };
-    inline static wstring const COMMENT_START  { L"# *** " };
-
     void OpenInputFile(wstring_view);
     void CloseInputFile();
 

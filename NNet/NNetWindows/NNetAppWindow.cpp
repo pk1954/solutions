@@ -214,7 +214,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_signalDesigner   .Show(true);
 
 	if (! WinManager::GetWindowConfiguration())
-		Util::Show(m_hwndApp, true);
+		::Show(m_hwndApp, true);
 
 	m_dynamicModelObservable.RegisterObserver(m_mainNNetWindow);
 	m_dynamicModelObservable.RegisterObserver(m_miniNNetWindow);
@@ -348,7 +348,7 @@ void NNetAppWindow::configureStatusBar()
 
 void NNetAppWindow::adjustChildWindows()
 {
-	PixelRectSize pntAppClientSize(Util::GetClRectSize(m_hwndApp));
+	PixelRectSize pntAppClientSize(::GetClRectSize(m_hwndApp));
 	if (pntAppClientSize.IsNotZero())
 	{
 		PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
@@ -548,11 +548,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	}
 	catch (NobTypeException const & e)
 	{
-		wcout << Scanner::COMMENT_START << L"Command failed: " << endl;
-		wcout << Scanner::COMMENT_START << L"File    : " << e.m_szFile  << endl;
-		wcout << Scanner::COMMENT_START << L"Line    : " << e.m_iLineNr << endl;
-		wcout << Scanner::COMMENT_START << L"Function: " << source_location::current().function_name()    << endl;
-		wcout << Scanner::COMMENT_START << L"NobType : " << to_wstring(static_cast<int>(e.m_type.GetValue())) << endl;
+		wcout << COMMENT_START << L"Command failed: " << endl;
+		wcout << COMMENT_START << L"File    : " << e.m_szFile  << endl;
+		wcout << COMMENT_START << L"Line    : " << e.m_iLineNr << endl;
+		wcout << COMMENT_START << L"Function: " << source_location::current().function_name()    << endl;
+		wcout << COMMENT_START << L"NobType : " << to_wstring(static_cast<int>(e.m_type.GetValue())) << endl;
 		FatalError::Happened(10, L"Invalid NobType");
 	}
 

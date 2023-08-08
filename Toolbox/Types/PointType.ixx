@@ -1,6 +1,6 @@
 // PointType.ixx
 //
-// Utilities
+// Toolbox\Types
 
 module;
 

@@ -1,6 +1,6 @@
 // CircleType.ixx
 //
-// Utilities
+// Toolbox\Types
 
 module;
 

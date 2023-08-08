@@ -1,6 +1,6 @@
 // SpeedType.h
 //
-// Utilities
+// Toolbox\Types
 
 export module Types:SpeedType;
 

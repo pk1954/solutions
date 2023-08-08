@@ -1,6 +1,6 @@
 // EllipseType.ixx
 //
-// Utilities
+// Toolbox\Types
 
 export module Types:EllipseType;
 

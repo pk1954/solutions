@@ -60,7 +60,7 @@ private:
 	HBITMAP m_hBitmap { nullptr };
 };
 
-class TextWindowThread : public Util::Thread
+class TextWindowThread : public ::Thread
 {
 public:
 	TextWindowThread
@@ -89,7 +89,7 @@ public:
 	{
 		DeleteDC(m_hDC_Memory);
 		m_hDC_Memory = nullptr;
-		Util::Thread::Terminate();
+		::Thread::Terminate();
 	}
 
 	virtual void Trigger()

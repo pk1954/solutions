@@ -48,8 +48,8 @@ public:
 	static void SetCaptions();
 
 	static void BringToTop (RootWinId const);
-	static void AdjustRight(RootWinId const id, PIXEL const p = 0_PIXEL) { Util::AdjustRight(GetHWND(id), p); }
-	static void AdjustLeft (RootWinId const id, PIXEL const p = 0_PIXEL) { Util::AdjustLeft(GetHWND(id), p);	}
+	static void AdjustRight(RootWinId const id, PIXEL const p = 0_PIXEL) { ::AdjustRight(GetHWND(id), p); }
+	static void AdjustLeft (RootWinId const id, PIXEL const p = 0_PIXEL) { ::AdjustLeft(GetHWND(id), p);	}
 
 	static wstring const& GetWindowName(BaseWindow const& w) { return GetWindowName(GetIdFromBaseWindow(w)); }
 
@@ -81,7 +81,7 @@ public:
 	static LRESULT SendMessage(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
 	static LRESULT PostMessage(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
 
-	static void Show(RootWinId const id, tBoolOp const op) { Util::Show(GetHWND(id), op);	}
+	static void Show(RootWinId const id, tBoolOp const op) { ::Show(GetHWND(id), op);	}
 
 	static void SetWindowConfigurationFile(wstring const& n) { m_strWindowConfigurationFile = n; };
 

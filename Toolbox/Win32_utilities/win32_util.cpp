@@ -21,7 +21,7 @@ using std::wcout;
 using std::endl;
 using std::stof;
 
-bool Util::Evaluate(HWND const hwndEditField, wstring & wstrValue)
+bool Evaluate(HWND const hwndEditField, wstring & wstrValue)
 {	
     static int const BUFLEN { 20 };
     wchar_t wBuffer[BUFLEN];
@@ -35,7 +35,7 @@ bool Util::Evaluate(HWND const hwndEditField, wstring & wstrValue)
     return false;
 }
 
-bool Util::Evaluate(HWND const hwndEditField, unsigned long & ulValue)
+bool Evaluate(HWND const hwndEditField, unsigned long & ulValue)
 {	
     wstring wstrEdit;
     if (Evaluate(hwndEditField, wstrEdit))
@@ -47,7 +47,7 @@ bool Util::Evaluate(HWND const hwndEditField, unsigned long & ulValue)
     return false;
 }
 
-bool Util::Evaluate(wstring & wstr, float & fValue)
+bool Evaluate(wstring & wstr, float & fValue)
 {
     bool  bResult { false };
 
@@ -67,7 +67,7 @@ bool Util::Evaluate(wstring & wstr, float & fValue)
     return bResult;
 }
 
-bool Util::Evaluate(HWND const hwndEditField, float & fValue)
+bool Evaluate(HWND const hwndEditField, float & fValue)
 {
     wstring wstrEdit;
     if (Evaluate(hwndEditField, wstrEdit))
@@ -82,7 +82,7 @@ bool Util::Evaluate(HWND const hwndEditField, float & fValue)
     return false;
 }
 
-void Util::MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, UINT const uiAlpha)
+void MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, UINT const uiAlpha)
 {
     if (bMode)
         AddWindowStyle(hwnd, WS_EX_LAYERED);
@@ -93,21 +93,21 @@ void Util::MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, 
     assert(bRes);
 }
 
-DWORD Util::GetNrOfCPUs(void)
+DWORD GetNrOfCPUs(void)
 {
     SYSTEM_INFO siSysInfo;
     GetSystemInfo(&siSysInfo); 
     return siSysInfo.dwNumberOfProcessors; 
 }
 
-ULONGLONG Util::GetPhysicalMemory()  // in bytes
+ULONGLONG GetPhysicalMemory()  // in bytes
 {
     ULONGLONG ramKB;
     (void)GetPhysicallyInstalledSystemMemory(&ramKB);   // get physical memory in KB
     return ramKB * 1024;                                // compute number of bytes
 }
 
-wstring Util::GetComputerName()
+wstring GetComputerName()
 {
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];
@@ -116,7 +116,7 @@ wstring Util::GetComputerName()
     return wstring(buffer);
 }
 
-wstring Util::GetUserName()
+wstring GetUserName()
 {
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];
@@ -125,7 +125,7 @@ wstring Util::GetUserName()
     return wstring(buffer);
 }
 
-void Util::SetApplicationTitle
+void SetApplicationTitle
 (
 	HWND    const   hwndApp, 
     wstring const & wstrName,
@@ -138,7 +138,7 @@ void Util::SetApplicationTitle
     SetWindowText(hwndApp, newTitle.c_str());
 }
 
-void Util::StdOutConsole()
+void StdOutConsole()
 {
     FILE  * fp;
     bool    bRes = AllocConsole();
@@ -153,14 +153,14 @@ void Util::StdOutConsole()
     }	
 }
 
-HMENU Util::PopupMenu(HMENU const hMenuParent, LPCTSTR const text)
+HMENU PopupMenu(HMENU const hMenuParent, LPCTSTR const text)
 {
     HMENU hMenuPopup = CreatePopupMenu();
     ::AppendMenu(hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text);
     return hMenuPopup;
 }
 
-void Util::SetNotifyByPos(HMENU const hMenu)  // activate MNS_NOTIFYBYPOS -> WM_MENUECOMMAND will be send
+void SetNotifyByPos(HMENU const hMenu)  // activate MNS_NOTIFYBYPOS -> WM_MENUECOMMAND will be send
 {
     MENUINFO m_mi = { 0 };
     m_mi.cbSize = sizeof(m_mi);
@@ -169,7 +169,7 @@ void Util::SetNotifyByPos(HMENU const hMenu)  // activate MNS_NOTIFYBYPOS -> WM_
     SetMenuInfo(hMenu, &m_mi);
 }
 
-void Util::SetMenuItemData
+void SetMenuItemData
 (
     HMENU    const hMenu,
     UINT     const uiIndex,
@@ -184,7 +184,7 @@ void Util::SetMenuItemData
     assert(bRes);
 }
 
-UINT_PTR Util::GetMenuItemData
+UINT_PTR GetMenuItemData
 (
     HMENU const hMenu,
     UINT  const uiIndex
@@ -198,7 +198,7 @@ UINT_PTR Util::GetMenuItemData
     return m_mii.dwItemData;
 }
 
-void Util::AddMenu
+void AddMenu
 (
     HMENU    const hMenu,
     UINT     const uFlags,
@@ -210,17 +210,17 @@ void Util::AddMenu
     SetMenuItemData(hMenu, GetMenuItemCount(hMenu) - 1, uIDNewItem);
 }
 
-void Util::CheckMenuItem
+void CheckMenuItem
 (
     HMENU const hMenu,
     UINT  const idItem,
     bool  const bChecked
 )
 {
-    ::CheckMenuItem(hMenu, idItem, bChecked ? MF_CHECKED : MF_UNCHECKED);
+    ::CheckMenuItem(hMenu, idItem, static_cast<UINT>(bChecked ? MF_CHECKED : MF_UNCHECKED));
 }
 
-void Util::InsertMenuItem
+void InsertMenuItem
 (
     HMENU    const   hMenu,
     UINT     const   uiPos,  // zero based position in menue

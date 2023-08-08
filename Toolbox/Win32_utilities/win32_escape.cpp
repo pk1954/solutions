@@ -13,7 +13,7 @@ module Win32_Util;
 // Use case: long running tasks blocking UI, when the only meaningful 
 //	         user action is to abort task.
 
-bool Util::EscapeKeyPressed()
+bool ::EscapeKeyPressed()
 {
 	MSG msg;
 	if (PeekMessage(&msg, NULL, WM_KEYDOWN, WM_KEYDOWN, PM_REMOVE | PM_QS_INPUT) != 0)

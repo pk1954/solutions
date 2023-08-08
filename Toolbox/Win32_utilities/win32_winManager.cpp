@@ -11,8 +11,7 @@
 #include <memory>
 #include <map>
 
-import Scanner;
-import Symtab;
+import IoConstants;
 import Script;
 import Wrapper;
 import IoUtil;
@@ -36,9 +35,9 @@ using std::make_unique;
 using std::map;
 using std::out_of_range;
 
-using Util::operator==;
-using Util::operator!=;
-using Util::operator<<; 
+using ::operator==;
+using ::operator!=;
+using ::operator<<; 
 
 class WrapMoveWindow : public ScriptFunctor // Wrapper
 {
@@ -54,12 +53,12 @@ public:
 				HWND const hwnd = WinManager::GetHWND(id);
                 if (WinManager::IsSizeable(id))
                 {
-                    bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect, true);
+                    bool bRes = ::MoveWindowAbsolute(hwnd, pixRect, true);
                     assert(bRes);
                 }
                 else
                 {
-     				bool bRes = Util::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
+     				bool bRes = ::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
                 	DWORD dwErr = GetLastError();
                 	assert(bRes);
                 }
@@ -101,8 +100,8 @@ static MONITORINFO ScrReadMonitorInfo(Script & script)
     MONITORINFO monInfo;
 
     monInfo.cbSize    = sizeof(MONITORINFO);
-    monInfo.rcMonitor = Util::ScrReadRECT(script);
-    monInfo.rcWork    = Util::ScrReadRECT(script);
+    monInfo.rcMonitor = ::ScrReadRECT(script);
+    monInfo.rcWork    = ::ScrReadRECT(script);
     monInfo.dwFlags   = script.ScrReadUlong();
 
     return monInfo;
@@ -133,7 +132,7 @@ static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwD
             ++(pMonStruct->m_iMonCounter);
     
             MONITORINFO monInfoScript = ScrReadMonitorInfo(* pScript);
-            MONITORINFO monInfoSystem = Util::GetMonitorInfo(hMonitor);
+            MONITORINFO monInfoSystem = ::GetMonitorInfo(hMonitor);
             if (
                   (monInfoScript != monInfoSystem) ||
                   (pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter)
@@ -204,24 +203,24 @@ bool WinManager::GetWindowConfiguration()
     scriptWindowConfig.SetEcho(false);
 	if (! scriptWindowConfig.ScrProcess(MONITOR_CONFIG_FILE))
 	{
-		wcout << Scanner::COMMENT_SYMBOL << L" +++ Monitor configuration file " << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
+		wcout << COMMENT_SYMBOL << L" +++ Monitor configuration file " << MONITOR_CONFIG_FILE << L" not found or bad" << endl;
 	} 
 	else if (m_strWindowConfigurationFile.empty())
 	{
-		wcout << Scanner::COMMENT_SYMBOL << L" +++ Monitor configuration unknown" << endl;
+		wcout << COMMENT_SYMBOL << L" +++ Monitor configuration unknown" << endl;
 	}
     else
     {
 	    if (! scriptWindowConfig.ScrProcess(m_strWindowConfigurationFile))
 	    {
-            wcout << Scanner::COMMENT_SYMBOL
+            wcout << COMMENT_SYMBOL
                   << L" +++ Window configuration file " 
                   << m_strWindowConfigurationFile
                   << L" missing or bad" << endl;
 	    }
 	    else
 	    {
-            wcout << Scanner::COMMENT_SYMBOL
+            wcout << COMMENT_SYMBOL
                   << L" *** Window configuration file " 
                   << m_strWindowConfigurationFile
                   << L" sucessfully processed" << endl;
@@ -230,7 +229,7 @@ bool WinManager::GetWindowConfiguration()
     }
 
     if (! bRes)
-        wcout << Scanner::COMMENT_START << L"Using default window positions" << endl;
+        wcout << COMMENT_START << L"Using default window positions" << endl;
 
     return bRes;
 }
@@ -249,7 +248,7 @@ static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwDa
 {
     auto      * const pMonStruct { (DUMP_MON_STRUCT*)dwData };
     wofstream * const postr      { pMonStruct->m_postr };
-    MONITORINFO const monInfo    { Util::GetMonitorInfo(hMonitor) };
+    MONITORINFO const monInfo    { ::GetMonitorInfo(hMonitor) };
 
     ++(pMonStruct->m_iMonCounter);
 
@@ -290,10 +289,10 @@ void WinManager::dumpWindowCoordinates
         {
            ostr << L"MoveWindow" << SPACE
                 << elem.m_wstr
-                << Util::GetWindowLeftPos(hwnd)
-                << Util::GetWindowTop(hwnd)
-                << Util::GetWindowWidth(hwnd)
-                << Util::GetWindowHeight(hwnd)
+                << ::GetWindowLeftPos(hwnd)
+                << ::GetWindowTop(hwnd)
+                << ::GetWindowWidth(hwnd)
+                << ::GetWindowHeight(hwnd)
                 << endl;
 
            ostr << L"ShowWindow" << SPACE

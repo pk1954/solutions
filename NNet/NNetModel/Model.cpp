@@ -12,7 +12,7 @@ module NNetModel:Model;
 
 import Types;
 import Signals;
-import Scanner;
+import IoConstants;
 import :NobException;
 import :NobType;
 import :ParamType;
@@ -55,7 +55,7 @@ void Model::CheckModel() const
 	catch (NNetException const& e)
 	{
 		NNetExceptionMessage(e);
-		wcout << Scanner::COMMENT_SYMBOL << L"Model dump:" << endl;
+		wcout << COMMENT_SYMBOL << L"Model dump:" << endl;
 		m_upNobs->Dump();	
 	}
 #endif
@@ -161,7 +161,7 @@ void Model::DumpModel
 
 ) const
 {
-	wcout << Scanner::COMMENT_SYMBOL << L"--- Dump start (" << file << L" line " << line << L")" << endl;
+	wcout << COMMENT_SYMBOL << L"--- Dump start (" << file << L" line " << line << L")" << endl;
 	m_upNobs->Dump();
-	wcout << Scanner::COMMENT_SYMBOL << L"--- Dump end ---" << endl;
+	wcout << COMMENT_SYMBOL << L"--- Dump end ---" << endl;
 }

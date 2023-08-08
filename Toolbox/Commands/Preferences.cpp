@@ -11,7 +11,7 @@ module;
 
 module Preferences;
 
-import Symtab;
+import IoConstants;
 import Scanner;
 import Wrapper;
 import SoundInterface;
@@ -42,15 +42,15 @@ bool Preferences::ReadPreferences()
 {
     if (exists(m_wstrPreferencesFile))
     {
-        wcout << Scanner::COMMENT_START << L"Read preferences file " << m_wstrPreferencesFile << endl;
+        wcout << COMMENT_START << L"Read preferences file " << m_wstrPreferencesFile << endl;
         Script script;
         script.SetEcho(false);
         return script.ScrProcess(m_wstrPreferencesFile);
     }
     else
     {
-        wcout << Scanner::COMMENT_SYMBOL << L" +++ NNetPreferences file " << m_wstrPreferencesFile << L" not found" << endl;
-        wcout << Scanner::COMMENT_SYMBOL << L" +++ Using defaults" << endl;
+        wcout << COMMENT_SYMBOL << L" +++ NNetPreferences file " << m_wstrPreferencesFile << L" not found" << endl;
+        wcout << COMMENT_SYMBOL << L" +++ Using defaults" << endl;
         return false;
     }
 }
@@ -58,14 +58,14 @@ bool Preferences::ReadPreferences()
 bool Preferences::WritePreferences()
 {
     wofstream prefFile(m_wstrPreferencesFile);
-    prefFile << Scanner::COMMENT_START << L" User preferences" << endl;
+    prefFile << COMMENT_START << L" User preferences" << endl;
     for (auto const& it : m_prefVector)
     {
         it->Write(prefFile);
         prefFile << endl;
     }
-    prefFile << Scanner::COMMENT_START << L" End of Preferences" << endl;
+    prefFile << COMMENT_START << L" End of Preferences" << endl;
     prefFile.close();
-    wcout << Scanner::COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
+    wcout << COMMENT_START << L"preferences file " << m_wstrPreferencesFile << L" written" << endl;
     return true;
 }
