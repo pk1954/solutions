@@ -105,9 +105,6 @@
     <ClCompile Include="Win32_Tooltip.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Animation.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Win32_ActionTimer.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -202,6 +199,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WIn32_Animation.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

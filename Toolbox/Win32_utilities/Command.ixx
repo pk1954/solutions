@@ -22,7 +22,7 @@ public:
     void UpdateUI()                override;
     void NextScriptCommand() const final;
 
-    void CallUI(bool const); // called by Animation
+    void CallUI(bool const) final; // called by Animation
 
     static void DoCall(WPARAM const, LPARAM const); // called by m_pWin
 

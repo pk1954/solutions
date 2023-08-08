@@ -174,7 +174,7 @@
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
     <ClCompile Include="Win32_ActionTimer.ixx" />
-    <ClCompile Include="Win32_Animation.ixx" />
+    <ClCompile Include="WIn32_Animation.ixx" />
     <ClCompile Include="Win32_ArrowButton.ixx" />
     <ClCompile Include="Win32_BaseDialog.ixx" />
     <ClCompile Include="Win32_BaseRefreshRate.ixx" />
