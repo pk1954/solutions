@@ -39,9 +39,14 @@ using ::operator==;
 using ::operator!=;
 using ::operator<<; 
 
-class WrapMoveWindow : public ScriptFunctor // Wrapper
+class WrapMoveWindow : public Wrapper
 {
 public:
+    WrapMoveWindow(WinManager::WIN_MAP const &map)
+      : Wrapper(NAME),
+        m_map(map)
+    {}
+
     void operator() (Script & script) const final
     {
 	    RootWinId id(script.ScrReadInt());
@@ -66,13 +71,35 @@ public:
 		}
     }
 
+    void Write(wostream& out) const final
+    {
+        for (const auto& [key, value] : m_map)
+        {
+            if ((value.m_bTrackPosition) && (value.m_hwnd != nullptr))
+                out << NAME << SPACE
+                    << value.m_wstr
+                    << ::GetWindowLeftPos(value.m_hwnd)
+                    << ::GetWindowTop    (value.m_hwnd)
+                    << ::GetWindowWidth  (value.m_hwnd)
+                    << ::GetWindowHeight (value.m_hwnd)
+                    << endl;
+        }
+    }
+
 private:
     inline static const wstring NAME { L"MoveWindow" };
+
+    WinManager::WIN_MAP const& m_map;
 };
 
-class WrapShowWindow : public ScriptFunctor
+class WrapShowWindow : public Wrapper
 {
 public:
+    WrapShowWindow(WinManager::WIN_MAP const& map)
+        : Wrapper(NAME),
+        m_map(map)
+    {}
+
     void operator() (Script & script) const final
     {
 	    RootWinId const id      (script.ScrReadInt());
@@ -80,6 +107,27 @@ public:
 		if (id.GetValue() > 0)
 			ShowWindow(WinManager::GetHWND(id), iCmdShow);
     }
+
+    void Write(wostream& out) const final
+    {
+        for (const auto& [key, value] : m_map)
+        {
+            if ((value.m_bTrackPosition) && (value.m_hwnd != nullptr))
+                out << NAME << SPACE
+                    << value.m_wstr
+                    << (
+                        IsWindowVisible(value.m_hwnd)
+                        ? (IsZoomed(value.m_hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
+                        : L"SW_HIDE"
+                        )
+                    << endl;
+        }
+    }
+
+private:
+    inline static const wstring NAME { L"ShowWindow" };
+
+    WinManager::WIN_MAP const& m_map;
 };
 
 //
@@ -276,37 +324,6 @@ void WinManager::dumpMonitorConfiguration()
     ostr.close();
 }
 
-void WinManager::dumpWindowCoordinates
-(
-    wofstream & ostr,
-    MAP_ELEMENT const &elem
-)
-{
-    if (elem.m_bTrackPosition)
-    {
-        HWND hwnd = elem.m_hwnd;
-        if (hwnd != nullptr)
-        {
-           ostr << L"MoveWindow" << SPACE
-                << elem.m_wstr
-                << ::GetWindowLeftPos(hwnd)
-                << ::GetWindowTop(hwnd)
-                << ::GetWindowWidth(hwnd)
-                << ::GetWindowHeight(hwnd)
-                << endl;
-
-           ostr << L"ShowWindow" << SPACE
-                << elem.m_wstr << SPACE
-                << (
-                      IsWindowVisible(hwnd)
-                      ? (IsZoomed(hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
-                      : L"SW_HIDE"
-                   )
-                << endl;
-        }
-    }
-}
-
 void WinManager::StoreWindowConfiguration()
 {
     if (m_strWindowConfigurationFile.empty())
@@ -316,15 +333,17 @@ void WinManager::StoreWindowConfiguration()
     }
 
     wofstream ostr(m_strWindowConfigurationFile, wofstream::out);
-    for (const auto& [key, value] : *m_upMap.get())
-        dumpWindowCoordinates(ostr, value);
+    m_upWrapMoveWindow->Write(ostr);
+    m_upWrapShowWindow->Write(ostr);
     ostr.close();
 }
 
 WinManager::WinManager()
 {
-    SymbolTable::ScrDefConst(L"MoveWindow",           new WrapMoveWindow());
-    SymbolTable::ScrDefConst(L"ShowWindow",           new WrapShowWindow());
+    m_upMap            = make_unique<map<RootWinId, MAP_ELEMENT>>();
+    m_upWrapMoveWindow = make_unique<WrapMoveWindow>(*m_upMap.get());
+    m_upWrapShowWindow = make_unique<WrapShowWindow>(*m_upMap.get());
+
     SymbolTable::ScrDefConst(L"MonitorConfiguration", new WrapMonitorConfiguration());
 
     SymbolTable::ScrDefConst(L"SW_RESTORE",    static_cast<unsigned long>(SW_RESTORE   ));
@@ -332,8 +351,6 @@ WinManager::WinManager()
     SymbolTable::ScrDefConst(L"SW_MAXIMIZE",   static_cast<unsigned long>(SW_MAXIMIZE  ));
     SymbolTable::ScrDefConst(L"SW_SHOW",       static_cast<unsigned long>(SW_SHOW      ));
     SymbolTable::ScrDefConst(L"SW_HIDE",       static_cast<unsigned long>(SW_HIDE      ));
-
-    m_upMap = make_unique<map<RootWinId, MAP_ELEMENT>>();
 }
 
 void WinManager::SetCaptions()

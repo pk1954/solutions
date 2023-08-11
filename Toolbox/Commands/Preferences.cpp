@@ -29,7 +29,7 @@ using std::filesystem::current_path;
 void Preferences::Initialize(wstring const & wstrPrefFile)
 {
     m_wstrPreferencesFile = current_path().wstring();
-    m_wstrPreferencesFile += L"\\" + wstrPrefFile;
+    m_wstrPreferencesFile += BACKSLASH + wstrPrefFile;
 
     BoolWrapper::Initialize();
 

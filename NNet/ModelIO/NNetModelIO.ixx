@@ -60,9 +60,9 @@ public:
 
 private:
 
-	inline static unique_ptr<InputOutputUI>    m_upImportUI;
+	inline static unique_ptr<InputOutputUI>   m_upImportUI;
 	inline static vector<unique_ptr<Wrapper>> m_wrapVector;
-	inline static ThreadPoolTimer              m_timer;
+	inline static ThreadPoolTimer             m_timer;
 
 	/// import ///
 

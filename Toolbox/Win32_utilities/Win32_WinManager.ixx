@@ -15,6 +15,7 @@ export module WinManager;
 import Types;
 import BoolOp;
 import ErrHndl;
+import Wrapper;
 import BaseDialog;
 import BaseWindow;
 import Win32_Util;
@@ -99,12 +100,16 @@ public:
 		bool    const m_bTrackSize;     // if true, winManager sets window size from config file
 	};
 
+	using WIN_MAP = map<RootWinId, WinManager::MAP_ELEMENT>;
+
 private:
 
 	static inline wstring const MONITOR_CONFIG_FILE     = L"MonitorConfigurations.cnf";
 	static inline wstring const WINDOW_CONFIG_FILE_STUB = L"WindowConfiguration";
 
-	static inline unique_ptr<map<RootWinId, MAP_ELEMENT>> m_upMap;
+	static inline unique_ptr<WIN_MAP> m_upMap;
+	static inline unique_ptr<Wrapper> m_upWrapMoveWindow;
+	static inline unique_ptr<Wrapper> m_upWrapShowWindow;
 
 	static inline wstring m_strWindowConfigurationFile { L"" };
 	static inline int     m_iNrOfMonitorConfigurations { 0 };
@@ -112,8 +117,6 @@ private:
 	static inline ScriptErrorHandler::ScriptException m_errorInfo {};
 
 	static void dumpMonitorConfiguration();
-	static void dumpWindowCoordinates(wofstream &, MAP_ELEMENT const&);
-
 	static void addWindow
 	(
 		wstring      const &,
