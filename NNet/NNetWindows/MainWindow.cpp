@@ -652,7 +652,7 @@ void MainWindow::CenterSelection()
 
 void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
-	if ((wParam == VK_SPACE) && (GetKeyState(VK_LBUTTON) & 0x8000) && IsDefined(m_nobIdHighlighted))
+	if ((wParam == VK_SPACE) && (LeftMouseButtonDown()) && IsDefined(m_nobIdHighlighted))
 	{
 		Nob const* pNob { m_pNMRI->GetConstNob(m_nobIdHighlighted) };
 		if (pNob->IsIoLine())

@@ -121,7 +121,16 @@ wstring GetUserName()
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];
     DWORD   bufCharCount { SIZE };
-    ::GetUserName(buffer, & bufCharCount);
+    ::GetUserName(buffer, &bufCharCount);
+    return wstring(buffer);
+}
+
+wstring GetClassName(HWND const hwnd)
+{
+    static int const SIZE { 128 };
+    wchar_t buffer[SIZE];
+    DWORD   bufCharCount { SIZE };
+    ::GetClassName(hwnd, buffer, SIZE);
     return wstring(buffer);
 }
 

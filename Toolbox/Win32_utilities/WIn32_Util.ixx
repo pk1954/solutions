@@ -92,12 +92,16 @@ export inline MONITORINFO GetMonitorInfo(HMONITOR hMonitor)
     return monInfo;
 }
 
+export inline bool CtrlKeyDown()         { return GetAsyncKeyState(VK_CONTROL) & 0x01; }
+export inline bool LeftMouseButtonDown() { return GetKeyState(VK_LBUTTON) & 0x8000; }
+
 export void MakeLayered(HWND const, bool const, COLORREF const, UINT const);
 
 export DWORD     GetNrOfCPUs();
 export ULONGLONG GetPhysicalMemory();
 export wstring   GetComputerName();
 export wstring   GetUserName();
+export wstring   GetClassName(HWND const);
 export void      SetApplicationTitle(HWND const, wstring const&, wstring const & = L"");
 export void      StdOutConsole();
 export bool      EscapeKeyPressed();

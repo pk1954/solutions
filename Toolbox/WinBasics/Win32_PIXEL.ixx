@@ -19,8 +19,6 @@ export wostream & operator<< (wostream &, RECT const &);
 
 export RECT ScrReadRECT(Script &);
 
-export inline bool CtrlKeyDown() { return GetAsyncKeyState(VK_CONTROL) & 0x01; }
-
 export inline bool operator== (RECT const & a, RECT const & b) 
 { 
     return (a.left == b.left) && (a.top == b.top) && (a.right == b.right) && (a.bottom == b.bottom); 
