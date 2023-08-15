@@ -11,6 +11,7 @@ export module NNetCommands:InsertTrackCommand;
 
 import Types;
 import IoUtil;
+import Signals;
 import :NNetCommand;
 import NNetModel;
 

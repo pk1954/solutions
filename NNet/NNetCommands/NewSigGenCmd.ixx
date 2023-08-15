@@ -11,6 +11,7 @@ module;
 export module NNetCommands:NewSigGenCmd;
 
 import IoUtil;
+import Signals;
 import WinManager;
 import Win32_Util_Resource;
 import :NNetCommand;

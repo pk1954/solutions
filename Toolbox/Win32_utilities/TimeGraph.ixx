@@ -4,6 +4,7 @@
 
 module;
 
+#include <d2d1.h>
 #include <cassert>
 #include <compare>
 #include <math.h>

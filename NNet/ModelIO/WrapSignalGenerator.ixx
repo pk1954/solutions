@@ -13,6 +13,7 @@ import Wrapper;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;
+import Signals;
 import IoUtil;
 
 using std::wstring;

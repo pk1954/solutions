@@ -157,9 +157,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="BreakCommand.ixx" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Command.ixx" />

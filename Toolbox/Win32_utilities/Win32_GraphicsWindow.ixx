@@ -12,6 +12,7 @@ module;
 
 export module GraphicsWindow;
 
+import Color;
 import Direct2D;
 import Types;
 import BaseWindow;

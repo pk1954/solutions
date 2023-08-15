@@ -10,6 +10,7 @@ export module WrapActiveSigGen;
 
 import Wrapper;
 import Script;
+import Signals;
 import NNetModelIO;
 import NNetModel;
 

@@ -4,6 +4,7 @@
 
 module;
 
+#include <tchar.h>
 #include <cassert>
 #include <string>
 #include <sstream>
@@ -17,6 +18,8 @@ import Types;
 
 using std::wostringstream;
 using std::wstring;
+
+export inline LPCWSTR COMPILE_TIMESTAMP { _T(__DATE__) L" " _T(__TIME__) };
 
 export inline LONG_PTR GetUserDataPtr(HWND hwnd)
 {

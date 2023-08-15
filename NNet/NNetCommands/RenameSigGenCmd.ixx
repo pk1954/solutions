@@ -12,6 +12,7 @@ module;
 export module NNetCommands:RenameSigGenCmd;
 
 import EditLineBox;
+import Signals;
 import :NNetCommand;
 
 export class RenameSigGenCmd : public NNetCommand

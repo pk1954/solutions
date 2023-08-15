@@ -90,7 +90,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_performanceObservable, 
 		& m_dynamicModelObservable
 	);
-	NNetCommand::Initialize(&m_sound);
+	BaseCommand::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 
 	MonitorScrollState* pMonitorScrollState { NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };

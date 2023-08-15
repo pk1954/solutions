@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:AddSigGen2MonitorCmd;
 
+import Signals;
 import :NNetCommand;
 
 export class AddSigGen2MonitorCmd : public NNetCommand

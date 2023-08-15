@@ -4,6 +4,7 @@
 
 module;
 
+#include <bit>
 #include <string>
 #include "Windows.h"
 

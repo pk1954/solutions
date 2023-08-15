@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:CoordAnimationCmd;
 
+import Uniform2D;
 import :AnimationCmd;
 
 using U2DAnimationCmd = AnimationCmd<Uniform2D<MicroMeter>>;

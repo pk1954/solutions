@@ -12,6 +12,7 @@ import Wrapper;
 import Types;
 import IoUtil;
 import NNetModel;
+import Signals;
 import :NNetCommand;
 
 export class DelSensorCmd : public NNetCommand

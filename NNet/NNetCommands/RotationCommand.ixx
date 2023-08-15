@@ -14,7 +14,7 @@ public:
 
 	bool CombineCommands(BaseCommand const& src) override
 	{
-		RotationCommand const& srcCmd{ static_cast<RotationCommand const&>(src) };
+		RotationCommand const& srcCmd { static_cast<RotationCommand const&>(src) };
 		m_radDelta += srcCmd.m_radDelta;
 		return true;
 	}

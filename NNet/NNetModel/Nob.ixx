@@ -16,6 +16,7 @@ module;
 export module NNetModel:Nob;
 
 import BoolOp;
+import Color;
 import Types;
 import DrawContext;
 import :NNetParameters;

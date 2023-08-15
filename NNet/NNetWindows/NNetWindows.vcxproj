@@ -645,6 +645,9 @@
     <ProjectReference Include="..\NNetSignals\NNetSignals.vcxproj">
       <Project>{552a4922-9660-4144-9220-7f0d4e95a97d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Signals\Signals.vcxproj">
+      <Project>{01f78e78-6cee-426b-adab-5c30d825201f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:AddSensorCmd;
 
+import Signals;
 import :NNetCommand;
 
 export class AddSensorCmd : public NNetCommand

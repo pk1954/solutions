@@ -12,6 +12,8 @@
 
 import Win32_Util_Resource;
 import Win32_Util;
+import Util;
+import IoConstants;
 import Trace;
 import Stopwatch;
 import MessagePump;
@@ -59,8 +61,8 @@ int APIENTRY wWinMain
 	wcout << COMMENT_START << L"Application start at " << GetCurrentDateAndTime();
 	wcout << COMMENT_START << L"Version:       "       << AppTitle::PRODUCT_NAME  << endl;
 	wcout << COMMENT_START << L"Build date:    "       << COMPILE_TIMESTAMP       << endl;
-	wcout << COMMENT_START << L"Computer name: "       << ::GetComputerName() << endl;
-	wcout << COMMENT_START << L"User name:     "       << ::GetUserName()     << endl;
+	wcout << COMMENT_START << L"Computer name: "       << ::GetComputerName()     << endl;
+	wcout << COMMENT_START << L"User name:     "       << ::GetUserName()         << endl;
 
 	upApp = make_unique<NNetAppWindow>(AppTitle::PRODUCT_NAME);
 

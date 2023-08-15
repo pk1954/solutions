@@ -9,6 +9,7 @@ module;
 export module NNetCommands:DelMicroSensorCmd;
 
 import IoUtil;
+import Signals;
 import :NNetCommand;
 
 export class DelMicroSensorCmd : public NNetCommand

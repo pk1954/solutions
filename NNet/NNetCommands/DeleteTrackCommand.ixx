@@ -10,6 +10,7 @@ module;
 export module NNetCommands:DeleteTrackCommand;
 
 import IoUtil;
+import Signals;
 import :NNetCommand;
 
 export class DeleteTrackCommand: public NNetCommand

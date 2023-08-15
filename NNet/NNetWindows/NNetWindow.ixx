@@ -4,17 +4,21 @@
 
 module;
 
+#include <memory>
 #include <compare>
 #include <Windows.h>
+#include <d2d1helper.h>
 
 export module NNetWin32:NNetWindow;
 
 import Types;
 import Scale;
+import DrawContext;
 import Uniform2D;
 import D2D_DrawContext;
 import GraphicsWindow;
 import NNetModel;
+import Signals;
 import :NNetController;
 
 using std::unique_ptr;

@@ -10,6 +10,7 @@ module;
 module AboutBox;
 
 import Win32_Util_Resource;
+import Win32_Util;
 import Win32_Controls;
 import Win32_PIXEL;
 import Types;

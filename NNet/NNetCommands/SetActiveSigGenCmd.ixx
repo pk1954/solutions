@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands:SetActiveSigGenCmd;
 
+import Signals;
 import :NNetCommand;
 
 export class SetActiveSigGenCmd : public NNetCommand

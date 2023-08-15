@@ -4,6 +4,7 @@
 
 module;
 
+#include <bit>
 #include <functional>
 #include <memory>
 #include <array>

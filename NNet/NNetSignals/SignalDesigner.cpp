@@ -4,6 +4,7 @@
 
 module;
 
+#include <bit>
 #include <memory>
 #include <cassert>
 #include <string>

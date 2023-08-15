@@ -4,6 +4,7 @@
 
 module;
 
+#include <dwrite.h>
 #include <memory>
 #include <string>
 #include <iostream>

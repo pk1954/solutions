@@ -4,6 +4,7 @@
 
 module;
 
+#include <d2d1.h> 
 #include <sstream> 
 #include <iomanip>
 #include <dwrite.h>

@@ -4,6 +4,7 @@
 
 module;
 
+#include <d2d1helper.h>
 #include <cassert>
 #include <compare>
 #include <math.h>
@@ -17,6 +18,7 @@ import PixFpDimension;
 import Direct2D;
 import TimeGraph;
 import NNetModel;
+import Signals;
 
 export class NNetTimeGraph : public TimeGraph
 {

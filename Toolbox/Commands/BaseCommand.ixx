@@ -26,6 +26,8 @@ export class BaseCommand
 {
 public:
 
+    BaseCommand();
+
     virtual ~BaseCommand() = default;
 
     virtual void UpdateUI() = 0;
@@ -36,38 +38,19 @@ public:
 
     virtual void NextScriptCommand() const = 0;
 
-    static void Initialize(Sound* const pSound)
-    {
-        m_pSound = pSound;
-    }
+    static void Initialize(Sound* const);
 
-    void TargetReached()
-    {
-        if (m_targetReachedFunc)
-            (m_targetReachedFunc)();
-    }
+    void TargetReached();
 
-    virtual void Do()
-    {
-        m_uiPhase = 0;
-        doPhase();
-    }
-
-    virtual void Undo()
-    {
-        m_uiPhase = Cast2UnsignedInt(m_phases.size());
-        undoPhase();
-    }
+    virtual void Do();
+    virtual void Undo();
 
     static void PlaySound(wstring const& sound) { m_pSound->Play(sound); }
     static void PlayWarningSound() { m_pSound->Warning(); }
 
 protected:
 
-    void AddPhase(unique_ptr<BaseCommand> upCmd)
-    {
-        m_phases.push_back(move(upCmd));
-    }
+    void AddPhase(unique_ptr<BaseCommand>);
 
     virtual void BlockUI()   const = 0;
     virtual void UnblockUI() const = 0;
@@ -77,40 +60,10 @@ protected:
 
 private:
 
-    void doPhase() // runs in UI thread
-    {
-        if (!m_phases.empty())
-        {
-            if (m_uiPhase == 0)
-                BlockUI();
-            if (m_uiPhase < m_phases.size())
-            {
-                BaseCommand* const pAnimCmd { m_phases[m_uiPhase++].get() };
-                pAnimCmd->m_targetReachedFunc = [&]() { doPhase(); };
-                pAnimCmd->Do();
-            }
-            else
-                UnblockUI();
-        }
-        UpdateUI();
-    }
+    void doPhase  (); // runs in UI thread
+    void undoPhase(); // runs in UI thread
 
-    void undoPhase() // runs in UI thread
-    {
-        if (m_uiPhase >= m_phases.size())
-            BlockUI();
-        if (m_uiPhase > 0)
-        {
-            BaseCommand& animCmd { *m_phases[--m_uiPhase] };
-            animCmd.m_targetReachedFunc = [&]() { undoPhase(); };
-            animCmd.Undo();
-        }
-        else
-            UnblockUI();
-        UpdateUI();
-    }
-
-    function<void()>                m_targetReachedFunc { nullptr };
+    function<void(BaseCommand*)>    m_targetReachedFunc { nullptr };
     vector<unique_ptr<BaseCommand>> m_phases            { };
     unsigned int                    m_uiPhase           { 0 };
 

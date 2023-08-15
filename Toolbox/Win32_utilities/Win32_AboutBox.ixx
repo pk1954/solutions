@@ -6,15 +6,12 @@ module;
 
 #include <string>
 #include <Windows.h>
-#include <tchar.h>
 
 export module AboutBox;
 
 import StdDialogBox;
 
 using std::wstring;
-
-export inline LPCWSTR COMPILE_TIMESTAMP{ _T(__DATE__) L" " _T(__TIME__) };
 
 export class AboutBox : public StdDialogBox
 {

@@ -4,6 +4,7 @@
 
 module;
 
+#include <d2d1helper.h>
 #include <string>
 #include <algorithm>
 
