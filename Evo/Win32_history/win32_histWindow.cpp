@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "Windowsx.h"
 #include "strsafe.h"

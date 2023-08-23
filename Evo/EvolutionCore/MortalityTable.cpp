@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
+
 #include "debug.h"
 #include "MortalityTable.h"
 

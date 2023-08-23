@@ -2,7 +2,6 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
 #include "TextBuffer.h"
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"

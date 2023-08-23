@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "Resource.h"
 #include "config.h"
 #include "BoolOp.h"

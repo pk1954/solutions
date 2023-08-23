@@ -1,7 +1,6 @@
 // EvolutionTypes.cpp
 //
 
-#include "stdafx.h"
 #include <array>
 #include <unordered_map>
 #include "strategy.h"

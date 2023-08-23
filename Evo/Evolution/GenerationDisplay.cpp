@@ -2,7 +2,7 @@
 //
 // Evolution
 
-#include "stdafx.h"
+
 #include "win32_baseRefreshRate.h"
 #include "win32_status.h"
 #include "EvolutionCore.h"

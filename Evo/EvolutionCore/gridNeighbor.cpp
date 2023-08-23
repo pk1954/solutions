@@ -1,7 +1,7 @@
 // gridNeighbor.cpp :
 //
 
-#include "stdafx.h"
+
 #include "gridPoint.h"
 #include "gridRect.h"
 #include "grid_model.h"

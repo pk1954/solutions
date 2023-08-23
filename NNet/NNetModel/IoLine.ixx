@@ -29,6 +29,7 @@ public:
 		m_posDir(MicroMeterPosDir(upCenter, Radian::NULL_VAL()))
 	{}
 
+	void Dump() const;
 	void Check() const;
 
 	bool CompStep() final { return false; }

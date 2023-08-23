@@ -2,7 +2,7 @@
 //
 // Evolution
 
-#include "stdafx.h"
+
 #include "WinUser.h"
 #include "config.h"
 #include "resource.h"

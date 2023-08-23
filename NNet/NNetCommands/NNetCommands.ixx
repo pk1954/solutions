@@ -46,7 +46,6 @@ export import :InsertNeuronCommand;
 export import :InsertTrackCommand;
 export import :IoLinesAnimation;
 export import :LockDirectionCmd;
-export import :MakeConnAnimation;
 export import :MoveNobCommand;
 export import :MoveSelectionCommand;
 export import :MoveSensorCmd;

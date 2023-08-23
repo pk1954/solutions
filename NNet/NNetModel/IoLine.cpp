@@ -15,6 +15,22 @@ import :IoConnector;
 import :PipeList;
 import :Pipe;
 
+using std::wcout;
+using std::endl;
+
+void IoLine::Dump() const
+{
+	Nob::Dump();
+	wcout << SPACE;
+	if (HasParentNob())
+		wcout << L"connected";
+	else if (GetDir().IsNull())
+		wcout << L"standard";
+	else
+		wcout << L"locked";
+	wcout << endl;
+}
+
 void IoLine::Check() const
 {
 	PosNob::Check();

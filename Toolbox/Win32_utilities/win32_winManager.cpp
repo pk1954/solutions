@@ -114,7 +114,7 @@ public:
         {
             if ((value.m_bTrackPosition) && (value.m_hwnd != nullptr))
                 out << NAME << SPACE
-                    << value.m_wstr
+                    << value.m_wstr << SPACE
                     << (
                         IsWindowVisible(value.m_hwnd)
                         ? (IsZoomed(value.m_hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")

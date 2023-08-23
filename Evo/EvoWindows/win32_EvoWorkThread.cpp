@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include <sstream> 
 #include "gridRect.h"
 #include "SCRIPT.H"

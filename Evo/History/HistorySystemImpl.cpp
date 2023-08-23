@@ -1,7 +1,7 @@
 // HistorySystemImpl.cpp
 //
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "hist_slot.h"
 #include "HistSlotNr.h"

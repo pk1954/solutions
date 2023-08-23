@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "stdafx.h"
+
 #include "dump.h"
 #include "gridPoint.h"
 #include "gridField.h"

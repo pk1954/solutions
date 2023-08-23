@@ -1,7 +1,7 @@
 // food.cpp :
 //
 
-#include "stdafx.h"
+
 #include <assert.h>
 #include <limits.h>
 #include "config.h"

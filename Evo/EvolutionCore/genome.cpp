@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "debug.h"
 #include "config.h"

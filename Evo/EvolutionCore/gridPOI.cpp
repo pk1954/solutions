@@ -1,7 +1,7 @@
 // gridPOI.cpp
 //
 
-#include "stdafx.h"
+
 #include "EvolutionCoreImpl.h"
 #include "gridPOI.h"
 

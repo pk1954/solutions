@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#include "stdafx.h"
+
 #include <sstream> 
 #include "SCRIPT.H"
 #include "EventInterface.h"

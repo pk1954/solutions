@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#include "stdafx.h"
+
 #include "commctrl.h"
 #include "win32_util.h"
 #include "win32_stopwatch.h"

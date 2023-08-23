@@ -2,7 +2,6 @@
 //
 // EvolutionCoreInterface
 
-#include "stdafx.h"
 #include <algorithm>  // min/max templates
 #include "gridPoint.h"
 #include "GridDimensions.h"

@@ -1,7 +1,7 @@
 // win32_rightColumn.cpp
 //
 
-#include "stdafx.h"
+
 #include <iomanip>     
 #include "win32_memorySlot.h"
 #include "win32_rightColumn.h"

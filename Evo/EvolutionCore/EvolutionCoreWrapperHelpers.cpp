@@ -1,7 +1,6 @@
 // EvolutionCoreWrapperHelpers.cpp : wrapper functions for unit tests and scripting of application
 //
 
-#include "stdafx.h"
 #include "assert.h"
 #include "config.h"
 #include "ERRHNDL.H"

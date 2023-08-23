@@ -2,7 +2,6 @@
 //
 // D3D
 
-#include "stdafx.h"
 #include "assert.h"
 #include <d3d9.h>
 #include "util.h"

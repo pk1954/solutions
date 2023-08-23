@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
+
 #include "gridRect.h"
 
 void Apply2Rect

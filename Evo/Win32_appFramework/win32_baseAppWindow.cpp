@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#include "stdafx.h"
+
 #include <chrono>
 #include "trace.h"
 #include "HistorySystem.h"

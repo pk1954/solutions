@@ -2,7 +2,6 @@
 //
 // EvoHistGlue
 
-#include "stdafx.h"
 #include <unordered_map>
 #include <fstream>
 #include "EvoGenerationCmd.h"

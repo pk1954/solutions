@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "win32_script.h"
 #include "win32_WorkThread.h"

@@ -1,7 +1,6 @@
 // config.cpp : 
 //
 
-#include "stdafx.h"
 #include <fstream>
 #include <string>
 #include "assert.h"

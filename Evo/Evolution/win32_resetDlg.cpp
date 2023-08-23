@@ -2,7 +2,7 @@
 //
 // Evolution
 
-#include "stdafx.h"
+
 #include "Resource.h"
 #include "GridDimensions.h"
 #include "win32_util.h"

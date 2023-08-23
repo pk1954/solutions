@@ -1,7 +1,7 @@
 // HistorySystem.cpp
 //
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "HistorySystem.h"
 #include "HistorySystemImpl.h"

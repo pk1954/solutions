@@ -3,7 +3,7 @@
 // EvolutionCore
 //
 
-#include "stdafx.h"
+
 #include <array>
 #include "GridDimensions.h"
 #include "grid_model.h"

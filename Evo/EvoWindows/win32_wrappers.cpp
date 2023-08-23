@@ -1,7 +1,7 @@
 // win32_wrappers.cpp : wrapper functions for unit tests and scripting of application
 //
 
-#include "stdafx.h"
+
 #include "symtab.h"
 #include "Resource.h"
 #include "EvoGenerationCmd.h"

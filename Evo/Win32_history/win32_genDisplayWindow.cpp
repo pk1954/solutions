@@ -2,7 +2,6 @@
 //
 // Win32_history
 
-#include "stdafx.h"
 #include "strsafe.h"
 #include "Windowsx.h"
 #include "win32_baseWindow.h"
@@ -44,12 +43,12 @@ LRESULT GenDisplayWindow::UserProc( UINT const message, WPARAM const wParam, LPA
             wchar_t szBuffer[ 30 ];
             PAINTSTRUCT ps;
             HDC hDC = BeginPaint( &ps );
-            (void)FillBackground( hDC, CLR_BACK );
-            (void)StringCchPrintf( szBuffer, sizeof( szBuffer ) / sizeof( *szBuffer ), L"%u", m_genDisplay.GetLong( ) );
-            (void)SetTextAlign( hDC, TA_CENTER );
-            (void)SetTextColor( hDC, CLR_TEXT );
-            (void)TextOut( hDC, 25, 0, szBuffer, (int)wcslen( szBuffer ) );
-            (void)EndPaint( &ps );
+            FillBackground( hDC, CLR_BACK );
+            StringCchPrintf( szBuffer, sizeof( szBuffer ) / sizeof( *szBuffer ), L"%u", m_genDisplay.GetLong( ) );
+            SetTextAlign( hDC, TA_CENTER );
+            SetTextColor( hDC, CLR_TEXT );
+            TextOut( hDC, 25, 0, szBuffer, (int)wcslen( szBuffer ) );
+            EndPaint( &ps );
         }
         return FALSE;
 

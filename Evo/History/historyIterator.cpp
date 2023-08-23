@@ -1,6 +1,6 @@
 // historyIterator.cpp
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "hist_slot.h"
 #include "historyCache.h"

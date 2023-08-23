@@ -2,7 +2,6 @@
 //
 // EvoHistGlue
 
-#include "stdafx.h"
 #include "gridPOI.h"
 #include "gridPoint24.h"
 #include "EvoGenerationCmd.h"

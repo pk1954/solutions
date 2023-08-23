@@ -1,7 +1,7 @@
 // win32_leftColumn.cpp
 //
 
-#include "stdafx.h"
+
 #include <iomanip>     
 #include <algorithm>  // min/max templates
 #include "win32_leftColumn.h"

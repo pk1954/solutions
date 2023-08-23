@@ -1,7 +1,7 @@
 // interaction.cpp
 //
 
-#include "stdafx.h"
+
 #include "config.h"
 #include "EvolutionTypes.h"
 #include "individual.h"

@@ -1,7 +1,6 @@
 // d3d_system.cpp
 //
 
-#include "stdafx.h"
 #include <d3d9.h>
 #include <d3dx9core.h>
 #include "win32_util.h"

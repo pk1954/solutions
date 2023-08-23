@@ -1,7 +1,6 @@
 // EvolutionCore.cpp
 //
 
-#include "stdafx.h"
 #include "strategy.h"
 #include "genome.h"
 #include "gridPOI.h"

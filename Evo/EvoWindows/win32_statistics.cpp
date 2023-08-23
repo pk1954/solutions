@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "resource.h"
 #include "Strsafe.h"
 #include "XArray.h"

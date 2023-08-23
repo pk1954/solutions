@@ -2,7 +2,7 @@
 //
 // GDI
 
-#include "stdafx.h"
+
 #include <string.h>
 #include "util.h"
 #include "win32_util.h"

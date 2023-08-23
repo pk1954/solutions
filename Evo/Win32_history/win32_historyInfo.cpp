@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-#include "stdafx.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream> 

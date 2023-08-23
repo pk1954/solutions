@@ -1,6 +1,6 @@
 // history.cpp
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "historyCache.h"
 

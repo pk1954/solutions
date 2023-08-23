@@ -2,7 +2,7 @@
 //
 // Evolutopn
 
-#include "stdafx.h"
+
 
 #include <chrono>
 #include "WinUser.h"

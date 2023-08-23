@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "Windows.h"
 #include "Commdlg.h"
 #include "debug.h"

@@ -1,7 +1,6 @@
 // D3D_driver.cpp
 //
 
-#include "stdafx.h"
 #include <string.h>
 #include <d3d9.h>
 #include <d3dx9core.h>

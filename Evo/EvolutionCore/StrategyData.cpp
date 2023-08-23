@@ -1,7 +1,7 @@
 // StrategyData.cpp : 
 //
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "StrategyData.h"
 

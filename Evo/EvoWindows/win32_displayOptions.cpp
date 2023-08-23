@@ -1,7 +1,7 @@
 // win32_displayOptions.cpp 
 //
 
-#include "stdafx.h"
+
 #include <unordered_map>
 #include <functional>
 #include "Resource.h"

@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
+
 #include "Genome.h"
 #include "GeneType.h"
 

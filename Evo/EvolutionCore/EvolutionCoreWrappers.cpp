@@ -1,7 +1,6 @@
 // EvolutionCoreWrappers.cpp : wrapper functions for unit tests and scripting of application
 //
 
-#include "stdafx.h"
 #include "assert.h"
 #include "script.h"
 #include "symtab.h"

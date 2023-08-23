@@ -1,7 +1,6 @@
 // dump.cpp
 //
 
-#include "stdafx.h"
 #include <fstream>
 #include <iomanip>
 #include "grid_model.h"

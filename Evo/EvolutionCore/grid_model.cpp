@@ -1,7 +1,7 @@
 // grid_model.cpp :
 //
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include <cstdlib> 
 #include <cmath> 

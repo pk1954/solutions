@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "config.h"
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"

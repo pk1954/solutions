@@ -1,7 +1,7 @@
 // win32_infoShape.cpp
 //
 
-#include "stdafx.h"
+
 #include "config.h"
 #include "win32_infoShape.h"
 

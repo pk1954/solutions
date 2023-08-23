@@ -1,7 +1,6 @@
 // d3d_indexBuffer.cpp
 //
 
-#include "stdafx.h"
 #include <assert.h>
 #include <d3d9.h>
 #include "d3d_indexBuffer.h"

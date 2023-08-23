@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include <unordered_map>
 #include "commctrl.h"
 #include "Resource.h"

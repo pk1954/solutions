@@ -2,7 +2,7 @@
 //
 // HistoryInterface
 
-#include "stdafx.h"
+
 #include <unordered_map>
 #include "GenerationCmd.h"
 

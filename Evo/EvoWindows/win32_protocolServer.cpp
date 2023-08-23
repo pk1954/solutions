@@ -2,7 +2,7 @@
 //
 // Win32_utilities
 
-#include "stdafx.h"
+
 #include <sstream>
 #include <iostream>
 #include "EvolutionCore.h"

@@ -1,7 +1,7 @@
 // win32_memorySlot.cpp
 //
 
-#include "stdafx.h"
+
 #include <iomanip>
 #include "win32_memorySlot.h"
 

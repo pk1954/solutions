@@ -2,7 +2,6 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
 #include "Genome.h"
 #include "action.h"
 

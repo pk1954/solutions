@@ -1,7 +1,7 @@
 // win32_individualShape.cpp
 //
 
-#include "stdafx.h"
+
 #include "win32_individualShape.h"
 
 PixelRectSize IndividualShape::MinimalSize( EvolutionCore const * const pCore )  

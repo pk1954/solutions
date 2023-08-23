@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#include "stdafx.h"
+
 #include "grid_model.h"
 #include "gridBrush.h"
 

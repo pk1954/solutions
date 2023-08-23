@@ -2,7 +2,6 @@
 //
 // EvoHistGlue
 
-#include "stdafx.h"
 #include "config.h"
 #include "win32_util.h"
 #include "HistoryGeneration.h"

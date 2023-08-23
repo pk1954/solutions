@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "EvolutionCore.h"
 #include "GridDimensions.h"
 #include "EvoPixelCoords.h"

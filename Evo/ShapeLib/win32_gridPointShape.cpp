@@ -1,7 +1,7 @@
 // win32_gridPointShape.cpp
 //
 
-#include "stdafx.h"
+
 #include "config.h"
 #include "win32_textDisplay.h"
 #include "win32_gridPointShape.h"

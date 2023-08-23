@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "Strsafe.h"
 #include <chrono>
 #include "util.h"

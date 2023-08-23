@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "stdafx.h"
+
 #include "win32_shape.h"
 
 void Shape::Draw

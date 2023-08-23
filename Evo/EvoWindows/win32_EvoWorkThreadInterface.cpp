@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include "Resource.h"
 #include "gridPOI.h"

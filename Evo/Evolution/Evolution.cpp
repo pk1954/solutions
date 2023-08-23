@@ -2,7 +2,6 @@
 //
 // Evolution
 
-#include "stdafx.h"
 #include "Resource.h"
 #include "win32_messagePump.h"
 #include "win32_evoAppWindow.h"

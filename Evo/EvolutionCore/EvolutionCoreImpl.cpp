@@ -1,7 +1,6 @@
 // EvolutionCoreImpl.cpp
 //
 
-#include "stdafx.h"
 #include "assert.h"
 #include <array>
 #include "dump.h"

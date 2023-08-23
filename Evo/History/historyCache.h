@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "stdafx.h"
+
 #include "assert.h"
 #include <vector>
 #include "observerInterface.h"

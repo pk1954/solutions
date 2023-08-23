@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#include "stdafx.h"
+
 #include "symtab.h"
 #include "SCRIPT.H"
 #include "Resource.h"

@@ -2,7 +2,7 @@
 //
 // win32_appFramework
 
-#include "stdafx.h"
+
 #include "win32_speedControl.h"
 
 StatusBar     * SpeedControl::m_pStatusBar     = nullptr;
