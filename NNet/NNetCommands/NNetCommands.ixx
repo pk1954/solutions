@@ -8,6 +8,7 @@ module;
 
 export module NNetCommands;
 
+export import :Add2Connector;
 export import :AddMicroSensorCmd;
 export import :AddModuleCommand;
 export import :AddNobsCommand;
@@ -18,7 +19,6 @@ export import :AnimationCmd;
 export import :ArrowAnimationCmd;
 export import :AttachSigGen2ConCmd;
 export import :AttachSigGen2LineCmd;
-export import :ConnAnimationCommand;
 export import :Connect2NeuronCommand;
 export import :Connect2NeuronCommand;
 export import :ConnectCreateForkCmd;

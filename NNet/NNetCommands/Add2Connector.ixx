@@ -1,4 +1,4 @@
-// ConnAnimationCommand.ixx
+// Add2Connector.ixx
 //
 // NNetCommands
 
@@ -7,16 +7,16 @@ module;
 #include <vector>
 #include <iostream>
 
-export module NNetCommands:ConnAnimationCommand;
+export module NNetCommands:Add2Connector;
 
 import :NNetCommand;
 
 using std::vector;
 
-export class ConnAnimationCommand : public NNetCommand
+export class Add2Connector : public NNetCommand
 {
 public:
-    ConnAnimationCommand(NobId const, NobId const);
+    Add2Connector(NobId const, NobId const);
 
     void Do  () final;
     void Undo() final;
@@ -30,7 +30,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId1 << nobId2 << endl;
-		PushCommand(make_unique<ConnAnimationCommand>(nobId1, nobId2));
+		PushCommand(make_unique<Add2Connector>(nobId1, nobId2));
         PlaySound(L"SNAP_IN_SOUND");
     }
 
@@ -45,7 +45,7 @@ private:
         {
             NobId const id1 { ScrReadNobId(script) };
             NobId const id2 { ScrReadNobId(script) };
-            ConnAnimationCommand::Push(id1, id2);
+            Add2Connector::Push(id1, id2);
         }
     } m_wrapper { NAME };
 
@@ -56,20 +56,6 @@ private:
     unique_ptr<IoConnector> m_upIoConnector2;
     unique_ptr<IoConnector> m_upIoConnectorResult;
 
-    void add2IoLines(NobId const, vector<IoLine*>&);
-
-
-    void Align
-    (
-        MicroMeterPnt   const&,
-        MicroMeterPnt   const&,
-        vector<IoLine*> const&
-    );
-
-    void Align
-    (
-        MicroMeterLine  const&,
-        MicroMeter      const,
-        vector<IoLine*> const&
-    );
+    void add2IoLines(NobId const,     vector<IoLine*> &);
+    void align(MicroMeterLine const&, vector<IoLine*> const&);
 };

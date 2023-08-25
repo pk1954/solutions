@@ -1,4 +1,4 @@
-// ConnAnimationCommand.cpp
+// Add2Connector.cpp
 //
 // NNetCommands
 
@@ -9,7 +9,7 @@ module;
 #include <memory>
 #include <vector>
 
-module NNetCommands:ConnAnimationCommand;
+module NNetCommands:Add2Connector;
 
 import Types;
 import NNetModel;
@@ -18,7 +18,7 @@ using std::make_unique;
 using std::ranges::sort;
 using std::vector;
 
-ConnAnimationCommand::ConnAnimationCommand
+Add2Connector::Add2Connector
 (
     NobId const id1,
     NobId const id2
@@ -46,14 +46,7 @@ ConnAnimationCommand::ConnAnimationCommand
         }
     );
 
-//    vector<MicroMeterPoint> xxxxxx    MicroMeterPntVector umPntVector(ioLines);
-
-    //umPntVector.Align(umLine, NEURON_RADIUS * 2.0f);
-
-    Align(umLine, NEURON_RADIUS * 2.0f, ioLines);
-
-    //for (size_t i = 0; i < umPntVector.Size(); ++i)
-    //    ioLines[i]->SetPos(umPntVector.GetPosDir(i).GetPos());
+    align(umLine, ioLines);
 
     if (ioLines.front()->IsInputLine())
         m_upIoConnectorResult = make_unique<InputConnector>(move(ioLines));
@@ -61,7 +54,7 @@ ConnAnimationCommand::ConnAnimationCommand
         m_upIoConnectorResult = make_unique<OutputConnector>(move(ioLines));
 }
 
-void ConnAnimationCommand::Do()
+void Add2Connector::Do()
 {
     NNetCommand::Do();
 
@@ -76,7 +69,7 @@ void ConnAnimationCommand::Do()
     m_pNMWI->Push2Model(move(m_upIoConnectorResult));
 }
 
-void ConnAnimationCommand::Undo()
+void Add2Connector::Undo()
 {
     m_pNMWI->DumpModel(__FILE__, __LINE__);
 
@@ -98,7 +91,7 @@ void ConnAnimationCommand::Undo()
     m_pNMWI->DumpModel(__FILE__, __LINE__);
 }
 
-void ConnAnimationCommand::add2IoLines
+void Add2Connector::add2IoLines
 (
     NobId const      idNob,
     vector<IoLine*> &ioLines
@@ -117,33 +110,22 @@ void ConnAnimationCommand::add2IoLines
         assert(false);
 }
 
-void ConnAnimationCommand::Align
-(
-    MicroMeterPnt   const& umPntStart, 
-    MicroMeterPnt   const& umPntOffset,
-    vector<IoLine*> const& ioLines
-)
-{
-    MicroMeterPnt umPnt { umPntStart };
-    for (auto& elem : ioLines)
-    {
-        elem->SetPos(umPnt);
-        umPnt += umPntOffset;
-    }
-}
-
-void ConnAnimationCommand::Align
+void Add2Connector::align
 (
     MicroMeterLine  const& umLine, 
-    MicroMeter      const  umDist,
     vector<IoLine*> const& ioLines
 )
 {
+    MicroMeter    const umDist             { NEURON_RADIUS * 2.0f };        
     MicroMeterPnt const umVector           { umLine.GetVector() };
     float         const fGapCount          { Cast2Float(ioLines.size() - 1) };
     MicroMeter    const umLineLengthTarget { umDist * fGapCount };
     MicroMeterPnt const umPntSingleVector  { umVector.ScaledTo(umDist) };
     MicroMeterPnt const umPntLineTarget    { umVector.ScaledTo(umLineLengthTarget) };
-    MicroMeterPnt const umPntTargetStart   { umLine.GetCenter() - umPntLineTarget * 0.5f };
-    Align(umPntTargetStart, umPntSingleVector, ioLines);
+    MicroMeterPnt       umPnt              { umLine.GetCenter() - umPntLineTarget * 0.5f };
+    for (auto& elem : ioLines)
+    {
+        elem->SetPos(umPnt);
+        umPnt += umPntSingleVector;
+    }
 }

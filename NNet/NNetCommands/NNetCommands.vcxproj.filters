@@ -36,7 +36,7 @@
     <ClCompile Include="AttachSigGen2LineCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnAnimationCommand.ixx">
+    <ClCompile Include="Add2Connector.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Connect2NeuronCommand.ixx">
@@ -135,7 +135,7 @@
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConnAnimationCommand.cpp">
+    <ClCompile Include="Add2Connector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CreateForkCommand.ixx">
