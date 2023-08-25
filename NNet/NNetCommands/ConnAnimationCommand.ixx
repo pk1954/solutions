@@ -9,7 +9,6 @@ module;
 
 export module NNetCommands:ConnAnimationCommand;
 
-import :LockDirectionCmd;
 import :NNetCommand;
 
 using std::vector;
@@ -58,4 +57,19 @@ private:
     unique_ptr<IoConnector> m_upIoConnectorResult;
 
     void add2IoLines(NobId const, vector<IoLine*>&);
+
+
+    void Align
+    (
+        MicroMeterPnt   const&,
+        MicroMeterPnt   const&,
+        vector<IoLine*> const&
+    );
+
+    void Align
+    (
+        MicroMeterLine  const&,
+        MicroMeter      const,
+        vector<IoLine*> const&
+    );
 };

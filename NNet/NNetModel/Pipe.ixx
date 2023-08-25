@@ -74,7 +74,7 @@ public:
 	size_t      GetNrOfSegments() const { return getSegments().Size(); }
 
 	void          RotateNob(MicroMeterPnt const&, Radian const) final { /* Pipe dir defined by endpoints */ }
-	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
+//	void          SetDir   (Radian const)                       final { /* Pipe dir defined by endpoints */ };
 	void          Reconnect()                                   final { /* nothing to connect */ };
 
 	Radian        GetDir()       const final { return Vector2Radian(GetVector()); };

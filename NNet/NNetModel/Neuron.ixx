@@ -27,9 +27,6 @@ export class Neuron : public PosNob
 {
 public:
 	Neuron(MicroMeterPnt const&);
-	//Neuron(Neuron const&);
-
-	//Neuron& operator=(Neuron const&); // copy assignment operator
 
 	~Neuron() override = default;
 
@@ -43,7 +40,6 @@ public:
 
 	void StopOnTrigger(tBoolOp const op) { ApplyOp(m_bStopOnTrigger, op); }
 
-	void          SetDir(Radian const) final { /* empty */ };
 	void          ClearDynamicData()   final;
 	mV            GetPotential() const final;
 	MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }

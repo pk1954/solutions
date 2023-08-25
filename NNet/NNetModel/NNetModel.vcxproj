@@ -38,10 +38,6 @@
     <ClCompile Include="IoLinePair.ixx" />
     <ClCompile Include="Knot.cpp" />
     <ClCompile Include="Knot.ixx" />
-    <ClCompile Include="MicroMeterPntVector.cpp" />
-    <ClCompile Include="MicroMeterPointVector.ixx" />
-    <ClCompile Include="MicroMeterPosDir.cpp" />
-    <ClCompile Include="MicroMeterPosDir.ixx" />
     <ClCompile Include="MicroSensor.cpp" />
     <ClCompile Include="MicroSensor.ixx" />
     <ClCompile Include="Model.cpp" />

@@ -63,9 +63,6 @@
     <ClCompile Include="InsertTrackCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IoLinesAnimation.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MoveNobCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,16 +114,10 @@
     <ClCompile Include="SetActiveSigGenCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetNobCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SetParameterCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SetSigGenStaticDataCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SingleNobAnimation.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SizeSelectionCmd.ixx">
@@ -178,9 +169,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SelectAllConnectedCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LockDirectionCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetCommandStack.ixx">

@@ -21,7 +21,6 @@ import Types;
 import DrawContext;
 import :NNetParameters;
 import :tHighlight;
-import :MicroMeterPosDir;
 import :MicroSensor;
 import :NobType;
 import :NobId;
@@ -62,16 +61,11 @@ public:
 	bool operator==(Nob const &) const;
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };
 
-	virtual void SetDir(Radian const );
-
 	virtual void Recalc     ()                        = 0;
 	virtual void SetPosNoFix(MicroMeterPnt    const&) = 0;
-	virtual void SetPosDir  (MicroMeterPosDir const&);
 	virtual void AppendMenuItems(AddMenuFunc const&) const;
 
 	void SetPos(MicroMeterPnt const&);
-
-	MicroMeterPosDir GetPosDir() { return MicroMeterPosDir(GetPos(), GetDir());	};
 
 	virtual bool          IsIncludedIn(MicroMeterRect const &) const { assert(false); return false; }
 	virtual bool          Includes    (MicroMeterPnt  const &) const { assert(false); return false; }

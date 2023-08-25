@@ -126,8 +126,6 @@
     <ClCompile Include="InsertKnotCommand.ixx" />
     <ClCompile Include="InsertNeuronCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
-    <ClCompile Include="IoLinesAnimation.ixx" />
-    <ClCompile Include="LockDirectionCmd.ixx" />
     <ClCompile Include="MoveNobCommand.ixx" />
     <ClCompile Include="MoveSelectionCommand.ixx" />
     <ClCompile Include="MoveSensorCmd.ixx" />
@@ -150,10 +148,8 @@
     <ClCompile Include="SelectAllConnectedCmd.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SetActiveSigGenCmd.ixx" />
-    <ClCompile Include="SetNobCommand.ixx" />
     <ClCompile Include="SetParameterCommand.ixx" />
     <ClCompile Include="SetSigGenStaticDataCmd.ixx" />
-    <ClCompile Include="SingleNobAnimation.ixx" />
     <ClCompile Include="SizeSelectionCmd.ixx" />
     <ClCompile Include="SizeSensorCmd.ixx" />
     <ClCompile Include="SplitNeuronCmd.ixx" />

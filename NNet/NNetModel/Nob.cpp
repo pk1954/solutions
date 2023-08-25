@@ -20,7 +20,6 @@ import IoUtil;
 import :tHighlight;
 import :NNetColors;
 import :NNetParameters;
-import :MicroMeterPosDir;
 import :NobType;
 
 using std::min;
@@ -61,17 +60,6 @@ void Nob::SetPos(MicroMeterPnt const& umPos)
 	SetPosNoFix(umPos);
 	Recalc();
 }
-
-void Nob::SetDir(Radian const radian)
-{ 
-	RotateNob(GetPos(), radian - GetDir()); 
-};
-
-void Nob::SetPosDir(MicroMeterPosDir const & umPosDir) 
-{
-	SetDir(umPosDir.GetDir());
-	SetPos(umPosDir.GetPos());
-};
 
 Color Nob::GetInteriorColor(mV const voltage) const
 {

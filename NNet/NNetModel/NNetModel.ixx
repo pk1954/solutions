@@ -16,8 +16,6 @@ export import :IoConnector;
 export import :IoLine;
 export import :IoLinePair;
 export import :Knot;
-export import :MicroMeterPntVector;
-export import :MicroMeterPosDir;
 export import :MicroSensor;
 export import :Model;
 export import :ModelDescription;

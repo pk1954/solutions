@@ -11,7 +11,6 @@ export module NNetModel:IoLine;
 
 import Types;
 import :NNetParameters;
-import :MicroMeterPosDir;
 import :NobType;
 import :PosNob;
 import :Nob;
@@ -26,7 +25,7 @@ public:
 
 	IoLine(MicroMeterPnt const & upCenter, NobType const type)
 	  : PosNob(type),
-		m_posDir(MicroMeterPosDir(upCenter, Radian::NULL_VAL()))
+		m_pos(upCenter)
 	{}
 
 	void Dump() const;
@@ -35,81 +34,33 @@ public:
 	bool CompStep() final { return false; }
 
 	MicroMeter    GetExtension() const final { return NEURON_RADIUS; }
-	MicroMeterPnt GetPos()       const final { return m_posDir.GetPos(); }
+	MicroMeterPnt GetPos()       const final { return m_pos; }
 	Radian        GetDir()       const final;
 
+	void SetPosNoFix(MicroMeterPnt const& pos) final { m_pos = pos; }
+
 	void Recalc     ()                                   final;
-	void SetPosNoFix(MicroMeterPnt const&)               final;
-	void SetDir     (Radian const)                       final;
 	void MoveNob    (MicroMeterPnt const&)               final;
 	void RotateNob  (MicroMeterPnt const&, Radian const) final;
 	void Link       (Nob const&, Nob2NobFunc const&)     final;
 
-	void SetDirVector(MicroMeterPnt const &p) { SetDir(Vector2Radian(p)); }
-
-	enum class State
-	{
-		standard,
-		connected,
-		locked
-	};
-
-	// IoLines are in one of three states:
+	// IoLines are in one of two states:
 	//
 	// 1: standard - direction is determined by vector of m_pPipe
 	//             HasParentNob() is false
-	//             m_radDirection is Radian::NULL_VAL 
 	// 2: connected - IoLine is in IoConnector. Direction is determined by vector of IoConnector
 	//             HasParentNob() is true
 	//             ParentNob points to IoConnector 
-	//             m_radDirection is Radian::NULL_VAL 
-	// 3: locked - direction is explicitely defined in m_radDirection. Only during animations.
-	//             HasParentNob() is false
-	//             m_radDirection is not Radian::NULL_VAL 
 
-	State GetState() const
+	void Connect2IoConnector(Nob* const p)
 	{
-		if (HasParentNob())
-			return State::connected;
-		if (GetDir().IsNull())
-			return State::standard;
-		else
-			return State::locked;
+		m_pIoConnector = p;
 	}
 
-	void SetState(State const state, Nob* const p = nullptr)
+	void DisconnectFromIoConnector()
 	{
-		switch (state)
-		{
-		case State::connected:
-			Connect2IoConnector(p);
-			break;
-		case State::standard:
-			StandardDirection();
-			break;
-		case State::locked:
-			LockDirection();
-			break;
-		}
+		m_pIoConnector = nullptr;
 	}
-
-	void StandardDirection()             
-	{ 
-		SetDir(Radian::NULL_VAL());
-	}
-
-	void Connect2IoConnector(Nob* const p) 
-	{ 
-		m_pIoConnector = p; 
-		m_posDir.SetDir(Radian::NULL_VAL());
-	}
-
-	void LockDirection()
-	{ 
-		SetDir(GetDir()); 
-	}
-
-	bool IsDirLocked() const { return m_posDir.GetDir().IsNotNull(); }
 
 	MicroMeterPnt GetDirVector() const;
 
@@ -125,11 +76,9 @@ public:
 	Nob * GetParentNob() const final { return m_pIoConnector; }
 
 private:
-	Radian getDirection() const;
-
-	Pipe           * m_pPipe        { nullptr };
-	Nob            * m_pIoConnector { nullptr };
-	MicroMeterPosDir m_posDir;
+	Pipe        * m_pPipe        { nullptr };
+	Nob         * m_pIoConnector { nullptr };
+	MicroMeterPnt m_pos;
 };
 
 export template <typename T>

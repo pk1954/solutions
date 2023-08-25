@@ -34,8 +34,6 @@ public:
 
 	void AppendMenuItems(AddMenuFunc const&) const final;
 
-	void SetDir(Radian const r) final { /* Knot has no direction */ };
-
 	size_t GetNrOfInConns () const final { return 1; }
 	size_t GetNrOfOutConns() const final { return 1; }
 

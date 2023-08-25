@@ -19,8 +19,6 @@ using std::unique_ptr;
 using std::wostream;
 using std::setprecision;
 
-export MicroMeterPntVector   ScrReadMicroMeterPntVector(Script &);
-export MicroMeterPosDir      ScrReadMicroMeterPosDir   (Script &);
 export unique_ptr<NobIdList> ScrReadNobIdList          (Script &);
 export NobId                 ScrReadNobId              (Script &);
 export SignalId              ScrReadSignalId           (Script &);

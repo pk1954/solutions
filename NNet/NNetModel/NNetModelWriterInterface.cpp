@@ -54,8 +54,3 @@ void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })
 		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
-
-void NNetModelWriterInterface::SetPosDir(NobId const id, MicroMeterPosDir const & umPosDir)
-{
-	GetNobPtr<Nob *>(id)->SetPosDir(umPosDir);
-}

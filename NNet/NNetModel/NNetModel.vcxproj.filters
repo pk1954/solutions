@@ -38,12 +38,6 @@
     <ClCompile Include="Knot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MicroMeterPntVector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MicroMeterPosDir.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Neuron.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,9 +92,6 @@
     <ClCompile Include="tHighlightType.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MicroMeterPointVector.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PipeList.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,9 +138,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Neuron.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MicroMeterPosDir.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NobType.ixx">

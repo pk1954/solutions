@@ -17,7 +17,6 @@ import Types;
 import IoUtil;
 import DrawContext;
 import :tHighlight;
-import :MicroMeterPosDir;
 import :NobType;
 import :IoLine;
 import :Nob;
@@ -120,7 +119,7 @@ void IoConnector::ConnectIoLines()
 void IoConnector::DisconnectIoLines() const
 {
     for (auto & it: m_list)
-        it->StandardDirection();
+        it->DisconnectFromIoConnector();
 }
 
 void IoConnector::PosChanged()
@@ -128,16 +127,6 @@ void IoConnector::PosChanged()
     for (auto & it: m_list)
         it->PosChanged();
 }
-
-//void IoConnector::SetDir(Radian const radianNew)
-//{
-//    MicroMeterPnt umPntPivot { GetPos() };
-//    Radian        radDelta   { radianNew - GetDir() };
-//    for (auto it : m_list) 
-//    { 
-//        it->RotateNob(umPntPivot, radDelta); 
-//    }
-//}
 
 void IoConnector::SetPosNoFix(MicroMeterPnt const& umPos)
 {
@@ -147,14 +136,6 @@ void IoConnector::SetPosNoFix(MicroMeterPnt const& umPos)
 void IoConnector::Recalc()
 {
     DirectionDirty();
-}
-
-void IoConnector::SetPosDir(MicroMeterPosDir const & umPosDir)
-{
-    MicroMeterPnt const pos { GetPos() };
-    assert(pos.IsNotNull());
-    RotateNob(pos, umPosDir.GetDir() - GetDir());
-    MoveNob(umPosDir.GetPos() - pos);
 }
 
 void IoConnector::MoveNob(MicroMeterPnt const & delta)       

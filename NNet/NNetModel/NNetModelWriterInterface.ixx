@@ -20,7 +20,6 @@ import :NNetModelReaderInterface;
 import :NNetParameters;
 import :ParamType;
 import :SignalGenerator;
-import :MicroMeterPosDir;
 import :UPSigGenList;
 import :Pipe;
 import :NobId;
@@ -151,6 +150,4 @@ public:
     void ReduceSize  (long const nr) { GetUPNobs().ReduceSize(nr); }
 
     bool Compute() { return m_pModel->Compute(); }
-
-    void SetPosDir(NobId const, MicroMeterPosDir const&);
 };
