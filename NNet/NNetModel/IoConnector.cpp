@@ -203,6 +203,43 @@ void IoConnector::AppendMenuItems(AddMenuFunc const & add) const
     Nob::AppendMenuItems(add);
 }
 
+
+void IoConnector::AlignPositions(MicroMeterLine const& umLine)
+{
+    MicroMeter    const umDist             { NEURON_RADIUS * 2.0f };
+    MicroMeterPnt const umVector           { umLine.GetVector() };
+    float         const fGapCount          { Cast2Float(Size() - 1) };
+    MicroMeter    const umLineLengthTarget { umDist * fGapCount };
+    MicroMeterPnt const umPntSingleVector  { umVector.ScaledTo(umDist) };
+    MicroMeterPnt const umPntLineTarget    { umVector.ScaledTo(umLineLengthTarget) };
+    MicroMeterPnt       umPnt              { umLine.GetCenter() - umPntLineTarget * 0.5f };
+    Apply2All
+    (
+        [&umPnt, &umPntSingleVector](IoLine& ioLine)
+        {
+            ioLine.SetPos(umPnt);
+            umPnt += umPntSingleVector;
+        }
+    );
+}
+
+void IoConnector::SetPositions(vector<MicroMeterPnt> const& posList)
+{
+    assert(posList.size() == Size());
+    for (int i = 0; i < Size(); ++i)
+    {
+        m_list[i]->SetPos(posList[i]);
+    }
+}
+
+vector<MicroMeterPnt> IoConnector::GetPositions() const
+{
+    vector<MicroMeterPnt> result;
+    for (auto &elem : m_list)
+        result.push_back(elem->GetPos());
+    return result;
+}
+
 IoConnector const * Cast2IoConnector(Nob const * pNob)
 {
     assert(pNob->IsIoConnector());

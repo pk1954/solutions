@@ -371,7 +371,7 @@ void MainWindow::connect(NobId const idSrc, NobId const idDst)
 		PlugIoLinesCmd::Push(idSrc, idDst);              // case 4/5
 		break;
 	case ct_connector:
-		Add2Connector::Push(idSrc, idDst);     // case 12/13
+		Add2ConnectorCmd::Push(idSrc, idDst);     // case 12/13
 		break;
 	case ct_plugConnectors:
 		PlugIoConnectorsCmd::Push(idSrc, idDst);         // case 6

@@ -1,4 +1,4 @@
-// Add2Connector.ixx
+// Add2ConnectorCmd.ixx
 //
 // NNetCommands
 
@@ -7,16 +7,16 @@ module;
 #include <vector>
 #include <iostream>
 
-export module NNetCommands:Add2Connector;
+export module NNetCommands:Add2ConnectorCmd;
 
-import :NNetCommand;
+import :SelectionCommand;
 
 using std::vector;
 
-export class Add2Connector : public NNetCommand
+export class Add2ConnectorCmd : public SelectionCommand
 {
 public:
-    Add2Connector(NobId const, NobId const);
+    Add2ConnectorCmd(NobId const, NobId const);
 
     void Do  () final;
     void Undo() final;
@@ -30,13 +30,13 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId1 << nobId2 << endl;
-		PushCommand(make_unique<Add2Connector>(nobId1, nobId2));
+		PushCommand(make_unique<Add2ConnectorCmd>(nobId1, nobId2));
         PlaySound(L"SNAP_IN_SOUND");
     }
 
 private:
 
-    inline static const wstring NAME { L"ConnAnimation" };
+    inline static const wstring NAME { L"Add2Connector" };
 
     inline static struct myWrapper : public Wrapper
     {
@@ -45,17 +45,23 @@ private:
         {
             NobId const id1 { ScrReadNobId(script) };
             NobId const id2 { ScrReadNobId(script) };
-            Add2Connector::Push(id1, id2);
+            Add2ConnectorCmd::Push(id1, id2);
         }
     } m_wrapper { NAME };
 
     NobId m_id1;
     NobId m_id2;
 
+    MicroMeterLine        m_umLine;
+    vector<MicroMeterPnt> m_originalPositions;
+
     unique_ptr<IoConnector> m_upIoConnector1;
     unique_ptr<IoConnector> m_upIoConnector2;
     unique_ptr<IoConnector> m_upIoConnectorResult;
 
-    void add2IoLines(NobId const,     vector<IoLine*> &);
-    void align(MicroMeterLine const&, vector<IoLine*> const&);
+    void add2IoLines   (vector<IoLine*> &,        NobId const);
+    void sortIoLines   (vector<IoLine*> &,        MicroMeterLine const&);
+    void alignPositions(vector<IoLine*> const&,   MicroMeterLine const&);
+    void remove (unique_ptr<IoConnector>&, NobId const);
+    void restore(unique_ptr<IoConnector>&, NobId const);
 };

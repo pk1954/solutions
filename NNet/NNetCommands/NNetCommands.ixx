@@ -8,7 +8,7 @@ module;
 
 export module NNetCommands;
 
-export import :Add2Connector;
+export import :Add2ConnectorCmd;
 export import :AddMicroSensorCmd;
 export import :AddModuleCommand;
 export import :AddNobsCommand;

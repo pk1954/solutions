@@ -108,8 +108,8 @@
     <ClCompile Include="ArrowAnimationCmd.ixx" />
     <ClCompile Include="AttachSigGen2ConCmd.ixx" />
     <ClCompile Include="AttachSigGen2LineCmd.ixx" />
-    <ClCompile Include="Add2Connector.cpp" />
-    <ClCompile Include="Add2Connector.ixx" />
+    <ClCompile Include="Add2ConnectorCmd.cpp" />
+    <ClCompile Include="Add2ConnectorCmd.ixx" />
     <ClCompile Include="Connect2NeuronCommand.ixx" />
     <ClCompile Include="ConnectCreateForkCmd.ixx" />
     <ClCompile Include="ConnectCreateSynapseCmd.ixx" />

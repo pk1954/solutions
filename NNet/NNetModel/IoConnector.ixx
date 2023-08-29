@@ -62,6 +62,10 @@ public:
 	size_t   GetNrOfElements()       const { return m_list.size(); }
 	void     DisconnectIoLines()     const;
 	void     ConnectIoLines();
+	void     AlignPositions(MicroMeterLine const&);
+	void     SetPositions(vector<MicroMeterPnt> const&);
+
+	vector<MicroMeterPnt> GetPositions() const;
 
 	void DirectionDirty() final { m_radDirection.Set2Null(); }  // lazy evaluation
 
