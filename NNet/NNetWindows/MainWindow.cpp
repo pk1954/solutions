@@ -168,7 +168,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 
-	m_mainScales.AppendScaleMenu(hPopupMenu, L"&Scales", HasScales(), HasGrid());
+	m_mainScales.AppendScaleMenu(hPopupMenu, L"&Scales");
 
 	NNetWindow::AddContextMenuEntries(hPopupMenu);
 
@@ -705,18 +705,9 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDD_ARROW_ANIMATION:         ArrowAnimationCmd     ::Push(m_umArrowSize, NNetPreferences::m_bArrows.Get(), lParam); break;
 
 	case IDM_SCALE_OFF:
-		SetScales(false, true);
-		SetGrid (false, true);
-		break;
-
 	case IDM_SCALE_ON:
-		SetScales(true,  true);
-		SetGrid (false, true);
-		break;
-
 	case IDM_SCALE_GRID:
-		SetScales(true, true);
-		SetGrid (true, true);
+		m_mainScales.SetState(wmId);
 		break;
 
 	case IDD_GRID_UPDATE:

@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <memory>
 #include <Windows.h>
 
@@ -28,18 +29,17 @@ public:
 	void AppendScaleMenu
 	(
 		HMENU         hMenu,
-		LPCTSTR const title,
-		bool    const bScale,
-		bool    const bGrid
+		LPCTSTR const title
 	) const
 	{
 		HMENU hMenuPopup = ::PopupMenu(hMenu, title);
+		
 		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF, L"o&ff");
 		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON, L"o&n");
 		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_GRID, L"&grid");
-		::Enable(hMenuPopup, IDM_SCALE_OFF, bScale);
-		::Enable(hMenuPopup, IDM_SCALE_ON, bGrid || !bScale);
-		::Enable(hMenuPopup, IDM_SCALE_GRID, !bGrid);
+		::Enable(hMenuPopup, IDM_SCALE_OFF, HasScales());
+		::Enable(hMenuPopup, IDM_SCALE_ON,  HasGrid() || !HasScales());
+		::Enable(hMenuPopup, IDM_SCALE_GRID, !HasGrid());
 	}
 
 	void Start
@@ -116,6 +116,30 @@ public:
 			bOn, 
 			bAnim
 		);
+	}
+
+	void SetState(int const iCmd)
+	{
+		switch (iCmd)
+		{
+		case IDM_SCALE_OFF:
+			SetScales(false, true);
+			SetGrid(false, true);
+			break;
+
+		case IDM_SCALE_ON:
+			SetScales(true, true);
+			SetGrid(false, true);
+			break;
+
+		case IDM_SCALE_GRID:
+			SetScales(true, true);
+			SetGrid(true, true);
+			break;
+
+		default:
+			assert(false);
+		}
 	}
 
 	fPixel VerticalOffset() const
