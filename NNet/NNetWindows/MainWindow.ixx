@@ -12,7 +12,6 @@ export module NNetWin32:MainWindow;
 
 import Types;
 import Raster;
-import ScaleMenu;
 import ActionTimer;
 import NNetModel;
 import NNetSignals;
@@ -83,9 +82,6 @@ public:
 
 private:
 
-	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
-	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
-
 	MicroMeterPnt m_umDelta                { NP_ZERO };
 	MicroMeter    m_umArrowSize            { 0._MicroMeter };
 	ActionTimer  *m_pDisplayTimer          { nullptr };
@@ -97,7 +93,6 @@ private:
 	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
 	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
 	SelectionMenu m_selectionMenu;
-	ScaleMenu     m_scaleMenu;
 	MainScales    m_mainScales;
 
 	unique_ptr<Raster<MicroMeter>> m_upRaster;

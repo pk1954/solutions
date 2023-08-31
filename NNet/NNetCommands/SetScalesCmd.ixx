@@ -15,6 +15,7 @@ import RootWindow;
 import WinManager;
 import BoolWrapper;
 import WrapSetScales;
+import Scale;
 import :AnimationCmd;
 
 using std::wstring;
@@ -48,7 +49,13 @@ public:
         bool  const  bAnimation
     )
     {
-        fPixelPoint const umTarget { bActive ? fPixelPoint(35._fPixel, 30._fPixel) : fPP_ZERO };
+        fPixelPoint const umTarget 
+        { 
+            bActive 
+            ? Convert2fPixelPoint(PixelPoint(V_SCALE_WIDTH, H_SCALE_HEIGHT))
+            : fPP_ZERO 
+        };
+
         if (umTarget == umAnimated)
             return;
 

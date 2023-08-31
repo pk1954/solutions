@@ -59,9 +59,6 @@ public:
 
 private:
 
-	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
-	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
-
 	inline static PIXEL const STIMULUS_BUTTON_WIDTH  { 90_PIXEL };
 	inline static PIXEL const STIMULUS_BUTTON_HEIGHT { 30_PIXEL };
 

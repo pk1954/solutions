@@ -30,6 +30,9 @@ using std::to_wstring;
 using std::wstring;
 using std::bit_cast;
 
+export PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
+export PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
+
 export template <typename LogUnits>
 class Scale : public BaseScale
 {

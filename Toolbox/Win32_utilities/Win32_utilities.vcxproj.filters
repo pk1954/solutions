@@ -189,9 +189,6 @@
     <ClCompile Include="OnOffPair.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ScaleMenu.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Command.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

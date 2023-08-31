@@ -26,7 +26,6 @@ import NNetSignals;
 import Observable;
 import RootWindow;
 import Types;
-import ScaleMenu;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
@@ -169,7 +168,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 
-	m_scaleMenu.AppendScaleMenu(hPopupMenu, L"&Scales", HasScales(), HasGrid());
+	m_mainScales.AppendScaleMenu(hPopupMenu, L"&Scales", HasScales(), HasGrid());
 
 	NNetWindow::AddContextMenuEntries(hPopupMenu);
 

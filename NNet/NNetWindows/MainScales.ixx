@@ -16,6 +16,8 @@ import Direct2D;
 import Uniform2D;
 import RootWindow;
 import NNetCommands;
+import Win32_Util;
+import Win32_Util_Resource;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -23,6 +25,22 @@ using std::make_unique;
 export class MainScales
 {
 public:
+	void AppendScaleMenu
+	(
+		HMENU         hMenu,
+		LPCTSTR const title,
+		bool    const bScale,
+		bool    const bGrid
+	) const
+	{
+		HMENU hMenuPopup = ::PopupMenu(hMenu, title);
+		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF, L"o&ff");
+		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON, L"o&n");
+		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_GRID, L"&grid");
+		::Enable(hMenuPopup, IDM_SCALE_OFF, bScale);
+		::Enable(hMenuPopup, IDM_SCALE_ON, bGrid || !bScale);
+		::Enable(hMenuPopup, IDM_SCALE_GRID, !bGrid);
+	}
 
 	void Start
 	(
@@ -51,18 +69,18 @@ public:
 
 	void AdjustScales()
 	{
-		m_upHorzScale->SetOrthoOffset(m_fPixScaleSize.GetY());
+		m_upHorzScale->SetOrthoOffset (m_fPixScaleSize.GetY());
 		m_upHorzScale->SetBottomBorder(m_fPixScaleSize.GetY());
 
-		m_upHorzScale->SetLeftBorder(m_fPixScaleSize.GetX());
+		m_upHorzScale->SetLeftBorder (m_fPixScaleSize.GetX());
 		m_upVertScale->SetOrthoOffset(m_fPixScaleSize.GetX());
 
 		PixelRectSize const pixRectSize  { m_pRootWinParent->GetClRectSize() };
 		PixelPoint    const pixScaleSize { Convert2PixelPoint(m_fPixScaleSize) };
 		PIXEL         const pixHeight    { pixRectSize.GetY() - pixScaleSize.GetY() };
 
-		m_upHorzScale->Move(0_PIXEL, pixHeight, pixRectSize.GetX(), pixScaleSize.GetY(), true);
-		m_upVertScale->Move(0_PIXEL, 0_PIXEL, pixScaleSize.GetX(), pixHeight, true);
+		m_upHorzScale->Move(0_PIXEL, pixHeight, pixRectSize .GetX(), pixScaleSize.GetY(), true);
+		m_upVertScale->Move(0_PIXEL, 0_PIXEL,   pixScaleSize.GetX(), pixHeight,           true);
 		m_upHorzScale->SetUnitOffset(fPixelPoint(5._fPixel - m_fPixScaleSize.GetX(), -3._fPixel));
 	}
 
@@ -80,12 +98,24 @@ public:
 
 	void SetGrid(bool const bOn, bool const bAnim)
 	{
-		SetGridCmd::Push(*m_pRootWinParent, m_fGridDimFactor, bOn, bAnim);
+		SetGridCmd::Push
+		(
+			*m_pRootWinParent, 
+			m_fGridDimFactor, // animation parameter
+			bOn, 
+			bAnim
+		);
 	}
 
 	void SetScales(bool const bOn, bool const bAnim)
 	{
-		SetScalesCmd::Push(*m_pRootWinParent, m_fPixScaleSize, bOn, bAnim);
+		SetScalesCmd::Push
+		(
+			*m_pRootWinParent, 
+			m_fPixScaleSize,   // animation parameter
+			bOn, 
+			bAnim
+		);
 	}
 
 	fPixel VerticalOffset() const
@@ -97,7 +127,7 @@ public:
 
 private:
 
-	RootWindow                  * m_pRootWinParent  { nullptr };
+	RootWindow                  * m_pRootWinParent { nullptr };
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale    {};
 	unique_ptr<Scale<MicroMeter>> m_upVertScale    {};
 	fPixelPoint                   m_fPixScaleSize  { fPP_ZERO };
