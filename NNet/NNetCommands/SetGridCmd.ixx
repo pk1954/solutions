@@ -11,7 +11,7 @@ export module NNetCommands:SetGridCmd;
 
 import IoConstants;
 import Win32_Util_Resource;
-import BaseWindow;
+import RootWindow;
 import WinManager;
 import BoolWrapper;
 import WrapSetGrid;
@@ -28,7 +28,7 @@ public:
 
     SetGridCmd
     (
-        BaseWindow * const pWin,
+        RootWindow * const pWin,
         float            & fAnimated,
         float      const & fTarget
     )
@@ -44,7 +44,7 @@ public:
 
     static void Push
     (
-        BaseWindow &baseWin,
+        RootWindow &rootWin,
         float      &fAnimated,
         bool  const bActive,
         bool  const bAnimation
@@ -55,20 +55,20 @@ public:
             return;
 
         if (IsTraceOn())
-            WrapSetGrid::WriteSetGrid(TraceStream(), baseWin, bActive);
+            WrapSetGrid::WriteSetGrid(TraceStream(), rootWin, bActive);
 
         if (bAnimation)
         {
-            PushCommand(make_unique<SetGridCmd>(&baseWin, fAnimated, fTarget));
+            PushCommand(make_unique<SetGridCmd>(&rootWin, fAnimated, fTarget));
         }
         else
         {
             fAnimated = fTarget;
-            baseWin.SendCommand(IDD_GRID_UPDATE);
+            rootWin.SendCommand(IDD_GRID_UPDATE);
         }
     }
 
 private:
 
-    BaseWindow * m_pWin { nullptr };
+    RootWindow * m_pWin { nullptr };
 };

@@ -48,13 +48,6 @@ mV Sensor::GetSignalValue() const
     return mVResult;
 }
 
-void Sensor::Recalc(UPNobList const & list) 
-{
-    m_dataPoints.clear();
-    list.Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
-    NotifyAll(false);
-}
-
 float Sensor::GetDistFactor(MicroMeterPnt const & umPnt) const
 {
     return m_circle.DistFactor(umPnt);
@@ -72,6 +65,13 @@ void Sensor::Draw
         NNetColors::EEG_SENSOR_1, 
         bHighlight ? NNetColors::EEG_SENSOR_HIGH : NNetColors::EEG_SENSOR_2
     );
+}
+
+void Sensor::Recalc(UPNobList const & list) 
+{
+    m_dataPoints.clear();
+    list.Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
+    NotifyAll(false);
 }
 
 void Sensor::add2list(Pipe const & pipe) 

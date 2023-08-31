@@ -94,9 +94,9 @@ public:
         script.ScrReadSpecial(ID_SEPARATOR);
         unsigned short usBlue  { script.ScrReadUshort() };
         script.ScrReadSpecial(CLOSE_BRACKET);
-        BaseWindow* pBaseWin { WinManager::GetBaseWindow(id) };
-        if (pBaseWin)
-            pBaseWin->SetBackgroundColorRef(RGB(usRed, usGreen, usBlue));
+        RootWindow* pRootWin { WinManager::GetRootWindow(id) };
+        if (pRootWin)
+            pRootWin->SetBackgroundColorRef(RGB(usRed, usGreen, usBlue));
         else
         {
             //TODO: Error message
@@ -109,7 +109,7 @@ public:
         (
             [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
             {
-                if (elem.m_pBaseWindow)
+                if (elem.m_pRootWindow)
                     WriteBackgroundColor(out, elem);
             }
         );
@@ -121,7 +121,7 @@ private:
 
     static void WriteBackgroundColor(wostream &out, WinManager::MAP_ELEMENT const& elem)
     {
-        COLORREF col { elem.m_pBaseWindow->GetBackgroundColorRef() };
+        COLORREF col { elem.m_pRootWindow->GetBackgroundColorRef() };
         out << NAME << SPACE << elem.m_wstr << SPACE
             << L"RGB"
             << OPEN_BRACKET

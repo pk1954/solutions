@@ -21,7 +21,7 @@ using std::unique_ptr;
 
 void Command::UpdateUI()
 {
-    WinManager::GetBaseWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
+    WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
 };
 
 void Command::CallUI(bool const bTargetReached)  // runs in animation thread

@@ -1,0 +1,105 @@
+// MainScales.ixx
+//
+// NNetWindows
+
+module;
+
+#include <memory>
+#include <Windows.h>
+
+export module NNetWin32:MainScales;
+
+import Types;
+import Scale;
+import Observable;
+import Direct2D;
+import Uniform2D;
+import RootWindow;
+import NNetCommands;
+
+using std::unique_ptr;
+using std::make_unique;
+
+export class MainScales
+{
+public:
+
+	void Start
+	(
+		RootWindow           * pRootWinParent,
+		Uniform2D<MicroMeter>& coord,
+		Observable           & coordObservable
+	)
+	{
+		m_pRootWinParent = pRootWinParent;
+
+		m_upHorzScale = make_unique<Scale<MicroMeter>>(pRootWinParent->GetWindowHandle(), false, coord.GetXdim());
+		m_upVertScale = make_unique<Scale<MicroMeter>>(pRootWinParent->GetWindowHandle(), true,  coord.GetYdim());
+
+		coordObservable.RegisterObserver(*m_upHorzScale.get());
+		coordObservable.RegisterObserver(*m_upVertScale.get());
+
+		m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
+		m_upHorzScale->SetAllowUnlock(true);
+		m_upHorzScale->SetZoomAllowed(false);
+
+		m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
+		m_upVertScale->SetAllowUnlock(true);
+		m_upVertScale->SetZoomAllowed(false);
+		m_upVertScale->DisplayUnit(false);
+	}
+
+	void AdjustScales()
+	{
+		m_upHorzScale->SetOrthoOffset(m_fPixScaleSize.GetY());
+		m_upHorzScale->SetBottomBorder(m_fPixScaleSize.GetY());
+
+		m_upHorzScale->SetLeftBorder(m_fPixScaleSize.GetX());
+		m_upVertScale->SetOrthoOffset(m_fPixScaleSize.GetX());
+
+		PixelRectSize const pixRectSize  { m_pRootWinParent->GetClRectSize() };
+		PixelPoint    const pixScaleSize { Convert2PixelPoint(m_fPixScaleSize) };
+		PIXEL         const pixHeight    { pixRectSize.GetY() - pixScaleSize.GetY() };
+
+		m_upHorzScale->Move(0_PIXEL, pixHeight, pixRectSize.GetX(), pixScaleSize.GetY(), true);
+		m_upVertScale->Move(0_PIXEL, 0_PIXEL, pixScaleSize.GetX(), pixHeight, true);
+		m_upHorzScale->SetUnitOffset(fPixelPoint(5._fPixel - m_fPixScaleSize.GetX(), -3._fPixel));
+	}
+
+	void Paint(D2D_driver& graphics)
+	{
+		if (m_fGridDimFactor > 0.0f)
+		{
+			m_upHorzScale->DrawAuxLines(graphics, m_fGridDimFactor);
+			m_upVertScale->DrawAuxLines(graphics, m_fGridDimFactor);
+		}
+	}
+
+	bool HasScales() const { return m_fPixScaleSize.IsNotZero(); }
+	bool HasGrid()   const { return m_fGridDimFactor > 0.0f; }
+
+	void SetGrid(bool const bOn, bool const bAnim)
+	{
+		SetGridCmd::Push(*m_pRootWinParent, m_fGridDimFactor, bOn, bAnim);
+	}
+
+	void SetScales(bool const bOn, bool const bAnim)
+	{
+		SetScalesCmd::Push(*m_pRootWinParent, m_fPixScaleSize, bOn, bAnim);
+	}
+
+	fPixel VerticalOffset() const
+	{
+		return HasScales()
+			? m_upVertScale->GetOrthoOffset()
+			: 0._fPixel;
+	}
+
+private:
+
+	RootWindow                  * m_pRootWinParent  { nullptr };
+	unique_ptr<Scale<MicroMeter>> m_upHorzScale    {};
+	unique_ptr<Scale<MicroMeter>> m_upVertScale    {};
+	fPixelPoint                   m_fPixScaleSize  { fPP_ZERO };
+	float                         m_fGridDimFactor { 0.0f };
+};

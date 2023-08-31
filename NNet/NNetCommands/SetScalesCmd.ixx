@@ -11,7 +11,7 @@ export module NNetCommands:SetScalesCmd;
 
 import IoConstants;
 import Win32_Util_Resource;
-import BaseWindow;
+import RootWindow;
 import WinManager;
 import BoolWrapper;
 import WrapSetScales;
@@ -26,7 +26,7 @@ export class SetScalesCmd : public fPixelPointAnimationCmd
 public:
     SetScalesCmd
     (
-        BaseWindow * const pWin,
+        RootWindow * const pWin,
         fPixelPoint      & fAnimated,
         fPixelPoint const& fTarget
     )
@@ -42,10 +42,10 @@ public:
 
     static void Push
     (
-        BaseWindow  &baseWin,
+        RootWindow  &rootWin,
         fPixelPoint &umAnimated,
-        bool  const bActive,
-        bool  const bAnimation
+        bool  const  bActive,
+        bool  const  bAnimation
     )
     {
         fPixelPoint const umTarget { bActive ? fPixelPoint(35._fPixel, 30._fPixel) : fPP_ZERO };
@@ -53,18 +53,18 @@ public:
             return;
 
         if (IsTraceOn())
-            WrapSetScales::WriteSetScales(TraceStream(), baseWin, bActive);
+            WrapSetScales::WriteSetScales(TraceStream(), rootWin, bActive);
 
         if (bAnimation)
-            PushCommand(make_unique<SetScalesCmd>(&baseWin, umAnimated, umTarget));
+            PushCommand(make_unique<SetScalesCmd>(&rootWin, umAnimated, umTarget));
         else
         {
             umAnimated = umTarget;
-            baseWin.SendCommand(IDD_SCALES_UPDATE);
+            rootWin.SendCommand(IDD_SCALES_UPDATE);
         }
     }
 
 private:
 
-    BaseWindow * m_pWin { nullptr };
+    RootWindow * m_pWin { nullptr };
 };

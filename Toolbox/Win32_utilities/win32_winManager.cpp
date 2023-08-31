@@ -21,6 +21,7 @@ import ErrHndl;
 import Win32_Util_Resource;
 import Win32_Util;
 import Win32_PIXEL;
+import RootWindow;
 import BaseWindow;
 import BaseDialog;
 
@@ -371,14 +372,14 @@ void WinManager::addWindow
     wstring      const & wstrName, 
     RootWinId    const   id, 
     HWND         const   hwnd, 
-    BaseWindow * const   pBaseWindow,
+    RootWindow * const   pRootWindow,
     bool         const   bTrackPosition,
     bool         const   bTrackSize
 )
 {
     if (id.GetValue() > 0)
     {
-        m_upMap->try_emplace(id, MAP_ELEMENT(pBaseWindow, wstrName, hwnd, bTrackPosition, bTrackSize));
+        m_upMap->try_emplace(id, MAP_ELEMENT(pRootWindow, wstrName, hwnd, bTrackPosition, bTrackSize));
         SymbolTable::ScrDefConst(wstrName, static_cast<unsigned long>(id.GetValue()));
     }
 }
@@ -428,16 +429,16 @@ RootWinId WinManager::GetIdFromHWND(HWND const hwnd)
     return RootWinId(-1);
 }
 
-RootWinId WinManager::GetIdFromBaseWindow(BaseWindow const & baseWin)
+RootWinId WinManager::GetIdFromRootWindow(RootWindow const & RootWin)
 {
-    return GetIdFromHWND(baseWin.GetWindowHandle());
+    return GetIdFromHWND(RootWin.GetWindowHandle());
 }
 
-BaseWindow* WinManager::GetBaseWindow(RootWinId const id) 
+RootWindow* WinManager::GetRootWindow(RootWinId const id) 
 { 
     try
     { 
-        return m_upMap->at(id).m_pBaseWindow;
+        return m_upMap->at(id).m_pRootWindow;
     }
     catch (const out_of_range&)
     {

@@ -146,6 +146,12 @@ public:
 	virtual void     SetBackgroundColorRef(COLORREF const c) {}
 	virtual COLORREF GetBackgroundColorRef() const           { return RGB(0, 0, 0); }
 
+	virtual void    SetGrid  (bool const, bool const) {}
+	virtual void    SetScales(bool const, bool const) {}
+
+	virtual bool HasGrid()   const { return false; }
+	virtual bool HasScales() const { return false; }
+
 	void Notify(bool const) override;
 
 	void    Move(PIXEL const, PIXEL const, PIXEL const, PIXEL const, bool const) const;

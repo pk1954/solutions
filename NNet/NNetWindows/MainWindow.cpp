@@ -16,6 +16,7 @@ module;
 
 module NNetWin32:MainWindow;
 
+import Raster;
 import ActionTimer;
 import NNetCommands;
 import DrawContext;
@@ -32,6 +33,7 @@ import Win32_Util_Resource;
 import Win32_Controls;
 import NNetPreferences;
 import :NNetController;
+import :MainScales;
 
 using std::bit_cast;
 using std::unordered_map;
@@ -73,24 +75,14 @@ void MainWindow::Start
 	m_pDisplayTimer        = pActionTimer;
 	m_selectionMenu.Start(GetWindowHandle());
 
-	Uniform2D<MicroMeter>      & coord  { GetCoord() };
-	PixFpDimension<MicroMeter> & coordX { coord.GetXdim() };
-	PixFpDimension<MicroMeter> & coordY { coord.GetYdim() };
+	m_mainScales.Start(this, GetCoord(), coordObservable);
 
-	m_upHorzScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), false, coordX);
-	m_upVertScale = make_unique<Scale<MicroMeter>>(GetWindowHandle(), true,  coordY);
-
-	m_pCoordObservable->RegisterObserver(*m_upHorzScale.get());
-	m_pCoordObservable->RegisterObserver(*m_upVertScale.get());
-
-	m_upHorzScale->SetTicksDir(BaseScale::TICKS_DOWN);
-	m_upHorzScale->SetAllowUnlock(true);
-	m_upHorzScale->SetZoomAllowed(false);
-
-	m_upVertScale->SetTicksDir(BaseScale::TICKS_LEFT);
-	m_upVertScale->SetAllowUnlock(true);
-	m_upVertScale->SetZoomAllowed(false);
-	m_upVertScale->DisplayUnit(false);
+	m_upRaster = make_unique<Raster<MicroMeter>>
+	(
+		500._MicroMeter,
+		PosType<MicroMeter>(300._MicroMeter, 200._MicroMeter),
+		SizeType<int>(100, 50)
+	);
 }
 
 void MainWindow::Stop()
@@ -199,27 +191,10 @@ MicroMeterPnt MainWindow::GetCursorPos() const
 //	SetCursor(hCrsr);
 //}
 
-void MainWindow::adjustScales()
-{
-	m_upHorzScale->SetOrthoOffset (m_fPixScaleSize.GetY());
-	m_upHorzScale->SetBottomBorder(m_fPixScaleSize.GetY());
-
-	m_upHorzScale->SetLeftBorder (m_fPixScaleSize.GetX());
-	m_upVertScale->SetOrthoOffset(m_fPixScaleSize.GetX());
-
-	PixelRectSize const pixRectSize  { GetClRectSize() };
-	PixelPoint    const pixScaleSize { Convert2PixelPoint(m_fPixScaleSize) };
-	PIXEL         const pixHeight    { pixRectSize.GetY() - pixScaleSize.GetY() };
-
-	m_upHorzScale->Move(0_PIXEL, pixHeight, pixRectSize.GetX(),  pixScaleSize.GetY(), true);
-	m_upVertScale->Move(0_PIXEL, 0_PIXEL,   pixScaleSize.GetX(), pixHeight,           true);
-	m_upHorzScale->SetUnitOffset(fPixelPoint(5._fPixel-m_fPixScaleSize.GetX(), -3._fPixel));
-}
-
 bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
-	adjustScales();
+	m_mainScales.AdjustScales();
 	m_pCoordObservable->NotifyAll(false);
 	return true;
 }
@@ -337,7 +312,8 @@ SigGenId MainWindow::getSigGenId(LPARAM const lParam)
 {
 	PixelPoint  const ptCrsr   { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint const fPixCrsr { Convert2fPixelPoint(ptCrsr) };
-	SigGenId    const idSigGen { m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr, sigGenOffset()) };
+	fPixel      const fOffset  { m_mainScales.VerticalOffset() };
+	SigGenId    const idSigGen { m_pNMRI->GetSigGenList().GetSigGenId(fPixCrsr, fOffset) };
 	return idSigGen;
 }
 
@@ -493,11 +469,7 @@ void MainWindow::PaintGraphics()
 	DrawContext const& context         { GetDrawContextC() };
 	Sensor      const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
 
-	if (m_fGridDimFactor > 0.0f)
-	{
-		m_upHorzScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
-		m_upVertScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
-	}
+	m_mainScales.Paint(*m_upGraphics.get());
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -538,7 +510,7 @@ void MainWindow::PaintGraphics()
 
 	//DrawMicroSensorsInRect(pixRect);
 	DrawSensors();
-	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get(), sigGenOffset());
+	m_pNMRI->GetSigGenList().DrawSignalGenerators(*m_upGraphics.get(), m_mainScales.VerticalOffset());
 	m_pNMRI->Apply2AllC<InputLine>([this](InputLine const& i) { drawInputCable(i); });
 
 	if (NNetPreferences::m_bSensorPoints.Get() && pSensorSelected)
@@ -568,14 +540,15 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		? m_pBrushSensorSelected
 		: m_pBrushSensorNormal
 	};
-	list.DrawInputCable(graphics, coord, sigGenOffset(), idSigGen, inputLine, pBrush);
-}
-
-fPixel MainWindow::sigGenOffset() const
-{
-	return HasScales()
-		? m_upVertScale->GetOrthoOffset()
-		: 0._fPixel;
+	list.DrawInputCable
+	(
+		graphics, 
+		coord, 
+		m_mainScales.VerticalOffset(), 
+		idSigGen, 
+		inputLine, 
+		pBrush
+	);
 }
 
 bool MainWindow::selectionCommand(WPARAM const wParam)
@@ -752,7 +725,7 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		return true;
 
 	case IDD_SCALES_UPDATE:
-		adjustScales();
+		m_mainScales.AdjustScales();
 		return true;
 
 	default:
@@ -760,14 +733,4 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	}
 
 	return true;
-}
-
-void MainWindow::SetGrid(bool const bOn, bool const bAnim)
-{
-	SetGridCmd::Push(*this, m_fGridDimFactor, bOn, bAnim);
-}
-
-void MainWindow::SetScales(bool const bOn, bool const bAnim)
-{
-	SetScalesCmd::Push(*this, m_fPixScaleSize, bOn, bAnim);
 }

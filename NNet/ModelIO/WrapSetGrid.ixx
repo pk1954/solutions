@@ -11,7 +11,7 @@ export module WrapSetGrid;
 
 import Wrapper;
 import BoolWrapper;
-import BaseWindow;
+import RootWindow;
 import WinManager;
 
 using std::wostream;
@@ -28,11 +28,11 @@ public:
     static void WriteSetGrid
     (
         wostream        & out,
-        BaseWindow const& baseWin,
+        RootWindow const& rootWin,
         bool       const  bActive
     )
     {
-        out << NAME << SPACE << WinManager::GetWindowName(baseWin) << PrefOnOff(bActive) << SPACE; // << endl;
+        out << NAME << SPACE << WinManager::GetWindowName(rootWin) << PrefOnOff(bActive) << SPACE; // << endl;
     }
 
     void operator() (Script& script) const final
@@ -46,9 +46,9 @@ public:
         (
             [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
             {
-                if (elem.m_pBaseWindow && elem.m_pBaseWindow->HasGrid())
+                if (elem.m_pRootWindow && elem.m_pRootWindow->HasGrid())
                 {
-                    WriteSetGrid(out, *elem.m_pBaseWindow, true);
+                    WriteSetGrid(out, *elem.m_pRootWindow, true);
                 }
             }
         );
@@ -64,9 +64,9 @@ private:
         {
             unsigned int const uiWinId  { script.ScrReadUint() };
             bool         const bActive  { script.ScrReadBool() };
-            BaseWindow * const pBaseWin { WinManager::GetBaseWindow(RootWinId(uiWinId)) };
-            if (pBaseWin)
-                pBaseWin->SetGrid(bActive, false);
+            RootWindow * const pRootWin { WinManager::GetRootWindow(RootWinId(uiWinId)) };
+            if (pRootWin)
+                pRootWin->SetGrid(bActive, false);
             else
             {
                 //TODO: Error message

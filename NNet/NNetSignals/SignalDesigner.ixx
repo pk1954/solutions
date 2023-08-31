@@ -96,7 +96,7 @@ private:
 	array<unique_ptr<SignalControl>,     2> m_upSignalControl; // create first, destroy last
 	
 	array<unique_ptr<ArrowButton>, 2> m_upArrowButton;
-	HWND                              m_hwndPreviewButton;
+	HWND                              m_hwndPreviewButton { nullptr };
 	unique_ptr<StimulusButton>        m_upStimulusButton;
 	
 	SimuRunning        const * m_pSimuRunning   { nullptr };

@@ -36,7 +36,7 @@ void MonitorWindow::Start
 )
 {
 	m_pMoveSizeObservable = &observable;
-	m_pSimuRunning = &simuRunning;
+	m_pSimuRunning        = &simuRunning;
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,

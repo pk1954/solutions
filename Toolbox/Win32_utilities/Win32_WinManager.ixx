@@ -52,7 +52,7 @@ public:
 	static void AdjustRight(RootWinId const id, PIXEL const p = 0_PIXEL) { ::AdjustRight(GetHWND(id), p); }
 	static void AdjustLeft (RootWinId const id, PIXEL const p = 0_PIXEL) { ::AdjustLeft(GetHWND(id), p);	}
 
-	static wstring const& GetWindowName(BaseWindow const& w) { return GetWindowName(GetIdFromBaseWindow(w)); }
+	static wstring const& GetWindowName(RootWindow const& w) { return GetWindowName(GetIdFromRootWindow(w)); }
 
 	static wstring const& GetWindowName(RootWinId const id) { return m_upMap->at(id).m_wstr; }
 	static HWND           GetHWND      (RootWinId const id) { return m_upMap->at(id).m_hwnd; }
@@ -60,8 +60,8 @@ public:
 	static bool           IsSizeable   (RootWinId const id) { return m_upMap->at(id).m_bTrackSize; }
 	static bool           IsVisible    (RootWinId const id) { return IsWindowVisible(GetHWND(id)); }
 
-	static BaseWindow* GetBaseWindow(RootWinId const);
-	static RootWinId   GetIdFromBaseWindow(BaseWindow const &);
+	static RootWindow* GetRootWindow(RootWinId const);
+	static RootWinId   GetIdFromRootWindow(RootWindow const &);
 	static RootWinId   GetIdFromHWND(HWND const);
 
 	static LRESULT SendCommand2MainWin(WPARAM const, LPARAM const = 0);
@@ -93,7 +93,7 @@ public:
 
 	struct MAP_ELEMENT
 	{
-		BaseWindow  * m_pBaseWindow;    // Normally WinManager handles BaseWindows
+		RootWindow  * m_pRootWindow;    // Normally WinManager handles RootWindows
 		wstring const m_wstr;
 		HWND    const m_hwnd;           // but in some cases also naked HWNDs are used
 		bool    const m_bTrackPosition; // if true, winManager sets window position from config file
@@ -122,7 +122,7 @@ private:
 		wstring      const &,
 		RootWinId    const,
 		HWND         const,
-		BaseWindow * const,
+		RootWindow * const,
 		bool         const,
 		bool         const
 	);

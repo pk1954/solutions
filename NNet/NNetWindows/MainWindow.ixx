@@ -11,6 +11,7 @@ module;
 export module NNetWin32:MainWindow;
 
 import Types;
+import Raster;
 import ScaleMenu;
 import ActionTimer;
 import NNetModel;
@@ -19,6 +20,7 @@ import NNetCommands;
 import NNetPreferences;
 import :SelectionMenu;
 import :NNetWindow;
+import :MainScales;
 
 using std::unique_ptr;
 
@@ -58,11 +60,11 @@ public:
 	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
 	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
 
-	bool HasScales() const final { return m_fPixScaleSize.IsNotZero(); }
-	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
+	bool HasScales() const final { return m_mainScales.HasScales(); }
+	bool HasGrid  () const final { return m_mainScales.HasGrid(); }
 
-	void SetGrid  (bool const, bool const) final;
-	void SetScales(bool const, bool const) final;
+	void SetGrid  (bool const bOn, bool const bAnim) final { m_mainScales.SetGrid  (bOn, bAnim); }
+	void SetScales(bool const bOn, bool const bAnim) final { m_mainScales.SetScales(bOn, bAnim); }
 
 	void CenterModel();
 	void CenterSelection();
@@ -84,12 +86,7 @@ private:
 	inline static PIXEL const H_SCALE_HEIGHT { 30_PIXEL };
 	inline static PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 
-	unique_ptr<Scale<MicroMeter>> m_upHorzScale {};
-	unique_ptr<Scale<MicroMeter>> m_upVertScale {};
-
 	MicroMeterPnt m_umDelta                { NP_ZERO };
-	fPixelPoint   m_fPixScaleSize          { fPP_ZERO };
-	float         m_fGridDimFactor         { 0.0f };
 	MicroMeter    m_umArrowSize            { 0._MicroMeter };
 	ActionTimer  *m_pDisplayTimer          { nullptr };
 	Observable   *m_pCoordObservable       { nullptr };
@@ -101,6 +98,9 @@ private:
 	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
 	SelectionMenu m_selectionMenu;
 	ScaleMenu     m_scaleMenu;
+	MainScales    m_mainScales;
+
+	unique_ptr<Raster<MicroMeter>> m_upRaster;
 
 	NobId    findTargetNob(MicroMeterPnt const&);
 	bool     setHighlightedNob   (MicroMeterPnt const&);
@@ -114,8 +114,6 @@ private:
 	void     PaintGraphics() final;
 	void     drawInputCable(InputLine const &) const;
 	void     connect(NobId const, NobId const);
-	void     adjustScales();
-	fPixel   sigGenOffset() const;
 	bool     selectionCommand(WPARAM const);
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;

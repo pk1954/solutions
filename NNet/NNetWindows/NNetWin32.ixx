@@ -13,6 +13,7 @@ export import :ComputeThread;
 export import :CrsrWindow;
 export import :DescriptionWindow;
 export import :MainWindow;
+export import :MainScales;
 export import :MiniWindow;
 export import :NNetAppMenu;
 export import :NNetAppWindow;

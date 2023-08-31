@@ -58,7 +58,7 @@ public:
         AcquireSRWLockExclusive(& m_srwlData);
         result = m_actual;
         ReleaseSRWLockExclusive(& m_srwlData);
-        return move(result);
+        return result;
     }
 
     void SetNrOfSteps(unsigned int const uiNrOfSteps)

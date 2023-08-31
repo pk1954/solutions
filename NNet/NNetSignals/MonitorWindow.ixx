@@ -77,6 +77,6 @@ private:
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;
 	unique_ptr<MonitorControl>    m_upMonitorControl;
 	unique_ptr<StimulusButton>    m_upStimulusButton;
-	Observable                  * m_pMoveSizeObservable;
-	SimuRunning           const * m_pSimuRunning;
+	Observable                  * m_pMoveSizeObservable { nullptr };
+	SimuRunning           const * m_pSimuRunning        { nullptr };;
 };

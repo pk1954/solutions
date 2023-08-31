@@ -576,6 +576,7 @@
   <ItemGroup>
     <ClCompile Include="ComputeThread.cpp" />
     <ClCompile Include="ComputeThread.ixx" />
+    <ClCompile Include="MainScales.ixx" />
     <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetSimuRunning.ixx" />
