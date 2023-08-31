@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <memory>
 #include <Windows.h>
+#include "Resource.h"
 
 export module NNetWin32:MainScales;
 
@@ -34,8 +35,8 @@ public:
 	{
 		HMENU hMenuPopup = ::PopupMenu(hMenu, title);
 		
-		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF, L"o&ff");
-		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON, L"o&n");
+		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_OFF,  L"o&ff");
+		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_ON,   L"o&n");
 		::AddMenu(hMenuPopup, MF_STRING, IDM_SCALE_GRID, L"&grid");
 		::Enable(hMenuPopup, IDM_SCALE_OFF, HasScales());
 		::Enable(hMenuPopup, IDM_SCALE_ON,  HasGrid() || !HasScales());
@@ -118,23 +119,27 @@ public:
 		);
 	}
 
-	void SetState(int const iCmd)
+	void HandleCommand(int const iCmd)
 	{
 		switch (iCmd)
 		{
 		case IDM_SCALE_OFF:
 			SetScales(false, true);
-			SetGrid(false, true);
+			SetGrid  (false, true);
 			break;
 
 		case IDM_SCALE_ON:
-			SetScales(true, true);
-			SetGrid(false, true);
+			SetScales(true,  true);
+			SetGrid  (false, true);
 			break;
 
 		case IDM_SCALE_GRID:
 			SetScales(true, true);
-			SetGrid(true, true);
+			SetGrid  (true, true);
+			break;
+
+		case IDD_SCALES_UPDATE:
+			AdjustScales();
 			break;
 
 		default:

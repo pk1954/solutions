@@ -707,15 +707,12 @@ bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_SCALE_OFF:
 	case IDM_SCALE_ON:
 	case IDM_SCALE_GRID:
-		m_mainScales.SetState(wmId);
+	case IDD_SCALES_UPDATE:
+		m_mainScales.HandleCommand(wmId);
 		break;
 
 	case IDD_GRID_UPDATE:
 		Notify(true);
-		return true;
-
-	case IDD_SCALES_UPDATE:
-		m_mainScales.AdjustScales();
 		return true;
 
 	default:
