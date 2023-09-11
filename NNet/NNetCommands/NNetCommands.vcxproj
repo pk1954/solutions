@@ -122,6 +122,7 @@
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />
+    <ClCompile Include="SetScanAreaCmd.ixx" />
     <ClCompile Include="SetGridCmd.ixx" />
     <ClCompile Include="InsertKnotCommand.ixx" />
     <ClCompile Include="InsertNeuronCommand.ixx" />

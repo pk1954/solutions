@@ -15,7 +15,6 @@ import Types;
 
 using std::wstring;
 
-
 export class DrawContext
 {
 public:

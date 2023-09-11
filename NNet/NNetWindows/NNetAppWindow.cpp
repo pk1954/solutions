@@ -473,6 +473,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_signalDesigner.Trigger();
 			break;
 
+		case IDD_SCAN_AREA:
+			NNetPreferences::m_bScanArea.Toggle();
+			break;
+
 		case IDM_SAVE_MODEL_AS:
 			m_computeThread.StopComputation();
 			if (SaveModelAs())

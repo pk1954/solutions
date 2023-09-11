@@ -11,6 +11,7 @@ export module NNetModel:Model;
 
 import Observable;
 import Util;
+import Raster;
 import Signals;
 import DescriptionUI;
 import :ParamType;
@@ -98,25 +99,23 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList     const & GetSigGenList  () const { return *m_upSigGenList.get(); }
-	UPSigGenList           & GetSigGenList  ()       { return *m_upSigGenList.get(); }
-	UPSensorList     const & GetSensorList  () const { return m_sensorList; }
-	UPSensorList           & GetSensorList  ()       { return m_sensorList; }
-	UPNobList        const & GetUPNobs      () const { return *m_upNobs.get(); }
-	UPNobList              & GetUPNobs      ()       { return *m_upNobs.get(); }
-	unique_ptr<UPNobList>    MoveUPNobs     ()       { return move(m_upNobs); }
-	MonitorData      const & GetMonitorData () const { return m_monitorData; }
-	MonitorData            & GetMonitorData ()       { return m_monitorData; }
-	NNetParameters   const & GetParams      () const { return *m_upParam.get(); }
-	NNetParameters         & GetParams      ()       { return *m_upParam.get(); }
-	SignalParameters const & GetSignalParams() const { return m_signalParams; }
-	SignalParameters       & GetSignalParams()       { return m_signalParams; }
+	UPSigGenList     const & GetSigGenList  ()            const { return *m_upSigGenList.get(); }
+	UPSigGenList           & GetSigGenList  ()                  { return *m_upSigGenList.get(); }
+	UPSensorList     const & GetSensorList  ()            const { return m_sensorList; }
+	UPSensorList           & GetSensorList  ()                  { return m_sensorList; }
+	UPNobList        const & GetUPNobs      ()            const { return *m_upNobs.get(); }
+	UPNobList              & GetUPNobs      ()                  { return *m_upNobs.get(); }
+	unique_ptr<UPNobList>    MoveUPNobs     ()                  { return move(m_upNobs); }
+	MonitorData      const & GetMonitorData ()            const { return m_monitorData; }
+	MonitorData            & GetMonitorData ()                  { return m_monitorData; }
+	NNetParameters   const & GetParams      ()            const { return *m_upParam.get(); }
+	NNetParameters         & GetParams      ()                  { return *m_upParam.get(); }
+	SignalParameters const & GetSignalParams()            const { return m_signalParams; }
+	SignalParameters       & GetSignalParams()                  { return m_signalParams; }
+	MicroMeterRect           GetScanAreaRect()            const { return m_upRaster->GetRasterRect(); }
+	SignalGenerator const  * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
+	MicroMeter               GetScanResolution()          const { return m_upRaster->Resolution(); }
 
-	SignalGenerator const* GetSigGen(SigGenId const sigGenId) const
-	{									  
-		return m_upSigGenList->GetSigGen(sigGenId);
-	}									  
-	
 	// non const functions
 
 	Nob * GetNob(NobId const);
@@ -124,20 +123,22 @@ public:
 	bool Compute();
 	void ResetModel();
 	void SetParam(ParamType::Value const, float const);
+	void SetScanArea(MicroMeterRect const&);
 	void Reconnect(NobId const);
 
-	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
-	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
-	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
-	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
-	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
-	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
+	void DeselectAllNobs          ()               const{ m_upNobs->DeselectAllNobs(); }
+	void SetModelFilePath         (wstring const & wstr){ m_wstrModelFilePath = wstr; }
+	void AddDescriptionLine       (wstring const & wstr){ m_description.AddDescriptionLine(wstr); }
+	void DescriptionComplete      ()                    { m_description.DescriptionComplete(); }
+	void SetDescriptionUI         (DescriptionUI &i)    { m_description.SetDescriptionUI(i); }
+	void SetHighSigObservable     (Observable    &o)    { m_monitorData.SetHighSigObservable(o); }
+	void SetActiveSigGenObservable(Observable    &o)    { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
+	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;
 	ModelDescription           m_description;

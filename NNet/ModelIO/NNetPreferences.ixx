@@ -66,6 +66,7 @@ public:
 
 	inline static ShowArrows m_bArrows;
 	inline static BoolType   m_bSensorPoints { false };
+	inline static BoolType   m_bScanArea     { false };
 
 private:
 

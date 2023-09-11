@@ -4,50 +4,62 @@
 
 module;
 
-#include <cmath>
+#include <optional>
 
 export module Raster;
 
 import Types;
 
-using std::round;
+using std::optional;
 
 export using RasterIndex = int;
-export using RasterPnt   = PosType<RasterIndex>;
+export using RasterPoint = PosType<RasterIndex>;
+export using RasterSize  = SizeType<RasterIndex>;
 
-export template <typename LOG_UNIT>
-class Raster
+export class Raster
 {
 public:
 
 Raster
 (
-    LOG_UNIT          resolution,
-    PosType<LOG_UNIT> origin,
-    SizeType<int>     size
+    MicroMeter    resolution,
+    MicroMeterPnt center,
+    RasterSize    size
 )
  :  m_resolution(resolution),
-    m_origin(origin),
+    m_center(center),
     m_size(size)
 {}
 
-RasterPnt FindRasterPos(MicroMeterPnt const umPnt) const
+void SetResolution(MicroMeter const logUnitRes)
 {
-    MicroMeterPnt const umOff { umPnt - m_origin };
-    MicroMeterPnt const umPos { umOff / m_resolution };
-    RasterPnt     const pos   { round(umPos.GetXvalue()), round(umPos.GetYvalue()) };
-    return 
-    (
-        (pos.GetX() < 0) || (pos.GetX() >= m_size.GetX()) ||
-        (pos.GetY() < 0) || (pos.GetY() >= m_size.GetY())
-    )
-    ? RasterPnt::NULL_VAL()
-    : pos;
+    m_resolution = logUnitRes;
 }
+
+MicroMeterPnt Origin() const
+{
+    return m_center - logSizeHalf();
+}
+
+optional<RasterPoint> FindRasterPos(MicroMeterPnt const) const;
+MicroMeterRect        GetRasterRect() const;
+
+void SetRasterRect(CardPoint const, MicroMeterPnt const&);
+void SetRasterRect(MicroMeterRect const&);
+
+RasterSize const& Size()       const { return m_size; }
+MicroMeter        Resolution() const { return m_resolution; }
 
 private:
 
-    LOG_UNIT          m_resolution { LOG_UNIT(1.0f) };
-    PosType<LOG_UNIT> m_origin;
-    SizeType<int>     m_size { 1, 1 };
+    MicroMeter    m_resolution { 100.0_MicroMeter };
+    MicroMeterPnt m_center     { NP_ZERO };
+    RasterSize    m_size       { 1, 1 };
+
+    MicroMeterPnt logSizeHalf() const
+    {
+        MicroMeterPnt res(MicroMeter(Cast2Float(m_size.GetX())), MicroMeter(Cast2Float(m_size.GetY())));
+        res *= m_resolution.GetValue() * 0.5f;
+        return res;
+    }
 };

@@ -132,6 +132,25 @@ export Degrees Normalize(Degrees const& d) { return Degrees(fmodf(fabsf(d.GetVal
 export MicroMeter Cos(Radian const r) { return MicroMeter(cosf(r.GetValue())); }
 export MicroMeter Sin(Radian const r) { return MicroMeter(sinf(r.GetValue())); }
 
+///////////////// Cardinal points //////////////////////////////////
+
+export enum class CardPoint
+{
+	north, south, west, east, northWest, northEast, southWest, southEast
+};
+
+export void Apply2CardPoints(auto const& func)
+{
+	func(CardPoint::north);
+	func(CardPoint::south);
+	func(CardPoint::west);
+	func(CardPoint::east);
+	func(CardPoint::northWest);
+	func(CardPoint::northEast);
+	func(CardPoint::southWest);
+	func(CardPoint::southEast);
+}
+
 ///////////////// Utilities //////////////////////////////////
 
 export int     StepsOfThousand(float fValue);

@@ -53,7 +53,7 @@ public:
 		SymbolTable::ScrDefConst(NAME, &m_wrapper);
 	}
 
-	static void Push(SensorId id, MicroMeterPnt const& delta)
+	static void Push(SensorId const id, MicroMeterPnt const& delta)
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << id << SPACE << delta << endl;

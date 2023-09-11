@@ -59,6 +59,7 @@ export import :RotateModelCommand;
 export import :RotateNobCommand;
 export import :RotateSelectionCommand;
 export import :SetScalesCmd;
+export import :SetScanAreaCmd;
 export import :SelectAllConnectedCmd;
 export import :SetActiveSigGenCmd;
 export import :SetParameterCommand;

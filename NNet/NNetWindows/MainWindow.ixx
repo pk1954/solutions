@@ -4,14 +4,14 @@
 
 module;
 
-#include <Windows.h>
+#include <optional>
 #include <memory>
 #include "Resource.h"
+#include <Windows.h>
 
 export module NNetWin32:MainWindow;
 
 import Types;
-import Raster;
 import ActionTimer;
 import NNetModel;
 import NNetSignals;
@@ -22,6 +22,8 @@ import :NNetWindow;
 import :MainScales;
 
 using std::unique_ptr;
+using std::optional;
+using std::nullopt;
 
 export class MainWindow : public NNetWindow
 {
@@ -82,34 +84,38 @@ public:
 
 private:
 
-	MicroMeterPnt m_umDelta                { NP_ZERO };
-	MicroMeter    m_umArrowSize            { 0._MicroMeter };
-	ActionTimer  *m_pDisplayTimer          { nullptr };
-	Observable   *m_pCoordObservable       { nullptr };
-	Observable   *m_pCursorPosObservable   { nullptr };
-	Observable   *m_pStaticModelObservable { nullptr };
-	NobId         m_nobIdHighlighted       { NO_NOB };
-	NobId         m_nobIdTarget            { NO_NOB };
-	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
-	SelectionMenu m_selectionMenu;
-	MainScales    m_mainScales;
+	MicroMeterPnt            m_umDelta                { NP_ZERO };
+	MicroMeter               m_umArrowSize            { 0._MicroMeter };
+	ActionTimer             *m_pDisplayTimer          { nullptr };
+	Observable              *m_pCoordObservable       { nullptr };
+	Observable              *m_pCursorPosObservable   { nullptr };
+	Observable              *m_pStaticModelObservable { nullptr };
+	NobId                    m_nobIdHighlighted       { NO_NOB };
+	NobId                    m_nobIdTarget            { NO_NOB };
+	SigGenId                 m_idSigGenUnderCrsr      { NO_SIGGEN };
+	SensorId                 m_sensorIdSelected       { SensorId::NULL_VAL() };
+	optional<CardPoint>      m_scanAreaHandleSelected { nullopt };
+	optional<MicroMeterRect> m_scanAreaRect           { nullopt };
+	SelectionMenu            m_selectionMenu;
+	MainScales               m_mainScales;
 
-	unique_ptr<Raster<MicroMeter>> m_upRaster;
-
-	NobId    findTargetNob(MicroMeterPnt const&);
-	bool     setHighlightedNob   (MicroMeterPnt const&);
-	bool     setHighlightedSensor(MicroMeterPnt const&);
-	void     selectSignalHandle  (MicroMeterPnt const&);
-	void     centerAndZoomRect(UPNobList::SelMode const, float const);
-	bool     connectionAllowed();
-	void     select(NobId const);
-	SigGenId getSigGenId(LPARAM const);
-	bool     selectSigGen(SigGenId const);
-	void     PaintGraphics() final;
-	void     drawInputCable(InputLine const &) const;
-	void     connect(NobId const, NobId const);
-	bool     selectionCommand(WPARAM const);
+	bool       setTargetNob        (MicroMeterPnt const&);
+	bool       setScanAreaHandle   (MicroMeterPnt const&);
+	bool       setHighlightedNob   (MicroMeterPnt const&);
+	bool       setHighlightedSensor(MicroMeterPnt const&);
+	void       selectSignalHandle  (MicroMeterPnt const&);
+	void       centerAndZoomRect(UPNobList::SelMode const, float const);
+	bool       connectionAllowed();
+	void       select(NobId const);
+	void       drawScanArea();
+	SigGenId   getSigGenId(LPARAM const);
+	MicroMeter getScanAreaHandleSize();
+	bool       selectSigGen(SigGenId const);
+	void       PaintGraphics() final;
+	void       drawInputCable(InputLine const &) const;
+	void       connect(NobId const, NobId const);
+	bool       selectionCommand(WPARAM const);
+	void       drawScanAreaHandle(CardPoint const, MicroMeterRect const&, MicroMeter const);
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

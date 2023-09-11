@@ -7,12 +7,14 @@ module;
 #include <memory>
 #include <string>
 #include <iostream>
+#include <optional>
 
 module NNetModel:Model;
 
 import Types;
 import Signals;
 import IoConstants;
+import Raster;
 import :NobException;
 import :NobType;
 import :ParamType;
@@ -34,17 +36,16 @@ Model::Model()
 	m_upNobs       = make_unique<UPNobList>();
 	m_upSigGenList = make_unique<UPSigGenList>();
 	m_upParam      = make_unique<NNetParameters>(&m_signalParams);
+	m_upRaster     = make_unique<Raster>
+ 					 ( 
+						100._MicroMeter,
+						MicroMeterPnt(0._MicroMeter, 0._MicroMeter),
+						SizeType<int>(50, 50)
+					 );
+	std::optional<RasterPoint> p = m_upRaster->FindRasterPos(MicroMeterPnt(3500._MicroMeter, 280._MicroMeter));
+	int x = 42;
 }
 
-//bool Model::operator==(Model const & rhs) const
-//{
-//	return
-//	(m_Nobs              == rhs.m_Nobs             ) &&
-//	(m_wstrModelFilePath == rhs.m_wstrModelFilePath) &&
-//	(m_monitorData       == rhs.m_monitorData      ) &&
-//	(m_param             == rhs.m_param            );
-//}
-// TODO
 void Model::CheckModel() const
 {
 #ifdef _DEBUG
@@ -164,4 +165,9 @@ void Model::DumpModel
 	wcout << COMMENT_SYMBOL << L"--- Dump start (" << file << L" line " << line << L")" << endl;
 	m_upNobs->Dump();
 	wcout << COMMENT_SYMBOL << L"--- Dump end ---" << endl;
+}
+
+void Model::SetScanArea(MicroMeterRect const& rect)
+{
+	m_upRaster->SetRasterRect(rect);
 }

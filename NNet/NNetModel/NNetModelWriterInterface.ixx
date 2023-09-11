@@ -68,13 +68,14 @@ public:
     SignalGenerator * GetSigGen        (wstring const& name)     const { return m_pModel->GetSigGenList().GetSigGen(name); }
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
-
-    UPSigGenList  & GetSigGenList() { return m_pModel->GetSigGenList(); }
+    
+    UPSigGenList & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 
-    void SetSigGenName(SigGenId const id, wstring const &n) { GetSigGenList().SetName(id, n); }
-    void Reconnect(NobId const id) const { m_pModel->Reconnect(id); }
-    void SetParam(ParamType::Value const p, float const f) { m_pModel->SetParam(p, f); }
+    void SetSigGenName(SigGenId const id, wstring const &n)     { GetSigGenList().SetName(id, n); }
+    void Reconnect    (NobId const id) const                    { m_pModel->Reconnect(id); }
+    void SetParam     (ParamType::Value const p, float const f) { m_pModel->SetParam(p, f); }
+    void SetScanArea  (MicroMeterRect const& rect)              { m_pModel->SetScanArea(rect); }
 
     void SetDescriptionUI   (DescriptionUI & ui)   { m_pModel->SetDescriptionUI(ui); }
     void SetModelFilePath   (wstring const & wstr) { m_pModel->SetModelFilePath(wstr); }

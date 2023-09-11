@@ -78,5 +78,8 @@
     <ClCompile Include="Raster.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Raster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

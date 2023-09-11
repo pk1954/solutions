@@ -65,6 +65,7 @@
 #define       IDD_AUTO_OPEN                  312
 #define       IDD_SENSOR_PNTS                313
 #define       IDD_PERF_MON_MODE              314
+#define       IDD_SCAN_AREA                  315
 
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341

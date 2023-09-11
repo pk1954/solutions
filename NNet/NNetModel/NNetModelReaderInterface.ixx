@@ -76,6 +76,7 @@ public:
 	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
 	UPNobList       const & GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
+	MicroMeterRect          GetScanAreaRect()                      const { return m_pModel->GetScanAreaRect(); }
 	unsigned int            GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
 	unsigned int            GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
 	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
@@ -91,6 +92,7 @@ public:
 	wstring          const& GetSigGenName(SigGenId const id)       const { return GetSigGenList().GetSigGen(id)->GetName(); }
 	UPSensorList     const& GetSensorList()                        const { return m_pModel->GetSensorList(); }
 	Sensor           const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
+	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 
 	bool                HasMicroSensor(NobId const id) const { return GetConstNob(id)->HasMicroSensor(); }
 	MicroSensor const * GetMicroSensor(NobId const id) const { return GetConstNob(id)->GetMicroSensor(); }

@@ -184,6 +184,12 @@ public:
 		return ::IsInRange(*this, min, max);
 	}
 
+	void RoundTo(BASE_TYPE const raster)
+	{
+		float fDiv { m_value / raster + 0.5f };
+		m_value = raster * roundf(fDiv);
+	}
+
 private:
 	BASE_TYPE m_value;
 };

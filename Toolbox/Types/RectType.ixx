@@ -123,6 +123,46 @@ public:
 	POS_TYPE  GetEndPoint  () const { return POS_TYPE(GetRight(), GetBottom()); }
 	POS_TYPE  GetCenter    () const { return (GetStartPoint() + GetEndPoint()) / 2; }
 
+	BASE_TYPE HorzCenter() const { return (m_Left + m_Right) / 2; };
+	BASE_TYPE VertCenter() const { return (m_Top + m_Bottom) / 2; };
+
+	POS_TYPE CardPntPos(CardPoint const cardPnt) const
+	{
+		switch (cardPnt)
+		{
+		case CardPoint::north:     return POS_TYPE(HorzCenter(), GetTop());
+		case CardPoint::south:     return POS_TYPE(HorzCenter(), GetBottom());
+		case CardPoint::west:      return POS_TYPE(GetLeft(),    VertCenter());
+		case CardPoint::east:      return POS_TYPE(GetRight(),   VertCenter());
+		case CardPoint::northWest: return POS_TYPE(GetLeft(),    GetTop());
+		case CardPoint::northEast: return POS_TYPE(GetRight(),   GetTop());
+		case CardPoint::southWest: return POS_TYPE(GetLeft(),    GetBottom());
+		case CardPoint::southEast: return POS_TYPE(GetRight(),   GetBottom());
+		default: assert(false);
+		}
+		return POS_TYPE::ZERO_VAL();
+	}
+
+	void Manipulate
+	(
+		CardPoint const  cardPnt,
+		POS_TYPE  const &pos
+	)
+	{
+		switch (cardPnt)
+		{
+		case CardPoint::north:     m_Top    += pos.GetY(); break;
+		case CardPoint::south:     m_Bottom += pos.GetY(); break;
+		case CardPoint::west:      m_Left   += pos.GetX(); break;
+		case CardPoint::east:      m_Right  += pos.GetX(); break;
+		case CardPoint::northWest: m_Top    += pos.GetY(); m_Left  += pos.GetX(); break;
+		case CardPoint::northEast: m_Top    += pos.GetY(); m_Right += pos.GetX(); break;
+		case CardPoint::southWest: m_Bottom += pos.GetY(); m_Left  += pos.GetX(); break;
+		case CardPoint::southEast: m_Bottom += pos.GetY(); m_Right += pos.GetX(); break;
+		default: assert(false);
+		}
+	}
+
 	bool Includes(POS_TYPE const pnt) const
 	{
 		return (m_Left <= pnt.GetX()) && (pnt.GetX() < m_Right) && 
@@ -267,11 +307,31 @@ public:
 		};
 	}
 
-	static RectType const & ZERO_VAL() 
+	void Apply2RectHandles(auto const& func) const
+	{
+		Apply2CardPoints([this, &func](CardPoint const cp) { func(CardPntPos(cp)); });
+	}
+
+	static RectType const & ZERO_VAL()
 	{ 
 		static RectType res { POS_TYPE::ZERO_VAL(), POS_TYPE::ZERO_VAL() }; 
 		return res;
 	};
+
+	void RoundTo(BASE_TYPE const raster)
+	{
+		POS_TYPE pp;
+		pp.RoundTo(raster);
+		BASE_TYPE bb;
+		bb.RoundTo(raster);
+
+		m_Top = bb;
+
+		m_Left  .RoundTo(raster);
+		m_Top   .RoundTo(raster);
+		m_Right .RoundTo(raster);
+		m_Bottom.RoundTo(raster);
+	}
 
 private:
 	BASE_TYPE m_Left;
@@ -279,3 +339,19 @@ private:
 	BASE_TYPE m_Right;
 	BASE_TYPE m_Bottom;
 };
+
+export template <typename BASE_TYPE>
+RectType<BASE_TYPE> RectFromCenterAndExtension
+(
+	PosType<BASE_TYPE>  const& pos,
+	BASE_TYPE           const& ext
+)
+{
+	return RectType<BASE_TYPE>
+	{
+		pos.GetX() - ext,
+		pos.GetY() - ext,
+		pos.GetX() + ext,
+		pos.GetY() + ext
+	};
+}

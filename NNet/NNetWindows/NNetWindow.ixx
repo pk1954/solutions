@@ -52,7 +52,6 @@ public:
 	MicroMeter                    PixelSize()       const { return m_context.GetPixelSize(); }
 
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
-	//void DrawMicroSensorsInRect(PixelRect const&) const;
 
 	SignalId FindSignalHandle(MicroMeterPnt const&) const;
 

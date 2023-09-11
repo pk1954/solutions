@@ -54,3 +54,8 @@ void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })
 		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
+
+void NNetModelWriterInterface::SetScanArea(MicroMeterRect const &rect)
+{
+	m_pModel->SetScanArea(rect);
+}

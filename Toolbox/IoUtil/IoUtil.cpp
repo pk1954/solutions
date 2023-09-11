@@ -80,6 +80,13 @@ MicroMeterPnt ScrReadMicroMeterPnt(Script& script)
     return MicroMeterPnt(x, y);
 }
 
+MicroMeterRect ScrReadMicroMeterRect(Script& script)
+{
+    MicroMeterPnt const umPntStart(ScrReadMicroMeterPnt(script));
+    MicroMeterPnt const umPntEnd  (ScrReadMicroMeterPnt(script));
+    return MicroMeterRect(umPntStart, umPntEnd);
+}
+
 MicroMeterCircle ScrReadMicroMeterCircle(Script& script)
 {
     script.ScrReadSpecial(OPEN_BRACKET);

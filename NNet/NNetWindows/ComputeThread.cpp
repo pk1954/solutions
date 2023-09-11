@@ -131,7 +131,7 @@ long ComputeThread::getCyclesTodo() const
 }
 
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
-{                                         // no thread messages used
+{                                        // no thread messages used
 	for (;;)
 	{
 		AcquireSRWLockExclusive(& m_srwlStopped);

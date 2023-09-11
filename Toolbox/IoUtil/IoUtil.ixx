@@ -30,6 +30,7 @@ export wostream& operator<< (wostream&, MicroMeterCircle const&);
 export fMicroSecs       ScrReadfMicroSecs      (Script&);
 export MicroMeter       ScrReadMicroMeter      (Script&);
 export MicroMeterPnt    ScrReadMicroMeterPnt   (Script&);
+export MicroMeterRect   ScrReadMicroMeterRect  (Script&);
 export MicroMeterCircle ScrReadMicroMeterCircle(Script&);
 export tBoolOp          ScrReadBoolOp          (Script&);
 

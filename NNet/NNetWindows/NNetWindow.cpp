@@ -133,21 +133,6 @@ void NNetWindow::DrawSensors() const
 	);
 }
 
-//void NNetWindow::DrawMicroSensorsInRect(PixelRect const& rect) const
-//{
-//	m_pNMRI->GetUPNobsC().Apply2AllInRectC<Nob>
-//	(
-//		GetCoordC().Transform2logUnitRect(rect),
-//		[&](Nob const& nob)
-//		{
-//			if (nob.HasMicroSensor())
-//			{
-//				nob.GetMicroSensor()->Draw(m_context, false);
-//			}
-//		}
-//	);
-//}
-
 void NNetWindow::drawSignalCable
 (
 	SignalId       const& signalId,

@@ -229,6 +229,12 @@ public:
 		*this = pntPosNew;
 	}
 
+	void RoundTo(BASE_TYPE const raster)
+	{
+		m_x.RoundTo(raster);
+		m_y.RoundTo(raster);
+	}
+
 private:
 	BASE_TYPE m_x;
 	BASE_TYPE m_y;

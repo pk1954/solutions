@@ -142,6 +142,10 @@ public:
 			AdjustScales();
 			break;
 
+		case IDD_GRID_UPDATE:
+			m_pRootWinParent->Notify(true);
+			break;
+
 		default:
 			assert(false);
 		}
