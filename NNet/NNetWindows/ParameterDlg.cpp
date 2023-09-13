@@ -85,7 +85,8 @@ void ParameterDialog::refreshParameters()  // refresh edit fields with data from
 	resetParameter(m_hwndPulseSpeed,     pulseSpeed);
 	resetParameter(m_hwndPulseWidth,     pulseWidth);
 	resetParameter(m_hwndTimeResolution, timeResolution);
-}										  
+	resetParameter(m_hwndScanResolution, scanResolution);
+}
 										  
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {										  
@@ -97,6 +98,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPulseSpeed,     pulseSpeed);
 	applyParameter(m_hwndPulseWidth,     pulseWidth);
 	applyParameter(m_hwndTimeResolution, timeResolution);
+	applyParameter(m_hwndScanResolution, scanResolution);
 }
 
 void ParameterDialog::Start(HWND const hwndParent)
@@ -126,12 +128,15 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 	m_hwndPulseFreqMax   = addParameter(hwndDlg, pulseFreqMax,   iYpos);
 	m_hwndTimeResolution = addParameter(hwndDlg, timeResolution, iYpos);
+	iYpos += VERT_BLOCK_SPACE;
+
+	m_hwndScanResolution = addParameter(hwndDlg, scanResolution, iYpos);
 	iYpos += HEIGHT;
 
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 180, iYpos, 50, 20, IDD_RESET);
 
-	SetWindowSize(280_PIXEL, 380_PIXEL, true);
+	SetWindowSize(280_PIXEL, 430_PIXEL, true);
 }
 
 void ParameterDialog::PaintGraphics()
@@ -141,6 +146,7 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(1, L"Synapse");
 	paintHeader(1, L"Dendrite");
 	paintHeader(2, L"General");
+	paintHeader(1, L"Scan");
 	refreshParameters();
 }
 
@@ -162,7 +168,7 @@ void ParameterDialog::paintHeader
 	fPixelRect rect { 16._fPixel, m_fPixPosVert - VSIZE + 3._fPixel, 85._fPixel, m_fPixPosVert + VSIZE };
 	m_upGraphics->ClearRectangle(rect);
 	
-	rect.MoveHorz(2._fPixel);
+	rect.Move2Horz(2._fPixel);
 	m_upGraphics->DisplayText(rect, wstrText.c_str(), m_pTextFormatHeader);
 
 	m_fPixPosVert += fPixBlockHeight + fPixel(VERT_BLOCK_SPACE);

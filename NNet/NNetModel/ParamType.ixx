@@ -27,6 +27,7 @@ public:
 		pulseSpeed,
 		pulseWidth,
 		timeResolution,
+		scanResolution,
 		tParameterLastGlobal = timeResolution,
 		tParameterLast = timeResolution
 	};

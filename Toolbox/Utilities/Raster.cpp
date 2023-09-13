@@ -12,28 +12,20 @@ module Raster;
 import SaveCast;
 import Types;
 
-using std::round;
+using std::roundf;
 using std::optional;
 
 optional<RasterPoint> Raster::FindRasterPos(MicroMeterPnt const umPnt) const
 {
-    MicroMeterPnt const umOrigin { Origin() };
-    MicroMeterPnt const umOff    { umPnt - umOrigin };
-    MicroMeterPnt const umPos    { umOff * (1.0f / m_resolution.GetValue()) };
-    RasterPoint   const pos      { Cast2Int(round(umPos.GetXvalue())), Cast2Int(round(umPos.GetYvalue())) };
-    if (
-        (pos.GetX() < 0) || (pos.GetX() >= m_size.GetX()) ||
-        (pos.GetY() < 0) || (pos.GetY() >= m_size.GetY())
-       )
-        return {};
-    return pos;
-}
-
-MicroMeterRect Raster::GetRasterRect() const
-{
-    MicroMeterPnt const umSizeHalf { logSizeHalf() };
-    MicroMeterRect rect(m_center - umSizeHalf, m_center + umSizeHalf);
-    return rect;
+    if (m_rect.Includes(umPnt))
+    {
+        MicroMeterPnt const umOrigin  { m_rect.GetStartPoint() };
+        MicroMeterPnt const umOff     { umPnt - umOrigin };
+        MicroMeterPnt const umPos     { umOff * (1.0f / m_resolution.GetValue()) };
+        RasterPoint   const rasterPos { round2RasterPoint(umPos) };
+        return rasterPos;
+    }
+    return {};
 }
 
 void Raster::SetRasterRect
@@ -42,17 +34,28 @@ void Raster::SetRasterRect
     MicroMeterPnt const& pos
 )
 {
-    MicroMeterRect umRect { GetRasterRect() };
-    umRect.Manipulate(cardPnt, pos);
-    SetRasterRect(umRect);
+    m_rect.Manipulate(cardPnt, pos);
+    adjust2Raster();
 }
 
 void Raster::SetRasterRect(MicroMeterRect const& umRect)
 {
-    m_center = umRect.GetCenter();
-    m_size = RasterSize
-    (
-        Cast2Int((umRect.GetWidth () + m_resolution * 0.5f) / m_resolution),
-        Cast2Int((umRect.GetHeight() + m_resolution * 0.5f) / m_resolution)
-    );
+    m_rect = umRect;
+    adjust2Raster();
+}
+
+RasterPoint Raster::Size() const
+{
+    return round2RasterPoint(MicroMeterPnt(m_rect.GetWidth(), m_rect.GetHeight()));
+}
+
+RasterPoint Raster::round2RasterPoint(MicroMeterPnt const& pntParam) const
+{
+    MicroMeterPnt pnt { pntParam.DivRound(m_resolution) };
+    return RasterPoint(Cast2Int(pnt.GetXvalue()), Cast2Int(pnt.GetYvalue()));
+}
+
+void Raster::adjust2Raster()
+{
+    m_rect.SetSize(m_rect.GetSize().Round(m_resolution));
 }

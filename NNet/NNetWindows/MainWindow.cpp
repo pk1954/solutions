@@ -537,26 +537,35 @@ void MainWindow::drawScanArea()
 	Color          const  colLine         { NNetColors::SCAN_AREA_HANDLE };
 	MicroMeterRect const  scanAreaRectOld { m_pNMRI->GetScanAreaRect() };
 	MicroMeterRect const  scanAreaRectNew { m_scanAreaRect.has_value() ? *m_scanAreaRect : scanAreaRectOld };
+	RasterPoint    const  rasterSize      { m_pNMRI->GetScanAreaSize() };
 
 	context.FillRectangle(scanAreaRectNew, NNetColors::SCAN_AREA_RECT);
 
-	for (MicroMeter umX = scanAreaRectOld.GetLeft(); umX <= scanAreaRectOld.GetRight(); umX += umResolution)
-		context.DrawLine
-		(
-			MicroMeterPnt(umX, scanAreaRectOld.GetTop()),
-			MicroMeterPnt(umX, scanAreaRectOld.GetBottom()),
-			0.0_MicroMeter,
-			colLine
-		);
-
-	for (MicroMeter umY = scanAreaRectOld.GetTop(); umY <= scanAreaRectOld.GetBottom(); umY += umResolution)
-		context.DrawLine
-		(
-			MicroMeterPnt(scanAreaRectOld.GetLeft(),  umY),
-			MicroMeterPnt(scanAreaRectOld.GetRight(), umY),
-			0.0_MicroMeter,
-			colLine
-		);
+	if (GetCoordC().Transform2fPixel(umResolution) >= 8.0_fPixel)
+	{
+		for (int x = 0; x <= rasterSize.GetX(); ++x)
+		{
+			MicroMeter const umX { scanAreaRectOld.GetLeft() + umResolution * Cast2Float(x) };
+			context.DrawLine
+			(
+				MicroMeterPnt(umX, scanAreaRectOld.GetTop()),
+				MicroMeterPnt(umX, scanAreaRectOld.GetBottom()),
+				0.0_MicroMeter,
+				colLine
+			);
+		}
+		for (int y = 0; y <= rasterSize.GetY(); ++y)
+		{
+			MicroMeter const umY { scanAreaRectOld.GetTop() + umResolution * Cast2Float(y) };
+			context.DrawLine
+			(
+				MicroMeterPnt(scanAreaRectOld.GetLeft(), umY),
+				MicroMeterPnt(scanAreaRectOld.GetRight(), umY),
+				0.0_MicroMeter,
+				colLine
+			);
+		}
+	}
 
 	Apply2CardPoints
 	(
@@ -619,8 +628,8 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		case active: if (!bActive)                     return; break;
 		case none:                                	   return;
 	}
-	D2D_driver                 & graphics  { *m_upGraphics.get() };
-	Uniform2D<MicroMeter> const& coord     { m_context.GetCoordC() };
+	D2D_driver                 & graphics { *m_upGraphics.get() };
+	Uniform2D<MicroMeter> const& coord    { m_context.GetCoordC() };
 	ID2D1SolidColorBrush* const  pBrush
 	{
 		(IsHighlighted(inputLine) || bActive)

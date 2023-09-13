@@ -192,14 +192,47 @@ public:
 		return res; 
 	};
 
-	PointType MoveHorz(BASE_TYPE const offset) const
+	void Move2Horz(BASE_TYPE const offset)
+	{
+		m_x += offset;
+	}
+
+	void Move2Vert(BASE_TYPE const offset)
+	{
+		m_y += offset;
+	}
+
+	PointType Horz(BASE_TYPE const offset) const
 	{
 		return PointType(m_x + offset, m_y);
 	}
 
-	PointType MoveVert(BASE_TYPE const offset) const
+	PointType Vert(BASE_TYPE const offset) const
 	{
 		return PointType(m_x, m_y + offset);
+	}
+
+	PointType Round(BASE_TYPE const raster) const
+	{
+		return PointType
+		(
+			m_x.Round(raster),
+			m_y.Round(raster)
+		);
+	}
+
+	PointType DivRound(BASE_TYPE const raster) const
+	{
+		return PointType
+		(
+			m_x.DivRound(raster),
+			m_y.DivRound(raster)
+		);
+	}
+
+	PointType Round() const
+	{
+		return PointType(Round(m_x), Round(m_y));
 	}
 
 	// makes problems! Not quite clear, but works without.
@@ -227,12 +260,6 @@ public:
 		PointType const pntVectorScaled { pntVectorNew.ScaledTo(distFromPivot) };
 		PointType const pntPosNew       { pntPivot + pntVectorScaled };
 		*this = pntPosNew;
-	}
-
-	void RoundTo(BASE_TYPE const raster)
-	{
-		m_x.RoundTo(raster);
-		m_y.RoundTo(raster);
 	}
 
 private:

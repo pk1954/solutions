@@ -32,7 +32,8 @@ wchar_t const* ParamType::GetName(ParamType::Value const p)
 		{ synapseDelay,   L"Delay"           },
 		{ pulseSpeed,     L"PulseSpeed"      },
 		{ pulseWidth,     L"PulseWidth"      },
-		{ timeResolution, L"TimeResolution"  }
+		{ timeResolution, L"TimeResolution"  },
+		{ scanResolution, L"ScanResolution"  }
 	};
 
 	return mapParam.at(p);
@@ -54,7 +55,8 @@ wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 		{ synapseDelay,   L"µs"    },
 		{ pulseSpeed,     L"m/sec" },
 		{ pulseWidth,     L"µs"    },
-		{ timeResolution, L"µs"    }
+		{ timeResolution, L"µs"    },
+		{ scanResolution, L"µm"    }
 	};
 
 	return mapParam.at(p);

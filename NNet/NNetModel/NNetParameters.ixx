@@ -12,13 +12,19 @@ import Observable;
 import SaveCast;
 import Types;
 import Signals;
+import Raster;
 import :ParamType;
 
 export class NNetParameters : public Observable
 {
 public:
-	NNetParameters(SignalParameters * const pSigPars)
-		: m_pSignalParameters(pSigPars)
+	NNetParameters
+	(
+		SignalParameters * const pSigPars,
+		Raster           * const pScanRaster
+	)
+	  : m_pSignalParameters(pSigPars),
+		m_pScanRaster(pScanRaster)
 	{}
 
 	//bool operator==(NNetParameters const & rhs) const;
@@ -34,6 +40,7 @@ public:
 	meterPerSec PulseSpeed    () const { return m_pulseSpeed; }
 	fMicroSecs  PulseDistMin  () const { return m_usPulseDistMin; }
 	fMicroSecs  TimeResolution() const { return m_pSignalParameters->TimeResolution(); }
+	MicroMeter  ScanResolution() const { return m_pScanRaster->Resolution(); }
 
 private:
 	fHertz      m_freqMax        { 50.0_fHertz };
@@ -44,7 +51,8 @@ private:
 	fMicroSecs  m_pulseWidth     { 2000._MicroSecs };
 	fMicroSecs  m_usPulseDistMin { PulseDuration(m_freqMax) };
 
-	SignalParameters* m_pSignalParameters { nullptr };
+	Raster           *m_pScanRaster       { nullptr };
+	SignalParameters *m_pSignalParameters { nullptr };
 };
 
 // geometry

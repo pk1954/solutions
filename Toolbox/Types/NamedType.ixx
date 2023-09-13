@@ -11,11 +11,13 @@ module;
 #include <iomanip>
 #include <limits>
 #include <string>
+#include <cmath>
 
 export module Types:NamedType;
 
 import Util;
 
+using std::roundf;
 using std::wstring;
 using std::wostream;
 using std::numeric_limits;
@@ -179,15 +181,26 @@ public:
 	bool IsNull   () const { return * this == NULL_VAL(); };
 	bool IsNotNull() const { return * this != NULL_VAL(); };
 
-	bool IsInRange(auto const min, auto const max)
+	bool IsInRange(auto const min, auto const max) const
 	{
 		return ::IsInRange(*this, min, max);
 	}
 
-	void RoundTo(BASE_TYPE const raster)
+	NamedType Round(NamedType const raster) const
 	{
-		float fDiv { m_value / raster + 0.5f };
-		m_value = raster * roundf(fDiv);
+		return DivRound(raster) * raster.GetValue();
+	}
+
+	NamedType DivRound(NamedType const raster) const
+	{
+		BASE_TYPE value { m_value };
+		value /= raster.GetValue();
+		return NamedType(roundf(value));
+	}
+
+	NamedType Round() const
+	{ 
+		return NamedType(roundf(m_value));
 	}
 
 private:

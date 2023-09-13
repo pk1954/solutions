@@ -54,6 +54,7 @@ private:
 	HWND m_hwndTimeResolution { nullptr };
 	HWND m_hwndFilterSize     { nullptr };
 	HWND m_hwndPulseSpeed     { nullptr };
+	HWND m_hwndScanResolution { nullptr };
 
 	void resetParameter(HWND const, ParamType::Value const) const;
 	void applyParameter(HWND const, ParamType::Value const);

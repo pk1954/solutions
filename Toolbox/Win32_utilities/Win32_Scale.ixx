@@ -286,12 +286,12 @@ private:
 		if (IsVertScale())
 		{
 			fPixelPoint const fPixPntStart(m_fPixPntStart.GetX(), yPos(fTickA));
-			m_upGraphics->DrawLine(fPixPntStart, fPixPntStart.MoveHorz(fDir), 1._fPixel);
+			m_upGraphics->DrawLine(fPixPntStart, fPixPntStart.Horz(fDir), 1._fPixel);
 		}
 		else
 		{
 			fPixelPoint const fPixPntStart(xPos(fTickA), m_fPixPntStart.GetY());
-			m_upGraphics->DrawLine(fPixPntStart, fPixPntStart.MoveVert(fDir), 1._fPixel);
+			m_upGraphics->DrawLine(fPixPntStart, fPixPntStart.Vert(fDir), 1._fPixel);
 		};
 	}
 

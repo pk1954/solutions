@@ -89,11 +89,11 @@ void SignalGenerator::DrawSigGen
 	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
 	graphics.DisplayText(fPixRect, GetName(), m_pTextFormat);
 
-	fPixRect.MoveVert(15.0_fPixel);
+	fPixRect.Move2Vert(15.0_fPixel);
 	fHertz const frequency { GetStimulusFrequency() };
 	graphics.DisplayText(fPixRect, Format2wstring<fHertz>(frequency, 1), m_pTextFormat);
 
-	fPixRect.MoveVert(15.0_fPixel);
+	fPixRect.Move2Vert(15.0_fPixel);
 	mV const voltage { GetStimulusAmplitude() };
 	graphics.DisplayText(fPixRect, Format2wstring<mV>(voltage, 1), m_pTextFormat);
 }

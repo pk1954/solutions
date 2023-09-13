@@ -235,13 +235,13 @@ fPixelRect UPSigGenList::newSigGenButtonRect(fPixel const fPixOffX) const
 void UPSigGenList::DrawSignalGenerators(D2D_driver& graphics, fPixel const fPixOffX) const
 {
     fPixelRect fPixRect { 1._fPixel, 1._fPixel, SignalGenerator::SIGGEN_WIDTH, SignalGenerator::SIGGEN_HEIGHT };
-    fPixRect.MoveHorz(fPixOffX);
+    fPixRect.Move2Horz(fPixOffX);
     Apply2AllC
     (
         [this, &fPixRect, &graphics](auto const& pSigGen)
         {
             pSigGen->DrawSigGen(graphics, fPixRect, IsSelected(*pSigGen));
-            fPixRect.MoveHorz(DIST);
+            fPixRect.Move2Horz(DIST);
         }
     );
     SignalGenerator::DrawNewSigGenButton(graphics, newSigGenButtonRect(fPixOffX));

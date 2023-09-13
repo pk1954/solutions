@@ -35,13 +35,8 @@ Model::Model()
 {
 	m_upNobs       = make_unique<UPNobList>();
 	m_upSigGenList = make_unique<UPSigGenList>();
-	m_upParam      = make_unique<NNetParameters>(&m_signalParams);
-	m_upRaster     = make_unique<Raster>
- 					 ( 
-						100._MicroMeter,
-						MicroMeterPnt(0._MicroMeter, 0._MicroMeter),
-						SizeType<int>(50, 50)
-					 );
+	m_upRaster     = make_unique<Raster>();
+	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
 	std::optional<RasterPoint> p = m_upRaster->FindRasterPos(MicroMeterPnt(3500._MicroMeter, 280._MicroMeter));
 	int x = 42;
 }

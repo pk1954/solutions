@@ -105,6 +105,8 @@ public:
 	void SetHeight(BASE_TYPE const val) { m_Bottom = m_Top  + val - BASE_TYPE(BASE_TYPE(1)); }
 	void SetPos   (POS_TYPE  const pos) { SetLeft (pos.GetX()); SetRight (pos.GetY()); }
 	void SetSize  (SIZE_TYPE const siz) { SetWidth(siz.GetX()); SetHeight(siz.GetY()); }
+	void SetSize  (POS_TYPE  const siz) { SetWidth(siz.GetX()); SetHeight(siz.GetY()); }
+	void SetCenter(POS_TYPE  const pos) { Move(pos - GetCenter()); }
 
 	bool IsEmpty   () const { return (m_Left == m_Right) || (m_Top == m_Bottom); };
 	bool IsNotEmpty() const { return (m_Left <  m_Right) && (m_Top <  m_Bottom); };
@@ -223,22 +225,27 @@ public:
 		};
 	}
 
-	void MoveHorz(BASE_TYPE const offset)
+	void Move2Horz(BASE_TYPE const offset)
 	{
 		m_Left  += offset;
 		m_Right += offset;
 	}
 
-	void MoveVert(BASE_TYPE const offset)
+	void Move2Vert(BASE_TYPE const offset)
 	{
-		m_Top    += offset;
+		m_Top += offset;
 		m_Bottom += offset;
 	}
 
-	RectType operator+= (POS_TYPE const offset)
+	void Move(POS_TYPE const offPnt)
 	{
-		MoveHorz(offset.GetX());
-		MoveVert(offset.GetY());
+		Move2Horz(offPnt.GetX());
+		Move2Vert(offPnt.GetY());
+	}
+
+	RectType operator+= (POS_TYPE const offPnt)
+	{
+		Move(offPnt);
 		return *this;
 	}
 
