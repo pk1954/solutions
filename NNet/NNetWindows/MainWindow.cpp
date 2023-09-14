@@ -214,6 +214,11 @@ bool MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
 	return false;
 }
 
+bool MainWindow::crsrInScanArea(MicroMeterPnt const &umCrsrPos)
+{
+	return NNetPreferences::ScanMode() && ScanAreaRect().Includes(umCrsrPos);
+}
+
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
@@ -246,6 +251,13 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	m_umDelta = umCrsrPos - umLastPos;
 	if (m_umDelta.IsZero())
 		return;
+
+	if (crsrInScanArea(umCrsrPos))
+	{
+		m_scanAreaRect.value() += m_umDelta;
+		m_pStaticModelObservable->NotifyAll(true);
+		return;
+	}
 
 	if (wParam & MK_CONTROL)   // rotate
 	{
@@ -525,53 +537,60 @@ void MainWindow::PaintGraphics()
 
 	m_selectionMenu.Show(m_pNMRI->AnyNobsSelected());
 
-	if (NNetPreferences::m_bScanArea.Get())
-		drawScanArea();
+	if (NNetPreferences::ScanMode())
+	{
+		DrawScanArea();
+		drawScanRaster();
+		drawScanAreaHandles();
+	}
 }
 
-void MainWindow::drawScanArea()
+void MainWindow::drawScanRaster()
 {
-	DrawContext    const &context         { GetDrawContextC() };
-	MicroMeter     const  umSize          { getScanAreaHandleSize() };
-	MicroMeter     const  umResolution    { m_pNMRI->GetScanResolution() };
-	Color          const  colLine         { NNetColors::SCAN_AREA_HANDLE };
-	MicroMeterRect const  scanAreaRectOld { m_pNMRI->GetScanAreaRect() };
-	MicroMeterRect const  scanAreaRectNew { m_scanAreaRect.has_value() ? *m_scanAreaRect : scanAreaRectOld };
-	RasterPoint    const  rasterSize      { m_pNMRI->GetScanAreaSize() };
-
-	context.FillRectangle(scanAreaRectNew, NNetColors::SCAN_AREA_RECT);
+	MicroMeter     const umResolution { m_pNMRI->GetScanResolution() };
+	Color          const colLine      { NNetColors::SCAN_AREA_HANDLE };
+	MicroMeterRect const scanAreaRect { m_pNMRI->GetScanAreaRect() };
+	RasterPoint    const rasterSize   { m_pNMRI->GetScanAreaSize() };
 
 	if (GetCoordC().Transform2fPixel(umResolution) >= 8.0_fPixel)
 	{
 		for (int x = 0; x <= rasterSize.GetX(); ++x)
 		{
-			MicroMeter const umX { scanAreaRectOld.GetLeft() + umResolution * Cast2Float(x) };
-			context.DrawLine
+			MicroMeter const umX { scanAreaRect.GetLeft() + umResolution * Cast2Float(x) };
+			GetDrawContextC().DrawLine
 			(
-				MicroMeterPnt(umX, scanAreaRectOld.GetTop()),
-				MicroMeterPnt(umX, scanAreaRectOld.GetBottom()),
+				MicroMeterPnt(umX, scanAreaRect.GetTop()),
+				MicroMeterPnt(umX, scanAreaRect.GetBottom()),
 				0.0_MicroMeter,
 				colLine
 			);
 		}
 		for (int y = 0; y <= rasterSize.GetY(); ++y)
 		{
-			MicroMeter const umY { scanAreaRectOld.GetTop() + umResolution * Cast2Float(y) };
-			context.DrawLine
+			MicroMeter const umY { scanAreaRect.GetTop() + umResolution * Cast2Float(y) };
+			GetDrawContextC().DrawLine
 			(
-				MicroMeterPnt(scanAreaRectOld.GetLeft(), umY),
-				MicroMeterPnt(scanAreaRectOld.GetRight(), umY),
+				MicroMeterPnt(scanAreaRect.GetLeft(), umY),
+				MicroMeterPnt(scanAreaRect.GetRight(), umY),
 				0.0_MicroMeter,
 				colLine
 			);
 		}
 	}
+}
 
+void MainWindow::drawScanAreaHandles()
+{
+	MicroMeter     const umHandleSize { getScanAreaHandleSize() };
+	MicroMeterRect const scanArea     { ScanAreaRect() };
 	Apply2CardPoints
 	(
-		[this, umSize, &scanAreaRectNew](CardPoint const cp)
+		[this, umHandleSize, &scanArea](CardPoint const cp)
 		{
-			drawScanAreaHandle(cp, scanAreaRectNew, umSize);;
+			Color          const col    { (cp == m_scanAreaHandleSelected) ? NNetColors::INT_SELECTED : NNetColors::SCAN_AREA_HANDLE };
+			MicroMeterPnt  const pos    { scanArea.CardPntPos(cp) };
+			MicroMeterRect const umRect { RectFromCenterAndExtension<MicroMeter>(pos, umHandleSize) };
+			GetDrawContextC().DrawTranspRect(umRect, col);
 		}
 	);
 }
@@ -585,8 +604,9 @@ MicroMeter MainWindow::getScanAreaHandleSize()
 
 bool MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
 {
+	if (!NNetPreferences::ScanMode())
+		return false;
 	MicroMeter const umSize { getScanAreaHandleSize() };
-	
 	m_scanAreaRect = m_pNMRI->GetScanAreaRect();
 	m_scanAreaHandleSelected = nullopt;
 	Apply2CardPoints
@@ -600,19 +620,6 @@ bool MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
 		}
 	);
 	return m_scanAreaHandleSelected.has_value();
-}
-
-void MainWindow::drawScanAreaHandle
-(
-	CardPoint      const  cp,
-	MicroMeterRect const &rectScanArea,
-	MicroMeter     const  umHandleSize
-)
-{
-	Color          const col    { (cp == m_scanAreaHandleSelected) ? NNetColors::INT_SELECTED : NNetColors::SCAN_AREA_HANDLE };
-	MicroMeterPnt  const pos    { rectScanArea.CardPntPos(cp) };
-	MicroMeterRect const umRect { RectFromCenterAndExtension<MicroMeter>(pos, umHandleSize) };
-	GetDrawContextC().DrawTranspRect(umRect, col);
 }
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const

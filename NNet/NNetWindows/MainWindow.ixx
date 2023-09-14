@@ -95,7 +95,6 @@ private:
 	SigGenId                 m_idSigGenUnderCrsr      { NO_SIGGEN };
 	SensorId                 m_sensorIdSelected       { SensorId::NULL_VAL() };
 	optional<CardPoint>      m_scanAreaHandleSelected { nullopt };
-	optional<MicroMeterRect> m_scanAreaRect           { nullopt };
 	SelectionMenu            m_selectionMenu;
 	MainScales               m_mainScales;
 
@@ -107,7 +106,8 @@ private:
 	void       centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool       connectionAllowed();
 	void       select(NobId const);
-	void       drawScanArea();
+	void       drawScanRaster();
+	void       drawScanAreaHandles();
 	SigGenId   getSigGenId(LPARAM const);
 	MicroMeter getScanAreaHandleSize();
 	bool       selectSigGen(SigGenId const);
@@ -115,7 +115,7 @@ private:
 	void       drawInputCable(InputLine const &) const;
 	void       connect(NobId const, NobId const);
 	bool       selectionCommand(WPARAM const);
-	void       drawScanAreaHandle(CardPoint const, MicroMeterRect const&, MicroMeter const);
+	bool       crsrInScanArea(MicroMeterPnt const&);
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

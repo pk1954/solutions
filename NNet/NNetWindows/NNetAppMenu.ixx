@@ -54,5 +54,5 @@ private:
 	unique_ptr<OnOffPair> m_upOnOffSensorPoints;
 	unique_ptr<OnOffPair> m_upOnOffPerfMonMode;
 	unique_ptr<OnOffPair> m_upOnOffColorMenu;
-	unique_ptr<OnOffPair> m_upOnOffScanArea;
+	unique_ptr<OnOffPair> m_upOnOffScanMode;
 };

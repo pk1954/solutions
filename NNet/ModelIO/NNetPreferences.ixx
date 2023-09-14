@@ -64,9 +64,11 @@ public:
 
 	static NNetModelReaderInterface const *GetModelInterface() { return m_pNMRI; };
 
+	static bool ScanMode() { return m_bScanMode.Get(); }
+
 	inline static ShowArrows m_bArrows;
 	inline static BoolType   m_bSensorPoints { false };
-	inline static BoolType   m_bScanArea     { false };
+	inline static BoolType   m_bScanMode     { false };
 
 private:
 

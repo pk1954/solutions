@@ -69,10 +69,14 @@ void MiniWindow::Notify(bool const bImmediately)
 {
 	if (m_pObservedNNetWindow)
 	{
-		float            const EXTRA_SPACE_FACTOR { 1.2f };                              // give 20% more space (looks better)
-		MicroMeterRect   const umRectMain  { m_pObservedNNetWindow->GetViewRect() };     // current position of main window view 
-		MicroMeterRect   const umRectModel { m_pNMRI->GetUPNobsC().CalcEnclosingRect() }; // current extension of model
-		MicroMeterRect   const umRectShow  { Union(umRectMain, umRectModel) };           // all this should be visible  
+		float            const EXTRA_SPACE_FACTOR { 1.2f };                               // give 20% more space (looks better)
+		MicroMeterRect   const umRectMain     { m_pObservedNNetWindow->GetViewRect() };      // current position of main window view 
+		MicroMeterRect   const umRectModel    { m_pNMRI->GetUPNobsC().CalcEnclosingRect() }; // current extension of model
+		MicroMeterRect         umRectShow     { Union(umRectMain, umRectModel) };            // all this should be visible  
+
+		if (NNetPreferences::ScanMode())
+			umRectShow = Union(umRectShow, m_pNMRI->GetScanAreaRect());            // all this should be visible  
+
 		fPixelPoint      const fpCenter    { Convert2fPixelPoint(GetClRectCenter()) };
 		MicroMeterPnt    const umPntTarget { umRectShow.GetCenter() };
 		Uniform2D<MicroMeter>& coord       { GetCoord() };
@@ -97,5 +101,7 @@ void MiniWindow::PaintGraphics()
 	{
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
+		if (NNetPreferences::ScanMode())
+			DrawScanArea();
 	}
 }

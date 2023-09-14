@@ -148,7 +148,7 @@ void NNetPreferences::Initialize()
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
     Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
     Preferences::AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
-    Preferences::AddBoolWrapper(L"SetShowScanArea",  m_bScanArea);
+    Preferences::AddBoolWrapper(L"SetScanMode",      m_bScanMode);
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

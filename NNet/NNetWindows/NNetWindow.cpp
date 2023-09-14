@@ -133,6 +133,11 @@ void NNetWindow::DrawSensors() const
 	);
 }
 
+void NNetWindow::DrawScanArea() const
+{
+	GetDrawContextC().FillRectangle(ScanAreaRect(), NNetColors::SCAN_AREA_RECT);
+}
+
 void NNetWindow::drawSignalCable
 (
 	SignalId       const& signalId,

@@ -4,6 +4,7 @@
 
 module;
 
+#include <optional>
 #include <memory>
 #include <compare>
 #include <Windows.h>
@@ -22,6 +23,8 @@ import Signals;
 import :NNetController;
 
 using std::unique_ptr;
+using std::optional;
+using std::nullopt;
 
 export class NNetWindow : public GraphicsWindow
 {
@@ -104,14 +107,18 @@ protected:
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
 	void DrawSensors() const;
+	void DrawScanArea() const;
 
 	NNetModelReaderInterface const* m_pNMRI          { nullptr };
 	MonitorWindow            const* m_pMonitorWindow { nullptr };
+	optional<MicroMeterRect>        m_scanAreaRect   { nullopt };
 
 	PixelPoint GetPtLast() const { return m_ptLast; }
 
 	void SetPtLast(PixelPoint const& pt) { m_ptLast = pt; }
 	void ClearPtLast() { m_ptLast.Set2Null(); }
+
+	MicroMeterRect ScanAreaRect() const { return m_scanAreaRect.has_value() ? *m_scanAreaRect : m_pNMRI->GetScanAreaRect(); }
 
 private:
 	NNetWindow(NNetWindow const&);                       // noncopyable class 
