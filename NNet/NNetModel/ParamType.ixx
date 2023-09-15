@@ -26,8 +26,9 @@ public:
 		synapseDelay,     // delay of incoming pulse in synapse
 		pulseSpeed,
 		pulseWidth,
-		timeResolution,
 		scanResolution,
+		pixelScanTime,
+		timeResolution,
 		tParameterLastGlobal = timeResolution,
 		tParameterLast = timeResolution
 	};

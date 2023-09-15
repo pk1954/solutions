@@ -12,19 +12,6 @@ import Types;
 import Signals;
 import :ParamType;
 
-//bool NNetParameters::operator==(NNetParameters const& rhs) const
-//{
-//	return
-//		(m_sigGenData     == rhs.m_sigGenData) &&
-//		(m_freqMax        == rhs.m_freqMax) &&
-//		(m_neuronPeakVolt == rhs.m_neuronPeakVolt) &&
-//		(m_threshold      == rhs.m_threshold) &&
-//		(m_synapseDelay   == rhs.m_synapseDelay) &&
-//		(m_pulseSpeed     == rhs.m_pulseSpeed) &&
-//		(m_pulseWidth     == rhs.m_pulseWidth) &&
-//		(m_usResolution   == rhs.m_usResolution);
-//}
-
 float NNetParameters::GetParameterValue(ParamType::Value const param) const
 {
 	SigGenStaticData const& sigGenData { m_pSignalParameters->GetSigGenStaticData() };
@@ -42,6 +29,7 @@ float NNetParameters::GetParameterValue(ParamType::Value const param) const
 	case synapseDelay:   return m_synapseDelay.GetValue();
 	case pulseSpeed:	 return m_pulseSpeed.GetValue();
 	case pulseWidth:	 return m_pulseWidth.GetValue();
+	case pixelScanTime:  return m_pixelScanTime.GetValue();
 	case timeResolution: return TimeResolution().GetValue();
 	case scanResolution: return ScanResolution().GetValue();
 	default: assert(false);
@@ -72,8 +60,9 @@ void NNetParameters::SetParameterValue
 	case threshold:      m_threshold       =    static_cast<mV>         (fNewValue);  break;
 	case synapseDelay:   m_synapseDelay    =    static_cast<fMicroSecs> (fNewValue);  break;
 	case neuronPeakVolt: m_neuronPeakVolt  =    static_cast<mV>         (fNewValue);  break;
-	case scanResolution: m_pScanRaster      ->SetResolution(static_cast<MicroMeter>(fNewValue));  break;
-	case timeResolution: m_pSignalParameters->SetResolution(static_cast<fMicroSecs>(fNewValue));  break;
+	case pixelScanTime:  m_pixelScanTime   =    static_cast<fMicroSecs> (fNewValue);  break;
+	case timeResolution: m_pSignalParameters->SetResolution(static_cast<fMicroSecs>(fNewValue)); break;
+	case scanResolution: m_pScanRaster      ->SetResolution(static_cast<MicroMeter>(fNewValue)); break;
 	default: assert(false);
 	}
 	NotifyAll(false);

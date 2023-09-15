@@ -114,12 +114,13 @@ void ParameterDialog::Start(HWND const hwndParent)
 	iYpos += VERT_BLOCK_SPACE;
 
 	addParameter(hwndDlg, scanResolution, iYpos);
+	addParameter(hwndDlg, pixelScanTime,  iYpos);
 	iYpos += HEIGHT;
 
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 180, iYpos, 50, 20, IDD_RESET);
 
-	SetWindowSize(280_PIXEL, 430_PIXEL, true);
+	SetWindowSize(280_PIXEL, PIXEL(iYpos) + 70_PIXEL, true);
 }
 
 void ParameterDialog::PaintGraphics()
@@ -129,7 +130,7 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(1, L"Synapse");
 	paintHeader(1, L"Dendrite");
 	paintHeader(2, L"General");
-	paintHeader(1, L"Scan");
+	paintHeader(2, L"Scan");
 	refreshParameters();
 }
 

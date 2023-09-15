@@ -50,6 +50,7 @@ private:
 	meterPerSec m_pulseSpeed     { 120.0_meterPerSec };
 	fMicroSecs  m_pulseWidth     { 2000._MicroSecs };
 	fMicroSecs  m_usPulseDistMin { PulseDuration(m_freqMax) };
+	fMicroSecs  m_pixelScanTime  { 100._MicroSecs };
 
 	Raster           *m_pScanRaster       { nullptr };
 	SignalParameters *m_pSignalParameters { nullptr };
