@@ -35,29 +35,20 @@ void ParameterDialog::Notify(bool const bImmediate)
 	BaseDialog::Notify(bImmediate);
 }
 
-void ParameterDialog::resetParameter   // refresh edit field with data from model
-(
-	HWND             const hwndEditField,
-	ParamType::Value const parameter
-) const
+void ParameterDialog::resetParameter(ParamField& field) const
 {
-	::SetEditField(hwndEditField, m_pNMWI->GetParams().GetParameterValue(parameter));
+	::SetEditField(field.m_hwnd, m_pNMWI->GetParams().GetParameterValue(field.m_type));
 }
-
-void ParameterDialog::applyParameter  // read out edit field and write data to model
-(
-	HWND             const hwndEditField,
-	ParamType::Value const parameter
-)
+void ParameterDialog::applyParameter(ParamField &field)   // read out edit field and write data to model
 {
-	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(parameter) }; 
+	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(field.m_type) }; 
 	float       fValue    { fOldValue }; 
-	bool  const bOK       { ::Evaluate(hwndEditField, fValue) };
+	bool  const bOK       { ::Evaluate(field.m_hwnd, fValue) };
 	if (bOK && ! IsCloseToZero(fValue - fOldValue))
-		SetParameterCommand::Push(parameter, fValue);
+		SetParameterCommand::Push(field.m_type, fValue);
 }
 
-HWND ParameterDialog::addParameter
+void ParameterDialog::addParameter
 (
 	HWND             const hwndDlg,
 	ParamType::Value const parameter,
@@ -65,56 +56,32 @@ HWND ParameterDialog::addParameter
 )
 {
 	int  iXpos { LEFT_SPACE };
-
 	HWND const hwndStatic = CreateStaticField(hwndDlg, ParamType::GetName(parameter), iXpos, iYpos, NAME_WIDTH, HEIGHT);
 	iXpos += NAME_WIDTH + HORZ_SPACE;
 	HWND const hwndEdit = CreateEditField(hwndDlg,            iXpos, iYpos, EDIT_WIDTH, HEIGHT);
 	iXpos += EDIT_WIDTH + HORZ_SPACE;
 	CreateStaticField(hwndDlg, ParamType::GetUnit(parameter), iXpos, iYpos, UNIT_WIDTH, HEIGHT);
-
 	iYpos += HEIGHT + VERT_SPACE;
-
-	return hwndEdit;
+	m_fields.push_back(ParamField(hwndEdit, parameter));
 }
 
 void ParameterDialog::refreshParameters()  // refresh edit fields with data from model
 {
-	using enum ParamType::Value;
-	resetParameter(m_hwndPulseFreqMax,   pulseFreqMax);
-	resetParameter(m_hwndPeakVoltage,    neuronPeakVolt);
-	resetParameter(m_hwndThreshold,      threshold);
-	resetParameter(m_hwndSynapseDelay,   synapseDelay);
-	resetParameter(m_hwndPulseSpeed,     pulseSpeed);
-	resetParameter(m_hwndPulseWidth,     pulseWidth);
-	resetParameter(m_hwndTimeResolution, timeResolution);
-	resetParameter(m_hwndScanResolution, scanResolution);
+	for (auto& field : m_fields)
+		resetParameter(field);
 }
 										  
 void ParameterDialog::applyParameters()  // read out edit field and write data to model
 {										  
-	using enum ParamType::Value;		  
-	applyParameter(m_hwndPulseFreqMax,   pulseFreqMax);
-	applyParameter(m_hwndPeakVoltage,    neuronPeakVolt);
-	applyParameter(m_hwndThreshold,      threshold);
-	applyParameter(m_hwndSynapseDelay,   synapseDelay);
-	applyParameter(m_hwndPulseSpeed,     pulseSpeed);
-	applyParameter(m_hwndPulseWidth,     pulseWidth);
-	applyParameter(m_hwndTimeResolution, timeResolution);
-	applyParameter(m_hwndScanResolution, scanResolution);
+	for (auto& field : m_fields)
+		applyParameter(field);
 }
 
 void ParameterDialog::EnableAllEditFields()
 {
-	using enum ParamType::Value;
 	bool const bEnable { m_pNMWI->ScanMode() };
-	Edit_Enable(m_hwndPulseFreqMax,   bEnable);
-	Edit_Enable(m_hwndPeakVoltage,    bEnable);
-	Edit_Enable(m_hwndThreshold,      bEnable);
-	Edit_Enable(m_hwndSynapseDelay,   bEnable);
-	Edit_Enable(m_hwndPulseSpeed,     bEnable);
-	Edit_Enable(m_hwndPulseWidth,     bEnable);
-	Edit_Enable(m_hwndTimeResolution, bEnable);
-	Edit_Enable(m_hwndScanResolution, bEnable);
+	for (auto & field : m_fields)
+		Edit_Enable(field.m_hwnd, bEnable);
 }
 
 void ParameterDialog::Start(HWND const hwndParent)
@@ -131,22 +98,22 @@ void ParameterDialog::Start(HWND const hwndParent)
 
 	using enum ParamType::Value;
 
-	m_hwndPeakVoltage = addParameter(hwndDlg, neuronPeakVolt, iYpos);
-	m_hwndPulseWidth  = addParameter(hwndDlg, pulseWidth,     iYpos);
-	m_hwndThreshold   = addParameter(hwndDlg, threshold,      iYpos);
+	addParameter(hwndDlg, neuronPeakVolt, iYpos);
+	addParameter(hwndDlg, pulseWidth,     iYpos);
+	addParameter(hwndDlg, threshold,      iYpos);
 	iYpos += VERT_BLOCK_SPACE;
 
-	m_hwndSynapseDelay = addParameter(hwndDlg, synapseDelay, iYpos);
+	addParameter(hwndDlg, synapseDelay, iYpos);
 	iYpos += VERT_BLOCK_SPACE;
 
-	m_hwndPulseSpeed     = addParameter(hwndDlg, pulseSpeed, iYpos);
+	addParameter(hwndDlg, pulseSpeed, iYpos);
 	iYpos += VERT_BLOCK_SPACE;
 
-	m_hwndPulseFreqMax   = addParameter(hwndDlg, pulseFreqMax,   iYpos);
-	m_hwndTimeResolution = addParameter(hwndDlg, timeResolution, iYpos);
+	addParameter(hwndDlg, pulseFreqMax,   iYpos);
+	addParameter(hwndDlg, timeResolution, iYpos);
 	iYpos += VERT_BLOCK_SPACE;
 
-	m_hwndScanResolution = addParameter(hwndDlg, scanResolution, iYpos);
+	addParameter(hwndDlg, scanResolution, iYpos);
 	iYpos += HEIGHT;
 
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);

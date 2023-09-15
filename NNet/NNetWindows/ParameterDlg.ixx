@@ -8,6 +8,7 @@ module;
 #include <compare>
 #include <memory>
 #include <string>
+#include <vector>
 #include <Windows.h>
 
 export module NNetWin32:ParameterDialog;
@@ -18,6 +19,7 @@ import NNetModel;
 
 using std::unique_ptr;
 using std::wstring;
+using std::vector;
 
 export class ParameterDialog : public BaseDialog
 {
@@ -47,19 +49,17 @@ private:
 
 	fPixel m_fPixPosVert;      // helper for paintHeader
 
-	HWND m_hwndPulseFreqMax   { nullptr };
-	HWND m_hwndPeakVoltage    { nullptr };
-	HWND m_hwndThreshold      { nullptr };
-	HWND m_hwndSynapseDelay   { nullptr };
-	HWND m_hwndPulseWidth     { nullptr };
-	HWND m_hwndTimeResolution { nullptr };
-	HWND m_hwndFilterSize     { nullptr };
-	HWND m_hwndPulseSpeed     { nullptr };
-	HWND m_hwndScanResolution { nullptr };
+	struct ParamField
+	{
+		HWND             m_hwnd;
+		ParamType::Value m_type;
+	};
 
-	void resetParameter(HWND const, ParamType::Value const) const;
-	void applyParameter(HWND const, ParamType::Value const);
-	HWND addParameter  (HWND const, ParamType::Value const, int &);
+	vector<ParamField> m_fields;
+
+	void resetParameter(ParamField &) const;
+	void applyParameter(ParamField &);
+	void addParameter  (HWND const, ParamType::Value const, int &);
 	void refreshParameters();
 	void applyParameters();
 	void paintHeader(int const, wstring const &);
