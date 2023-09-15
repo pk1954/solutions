@@ -19,12 +19,11 @@ export class Raster
 {
 public:
 
-void SetResolution (MicroMeter    const  res)   { m_resolution = res; }
-void SetCenter     (MicroMeterPnt const& pnt)   { m_rect.SetCenter(pnt); }
-void MoveRasterRect(MicroMeterPnt const& delta) { m_rect.Move(delta); }
-
-void SetRasterRect(MicroMeterRect const&);
-void SetRasterRect(CardPoint const, MicroMeterPnt const&);
+void SetResolution (MicroMeter     const  res)    { m_resolution = res; }
+void SetCenter     (MicroMeterPnt  const& pnt)    { m_rect.SetCenter(pnt); }
+void MoveRasterRect(MicroMeterPnt  const& delta)  { m_rect.Move(delta); }
+void SetRasterRect (MicroMeterRect const& umRect) { m_rect = umRect; }
+void SetRasterRect (CardPoint const, MicroMeterPnt const&);
 
 RasterPoint    Size()          const;
 MicroMeter     Resolution()    const { return m_resolution; }
@@ -38,5 +37,4 @@ private:
     MicroMeterRect m_rect       { -1000._MicroMeter, -1000._MicroMeter, 1000._MicroMeter, 1000._MicroMeter, };
 
     RasterPoint round2RasterPoint(MicroMeterPnt const&) const;
-    void        adjust2Raster();
 };

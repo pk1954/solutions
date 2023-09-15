@@ -15,6 +15,7 @@ import Win32_Util_Resource;
 import Types;
 import NNetModel;
 import NNetCommands;
+import NNetPreferences;
 import :SimuRunning;
 
 using std::max;
@@ -341,6 +342,9 @@ float SignalControl::ScaleFactorVoltCoord() const
 
 void SignalControl::setPos(fPixelPoint const & pos)
 {
+	if (NNetPreferences::ScanMode())
+		return;
+
 	m_moveMode = tPos::NONE;
 	fPixel fPixDistBest { 10000._fPixel };
 	

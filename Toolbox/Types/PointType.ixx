@@ -221,15 +221,6 @@ public:
 		);
 	}
 
-	PointType DivRound(BASE_TYPE const raster) const
-	{
-		return PointType
-		(
-			m_x.DivRound(raster),
-			m_y.DivRound(raster)
-		);
-	}
-
 	PointType Round() const
 	{
 		return PointType(Round(m_x), Round(m_y));

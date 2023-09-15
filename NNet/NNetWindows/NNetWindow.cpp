@@ -135,7 +135,7 @@ void NNetWindow::DrawSensors() const
 
 void NNetWindow::DrawScanArea() const
 {
-	GetDrawContextC().FillRectangle(ScanAreaRect(), NNetColors::SCAN_AREA_RECT);
+	GetDrawContextC().FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
 }
 
 void NNetWindow::drawSignalCable

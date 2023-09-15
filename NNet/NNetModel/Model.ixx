@@ -127,13 +127,13 @@ public:
 	void SetScanArea(MicroMeterRect const&);
 	void Reconnect(NobId const);
 
-	void DeselectAllNobs          ()               const{ m_upNobs->DeselectAllNobs(); }
-	void SetModelFilePath         (wstring const & wstr){ m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine       (wstring const & wstr){ m_description.AddDescriptionLine(wstr); }
-	void DescriptionComplete      ()                    { m_description.DescriptionComplete(); }
-	void SetDescriptionUI         (DescriptionUI &i)    { m_description.SetDescriptionUI(i); }
-	void SetHighSigObservable     (Observable    &o)    { m_monitorData.SetHighSigObservable(o); }
-	void SetActiveSigGenObservable(Observable    &o)    { m_upSigGenList->SetActiveSigGenObservable(o); }
+	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
+	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
+	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
+	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
+	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
+	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
+	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;

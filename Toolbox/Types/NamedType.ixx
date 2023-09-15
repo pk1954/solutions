@@ -188,14 +188,9 @@ public:
 
 	NamedType Round(NamedType const raster) const
 	{
-		return DivRound(raster) * raster.GetValue();
-	}
-
-	NamedType DivRound(NamedType const raster) const
-	{
 		BASE_TYPE value { m_value };
 		value /= raster.GetValue();
-		return NamedType(roundf(value));
+		return NamedType(roundf(value)) * raster.GetValue();
 	}
 
 	NamedType Round() const

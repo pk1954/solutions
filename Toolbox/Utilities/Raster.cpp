@@ -35,13 +35,6 @@ void Raster::SetRasterRect
 )
 {
     m_rect.Manipulate(cardPnt, pos);
-    adjust2Raster();
-}
-
-void Raster::SetRasterRect(MicroMeterRect const& umRect)
-{
-    m_rect = umRect;
-    adjust2Raster();
 }
 
 RasterPoint Raster::Size() const
@@ -51,11 +44,7 @@ RasterPoint Raster::Size() const
 
 RasterPoint Raster::round2RasterPoint(MicroMeterPnt const& pntParam) const
 {
-    MicroMeterPnt pnt { pntParam.DivRound(m_resolution) };
+    MicroMeterPnt pnt { pntParam };
+    pnt /= m_resolution.GetValue();
     return RasterPoint(Cast2Int(pnt.GetXvalue()), Cast2Int(pnt.GetYvalue()));
-}
-
-void Raster::adjust2Raster()
-{
-    m_rect.SetSize(m_rect.GetSize().Round(m_resolution));
 }
