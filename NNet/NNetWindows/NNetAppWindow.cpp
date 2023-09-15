@@ -81,7 +81,8 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_SlowMotionRatio,
 		& m_sound,
 		& m_cmdStack,
-		& m_monitorWindow
+		& m_monitorWindow,
+		&m_staticModelObservable
 	);
 	m_computeThread.Initialize
 	(
@@ -228,6 +229,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_staticModelObservable .RegisterObserver(m_appTitle);
 	m_staticModelObservable .RegisterObserver(m_undoRedoMenu);
 	m_staticModelObservable .RegisterObserver(m_appMenu);
+	m_staticModelObservable .RegisterObserver(m_parameterDlg);
 	m_highlightSigObservable.RegisterObserver(m_mainNNetWindow);
 	m_highlightSigObservable.RegisterObserver(m_monitorWindow);
 	m_highlightSigObservable.RegisterObserver(m_mainNNetWindow);
@@ -471,11 +473,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDD_TRIGGER_SIGNAL_DESIGNER:
 			m_signalDesigner.Trigger();
-			break;
-
-		case IDD_SCAN_MODE:
-			NNetPreferences::m_bScanMode.Toggle();
-			m_staticModelObservable.NotifyAll(false);
 			break;
 
 		case IDM_SAVE_MODEL_AS:

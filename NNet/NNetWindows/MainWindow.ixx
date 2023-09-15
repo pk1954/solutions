@@ -99,7 +99,7 @@ private:
 	MainScales          m_mainScales;
 
 	bool       setTargetNob        (MicroMeterPnt const&);
-	void       setScanAreaHandle   (MicroMeterPnt const&);
+	bool       setScanAreaHandle   (MicroMeterPnt const&);
 	bool       setHighlightedNob   (MicroMeterPnt const&);
 	bool       setHighlightedSensor(MicroMeterPnt const&);
 	bool       selectSignalHandle  (MicroMeterPnt const&);

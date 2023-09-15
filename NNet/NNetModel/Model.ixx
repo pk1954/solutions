@@ -13,6 +13,7 @@ import Observable;
 import Util;
 import Raster;
 import Signals;
+import BoolType;
 import DescriptionUI;
 import :ParamType;
 import :ModelDescription;
@@ -53,6 +54,7 @@ public:
 	NobId GetStartKnotId(NobId const) const;
 	NobId GetEndKnotId  (NobId const) const;
 
+	bool    ScanMode()         const { return m_bScanMode.Get(); }
 	wstring GetModelFilePath() const { return m_wstrModelFilePath; }
 	size_t  Size()             const { return m_upNobs->Size(); }
 
@@ -134,6 +136,7 @@ public:
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
+	void ToggleScanMode           ()                     { m_bScanMode.Toggle(); }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;
@@ -144,5 +147,6 @@ private:
 	UPSensorList               m_sensorList;
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
-	wstring                    m_wstrModelFilePath { L"" };
-};						    
+	wstring                    m_wstrModelFilePath;
+	BoolType                   m_bScanMode { false };
+};

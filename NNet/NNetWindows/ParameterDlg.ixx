@@ -30,6 +30,7 @@ public:
 	void SetModelInterface(NNetModelWriterInterface* const);
 	void Notify(bool const) final;
 	void PaintGraphics() final;
+	void EnableAllEditFields();
 
 private:
 	static int const LEFT_SPACE       {  16 };

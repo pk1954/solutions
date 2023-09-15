@@ -43,26 +43,29 @@ void NNetController::Initialize
     SlowMotionRatio * const pSlowMotionRatio,
     Sound           * const pSound,
     CommandStack    * const pCommandStack,
-    MonitorWindow   * const pMonitorWindow
+    MonitorWindow   * const pMonitorWindow,
+    Observable      * const pStaticModelObservable
 ) 
 {
-    m_pSlowMotionRatio = pSlowMotionRatio;
-    m_pComputeThread   = pComputeThread;
-    m_pSound           = pSound;
-    m_pCommandStack    = pCommandStack;
-    m_pMonitorWindow   = pMonitorWindow;
-    m_hCrsrWait        = LoadCursor(NULL, IDC_WAIT);
+    m_pSlowMotionRatio       = pSlowMotionRatio;
+    m_pComputeThread         = pComputeThread;
+    m_pSound                 = pSound;
+    m_pCommandStack          = pCommandStack;
+    m_pMonitorWindow         = pMonitorWindow;
+    m_pStaticModelObservable = pStaticModelObservable;
+    m_hCrsrWait              = LoadCursor(NULL, IDC_WAIT);
 }
 
 NNetController::~NNetController()
 {
-    m_pNMRI            = nullptr;
-    m_pSlowMotionRatio = nullptr;
-    m_pComputeThread   = nullptr;
-    m_hCrsrWait        = nullptr;
-    m_pSound           = nullptr;
-    m_pCommandStack    = nullptr;
-    m_pMonitorWindow   = nullptr;
+    m_pNMRI                  = nullptr;
+    m_pSlowMotionRatio       = nullptr;
+    m_pComputeThread         = nullptr;
+    m_hCrsrWait              = nullptr;
+    m_pSound                 = nullptr;
+    m_pCommandStack          = nullptr;
+    m_pMonitorWindow         = nullptr;
+    m_pStaticModelObservable = nullptr;
 }
 
 void NNetController::SetModelInterface(NNetModelReaderInterface * const pNMRI)
@@ -219,6 +222,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDM_TRIGGER_STIMULUS:
         m_pMonitorWindow->StimulusTriggered();
         StartStimulusCmd::Push();
+        break;
+
+    case IDD_SCAN_AREA:
+        NNetPreferences::m_bScanArea.Toggle();
+        m_pStaticModelObservable->NotifyAll(false);
         break;
 
     default:

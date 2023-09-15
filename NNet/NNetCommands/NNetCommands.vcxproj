@@ -157,6 +157,7 @@
     <ClCompile Include="SplitPipeCommand.ixx" />
     <ClCompile Include="StartStimulusCmd.ixx" />
     <ClCompile Include="ToggleEmphModeCmd.ixx" />
+    <ClCompile Include="ToggleScanModeCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

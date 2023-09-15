@@ -94,6 +94,7 @@ public:
 	Sensor           const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
 	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
+	bool                    ScanMode()                             const { return m_pModel->ScanMode(); }
 
 	bool                HasMicroSensor(NobId const id) const { return GetConstNob(id)->HasMicroSensor(); }
 	MicroSensor const * GetMicroSensor(NobId const id) const { return GetConstNob(id)->GetMicroSensor(); }

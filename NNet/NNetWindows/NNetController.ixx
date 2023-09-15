@@ -37,7 +37,8 @@ public:
 		SlowMotionRatio * const,
 		Sound           * const,
 		CommandStack    * const,
-		MonitorWindow   * const
+		MonitorWindow   * const,
+		Observable      * const
 	);
 
 	virtual ~NNetController();

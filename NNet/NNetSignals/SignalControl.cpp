@@ -15,7 +15,6 @@ import Win32_Util_Resource;
 import Types;
 import NNetModel;
 import NNetCommands;
-import NNetPreferences;
 import :SimuRunning;
 
 using std::max;
@@ -342,9 +341,6 @@ float SignalControl::ScaleFactorVoltCoord() const
 
 void SignalControl::setPos(fPixelPoint const & pos)
 {
-	if (NNetPreferences::ScanMode())
-		return;
-
 	m_moveMode = tPos::NONE;
 	fPixel fPixDistBest { 10000._fPixel };
 	
@@ -447,10 +443,11 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			Notify(true);
 		}
 		else  // left button not pressed: select
-		{
-			setPos(fPixCrsrPos);
-			Trigger();   // cause repaint
-		}
+	//		if (!m_pNMRI->ScanMode())
+			{ 
+				setPos(fPixCrsrPos);
+				Trigger();   // cause repaint
+			}
 	}
 	NNetTimeGraph::OnMouseMove(wParam, lParam);
 }

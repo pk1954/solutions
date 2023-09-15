@@ -74,7 +74,7 @@ void MiniWindow::Notify(bool const bImmediately)
 		MicroMeterRect   const umRectModel    { m_pNMRI->GetUPNobsC().CalcEnclosingRect() }; // current extension of model
 		MicroMeterRect         umRectShow     { Union(umRectMain, umRectModel) };            // all this should be visible  
 
-		if (NNetPreferences::ScanMode())
+		if (NNetPreferences::ScanArea())
 			umRectShow = Union(umRectShow, m_pNMRI->GetScanAreaRect());            // all this should be visible  
 
 		fPixelPoint      const fpCenter    { Convert2fPixelPoint(GetClRectCenter()) };
@@ -101,7 +101,7 @@ void MiniWindow::PaintGraphics()
 	{
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
-		if (NNetPreferences::ScanMode())
+		if (NNetPreferences::ScanArea())
 			DrawScanArea();
 	}
 }

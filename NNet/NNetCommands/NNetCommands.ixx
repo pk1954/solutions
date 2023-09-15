@@ -69,4 +69,5 @@ export import :SizeSensorCmd;
 export import :SplitNeuronCmd;
 export import :StartStimulusCmd;
 export import :ToggleEmphModeCmd;
+export import :ToggleScanModeCmd;
 export import :ToggleStopOnTriggerCmd;

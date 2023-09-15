@@ -122,9 +122,9 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 
 LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	if (NNetPreferences::ScanMode())
+	if (m_pNMRI->ScanMode())
 	{
-		appendMenu(hPopupMenu, IDD_SCAN_MODE);
+		appendMenu(hPopupMenu, IDD_SCAN_AREA);
 	}
 	else if (m_pNMRI->AnyNobsSelected())
 	{
@@ -220,7 +220,7 @@ bool MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
 
 bool MainWindow::crsrInScanArea(MicroMeterPnt const &umCrsrPos)
 {
-	return NNetPreferences::ScanMode() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
+	return m_pNMRI->ScanMode() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -234,17 +234,11 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
-		if (NNetPreferences::ScanMode())
-		{
-			setScanAreaHandle(umCrsrPos);
-		}
-		else 
-		{
+		if (!setScanAreaHandle(umCrsrPos))
 			if (!setHighlightedNob(umCrsrPos))
 				if (!setHighlightedSensor(umCrsrPos))
-					selectSignalHandle(umCrsrPos);
-			m_idSigGenUnderCrsr = getSigGenId(fPixCrsr);
-		}
+					if (!selectSignalHandle(umCrsrPos))
+						m_idSigGenUnderCrsr = getSigGenId(fPixCrsr);
 		ClearPtLast();                 // make m_ptLast invalid
 		return;
 	}
@@ -277,10 +271,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (m_scanAreaHandleSelected.has_value())    // manipulate selection area
 	{
-		MicroMeterRect rectScanArea { m_pNMRI->GetScanAreaRect() };
-		MicroMeterRect rectTest     { rectScanArea };
-		rectScanArea.Manipulate(*m_scanAreaHandleSelected, m_umDelta);
-		SetScanAreaCmd::Push(rectScanArea);
+		SetScanAreaCmd::Push(*m_scanAreaHandleSelected, m_umDelta);
 	}
 	else if (crsrInScanArea(umCrsrPos))
 	{
@@ -544,7 +535,7 @@ void MainWindow::PaintGraphics()
 
 	m_selectionMenu.Show(m_pNMRI->AnyNobsSelected());
 
-	if (NNetPreferences::ScanMode())
+	if (NNetPreferences::ScanArea())
 	{
 		DrawScanArea();
 		drawScanRaster();
@@ -614,7 +605,7 @@ MicroMeter MainWindow::getScanAreaHandleSize()
 	return GetCoordC().Transform2logUnit(HANDLE_SIZE);
 }
 
-void MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
+bool MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
 {
 	MicroMeter    const umSize            { getScanAreaHandleSize() };
 	optional<CardPoint> scanAreaHandleNew { nullopt };
@@ -633,6 +624,7 @@ void MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
 		m_scanAreaHandleSelected = scanAreaHandleNew;
 		Notify(false);
 	}
+	return m_scanAreaHandleSelected.has_value();
 }
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const

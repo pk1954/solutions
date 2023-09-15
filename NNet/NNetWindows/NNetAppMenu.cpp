@@ -32,7 +32,7 @@ NNetAppMenu::NNetAppMenu()
     m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS  )),
     m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE)),
     m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU   )),
-    m_upOnOffScanMode    (make_unique<OnOffPair>(IDD_SCAN_MODE    ))
+    m_upOnOffScanArea    (make_unique<OnOffPair>(IDD_SCAN_AREA    ))
 { }
 
 NNetAppMenu::~NNetAppMenu() = default;
@@ -105,7 +105,7 @@ void NNetAppMenu::Start
             ::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_ACTIVE, L"Show active");
             ::AddMenu(hMenuInputCables, MF_STRING, IDM_INPUT_CABLES_NONE,   L"Show none");
         }
-        m_upOnOffScanMode    ->AppendOnOffMenu(hMenuView, L"&Scan mode");
+        m_upOnOffScanArea    ->AppendOnOffMenu(hMenuView, L"&Scan area");
         m_upOnOffArrows      ->AppendOnOffMenu(hMenuView, L"&Arrows");
         m_upOnOffSensorPoints->AppendOnOffMenu(hMenuView, L"Sensor &points");
         m_upOnOffColorMenu   ->AppendOnOffMenu(hMenuView, L"&Color menu");

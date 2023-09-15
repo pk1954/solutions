@@ -8,6 +8,7 @@ module;
 #include <string>
 #include "Resource.h"
 #include <Windows.h>
+#include <windowsx.h>
 #include "dwrite.h"
 
 module NNetWin32:ParameterDialog;
@@ -16,6 +17,7 @@ import Win32_Util_Resource;
 import Win32_Controls;
 import Win32_Util;
 import BaseDialog;
+import NNetPreferences;
 import NNetCommands;
 import NNetModel;
 
@@ -99,6 +101,20 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 	applyParameter(m_hwndPulseWidth,     pulseWidth);
 	applyParameter(m_hwndTimeResolution, timeResolution);
 	applyParameter(m_hwndScanResolution, scanResolution);
+}
+
+void ParameterDialog::EnableAllEditFields()
+{
+	using enum ParamType::Value;
+	bool const bEnable { m_pNMWI->ScanMode() };
+	Edit_Enable(m_hwndPulseFreqMax,   bEnable);
+	Edit_Enable(m_hwndPeakVoltage,    bEnable);
+	Edit_Enable(m_hwndThreshold,      bEnable);
+	Edit_Enable(m_hwndSynapseDelay,   bEnable);
+	Edit_Enable(m_hwndPulseSpeed,     bEnable);
+	Edit_Enable(m_hwndPulseWidth,     bEnable);
+	Edit_Enable(m_hwndTimeResolution, bEnable);
+	Edit_Enable(m_hwndScanResolution, bEnable);
 }
 
 void ParameterDialog::Start(HWND const hwndParent)
@@ -215,7 +231,7 @@ bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 	//}
 	if (message == WM_CTLCOLOREDIT)
 	{
-		SetBkColor(hdc, D2D1::ColorF::LightGreen);
+		SetBkColor(hdc, m_pNMWI->ScanMode() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 		return (INT_PTR)brush;
 	}
