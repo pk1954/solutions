@@ -49,6 +49,8 @@
 #define       IDM_ADD_IMPORTED_MODEL         177
 #define       IDM_RELOAD_MODEL               178
 
+#define       IDM_SCAN                       190
+
 #define       IDD_SCALES_UPDATE              263
 #define       IDD_GRID_UPDATE                264
 

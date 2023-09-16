@@ -37,8 +37,6 @@ Model::Model()
 	m_upSigGenList = make_unique<UPSigGenList>();
 	m_upRaster     = make_unique<Raster>();
 	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
-	std::optional<RasterPoint> p = m_upRaster->FindRasterPos(MicroMeterPnt(3500._MicroMeter, 280._MicroMeter));
-	int x = 42;
 }
 
 void Model::CheckModel() const

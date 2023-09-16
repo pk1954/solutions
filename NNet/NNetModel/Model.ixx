@@ -118,6 +118,7 @@ public:
 	SignalGenerator const  * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
 	MicroMeter               GetScanResolution()          const { return m_upRaster->Resolution(); }
 	RasterPoint              GetScanAreaSize()            const { return m_upRaster->Size(); }
+	Raster           const & GetScanRaster()              const { return *m_upRaster.get(); }
 
 	// non const functions
 

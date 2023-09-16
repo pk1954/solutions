@@ -19,7 +19,7 @@ using std::wostream;
 wchar_t const* ParamType::GetName(ParamType::Value const p)
 {
 	using enum ParamType::Value;
-	static unordered_map <ParamType::Value, wchar_t const* const> mapParam =
+	static unordered_map <ParamType::Value, wchar_t const* const> const mapParam =
 	{
 		{ pulseFreqMax,   L"PulseFreqMax"    }, // maximum pulse frequency
 		{ inputPeakTime,  L"StimulusMaxTime" }, // stimulus time til peak
@@ -43,7 +43,7 @@ wchar_t const* ParamType::GetName(ParamType::Value const p)
 wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 {
 	using enum ParamType::Value;
-	static unordered_map <ParamType::Value, wchar_t const* const> mapParam =
+	static unordered_map <ParamType::Value, wchar_t const* const> const mapParam =
 	{
 		{ pulseFreqMax,   TypeAttribute<fHertz>::unit.c_str() },
 		{ inputPeakTime,  L"µs"    },

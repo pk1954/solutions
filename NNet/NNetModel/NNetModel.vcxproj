@@ -77,6 +77,7 @@
     <ClCompile Include="PipeList.cpp" />
     <ClCompile Include="PipeList.ixx" />
     <ClCompile Include="PosNob.ixx" />
+    <ClCompile Include="Scan.cpp" />
     <ClCompile Include="Scan.ixx" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="Sensor.ixx" />

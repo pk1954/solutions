@@ -64,6 +64,9 @@ using std::wcout;
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
 
+
+Scan m_scan;
+
 NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 {
 	m_aboutBox.SetProductName(wstrProductName);
@@ -427,6 +430,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_nmwi.ClearDynamicData();
 			m_computeThread.Reset();
 			m_dynamicModelObservable.NotifyAll(true);
+			break;
+
+		case IDM_SCAN:
+			m_scan.PrepareScan(m_nmwi);
+			m_scan.StartScan  (m_nmwi);
 			break;
 
 		case IDM_FORWARD:

@@ -220,7 +220,7 @@ bool MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
 
 bool MainWindow::crsrInScanArea(MicroMeterPnt const &umCrsrPos)
 {
-	return m_pNMRI->ScanMode() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
+	return NNetPreferences::ScanArea() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)

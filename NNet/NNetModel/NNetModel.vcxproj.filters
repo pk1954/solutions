@@ -239,5 +239,8 @@
     <ClCompile Include="Scan.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

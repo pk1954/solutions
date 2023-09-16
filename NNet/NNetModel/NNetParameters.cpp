@@ -29,7 +29,7 @@ float NNetParameters::GetParameterValue(ParamType::Value const param) const
 	case synapseDelay:   return m_synapseDelay.GetValue();
 	case pulseSpeed:	 return m_pulseSpeed.GetValue();
 	case pulseWidth:	 return m_pulseWidth.GetValue();
-	case pixelScanTime:  return m_pixelScanTime.GetValue();
+	case pixelScanTime:  return m_usPixelScanTime.GetValue();
 	case timeResolution: return TimeResolution().GetValue();
 	case scanResolution: return ScanResolution().GetValue();
 	default: assert(false);
@@ -60,7 +60,7 @@ void NNetParameters::SetParameterValue
 	case threshold:      m_threshold       =    static_cast<mV>         (fNewValue);  break;
 	case synapseDelay:   m_synapseDelay    =    static_cast<fMicroSecs> (fNewValue);  break;
 	case neuronPeakVolt: m_neuronPeakVolt  =    static_cast<mV>         (fNewValue);  break;
-	case pixelScanTime:  m_pixelScanTime   =    static_cast<fMicroSecs> (fNewValue);  break;
+	case pixelScanTime:  m_usPixelScanTime =    static_cast<fMicroSecs> (fNewValue);  break;
 	case timeResolution: m_pSignalParameters->SetResolution(static_cast<fMicroSecs>(fNewValue)); break;
 	case scanResolution: m_pScanRaster      ->SetResolution(static_cast<MicroMeter>(fNewValue)); break;
 	default: assert(false);

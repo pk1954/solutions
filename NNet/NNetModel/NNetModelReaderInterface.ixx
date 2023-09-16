@@ -72,6 +72,7 @@ public:
 	MonitorData     const & GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	NNetParameters  const & GetParamsC()                           const { return m_pModel->GetParams(); };
 	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
+	fMicroSecs              PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };
 	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
@@ -94,6 +95,7 @@ public:
 	Sensor           const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
 	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
+	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	bool                    ScanMode()                             const { return m_pModel->ScanMode(); }
 
 	bool                HasMicroSensor(NobId const id) const { return GetConstNob(id)->HasMicroSensor(); }

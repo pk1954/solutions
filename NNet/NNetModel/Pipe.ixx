@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <utility>
 #include <functional>
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -22,6 +23,7 @@ import :NobType;
 import :NobId;
 import :Nob;
 
+using std::min;
 using std::pair;
 using std::vector;
 using std::function;
@@ -117,6 +119,23 @@ public:
 	void          RecalcSegments() { m_bSegmentsDirty = true; }
 
 	void Apply2AllSegments(auto const& func) const { getSegments().Apply2All(func); }
+
+	void Apply2AllSensorPoints
+	(
+		MicroMeter const  umResolution,
+		auto       const& func
+	) const
+	{
+		float const DATA_PNTS { 10.0f };
+		float const fIncCalc  { umResolution / (GetLength() * DATA_PNTS) };
+		float const fInc      { min(1.0f, fIncCalc) };
+		for (float fRun = 0.0f; fRun <= 1.0f; fRun += fInc)
+		{
+			MicroMeterPnt const umpRun { GetVector(fRun) };
+			SegNr         const segNr  { GetSegNr(fRun) };
+			func(*this, umpRun, segNr);
+		}
+	}
 
 	friend wostream& operator<< (wostream&, Pipe const&);
 

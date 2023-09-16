@@ -39,18 +39,19 @@ public:
 	fMicroSecs  PulseWidth    () const { return m_pulseWidth; }
 	meterPerSec PulseSpeed    () const { return m_pulseSpeed; }
 	fMicroSecs  PulseDistMin  () const { return m_usPulseDistMin; }
+	fMicroSecs  PixelScanTime () const { return m_usPixelScanTime; }
 	fMicroSecs  TimeResolution() const { return m_pSignalParameters->TimeResolution(); }
 	MicroMeter  ScanResolution() const { return m_pScanRaster->Resolution(); }
 
 private:
-	fHertz      m_freqMax        { 50.0_fHertz };
-	mV          m_neuronPeakVolt { 100._mV };
-	mV          m_threshold      { 20._mV };
-	fMicroSecs  m_synapseDelay   { 500._MicroSecs };
-	meterPerSec m_pulseSpeed     { 120.0_meterPerSec };
-	fMicroSecs  m_pulseWidth     { 2000._MicroSecs };
-	fMicroSecs  m_usPulseDistMin { PulseDuration(m_freqMax) };
-	fMicroSecs  m_pixelScanTime  { 100._MicroSecs };
+	fHertz      m_freqMax         { 50.0_fHertz };
+	mV          m_neuronPeakVolt  { 100._mV };
+	mV          m_threshold       { 20._mV };
+	fMicroSecs  m_synapseDelay    { 500._MicroSecs };
+	meterPerSec m_pulseSpeed      { 120.0_meterPerSec };
+	fMicroSecs  m_pulseWidth      { 2000._MicroSecs };
+	fMicroSecs  m_usPulseDistMin  { PulseDuration(m_freqMax) };
+	fMicroSecs  m_usPixelScanTime { 100._MicroSecs };
 
 	Raster           *m_pScanRaster       { nullptr };
 	SignalParameters *m_pSignalParameters { nullptr };

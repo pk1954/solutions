@@ -5,7 +5,6 @@
 module;
 
 #include <iostream> 
-#include <algorithm>
 #include <iomanip>
 
 module NNetModel:Sensor;
@@ -17,7 +16,6 @@ import Signals;
 import :NNetColors;
 import :UPNobList;
 
-using std::min;
 using std::endl;
 using std::wcout;
 using std::wostream;
@@ -76,18 +74,17 @@ void Sensor::Recalc(UPNobList const & list)
 
 void Sensor::add2list(Pipe const & pipe) 
 {  
-    float const DATA_PNTS { 10.0f };
-    float const fIncCalc  { m_circle.GetRadius() / (pipe.GetLength() * DATA_PNTS) };
-    float const fInc      { min(1.0f, fIncCalc) };
-    for (float fRun = 0.0f; fRun <= 1.0f; fRun += fInc)
-    {
-        MicroMeterPnt umpRun  { pipe.GetVector(fRun) };
-        float         fFactor { GetDistFactor(umpRun) };
-        if (fFactor > 0.0f)
-        {
-            m_dataPoints.push_back(SigDataPoint(&pipe, pipe.GetSegNr(fRun), umpRun, fFactor));
+    MicroMeter const umResolution { m_circle.GetRadius() };
+
+    pipe.Apply2AllSensorPoints
+    (
+        umResolution,
+        [this](Pipe const& pipe, MicroMeterPnt const& umPnt, Pipe::SegNr const segNr)
+        { 
+            if (float const fFactor = GetDistFactor(umPnt) > 0.0f)
+                m_dataPoints.push_back(SigDataPoint(&pipe, segNr, umPnt, fFactor));
         }
-    }
+    );
 } 
 
 void Sensor::DrawDataPoints(DrawContext const & context) const
