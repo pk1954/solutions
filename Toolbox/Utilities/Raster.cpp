@@ -21,8 +21,7 @@ optional<RasterPoint> Raster::FindRasterPos(MicroMeterPnt const umPnt) const
     {
         MicroMeterPnt const umOrigin  { m_rect.GetStartPoint() };
         MicroMeterPnt const umOff     { umPnt - umOrigin };
-        MicroMeterPnt const umPos     { umOff * (1.0f / m_resolution.GetValue()) };
-        RasterPoint   const rasterPos { round2RasterPoint(umPos) };
+        RasterPoint   const rasterPos { round2RasterPoint(umOff) };
         return rasterPos;
     }
     return {};

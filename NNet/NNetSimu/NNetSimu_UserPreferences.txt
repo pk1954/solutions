@@ -14,7 +14,7 @@ SetBKColor IDM_SIG_DESIGNER RGB(255,255,255)
 SetScales IDM_MAIN_WINDOW ON SetScales IDM_SIG_DESIGNER ON 
 
 ShowArrows  OFF
-ShowSensorPoints  OFF
+ShowSensorPoints  ON
 SetPerfMonMode  OFF
 DescWinFontSize 20
 # ***  End of Preferences

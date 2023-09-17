@@ -24,12 +24,9 @@ void Scan::add2list
     RasterPoint const& rPnt
 )
 {
-    SigDataPoint const  dataPoint(&pipe, segNr);
-    RasterIndex  const  rx { rPnt.GetX() };
-    RasterIndex  const  ry { rPnt.GetY() };
-    ScanLine  &scanLine  { m_upImage->m_scanLines.at(ry) };
-    ScanPoint &scanPoint { scanLine.m_scanPoints.at(rx) };
-    scanPoint.add(dataPoint);
+    ScanLine  &scanLine  { m_upImage->GetScanLine(rPnt.GetY()) };
+    ScanPoint &scanPoint { scanLine.GetScanPoint(rPnt.GetX()) };
+    scanPoint.Add(SigDataPoint(pipe, segNr));
 }
 
 void Scan::add2list
@@ -51,9 +48,10 @@ void Scan::add2list
 
 void Scan::PrepareScan(NNetModelWriterInterface& nmwi)
 {
-    Raster const &raster { nmwi.GetScanRaster() };
+    m_pNMWI = &nmwi;
+    Raster const &raster { m_pNMWI->GetScanRaster() };
     m_upImage = make_unique<Image>(raster.Size());
-    nmwi.Apply2AllC<Pipe>
+    m_pNMWI->Apply2AllC<Pipe>
     (
         [this, &raster](Pipe const& pipe)
         {
@@ -62,20 +60,68 @@ void Scan::PrepareScan(NNetModelWriterInterface& nmwi)
     );
 }
 
+size_t Scan::GetNrOfSensorPoints(RasterPoint const& rp) const
+{
+    return m_upImage->GetScanLine(rp.GetY()).GetScanPoint(rp.GetX()).GetNrOfSignalPoints();
+}
+
 void Scan::StartScan(NNetModelWriterInterface &nmwi)
 {
-    RasterPoint const scanRasterSize { nmwi.GetScanAreaSize() };
-    fMicroSecs        usScanTime     { 0.0_MicroSecs };
-    for (RasterIndex ry = 0; ry < scanRasterSize.GetY(); ++ry)
-    {
-        ScanLine &scanLine { m_upImage->m_scanLines.at(ry) };
-        for (RasterIndex rx = 0; rx < scanRasterSize.GetX(); ++rx)
+    RasterPoint const scanRasterSize  { m_pNMWI->GetScanAreaSize() };
+    fMicroSecs  const usPixelScanTime { m_pNMWI->PixelScanTime() };
+    fMicroSecs        usScanTime      { 0.0_MicroSecs };
+    Apply2AllScanPoints
+    (
+        [this, &usScanTime, usPixelScanTime](ScanPoint& scanPoint)
         {
-            ScanPoint &scanPoint { scanLine.m_scanPoints.at(rx) };
-            usScanTime += nmwi.PixelScanTime();
+            usScanTime += usPixelScanTime;
             while (SimulationTime::Get() < usScanTime)
-                nmwi.Compute();
-            scanPoint.scan();
+                m_pNMWI->Compute();
+            scanPoint.Scan();
         }
-    }
+    );
+}
+
+Image::Image(RasterPoint const& size)
+{
+    m_scanLines.reserve(size.GetY());
+    for (int i = 0; i < size.GetY(); ++i)
+        m_scanLines.push_back(ScanLine(size.GetX()));
+}
+
+ScanLine& Image::GetScanLine(RasterIndex const ry)
+{
+    return m_scanLines.at(ry);
+};
+
+ScanLine::ScanLine(RasterIndex const nrCols)
+{
+    m_scanPoints.resize(nrCols);
+}
+
+ScanPoint& ScanLine::GetScanPoint(RasterIndex const rx)
+{
+    return m_scanPoints.at(rx);
+}
+
+void ScanPoint::Scan()
+{
+    mVsum = 0.0_mV;
+    for (SigDataPoint const& pnt : list)
+        mVsum += pnt.GetSignalValue();
+}
+
+void ScanPoint::Add(SigDataPoint const& dataPoint)
+{
+    list.push_back(dataPoint);
+}
+
+SigDataPoint::SigDataPoint(Pipe const& pipe, Pipe::SegNr const segNr)
+  : m_pPipe(&pipe),
+    m_segNr(segNr)
+{}
+
+mV SigDataPoint::GetSignalValue() const
+{
+    return m_pPipe->GetVoltage(m_segNr);
 }
