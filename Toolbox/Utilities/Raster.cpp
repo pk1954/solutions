@@ -25,9 +25,9 @@ optional<RasterPoint> Raster::FindRasterPos(MicroMeterPnt const umPnt) const
         return {};
     if (rasterPos.GetY() < 0)
         return {};
-    if (rasterPos.GetX() >= round2Raster(m_rect.GetWidth()))
+    if (rasterPos.GetX() >= RasterWidth())
         return {};
-    if (rasterPos.GetY() >= round2Raster(m_rect.GetHeight()))
+    if (rasterPos.GetY() >= RasterHeight())
         return {};
     return rasterPos;
 }
@@ -43,12 +43,7 @@ void Raster::SetRasterRect
 
 RasterPoint Raster::Size() const
 {
-    RasterPoint rpnt 
-    { 
-        round2Raster(m_rect.GetWidth()), 
-        round2Raster(m_rect.GetHeight()) 
-    };
-    return rpnt;
+    return RasterPoint(RasterWidth(), RasterHeight());
 }
 
 RasterIndex Raster::round2Raster(MicroMeter umVal) const

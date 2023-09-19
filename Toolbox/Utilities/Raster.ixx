@@ -25,9 +25,13 @@ void MoveRasterRect(MicroMeterPnt  const& delta)  { m_rect.Move(delta); }
 void SetRasterRect (MicroMeterRect const& umRect) { m_rect = umRect; }
 void SetRasterRect (CardPoint const, MicroMeterPnt const&);
 
+RasterIndex    RasterWidth () const { return round2Raster(m_rect.GetWidth ()); }
+RasterIndex    RasterHeight() const { return round2Raster(m_rect.GetHeight()); }
+
 RasterPoint    Size()          const;
 MicroMeter     Resolution()    const { return m_resolution; }
 MicroMeterRect GetRasterRect() const { return m_rect; }
+size_t         NrOfPoints()    const { return RasterWidth() * RasterHeight(); }
 
 optional<RasterPoint> FindRasterPos(MicroMeterPnt const) const;
 

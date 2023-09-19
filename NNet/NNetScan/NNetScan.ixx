@@ -8,6 +8,7 @@ module;
 
 export module NNetScan;
 
+import SaveCast;
 import Raster;
 import NNetModel;
 
@@ -44,11 +45,33 @@ public:
         m_upImage->Apply2AllScanPixelsC(func);
     }
 
-    size_t GetNrOfSensorPoints()
+    size_t GetNrOfSensorPoints() const
     {
         size_t nr { 0 };
         Apply2AllScanPixelsC([&nr](ScanPixel const& p) { nr += p.GetNrOfDataPoints(); });
         return nr;
+    }
+
+    float DataPointsPerPixel() const
+    {
+        size_t nrOfPoints { GetNrOfSensorPoints() };
+        size_t nrOfPixels { m_pNMWI->GetScanRaster().NrOfPoints() };
+        return Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels);
+    }
+
+    float DataPointVariance()
+    {
+        float fCenter   { DataPointsPerPixel() };
+        float fVariance { 0.0f };
+        Apply2AllScanPixelsC
+        (
+            [fCenter, &fVariance](ScanPixel const& p)
+            { 
+                float const fDiff { Cast2Float(p.GetNrOfDataPoints()) - fCenter };
+                fVariance += fDiff * fDiff;
+            }
+        );
+        return fVariance;
     }
 
 private:

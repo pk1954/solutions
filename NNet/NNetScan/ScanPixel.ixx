@@ -38,7 +38,7 @@ public:
     }
 
     size_t GetNrOfDataPoints() const { return m_dataPoints.size(); }
-    mV     GetVoltage()          const { return m_mVsum; }
+    mV     GetVoltage()        const { return m_mVsum; }
 
     void Apply2AllScanPoints(auto const& func)
     {
