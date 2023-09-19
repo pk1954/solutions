@@ -64,27 +64,27 @@ private:
 	void OnMouseWheel     (WPARAM const, LPARAM const) final;
 	bool OnSize           (PIXEL  const, PIXEL  const) final;
 
-	void        moveOperation   (PixelPoint const &);
-	void        selectSignal    (PixelPoint const &);
-	void        selectTrack     (PixelPoint const &);
-	SignalNr    findSignal      (TrackNr const, PixelPoint const &) const;
-	float       pixel2Track     (PIXEL const) const;
-	int         findTrackPos    (PIXEL const) const;
-	void        highlightSignal (SignalId const &);
-	fPixel      getSignalOffset (SignalId const &) const;
-	fPixel      getSignalValue  (Signal const &, fMicroSecs const) const;
-	fPixelPoint getSignalPoint  (Signal const &, fMicroSecs const, fPixel const) const;
-	fPixel      calcTrackHeight () const;
-	fPixelPoint calcDiamondPos  () const;
+	void        moveOperation  (PixelPoint const &);
+	void        selectSignal   (PixelPoint const &);
+	void        selectTrack    (PixelPoint const &);
+	SignalNr    findSignal     (TrackNr const, PixelPoint const &) const;
+	float       pixel2Track    (PIXEL const) const;
+	int         findTrackPos   (PIXEL const) const;
+	void        highlightSignal(SignalId const &);
+	fPixel      getSignalOffset(SignalId const &) const;
+	fPixel      getSignalValue (Signal const &, fMicroSecs const) const;
+	fPixelPoint getSignalPoint (Signal const &, fMicroSecs const, fPixel const) const;
+	fPixel      calcTrackHeight() const;
+	fPixelPoint calcDiamondPos () const;
 
-	fMicroSecs pixel2scaleTime (fPixel     const fPix)    const { return GetHorzCoordC()->Transform2logUnitPos(fPix); }
-	fPixel     scale2pixelTime (fMicroSecs const usScale) const { return GetHorzCoordC()->Transform2fPixelPos(usScale); }
+	fMicroSecs pixel2scaleTime(fPixel     const fPix)    const { return GetHorzCoordC()->Transform2logUnitPos(fPix); }
+	fPixel     scale2pixelTime(fMicroSecs const usScale) const { return GetHorzCoordC()->Transform2fPixelPos(usScale); }
 
-	fMicroSecs scale2simuTime  (fMicroSecs const usScale) const { return usScale + SimulationTime::Get(); }
-	fMicroSecs simu2scaleTime  (fMicroSecs const usSimu)  const { return usSimu  - SimulationTime::Get(); }
+	fMicroSecs scale2simuTime (fMicroSecs const usScale) const { return usScale + SimulationTime::Get(); }
+	fMicroSecs simu2scaleTime (fMicroSecs const usSimu)  const { return usSimu  - SimulationTime::Get(); }
 
-	fMicroSecs pixel2simuTime  (fPixel     const fPix)    const { return scale2simuTime(pixel2scaleTime(fPix)); }
-	fPixel     simu2pixelTime  (fMicroSecs const usSimu)  const { return scale2pixelTime(simu2scaleTime(usSimu)); }
+	fMicroSecs pixel2simuTime (fPixel     const fPix)    const { return scale2simuTime(pixel2scaleTime(fPix)); }
+	fPixel     simu2pixelTime (fMicroSecs const usSimu)  const { return scale2pixelTime(simu2scaleTime(usSimu)); }
 
 	void paintWarningRect    () const;
 	void paintStimulusMarkers() const;

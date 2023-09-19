@@ -54,6 +54,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Types", "..\Toolbox\Types\T
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicUtils", "..\Toolbox\BasicUtils\BasicUtils.vcxproj", "{62C73BE1-212F-4084-80E8-F8D0B79F3498}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NNetScan", "NNetScan\NNetScan.vcxproj", "{C96207F8-3237-4301-9183-641FCBA2C83D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -190,6 +192,14 @@ Global
 		{62C73BE1-212F-4084-80E8-F8D0B79F3498}.Release|x64.Build.0 = Release|x64
 		{62C73BE1-212F-4084-80E8-F8D0B79F3498}.Release|x86.ActiveCfg = Release|Win32
 		{62C73BE1-212F-4084-80E8-F8D0B79F3498}.Release|x86.Build.0 = Release|Win32
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Debug|x64.ActiveCfg = Debug|x64
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Debug|x64.Build.0 = Debug|x64
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Debug|x86.ActiveCfg = Debug|Win32
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Debug|x86.Build.0 = Debug|Win32
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Release|x64.ActiveCfg = Release|x64
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Release|x64.Build.0 = Release|x64
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Release|x86.ActiveCfg = Release|Win32
+		{C96207F8-3237-4301-9183-641FCBA2C83D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

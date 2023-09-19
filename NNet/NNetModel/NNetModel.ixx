@@ -37,7 +37,6 @@ export import :ParamType;
 export import :Pipe;
 export import :PipeList;
 export import :PosNob;
-export import :Scan;
 export import :Sensor;
 export import :SensorId;
 export import :SignalFactory;

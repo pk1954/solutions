@@ -37,4 +37,5 @@ private:
     MicroMeterRect m_rect       { -1000._MicroMeter, -1000._MicroMeter, 1000._MicroMeter, 1000._MicroMeter, };
 
     RasterPoint round2RasterPoint(MicroMeterPnt const&) const;
+    RasterIndex round2Raster     (MicroMeter    const ) const;
 };

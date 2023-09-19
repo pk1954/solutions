@@ -35,6 +35,7 @@ import ScriptStack;
 import Signals;
 import Script;
 import Symtab;
+import NNetScan;
 import NNetModel;
 import NNetCommands;
 import NNetSignals;
@@ -64,7 +65,7 @@ using std::wcout;
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
 
-Scan m_scan;
+NNetScan m_scan;
 
 NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 {
@@ -434,25 +435,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_SCAN:
 			m_scan.PrepareScan(m_nmwi);
 			m_scan.StartScan  (m_nmwi);
-			{
-				mV mVmax { 0.0_mV };
-				m_scan.Apply2AllScanPointsC
-				(
-					[&mVmax](ScanPoint const& scanPoint)
-					{
-						mV mVscanPoint { scanPoint.GetVoltage() };
-						if (mVscanPoint > mVmax)
-							mVmax = mVscanPoint;
-					}
-				);
-				m_scan.Apply2AllScanPoints
-				(
-					[mVmax](ScanPoint & scanPoint)
-					{
-						scanPoint.Normalize(1.0f / mVmax.GetValue());
-					}
-				);
-			}
 			break;
 
 		case IDM_FORWARD:

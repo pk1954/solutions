@@ -91,8 +91,8 @@ public:
 	) :
 		m_Left(pos.GetX()),
 		m_Top(pos.GetY()),
-		m_Right(m_Left + size.GetValue() - BASE_TYPE(1)),
-		m_Bottom(m_Top + size.GetValue() - BASE_TYPE(1))
+		m_Right(m_Left + size.GetValue()),
+		m_Bottom(m_Top + size.GetValue())
 	{
 		assert(m_Bottom >= m_Top);
 	}
@@ -101,8 +101,8 @@ public:
 	void SetTop   (BASE_TYPE const val) { m_Top    = val; }
 	void SetRight (BASE_TYPE const val) { m_Right  = val; }
 	void SetBottom(BASE_TYPE const val) { m_Bottom = val; }
-	void SetWidth (BASE_TYPE const val) { m_Right  = m_Left + val - BASE_TYPE(BASE_TYPE(1)); }
-	void SetHeight(BASE_TYPE const val) { m_Bottom = m_Top  + val - BASE_TYPE(BASE_TYPE(1)); }
+	void SetWidth (BASE_TYPE const val) { m_Right  = m_Left + val; }
+	void SetHeight(BASE_TYPE const val) { m_Bottom = m_Top  + val; }
 	void SetPos   (POS_TYPE  const pos) { SetLeft (pos.GetX()); SetRight (pos.GetY()); }
 	void SetSize  (SIZE_TYPE const siz) { SetWidth(siz.GetX()); SetHeight(siz.GetY()); }
 	void SetSize  (POS_TYPE  const siz) { SetWidth(siz.GetX()); SetHeight(siz.GetY()); }
@@ -116,8 +116,8 @@ public:
 	BASE_TYPE GetRight () const { return m_Right;  };
 	BASE_TYPE GetBottom() const { return m_Bottom; };
 
-	BASE_TYPE GetWidth () const { return m_Right  - m_Left + BASE_TYPE(BASE_TYPE(1)); }
-	BASE_TYPE GetHeight() const { return m_Bottom - m_Top  + BASE_TYPE(BASE_TYPE(1)); }
+	BASE_TYPE GetWidth () const { return m_Right  - m_Left; }
+	BASE_TYPE GetHeight() const { return m_Bottom - m_Top; }
 
 	SIZE_TYPE GetSize() const { return SIZE_TYPE(GetWidth(), GetHeight()); }
 

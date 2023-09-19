@@ -19,104 +19,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h" />
+    <ClCompile Include="Image.ixx" />
+    <ClCompile Include="NNetScan.ixx" />
+    <ClCompile Include="NNetScan.cpp" />
+    <ClCompile Include="ScanDataPoint.ixx" />
+    <ClCompile Include="ScanLine.ixx" />
+    <ClCompile Include="ScanPixel.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CopySelectedNobs.cpp" />
-    <ClCompile Include="CopySelectedNobs.ixx" />
-    <ClCompile Include="Fork.cpp" />
-    <ClCompile Include="Fork.ixx" />
-    <ClCompile Include="InputConnector.cpp" />
-    <ClCompile Include="InputConnector.ixx" />
-    <ClCompile Include="InputLine.cpp" />
-    <ClCompile Include="InputLine.ixx" />
-    <ClCompile Include="IoConnector.cpp" />
-    <ClCompile Include="IoConnector.ixx" />
-    <ClCompile Include="IoLine.cpp" />
-    <ClCompile Include="IoLine.ixx" />
-    <ClCompile Include="IoLinePair.cpp" />
-    <ClCompile Include="IoLinePair.ixx" />
-    <ClCompile Include="Knot.cpp" />
-    <ClCompile Include="Knot.ixx" />
-    <ClCompile Include="MicroSensor.cpp" />
-    <ClCompile Include="MicroSensor.ixx" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Model.ixx" />
-    <ClCompile Include="ModelDescription.ixx" />
-    <ClCompile Include="NNetSignal.ixx" />
-    <ClCompile Include="NNetSignalSource.ixx" />
-    <ClCompile Include="PosNob.cpp" />
-    <ClCompile Include="Neuron.cpp" />
-    <ClCompile Include="Neuron.ixx" />
-    <ClCompile Include="NNetColors.ixx" />
-    <ClCompile Include="NNetModel.ixx" />
-    <ClCompile Include="NNetModelReaderInterface.cpp" />
-    <ClCompile Include="NNetModelReaderInterface.ixx" />
-    <ClCompile Include="NNetModelWriterInterface.cpp" />
-    <ClCompile Include="NNetModelWriterInterface.ixx" />
-    <ClCompile Include="NNetParameters.cpp" />
-    <ClCompile Include="NNetParameters.ixx" />
-    <ClCompile Include="NNetWrapperHelpers.cpp" />
-    <ClCompile Include="NNetWrapperHelpers.ixx" />
-    <ClCompile Include="Nob.cpp" />
-    <ClCompile Include="Nob.ixx" />
-    <ClCompile Include="NobException.ixx" />
-    <ClCompile Include="NobId.ixx" />
-    <ClCompile Include="NobIdList.cpp" />
-    <ClCompile Include="NobIdList.ixx" />
-    <ClCompile Include="NobType.cpp" />
-    <ClCompile Include="NobType.ixx" />
-    <ClCompile Include="OutputConnector.cpp" />
-    <ClCompile Include="OutputConnector.ixx" />
-    <ClCompile Include="OutputLine.cpp" />
-    <ClCompile Include="OutputLine.ixx" />
-    <ClCompile Include="ParamType.cpp" />
-    <ClCompile Include="ParamType.ixx" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="Pipe.ixx" />
-    <ClCompile Include="PipeList.cpp" />
-    <ClCompile Include="PipeList.ixx" />
-    <ClCompile Include="PosNob.ixx" />
-    <ClCompile Include="Sensor.cpp" />
-    <ClCompile Include="Sensor.ixx" />
-    <ClCompile Include="SensorId.ixx" />
-    <ClCompile Include="SignalFactory.cpp" />
-    <ClCompile Include="SignalFactory.ixx" />
-    <ClCompile Include="SignalGenerator.cpp" />
-    <ClCompile Include="SignalGenerator.ixx" />
-    <ClCompile Include="StdSigGen.ixx" />
-    <ClCompile Include="Synapse.cpp" />
-    <ClCompile Include="Synapse.ixx" />
-    <ClCompile Include="tHighlightType.ixx" />
-    <ClCompile Include="UPNobList.cpp" />
-    <ClCompile Include="UPNobList.ixx" />
-    <ClCompile Include="UPSensorList.cpp" />
-    <ClCompile Include="UPSensorList.ixx" />
-    <ClCompile Include="UPSigGenList.cpp" />
-    <ClCompile Include="UPSigGenList.ixx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
-      <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
-      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
       <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
+      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
+      <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Signals\Signals.vcxproj">
       <Project>{01f78e78-6cee-426b-adab-5c30d825201f}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
+    <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{93dedccb-8be5-48af-8e14-da2a19870565}</ProjectGuid>
-    <RootNamespace>NNetModel</RootNamespace>
+    <ProjectGuid>{c96207f8-3237-4301-9183-641fcba2c83d}</ProjectGuid>
+    <RootNamespace>NNetScan</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -164,12 +98,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -212,8 +140,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -231,8 +159,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>
