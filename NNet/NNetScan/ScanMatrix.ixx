@@ -45,11 +45,6 @@ public:
         return GetScanLineC(rp.m_y).GetScanPixelC(rp.m_x);
     }
 
-    //mV GetVoltage(RasterPoint const &rp) const
-    //{
-    //    return GetScanLine(rp.m_y).GetVoltage(rp.m_x);
-    //}
-
     void Add2list
     (
         Pipe   const &pipe,
@@ -86,7 +81,7 @@ public:
         return nr;
     }
 
-    float DataPointsPerPixel() const
+    float AverageDataPointsPerPixel() const
     {
         assert(!m_scanLines.empty());
         size_t nrOfPoints { GetNrOfSensorPoints() };
@@ -96,7 +91,7 @@ public:
 
     float DataPointVariance()
     {
-        float fCenter   { DataPointsPerPixel() };
+        float fCenter   { AverageDataPointsPerPixel() };
         float fVariance { 0.0f };
         Apply2AllScanPixelsC
         (

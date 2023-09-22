@@ -2,7 +2,7 @@
 SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  OFF
-ReadModel "D:\SW-projects\Delivery\V4_9\BC30.mod"
+ReadModel "D:\SW-projects\Solutions\NNet\Models\BC23.mod"
 InputCablesVisibility 1
 SetBKColor IDM_MAIN_WINDOW RGB(255,255,240)
 SetBKColor IDM_MINI_WINDOW RGB(255,255,240)

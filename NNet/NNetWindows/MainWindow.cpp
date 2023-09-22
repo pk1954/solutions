@@ -545,32 +545,32 @@ void MainWindow::PaintGraphics()
 
 void MainWindow::drawScanRaster()
 {
-	MicroMeter     const umResolution { m_pNMRI->GetScanResolution() };
-	Color          const colLine      { NNetColors::SCAN_AREA_HANDLE };
-	MicroMeterRect const scanAreaRect { m_pNMRI->GetScanAreaRect() };
-	RasterPoint    const rasterSize   { m_pNMRI->GetScanAreaSize() };
+	MicroMeter const umRes { m_pNMRI->GetScanResolution() };
 
-	if (GetCoordC().Transform2fPixel(umResolution) >= 8.0_fPixel)
+	if (GetCoordC().Transform2fPixel(umRes) >= 8.0_fPixel)
 	{
-		MicroMeter const umYend { scanAreaRect.GetTop()  + umResolution * Cast2Float(rasterSize.m_y) };
-		MicroMeter const umXend { scanAreaRect.GetLeft() + umResolution * Cast2Float(rasterSize.m_x) };
-		for (int x = 0; x <= rasterSize.m_x; ++x)
+		Color          const colLine { NNetColors::SCAN_AREA_HANDLE };
+		MicroMeterRect const umRect  { m_pNMRI->GetScanAreaRect() };
+		RasterPoint    const rSize   { m_pNMRI->GetScanAreaSize() };
+		MicroMeter     const umYend  { umRect.GetTop()  + umRes * Cast2Float(rSize.m_y) };
+		MicroMeter     const umXend  { umRect.GetLeft() + umRes * Cast2Float(rSize.m_x) };
+		for (int x = 0; x <= rSize.m_x; ++x)
 		{
-			MicroMeter const umX { scanAreaRect.GetLeft() + umResolution * Cast2Float(x) };
+			MicroMeter const umX { umRect.GetLeft() + umRes * Cast2Float(x) };
 			GetDrawContextC().DrawLine
 			(
-				MicroMeterPnt(umX, scanAreaRect.GetTop()),
+				MicroMeterPnt(umX, umRect.GetTop()),
 				MicroMeterPnt(umX, umYend),
 				0.0_MicroMeter,
 				colLine
 			);
 		}
-		for (int y = 0; y <= rasterSize.m_y; ++y)
+		for (int y = 0; y <= rSize.m_y; ++y)
 		{
-			MicroMeter const umY { scanAreaRect.GetTop() + umResolution * Cast2Float(y) };
+			MicroMeter const umY { umRect.GetTop() + umRes * Cast2Float(y) };
 			GetDrawContextC().DrawLine
 			(
-				MicroMeterPnt(scanAreaRect.GetLeft(), umY),
+				MicroMeterPnt(umRect.GetLeft(), umY),
 				MicroMeterPnt(umXend, umY),
 				0.0_MicroMeter,
 				colLine
