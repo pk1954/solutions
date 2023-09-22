@@ -552,9 +552,9 @@ void MainWindow::drawScanRaster()
 
 	if (GetCoordC().Transform2fPixel(umResolution) >= 8.0_fPixel)
 	{
-		MicroMeter const umYend { scanAreaRect.GetTop()  + umResolution * Cast2Float(rasterSize.GetY()) };
-		MicroMeter const umXend { scanAreaRect.GetLeft() + umResolution * Cast2Float(rasterSize.GetX()) };
-		for (int x = 0; x <= rasterSize.GetX(); ++x)
+		MicroMeter const umYend { scanAreaRect.GetTop()  + umResolution * Cast2Float(rasterSize.m_y) };
+		MicroMeter const umXend { scanAreaRect.GetLeft() + umResolution * Cast2Float(rasterSize.m_x) };
+		for (int x = 0; x <= rasterSize.m_x; ++x)
 		{
 			MicroMeter const umX { scanAreaRect.GetLeft() + umResolution * Cast2Float(x) };
 			GetDrawContextC().DrawLine
@@ -565,7 +565,7 @@ void MainWindow::drawScanRaster()
 				colLine
 			);
 		}
-		for (int y = 0; y <= rasterSize.GetY(); ++y)
+		for (int y = 0; y <= rasterSize.m_y; ++y)
 		{
 			MicroMeter const umY { scanAreaRect.GetTop() + umResolution * Cast2Float(y) };
 			GetDrawContextC().DrawLine

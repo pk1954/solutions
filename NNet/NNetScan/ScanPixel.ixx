@@ -4,7 +4,6 @@
 
 module;
 
-#include <memory>
 #include <vector>
 
 export module NNetScan:ScanPixel;
@@ -13,32 +12,33 @@ import Raster;
 import NNetModel;
 import :ScanDataPoint;
 
-using std::unique_ptr;
 using std::vector;
 
 export class ScanPixel
 {
 public:
-    void Scan()
+    mV Scan() const
     {
-        m_mVsum = 0.0_mV;
+        mV mVsum = 0.0_mV;
         for (ScanDataPoint const& pnt : m_dataPoints)
-            m_mVsum += pnt.GetSignalValue();
+            mVsum += pnt.GetSignalValue();
+        return mVsum;
     }
+
+    //mV GetVoltage() const
+    //{
+    //    return m_mVsum;
+    //}
 
     void Add(ScanDataPoint const& dataPoint)
     {
         m_dataPoints.push_back(dataPoint);
     }
 
-    ScanPixel& operator*= (float const f)
-    {
-        m_mVsum *= f;
-        return *this;
+    size_t GetNrOfDataPoints() const 
+    { 
+        return m_dataPoints.size(); 
     }
-
-    size_t GetNrOfDataPoints() const { return m_dataPoints.size(); }
-    mV     GetVoltage()        const { return m_mVsum; }
 
     void Apply2AllScanPoints(auto const& func)
     {
@@ -54,5 +54,5 @@ public:
 
 private:
     vector<ScanDataPoint> m_dataPoints {};
-    mV                    m_mVsum;
+    //mV                    m_mVsum;
 };

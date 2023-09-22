@@ -25,6 +25,7 @@
     <ClCompile Include="ScanDataPoint.ixx" />
     <ClCompile Include="ScanLine.ixx" />
     <ClCompile Include="ScanPixel.ixx" />
+    <ClCompile Include="ScanMatrix.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">

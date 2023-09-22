@@ -14,6 +14,10 @@ import :ScanDataPoint;
 import :ScanLine;
 
 using std::vector;
+using std::unique_ptr;
+using std::make_unique;
+
+export using ImageLine = vector<mV>;
 
 class Image
 {
@@ -21,46 +25,56 @@ public:
 
     Image(RasterPoint const& size)
     {
-        m_scanLines.reserve(size.GetY());
-        for (int i = 0; i < size.GetY(); ++i)
-            m_scanLines.push_back(ScanLine(size.GetX()));
+        m_imageLines.reserve(size.m_y);
+        for (int i = 0; i < size.m_y; ++i)
+            m_imageLines.push_back(make_unique<ImageLine>(size.m_x));
+    }
+
+    ImageLine &GetLine(RasterIndex const ry)
+    {
+        return *m_imageLines.at(ry).get();
+    }
+
+    void Set(RasterPoint const& rp, mV voltage)
+    {
+        ImageLine &line { GetLine(rp.m_y) };
+        line.at(rp.m_x) = voltage;
     }
 
     Image& operator*= (float const factor)
     {
-        Apply2AllScanPixels([factor](ScanPixel& sp) { sp *= factor; });
+        Apply2AllPixels([factor](mV &voltage) { voltage *= factor; });
         return *this;
     }
 
-    ScanLine& GetScanLine(RasterIndex const ry)
+    void Apply2AllPixels(auto const& func)
     {
-        return m_scanLines.at(ry);
-    };
-
-    void Apply2AllScanPointsC(auto const& func) const
-    {
-        for (ScanLine const& scanLine : m_scanLines)
-            scanLine.Apply2AllScanPointsC(func);
+        for (auto &upLine : m_imageLines)
+            for (mV & voltage : *upLine.get())
+                func(voltage);
     }
 
-    void Apply2AllScanPoints(auto const& func)
+    void Apply2AllPixelsC(auto const& func) const
     {
-        for (ScanLine& scanLine : m_scanLines)
-            scanLine.Apply2AllScanPoints(func);
+        for (auto const& upLine : m_imageLines)
+            for (mV const& voltage : *upLine.get())
+                func(voltage);
     }
 
-    void Apply2AllScanPixels(auto const& func)
+    mV GetMaxVoltage() const
     {
-        for (ScanLine &scanLine : m_scanLines)
-            scanLine.Apply2AllScanPixels(func);
-    }
-
-    void Apply2AllScanPixelsC(auto const& func) const
-    {
-        for (ScanLine const& scanLine : m_scanLines)
-            scanLine.Apply2AllScanPixelsC(func);
+        mV mVmax { 0.0_mV };
+        Apply2AllPixelsC
+        (
+            [&mVmax](mV const mv)
+            {
+                if (mv > mVmax)
+                    mVmax = mv;
+            }
+        );
+        return mVmax;
     }
 
 private:
-    vector<ScanLine> m_scanLines;
+    vector<unique_ptr<ImageLine>> m_imageLines;
 };

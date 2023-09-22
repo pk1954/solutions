@@ -11,9 +11,12 @@ module;
 
 module NNetScan;
 
+import Types;
+import Raster;
 import Signals;
 import NNetModel;
 import :ScanDataPoint;
+import :ScanMatrix;
 
 using std::min;
 using std::vector;
@@ -21,94 +24,43 @@ using std::unique_ptr;
 using std::make_unique;
 using std::optional;
 
-void NNetScan::add2list
-(
-    Pipe        const& pipe,
-    Pipe::SegNr const  segNr,
-    RasterPoint const& rPnt
-)
+unique_ptr<ScanMatrix> NNetScan::PrepareScan(NNetModelWriterInterface& nmwi)
 {
-    ScanLine  &scanLine  { m_upImage->GetScanLine(rPnt.GetY()) };
-    ScanPixel &scanPoint { scanLine.GetScanPixel(rPnt.GetX()) };
-    scanPoint.Add(ScanDataPoint(pipe, segNr));
-}
-
-void NNetScan::add2list
-(
-    Pipe   const& pipe,
-    Raster const& raster
-)
-{
-    pipe.Apply2AllSensorPoints
-    (
-        raster.Resolution(),
-        [this, &raster](Pipe const& pipe, MicroMeterPnt const& umPnt, Pipe::SegNr const segNr)
-        {
-            if (optional<RasterPoint> const rPntOpt = raster.FindRasterPos(umPnt))
-                add2list(pipe, segNr, rPntOpt.value());
-        }
-    );
-}
-
-void NNetScan::PrepareScan(NNetModelWriterInterface& nmwi)
-{
-    Raster const &raster { nmwi.GetScanRaster() };
-    m_upImage = make_unique<Image>(raster.Size());
+    Raster          const  raster       { nmwi.GetScanRaster() };
+    RasterPoint     const  rasterSize   { raster.Size() };
+    unique_ptr<ScanMatrix> upScanMatrix { make_unique<ScanMatrix>(rasterSize) };
     nmwi.Apply2AllC<Pipe>
     (
-        [this, &raster](Pipe const& pipe)
+        [&upScanMatrix, &raster](Pipe const& pipe)
         {
-            add2list(pipe, raster);
+            upScanMatrix->Add2list(pipe, raster);
         }
     );
+    return upScanMatrix;
 }
 
-ScanPixel const& NNetScan::GetScanPixel(RasterPoint const& rp) const
-{
-    return m_upImage->GetScanLine(rp.GetY()).GetScanPixel(rp.GetX());
-}
-
-size_t NNetScan::GetNrOfSensorPoints(RasterPoint const& rp) const
-{
-    return GetScanPixel(rp).GetNrOfDataPoints();
-}
-
-void NNetScan::StartScan(NNetModelWriterInterface &nmwi)
+unique_ptr<Image> NNetScan::Scan
+(
+    NNetModelWriterInterface &nmwi,
+    ScanMatrix               &scanMatrix
+)
 {
     RasterPoint const scanRasterSize { nmwi.GetScanAreaSize() };
     fMicroSecs        usScanTime     { SimulationTime::Get() };
-    int iNrOfScans = 0;
-    int iNrOfComputations = 0;
-    m_upImage->Apply2AllScanPixels
-    (
-        [this, &usScanTime, &nmwi, &iNrOfComputations, &iNrOfScans](ScanPixel& scanPixel)
+    RasterPoint       imageSize      { scanMatrix.Size() };
+    unique_ptr<Image> upImage        { make_unique<Image>(imageSize) };
+    RasterPoint       rpRun;
+    for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
+    {
+        ScanLine const& scanLine  { scanMatrix.GetScanLineC(rpRun.m_y) };
+        ImageLine     & imageLine { upImage->GetLine(rpRun.m_y) };
+        for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
         {
             usScanTime += nmwi.PixelScanTime();
-            for (;;)
-            {
-                fMicroSecs usSimulationTime { SimulationTime::Get() };
-                if (usSimulationTime >= usScanTime)
-                    break;
+            while (SimulationTime::Get() < usScanTime)
                 nmwi.Compute();
-                ++iNrOfComputations;
-            }
-            scanPixel.Scan();
-            ++iNrOfScans;
+            imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
         }
-    );
-}
-
-mV NNetScan::getMaxVoltage() const
-{
-    mV mVmax { 0.0_mV };
-    m_upImage->Apply2AllScanPixelsC
-    (
-        [&mVmax](ScanPixel const& scanPoint)
-        {
-            mV mVscanPoint { scanPoint.GetVoltage() };
-            if (mVscanPoint > mVmax)
-                mVmax = mVscanPoint;
-        }
-    );
-    return mVmax;
+    }
+    return upImage;
 }

@@ -21,13 +21,13 @@ optional<RasterPoint> Raster::FindRasterPos(MicroMeterPnt const umPnt) const
     MicroMeterPnt const umOrigin  { m_rect.GetStartPoint() };
     MicroMeterPnt const umOff     { umPnt - umOrigin };
     RasterPoint   const rasterPos { round2RasterPoint(umOff) };
-    if (rasterPos.GetX() < 0)
+    if (rasterPos.m_x < 0)
         return {};
-    if (rasterPos.GetY() < 0)
+    if (rasterPos.m_y < 0)
         return {};
-    if (rasterPos.GetX() >= RasterWidth())
+    if (rasterPos.m_x >= RasterWidth())
         return {};
-    if (rasterPos.GetY() >= RasterHeight())
+    if (rasterPos.m_y >= RasterHeight())
         return {};
     return rasterPos;
 }

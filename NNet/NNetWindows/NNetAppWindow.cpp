@@ -433,8 +433,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_SCAN:
-			m_scan.PrepareScan(m_nmwi);
-			m_scan.StartScan  (m_nmwi);
+		{
+			unique_ptr<ScanMatrix> upScanMatrix { m_scan.PrepareScan(m_nmwi) };
+			m_scan.Scan(m_nmwi, *upScanMatrix.get());
+
+		}
 			break;
 
 		case IDM_FORWARD:

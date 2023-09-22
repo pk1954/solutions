@@ -12,8 +12,12 @@ import Types;
 
 using std::optional;
 
-export using RasterIndex = long;
-export using RasterPoint = PosType<RasterIndex>;
+export using RasterIndex = int;
+export struct RasterPoint 
+{
+    RasterIndex m_x;
+    RasterIndex m_y;
+};
 
 export class Raster
 {
