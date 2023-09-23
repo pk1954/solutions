@@ -107,6 +107,7 @@ private:
 	bool       connectionAllowed();
 	void       select(NobId const);
 	void       drawScanRaster();
+	void       drawScanImage();
 	void       drawScanAreaHandles();
 	SigGenId   getSigGenId(LPARAM const);
 	SigGenId   getSigGenId(fPixelPoint const &);

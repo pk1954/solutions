@@ -1,4 +1,4 @@
-// Image.ixx
+// ScanImage.ixx
 //
 // NNetScan
 
@@ -7,7 +7,7 @@ module;
 #include <memory>
 #include <vector>
 
-export module NNetScan:Image;
+export module NNetScan:ScanImage;
 
 import Raster;
 import :ScanDataPoint;
@@ -19,29 +19,38 @@ using std::make_unique;
 
 export using ImageLine = vector<mV>;
 
-class Image
+export class ScanImage
 {
 public:
 
-    Image(RasterPoint const& size)
+    ScanImage(RasterPoint const& size)
     {
         m_imageLines.reserve(size.m_y);
         for (int i = 0; i < size.m_y; ++i)
             m_imageLines.push_back(make_unique<ImageLine>(size.m_x));
     }
 
-    ImageLine &GetLine(RasterIndex const ry)
+    ImageLine& GetLine(RasterIndex const ry)
+    {
+        return *m_imageLines.at(ry).get();
+    }
+
+    ImageLine const& GetLine(RasterIndex const ry) const
     {
         return *m_imageLines.at(ry).get();
     }
 
     void Set(RasterPoint const& rp, mV voltage)
     {
-        ImageLine &line { GetLine(rp.m_y) };
-        line.at(rp.m_x) = voltage;
+        GetLine(rp.m_y).at(rp.m_x) = voltage;
     }
 
-    Image& operator*= (float const factor)
+    mV Get(RasterPoint const& rp) const
+    {
+        return GetLine(rp.m_y).at(rp.m_x);
+    }
+
+    ScanImage& operator*= (float const factor)
     {
         Apply2AllPixels([factor](mV &voltage) { voltage *= factor; });
         return *this;

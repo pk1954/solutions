@@ -26,6 +26,7 @@ import NNetSignals;
 import Observable;
 import RootWindow;
 import Types;
+import NNetScan;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
@@ -234,12 +235,12 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
+		ClearPtLast();                 // make m_ptLast invalid
 		if (!setScanAreaHandle(umCrsrPos))
 			if (!setHighlightedNob(umCrsrPos))
 				if (!setHighlightedSensor(umCrsrPos))
 					if (!selectSignalHandle(umCrsrPos))
 						m_idSigGenUnderCrsr = getSigGenId(fPixCrsr);
-		ClearPtLast();                 // make m_ptLast invalid
 		return;
 	}
 
@@ -538,9 +539,25 @@ void MainWindow::PaintGraphics()
 	if (NNetPreferences::ScanArea())
 	{
 		DrawScanArea();
-		drawScanRaster();
-		drawScanAreaHandles();
+		//if (ScanImage const* pScanImage { m_pNMRI->GetScanImage() })
+		//{
+		//	drawScanImage();
+		//}
+		//else
+		{
+			drawScanRaster();
+			drawScanAreaHandles();
+		}
 	}
+}
+
+void MainWindow::drawScanImage()
+{
+	//MicroMeter     const umRes  { m_pNMRI->GetScanResolution() };
+	//MicroMeterRect const umRect { m_pNMRI->GetScanAreaRect() };
+	//RasterPoint    const rSize  { m_pNMRI->GetScanAreaSize() };
+	//MicroMeter     const umYend { umRect.GetTop() + umRes * Cast2Float(rSize.m_y) };
+	//MicroMeter     const umXend { umRect.GetLeft() + umRes * Cast2Float(rSize.m_x) };
 }
 
 void MainWindow::drawScanRaster()

@@ -32,6 +32,14 @@ optional<RasterPoint> Raster::FindRasterPos(MicroMeterPnt const umPnt) const
     return rasterPos;
 }
 
+MicroMeterRect Raster::GetPointRect(RasterPoint const& rPnt) const 
+{ 
+    MicroMeter const umLeft { m_rect.GetLeft() + m_resolution * Cast2Float(rPnt.m_x) };
+    MicroMeter const umTop  { m_rect.GetTop () + m_resolution * Cast2Float(rPnt.m_y) };
+    MicroMeterRect const rect(umLeft, umTop, umLeft + m_resolution, umTop + m_resolution);
+    return rect;
+}
+
 void Raster::SetRasterRect
 (
     CardPoint     const  cardPnt,

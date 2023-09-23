@@ -38,6 +38,8 @@ public:
 	void LockComputation();
 	void RunStopComputation();
 	void StopComputation();
+	void StandardRun();
+	void ScanRun();
 	bool IsRunning() const { return ! m_bStopped; }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };

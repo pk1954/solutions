@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Image.ixx" />
+    <ClCompile Include="ScanImage.ixx" />
     <ClCompile Include="NNetScan.ixx" />
     <ClCompile Include="NNetScan.cpp" />
     <ClCompile Include="ScanDataPoint.ixx" />

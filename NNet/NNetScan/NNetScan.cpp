@@ -17,6 +17,7 @@ import Signals;
 import NNetModel;
 import :ScanDataPoint;
 import :ScanMatrix;
+import :ScanImage;
 
 using std::min;
 using std::vector;
@@ -39,17 +40,17 @@ unique_ptr<ScanMatrix> NNetScan::PrepareScan(NNetModelWriterInterface& nmwi)
     return upScanMatrix;
 }
 
-unique_ptr<Image> NNetScan::Scan
+unique_ptr<ScanImage> NNetScan::Scan
 (
     NNetModelWriterInterface &nmwi,
     ScanMatrix               &scanMatrix
 )
 {
-    RasterPoint const scanRasterSize { nmwi.GetScanAreaSize() };
-    fMicroSecs        usScanTime     { SimulationTime::Get() };
-    RasterPoint       imageSize      { scanMatrix.Size() };
-    unique_ptr<Image> upImage        { make_unique<Image>(imageSize) };
-    RasterPoint       rpRun;
+    RasterPoint     const scanRasterSize { nmwi.GetScanAreaSize() };
+    fMicroSecs            usScanTime     { SimulationTime::Get() };
+    RasterPoint           imageSize      { scanMatrix.Size() };
+    unique_ptr<ScanImage> upImage        { make_unique<ScanImage>(imageSize) };
+    RasterPoint           rpRun;
     for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
     {
         ScanLine const& scanLine  { scanMatrix.GetScanLineC(rpRun.m_y) };

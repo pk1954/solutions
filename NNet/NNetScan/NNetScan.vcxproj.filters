@@ -21,7 +21,7 @@
     <ClCompile Include="ScanDataPoint.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Image.ixx">
+    <ClCompile Include="ScanImage.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScanPixel.ixx">

@@ -96,6 +96,7 @@ public:
 	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
+	//ScanImage        const* GetScanImage()                         const { return m_pModel->GetScanImage(); }
 	bool                    ScanMode()                             const { return m_pModel->ScanMode(); }
 
 	bool                HasMicroSensor(NobId const id) const { return GetConstNob(id)->HasMicroSensor(); }

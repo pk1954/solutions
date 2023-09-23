@@ -12,7 +12,7 @@ import SaveCast;
 import Raster;
 import NNetModel;
 
-export import :Image;
+export import :ScanImage;
 export import :ScanMatrix;
 
 import :ScanLine;
@@ -30,7 +30,7 @@ public:
     
     ScanPixel const& GetScanPixel(RasterPoint const&) const;
 
-    unique_ptr<Image> Scan(NNetModelWriterInterface&, ScanMatrix&);
+    unique_ptr<ScanImage> Scan(NNetModelWriterInterface&, ScanMatrix&);
 
 private:
 

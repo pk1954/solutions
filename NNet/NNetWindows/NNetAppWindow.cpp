@@ -435,7 +435,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_SCAN:
 		{
 			unique_ptr<ScanMatrix> upScanMatrix { m_scan.PrepareScan(m_nmwi) };
-			m_scan.Scan(m_nmwi, *upScanMatrix.get());
+			unique_ptr<ScanImage>  upImage      { m_scan.Scan(m_nmwi, *upScanMatrix.get()) };
 
 		}
 			break;

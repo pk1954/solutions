@@ -88,16 +88,6 @@ void ComputeThread::RunStopComputation()
 	}
 }
 
-//void ComputeThread::RunComputation()
-//{
-//	if (m_bStopped)
-//	{
-//		m_bStopped = false;
-//		if (! m_bComputationLocked)  // both locks are released. We can start to run
-//			runComputation();
-//	}
-//}
-
 void ComputeThread::StopComputation()
 {
 	if (! m_bStopped)
@@ -130,45 +120,69 @@ long ComputeThread::getCyclesTodo() const
 	return max(0, lCycles);
 }
 
+void ComputeThread::StandardRun()
+{
+	while (!(m_bStopped || m_bComputationLocked))
+	{
+		Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
+
+		long const lCyclesTodo { getCyclesTodo() };
+		long       lCyclesDone { 0 };
+
+		while ((lCyclesDone < lCyclesTodo) && !(m_bStopped || m_bComputationLocked))
+		{
+			if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
+			{
+				m_bStopped = true;
+				m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
+			}
+			m_pDynamicModelObservable->NotifyAll(false);
+			++lCyclesDone;
+		}
+
+		Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
+
+		if (lCyclesDone > 0)
+		{
+			m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs(ticksInLoop / lCyclesDone);
+			m_fEffectiveSlowMo = netRealTimeSinceLastReset() / simuTimeSinceLastReset();
+			m_pPerformanceObservable->NotifyAll(false);
+		}
+
+		fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
+		fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
+		if (usSleepTime > 10000.0_MicroSecs)
+			Sleep(10);
+	}
+}
+
+void ComputeThread::ScanRun()
+{
+	//RasterPoint     const scanRasterSize { m_pNMWI->GetScanAreaSize() };
+	//fMicroSecs            usScanTime     { SimulationTime::Get() };
+	//RasterPoint           imageSize      { scanMatrix.Size() };
+	//unique_ptr<ScanImage> upImage        { make_unique<ScanImage>(imageSize) };
+	//RasterPoint           rpRun;
+	//for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
+	//{
+	//	ScanLine const& scanLine  { scanMatrix.GetScanLineC(rpRun.m_y) };
+	//	ImageLine     & imageLine { upImage->GetLine(rpRun.m_y) };
+	//	for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
+	//	{
+	//		usScanTime += nmwi.PixelScanTime();
+	//		while (SimulationTime::Get() < usScanTime)
+	//			m_pNMWI->Compute();
+	//		imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
+	//	}
+	//}
+}
+
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
 {                                        // no thread messages used
 	for (;;)
 	{
 		AcquireSRWLockExclusive(& m_srwlStopped);
-
-		while (! (m_bStopped || m_bComputationLocked))
-		{
-			Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
-
-			long const lCyclesTodo { getCyclesTodo() };
-			long       lCyclesDone { 0 };
-
-			while ((lCyclesDone < lCyclesTodo) && ! (m_bStopped || m_bComputationLocked))
-			{
-				if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
-				{
-					m_bStopped = true;
-					m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
-				}
-				m_pDynamicModelObservable->NotifyAll(false);
-				++lCyclesDone;
-			}
-
-			Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
-
-			if (lCyclesDone > 0)
-			{
-				m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs(ticksInLoop / lCyclesDone);
-				m_fEffectiveSlowMo        = netRealTimeSinceLastReset() / simuTimeSinceLastReset();
-				m_pPerformanceObservable->NotifyAll(false);
-			}
-
-			fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
-			fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
-			if (usSleepTime > 10000.0_MicroSecs)
-				Sleep(10);
-		}
-
+		StandardRun();
 		ReleaseSRWLockExclusive(& m_srwlStopped);
 	}
 }

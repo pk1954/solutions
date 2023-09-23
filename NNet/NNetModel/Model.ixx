@@ -115,10 +115,11 @@ public:
 	SignalParameters const & GetSignalParams()            const { return m_signalParams; }
 	SignalParameters       & GetSignalParams()                  { return m_signalParams; }
 	MicroMeterRect           GetScanAreaRect()            const { return m_upRaster->GetRasterRect(); }
-	SignalGenerator const  * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
+	SignalGenerator  const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
 	MicroMeter               GetScanResolution()          const { return m_upRaster->Resolution(); }
 	RasterPoint              GetScanAreaSize()            const { return m_upRaster->Size(); }
 	Raster           const & GetScanRaster()              const { return *m_upRaster.get(); }
+	//ScanImage        const * GetScanImage()               const { return m_upImage.get(); }
 
 	// non const functions
 
@@ -143,6 +144,7 @@ private:
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
+	//unique_ptr<ScanImage>      m_upImage;
 	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;

@@ -37,6 +37,8 @@ MicroMeter     Resolution()    const { return m_resolution; }
 MicroMeterRect GetRasterRect() const { return m_rect; }
 size_t         NrOfPoints()    const { return RasterWidth() * RasterHeight(); }
 
+MicroMeterRect GetPointRect(RasterPoint const&) const;
+
 optional<RasterPoint> FindRasterPos(MicroMeterPnt const) const;
 
 private:
