@@ -12,13 +12,12 @@ export module NNetScan:ScanLine;
 import Raster;
 import SaveCast;
 import NNetModel;
-import :ScanDataPoint;
 import :ScanPixel;
 
 using std::unique_ptr;
 using std::vector;
 
-class ScanLine
+export class ScanLine
 {
 public:
 
@@ -42,9 +41,9 @@ public:
         return m_scanPixels.at(rx);
     }
 
-    mV Scan(RasterIndex const rpX) const
+    mV Scan(RasterIndex const rpX)
     {
-        return GetScanPixelC(rpX).Scan();
+        return GetScanPixel(rpX).Scan();
     }
 
     void Apply2AllScanPixels(auto const& func)

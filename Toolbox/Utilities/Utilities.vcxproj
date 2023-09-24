@@ -43,6 +43,7 @@
     <ClCompile Include="Trace.cpp" />
     <ClCompile Include="Trace.ixx" />
     <ClCompile Include="Uniform2D.ixx" />
+    <ClCompile Include="Vector2D.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BasicUtils\BasicUtils.vcxproj">

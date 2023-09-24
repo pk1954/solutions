@@ -236,5 +236,8 @@
     <ClCompile Include="NNetSignal.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScanDataPoint.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

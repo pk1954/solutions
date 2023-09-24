@@ -13,6 +13,7 @@ export module NNetWin32:MainWindow;
 
 import Types;
 import ActionTimer;
+import Vector2D;
 import NNetModel;
 import NNetSignals;
 import NNetCommands;
@@ -107,7 +108,7 @@ private:
 	bool       connectionAllowed();
 	void       select(NobId const);
 	void       drawScanRaster();
-	void       drawScanImage();
+	void       drawScanImage(Vector2D<mV> const&) const;
 	void       drawScanAreaHandles();
 	SigGenId   getSigGenId(LPARAM const);
 	SigGenId   getSigGenId(fPixelPoint const &);

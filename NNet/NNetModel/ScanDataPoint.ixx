@@ -1,14 +1,14 @@
 // ScanDataPoint.ixx
 //
-// NNetScan
+// NNetModel
 
 module;
 
-export module NNetScan:ScanDataPoint;
+export module NNetModel:ScanDataPoint;
 
-import NNetModel;
+import :Pipe;
 
-class ScanDataPoint
+export class ScanDataPoint
 {
 public:
 

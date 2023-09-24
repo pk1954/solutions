@@ -14,6 +14,7 @@ import Util;
 import Raster;
 import Signals;
 import BoolType;
+import Vector2D;
 import DescriptionUI;
 import :ParamType;
 import :ModelDescription;
@@ -23,6 +24,7 @@ import :UPSensorList;
 import :PosNob;
 
 using std::unique_ptr;
+using std::make_unique;
 using std::wstring;
 using std::move;
 
@@ -119,7 +121,8 @@ public:
 	MicroMeter               GetScanResolution()          const { return m_upRaster->Resolution(); }
 	RasterPoint              GetScanAreaSize()            const { return m_upRaster->Size(); }
 	Raster           const & GetScanRaster()              const { return *m_upRaster.get(); }
-	//ScanImage        const * GetScanImage()               const { return m_upImage.get(); }
+	Vector2D<mV>     const * GetScanImageC()              const { return m_upImage.get(); }
+	Vector2D<mV>           * GetScanImage()                     { return m_upImage.get(); }
 
 	// non const functions
 
@@ -131,20 +134,21 @@ public:
 	void SetScanArea(MicroMeterRect const&);
 	void Reconnect(NobId const);
 
-	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
-	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
-	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
-	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
-	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
-	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void ToggleScanMode           ()                     { m_bScanMode.Toggle(); }
+	void DeselectAllNobs          ()               const  { m_upNobs->DeselectAllNobs(); }
+	void SetModelFilePath         (wstring const & wstr)  { m_wstrModelFilePath = wstr; }
+	void AddDescriptionLine       (wstring const & wstr)  { m_description.AddDescriptionLine(wstr); }
+	void DescriptionComplete      ()                      { m_description.DescriptionComplete(); }
+	void SetDescriptionUI         (DescriptionUI &i)      { m_description.SetDescriptionUI(i); }
+	void SetHighSigObservable     (Observable    &o)      { m_monitorData.SetHighSigObservable(o); }
+	void SetActiveSigGenObservable(Observable    &o)      { m_upSigGenList->SetActiveSigGenObservable(o); }
+	void ToggleScanMode           ()                      { m_bScanMode.Toggle(); }
+	void CreateImage              ()                      { m_upImage = make_unique<Vector2D<mV>>(GetScanAreaSize()); }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
-	//unique_ptr<ScanImage>      m_upImage;
+	unique_ptr<Vector2D<mV>>   m_upImage;
 	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;

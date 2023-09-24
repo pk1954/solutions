@@ -15,6 +15,7 @@ import HiResTimer;
 import Thread;
 import SlowMotionRatio;
 import NNetModel;
+import NNetScan;
 
 export class ComputeThread: public ::Thread, public ObserverInterface
 {
@@ -39,7 +40,7 @@ public:
 	void RunStopComputation();
 	void StopComputation();
 	void StandardRun();
-	void ScanRun();
+	void ScanRun(ScanMatrix&);
 	bool IsRunning() const { return ! m_bStopped; }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };

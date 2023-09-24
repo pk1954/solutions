@@ -13,7 +13,6 @@ export module NNetScan:ScanMatrix;
 import Types;
 import Raster;
 import SaveCast;
-import :ScanDataPoint;
 import :ScanLine;
 
 using std::vector;
@@ -38,7 +37,12 @@ public:
     ScanLine const& GetScanLineC(RasterIndex const ry) const
     {
         return m_scanLines.at(ry);
-    };
+    }
+
+    ScanLine& GetScanLine(RasterIndex const ry)
+    {
+        return m_scanLines.at(ry);
+    }
 
     ScanPixel const &GetScanPixel(RasterPoint const &rp) const
     {

@@ -8,31 +8,26 @@ module;
 
 export module NNetScan:ScanPixel;
 
+import Types;
 import Raster;
 import NNetModel;
-import :ScanDataPoint;
 
 using std::vector;
 
 export class ScanPixel
 {
 public:
-    mV Scan() const
-    {
-        mV mVsum = 0.0_mV;
-        for (ScanDataPoint const& pnt : m_dataPoints)
-            mVsum += pnt.GetSignalValue();
-        return mVsum;
-    }
-
-    //mV GetVoltage() const
-    //{
-    //    return m_mVsum;
-    //}
 
     void Add(ScanDataPoint const& dataPoint)
     {
         m_dataPoints.push_back(dataPoint);
+    }
+
+    mV Scan()
+    {
+        mV mVsum = 0.0_mV;
+        Apply2AllScanPoints([&mVsum](ScanDataPoint const& p) { mVsum += p.GetSignalValue(); });
+        return mVsum;
     }
 
     size_t GetNrOfDataPoints() const 
@@ -54,5 +49,4 @@ public:
 
 private:
     vector<ScanDataPoint> m_dataPoints {};
-    //mV                    m_mVsum;
 };

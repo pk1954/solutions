@@ -18,12 +18,6 @@
     <ClCompile Include="NNetScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScanDataPoint.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScanImage.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScanPixel.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

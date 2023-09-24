@@ -5,6 +5,7 @@
 module;
 
 #include "bit"
+#include <vector>
 #include <optional>
 #include <unordered_map>
 #include <cassert>
@@ -26,7 +27,6 @@ import NNetSignals;
 import Observable;
 import RootWindow;
 import Types;
-import NNetScan;
 import Uniform2D;
 import Win32_Util;
 import Win32_Util_Resource;
@@ -47,6 +47,7 @@ using std::wcout;
 using std::endl;
 using std::optional;
 using std::nullopt;
+using std::vector;
 
 void MainWindow::Start
 (
@@ -539,11 +540,11 @@ void MainWindow::PaintGraphics()
 	if (NNetPreferences::ScanArea())
 	{
 		DrawScanArea();
-		//if (ScanImage const* pScanImage { m_pNMRI->GetScanImage() })
-		//{
-		//	drawScanImage();
-		//}
-		//else
+		if (Vector2D<mV> const* pScanImage { m_pNMRI->GetScanImageC() })
+		{
+			drawScanImage(*pScanImage);
+		}
+		else
 		{
 			drawScanRaster();
 			drawScanAreaHandles();
@@ -551,13 +552,23 @@ void MainWindow::PaintGraphics()
 	}
 }
 
-void MainWindow::drawScanImage()
+void MainWindow::drawScanImage(Vector2D<mV> const &scanImage) const
 {
-	//MicroMeter     const umRes  { m_pNMRI->GetScanResolution() };
-	//MicroMeterRect const umRect { m_pNMRI->GetScanAreaRect() };
-	//RasterPoint    const rSize  { m_pNMRI->GetScanAreaSize() };
-	//MicroMeter     const umYend { umRect.GetTop() + umRes * Cast2Float(rSize.m_y) };
-	//MicroMeter     const umXend { umRect.GetLeft() + umRes * Cast2Float(rSize.m_x) };
+	Raster const &raster { m_pNMRI->GetScanRaster() };
+	RasterPoint   rpRun;
+	for (rpRun.m_y = 0; rpRun.m_y < raster.RasterHeight(); ++rpRun.m_y)
+	{
+		vector<mV> const& imageLine { scanImage.GetLine(rpRun.m_y) };
+		for (rpRun.m_x = 0; rpRun.m_x < raster.RasterWidth(); ++rpRun.m_x)
+		{
+			mV mv { scanImage.Get(imageLine, rpRun.m_x) };
+			if (!mv.IsNull())
+			{
+				MicroMeterRect umRect { raster.GetPointRect(rpRun) };
+				GetDrawContextC().FillRectangle(umRect, Color(0.0f, 1.0f, 0.0f));
+			}
+		}
+	}
 }
 
 void MainWindow::drawScanRaster()

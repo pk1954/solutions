@@ -68,7 +68,8 @@ public:
     SignalGenerator * GetSigGen        (wstring const& name)     const { return m_pModel->GetSigGenList().GetSigGen(name); }
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
-    
+    Vector2D<mV>    * GetScanImage     ()                              { return m_pModel->GetScanImage(); }
+
     UPSigGenList & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
 
@@ -77,12 +78,13 @@ public:
     void SetParam     (ParamType::Value const p, float const f) { m_pModel->SetParam(p, f); }
     void SetScanArea  (MicroMeterRect const& rect)              { m_pModel->SetScanArea(rect); }
 
-    void SetDescriptionUI   (DescriptionUI & ui)   { m_pModel->SetDescriptionUI(ui); }
-    void SetModelFilePath   (wstring const & wstr) { m_pModel->SetModelFilePath(wstr); }
-    void AddDescriptionLine (wstring const & wstr) { m_pModel->AddDescriptionLine(wstr); }
-    void DescriptionComplete()                     { m_pModel->DescriptionComplete(); }
-    void DeselectAllNobs    () const               { m_pModel->DeselectAllNobs(); }
-    void ToggleScanMode     ()                     { m_pModel->ToggleScanMode(); }
+    void SetDescriptionUI   (DescriptionUI & ui)    { m_pModel->SetDescriptionUI(ui); }
+    void SetModelFilePath   (wstring const & wstr)  { m_pModel->SetModelFilePath(wstr); }
+    void AddDescriptionLine (wstring const & wstr)  { m_pModel->AddDescriptionLine(wstr); }
+    void DescriptionComplete()                      { m_pModel->DescriptionComplete(); }
+    void DeselectAllNobs    () const                { m_pModel->DeselectAllNobs(); }
+    void ToggleScanMode     ()                      { m_pModel->ToggleScanMode(); }
+    void CreateImage        ()                      { m_pModel->CreateImage(); }
 
     void AddOutgoing(NobId const, Pipe *);
     void AddIncoming(NobId const, Pipe *);

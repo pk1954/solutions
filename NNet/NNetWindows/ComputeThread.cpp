@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <Windows.h>
 
 module NNetWin32:ComputeThread;
@@ -14,7 +15,11 @@ import FatalError;
 import HiResTimer;
 import Signals;
 import NNetModel;
+import NNetScan;
 import SaveCast;
+
+using std::unique_ptr;
+using std::make_unique;
 
 void ComputeThread::Initialize
 (
@@ -156,25 +161,29 @@ void ComputeThread::StandardRun()
 	}
 }
 
-void ComputeThread::ScanRun()
+void ComputeThread::ScanRun(ScanMatrix& scanMatrix)
 {
-	//RasterPoint     const scanRasterSize { m_pNMWI->GetScanAreaSize() };
-	//fMicroSecs            usScanTime     { SimulationTime::Get() };
-	//RasterPoint           imageSize      { scanMatrix.Size() };
-	//unique_ptr<ScanImage> upImage        { make_unique<ScanImage>(imageSize) };
-	//RasterPoint           rpRun;
-	//for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
-	//{
-	//	ScanLine const& scanLine  { scanMatrix.GetScanLineC(rpRun.m_y) };
-	//	ImageLine     & imageLine { upImage->GetLine(rpRun.m_y) };
-	//	for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
-	//	{
-	//		usScanTime += nmwi.PixelScanTime();
-	//		while (SimulationTime::Get() < usScanTime)
-	//			m_pNMWI->Compute();
-	//		imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
-	//	}
-	//}
+	using ScanImage = Vector2D<mV>;
+	using ImageLine = Vector2D<mV>::UnitVector;
+
+	RasterPoint const scanRasterSize { m_pNMWI->GetScanAreaSize() };
+	fMicroSecs        usScanTime     { SimulationTime::Get() };
+	RasterPoint       imageSize      { scanMatrix.Size() };
+	ScanImage       * pImage         { m_pNMWI->GetScanImage() };
+	RasterPoint       rpRun;
+	for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
+	{
+		ScanLine  &scanLine  { scanMatrix.GetScanLine(rpRun.m_y) };
+		ImageLine &imageLine { pImage->GetLine(rpRun.m_y) };
+		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
+		{
+			usScanTime += m_pNMWI->PixelScanTime();
+			while (SimulationTime::Get() < usScanTime)
+				m_pNMWI->Compute();
+			m_pDynamicModelObservable->NotifyAll(false);
+			imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
+		}
+	}
 }
 
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function

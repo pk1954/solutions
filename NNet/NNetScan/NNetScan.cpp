@@ -15,15 +15,17 @@ import Types;
 import Raster;
 import Signals;
 import NNetModel;
-import :ScanDataPoint;
+import Vector2D;
 import :ScanMatrix;
-import :ScanImage;
 
 using std::min;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 using std::optional;
+
+using ScanImage = Vector2D<mV>;
+using ImageLine = Vector2D<mV>::UnitVector;
 
 unique_ptr<ScanMatrix> NNetScan::PrepareScan(NNetModelWriterInterface& nmwi)
 {
@@ -40,28 +42,28 @@ unique_ptr<ScanMatrix> NNetScan::PrepareScan(NNetModelWriterInterface& nmwi)
     return upScanMatrix;
 }
 
-unique_ptr<ScanImage> NNetScan::Scan
-(
-    NNetModelWriterInterface &nmwi,
-    ScanMatrix               &scanMatrix
-)
-{
-    RasterPoint     const scanRasterSize { nmwi.GetScanAreaSize() };
-    fMicroSecs            usScanTime     { SimulationTime::Get() };
-    RasterPoint           imageSize      { scanMatrix.Size() };
-    unique_ptr<ScanImage> upImage        { make_unique<ScanImage>(imageSize) };
-    RasterPoint           rpRun;
-    for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
-    {
-        ScanLine const& scanLine  { scanMatrix.GetScanLineC(rpRun.m_y) };
-        ImageLine     & imageLine { upImage->GetLine(rpRun.m_y) };
-        for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
-        {
-            usScanTime += nmwi.PixelScanTime();
-            while (SimulationTime::Get() < usScanTime)
-                nmwi.Compute();
-            imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
-        }
-    }
-    return upImage;
-}
+//unique_ptr<ScanImage> NNetScan::Scan
+//(
+//    NNetModelWriterInterface &nmwi,
+//    ScanMatrix               &scanMatrix
+//)
+//{
+//    RasterPoint     const scanRasterSize { nmwi.GetScanAreaSize() };
+//    fMicroSecs            usScanTime     { SimulationTime::Get() };
+//    RasterPoint           imageSize      { scanMatrix.Size() };
+//    unique_ptr<ScanImage> upImage        { make_unique<ScanImage>(imageSize) };
+//    RasterPoint           rpRun;
+//    for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
+//    {
+//        ScanLine  & scanLine  { scanMatrix.GetScanLine(rpRun.m_y) };
+//        ImageLine & imageLine { upImage->GetLine(rpRun.m_y) };
+//        for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
+//        {
+//            usScanTime += nmwi.PixelScanTime();
+//            while (SimulationTime::Get() < usScanTime)
+//                nmwi.Compute();
+//            imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
+//        }
+//    }
+//    return upImage;
+//}

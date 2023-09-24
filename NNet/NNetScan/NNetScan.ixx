@@ -12,12 +12,10 @@ import SaveCast;
 import Raster;
 import NNetModel;
 
-export import :ScanImage;
 export import :ScanMatrix;
+export import :ScanLine;
 
-import :ScanLine;
 import :ScanPixel;
-import :ScanDataPoint;
 
 using std::unique_ptr;
 
@@ -30,11 +28,5 @@ public:
     
     ScanPixel const& GetScanPixel(RasterPoint const&) const;
 
-    unique_ptr<ScanImage> Scan(NNetModelWriterInterface&, ScanMatrix&);
-
 private:
-
-    mV getMaxVoltage(ScanMatrix const&) const;
-
-    void add2list(Pipe const&, ScanMatrix &);
 };
