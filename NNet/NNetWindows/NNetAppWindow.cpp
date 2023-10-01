@@ -36,7 +36,6 @@ import ScriptStack;
 import Signals;
 import Script;
 import Symtab;
-import NNetScan;
 import NNetModel;
 import NNetCommands;
 import NNetSignals;
@@ -65,8 +64,6 @@ using std::wcout;
 
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
-
-NNetScan m_scan;
 
 NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 {
@@ -434,11 +431,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDM_SCAN:
-		{
-			unique_ptr<ScanMatrix> upScanMatrix { m_scan.PrepareScan(m_nmwi) };
-			m_nmwi.CreateImage();
-			m_computeThread.ScanRun(*upScanMatrix.get());
-		}
+			m_computeThread.StartScan();
 			break;
 
 		case IDM_FORWARD:
@@ -484,7 +477,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			break;
 
 		case IDD_TRIGGER_SIGNAL_DESIGNER:
-			m_signalDesigner.Trigger();
+			m_signalDesigner.Trigger(false);
 			break;
 
 		case IDM_SAVE_MODEL_AS:

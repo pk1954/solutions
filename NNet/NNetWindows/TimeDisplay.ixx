@@ -27,7 +27,7 @@ public:
 	{
 	public:
 		RefreshRate(StatusBar *, int);
-		void Trigger() final;
+		void Trigger(bool const = false) final;
 
 	private:
 		StatusBar * m_pStatusBar       { nullptr };

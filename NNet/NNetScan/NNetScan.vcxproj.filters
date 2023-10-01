@@ -15,16 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetScan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScanPixel.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScanLine.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetScan.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScanMatrix.ixx">

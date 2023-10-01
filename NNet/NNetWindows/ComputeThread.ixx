@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <Windows.h>
 
 export module NNetWin32:ComputeThread;
@@ -15,7 +16,9 @@ import HiResTimer;
 import Thread;
 import SlowMotionRatio;
 import NNetModel;
-import NNetScan;
+import ScanMatrix;
+
+using std::unique_ptr;
 
 export class ComputeThread: public ::Thread, public ObserverInterface
 {
@@ -39,8 +42,7 @@ public:
 	void LockComputation();
 	void RunStopComputation();
 	void StopComputation();
-	void StandardRun();
-	void ScanRun(ScanMatrix&);
+	void StartScan();
 	bool IsRunning() const { return ! m_bStopped; }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
@@ -59,6 +61,7 @@ private:
 
 	bool              m_bStopped               { true };          // visible to UI
 	bool              m_bComputationLocked     { true };          // internal lock (short time)
+	bool              m_bScanMode              { false };
 	HiResTimer        m_hrTimer                { };
 	SRWLOCK           m_srwlStopped            { SRWLOCK_INIT };
 
@@ -72,8 +75,13 @@ private:
 
 	float             m_fEffectiveSlowMo { 0.0f };
 
+	unique_ptr<ScanMatrix> m_upScanMatrix { };
+
+	void prepareScan();
 	void runComputation();
 	void stopComputation();
+	void StandardRun();
+	void ScanRun();
 
 	fMicroSecs simuTimeSinceLastReset() const;
 	fMicroSecs netRealTimeSinceLastReset() const;

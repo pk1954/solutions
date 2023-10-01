@@ -221,7 +221,7 @@ wstring SignalDesigner::GetCaption() const
     return L"##### not ready";
 }
 
-void SignalDesigner::Trigger()
+void SignalDesigner::Trigger(bool const bImmediately)
 {
 	m_upSignalControl[0]->Notify(false);
 	m_upSignalControl[1]->Notify(false);
@@ -300,7 +300,7 @@ void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)
 bool SignalDesigner::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeight)
 {
 	adjustLayout(pixClientWidth, pixClientHeight);
-	Trigger();  // cause repaint
+	Trigger(false);  // cause repaint
 	return true;
 }
 

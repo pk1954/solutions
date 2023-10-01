@@ -15,7 +15,6 @@ import FatalError;
 import HiResTimer;
 import Signals;
 import NNetModel;
-import NNetScan;
 import SaveCast;
 
 using std::unique_ptr;
@@ -117,6 +116,18 @@ void ComputeThread::stopComputation()
 	m_pRunObservable->NotifyAll(false);
 }
 
+fMicroSecs ComputeThread::simuTimeSinceLastReset() const
+{
+	return SimulationTime::Get() - m_usSimuTimeAtLastReset;
+};
+
+fMicroSecs ComputeThread::netRealTimeSinceLastReset() const
+{
+	Ticks      ticksNet      { m_ticksNetRunning + m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun };
+	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs(ticksNet) };
+	return usNetRealTime;
+}
+
 long ComputeThread::getCyclesTodo() const
 {
 	fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime(netRealTimeSinceLastReset()) };
@@ -155,34 +166,53 @@ void ComputeThread::StandardRun()
 		}
 
 		fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
-		fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
+		fMicroSecs const usSleepTime { m_usTimeAvailPerCycle - usSpentInCompute };
 		if (usSleepTime > 10000.0_MicroSecs)
 			Sleep(10);
 	}
 }
 
-void ComputeThread::ScanRun(ScanMatrix& scanMatrix)
+void ComputeThread::prepareScan()
 {
-	using ScanImage = Vector2D<mV>;
-	using ImageLine = Vector2D<mV>::UnitVector;
+	Raster const raster { m_pNMWI->GetScanRaster() };
+	m_upScanMatrix = make_unique<ScanMatrix>(raster.Size());
+	m_pNMWI->Apply2AllC<Pipe>
+	(
+		[this, &raster](Pipe const& pipe)
+		{
+			m_upScanMatrix->Add2list(pipe, raster);
+		}
+	);
+}
 
-	RasterPoint const scanRasterSize { m_pNMWI->GetScanAreaSize() };
-	fMicroSecs        usScanTime     { SimulationTime::Get() };
-	RasterPoint       imageSize      { scanMatrix.Size() };
-	ScanImage       * pImage         { m_pNMWI->GetScanImage() };
+void ComputeThread::StartScan()
+{
+	StopComputation();
+	if (!m_upScanMatrix)
+		prepareScan();
+	m_pNMWI->CreateImage();
+	m_bScanMode = true;
+	RunStopComputation();
+}
+
+void ComputeThread::ScanRun()
+{
+	RasterPoint const imageSize  { m_upScanMatrix->Size() };
+	fMicroSecs        usScanTime { SimulationTime::Get() };
+	Vector2D<mV>    * pImage     { m_pNMWI->GetScanImage() };
 	RasterPoint       rpRun;
 	for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
+	for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
 	{
-		ScanLine  &scanLine  { scanMatrix.GetScanLine(rpRun.m_y) };
-		ImageLine &imageLine { pImage->GetLine(rpRun.m_y) };
-		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
+		usScanTime += m_pNMWI->PixelScanTime();
+		while (SimulationTime::Get() < usScanTime)
 		{
-			usScanTime += m_pNMWI->PixelScanTime();
-			while (SimulationTime::Get() < usScanTime)
-				m_pNMWI->Compute();
-			m_pDynamicModelObservable->NotifyAll(false);
-			imageLine.at(rpRun.m_x) = scanLine.Scan(rpRun.m_x);
+			m_pNMWI->Compute();
+			m_pDynamicModelObservable->NotifyAll(true);
 		}
+		pImage->Set(rpRun, m_upScanMatrix->Scan(rpRun));
+		if (m_bStopped || m_bComputationLocked)
+			return;
 	}
 }
 
@@ -191,7 +221,10 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 	for (;;)
 	{
 		AcquireSRWLockExclusive(& m_srwlStopped);
-		StandardRun();
+		if (m_bScanMode)
+			ScanRun();
+		else
+			StandardRun();
 		ReleaseSRWLockExclusive(& m_srwlStopped);
 	}
 }
@@ -200,16 +233,4 @@ void ComputeThread::SingleStep()
 { 
 	m_pNMWI->Compute();
 	m_pDynamicModelObservable->NotifyAll(false);
-}
-
-fMicroSecs ComputeThread::simuTimeSinceLastReset() const
-{ 
-	return SimulationTime::Get() - m_usSimuTimeAtLastReset; 
-};
-
-fMicroSecs ComputeThread::netRealTimeSinceLastReset() const
-{
-	Ticks      ticksNet      { m_ticksNetRunning + m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun };
-	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs(ticksNet) };
-	return usNetRealTime;
 }

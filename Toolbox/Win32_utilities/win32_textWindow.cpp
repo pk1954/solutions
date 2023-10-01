@@ -84,7 +84,7 @@ void TextWindow::StopTextWindow()
 	}
 }
 
-void TextWindow::Trigger()
+void TextWindow::Trigger(bool const bImmediately)
 {
 	if (m_upTextWindowThread)
 		m_upTextWindowThread->Trigger();

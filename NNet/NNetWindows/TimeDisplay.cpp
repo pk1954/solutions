@@ -34,7 +34,7 @@ TimeDisplay::RefreshRate::RefreshRate
 { 
 }
 
-void TimeDisplay::RefreshRate::Trigger()
+void TimeDisplay::RefreshRate::Trigger(bool const bImmediately)
 {
 	fMicroSecs const time { SimulationTime::Get() };
 	m_pStatusBar->DisplayInPart(m_iPartInStatusBar, Format2wstring(time));

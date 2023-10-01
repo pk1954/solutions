@@ -73,6 +73,9 @@
     <ClCompile Include="WrapSetGrid.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapSetScanArea.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

@@ -6,7 +6,7 @@ module;
 
 #include <vector>
 
-export module NNetScan:ScanPixel;
+export module ScanPixel;
 
 import Types;
 import Raster;

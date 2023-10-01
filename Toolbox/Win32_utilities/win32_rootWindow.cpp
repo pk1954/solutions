@@ -60,9 +60,9 @@ public:
 		: m_pRootWin(pRootWin)
 	{ }
 
-	void Trigger() final
+	void Trigger(bool const bImmediately= false ) final
 	{
-		m_pRootWin->Trigger();
+		m_pRootWin->Trigger(bImmediately);
 	}
 
 private:
@@ -215,6 +215,13 @@ void RootWindow::Invalidate(bool const bRedraw) const
 		::InvalidateRect(m_hwnd, nullptr, bRedraw);
 }
 
+void RootWindow::Trigger(bool const bImmediately)
+{
+	if (bImmediately)
+		UpdateImmediately();
+	else
+		Invalidate(false);
+}
 void RootWindow::FillBackground(HDC const hDC, COLORREF const col) const
 {
 	SetBkColor(hDC, col);

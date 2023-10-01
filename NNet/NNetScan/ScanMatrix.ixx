@@ -8,12 +8,14 @@ module;
 #include <vector>
 #include <optional>
 
-export module NNetScan:ScanMatrix;
+export module ScanMatrix;
 
 import Types;
 import Raster;
 import SaveCast;
-import :ScanLine;
+import ScanLine;
+import ScanPixel;
+import NNetModel;
 
 using std::vector;
 using std::optional;
@@ -32,6 +34,11 @@ public:
     RasterPoint Size() const
     {
         return RasterPoint(m_scanLines.at(0).Size(), Cast2Int(m_scanLines.size()));
+    }
+
+    mV Scan(RasterPoint const &rp)
+    {
+        return GetScanLine(rp.m_y).Scan(rp.m_x);
     }
 
     ScanLine const& GetScanLineC(RasterIndex const ry) const

@@ -42,7 +42,7 @@ public:
 
 	virtual void PaintText(TextBuffer&) = 0;
 
-	void Trigger() final;
+	void Trigger(bool const = false) final;
 
 	void     SetBackgroundColorRef(COLORREF const) final;
 	COLORREF GetBackgroundColorRef() const         final;

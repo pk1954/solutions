@@ -19,8 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetScan.ixx" />
-    <ClCompile Include="NNetScan.cpp" />
     <ClCompile Include="ScanLine.ixx" />
     <ClCompile Include="ScanPixel.ixx" />
     <ClCompile Include="ScanMatrix.ixx" />

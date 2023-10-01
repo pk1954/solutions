@@ -39,6 +39,7 @@ import WrapActiveSigGen;
 import WrapEmphasized;
 import WrapSignalInfo;
 import WrapGlobalParameter;
+import WrapSetScanArea;
 import WrapSignalData;
 import WrapSetSigGen;
 import InputOutputUI;
@@ -73,6 +74,7 @@ void NNetModelIO::Initialize()
     AddModelWrapper<WrapNrOfTracks     >(L"NrOfTracks");
     AddModelWrapper<WrapSignalInfo     >(L"SignalInfo");
     AddModelWrapper<WrapSignalData     >(L"SignalData");
+    AddModelWrapper<WrapSetScanArea    >(L"SetScanArea");
     AddModelWrapper<WrapSimulationTime >(L"SimulationTime");
 
     NobType::Apply2All

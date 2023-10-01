@@ -7,12 +7,13 @@ module;
 #include <memory>
 #include <vector>
 
-export module NNetScan:ScanLine;
+export module ScanLine;
 
+import Types;
 import Raster;
 import SaveCast;
 import NNetModel;
-import :ScanPixel;
+import ScanPixel;
 
 using std::unique_ptr;
 using std::vector;

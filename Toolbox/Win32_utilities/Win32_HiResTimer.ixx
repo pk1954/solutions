@@ -84,14 +84,14 @@ public:
 
 private:
 
-	long long const MICROSECONDS_TO_SECONDS{ microseconds::period::den };
-	float     const fMICROSECS_TO_SECONDS{ static_cast<float>(MICROSECONDS_TO_SECONDS) };
+	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
+	float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
 
-	bool  m_bStarted{ false };
-	Ticks m_ticksOnStart{ Ticks(0) };
-	Ticks m_ticksAccumulated{ Ticks(0) };
+	bool  m_bStarted         { false };
+	Ticks m_ticksOnStart     { Ticks(0) };
+	Ticks m_ticksAccumulated { Ticks(0) };
 
-	inline static Hertz  m_frequency{ 0_Hertz };
+	inline static Hertz  m_frequency { 0_Hertz };
 	inline static fHertz m_fFrequency{ 0.0_fHertz };
 
 	microseconds TicksToMicroseconds(Ticks const) const;

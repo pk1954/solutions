@@ -132,8 +132,9 @@ public:
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
 
-	virtual void Trigger() { Invalidate(false); }
-	virtual void Stop()	   { DestroyWindow(); }
+	virtual void Trigger(bool const = false);
+
+	virtual void Stop() { DestroyWindow(); }
 
 	void ShowRefreshRateDlg(bool const bShow) { m_bShowRefreshRateDlg = bShow; }
 	void SetWindowVisibility(tOnOffAuto const);

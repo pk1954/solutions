@@ -23,7 +23,7 @@ public:
 	BaseRefreshRate();
 	virtual ~BaseRefreshRate();
 
-	virtual void Trigger() = 0;
+	virtual void Trigger(bool const = false) = 0;
 
 	void SetRefreshRate(milliseconds const);
 	milliseconds GetRefreshRate() const;
@@ -32,7 +32,7 @@ public:
 	{
 		m_bDirty = true;
 		if (bImmediately || (m_msRefreshRate == 0ms))
-			trigger();
+			trigger(bImmediately);
 	}
 
 	void RefreshRateDialog(HWND const);
@@ -48,9 +48,9 @@ private:
 
 	void startTimer(milliseconds const);
 	void deleteTimer();
-	void trigger()
+	void trigger(bool const bImmediately)
 	{
-		Trigger();
+		Trigger(bImmediately);
 		m_bDirty = false;
 	}
 

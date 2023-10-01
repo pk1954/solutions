@@ -46,7 +46,7 @@ public:
 	void    SetBackgroundColorRef(COLORREF const) final;
 	LPARAM  AddContextMenuEntries(HMENU const)    final;
 	wstring GetCaption()                    const final;
-	void    Trigger()                             final;
+	void    Trigger(bool const)                   final;
 	void    SetGrid(bool const, bool const)       final;
 
 	bool    HasScales() const final { return m_upSignalControl[0]->HasScales(); }

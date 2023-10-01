@@ -90,5 +90,5 @@ void CALLBACK BaseRefreshRate::TimerProc(void * const lpParam, bool const TimerO
 {
 	auto const pRefreshRate = bit_cast<BaseRefreshRate *>(lpParam);
 	if (pRefreshRate->m_bDirty)
-		pRefreshRate->trigger();
+		pRefreshRate->trigger(false);
 }
