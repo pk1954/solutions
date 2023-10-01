@@ -15,6 +15,7 @@ module;
 module NNetPreferences;
 
 import BoolType;
+import BoolWrapper;
 import IoUtil;
 import IoConstants;
 import Wrapper;
@@ -34,6 +35,26 @@ using std::endl;
 using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
+
+class WrapScanAreaVisibility : public Wrapper
+{
+public:
+    WrapScanAreaVisibility()
+        : Wrapper(NAME)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        NNetPreferences::m_bScanArea.Set(script.ScrReadBool());
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bScanArea.Get());
+    }
+
+    inline static const wstring NAME { L"ScanAreaVisibility" };
+};
 
 class WrapInputCablesVisibility : public Wrapper
 {
@@ -141,6 +162,7 @@ void NNetPreferences::Initialize()
 
     Preferences::AddWrapper(make_unique<WrapReadModel>());
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
+    Preferences::AddWrapper(make_unique<WrapScanAreaVisibility>());
     Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());

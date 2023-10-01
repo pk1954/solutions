@@ -1,5 +1,5 @@
 # NNetModel
-# Created Sun Oct  1 13:13:18 2023
+# Created Sun Oct  1 17:24:39 2023
 
 # Computer name: DESKTOP-4-PETER
 # User name: Peter
@@ -2855,8 +2855,8 @@ ActiveSigGen  0
 NrOfTracks 1
 SignalInfo  ( 0| 0) source 101((4553.452148|21803.42383),3965.775391)
 SignalData  ( 0| 0) StartTime 0
-{2:
-0 0 
+{4:
+0 0 0 0 
 }
 SetScanArea  ( 4101.531738| 7203.81543) ( 8066.310547| 15201.56348)
 SimulationTime  0
