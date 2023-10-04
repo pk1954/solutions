@@ -79,7 +79,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 
 void ParameterDialog::EnableAllEditFields()
 {
-	bool const bEnable { m_pNMWI->ScanMode() };
+	bool const bEnable { ! m_pNMWI->ScanImagePresent() };
 	for (auto & field : m_fields)
 		Edit_Enable(field.m_hwnd, bEnable);
 }
@@ -199,7 +199,7 @@ bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 	//}
 	if (message == WM_CTLCOLOREDIT)
 	{
-		SetBkColor(hdc, m_pNMWI->ScanMode() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
+		SetBkColor(hdc, m_pNMWI->ScanImagePresent() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 		return (INT_PTR)brush;
 	}

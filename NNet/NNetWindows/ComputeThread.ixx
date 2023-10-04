@@ -43,7 +43,8 @@ public:
 	void RunStopComputation();
 	void StopComputation();
 	void StartScan();
-	bool IsRunning() const { return ! m_bStopped; }
+	bool IsRunning    () const { return !m_bStopped; }
+	bool IsScanRunning() const { return m_bScanRunning; }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
@@ -59,9 +60,9 @@ private:
 	Observable      * m_pPerformanceObservable  { nullptr };
 	Observable      * m_pDynamicModelObservable { nullptr };
 
+	bool              m_bScanRunning           { false };
 	bool              m_bStopped               { true };          // visible to UI
 	bool              m_bComputationLocked     { true };          // internal lock (short time)
-	bool              m_bScanMode              { false };
 	HiResTimer        m_hrTimer                { };
 	SRWLOCK           m_srwlStopped            { SRWLOCK_INIT };
 

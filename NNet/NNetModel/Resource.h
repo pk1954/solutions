@@ -49,7 +49,7 @@
 #define       IDM_ADD_IMPORTED_MODEL         177
 #define       IDM_RELOAD_MODEL               178
 
-#define       IDM_SCAN                       190
+#define       IDM_START_SCAN                 190
 
 #define       IDD_SCALES_UPDATE              263
 #define       IDD_GRID_UPDATE                264
@@ -67,7 +67,7 @@
 #define       IDD_AUTO_OPEN                  312
 #define       IDD_SENSOR_PNTS                313
 #define       IDD_PERF_MON_MODE              314
-#define       IDD_SCAN_AREA                  315
+#define       IDD_SCAN_AREA_VISIBLE          315
 
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341

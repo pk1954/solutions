@@ -219,8 +219,5 @@
     <ClCompile Include="SetScanAreaCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ToggleScanModeCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

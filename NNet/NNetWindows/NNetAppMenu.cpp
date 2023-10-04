@@ -26,13 +26,13 @@ import :ComputeThread;
 using std::make_unique;
 
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS       )),
-    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND        )),
-    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN    )),
-    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS  )),
-    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE)),
-    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU   )),
-    m_upOnOffScanArea    (make_unique<OnOffPair>(IDD_SCAN_AREA    ))
+  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS           )),
+    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND            )),
+    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN        )),
+    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS      )),
+    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE    )),
+    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU       )),
+    m_upOnOffScanArea    (make_unique<OnOffPair>(IDD_SCAN_AREA_VISIBLE))
 { }
 
 NNetAppMenu::~NNetAppMenu() = default;
@@ -141,6 +141,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
 
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
     m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());
+    m_upOnOffScanArea    ->EnableOnOff(m_hMenu, NNetPreferences::m_bScanArea.Get());
     m_upOnOffSound       ->EnableOnOff(m_hMenu, Preferences::m_bSound.Get());
     m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, Preferences::m_bAutoOpen.Get());
     m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, Preferences::m_bColorMenu.Get());

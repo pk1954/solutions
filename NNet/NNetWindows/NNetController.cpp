@@ -224,9 +224,8 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         StartStimulusCmd::Push();
         break;
 
-    case IDD_SCAN_AREA:
+    case IDD_SCAN_AREA_VISIBLE:
         NNetPreferences::m_bScanArea.Toggle();
-        m_pStaticModelObservable->NotifyAll(false);
         break;
 
     default:

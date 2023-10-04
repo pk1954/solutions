@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <cstddef>
 #include <Windows.h>
 
 module NNetWin32:ComputeThread;
@@ -19,6 +20,7 @@ import SaveCast;
 
 using std::unique_ptr;
 using std::make_unique;
+using std::byte;
 
 void ComputeThread::Initialize
 (
@@ -191,7 +193,7 @@ void ComputeThread::StartScan()
 	if (!m_upScanMatrix)
 		prepareScan();
 	m_pNMWI->CreateImage();
-	m_bScanMode = true;
+	m_bScanRunning = true;
 	RunStopComputation();
 }
 
@@ -202,18 +204,26 @@ void ComputeThread::ScanRun()
 	Vector2D<mV>    * pImage     { m_pNMWI->GetScanImage() };
 	RasterPoint       rpRun;
 	for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
-	for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
 	{
-		usScanTime += m_pNMWI->PixelScanTime();
-		while (SimulationTime::Get() < usScanTime)
+		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
 		{
-			m_pNMWI->Compute();
-			m_pDynamicModelObservable->NotifyAll(true);
+			usScanTime += m_pNMWI->PixelScanTime();
+			while (SimulationTime::Get() < usScanTime)
+				m_pNMWI->Compute();
+			pImage->Set(rpRun, m_upScanMatrix->Scan(rpRun));
+			if (m_bStopped)
+				return;
+			if (m_bComputationLocked)
+			{
+				return;
+			}
 		}
-		pImage->Set(rpRun, m_upScanMatrix->Scan(rpRun));
-		if (m_bStopped || m_bComputationLocked)
-			return;
+		m_pDynamicModelObservable->NotifyAll(true);
 	}
+	mV mvMax { pImage->GetMax() };
+	*pImage *= 1.0f / mvMax.GetValue();
+	StopComputation();
+	//	Vector2D<byte> byteImage(imageSize);
 }
 
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
@@ -221,8 +231,11 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 	for (;;)
 	{
 		AcquireSRWLockExclusive(& m_srwlStopped);
-		if (m_bScanMode)
+		if (m_bScanRunning)
+		{
 			ScanRun();
+			m_bScanRunning = false;
+		}
 		else
 			StandardRun();
 		ReleaseSRWLockExclusive(& m_srwlStopped);

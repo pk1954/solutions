@@ -218,34 +218,37 @@ void NNetAppWindow::Start(MessagePump & pump)
 	if (! WinManager::GetWindowConfiguration())
 		::Show(m_hwndApp, true);
 
-	m_dynamicModelObservable.RegisterObserver(m_mainNNetWindow);
-	m_dynamicModelObservable.RegisterObserver(m_miniNNetWindow);
-	m_dynamicModelObservable.RegisterObserver(m_monitorWindow);
-	m_dynamicModelObservable.RegisterObserver(m_timeDisplay);
-	m_dynamicModelObservable.RegisterObserver(m_crsrWindow);
-	m_staticModelObservable .RegisterObserver(m_mainNNetWindow);
-	m_staticModelObservable .RegisterObserver(m_miniNNetWindow);
-	m_staticModelObservable .RegisterObserver(m_monitorWindow);
-	m_staticModelObservable .RegisterObserver(m_performanceWindow);
-	m_staticModelObservable .RegisterObserver(m_appTitle);
-	m_staticModelObservable .RegisterObserver(m_undoRedoMenu);
-	m_staticModelObservable .RegisterObserver(m_appMenu);
-	m_staticModelObservable .RegisterObserver(m_parameterDlg);
-	m_highlightSigObservable.RegisterObserver(m_mainNNetWindow);
-	m_highlightSigObservable.RegisterObserver(m_monitorWindow);
-	m_highlightSigObservable.RegisterObserver(m_mainNNetWindow);
-	m_cursorPosObservable   .RegisterObserver(m_crsrWindow);
-	m_performanceObservable .RegisterObserver(m_performanceWindow);
-	m_runObservable         .RegisterObserver(m_simulationControl);
-	m_SlowMotionRatio       .RegisterObserver(m_computeThread);
-	m_SlowMotionRatio       .RegisterObserver(m_slowMotionDisplay);
-	m_nmwi.GetParams()      .RegisterObserver(m_parameterDlg);
-	m_nmwi.GetParams()      .RegisterObserver(m_computeThread);
-	Preferences::m_bSound   .RegisterObserver(m_appMenu);
-	m_coordObservable       .RegisterObserver(m_mainNNetWindow);
-	m_coordObservable       .RegisterObserver(m_miniNNetWindow);
-	m_activeSigGenObservable.RegisterObserver(m_mainNNetWindow);
-	m_activeSigGenObservable.RegisterObserver(m_signalDesigner);
+	m_dynamicModelObservable    .RegisterObserver(m_mainNNetWindow);
+	m_dynamicModelObservable    .RegisterObserver(m_miniNNetWindow);
+	m_dynamicModelObservable    .RegisterObserver(m_monitorWindow);
+	m_dynamicModelObservable    .RegisterObserver(m_timeDisplay);
+	m_dynamicModelObservable    .RegisterObserver(m_crsrWindow);
+	m_staticModelObservable     .RegisterObserver(m_mainNNetWindow);
+	m_staticModelObservable     .RegisterObserver(m_miniNNetWindow);
+	m_staticModelObservable     .RegisterObserver(m_monitorWindow);
+	m_staticModelObservable     .RegisterObserver(m_performanceWindow);
+	m_staticModelObservable     .RegisterObserver(m_appTitle);
+	m_staticModelObservable     .RegisterObserver(m_undoRedoMenu);
+	m_staticModelObservable     .RegisterObserver(m_appMenu);
+	m_staticModelObservable     .RegisterObserver(m_parameterDlg);
+	m_highlightSigObservable    .RegisterObserver(m_mainNNetWindow);
+	m_highlightSigObservable    .RegisterObserver(m_monitorWindow);
+	m_highlightSigObservable    .RegisterObserver(m_mainNNetWindow);
+	m_cursorPosObservable       .RegisterObserver(m_crsrWindow);
+	m_performanceObservable     .RegisterObserver(m_performanceWindow);
+	m_runObservable             .RegisterObserver(m_simulationControl);
+	NNetPreferences::m_bScanArea.RegisterObserver(m_simulationControl);
+	NNetPreferences::m_bScanArea.RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_bScanArea.RegisterObserver(m_miniNNetWindow);
+	m_SlowMotionRatio           .RegisterObserver(m_computeThread);
+	m_SlowMotionRatio           .RegisterObserver(m_slowMotionDisplay);
+	m_nmwi.GetParams()          .RegisterObserver(m_parameterDlg);
+	m_nmwi.GetParams()          .RegisterObserver(m_computeThread);
+	Preferences::m_bSound       .RegisterObserver(m_appMenu);
+	m_coordObservable           .RegisterObserver(m_mainNNetWindow);
+	m_coordObservable           .RegisterObserver(m_miniNNetWindow);
+	m_activeSigGenObservable    .RegisterObserver(m_mainNNetWindow);
+	m_activeSigGenObservable    .RegisterObserver(m_signalDesigner);
 
 	m_appMenu.Notify(true);
 	m_undoRedoMenu.Notify(true);
@@ -430,7 +433,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_dynamicModelObservable.NotifyAll(true);
 			break;
 
-		case IDM_SCAN:
+		case IDM_START_SCAN:
 			m_computeThread.StartScan();
 			break;
 

@@ -47,5 +47,5 @@ public:
 private:
 
 	inline static vector<unique_ptr<Wrapper>> m_prefVector;
-	inline static wstring                      m_wstrPreferencesFile;
+	inline static wstring                     m_wstrPreferencesFile;
 };

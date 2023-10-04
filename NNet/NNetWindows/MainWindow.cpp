@@ -124,11 +124,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 
 LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	if (m_pNMRI->ScanMode())
-	{
-		appendMenu(hPopupMenu, IDD_SCAN_AREA);
-	}
-	else if (m_pNMRI->AnyNobsSelected())
+	if (m_pNMRI->AnyNobsSelected())
 	{
 		// no context menu, use selection menu
 	}
@@ -164,8 +160,14 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	}
 	else  // nothing selected, cursor on background
 	{
-		appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
-		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
+		if (m_pNMRI->ScanImagePresent())    // no edit operations allowed
+		{
+		}
+		else
+		{
+			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
+			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
+		}
 	}
 
 	m_mainScales.AppendScaleMenu(hPopupMenu, L"&Scales");
@@ -222,7 +224,7 @@ bool MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
 
 bool MainWindow::crsrInScanArea(MicroMeterPnt const &umCrsrPos)
 {
-	return NNetPreferences::ScanArea() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
+	return NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -236,12 +238,18 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
-		ClearPtLast();                 // make m_ptLast invalid
-		if (!setScanAreaHandle(umCrsrPos))
-			if (!setHighlightedNob(umCrsrPos))
-				if (!setHighlightedSensor(umCrsrPos))
-					if (!selectSignalHandle(umCrsrPos))
-						m_idSigGenUnderCrsr = getSigGenId(fPixCrsr);
+		ClearPtLast();                      // make m_ptLast invalid
+		if (m_pNMRI->ScanImagePresent())    // no edit operations allowed
+			return;
+		if (setScanAreaHandle(umCrsrPos))
+			return;
+		if (setHighlightedNob(umCrsrPos))
+			return;
+		if (setHighlightedSensor(umCrsrPos))
+			return;
+		if (selectSignalHandle(umCrsrPos))
+			return;
+		m_idSigGenUnderCrsr = getSigGenId(fPixCrsr);
 		return;
 	}
 
@@ -260,6 +268,8 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_CONTROL)   // rotate
 	{
+		if (m_pNMRI->ScanImagePresent())    // no edit operations allowed
+			return;
 		if (selectionCommand(wParam))
 			RotateSelectionCommand::Push(umLastPos, umCrsrPos);
 		else if (IsDefined(m_nobIdHighlighted))           
@@ -277,7 +287,8 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (crsrInScanArea(umCrsrPos))
 	{
-		SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
+		if (!m_pNMRI->ScanImagePresent())    // no edit operations allowed
+			SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
@@ -537,7 +548,7 @@ void MainWindow::PaintGraphics()
 
 	m_selectionMenu.Show(m_pNMRI->AnyNobsSelected());
 
-	if (NNetPreferences::ScanArea())
+	if (NNetPreferences::ScanAreaVisible())
 	{
 		DrawScanArea();
 		if (Vector2D<mV> const* pScanImage { m_pNMRI->GetScanImageC() })
@@ -562,10 +573,19 @@ void MainWindow::drawScanImage(Vector2D<mV> const &scanImage) const
 		for (rpRun.m_x = 0; rpRun.m_x < raster.RasterWidth(); ++rpRun.m_x)
 		{
 			mV mv { scanImage.Get(imageLine, rpRun.m_x) };
-			if (!mv.IsNull())
+			//if ()
+
+
+			if (mv.IsNotNull())
 			{
-				MicroMeterRect umRect { raster.GetPointRect(rpRun) };
-				GetDrawContextC().FillRectangle(umRect, Color(0.0f, 1.0f, 0.0f));
+				MicroMeterRect const umRect { raster.GetPointRect(rpRun) };
+				Color                color  { Color(0.0f, 1.0f, 0.0f) };
+				if (m_pNMRI->ScanImagePresent())
+				{ 
+					float f = mv.GetValue();
+					color = Color(f, f, f);
+				}
+				GetDrawContextC().FillRectangle(umRect, color);
 			}
 		}
 	}

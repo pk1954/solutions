@@ -83,7 +83,6 @@ public:
     void AddDescriptionLine (wstring const & wstr)  { m_pModel->AddDescriptionLine(wstr); }
     void DescriptionComplete()                      { m_pModel->DescriptionComplete(); }
     void DeselectAllNobs    () const                { m_pModel->DeselectAllNobs(); }
-    void ToggleScanMode     ()                      { m_pModel->ToggleScanMode(); }
     void CreateImage        ()                      { m_pModel->CreateImage(); }
 
     void AddOutgoing(NobId const, Pipe *);
