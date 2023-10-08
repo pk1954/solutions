@@ -36,8 +36,9 @@ export inline D2D1_COLOR_F Convert2ColorF(COLORREF const color)
 	return colF;
 }
 
-export struct Color : public D2D1_COLOR_F
+export class Color : public D2D1_COLOR_F
 {
+public:
 	Color
 	(
 		float const rPar,
@@ -126,4 +127,6 @@ export struct Color : public D2D1_COLOR_F
 		out << L" " << col.r << L" " << col.g << L" " << col.b;
 		return out;
 	}
+
+private:
 };

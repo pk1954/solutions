@@ -80,8 +80,12 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 void ParameterDialog::EnableAllEditFields()
 {
 	bool const bEnable { ! m_pNMWI->ScanImagePresent() };
-	for (auto & field : m_fields)
-		Edit_Enable(field.m_hwnd, bEnable);
+	if (bEnable != m_bEnabled)
+	{
+		m_bEnabled = bEnable;
+		for (auto& field : m_fields)
+			Edit_Enable(field.m_hwnd, m_bEnabled);
+	}
 }
 
 void ParameterDialog::Start(HWND const hwndParent)

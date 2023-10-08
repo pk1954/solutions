@@ -569,23 +569,15 @@ void MainWindow::drawScanImage(Vector2D<mV> const &scanImage) const
 	RasterPoint   rpRun;
 	for (rpRun.m_y = 0; rpRun.m_y < raster.RasterHeight(); ++rpRun.m_y)
 	{
-		vector<mV> const& imageLine { scanImage.GetLine(rpRun.m_y) };
+		UnitVector<mV> const& imageRow { scanImage.GetRow(rpRun.m_y) };
 		for (rpRun.m_x = 0; rpRun.m_x < raster.RasterWidth(); ++rpRun.m_x)
 		{
-			mV mv { scanImage.Get(imageLine, rpRun.m_x) };
-			//if ()
-
-
+			MicroMeterRect const umRect { raster.GetPointRect(rpRun) };
+			mV             const mv     { imageRow.m_vector.at(rpRun.m_x)};
 			if (mv.IsNotNull())
 			{
-				MicroMeterRect const umRect { raster.GetPointRect(rpRun) };
-				Color                color  { Color(0.0f, 1.0f, 0.0f) };
-				if (m_pNMRI->ScanImagePresent())
-				{ 
-					float f = mv.GetValue();
-					color = Color(f, f, f);
-				}
-				GetDrawContextC().FillRectangle(umRect, color);
+				float f = mv.GetValue();
+				GetDrawContextC().FillRectangle(umRect, Color(f, f, f));
 			}
 		}
 	}

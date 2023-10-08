@@ -99,6 +99,7 @@ public:
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	Vector2D<mV>     const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	bool                    ScanImagePresent()                     const { return m_pModel->GetScanImageC() != nullptr; }
+	bool                    IsScanRunning()                        const { return m_pModel->IsScanRunning(); }
 
 	bool                HasMicroSensor(NobId const id) const { return GetConstNob(id)->HasMicroSensor(); }
 	MicroSensor const * GetMicroSensor(NobId const id) const { return GetConstNob(id)->GetMicroSensor(); }

@@ -27,12 +27,14 @@ void ComputeThread::Initialize
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
 	Observable      * const pPerformanceObservable,
-	Observable      * const pDynamicModelObservable
-) 
+	Observable      * const pDynamicModelObservable,
+	Observable      * const pBlockModelObservable
+)
 {
 	m_pRunObservable          = pRunObservable;
 	m_pPerformanceObservable  = pPerformanceObservable;
 	m_pDynamicModelObservable = pDynamicModelObservable;
+	m_pBlockModelObservable   = pBlockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
 	AcquireSRWLockExclusive(& m_srwlStopped);
 	BeginThread(L"ComputeThread"); 
@@ -62,7 +64,17 @@ void ComputeThread::Reset()
 	UnlockComputation();
 }
 
-void ComputeThread::UnlockComputation()
+void ComputeThread::LockComputation()  // runs in main thread
+{
+	if (! m_bComputationLocked)
+	{
+		m_bComputationLocked = true;
+		if (! m_bStopped)      // if not already haltet, halt now
+			haltComputation();
+	}
+}
+
+void ComputeThread::UnlockComputation()   // runs in main thread
 {
 	if (m_bComputationLocked)
 	{
@@ -72,46 +84,36 @@ void ComputeThread::UnlockComputation()
 	}
 }
 
-void ComputeThread::LockComputation()
-{
-	if (! m_bComputationLocked)
-	{
-		m_bComputationLocked = true;
-		if (! m_bStopped)      // if not already stopped, stop now
-			stopComputation();
-	}
-}
-
-void ComputeThread::RunStopComputation()
+void ComputeThread::RunStopComputation()    // runs in main thread
 {
 	m_bStopped = ! m_bStopped;
-	if (! m_bComputationLocked)  // if not already stopped, stop now
+	if (! m_bComputationLocked)  // if not already haltet, halt now
 	{
 		if (m_bStopped)
-			stopComputation();
+			haltComputation();
 		else
 			runComputation();
 	}
 }
 
-void ComputeThread::StopComputation()
+void ComputeThread::StopComputation()    // runs in main thread
 {
 	if (! m_bStopped)
 	{
 		m_bStopped = true;
 		if (! m_bComputationLocked)  // if not already stopped, stop now
-			stopComputation();
+			haltComputation();
 	}
 }
 
-void ComputeThread::runComputation()
+void ComputeThread::runComputation()    // runs in main thread
 {
 	m_ticksAtLastRun = m_hrTimer.ReadHiResTimer();
 	m_pRunObservable->NotifyAll(false);
 	ReleaseSRWLockExclusive(& m_srwlStopped); // allow ComputeThread to run
 }
 
-void ComputeThread::stopComputation()
+void ComputeThread::haltComputation()    // runs in main thread
 {
 	AcquireSRWLockExclusive(& m_srwlStopped); // wait until ComputeThread has finished activities
 	m_ticksNetRunning += m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun;
@@ -168,7 +170,7 @@ void ComputeThread::StandardRun()
 		}
 
 		fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
-		fMicroSecs const usSleepTime { m_usTimeAvailPerCycle - usSpentInCompute };
+		fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
 		if (usSleepTime > 10000.0_MicroSecs)
 			Sleep(10);
 	}
@@ -193,7 +195,8 @@ void ComputeThread::StartScan()
 	if (!m_upScanMatrix)
 		prepareScan();
 	m_pNMWI->CreateImage();
-	m_bScanRunning = true;
+	m_pNMWI->SetScanRunning(true);
+	m_pBlockModelObservable->NotifyAll(false);
 	RunStopComputation();
 }
 
@@ -203,42 +206,51 @@ void ComputeThread::ScanRun()
 	fMicroSecs        usScanTime { SimulationTime::Get() };
 	Vector2D<mV>    * pImage     { m_pNMWI->GetScanImage() };
 	RasterPoint       rpRun;
-	for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)
+
+	for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)  // loop over rows
 	{
-		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)
-		{
+		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)  // loop over columns
+		{ 
 			usScanTime += m_pNMWI->PixelScanTime();
 			while (SimulationTime::Get() < usScanTime)
 				m_pNMWI->Compute();
+
 			pImage->Set(rpRun, m_upScanMatrix->Scan(rpRun));
-			if (m_bStopped)
-				return;
-			if (m_bComputationLocked)
+			m_pDynamicModelObservable->NotifyAll(false);  // screen refresh, if possible
+
+			if (m_bStopped)  // forced termination of scan
 			{
-				return;
+				m_pNMWI->RejectImage();
+				goto EXIT;
 			}
 		}
-		m_pDynamicModelObservable->NotifyAll(true);
+		m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
+	} 
+
+	{
+		mV mvMax { pImage->GetMax() };
+		*pImage *= 1.0f / mvMax.GetValue();
+		m_pDynamicModelObservable->NotifyAll(false);
 	}
-	mV mvMax { pImage->GetMax() };
-	*pImage *= 1.0f / mvMax.GetValue();
-	StopComputation();
-	//	Vector2D<byte> byteImage(imageSize);
+
+	EXIT:
+	m_pNMWI->SetScanRunning(false);
 }
 
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
 {                                        // no thread messages used
 	for (;;)
 	{
-		AcquireSRWLockExclusive(& m_srwlStopped);
-		if (m_bScanRunning)
+		AcquireSRWLockExclusive(&m_srwlStopped);
+		if (m_pNMWI && m_pNMWI->IsScanRunning())
 		{
 			ScanRun();
-			m_bScanRunning = false;
 		}
 		else
+		{
 			StandardRun();
-		ReleaseSRWLockExclusive(& m_srwlStopped);
+		}
+		ReleaseSRWLockExclusive(&m_srwlStopped);
 	}
 }
 

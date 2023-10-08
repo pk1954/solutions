@@ -16,31 +16,48 @@ using std::unique_ptr;
 using std::make_unique;
 
 export template <typename UNIT>
+struct UnitVector
+{
+    UnitVector(size_t const siz, UNIT const val)
+        : m_vector(siz, val)
+    {}
+
+    UnitVector& operator*= (float const factor)
+    {
+        for (UNIT& val : m_vector)
+            val *= factor;
+        return *this;
+    }
+
+    vector<UNIT> m_vector;
+};
+
+export template <typename UNIT>
 class Vector2D
 {
 public:
-    using UnitVector = vector<UNIT>;
+    using ROW = UnitVector<UNIT>;
 
     Vector2D(RasterPoint const& size)
     {
         m_rows.reserve(size.m_y);
         for (int i = 0; i < size.m_y; ++i)
-            m_rows.push_back(make_unique<UnitVector>(size.m_x, UNIT::NULL_VAL()));
+            m_rows.push_back(make_unique<ROW>(size.m_x, UNIT::NULL_VAL()));
     }
 
-    UnitVector& GetLine(RasterIndex const ry)
+    ROW& GetRow(RasterIndex const ry)
     {
         return *m_rows.at(ry).get();
     }
 
-    UnitVector const& GetLine(RasterIndex const ry) const
+    ROW const& GetRow(RasterIndex const ry) const
     {
         return *m_rows.at(ry).get();
     }
 
     void Set(RasterPoint const& rp, UNIT val)
     {
-        GetLine(rp.m_y).at(rp.m_x) = val;
+        GetRow(rp.m_y).m_vector.at(rp.m_x) = val;
     }
 
     void Set(UNIT const newVal)
@@ -50,31 +67,43 @@ public:
 
     UNIT Get(RasterPoint const& rp) const
     {
-        return GetLine(rp.m_y).at(rp.m_x);
+        return GetRow(rp.m_y).at(rp.m_x);
     }
 
-    UNIT Get(UnitVector const &line, RasterIndex const rx) const
+    UNIT Get(ROW const &row, RasterIndex const rx) const
     {
-        return line.at(rx);
+        return row.at(rx);
     }
 
     Vector2D& operator*= (float const factor)
     {
-        Apply2AllPixels([factor](UNIT &val) { val *= factor; });
+        Apply2AllRows([factor](ROW &vec) { vec *= factor; });
         return *this;
+    }
+
+    void Apply2AllRows(auto const& func)
+    {
+        for (auto& upRow : m_rows)
+            func(*upRow.get());
+    }
+
+    void Apply2AllRowsC(auto const& func) const
+    {
+        for (auto const& upRow : m_rows)
+            func(*upRow.get());
     }
 
     void Apply2AllPixels(auto const& func)
     {
-        for (auto &upLine : m_rows)
-            for (UNIT& val : *upLine.get())
+        for (auto& upRow : m_rows)
+            for (UNIT& val : upRow->m_vector)
                 func(val);
     }
 
     void Apply2AllPixelsC(auto const& func) const
     {
-        for (auto const& upLine : m_rows)
-            for (UNIT& val : *upLine.get())
+        for (auto const& upRow : m_rows)
+            for (UNIT& val : upRow->m_vector)
                 func(val);
     }
 
@@ -86,5 +115,5 @@ public:
     }
 
 private:
-    vector<unique_ptr<UnitVector>> m_rows;
+    vector<unique_ptr<ROW>> m_rows;
 };

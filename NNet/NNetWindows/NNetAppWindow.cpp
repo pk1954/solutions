@@ -76,21 +76,14 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	NNetModelIO    ::Initialize();
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
-	m_NNetController.Initialize
-	(
-		& m_computeThread,
-		& m_SlowMotionRatio,
-		& m_sound,
-		& m_cmdStack,
-		& m_monitorWindow,
-		&m_staticModelObservable
-	);
+	m_NNetController.Initialize(&m_computeThread, &m_SlowMotionRatio);
 	m_computeThread.Initialize
 	(
 		& m_SlowMotionRatio, 
 		& m_runObservable, 
 		& m_performanceObservable, 
-		& m_dynamicModelObservable
+		& m_dynamicModelObservable,
+		& m_blockModelObservable
 	);
 	BaseCommand::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
@@ -231,6 +224,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_staticModelObservable     .RegisterObserver(m_undoRedoMenu);
 	m_staticModelObservable     .RegisterObserver(m_appMenu);
 	m_staticModelObservable     .RegisterObserver(m_parameterDlg);
+	m_blockModelObservable      .RegisterObserver(m_parameterDlg);
 	m_highlightSigObservable    .RegisterObserver(m_mainNNetWindow);
 	m_highlightSigObservable    .RegisterObserver(m_monitorWindow);
 	m_highlightSigObservable    .RegisterObserver(m_mainNNetWindow);
@@ -410,6 +404,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	{
 		switch (wmId)
 		{
+		case 0:             // unclear origin
+			return true;
+
 		case IDM_ABOUT:
 			m_aboutBox.Show(m_mainNNetWindow.GetWindowHandle());
 			break;

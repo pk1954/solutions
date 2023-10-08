@@ -29,6 +29,7 @@ public:
 		SlowMotionRatio * const,
 		Observable      * const,
 		Observable      * const,
+		Observable      * const,
 		Observable      * const
 	);
 
@@ -43,8 +44,7 @@ public:
 	void RunStopComputation();
 	void StopComputation();
 	void StartScan();
-	bool IsRunning    () const { return !m_bStopped; }
-	bool IsScanRunning() const { return m_bScanRunning; }
+	bool IsRunning() const { return !m_bStopped; }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
@@ -59,8 +59,8 @@ private:
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };
 	Observable      * m_pDynamicModelObservable { nullptr };
+	Observable      * m_pBlockModelObservable   { nullptr };
 
-	bool              m_bScanRunning           { false };
 	bool              m_bStopped               { true };          // visible to UI
 	bool              m_bComputationLocked     { true };          // internal lock (short time)
 	HiResTimer        m_hrTimer                { };
@@ -80,7 +80,7 @@ private:
 
 	void prepareScan();
 	void runComputation();
-	void stopComputation();
+	void haltComputation();
 	void StandardRun();
 	void ScanRun();
 

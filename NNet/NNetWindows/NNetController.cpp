@@ -17,7 +17,6 @@ import SlowMotionRatio;
 import Scanner;
 import SaveCast;
 import Observable;
-import Win32_Sound;
 import StdDialogBox;
 import WinManager;
 import FatalError;
@@ -40,32 +39,20 @@ using std::endl;
 void NNetController::Initialize
 (
     ComputeThread   * const pComputeThread,
-    SlowMotionRatio * const pSlowMotionRatio,
-    Sound           * const pSound,
-    CommandStack    * const pCommandStack,
-    MonitorWindow   * const pMonitorWindow,
-    Observable      * const pStaticModelObservable
+    SlowMotionRatio * const pSlowMotionRatio
 ) 
 {
-    m_pSlowMotionRatio       = pSlowMotionRatio;
-    m_pComputeThread         = pComputeThread;
-    m_pSound                 = pSound;
-    m_pCommandStack          = pCommandStack;
-    m_pMonitorWindow         = pMonitorWindow;
-    m_pStaticModelObservable = pStaticModelObservable;
-    m_hCrsrWait              = LoadCursor(NULL, IDC_WAIT);
+    m_pSlowMotionRatio = pSlowMotionRatio;
+    m_pComputeThread   = pComputeThread;
+    m_hCrsrWait        = LoadCursor(NULL, IDC_WAIT);
 }
 
 NNetController::~NNetController()
 {
-    m_pNMRI                  = nullptr;
-    m_pSlowMotionRatio       = nullptr;
-    m_pComputeThread         = nullptr;
-    m_hCrsrWait              = nullptr;
-    m_pSound                 = nullptr;
-    m_pCommandStack          = nullptr;
-    m_pMonitorWindow         = nullptr;
-    m_pStaticModelObservable = nullptr;
+    m_pNMRI            = nullptr;
+    m_pSlowMotionRatio = nullptr;
+    m_pComputeThread   = nullptr;
+    m_hCrsrWait        = nullptr;
 }
 
 void NNetController::SetModelInterface(NNetModelReaderInterface * const pNMRI)
@@ -89,7 +76,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
         return true;                    // but do not concern the model  
 
-    if (! m_bBlockedUI)
+    if (!(m_bBlockedUI || m_pNMRI->ScanImagePresent()))
     {
         m_pComputeThread->LockComputation();
         try
@@ -162,6 +149,10 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::none);
         break;
 
+    case IDD_SCAN_AREA_VISIBLE:
+        NNetPreferences::m_bScanArea.Toggle();
+        break;
+
     default:
         return false; // command has not been processed
     }
@@ -183,6 +174,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
         break;
 
+    case IDD_ADD_EEG_SENSOR:
+        AddSensorCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
+        WinManager::SendCommand(RootWinId(IDM_MONITOR_WINDOW), IDM_WINDOW_ON);
+        break;
+
     case IDM_COPY_SELECTION:
     case IDM_DELETE:   // keyboard delete key
     case IDM_ESCAPE:
@@ -202,13 +198,8 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         AddModuleCommand::Push();
         break;
 
-    case IDD_ADD_EEG_SENSOR:
-        AddSensorCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
-        m_pMonitorWindow->Show(true);
-        break;
-
     case IDD_DELETE_SIGNAL:
-        deleteSignal(static_cast<NNetSignal const *>(m_pNMRI->GetMonitorDataC().GetHighlightedSignal()));
+        deleteSignal();
         break;
 
     case IDD_ADD_TRACK:
@@ -220,12 +211,8 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         break;
 
     case IDM_TRIGGER_STIMULUS:
-        m_pMonitorWindow->StimulusTriggered();
+        static_cast<MonitorWindow *>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW)))->StimulusTriggered();
         StartStimulusCmd::Push();
-        break;
-
-    case IDD_SCAN_AREA_VISIBLE:
-        NNetPreferences::m_bScanArea.Toggle();
         break;
 
     default:
@@ -234,9 +221,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     return true;
 }
-void NNetController::deleteSignal(NNetSignal const* pSignal)
+void NNetController::deleteSignal()
 {
-    NNetSignalSource const* pSigSrc { pSignal->GetSignalSource() };
+    Signal           const* pSignal     { m_pNMRI->GetMonitorDataC().GetHighlightedSignal() };
+    NNetSignal       const* pNNetSignal { static_cast<NNetSignal const*>(pSignal) };
+    NNetSignalSource const* pSigSrc     { pNNetSignal->GetSignalSource() };
     switch (pSigSrc->SignalSourceType())
     {
         using enum NNetSignalSource::Type;
