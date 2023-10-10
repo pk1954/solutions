@@ -84,5 +84,8 @@
     <ClCompile Include="Vector2D.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColorLUT.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -142,7 +142,7 @@ private:
 	Observable               m_performanceObservable;
 	Observable               m_coordObservable;
 	Observable               m_activeSigGenObservable;
-	Observable               m_blockModelObservable;
+	Observable               m_lockModelObservable;
 	ParameterDialog          m_parameterDlg;
 	PerformanceWindow        m_performanceWindow;
 	ScriptFile               m_scriptFile;

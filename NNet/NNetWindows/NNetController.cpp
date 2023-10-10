@@ -76,21 +76,21 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
         return true;                    // but do not concern the model  
 
-    if (!(m_bBlockedUI || m_pNMRI->ScanImagePresent()))
+    if (m_bBlockedUI || m_pNMRI->ScanImagePresent())
+        return true;
+
+    m_pComputeThread->LockComputation();
+    try
     {
-        m_pComputeThread->LockComputation();
-        try
-        {
-            bRes = processModelCommand(wmId, lParam, umPoint);
-        }
-        catch (NobException const & e)
-        {
-            wcout << COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
-            m_pNMRI->DumpModel(__FILE__, __LINE__);
-            FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
-        }
-        m_pComputeThread->UnlockComputation();
+        bRes = processModelCommand(wmId, lParam, umPoint);
     }
+    catch (NobException const & e)
+    {
+        wcout << COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
+        m_pNMRI->DumpModel(__FILE__, __LINE__);
+        FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
+    }
+    m_pComputeThread->UnlockComputation();
 
     return bRes;
 }
@@ -99,7 +99,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 {
     switch (wmId)
     {
-
     case IDM_SIG_DESIGNER:
     case IDM_PERF_WINDOW:
     case IDM_CRSR_WINDOW:
@@ -208,11 +207,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDD_DELETE_TRACK:
         DeleteTrackCommand::Push(TrackNr(Cast2Int(lParam)));
-        break;
-
-    case IDM_TRIGGER_STIMULUS:
-        static_cast<MonitorWindow *>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW)))->StimulusTriggered();
-        StartStimulusCmd::Push();
         break;
 
     default:

@@ -28,13 +28,13 @@ void ComputeThread::Initialize
 	Observable      * const pRunObservable,
 	Observable      * const pPerformanceObservable,
 	Observable      * const pDynamicModelObservable,
-	Observable      * const pBlockModelObservable
+	Observable      * const pLockModelObservable
 )
 {
 	m_pRunObservable          = pRunObservable;
 	m_pPerformanceObservable  = pPerformanceObservable;
 	m_pDynamicModelObservable = pDynamicModelObservable;
-	m_pBlockModelObservable   = pBlockModelObservable;
+	m_pLockModelObservable    = pLockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
 	AcquireSRWLockExclusive(& m_srwlStopped);
 	BeginThread(L"ComputeThread"); 
@@ -98,12 +98,18 @@ void ComputeThread::RunStopComputation()    // runs in main thread
 
 void ComputeThread::StopComputation()    // runs in main thread
 {
-	if (! m_bStopped)
+	if (!m_bStopped)
 	{
 		m_bStopped = true;
-		if (! m_bComputationLocked)  // if not already stopped, stop now
+		m_pRunObservable->NotifyAll(false);
+		if (!m_bComputationLocked)  // if not already stopped, stop now
 			haltComputation();
 	}
+}
+
+void ComputeThread::StartStimulus()    // runs in main thread
+{
+	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }
 
 void ComputeThread::runComputation()    // runs in main thread
@@ -196,7 +202,7 @@ void ComputeThread::StartScan()
 		prepareScan();
 	m_pNMWI->CreateImage();
 	m_pNMWI->SetScanRunning(true);
-	m_pBlockModelObservable->NotifyAll(false);
+	m_pLockModelObservable->NotifyAll(false);
 	RunStopComputation();
 }
 
@@ -221,6 +227,7 @@ void ComputeThread::ScanRun()
 			if (m_bStopped)  // forced termination of scan
 			{
 				m_pNMWI->RejectImage();
+				m_pLockModelObservable->NotifyAll(false);
 				goto EXIT;
 			}
 		}
@@ -235,6 +242,7 @@ void ComputeThread::ScanRun()
 
 	EXIT:
 	m_pNMWI->SetScanRunning(false);
+	StopComputation();
 }
 
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function

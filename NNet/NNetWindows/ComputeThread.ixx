@@ -44,6 +44,7 @@ public:
 	void RunStopComputation();
 	void StopComputation();
 	void StartScan();
+	void StartStimulus();
 	bool IsRunning() const { return !m_bStopped; }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
@@ -59,12 +60,12 @@ private:
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };
 	Observable      * m_pDynamicModelObservable { nullptr };
-	Observable      * m_pBlockModelObservable   { nullptr };
+	Observable      * m_pLockModelObservable    { nullptr };
 
-	bool              m_bStopped               { true };          // visible to UI
-	bool              m_bComputationLocked     { true };          // internal lock (short time)
-	HiResTimer        m_hrTimer                { };
-	SRWLOCK           m_srwlStopped            { SRWLOCK_INIT };
+	bool              m_bStopped                { true };          // visible to UI
+	bool              m_bComputationLocked      { true };          // internal lock (short time)
+	HiResTimer        m_hrTimer                 { };
+	SRWLOCK           m_srwlStopped             { SRWLOCK_INIT };
 
 	fMicroSecs        m_usSimuTimeAtLastReset   { 0.0_MicroSecs };
 	fMicroSecs        m_usSimuTimeResolution    { 0.0_MicroSecs };

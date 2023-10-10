@@ -14,6 +14,7 @@ export module NNetWin32:MainWindow;
 import Types;
 import ActionTimer;
 import Vector2D;
+import ColorLUT;
 import NNetModel;
 import NNetSignals;
 import NNetCommands;
@@ -98,6 +99,7 @@ private:
 	optional<CardPoint> m_scanAreaHandleSelected { nullopt };
 	SelectionMenu       m_selectionMenu;
 	MainScales          m_mainScales;
+	ColorLUT            m_lut;
 
 	bool       setTargetNob        (MicroMeterPnt const&);
 	bool       setScanAreaHandle   (MicroMeterPnt const&);

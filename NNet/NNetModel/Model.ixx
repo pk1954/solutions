@@ -142,9 +142,9 @@ public:
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void CreateImage              ()                     {	m_upImage = make_unique<Vector2D<mV>>(GetScanAreaSize()); }
+	void CreateImage              ()                     { m_upImage = make_unique<Vector2D<mV>>(GetScanAreaSize()); }
 	void RejectImage              ()                     { m_upImage.release(); }
-	void SetScanRunning           (bool const b)         {	m_bScanRunning = b; }
+	void SetScanRunning           (bool const b)         { m_bScanRunning = b; }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;

@@ -81,6 +81,7 @@ void NNetAppMenu::Start
     HMENU hMenuAction = ::PopupMenu(m_hMenu, L"&Action");
     {
         ::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
+        ::AddMenu(hMenuAction, MF_STRING, IDM_REJECT_IMAGES,      L"Throw away images");
         ::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,            L"&Proceed single step");
         ::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP,           L"&Run/Stop");
         ::AddMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL,       L"&Center model");

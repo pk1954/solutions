@@ -32,6 +32,7 @@ import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
 import NNetPreferences;
+import ColorLUT;
 import :NNetController;
 import :MainScales;
 
@@ -577,7 +578,10 @@ void MainWindow::drawScanImage(Vector2D<mV> const &scanImage) const
 			if (mv.IsNotNull())
 			{
 				float f = mv.GetValue();
-				GetDrawContextC().FillRectangle(umRect, Color(f, f, f));
+				int   iLutPos = static_cast<int>(f * 256.0f);
+				if (iLutPos > 255)
+					iLutPos = 255;
+				GetDrawContextC().FillRectangle(umRect, m_lut.Get(iLutPos));
 			}
 		}
 	}

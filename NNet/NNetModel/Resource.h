@@ -50,6 +50,7 @@
 #define       IDM_RELOAD_MODEL               178
 
 #define       IDM_START_SCAN                 190
+#define       IDM_REJECT_IMAGES              191
 
 #define       IDD_SCALES_UPDATE              263
 #define       IDD_GRID_UPDATE                264

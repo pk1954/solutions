@@ -83,7 +83,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 		& m_runObservable, 
 		& m_performanceObservable, 
 		& m_dynamicModelObservable,
-		& m_blockModelObservable
+		& m_lockModelObservable
 	);
 	BaseCommand::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
@@ -224,7 +224,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_staticModelObservable     .RegisterObserver(m_undoRedoMenu);
 	m_staticModelObservable     .RegisterObserver(m_appMenu);
 	m_staticModelObservable     .RegisterObserver(m_parameterDlg);
-	m_blockModelObservable      .RegisterObserver(m_parameterDlg);
+	m_lockModelObservable       .RegisterObserver(m_parameterDlg);
+	m_lockModelObservable       .RegisterObserver(m_appTitle);
 	m_highlightSigObservable    .RegisterObserver(m_mainNNetWindow);
 	m_highlightSigObservable    .RegisterObserver(m_monitorWindow);
 	m_highlightSigObservable    .RegisterObserver(m_mainNNetWindow);
@@ -434,6 +435,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_computeThread.StartScan();
 			break;
 
+		case IDM_REJECT_IMAGES:
+			m_nmwi.RejectImage();
+			m_lockModelObservable.NotifyAll(false);
+			break;
+
 		case IDM_FORWARD:
 			m_computeThread.SingleStep();
 			break;
@@ -445,6 +451,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_SCRIPT_DIALOG:
 			m_computeThread.StopComputation();
 			processScript();
+			break;
+
+		case IDM_TRIGGER_STIMULUS:
+			m_monitorWindow.StimulusTriggered();
+			m_computeThread.StartStimulus();
 			break;
 
 		case IDM_NEXT_SCRIPT_CMD:

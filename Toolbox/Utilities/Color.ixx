@@ -1,6 +1,6 @@
 // Color.ixx
 //
-// Toolbox\Direct2D
+// Toolbox\Utilities
 
 module;
 
@@ -39,6 +39,14 @@ export inline D2D1_COLOR_F Convert2ColorF(COLORREF const color)
 export class Color : public D2D1_COLOR_F
 {
 public:
+	Color()
+	{
+		r = 1.0f;
+		g = 1.0f;
+		b = 1.0f;
+		a = 1.0f;
+	}
+
 	Color
 	(
 		float const rPar,
@@ -93,11 +101,19 @@ public:
 		return *this;
 	}
 
-	Color& operator*= (float const f) 
-	{ 
+	Color& operator*= (float const f)
+	{
 		r *= f;
 		g *= f;
 		b *= f;
+		return *this;
+	}
+
+	Color& operator/= (float const f)
+	{
+		r /= f;
+		g /= f;
+		b /= f;
 		return *this;
 	}
 
@@ -119,6 +135,13 @@ public:
 	{
 		Color res { a };
 		res *= f;
+		return res;
+	}
+
+	friend Color operator/ (Color const a, float const f)
+	{
+		Color res { a };
+		res /= f;
 		return res;
 	}
 

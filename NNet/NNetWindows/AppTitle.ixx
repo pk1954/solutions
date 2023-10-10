@@ -45,12 +45,14 @@ public:
 		return m_bUnsavedChanges; 
 	}
 
-	inline static wstring const PRODUCT_NAME { L"NNetSimu 4.11" };
+	inline static wstring const PRODUCT_NAME { L"NNetSimu 5.0a" };
 
 private:
 	void setAppTitle()
 	{
 		wstring wstr { m_bUnsavedChanges ? L" * " : L"" };
+		if (m_pNMRI->ScanImagePresent())
+			wstr += L"  +++ model locked +++";
 		::SetApplicationTitle
 		(
 			m_hwndApp, 
