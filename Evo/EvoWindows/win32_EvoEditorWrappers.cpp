@@ -7,7 +7,7 @@
 #include "SCRIPT.H"
 #include "Resource.h"
 #include "EvolutionCoreWrapperHelpers.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "win32_EvoEditor.h"
 #include "win32_EvoEditorWrappers.h"
 

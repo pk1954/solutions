@@ -3,7 +3,7 @@
 
 module;
 
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 
 import GridPoint;
 

@@ -9,7 +9,7 @@ import BoolOp;
 #include "GridRect.h"
 #include "strategy.h"
 #include "ModelInterface.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 import GridDimensions;
 
 class ObserverInterface;

@@ -119,6 +119,7 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -195,6 +196,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
       <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

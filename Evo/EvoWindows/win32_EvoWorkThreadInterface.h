@@ -8,7 +8,7 @@ module;
 #include "MoreTypes.h"
 #include "boolOp.h"
 #include "strategy.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "win32_WorkThreadInterface.h"
 
 import GridRect;

@@ -9,7 +9,7 @@ import GridDimensions;
 #include "gridPOI.h"
 #include "grid_model.h"
 #include "gridBrush.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "EvolutionCore.h"
 
 import BoolOp;

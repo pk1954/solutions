@@ -15,33 +15,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D3D_driver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="d3d_vertexBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="D3D_driver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="d3d_indexBuffer.cpp">
+    <ClCompile Include="D3D_indexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="d3d_system.cpp">
+    <ClCompile Include="D3D_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="d3d_vertexBuffer.cpp">
+    <ClCompile Include="D3D_vertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D3dSystem.ixx">
+    <ClCompile Include="D3D _system.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="D3dIndexBuffer.ixx">
+    <ClCompile Include="D3D_indexBuffer.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D_driver.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D_vertexBuffer.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

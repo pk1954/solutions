@@ -2,7 +2,7 @@
 //
 
 
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "individual.h"
 #include "interaction.h"
 

@@ -223,6 +223,9 @@
     <ClCompile Include="StrategyData.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>

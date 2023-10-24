@@ -7,7 +7,7 @@
 #include "Resource.h"
 #include "gridPOI.h"
 #include "GridPoint24.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
 #include "EvoHistorySysGlue.h"

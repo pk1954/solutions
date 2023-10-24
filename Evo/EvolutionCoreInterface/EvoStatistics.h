@@ -8,7 +8,7 @@ module;
 #include "EnumArray.h"
 #include "GridPoint.h"
 #include "strategy.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 
 class TextBuffer;
 class EvolutionCore;

@@ -9,6 +9,7 @@ module;
 export module Gene;
 
 import Random;
+import SaveCast;
 import GeneTypeLimits;
 
 class Gene
@@ -33,7 +34,7 @@ public:
 
 		double const dRand = random.NextWeightedDistribution() * lim.GetFactor();
 
-		m_sAllele = lim.ClipToLimits(CastToInt(m_sAllele + dRand * dMutationRate));
+		m_sAllele = lim.ClipToLimits(Cast2Int(m_sAllele + dRand * dMutationRate));
 	}
 
 	void SetAllele(short const sValue)

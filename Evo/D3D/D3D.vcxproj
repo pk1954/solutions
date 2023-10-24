@@ -130,6 +130,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,17 +157,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="D3D_driver.h" />
-    <ClInclude Include="d3d_vertexBuffer.h" />
-    <ClInclude Include="targetver.h" />
+    <ClCompile Include="D3D_indexBuffer.ixx" />
+    <ClCompile Include="D3D _system.ixx" />
+    <ClCompile Include="D3D_driver.cpp" />
+    <ClCompile Include="D3D_driver.ixx" />
+    <ClCompile Include="D3D_indexBuffer.cpp" />
+    <ClCompile Include="D3D_system.cpp" />
+    <ClCompile Include="D3D_vertexBuffer.cpp" />
+    <ClCompile Include="D3D_vertexBuffer.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3dIndexBuffer.ixx" />
-    <ClCompile Include="D3dSystem.ixx" />
-    <ClCompile Include="D3D_driver.cpp" />
-    <ClCompile Include="d3d_indexBuffer.cpp" />
-    <ClCompile Include="d3d_system.cpp" />
-    <ClCompile Include="d3d_vertexBuffer.cpp" />
+    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
+      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

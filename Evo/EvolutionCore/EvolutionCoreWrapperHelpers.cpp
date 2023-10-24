@@ -4,7 +4,7 @@
 #include <cassert>
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "EvolutionCoreWrapperHelpers.h"
 
 import Config;

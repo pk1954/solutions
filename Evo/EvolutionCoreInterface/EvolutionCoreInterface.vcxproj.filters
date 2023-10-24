@@ -13,9 +13,6 @@
     <ClInclude Include="EvolutionCore.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="EvolutionTypes.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridNeighbor.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -63,5 +60,6 @@
     <ClCompile Include="Config.ixx" />
     <ClCompile Include="GridPoint.ixx" />
     <ClCompile Include="GridRect.ixx" />
+    <ClCompile Include="EvolutionTypes.ixx" />
   </ItemGroup>
 </Project>

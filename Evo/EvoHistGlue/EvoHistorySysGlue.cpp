@@ -4,7 +4,7 @@
 
 #include "HistoryGeneration.h"
 #include "HistorySystem.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "EvoHistorySysGlue.h"
 
 import Config;

@@ -4,7 +4,7 @@
 #include <array>
 #include <unordered_map>
 #include "strategy.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 
 using std::unordered_map;
 using std::setbase;

@@ -4,7 +4,7 @@
 module;
 
 #include <iostream>
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "interaction.h"
 #include "individual.h"
 

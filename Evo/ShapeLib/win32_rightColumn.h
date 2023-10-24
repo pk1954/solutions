@@ -4,7 +4,7 @@
 module;
 
 #include <array>
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 import Shape;
 
 class MemorySlot;

@@ -7,12 +7,12 @@
 #include "gridPOI.h"
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "EvoPixelCoords.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"
 
-static EvolutionCore    * m_pCore;
+static EvolutionCore  * m_pCore;
 static EvoPixelCoords * m_pPixCoords;
 
 class WrapSetPoi : public Script_Functor

@@ -5,7 +5,7 @@
 module;
 #include <array>
 #include <functional>
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 
 class StrategyData;
 

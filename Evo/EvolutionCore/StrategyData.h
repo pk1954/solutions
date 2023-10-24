@@ -3,7 +3,7 @@
 
 module;
 #include <array>
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 
 class StrategyData
 {

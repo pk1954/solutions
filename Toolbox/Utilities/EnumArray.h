@@ -8,6 +8,7 @@
 #include <array>
 
 using std::array;
+using std::function;
 
 // EnumArray: template for classes providing arrays over enum
 // Requirements:

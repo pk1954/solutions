@@ -4,7 +4,7 @@
 
 module;
 
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
 #include "win32_baseDialog.h"

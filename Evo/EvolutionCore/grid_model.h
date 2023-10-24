@@ -14,7 +14,7 @@ module;
 #include "gridPOI.h"
 #include "ActionOptions.h"
 import GridDimensions;
-#include "EvolutionTypes.h"
+import EvolutionTypes;
 
 import GridPoint;
 import GridRect;

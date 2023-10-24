@@ -4,6 +4,6 @@
 
 export module HistSlotNr;
 
-import NamedType;
+import Types;
 
 using HistSlotNr = NamedType<int, struct HistSlotNr_Parameter>;

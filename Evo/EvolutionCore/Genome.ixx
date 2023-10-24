@@ -5,13 +5,13 @@
 module;
 
 #include "EnumArray.h"
-#include "EvolutionTypes.h"
 
 export module Genome;
 
 import Types;
 import Config;
 import Gene;
+import EvolutionTypes;
 
 class Random;
 
