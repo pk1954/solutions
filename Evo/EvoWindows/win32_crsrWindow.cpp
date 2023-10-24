@@ -3,20 +3,21 @@
 // EvoWindows
 
 
-#include "config.h"
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
 #include "win32_focusPoint.h"
 #include "win32_textBuffer.h"
 #include "win32_crsrWindow.h"
 
-CrsrWindow::CrsrWindow( ) :
-    TextWindow( ),
-    m_pFocusPoint( nullptr ),
-    m_pReadBuffer( nullptr )
+import Config;
+
+CrsrWindow::CrsrWindow() :
+    TextWindow(),
+    m_pFocusPoint(nullptr),
+    m_pReadBuffer(nullptr)
 {}
 
-CrsrWindow::~CrsrWindow( )
+CrsrWindow::~CrsrWindow()
 {
 	m_pReadBuffer = nullptr;
 	m_pFocusPoint = nullptr;
@@ -31,9 +32,9 @@ void CrsrWindow::Start
 {
     m_pReadBuffer = pReadBuffer;
     m_pFocusPoint = pFocusPoint;
-    m_pFocusPoint->RegisterObserver( this );
+    m_pFocusPoint->RegisterObserver(this);
     StartTextWindow
-	( 
+	(
 		hwndParent, 
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
 		L"CrsrWindow", 
@@ -41,57 +42,57 @@ void CrsrWindow::Start
 		TRUE,
 		nullptr
 	);
-	m_pReadBuffer->RegisterObserver( this );
+	m_pReadBuffer->RegisterObserver(this);
 }
 
-void CrsrWindow::Stop( )
+void CrsrWindow::Stop()
 {
-	TextWindow::StopTextWindow( );
-	Show( FALSE );
+	TextWindow::StopTextWindow();
+	Show(FALSE);
 }
 
-void CrsrWindow::DoPaint( TextBuffer & textBuf )
+void CrsrWindow::DoPaint(TextBuffer & textBuf)
 {
-    textBuf.printString( L"Position:" );
+    textBuf.printString(L"Position:");
 
-    GridPoint const gpFocus = m_pFocusPoint->GetGridPoint( );
+    GridPoint const gpFocus = m_pFocusPoint->GetGridPoint();
 
-    if ( ! IsInGrid( gpFocus ) )
+    if (! IsInGrid(gpFocus))
     {
-        textBuf.printString( L"out of grid" );
+        textBuf.printString(L"out of grid");
         return;
     }
 
-    textBuf.printNumber( gpFocus.GetXvalue() );
-    textBuf.printNumber( gpFocus.GetYvalue() );
+    textBuf.printNumber(gpFocus.GetXvalue());
+    textBuf.printNumber(gpFocus.GetYvalue());
 
-	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer( );
+	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer();
 
-	ENERGY_UNITS enFoodStock = pCore->GetFoodStock( gpFocus );
-	ENERGY_UNITS enFertility = pCore->GetFertility( gpFocus );
-	ENERGY_UNITS enIndEnergy = pCore->GetEnergy( gpFocus );
-	PERCENT      mutRate     = pCore->GetMutRate( gpFocus );
-    bool         bIsAlive    = pCore->IsAlive( gpFocus );
+	ENERGY_UNITS enFoodStock = pCore->GetFoodStock(gpFocus);
+	ENERGY_UNITS enFertility = pCore->GetFertility(gpFocus);
+	ENERGY_UNITS enIndEnergy = pCore->GetEnergy(gpFocus);
+	PERCENT      mutRate     = pCore->GetMutRate(gpFocus);
+    bool         bIsAlive    = pCore->IsAlive(gpFocus);
 
-	m_pReadBuffer->ReleaseReadBuffer( );
+	m_pReadBuffer->ReleaseReadBuffer();
 
-    textBuf.nextLine( L"Food:" );
-    textBuf.setHorizontalPos( 3_TEXT_POSITION );
-    textBuf.printPercentage( enFoodStock.GetValue(), enFertility.GetValue() );
+    textBuf.nextLine(L"Food:");
+    textBuf.setHorizontalPos(3_TEXT_POSITION);
+    textBuf.printPercentage(enFoodStock.GetValue(), enFertility.GetValue());
 
-    textBuf.nextLine( L"MutRate:" );
-    textBuf.setHorizontalPos( 2_TEXT_POSITION );
-    textBuf.printPercentage( mutRate.GetValue() );
+    textBuf.nextLine(L"MutRate:");
+    textBuf.setHorizontalPos(2_TEXT_POSITION);
+    textBuf.printPercentage(mutRate.GetValue());
     
-	if ( bIsAlive )
+	if (bIsAlive)
 	{
-		textBuf.nextLine( L"Energy:" );
-		textBuf.setHorizontalPos( 4_TEXT_POSITION );
-		textBuf.printPercentage( enIndEnergy.GetValue(), Config::GetConfigValueShort( Config::tId::stdCapacity ) );
+		textBuf.nextLine(L"Energy:");
+		textBuf.setHorizontalPos(4_TEXT_POSITION);
+		textBuf.printPercentage(enIndEnergy.GetValue(), Config::GetConfigValueShort(Config::tId::stdCapacity));
 	}
 
 	// Deactivated, see win32_focusPoint.cpp
 
-    // nextLine( L"Lifespan:" );
-    // printSpan( m_pFocusPoint->GetGenBirth( ).GetLong( ), m_pFocusPoint->GetGenDeath( ).GetLong( ) );
+    // nextLine(L"Lifespan:");
+    // printSpan(m_pFocusPoint->GetGenBirth().GetLong(), m_pFocusPoint->GetGenDeath().GetLong());
 }

@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include "EvolutionTypes.h"
 #include "EvolutionCore.h"
@@ -16,31 +16,31 @@ class StatusBar;
 class EvoEditorWindow : public BaseDialog
 {
 public:
-    EvoEditorWindow( );
-    ~EvoEditorWindow( );
+    EvoEditorWindow();
+    ~EvoEditorWindow();
 
     void Start
-	( 
+	(
 		HWND const, 
 		EvoWorkThreadInterface * const, 
 		EvoReadBuffer          * const, 
 		DspOptWindow           * const
 	);
 
-	void Stop( );
+	void Stop();
 
-	void    UpdateEditControls( );
-	LRESULT SendClick( int ) const;
+	void    UpdateEditControls();
+	LRESULT SendClick(int) const;
 
 
 private:
-    virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+    virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 
-	void setBrushMode       ( WORD const ) const;
-	void setBrushShape      ( WORD const ) const;
-	void setBrushManipulator( WORD const ) const;
+	void setBrushMode       (WORD const) const;
+	void setBrushShape      (WORD const) const;
+	void setBrushManipulator(WORD const) const;
 
-	void updateOperationButtons( tBrushMode const ) const;
+	void updateOperationButtons(tBrushMode const) const;
 
 	EvoReadBuffer          * m_pReadBuffer;
     EvoWorkThreadInterface * m_pWorkThreadInterface;

@@ -8,93 +8,93 @@
 
 using std::wostringstream;
 
-RightColumn::RightColumn( ) :
-	Shape( ),
+RightColumn::RightColumn() :
+	Shape(),
 	m_aMemorySlot()
 {
-	for	( MEM_INDEX mem = MEM_INDEX( 0 ); mem < MEM_INDEX(IMEMSIZE_MAX); ++mem )
+	for	(MEM_INDEX mem = MEM_INDEX(0); mem < MEM_INDEX(IMEMSIZE_MAX); ++mem)
 	{
-		m_aMemorySlot[mem.GetValue()] = new MemorySlot( mem );
+		m_aMemorySlot[mem.GetValue()] = new MemorySlot(mem);
 	}
 }
 
-void RightColumn::SetTextDisplay( TextDisplay * pTextDisplay )
+void RightColumn::SetTextDisplay(TextDisplay * pTextDisplay)
 {
-	Shape::SetTextDisplay( pTextDisplay );
-	for	( auto & pSlot : m_aMemorySlot )
+	Shape::SetTextDisplay(pTextDisplay);
+	for	(auto & pSlot : m_aMemorySlot)
 	{
-		pSlot->SetTextDisplay( pTextDisplay );
+		pSlot->SetTextDisplay(pTextDisplay);
 	}
 }
 
-PixelRectSize RightColumn::MinimalSize( EvolutionCore const * const pCore )  
+PixelRectSize RightColumn::MinimalSize(EvolutionCore const * const pCore)  
 {       
-	PixelRectSize minSlotSize = m_aMemorySlot[0]->MinimalSize( pCore );
-	return SetMinSize( minSlotSize.GetX( ), minSlotSize.GetY( ) * IMEMSIZE_MAX	);     
+	PixelRectSize minSlotSize = m_aMemorySlot[0]->MinimalSize(pCore);
+	return SetMinSize(minSlotSize.GetX(), minSlotSize.GetY() * IMEMSIZE_MAX	);     
 }                                     
 
-void RightColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
+void RightColumn::PrepareShape(PixelPoint const ppOffset, PixelRectSize const ppSize)
 {
-	if ( SetShapeRect( ppOffset, ppSize ) )
+	if (SetShapeRect(ppOffset, ppSize))
 	{
 		PIXEL         const pixSlotHeight{ getShapeHeight() / IMEMSIZE_MAX };
 		PixelRectSize const slotSize     { getShapeWidth(), pixSlotHeight };
 
-		PixelPoint posShape = GetShapePos( );
-		for	( auto & pSlot : m_aMemorySlot )
+		PixelPoint posShape = GetShapePos();
+		for	(auto & pSlot : m_aMemorySlot)
 		{
-			posShape += PixelPoint( 0_PIXEL, pixSlotHeight );
-			pSlot->PrepareShape( posShape, slotSize );
+			posShape += PixelPoint(0_PIXEL, pixSlotHeight);
+			pSlot->PrepareShape(posShape, slotSize);
 		}
 	}
 }
 
-void RightColumn::FillBuffer( EvolutionCore const * const pCore, GridPoint const gp )
+void RightColumn::FillBuffer(EvolutionCore const * const pCore, GridPoint const gp)
 {
 	wostringstream & buffer = m_pTextDisplay->Buffer();
 
-	MEM_INDEX const memSize = pCore->GetMemSize( gp );  
-	MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
+	MEM_INDEX const memSize = pCore->GetMemSize(gp);  
+	MEM_INDEX const memUsed = pCore->GetMemUsed(gp); 
         
 	buffer << L"Memory " << memUsed.GetValue() << L"/" << memSize.GetValue();
 }
 
 Shape const * RightColumn::FindShape
-( 
+(
 	EvolutionCore const * const pCore, 
 	PixelPoint            const pnt,             
 	GridPoint             const gp
 ) const
 {
-	MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
-	for	( auto & pSlot : m_aMemorySlot )
+	MEM_INDEX const memUsed = pCore->GetMemUsed(gp); 
+	for	(auto & pSlot : m_aMemorySlot)
 	{
-		if ( pSlot->GetMemIndex() == memUsed )
+		if (pSlot->GetMemIndex() == memUsed)
 			break;
-		if ( pSlot->FindShape( pnt, gp ) )
+		if (pSlot->FindShape(pnt, gp))
 			return pSlot;
 	}
 
-	return Shape::FindShape( pnt, gp );
+	return Shape::FindShape(pnt, gp);
 }
 
 void RightColumn::Draw
-( 
+(
 	EvolutionCore const * const pCore, 
 	GridPoint             const gp, 
 	PixelPoint            const pntGridpointOffset 
 )
 {
-	if ( IsNotEmpty () )
+	if (IsNotEmpty ())
 	{
-		Shape::Draw( pCore, gp, pntGridpointOffset );
+		Shape::Draw(pCore, gp, pntGridpointOffset);
 
-		MEM_INDEX const memUsed = pCore->GetMemUsed( gp ); 
-		for	( auto & pSlot : m_aMemorySlot )
+		MEM_INDEX const memUsed = pCore->GetMemUsed(gp); 
+		for	(auto & pSlot : m_aMemorySlot)
 		{
-			if ( pSlot->GetMemIndex() == memUsed )
+			if (pSlot->GetMemIndex() == memUsed)
 				break;
-			pSlot->Draw( pCore, gp, pntGridpointOffset );
+			pSlot->Draw(pCore, gp, pntGridpointOffset);
 		}
 	}
 }

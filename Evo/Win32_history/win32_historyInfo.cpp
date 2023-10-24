@@ -12,15 +12,15 @@
 #include "HistorySystem.h"
 #include "win32_historyInfo.h"
 
-HistInfoWindow::HistInfoWindow( ) :
-    TextWindow( ),
-    m_pHistSys( nullptr )
+HistInfoWindow::HistInfoWindow() :
+    TextWindow(),
+    m_pHistSys(nullptr)
 { }
 
-void HistInfoWindow::Start( HWND const hwndParent, function<bool()> const visibilityCriterion ) 
+void HistInfoWindow::Start(HWND const hwndParent, function<bool()> const visibilityCriterion) 
 {
 	StartTextWindow
-	( 
+	(
 		hwndParent, 
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 415_PIXEL }, 
 		L"HistInfoWindow", 
@@ -30,42 +30,42 @@ void HistInfoWindow::Start( HWND const hwndParent, function<bool()> const visibi
 	);
 }
 
-void HistInfoWindow::Stop( ) 
+void HistInfoWindow::Stop() 
 {
-	TextWindow::StopTextWindow( );
+	TextWindow::StopTextWindow();
 	m_pHistSys->UnregisterAllObservers();
 	m_pHistSys = nullptr;
 }
 
-void HistInfoWindow::SetHistorySystem( HistorySystem * pHistSys ) 
+void HistInfoWindow::SetHistorySystem(HistorySystem * pHistSys) 
 {
 	m_pHistSys = pHistSys;
-	m_pHistSys->RegisterObserver( this );  // Notify me, if something happens in history system
+	m_pHistSys->RegisterObserver(this);  // Notify me, if something happens in history system
 }
 
-void HistInfoWindow::DoPaint( TextBuffer & textBuf )
+void HistInfoWindow::DoPaint(TextBuffer & textBuf)
 {
-	if ( m_pHistSys )
+	if (m_pHistSys)
 	{
-		int iNrOfUsedSlots { m_pHistSys->GetNrOfUsedHistCacheSlots( ).GetValue() };
-		int iNrOfSlots     { m_pHistSys->GetNrOfHistCacheSlots( ).GetValue() };
-		BYTES slotSize     { m_pHistSys->GetSlotSize( ) };
+		int iNrOfUsedSlots { m_pHistSys->GetNrOfUsedHistCacheSlots().GetValue() };
+		int iNrOfSlots     { m_pHistSys->GetNrOfHistCacheSlots().GetValue() };
+		BYTES slotSize     { m_pHistSys->GetSlotSize() };
 		BYTES totalSize    { slotSize.GetValue() * iNrOfSlots };
 
-		textBuf.printString( L"used slots  " );
-		textBuf.setHorizontalPos( 3_TEXT_POSITION );
-		textBuf.printPercentage( iNrOfUsedSlots, iNrOfSlots );
+		textBuf.printString(L"used slots  ");
+		textBuf.setHorizontalPos(3_TEXT_POSITION);
+		textBuf.printPercentage(iNrOfUsedSlots, iNrOfSlots);
 
-		textBuf.nextLine( L"slot size   " );
-		textBuf.setHorizontalPos( 3_TEXT_POSITION );
-		textBuf.printNumber( slotSize.GetValue() );
+		textBuf.nextLine(L"slot size   ");
+		textBuf.setHorizontalPos(3_TEXT_POSITION);
+		textBuf.printNumber(slotSize.GetValue());
 
-		textBuf.nextLine( L"cache size  " );
-		textBuf.setHorizontalPos( 3_TEXT_POSITION );
-		textBuf.printNumber( totalSize.GetValue() );
+		textBuf.nextLine(L"cache size  ");
+		textBuf.setHorizontalPos(3_TEXT_POSITION);
+		textBuf.printNumber(totalSize.GetValue());
 
-		textBuf.nextLine( L"genCurrent  " );
-		textBuf.setHorizontalPos( 3_TEXT_POSITION );
-		textBuf.printNumber( m_pHistSys->GetCurrentGeneration( ).GetLong() );
+		textBuf.nextLine(L"genCurrent  ");
+		textBuf.setHorizontalPos(3_TEXT_POSITION);
+		textBuf.printNumber(m_pHistSys->GetCurrentGeneration().GetLong());
 	}
 }

@@ -2,7 +2,7 @@
 //
 // Win32_utilities
 
-#pragma once
+module;
 
 #include "observerInterface.h"
 
@@ -12,15 +12,15 @@ class HistorySystem;
 class ProtocolServer : public ObserverInterface
 {
 public:
-	ProtocolServer( );
-	~ProtocolServer( );
+	ProtocolServer();
+	~ProtocolServer();
 
-	void Start( HistorySystem * const pHistSys )
+	void Start(HistorySystem * const pHistSys)
 	{
 		m_pHistorySystem = pHistSys;
 	}
 
-	virtual void Notify( bool const );
+	virtual void Notify(bool const);
 
 private:
 	HistorySystem * m_pHistorySystem;

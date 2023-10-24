@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-#pragma once
+module;
 
 #include "win32_textWindow.h"
 
@@ -11,14 +11,14 @@ class HistorySystem;
 class HistInfoWindow: public TextWindow
 {
 public:
-    HistInfoWindow( );
+    HistInfoWindow();
 
-	void Start(	HWND const, function<bool()> const );
-	void Stop( );
+	void Start(	HWND const, function<bool()> const);
+	void Stop();
 
-	void SetHistorySystem( HistorySystem * );
+	void SetHistorySystem(HistorySystem *);
 
-    virtual void DoPaint( TextBuffer & );
+    virtual void DoPaint(TextBuffer &);
 
 private:
 	HistorySystem * m_pHistSys;

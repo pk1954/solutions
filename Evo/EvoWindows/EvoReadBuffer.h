@@ -1,7 +1,7 @@
 // EvoReadBuffer.h 
 //
 
-#pragma once
+module;
 
 #include "EvolutionCore.h"
 #include "win32_readBuffer.h"

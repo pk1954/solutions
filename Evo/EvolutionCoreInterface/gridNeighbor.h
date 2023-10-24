@@ -1,11 +1,12 @@
 // gridNeighbor.h : 
 //
 
-#pragma once
+module;
 
 #include <vector>
 #include <functional>
-#include "gridPoint.h"
+
+import GridPoint;
 
 class Grid;
 
@@ -16,60 +17,60 @@ using NEIGHBORS = vector< GridPoint >;
 class Neighborhood
 {
 public:
-    static void InitClass( int const );
+    static void InitClass(int const);
 
-	static int GetNrOfNeighbors( ) 
+	static int GetNrOfNeighbors() 
 	{ 
 		return m_iNrOfNeighbors; 
 	}
 
-	Neighborhood( )	: m_neighbors( )
+	Neighborhood()	: m_neighbors()
 	{
-		m_neighbors.reserve( m_iNrOfNeighbors );
+		m_neighbors.reserve(m_iNrOfNeighbors);
 	}
 
-	void AddToList( GridPoint const & gp )
+	void AddToList(GridPoint const & gp)
 	{
-		assert( static_cast<int>(m_neighbors.size()) < m_iNrOfNeighbors );
-		m_neighbors.push_back( gp );
+		assert(static_cast<int>(m_neighbors.size()) < m_iNrOfNeighbors);
+		m_neighbors.push_back(gp);
 	}
 
-	void RemoveFromList( function<bool(GridPoint const)> const & func )
+	void RemoveFromList(function<bool(GridPoint const)> const & func)
 	{
-		m_neighbors.erase( std::remove_if(m_neighbors.begin(), m_neighbors.end(), func), m_neighbors.end() ); 
+		m_neighbors.erase(std::remove_if(m_neighbors.begin(), m_neighbors.end(), func), m_neighbors.end()); 
 	}
 
-	size_t GetLength( ) const 
+	size_t GetLength() const 
 	{ 
-		return m_neighbors.size( ); 
+		return m_neighbors.size(); 
 	}
 
-	void Clear( ) 
+	void Clear() 
 	{ 
-		return m_neighbors.clear( ); 
+		return m_neighbors.clear(); 
 	}
 
-	GridPoint const GetElement( unsigned int const uiIndex  ) const 
+	GridPoint const GetElement(unsigned int const uiIndex ) const 
 	{ 
 		return m_neighbors[uiIndex]; 
 	}
 
-	GridPoint const GetRandomElement( unsigned int const uiRandom ) const 
+	GridPoint const GetRandomElement(unsigned int const uiRandom) const 
 	{
-		assert( m_neighbors.size( ) > 0 ); 
-		return m_neighbors[uiRandom % m_neighbors.size( )];
+		assert(m_neighbors.size() > 0); 
+		return m_neighbors[uiRandom % m_neighbors.size()];
 	}
 
-	bool const Includes( GridPoint const & gp ) const 
+	bool const Includes(GridPoint const & gp) const 
 	{
 		return std::find(m_neighbors.begin(), m_neighbors.end(), gp) != m_neighbors.end();
 	}
 
-	void Apply2All( function<void(GridPoint const)> const & func )
+	void Apply2All(function<void(GridPoint const)> const & func)
 	{
-		for ( auto gp : m_neighbors )
+		for (auto gp : m_neighbors)
 		{
-			func( gp );
+			func(gp);
 		}
 	}
 

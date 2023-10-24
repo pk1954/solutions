@@ -1,8 +1,6 @@
-#pragma once
+module;
 
 // identifiers below 100 are reserved for win32_utilities
-#include "win32_util_resource.h"
-
 // identifiers for application start at 100
 
 #define IDI_EVOLUTION                           111

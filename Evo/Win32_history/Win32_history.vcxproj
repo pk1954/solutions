@@ -106,6 +106,7 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,14 +155,28 @@
   <ItemGroup>
     <ClInclude Include="HistAllocThread.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_genDisplayWindow.h" />
     <ClInclude Include="win32_historyInfo.h" />
     <ClInclude Include="win32_histWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_genDisplayWindow.cpp" />
+    <ClCompile Include="GenDisplayWindow.ixx" />
+    <ClCompile Include="GenDisplayWindow.cpp" />
     <ClCompile Include="win32_historyInfo.cpp" />
     <ClCompile Include="win32_histWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\History\History.vcxproj">
+      <Project>{642c34fc-f20c-45a6-bab8-c75988c88f52}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

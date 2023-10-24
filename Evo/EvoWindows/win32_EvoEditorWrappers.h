@@ -2,8 +2,8 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 class EvoEditorWindow;
 
-extern void DefineWin32EditorWrapperFunctions( EvoEditorWindow const * );
+extern void DefineWin32EditorWrapperFunctions(EvoEditorWindow const *);

@@ -2,7 +2,7 @@
 //
 // Evolution
 
-#pragma once
+module;
 
 #include <fstream>
 #include <iostream>
@@ -19,7 +19,6 @@
 #include "win32_EvoWorkThreadInterface.h"
 #include "EvoHistorySysGlue.h"
 #include "EvoReadBuffer.h"
-#include "GDI_driver.h"
 #include "D3D_driver.h"
 
 // application
@@ -48,19 +47,19 @@ class AppMenu;
 class EvoAppWindow : public AppWindowInterface
 {
 public:
-    EvoAppWindow( );
-	~EvoAppWindow( );
+    EvoAppWindow();
+	~EvoAppWindow();
 
-	virtual void Start( );
-	virtual void Stop( );
+	virtual void Start();
+	virtual void Stop();
 
 private:
-	EvoAppWindow             ( EvoAppWindow const & );  // noncopyable class 
-    EvoAppWindow & operator= ( EvoAppWindow const & );  // noncopyable class 
+	EvoAppWindow             (EvoAppWindow const &);  // noncopyable class 
+    EvoAppWindow & operator= (EvoAppWindow const &);  // noncopyable class 
 
-	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 );
+	virtual void ProcessAppCommand(WPARAM const, LPARAM const = 0);
 
-	void configureStatusBar( );
+	void configureStatusBar();
 
 	Util::Event              m_eventPOI;
 					         

@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-#pragma once
+module;
 
 #include "HistorySystem.h"
 #include "win32_thread.h"
@@ -13,21 +13,21 @@ class HistAllocThread : public Util::Thread
 {
 public:
 
-	HistAllocThread( )
-	 :	m_pHistorySys( nullptr )
+	HistAllocThread()
+	 :	m_pHistorySys(nullptr)
 	{ }
 
 	void Start
-	( 
+	(
 		HistorySystem * const pHistSys,
 		BOOL            const bAsync      
 	) 
 	{
 		m_pHistorySys = pHistSys;
 
-		if ( bAsync )
+		if (bAsync)
 		{
-			StartThread( L"HistAlloc", true );  
+			StartThread(L"HistAlloc", true);  
 		}
 		else
 		{
@@ -37,16 +37,16 @@ public:
 
 	~HistAllocThread() {};
 
-	void  ThreadStartupFunc( )
+	void  ThreadStartupFunc()
 	{
-		ThreadMsgDispatcher( MSG{0,0,0,0} );
+		ThreadMsgDispatcher(MSG{0,0,0,0});
 	}
 
-	void ThreadMsgDispatcher( MSG msg )
+	void ThreadMsgDispatcher(MSG msg)
 	{
-		if ( m_pHistorySys->AddHistorySlot() )                    // if allocation of slot 
+		if (m_pHistorySys->AddHistorySlot())                    // if allocation of slot 
 		{                                                         // was successfull,
-			PostThreadMsg( msg.message, msg.wParam, msg.lParam ); // do it again
+			PostThreadMsg(msg.message, msg.wParam, msg.lParam); // do it again
 		}
 	}
 

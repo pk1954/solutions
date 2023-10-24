@@ -21,12 +21,6 @@
     <ClInclude Include="D3D_driver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="d3d_indexBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="d3d_system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="d3d_vertexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,6 +36,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="d3d_vertexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3dSystem.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3dIndexBuffer.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

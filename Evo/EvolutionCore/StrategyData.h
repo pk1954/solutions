@@ -1,35 +1,35 @@
 // StrategyData.h : 
 //
 
-#pragma once
+module;
 #include <array>
 #include "EvolutionTypes.h"
 
 class StrategyData
 {
 public:
-    StrategyData( );
+    StrategyData();
 
-	static void ResetCounters( );
+	static void ResetCounters();
 
-	void SetMemorySize( short const );
+	void SetMemorySize(short const);
 
     // display information
 
-    IND_ID    GetMemEntry( MEM_INDEX const ) const;	
-    MEM_INDEX GetMemSize ( )                 const { return m_memSize; };
-    MEM_INDEX GetMemUsed ( )                 const { return m_memUsed; };
+    IND_ID    GetMemEntry(MEM_INDEX const) const;	
+    MEM_INDEX GetMemSize ()                 const { return m_memSize; };
+    MEM_INDEX GetMemUsed ()                 const { return m_memUsed; };
 
-    static MEM_INDEX    GetMaxPartnerMemory( )                 { return m_uiMaxPartnerMemory; };
-    static unsigned int GetNrInteractionsWithKnownCulprit( )   { return m_uiNrInteractionsWithKnownCulprit; };
-    static unsigned int GetNrInteractionsWithUnknownCulprit( ) { return m_uiNrInteractionsWithUnknownCulprit; };
+    static MEM_INDEX    GetMaxPartnerMemory()                 { return m_uiMaxPartnerMemory; };
+    static unsigned int GetNrInteractionsWithKnownCulprit()   { return m_uiNrInteractionsWithKnownCulprit; };
+    static unsigned int GetNrInteractionsWithUnknownCulprit() { return m_uiNrInteractionsWithUnknownCulprit; };
 
-    static void KnownCulprit( )   { ++m_uiNrInteractionsWithKnownCulprit; };
-    static void UnknownCulprit( ) { ++m_uiNrInteractionsWithUnknownCulprit; };
+    static void KnownCulprit()   { ++m_uiNrInteractionsWithKnownCulprit; };
+    static void UnknownCulprit() { ++m_uiNrInteractionsWithUnknownCulprit; };
 
-	MEM_INDEX FindInListOfCulprits    ( IND_ID const );
-    void      AddToListOfCulprits     ( IND_ID const );
-    void      RemoveFromListOfCulprits( MEM_INDEX const );
+	MEM_INDEX FindInListOfCulprits    (IND_ID const);
+    void      AddToListOfCulprits     (IND_ID const);
+    void      RemoveFromListOfCulprits(MEM_INDEX const);
 
 private:
     static MEM_INDEX    m_uiMaxPartnerMemory;
@@ -41,12 +41,12 @@ private:
 
     std::array< IND_ID, IMEMSIZE_MAX > m_aIdCulprits;
 
-	IND_ID getCulpritId( MEM_INDEX const index ) const
+	IND_ID getCulpritId(MEM_INDEX const index) const
 	{
 		return m_aIdCulprits.at(index.GetValue());
 	}
 
-	void setCulpritId( MEM_INDEX const index, IND_ID const id )
+	void setCulpritId(MEM_INDEX const index, IND_ID const id)
 	{
 		m_aIdCulprits.at(index.GetValue()) = id;
 	}

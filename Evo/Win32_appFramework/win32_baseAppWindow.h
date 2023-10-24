@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#pragma once
+module;
 
 #include <fstream>
 #include <iostream>
@@ -20,14 +20,14 @@ class AppMenu;
 class BaseAppWindow : public BaseWindow
 {
 public:
-	BaseAppWindow( );
+	BaseAppWindow();
 	virtual ~BaseAppWindow(); 
 
-	void Initialize( WorkThreadInterface * const, BOOL const );
+	void Initialize(WorkThreadInterface * const, BOOL const);
 
-	void Start( ModelWindow * const );
+	void Start(ModelWindow * const);
 
-	virtual void ProcessAppCommand( WPARAM const, LPARAM const = 0 ) = 0;
+	virtual void ProcessAppCommand(WPARAM const, LPARAM const = 0) = 0;
 
 protected:
 	HWND       m_hwndApp;
@@ -37,9 +37,9 @@ protected:
 	AppMenu       * m_pAppMenu;        // allocated by application
 	HistorySystem * m_pHistorySystem;  // allocated here
 
-	virtual void Stop( );
+	virtual void Stop();
 
-    bool ProcessFrameworkCommand( WPARAM const, LPARAM const = 0 );
+    bool ProcessFrameworkCommand(WPARAM const, LPARAM const = 0);
 
 private:
 
@@ -55,7 +55,7 @@ private:
 
 	std::wofstream m_traceStream;
 
-	void adjustChildWindows( );
+	void adjustChildWindows();
 
-	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 };

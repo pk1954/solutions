@@ -1,12 +1,13 @@
 // EvolutionCoreWrapperHelpers.h : 
 //
 
-#pragma once
+module;
 
 #include "script.h"
-#include "gridPoint.h"
-#include "gridRect.h"
 
-extern GRID_COORD ScrReadGridCoord( Script & );
-extern GridPoint  ScrReadGridPoint( Script & );
-extern GridRect   ScrReadGridRect ( Script & );
+import GridPoint;
+import GridRect;
+
+extern GRID_COORD ScrReadGridCoord(Script &);
+extern GridPoint  ScrReadGridPoint(Script &);
+extern GridRect   ScrReadGridRect (Script &);

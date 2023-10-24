@@ -1,10 +1,10 @@
 // win32_shape.cpp
 //
 
-#pragma once
+module;
 
 
-#include "win32_shape.h"
+import Shape;
 
 void Shape::Draw
 (
@@ -13,10 +13,10 @@ void Shape::Draw
 	PixelPoint            const ppGridPointOffset 
 )
 {
-	if ( IsNotEmpty() )
+	if (IsNotEmpty())
 	{
 		m_pTextDisplay->Clear();
-		FillBuffer( pCore, gp );
-		m_pTextDisplay->DisplayText( m_rect + ppGridPointOffset );
+		FillBuffer(pCore, gp);
+		m_pTextDisplay->DisplayText(m_rect + ppGridPointOffset);
 	}
 }

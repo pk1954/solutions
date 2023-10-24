@@ -2,12 +2,12 @@
 //
 
 
-#include "assert.h"
-#include "debug.h"
+#include <cassert>
 #include "random.h"
-#include "config.h"
 #include "strategy.h"
 #include "individual.h"
+
+import Config;
 
 static DefectAlways    StratD;
 static CooperateAlways StratC;
@@ -24,44 +24,44 @@ const std::array< Strategy * const, Strategy::COUNT > Individual::m_apStrat =
 	&StratT  // Strategy::Id::tit4tat,  
 };
 
-void Individual::RefreshCache( )
+void Individual::RefreshCache()
 {
-    m_stdEnergyCapacity = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::stdCapacity ));
-    m_initialEnergy     = ENERGY_UNITS(Config::GetConfigValueShort( Config::tId::initialEnergy ));
+    m_stdEnergyCapacity = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::stdCapacity));
+    m_initialEnergy     = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::initialEnergy));
 }
 
-Individual::Individual( )
+Individual::Individual()
 { 
-    ResetIndividual( );
+    ResetIndividual();
 }
 
-void Individual::ResetIndividual( )
+void Individual::ResetIndividual()
 { 
-    m_id.Set2Null( ); 
+    m_id.Set2Null(); 
     m_genBirth.Set2Null();
     m_origin     = tOrigin::undefined;
     m_enStock    = 0_ENERGY_UNITS;
     m_enCapacity = 0_ENERGY_UNITS;
     m_strategyId = Strategy::Id::empty;
-    m_stratData.SetMemorySize( 0 );
-    m_genome.InitGenome( );
+    m_stratData.SetMemorySize(0);
+    m_genome.InitGenome();
 };
 
 void Individual::Create
-( 
+(
     IND_ID         const id,
     EVO_GENERATION const genBirth,
     Strategy::Id   const strategyId
 )
 {
-    m_genome.InitGenome( );
+    m_genome.InitGenome();
     m_id         = id;
     m_genBirth   = genBirth;
     m_origin     = tOrigin::editor;
     m_enCapacity = m_stdEnergyCapacity;
     m_strategyId = strategyId;
-    m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
-    SetEnergy( m_initialEnergy ); // makes IsAlive() true. Last assignment to avoid race conditions  
+    m_stratData.SetMemorySize(m_genome.GetAllele(GeneType::Id::memSize));  // clears memory. Experience not inheritable.
+    SetEnergy(m_initialEnergy); // makes IsAlive() true. Last assignment to avoid race conditions  
 }
 
 // Clone - creates a mutated clone of this individual
@@ -81,8 +81,8 @@ void Individual::Clone
     m_origin     = tOrigin::cloning;
     m_enCapacity = indParent.m_enCapacity;
     m_strategyId = indParent.m_strategyId;
-    m_genome.Mutate( mutationRate, random );
-    m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
+    m_genome.Mutate(mutationRate, random);
+    m_stratData.SetMemorySize(m_genome.GetAllele(GeneType::Id::memSize));  // clears memory. Experience not inheritable.
 }
 
 static Individual const & selectParent
@@ -92,7 +92,7 @@ static Individual const & selectParent
     Individual const & indParB
 )
 {
-    return random.NextBooleanValue( ) ? indParA : indParB;
+    return random.NextBooleanValue() ? indParA : indParB;
 }
 
 // Breed - creates a child with a mix of genes of both parents
@@ -111,9 +111,9 @@ void Individual::Breed
     m_id         = id;
     m_genBirth   = genBirth;
     m_origin     = tOrigin::marriage;
-    m_enCapacity = selectParent( random, indParentA, indParentB ).m_enCapacity;
-    m_strategyId = selectParent( random, indParentA, indParentB ).m_strategyId;
-    m_genome.Recombine( indParentA.m_genome, indParentB.m_genome, random );
-    m_genome.Mutate( mutationRate, random );
-    m_stratData.SetMemorySize( m_genome.GetAllele(GeneType::Id::memSize) );  // clears memory. Experience not inheritable.
+    m_enCapacity = selectParent(random, indParentA, indParentB).m_enCapacity;
+    m_strategyId = selectParent(random, indParentA, indParentB).m_strategyId;
+    m_genome.Recombine(indParentA.m_genome, indParentB.m_genome, random);
+    m_genome.Mutate(mutationRate, random);
+    m_stratData.SetMemorySize(m_genome.GetAllele(GeneType::Id::memSize));  // clears memory. Experience not inheritable.
 }

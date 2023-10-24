@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include "EvoReadBuffer.h"
 #include "win32_textWindow.h"
@@ -12,19 +12,19 @@ class FocusPoint;
 class CrsrWindow: public TextWindow
 {
 public:
-    CrsrWindow( );
-    virtual ~CrsrWindow( );
+    CrsrWindow();
+    virtual ~CrsrWindow();
 
     void Start
-	( 
+	(
 		HWND            const, 
 		EvoReadBuffer * const,
 		FocusPoint    * const 
 	);
 
-	void Stop( );
+	void Stop();
 
-    virtual void DoPaint( TextBuffer & );
+    virtual void DoPaint(TextBuffer &);
 
 private:
     FocusPoint    * m_pFocusPoint;

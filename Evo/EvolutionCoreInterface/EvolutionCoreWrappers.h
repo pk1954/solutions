@@ -1,10 +1,10 @@
 // wrappers.h : 
 //
 
-#pragma once
+module;
 
 class EvolutionCore;
 class EvoPixelCoords;
 
-extern void DefineCoreWrapperFunctions( EvolutionCore * );
-extern void DefineEvoPixelCoordsWrapperFunctions( EvoPixelCoords * );
+extern void DefineCoreWrapperFunctions(EvolutionCore *);
+extern void DefineEvoPixelCoordsWrapperFunctions(EvoPixelCoords *);

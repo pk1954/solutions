@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include "win32_textWindow.h"
 
@@ -12,11 +12,11 @@ class Delay;
 class PerformanceWindow: public TextWindow
 {
 public:
-    PerformanceWindow( );
-    ~PerformanceWindow( ) {}; 
+    PerformanceWindow();
+    ~PerformanceWindow() {}; 
 
     void Start
-	( 
+	(
 		HWND const, 
 		Delay &, 
 		ActionTimer &, 
@@ -24,13 +24,13 @@ public:
 		function<bool()> const 
 	);
 
-	void Stop( );
+	void Stop();
 
-    virtual void DoPaint( TextBuffer & );
+    virtual void DoPaint(TextBuffer &);
 
 private:
-	void printLine( TextBuffer &, wchar_t const * const, microseconds const );
-	void printLine( TextBuffer &, wchar_t const * const, Hertz        const );
+	void printLine(TextBuffer &, wchar_t const * const, microseconds const);
+	void printLine(TextBuffer &, wchar_t const * const, Hertz        const);
 
 	ActionTimer * m_pAtComputation;
 	ActionTimer * m_pAtDisplay;

@@ -30,10 +30,12 @@
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="FixedPipeline.ixx" />
     <ClCompile Include="Geometry.ixx" />
+    <ClCompile Include="Int24.ixx" />
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="PixFpDimension.ixx" />
+    <ClCompile Include="Random.ixx" />
     <ClCompile Include="Raster.cpp" />
     <ClCompile Include="Raster.ixx" />
     <ClCompile Include="SlowMotionRatio.ixx" />
@@ -148,7 +150,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>Default</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

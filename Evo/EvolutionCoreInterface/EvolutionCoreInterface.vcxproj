@@ -100,12 +100,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,7 +153,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="action.h" />
-    <ClInclude Include="config.h" />
     <ClInclude Include="dump.h" />
     <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionTypes.h" />
@@ -162,14 +162,22 @@
     <ClInclude Include="GridDimensions.h" />
     <ClInclude Include="gridNeighbor.h" />
     <ClInclude Include="gridPOI.h" />
-    <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridPoint24.h" />
-    <ClInclude Include="gridRect.h" />
     <ClInclude Include="gridSelection.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
     <ClInclude Include="EvolutionCoreWrappers.h" />
     <ClInclude Include="EvoStatistics.h" />
     <ClInclude Include="strategy.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Config.ixx" />
+    <ClCompile Include="GridPoint.ixx" />
+    <ClCompile Include="GridRect.ixx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

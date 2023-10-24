@@ -1,15 +1,16 @@
 // gpList.h : 
 //
 
-#pragma once
+module;
 
-#include "gridPoint.h"
 #include "gridField.h"
 
+import GridPoint;
+
 #ifdef _DEBUG
-#define CHECK_GRIDPOINT_LIST( grid ) CheckGridPointList( grid )
+#define CHECK_GRIDPOINT_LIST(grid) CheckGridPointList(grid)
 #else 
-#define CHECK_GRIDPOINT_LIST( grid )
+#define CHECK_GRIDPOINT_LIST(grid)
 #endif
 
 class Grid;
@@ -19,37 +20,37 @@ class Grid;
 class GridPointList
 {
 public:
-    GridPointList( ) 
-        : m_gpOldest  ( GP_NULL ),
-          m_gpYoungest( GP_NULL ),
-          m_iCount( 0 )
+    GridPointList() 
+        : m_gpOldest  (GP_NULL),
+          m_gpYoungest(GP_NULL),
+          m_iCount(0)
     { };
 
-    int GetSize( ) const { return m_iCount; }; 
+    int GetSize() const { return m_iCount; }; 
 
-    GridPoint const GetOldestGp  ( ) const { return m_gpOldest;   };
-    GridPoint const GetYoungestGp( ) const { return m_gpYoungest; };
+    GridPoint const GetOldestGp  () const { return m_gpOldest;   };
+    GridPoint const GetYoungestGp() const { return m_gpYoungest; };
 
-    bool ListIsEmpty( ) const { return m_gpOldest.IsNull( ); }
+    bool ListIsEmpty() const { return m_gpOldest.IsNull(); }
 
-    void SetOldest  ( GridPoint const gp ) { m_gpOldest   = gp; }; 
-    void SetYoungest( GridPoint const gp ) { m_gpYoungest = gp; }; 
+    void SetOldest  (GridPoint const gp) { m_gpOldest   = gp; }; 
+    void SetYoungest(GridPoint const gp) { m_gpYoungest = gp; }; 
 
-    bool IsOldest  ( GridPoint const gp ) const { return m_gpOldest   == gp; }
-    bool IsYoungest( GridPoint const gp ) const { return m_gpYoungest == gp; }
+    bool IsOldest  (GridPoint const gp) const { return m_gpOldest   == gp; }
+    bool IsYoungest(GridPoint const gp) const { return m_gpYoungest == gp; }
 
-    void ResetGpList( )
+    void ResetGpList()
     {
-        m_gpOldest  .Set2Null( );
-        m_gpYoungest.Set2Null( );
+        m_gpOldest  .Set2Null();
+        m_gpYoungest.Set2Null();
         m_iCount = 0;
     };
 
-    void AddGridPointToList     ( Grid &, GridField & );
-    void ReplaceGridPointInList ( Grid &, GridField &, GridField & );
-    void DeleteGridPointFromList( Grid &, GridField & );
+    void AddGridPointToList     (Grid &, GridField &);
+    void ReplaceGridPointInList (Grid &, GridField &, GridField &);
+    void DeleteGridPointFromList(Grid &, GridField &);
 
-    void CheckGridPointList( Grid const & ) const;
+    void CheckGridPointList(Grid const &) const;
 
 private:
     GridPoint m_gpOldest;

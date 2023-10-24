@@ -10,19 +10,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="EvolutionCore.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="EvolutionTypes.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gridPoint.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gridRect.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gridNeighbor.h">
@@ -67,5 +58,10 @@
     <ClInclude Include="EvoPixelCoords.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Config.ixx" />
+    <ClCompile Include="GridPoint.ixx" />
+    <ClCompile Include="GridRect.ixx" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,10 @@
 // individual.h : 
 //
 
-#pragma once
+module;
 
 #include <array>
-#include "genome.h"
+#include "Genome.h"
 #include "strategy.h"
 #include "StrategyData.h"
 
@@ -14,56 +14,56 @@ class Individual
 {
 public:
     
-    static void RefreshCache( );
+    static void RefreshCache();
 
-    Individual( );
+    Individual();
 
-    void ResetIndividual( );
+    void ResetIndividual();
     
-    ENERGY_UNITS    GetEnergy    ( )                       const { return m_enStock; };
-    EVO_GENERATION  GetGenBirth  ( )                       const { return m_genBirth; };
-    bool            IsDead       ( )                       const { return m_enStock <= 0_ENERGY_UNITS; };
-    bool            IsAlive      ( )                       const { return m_enStock >  0_ENERGY_UNITS; };
-    bool            IsDefined    ( )                       const { return m_id.IsNotNull(); };
-    IND_ID          GetId        ( )                       const { return m_id; };
-    tOrigin         GetOrigin    ( )                       const { return m_origin; }
-    Genome const &  GetGenome    ( )                       const { return m_genome; }
-	Strategy::Id    GetStrategyId( )                       const { return m_strategyId; }
-	MEM_INDEX       GetMemSize   ( )                       const { return m_stratData.GetMemSize( );  }
-    MEM_INDEX       GetMemUsed   ( )                       const { return m_stratData.GetMemUsed( ); }
-    short           GetAllele    ( GeneType::Id const gt ) const { return m_genome.GetAllele( gt ); }
-    IND_ID          GetMemEntry  ( MEM_INDEX    const ui ) const { return m_stratData.GetMemEntry( ui ); }
+    ENERGY_UNITS    GetEnergy    ()                       const { return m_enStock; };
+    EVO_GENERATION  GetGenBirth  ()                       const { return m_genBirth; };
+    bool            IsDead       ()                       const { return m_enStock <= 0_ENERGY_UNITS; };
+    bool            IsAlive      ()                       const { return m_enStock >  0_ENERGY_UNITS; };
+    bool            IsDefined    ()                       const { return m_id.IsNotNull(); };
+    IND_ID          GetId        ()                       const { return m_id; };
+    tOrigin         GetOrigin    ()                       const { return m_origin; }
+    Genome const &  GetGenome    ()                       const { return m_genome; }
+	Strategy::Id    GetStrategyId()                       const { return m_strategyId; }
+	MEM_INDEX       GetMemSize   ()                       const { return m_stratData.GetMemSize();  }
+    MEM_INDEX       GetMemUsed   ()                       const { return m_stratData.GetMemUsed(); }
+    short           GetAllele    (GeneType::Id const gt) const { return m_genome.GetAllele(gt); }
+    IND_ID          GetMemEntry  (MEM_INDEX    const ui) const { return m_stratData.GetMemEntry(ui); }
 
-    void Create( IND_ID const, EVO_GENERATION const, Strategy::Id const );
-    void Clone ( IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const & );
-    void Breed ( IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const &, Individual const & );
+    void Create(IND_ID const, EVO_GENERATION const, Strategy::Id const);
+    void Clone (IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const &);
+    void Breed (IND_ID const, EVO_GENERATION const, PERCENT const, Random &, Individual const &, Individual const &);
 
-	void Remember( IND_ID const & partnerId, bool const bPartnerReaction ) 
+	void Remember(IND_ID const & partnerId, bool const bPartnerReaction) 
 	{ 
-		m_apStrat.at( static_cast<int>(m_strategyId) )->Remember( m_stratData, partnerId, bPartnerReaction );
+		m_apStrat.at(static_cast<int>(m_strategyId))->Remember(m_stratData, partnerId, bPartnerReaction);
 	};
 
-	bool InteractWith( IND_ID const & partnerId ) 
+	bool InteractWith(IND_ID const & partnerId) 
 	{ 
-		return m_apStrat.at( static_cast<int>(m_strategyId) )->InteractWith( m_stratData, partnerId );
+		return m_apStrat.at(static_cast<int>(m_strategyId))->InteractWith(m_stratData, partnerId);
 	};
 
-	void SetEnergy( ENERGY_UNITS const energy )
+	void SetEnergy(ENERGY_UNITS const energy)
 	{
-       //int sizIND_ID         = sizeof(IND_ID          );
-       //int sizEVO_GENERATION = sizeof(EVO_GENERATION  );
-       //int siztOrigin        = sizeof(tOrigin         );
-       //int sizENERGY_UNITS   = sizeof(ENERGY_UNITS    );
-       //int sizStrategyData   = sizeof(StrategyData    );
-       //int sizGenome         = sizeof(Genome          );
-       //int sizActionId       = sizeof(Action::Id      );
-       int sizIndividual     = sizeof(Individual      );
-	   m_enStock = ( energy > m_enCapacity ) ? m_enCapacity : energy;
+       //int sizIND_ID         = sizeof(IND_ID         );
+       //int sizEVO_GENERATION = sizeof(EVO_GENERATION );
+       //int siztOrigin        = sizeof(tOrigin        );
+       //int sizENERGY_UNITS   = sizeof(ENERGY_UNITS   );
+       //int sizStrategyData   = sizeof(StrategyData   );
+       //int sizGenome         = sizeof(Genome         );
+       //int sizActionId       = sizeof(Action::Id     );
+       int sizIndividual     = sizeof(Individual     );
+	   m_enStock = (energy > m_enCapacity) ? m_enCapacity : energy;
 	}
 
-	void IncEnergy( ENERGY_UNITS const sInc )
+	void IncEnergy(ENERGY_UNITS const sInc)
 	{
-		SetEnergy( ENERGY_UNITS( AssertShortSum( m_enStock.GetValue(), sInc.GetValue() ) ) );
+		SetEnergy(ENERGY_UNITS(AssertShortSum(m_enStock.GetValue(), sInc.GetValue())));
 	}
 
 private:

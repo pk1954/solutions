@@ -2,7 +2,7 @@
 //
 // EvolutionCoreInterface
 
-#pragma once
+module;
 
 #include <array>
 #include <functional>
@@ -23,19 +23,19 @@ public:
 		count
 	};
 
-	static int constexpr COUNT = static_cast<int>( Id::count );
+	static int constexpr COUNT = static_cast<int>(Id::count);
 
-	static void Apply2AllEnabledActions( function<void(Id const &)> const & );
+	static void Apply2AllEnabledActions(function<void(Id const &)> const &);
 
-	static bool IsDefined( Id const action )
+	static bool IsDefined(Id const action)
 	{
 		return action != Id::undefined;
 	}
 
-	static bool IsUndefined( Id const action )
+	static bool IsUndefined(Id const action)
 	{
 		return action == Id::undefined;
 	}
 
-	static wchar_t const * const GetName( Id const );
+	static wchar_t const * const GetName(Id const);
 };

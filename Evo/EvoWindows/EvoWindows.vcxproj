@@ -145,6 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="TextDisplay.ixx" />
     <ClCompile Include="win32_colorManager.cpp" />
     <ClCompile Include="win32_crsrWindow.cpp" />
     <ClCompile Include="win32_displayOptions.cpp" />
@@ -177,7 +178,6 @@
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_protocolServer.h" />
     <ClInclude Include="win32_statistics.h" />
-    <ClInclude Include="win32_textDisplay.h" />
     <ClInclude Include="win32_EvoWorkThread.h" />
     <ClInclude Include="win32_EvoWorkThreadInterface.h" />
     <ClInclude Include="win32_wrappers.h" />

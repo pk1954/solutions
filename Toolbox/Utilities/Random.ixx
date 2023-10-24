@@ -1,13 +1,10 @@
 // Random.ixx : 
 //
-
-module;
-
-#pragma once
-
-#include "debug.h"
+// Toolbox\Utilities
 
 export module Random;
+
+import Debug;
 
 export class Random
 {
@@ -28,12 +25,12 @@ public:
 		m_dX2          = 0.0f;
 	}
 
-	unsigned int NextRandomNumber(void)  // delivers 15 bit pseudo random number
+	unsigned int NextRandomNumber()  // delivers 15 bit pseudo random number
 	{
 		return(((m_ulRandomSeed = m_ulRandomSeed * 214013L + 2531011L) >> 16) & MAX_VAL);
 	}
 
-	bool NextBooleanValue(void)
+	bool NextBooleanValue()
 	{
 		return NextRandomNumber() > (MAX_VAL / 2);
 	}
@@ -55,7 +52,7 @@ public:
 	// f'(0)   = 6                          steep at both ends 
 	// f'(1)   = 6
 
-	double NextWeightedDistribution(void) 
+	double NextWeightedDistribution() 
 	{
 		double dx   = static_cast<double>(NextRandomNumber()) / static_cast<double>(MAX_VAL);
 		double dRes = ((4.0 * dx - 6.0) * dx + 3.0) * dx * 2.0 - 1.0;

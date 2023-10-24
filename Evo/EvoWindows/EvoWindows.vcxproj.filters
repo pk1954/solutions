@@ -60,6 +60,9 @@
     <ClCompile Include="win32_performanceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextDisplay.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -90,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_packGridPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_textDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_colorManager.h">

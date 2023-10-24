@@ -1,8 +1,8 @@
 // win32_wrappers.h : 
 //
 
-#pragma once
+module;
 
 class EvoWorkThreadInterface;
 
-extern void DefineWin32WrapperFunctions( EvoWorkThreadInterface * const );
+extern void DefineWin32WrapperFunctions(EvoWorkThreadInterface * const);

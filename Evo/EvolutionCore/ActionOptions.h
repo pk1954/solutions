@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#pragma once
+module;
 
 #include <array>
 #include <iostream>     
@@ -15,16 +15,16 @@ class Genome;
 class ActionOptions
 {
 public:
-	void InitOptions( Genome const &, bool const, bool const, ENERGY_UNITS const );
+	void InitOptions(Genome const &, bool const, bool const, ENERGY_UNITS const);
 
-	void DisplayValidOptions( std::wostream * const, Genome const &, unsigned int const );
+	void DisplayValidOptions(std::wostream * const, Genome const &, unsigned int const);
 
-	unsigned int GetSumOfValidOptions( Genome const & );
+	unsigned int GetSumOfValidOptions(Genome const &);
 
-	Action::Id SelectAction( Genome const &, unsigned int const );
+	Action::Id SelectAction(Genome const &, unsigned int const);
 
 private:
-	void set( Action::Id const, bool const );
+	void set(Action::Id const, bool const);
 
 	EnumArray<bool, Action> m_abOptions;
 };

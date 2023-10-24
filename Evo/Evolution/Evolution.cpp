@@ -14,14 +14,14 @@ int APIENTRY wWinMain
 	_In_     int       nCmdShow
 )
 {
-    UNREFERENCED_PARAMETER( hPrevInstance );
-    UNREFERENCED_PARAMETER( lpCmdLine );
-    UNREFERENCED_PARAMETER( nCmdShow );
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+    UNREFERENCED_PARAMETER(nCmdShow);
 
-	Util::StdOutConsole( );
+	Util::StdOutConsole();
 
 	EvoAppWindow App;
 	App.Start();
 
-	return MessagePump( hInstance, App.GetWindowHandle(), IDC_EVOLUTION_MAIN );
+	return MessagePump(hInstance, App.GetWindowHandle(), IDC_EVOLUTION_MAIN);
 }

@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#pragma once
+module;
 
 #include "win32_baseAppWindow.h"
 
@@ -10,7 +10,7 @@ class AppWindowInterface : public BaseAppWindow
 {
 
 public:
-	~AppWindowInterface( ) { };
+	~AppWindowInterface() { };
 
-	virtual void Start( ) = 0;
+	virtual void Start() = 0;
 };

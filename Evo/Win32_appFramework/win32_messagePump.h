@@ -2,14 +2,14 @@
 //
 // Win32_appFramework
 
-#pragma once
+module;
 
 #include "minwindef.h"
 
 class AppWindowInterface;
 
 int MessagePump
-( 
+(
 	HINSTANCE const,
 	AppWindowInterface &,
 	int const

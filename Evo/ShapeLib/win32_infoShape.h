@@ -1,15 +1,15 @@
 // win32_infoShape.cpp
 //
 
-#pragma once
+module;
 
 #include <iomanip>     
-#include "win32_shape.h"
+import Shape;
 
 class EvolutionCore;
 
 class InfoShape : public Shape
 {
 public:
-	virtual void FillBuffer( EvolutionCore const * const, GridPoint const );
+	virtual void FillBuffer(EvolutionCore const * const, GridPoint const);
 };

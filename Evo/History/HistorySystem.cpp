@@ -2,16 +2,16 @@
 //
 
 
-#include "assert.h"
+#include <cassert>
 #include "HistorySystem.h"
 #include "HistorySystemImpl.h"
 
 HistorySystem * HistorySystem::CreateHistorySystem()
 {
-	return new HistorySystemImpl( );
+	return new HistorySystemImpl();
 }
 
-BYTES HistorySystem::GetSlotWrapperSize( )
+BYTES HistorySystem::GetSlotWrapperSize()
 { 
-	return BYTES( sizeof( HistCacheItem ) );  
+	return BYTES(sizeof(HistCacheItem));  
 }

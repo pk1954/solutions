@@ -21,10 +21,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="historyCache.h">
+    <ClInclude Include="HistoryCache.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="hist_slot.h">
+    <ClInclude Include="HistSlot.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="genCmdList.h">
@@ -36,15 +36,24 @@
     <ClInclude Include="HistCacheItem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="HistModelData.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="HistoryIterator.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelData.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="historyCache.cpp">
+    <ClCompile Include="HistoryCache.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="historyIterator.cpp">
+    <ClCompile Include="HistoryIterator.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="generationCmd.cpp">
+    <ClCompile Include="GenerationCmd.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistorySystemImpl.cpp">
@@ -54,6 +63,18 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistoryGeneration.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistorySystem.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistGeneration.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerationCmd.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistSlotNr.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

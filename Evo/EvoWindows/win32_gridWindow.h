@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include "GridPoint.h"
 #include "EvoPixelCoords.h"
@@ -23,7 +23,7 @@ class GridWindow : public ModelWindow
 {
 public:
 	static void InitClass
-	( 
+	(
 		EvoReadBuffer          * const,
         EvoWorkThreadInterface * const,
         FocusPoint             * const,
@@ -32,39 +32,39 @@ public:
 		ColorManager           * const 
 	);
 
-    GridWindow( );
+    GridWindow();
 
     void Start
-	( 
+	(
 		HWND                const, 
 		GraphicsInterface * const, 
 		DWORD               const, 
 		PIXEL               const, 
 		function<bool()>    const
 	);
-	void Stop( );
+	void Stop();
 
-	~GridWindow( );
+	~GridWindow();
 	
-	void  Size( );
-	void  Zoom( bool const );
-	void  ToggleStripMode( );
-	void  ToggleClutMode( );
-	void  Escape( );
-	void  SetFieldSize( PIXEL const );
-	void  Fit2Rect( );
-	bool  IsFullGridVisible( ) const;
-	PIXEL GetFieldSize( ) const;
+	void  Size();
+	void  Zoom(bool const);
+	void  ToggleStripMode();
+	void  ToggleClutMode();
+	void  Escape();
+	void  SetFieldSize(PIXEL const);
+	void  Fit2Rect();
+	bool  IsFullGridVisible() const;
+	PIXEL GetFieldSize() const;
 
-	void Observe( GridWindow * const pGridWin )
+	void Observe(GridWindow * const pGridWin)
 	{
 		m_pGridWindowObserved = pGridWin;
 		m_bMoveAllowed = FALSE; 
 	}
 
 private:
-    GridWindow             ( GridWindow const & );  // noncopyable class 
-    GridWindow & operator= ( GridWindow const & );  // noncopyable class 
+    GridWindow             (GridWindow const &);  // noncopyable class 
+    GridWindow & operator= (GridWindow const &);  // noncopyable class 
 
 	static EvoReadBuffer          * m_pReadBuffer;
     static EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
@@ -82,21 +82,21 @@ private:
     BOOL                m_bMoveAllowed;    // TRUE: move with mouse is possible
     HMENU               m_hPopupMenu;
 
-	virtual long AddContextMenuEntries( HMENU const, PixelPoint const );
+	virtual long AddContextMenuEntries(HMENU const, PixelPoint const);
 
-	virtual void OnLeftButtonDblClick( WPARAM const, LPARAM const ) {};
-	virtual bool OnRButtonDown( WPARAM const, LPARAM const ) { return false; };
-	virtual bool OnRButtonUp  ( WPARAM const, LPARAM const ) { return false; };
-	virtual void OnMouseWheel ( WPARAM const, LPARAM const );
-	virtual void OnMouseMove  ( WPARAM const, LPARAM const );
-	virtual bool OnCommand    ( WPARAM const, LPARAM const );
-	virtual void OnLButtonDown( WPARAM const, LPARAM const );
-	virtual void OnLButtonUp  ( WPARAM const, LPARAM const );
-	virtual void OnSetCursor  ( WPARAM const, LPARAM const );
-	virtual void OnSize       ( WPARAM const, LPARAM const );
-	virtual void OnPaint( );
+	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const) {};
+	virtual bool OnRButtonDown(WPARAM const, LPARAM const) { return false; };
+	virtual bool OnRButtonUp  (WPARAM const, LPARAM const) { return false; };
+	virtual void OnMouseWheel (WPARAM const, LPARAM const);
+	virtual void OnMouseMove  (WPARAM const, LPARAM const);
+	virtual bool OnCommand    (WPARAM const, LPARAM const);
+	virtual void OnLButtonDown(WPARAM const, LPARAM const);
+	virtual void OnLButtonUp  (WPARAM const, LPARAM const);
+	virtual void OnSetCursor  (WPARAM const, LPARAM const);
+	virtual void OnSize       (WPARAM const, LPARAM const);
+	virtual void OnPaint();
 
-	void newFieldSize( PIXEL const, GridPoint const );
-    BOOL inObservedClientRect( LPARAM const );
-    void moveGrid( PixelPoint const );
+	void newFieldSize(PIXEL const, GridPoint const);
+    BOOL inObservedClientRect(LPARAM const);
+    void moveGrid(PixelPoint const);
 };

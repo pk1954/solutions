@@ -1,7 +1,7 @@
 // win32_statistics.h 
 //
 
-#pragma once
+module;
 
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
@@ -12,13 +12,13 @@ class EvoStatistics;
 class StatisticsWindow : public TextWindow
 {
 public:
-    StatisticsWindow( );
-    virtual ~StatisticsWindow( );
+    StatisticsWindow();
+    virtual ~StatisticsWindow();
 
-    void Start( HWND const, EvoReadBuffer * const );
-	void Stop( );
+    void Start(HWND const, EvoReadBuffer * const);
+	void Stop();
 
-    virtual void DoPaint( TextBuffer & );
+    virtual void DoPaint(TextBuffer &);
 
 private:
 	EvoReadBuffer * m_pReadBuffer;

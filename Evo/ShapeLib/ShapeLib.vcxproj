@@ -98,6 +98,7 @@
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,8 +129,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>false</ConformanceMode>
+      <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,16 +160,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_coordShape.h" />
-    <ClInclude Include="win32_gridPointShape.h" />
     <ClInclude Include="win32_individualShape.h" />
     <ClInclude Include="win32_infoShape.h" />
     <ClInclude Include="win32_leftColumn.h" />
     <ClInclude Include="win32_memorySlot.h" />
     <ClInclude Include="win32_rightColumn.h" />
-    <ClInclude Include="win32_shape.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CoordShape.ixx" />
+    <ClCompile Include="GridPointShape.ixx" />
+    <ClCompile Include="Shape.ixx" />
     <ClCompile Include="win32_gridPointShape.cpp" />
     <ClCompile Include="win32_individualShape.cpp" />
     <ClCompile Include="win32_infoShape.cpp" />
@@ -174,6 +177,11 @@
     <ClCompile Include="win32_memorySlot.cpp" />
     <ClCompile Include="win32_rightColumn.cpp" />
     <ClCompile Include="win32_shape.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
+      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

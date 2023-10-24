@@ -2,7 +2,7 @@
 //
 // win32_appFramework
 
-#pragma once
+module;
 
 #include "LogarithmicTrackbar.h"
 #include "win32_util_resource.h"
@@ -15,8 +15,8 @@ class SpeedControl
 {
 public:
 
-	static void Add( StatusBar * const, HistorySystem * const, long const, long const, long const );
-	static void Adjust( BOOL const,	WorkThreadInterface * const );
+	static void Add(StatusBar * const, HistorySystem * const, long const, long const, long const);
+	static void Adjust(BOOL const,	WorkThreadInterface * const);
 
 private:
 	static StatusBar     * m_pStatusBar;

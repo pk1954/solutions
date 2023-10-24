@@ -1,7 +1,7 @@
 // interaction.h : 
 //
 
-#pragma once
+module;
 
 #include <iostream>
 
@@ -9,6 +9,6 @@ class Individual;
 
 namespace INTERACTION
 {
-	void RefreshCash( );
-	void Interact( Individual &, Individual &, std::wostream * );
+	void RefreshCash();
+	void Interact(Individual &, Individual &, std::wostream *);
 }

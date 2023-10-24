@@ -2,7 +2,7 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include "GridPoint24.h"
 #include "HistoryGeneration.h"
@@ -42,7 +42,7 @@ public:
 		LAST = SET_POI
 	};
 
-	static BOOL IsValid( EvoWorkThreadMessage::Id msg )
+	static BOOL IsValid(EvoWorkThreadMessage::Id msg)
 	{
 		return (EvoWorkThreadMessage::Id::FIRST <= msg) && (msg <= EvoWorkThreadMessage::Id::LAST);
 	}
@@ -52,7 +52,7 @@ class EvoWorkThread: public WorkThread
 {
 public:
 	EvoWorkThread
-	( 
+	(
 		HWND                     const,
 		ColorManager           * const,
 		ActionTimer            * const,
@@ -62,27 +62,27 @@ public:
 		EvoHistorySysGlue      * const,
 		EvoWorkThreadInterface * const
 	);
-	~EvoWorkThread( );
+	~EvoWorkThread();
 	
 private:
-	GenerationCmd EvoCmd( EvoGenerationCmd::Id const cmd, Int24 const param )
+	GenerationCmd EvoCmd(EvoGenerationCmd::Id const cmd, Int24 const param)
 	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
+		return GenerationCmd::ApplicationCmd(static_cast<GenerationCmd::Id>(cmd), param);  
 	}  
 
-	void editorCommand( EvoGenerationCmd::Id const cmd, WPARAM const wParam )
+	void editorCommand(EvoGenerationCmd::Id const cmd, WPARAM const wParam)
 	{
-		EditorCommand( static_cast<GenerationCmd::Id>(cmd), wParam );
+		EditorCommand(static_cast<GenerationCmd::Id>(cmd), wParam);
 	}
 
-	void editorCommand( EvoGenerationCmd::Id const cmd, GridPoint24 const gp24 )
+	void editorCommand(EvoGenerationCmd::Id const cmd, GridPoint24 const gp24)
 	{
-		GetHistorySystem( )->CreateAppCommand( EvoCmd( cmd, gp24 ) );
+		GetHistorySystem()->CreateAppCommand(EvoCmd(cmd, gp24));
 	}
 
-	virtual BOOL Dispatch( MSG const );
+	virtual BOOL Dispatch(MSG const);
 
-	virtual void WaitTilNextActivation( );
+	virtual void WaitTilNextActivation();
 
 	Delay             * m_pDelay;
 	ColorManager      * m_pColorManager;

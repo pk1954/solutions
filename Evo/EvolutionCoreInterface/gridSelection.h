@@ -2,10 +2,11 @@
 //
 // EvolutionCoreInterface
 
-#pragma once
+module;
 
-#include "GridDimensions.h"
-#include "gridRect.h"
+import GridDimensions;
+
+import GridRect;
 
 class GridSelection
 {
@@ -15,7 +16,7 @@ public:
 		m_gridRectSelection.SetZero(); 
 	};
 
-	static void SetSelection( GridRect const & rect ) 
+	static void SetSelection(GridRect const & rect) 
 	{ 
 		m_gridRectSelection = rect; 
 	}
@@ -32,7 +33,7 @@ public:
 
 	static GridRect GetSelection()  
 	{ 
-		return m_gridRectSelection.IsEmpty( ) 
+		return m_gridRectSelection.IsEmpty() 
 		       ? GridDimensions::GridRectFull() 
 			   : m_gridRectSelection; 
 	}

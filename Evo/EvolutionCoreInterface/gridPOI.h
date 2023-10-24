@@ -1,27 +1,28 @@
 // gridPOI.h
 //
 
-#pragma once
+module;
 
 #include "EvolutionTypes.h"
-#include "gridPoint.h"
+
+import GridPoint;
 
 class GridPOI  // point of interest
 {
 public:
-	static void SetPoi( GridPoint const ); 
+	static void SetPoi(GridPoint const); 
 
-	static void ClearPoi( ) 
+	static void ClearPoi() 
 	{
-		m_gpPOI.Set2Null( ); 
+		m_gpPOI.Set2Null(); 
 	}
 
-	static bool IsPoiDefined( ) 
+	static bool IsPoiDefined() 
 	{ 
-		return m_gpPOI.IsNotNull( ); 
+		return m_gpPOI.IsNotNull(); 
 	}
 
-	static bool IsPoi( GridPoint const gp ) 
+	static bool IsPoi(GridPoint const gp) 
 	{ 
 		return gp == m_gpPOI; 
 	}

@@ -10,13 +10,13 @@ using std::unordered_map;
 using std::setbase;
 using std::setw;
 
-std::wostream & operator<< ( std::wostream & out, IND_ID const & id )
+std::wostream & operator<< (std::wostream & out, IND_ID const & id)
 { 
-	out << L"[" << setbase( 16 ) << id.GetValue() << setbase( 10 ) << L"]";
+	out << L"[" << setbase(16) << id.GetValue() << setbase(10) << L"]";
 	return out;
 }
 
-wchar_t const * const Strategy::GetName( Strategy::Id const id )
+wchar_t const * const Strategy::GetName(Strategy::Id const id)
 {
     static unordered_map < Strategy::Id, wchar_t const * const > mapStrategies =
     { 
@@ -26,10 +26,10 @@ wchar_t const * const Strategy::GetName( Strategy::Id const id )
         { Strategy::Id::empty,     L"" }
     };
 
-    return mapStrategies.at( id );
+    return mapStrategies.at(id);
 }
 
-wchar_t const * const GetShapeName( tShape const s )
+wchar_t const * const GetShapeName(tShape const s)
 {
     static unordered_map < tShape, wchar_t const * const > mapShapes =
     {
@@ -38,10 +38,10 @@ wchar_t const * const GetShapeName( tShape const s )
         { tShape::Grid,   L"tShape::Grid" }
     };
 
-    return mapShapes.at( s );
+    return mapShapes.at(s);
 }
 
-wchar_t const * const GetOriginName( tOrigin const o )
+wchar_t const * const GetOriginName(tOrigin const o)
 {
     static unordered_map < tOrigin, wchar_t const * const > mapOrigins =
     {
@@ -51,10 +51,10 @@ wchar_t const * const GetOriginName( tOrigin const o )
         { tOrigin::undefined, L" undef" }
     };
 
-    return mapOrigins.at( o );
+    return mapOrigins.at(o);
 }
 
-wchar_t const * const Action::GetName( Action::Id const action )
+wchar_t const * const Action::GetName(Action::Id const action)
 {
     static unordered_map < Action::Id, wchar_t const * const > mapOptions =
     { 
@@ -68,10 +68,10 @@ wchar_t const * const Action::GetName( Action::Id const action )
         { Action::Id::undefined, L"undef"     }
     };
 
-    return mapOptions.at( action );
+    return mapOptions.at(action);
 }
 
-wchar_t const * const GeneType::GetName(GeneType::Id const gene )
+wchar_t const * const GeneType::GetName(GeneType::Id const gene)
 {
     static unordered_map < GeneType::Id, wchar_t const * const > mapTitles =
     {
@@ -93,10 +93,10 @@ wchar_t const * const GeneType::GetName(GeneType::Id const gene )
         { GeneType::Id::cloneDonation,  L"clone don" }
     };
 
-    return mapTitles.at( gene );
+    return mapTitles.at(gene);
 }
 
-Action::Id const GetRelatedAction( GeneType::Id const gene )
+Action::Id const GetRelatedAction(GeneType::Id const gene)
 {
     static const unordered_map < GeneType::Id, Action::Id const > mapActions =
     {
@@ -119,10 +119,10 @@ Action::Id const GetRelatedAction( GeneType::Id const gene )
 		{ GeneType::Id::reserve1,       Action::Id::undefined }
 	};
 
-    return mapActions.at( gene );
+    return mapActions.at(gene);
 }
 
-GeneType::Id const GetRelatedGeneType( Action::Id const action )
+GeneType::Id const GetRelatedGeneType(Action::Id const action)
 {
 	static GeneType::Id options[Action::COUNT] 
 	{
@@ -135,10 +135,10 @@ GeneType::Id const GetRelatedGeneType( Action::Id const action )
         GeneType::Id::undefined    //  Action::Id::passOn,   
 	};
 
-    return options[ static_cast<unsigned short>(action) ];
+    return options[static_cast<unsigned short>(action)];
 }
 
-wchar_t const * const GetBrushModeName( tBrushMode const mode )
+wchar_t const * const GetBrushModeName(tBrushMode const mode)
 {
     static unordered_map < tBrushMode, wchar_t const * const > mapModes =
     {
@@ -154,10 +154,10 @@ wchar_t const * const GetBrushModeName( tBrushMode const mode )
         { tBrushMode::fertilizer,  L"tBrushMode::fertilizer" }
     };
 
-    return mapModes.at( mode );
+    return mapModes.at(mode);
 }
 
-bool IsStrategyBrushMode( tBrushMode const mode ) 
+bool IsStrategyBrushMode(tBrushMode const mode) 
 { 
 	return (mode == tBrushMode::randomStrat) 
 		|| (mode == tBrushMode::cooperate)
@@ -166,7 +166,7 @@ bool IsStrategyBrushMode( tBrushMode const mode )
 		|| (mode == tBrushMode::noAnimals); 
 }
 
-wchar_t const * const GetBrushModeNameShort( tBrushMode const mode )
+wchar_t const * const GetBrushModeNameShort(tBrushMode const mode)
 {
     static unordered_map < tBrushMode, wchar_t const * const > mapModes =
     {
@@ -182,10 +182,10 @@ wchar_t const * const GetBrushModeNameShort( tBrushMode const mode )
         { tBrushMode::fertilizer,  L"E_FER" }
     };
 
-    return mapModes.at( mode );
+    return mapModes.at(mode);
 }
 
-wchar_t const * const GetManipulatorName( tManipulator const op )
+wchar_t const * const GetManipulatorName(tManipulator const op)
 {
     static unordered_map < tManipulator, wchar_t const * const > mapManipulators =
     { 
@@ -196,10 +196,10 @@ wchar_t const * const GetManipulatorName( tManipulator const op )
         { tManipulator::subtract, L"subtract" }
     };
 
-    return mapManipulators.at( op );
+    return mapManipulators.at(op);
 }
 
-wchar_t const * const GetColorObjectName( tColorObject const object )
+wchar_t const * const GetColorObjectName(tColorObject const object)
 {
     static unordered_map < tColorObject, wchar_t const * const > mapColorObjects =
     { 
@@ -208,5 +208,5 @@ wchar_t const * const GetColorObjectName( tColorObject const object )
         { tColorObject::highlight,  L"highlight" }
     };
 
-    return mapColorObjects.at( object );
+    return mapColorObjects.at(object);
 }

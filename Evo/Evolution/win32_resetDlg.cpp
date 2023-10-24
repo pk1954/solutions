@@ -4,8 +4,7 @@
 
 
 #include "Resource.h"
-#include "GridDimensions.h"
-#include "win32_util.h"
+import GridDimensions;
 #include "win32_resetDlg.h"
 
 static int const BUFLEN = 20;
@@ -15,7 +14,7 @@ static int       m_iWidth;
 static int       m_iHeight;
 static int       m_iGridType;
 
-int ResetDialog::GetNewWidth( )
+int ResetDialog::GetNewWidth()
 {
 	return m_iWidth;
 }
@@ -30,35 +29,35 @@ int ResetDialog::GetNewNrOfNeighbors()
 	return (m_iGridType == IDM_GRID_TYPE_HEX) ? 6 : 8;
 }
 
-int ResetDialog::Show( HWND const hwndParent )
+int ResetDialog::Show(HWND const hwndParent)
 {
 	m_iResult = -1;
 
-	DialogBox( nullptr, MAKEINTRESOURCE(IDM_RESET_DIALOG), hwndParent, dialogProc );
+	DialogBox(nullptr, MAKEINTRESOURCE(IDM_RESET_DIALOG), hwndParent, dialogProc);
 
 	return m_iResult;
 }
 
-void getUserInput( HWND const hwndDlg, int id, int & iResult )
+void getUserInput(HWND const hwndDlg, int id, int & iResult)
 {
-	if ( GetWindowText( GetDlgItem( hwndDlg, id ), m_wBuffer, BUFLEN ) )
+	if (GetWindowText(GetDlgItem(hwndDlg, id), m_wBuffer, BUFLEN))
 	{
 		int iValue;
-		if ( swscanf_s( m_wBuffer, L"%d", &iValue ) > 0 )
+		if (swscanf_s(m_wBuffer, L"%d", &iValue) > 0)
 			iResult = iValue;
 	}
 }
 
-void enableGridTypeControls( HWND const hwndDlg, BOOL const bState )
+void enableGridTypeControls(HWND const hwndDlg, BOOL const bState)
 {
-	EnableWindow( GetDlgItem( hwndDlg, IDM_CHANGE_GRID_TYPE_WIDTH  ), bState );
-	EnableWindow( GetDlgItem( hwndDlg, IDM_CHANGE_GRID_TYPE_HEIGHT ), bState );
-	EnableWindow( GetDlgItem( hwndDlg, IDM_GRID_TYPE_HEX  ), bState );
-	EnableWindow( GetDlgItem( hwndDlg, IDM_GRID_TYPE_RECT ), bState );
+	EnableWindow(GetDlgItem(hwndDlg, IDM_CHANGE_GRID_TYPE_WIDTH ), bState);
+	EnableWindow(GetDlgItem(hwndDlg, IDM_CHANGE_GRID_TYPE_HEIGHT), bState);
+	EnableWindow(GetDlgItem(hwndDlg, IDM_GRID_TYPE_HEX ), bState);
+	EnableWindow(GetDlgItem(hwndDlg, IDM_GRID_TYPE_RECT), bState);
 }
 
 static INT_PTR CALLBACK dialogProc
-( 
+(
 	HWND   const hDlg, 
 	UINT   const message, 
 	WPARAM const wParam, 
@@ -73,14 +72,14 @@ static INT_PTR CALLBACK dialogProc
 		m_iHeight   = GridDimensions::GridHeightVal();
 		m_iGridType = (GridDimensions::GetNrOfNeigbors() == 6) ? IDM_GRID_TYPE_HEX : IDM_GRID_TYPE_RECT;
 
-		swprintf_s( m_wBuffer, BUFLEN, L"%d", m_iWidth );
-		Util::SetText( GetDlgItem( hDlg, IDM_CHANGE_GRID_TYPE_WIDTH ), m_wBuffer );
+		swprintf_s(m_wBuffer, BUFLEN, L"%d", m_iWidth);
+		Util::SetText(GetDlgItem(hDlg, IDM_CHANGE_GRID_TYPE_WIDTH), m_wBuffer);
 
-		swprintf_s( m_wBuffer, BUFLEN, L"%d", m_iHeight );
-		Util::SetText( GetDlgItem( hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT ), m_wBuffer );
+		swprintf_s(m_wBuffer, BUFLEN, L"%d", m_iHeight);
+		Util::SetText(GetDlgItem(hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT), m_wBuffer);
 
-		SendDlgItemMessage( hDlg, m_iGridType,    BM_CLICK, 0, 0 );
-		SendDlgItemMessage( hDlg, IDM_SOFT_RESET, BM_CLICK, 0, 0 );
+		SendDlgItemMessage(hDlg, m_iGridType,    BM_CLICK, 0, 0);
+		SendDlgItemMessage(hDlg, IDM_SOFT_RESET, BM_CLICK, 0, 0);
 
 		return TRUE;
 	}
@@ -92,14 +91,14 @@ static INT_PTR CALLBACK dialogProc
 		{
 
 		case IDOK:
-			getUserInput( hDlg, IDM_CHANGE_GRID_TYPE_WIDTH,  m_iWidth );
-			getUserInput( hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT, m_iHeight );
-			EndDialog( hDlg, 0 );
+			getUserInput(hDlg, IDM_CHANGE_GRID_TYPE_WIDTH,  m_iWidth);
+			getUserInput(hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT, m_iHeight);
+			EndDialog(hDlg, 0);
 			break;
 
 		case IDCANCEL:
 			m_iResult = -1;
-			EndDialog( hDlg, 0 );
+			EndDialog(hDlg, 0);
 			break;
 
 		case IDM_GRID_TYPE_RECT:
@@ -109,12 +108,12 @@ static INT_PTR CALLBACK dialogProc
 
 		case IDM_SOFT_RESET:
 		case IDM_HISTORY_RESET:
-			enableGridTypeControls( hDlg, false );
+			enableGridTypeControls(hDlg, false);
 			m_iResult = wmId;
 			break;
 
 		case IDM_HARD_RESET:
-			enableGridTypeControls( hDlg, true );
+			enableGridTypeControls(hDlg, true);
 			m_iResult = wmId;
 			break;
 

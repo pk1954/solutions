@@ -2,8 +2,8 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 class WorkThreadInterface;
 
-extern void DefineWin32HistWrapperFunctions( WorkThreadInterface * );
+extern void DefineWin32HistWrapperFunctions(WorkThreadInterface *);

@@ -2,37 +2,37 @@
 //
 // EvolutionCore
 
-#pragma once
+module;
 
-#include "gridPoint.h"
 #include "EvolutionTypes.h"
-#include "gridPoint.h"
+
+import GridPoint;
 
 class Grid;
 
 class GridBrush
 {
 public:
-	GridBrush( Grid * const );
+	GridBrush(Grid * const);
 
 	virtual ~GridBrush() {};
 
-	void Reset( );
+	void Reset();
 
-	void operator()( GridPoint );
-    bool operator!=( GridBrush const & ) const;
+	void operator()(GridPoint);
+    bool operator!=(GridBrush const &) const;
 
-	void SetRadius     ( GRID_COORD   const );
-	void SetIntensity  ( PERCENT      const ); 
-	void SetBrushMode  ( tBrushMode   const );
-	void SetManipulator( tManipulator const );
-	void SetShape      ( tShape       const );
+	void SetRadius     (GRID_COORD   const);
+	void SetIntensity  (PERCENT      const); 
+	void SetBrushMode  (tBrushMode   const);
+	void SetManipulator(tManipulator const);
+	void SetShape      (tShape       const);
 
-    GRID_COORD   const GetRadius     ( ) const { return m_radius;      }
-	PERCENT      const GetIntensity  ( ) const { return m_intensity;   }
-	tShape       const GetShape      ( ) const { return m_shape;       }
-    tBrushMode   const GetBrushMode  ( ) const { return m_brushMode;   }
-    tManipulator const GetManipulator( ) const { return m_manipulator; }
+    GRID_COORD   const GetRadius     () const { return m_radius;      }
+	PERCENT      const GetIntensity  () const { return m_intensity;   }
+	tShape       const GetShape      () const { return m_shape;       }
+    tBrushMode   const GetBrushMode  () const { return m_brushMode;   }
+    tManipulator const GetManipulator() const { return m_manipulator; }
 
 private:
 	

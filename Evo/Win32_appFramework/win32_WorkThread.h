@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#pragma once
+module;
 
 #include "util.h"
 #include "GenerationCmd.h"
@@ -46,7 +46,7 @@ class WorkThread: public Util::Thread
 {
 public:
 	WorkThread
-	( 
+	(
 		HWND                  const,
 		ActionTimer         * const,
 		EventInterface      * const,
@@ -56,18 +56,18 @@ public:
 		WorkThreadInterface * const,
 		BOOL                  const
 	);
-	~WorkThread( );
+	~WorkThread();
 
-	virtual void ThreadStartupFunc( );
-	virtual void ThreadMsgDispatcher( MSG const );
+	virtual void ThreadStartupFunc();
+	virtual void ThreadMsgDispatcher(MSG const);
 	
 	// WorkMessage - process incoming messages from main thread
 
-	void WorkMessage( BOOL const, WorkThreadMessage::Id const, WPARAM const, LPARAM const );
+	void WorkMessage(BOOL const, WorkThreadMessage::Id const, WPARAM const, LPARAM const);
 
-	void NGenerationSteps( int ); 
+	void NGenerationSteps(int); 
 
-	HIST_GENERATION GetGenDemanded( ) const 
+	HistGeneration GetGenDemanded() const 
 	{ 
 		return m_genDemanded; 
 	}
@@ -77,57 +77,57 @@ public:
 		return m_bContinue;
 	}
 
-	void Continue( )
+	void Continue()
 	{
-		if ( m_pEventPOI != nullptr )
-			m_pEventPOI->Continue( );     // trigger worker thread if waiting on POI event
+		if (m_pEventPOI != nullptr)
+			m_pEventPOI->Continue();     // trigger worker thread if waiting on POI event
 	}
 
-	bool IsEditorCommand( HIST_GENERATION const gen )
+	bool IsEditorCommand(HistGeneration const gen)
 	{
-		return GetHistorySystem()->GetGenerationCmd( gen ).IsAppCommand( );
+		return GetHistorySystem()->GetGenerationCmd(gen).IsAppCommand();
 	}
 
-	HIST_GENERATION GetCurrentGeneration( )
+	HistGeneration GetCurrentGeneration()
 	{
 		return GetHistorySystem()->GetCurrentGeneration();
 	}
 
 protected:
-	virtual BOOL Dispatch( MSG const );
+	virtual BOOL Dispatch(MSG const);
 
-	void GotoGeneration( HIST_GENERATION const );
+	void GotoGeneration(HistGeneration const);
 
-	HistorySystem * GetHistorySystem( ) { return m_pHistorySystem; }
+	HistorySystem * GetHistorySystem() { return m_pHistorySystem; }
 
-	void EditorCommand( GenerationCmd::Id const cmd, WPARAM const wParam )
+	void EditorCommand(GenerationCmd::Id const cmd, WPARAM const wParam)
 	{
-		GetHistorySystem( )->CreateAppCommand( makeGenerationCmd( cmd, Int24(CastToUnsignedInt(wParam)) ) );
+		GetHistorySystem()->CreateAppCommand(makeGenerationCmd(cmd, Int24(CastToUnsignedInt(wParam))));
 	}
 
 	virtual void Compute() { m_pModel->Compute(); }
 
-	virtual void WaitTilNextActivation( ) = 0;
+	virtual void WaitTilNextActivation() = 0;
 
-	virtual void SetRunModeHook( BOOL const ) {};  // hook for application when run mode starts/stops
+	virtual void SetRunModeHook(BOOL const) {};  // hook for application when run mode starts/stops
 
 private:
 
-	void generationRun( bool const );
-	void generationStop( );
+	void generationRun(bool const);
+	void generationStop();
 
-	void setRunMode( BOOL const bState )
+	void setRunMode(BOOL const bState)
 	{
 		m_bContinue = bState;
-		SetRunModeHook( bState );
+		SetRunModeHook(bState);
 	}
 
-	GenerationCmd makeGenerationCmd( GenerationCmd::Id const cmd, Int24 const param )
+	GenerationCmd makeGenerationCmd(GenerationCmd::Id const cmd, Int24 const param)
 	{ 
-		return GenerationCmd::ApplicationCmd( static_cast<GenerationCmd::Id>(cmd), param );  
+		return GenerationCmd::ApplicationCmd(static_cast<GenerationCmd::Id>(cmd), param);  
 	}  
 
-	bool userWantsHistoryCut( ) const;
+	bool userWantsHistoryCut() const;
 
 	ActionTimer         * m_pComputeTimer;
     EventInterface      * m_pEventPOI;
@@ -135,7 +135,7 @@ private:
     HistorySystem       * m_pHistorySystem;   // if HistorySystem is not used: nullptr 
 	ModelInterface      * m_pModel;           // if HistorySystem is     used: nullptr
 	WorkThreadInterface * m_pWorkThreadInterface;
-    HIST_GENERATION       m_genDemanded;
+    HistGeneration       m_genDemanded;
     BOOL                  m_bContinue;
 	HWND                  m_hwndApplication;
 };

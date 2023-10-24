@@ -1,23 +1,22 @@
-#pragma once
-
 // win32_packGridPoint.h : 
 //
 
-#pragma once
+module;
 
 #include "minwindef.h"
 #include "windowsx.h"
-#include "gridPoint.h"
 
-static LPARAM Pack2LParam( GridPoint const gp )
+import GridPoint;
+
+static LPARAM Pack2LParam(GridPoint const gp)
 {
-	return MAKELONG( gp.GetXvalue(), gp.GetYvalue() );
+	return MAKELONG(gp.GetXvalue(), gp.GetYvalue());
 }
 
-static GridPoint UnpackFromLParam( LPARAM const lParam )
+static GridPoint UnpackFromLParam(LPARAM const lParam)
 {
 	return GridPoint
-	( 
+	(
 		GRID_COORD(GET_X_LPARAM(lParam)), 
 		GRID_COORD(GET_Y_LPARAM(lParam)) 
 	);

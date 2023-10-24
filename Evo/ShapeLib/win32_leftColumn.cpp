@@ -9,43 +9,43 @@
 // Can be displayed, if at least InfoShape has space
 // If possible, display also IdShape
 
-PixelRectSize LeftColumn::MinimalSize( EvolutionCore const * const pCore )  
+PixelRectSize LeftColumn::MinimalSize(EvolutionCore const * const pCore)  
 {       
-	PixelRectSize const minInfo = m_infoShape.MinimalSize( pCore );
+	PixelRectSize const minInfo = m_infoShape.MinimalSize(pCore);
 
-	return SetMinSize( minInfo );     
+	return SetMinSize(minInfo);     
 }                                     
 
-void LeftColumn::PrepareShape( PixelPoint const ppOffset, PixelRectSize const ppSize )
+void LeftColumn::PrepareShape(PixelPoint const ppOffset, PixelRectSize const ppSize)
 {
-	if ( SetShapeRect( ppOffset, ppSize ) )
+	if (SetShapeRect(ppOffset, ppSize))
 	{
-		m_infoShape.PrepareShape( GetShapePos( ), PixelRectSize( getShapeWidth (), getShapeHeight() ) );
+		m_infoShape.PrepareShape(GetShapePos(), PixelRectSize(getShapeWidth (), getShapeHeight()));
 	}
 }
 
 void LeftColumn::Draw
-( 
+(
 	EvolutionCore const * const pCore, 
 	GridPoint             const gp, 
 	PixelPoint            const pntGridpointOffset 
 )
 {
-	if ( IsNotEmpty () )
+	if (IsNotEmpty ())
 	{
-		m_infoShape.Draw( pCore, gp, pntGridpointOffset );
+		m_infoShape.Draw(pCore, gp, pntGridpointOffset);
 	}
 }
 
 Shape const * LeftColumn::FindShape
-( 
+(
 	PixelPoint const pnt,
 	GridPoint  const gp
 ) const
 {
-	Shape const * pShapeRes = m_infoShape.FindShape( pnt, gp );
-	if ( pShapeRes != nullptr )
+	Shape const * pShapeRes = m_infoShape.FindShape(pnt, gp);
+	if (pShapeRes != nullptr)
 		return pShapeRes;
 
-	return Shape::FindShape( pnt, gp );
+	return Shape::FindShape(pnt, gp);
 }

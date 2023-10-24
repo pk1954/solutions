@@ -2,9 +2,9 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
-#include "GridDimensions.h"
+import GridDimensions;
 #include "GridPoint.h"
 #include "EvolutionCore.h"
 #include "observable.h"
@@ -16,43 +16,43 @@ class EvolutionCore;
 class FocusPoint: public Observable
 {
 public:
-	FocusPoint( ) :
-		m_gp( GP_NULL )
+	FocusPoint() :
+		m_gp(GP_NULL)
 	{ };
-	virtual ~FocusPoint( ) {};
+	virtual ~FocusPoint() {};
 
-	void SetFocusPoint( GridPoint const gpNew )
+	void SetFocusPoint(GridPoint const gpNew)
 	{
-		if ( gpNew != m_gp )
+		if (gpNew != m_gp)
 		{
 			m_gp = gpNew;
-			NotifyAll( false );
+			NotifyAll(false);
 		}
 	}
 
-	GridPoint const GetGridPoint( ) const 
+	GridPoint const GetGridPoint() const 
 	{ 
 		return m_gp; 
 	}
 
-	BOOL const IsInGrid( ) const 
+	BOOL const IsInGrid() const 
 	{ 
-		return ::IsInGrid( m_gp ); 
+		return ::IsInGrid(m_gp); 
 	}
 
-	BOOL const IsAlive( EvolutionCore const & core ) const 
+	BOOL const IsAlive(EvolutionCore const & core) const 
 	{ 
-		return core.IsAlive( m_gp ); 
+		return core.IsAlive(m_gp); 
 	}
 
-	BOOL const IsDead( EvolutionCore const & core ) const 
+	BOOL const IsDead(EvolutionCore const & core) const 
 	{ 
-		return core.IsDead( m_gp ); 
+		return core.IsDead(m_gp); 
 	}
 
-	BOOL const IsDefined( EvolutionCore const & core ) const 
+	BOOL const IsDefined(EvolutionCore const & core) const 
 	{ 
-		return core.IsDefined( m_gp ); 
+		return core.IsDefined(m_gp); 
 	}
 
 private:

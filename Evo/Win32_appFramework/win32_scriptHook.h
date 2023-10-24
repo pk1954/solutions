@@ -2,7 +2,7 @@
 //
 // win32_appFramework
 
-#pragma once
+module;
 
 #include "win32_status.h"
 #include "script.h"
@@ -11,35 +11,35 @@ class ScriptHook : public Script_Functor
 {
 public:
 	ScriptHook()
-	:  m_pStatusBar( nullptr ),
-	   m_iStatusBarPart( 0 )
+	:  m_pStatusBar(nullptr),
+	   m_iStatusBarPart(0)
 	{}
 
-	void Initialize( StatusBar * const pStatusBar, int iPart )
+	void Initialize(StatusBar * const pStatusBar, int iPart)
 	{
 		m_pStatusBar = pStatusBar;
 		m_iStatusBarPart = iPart;
 	}
 
-    virtual void operator( ) ( Script & script ) const
+    virtual void operator() (Script & script) const
     {
-        if ( m_pStatusBar != nullptr )
+        if (m_pStatusBar != nullptr)
         {
 			wstring m_wstrScriptLine;
 
-			if ( script.IsActive() )
+			if (script.IsActive())
 			{
-				wstring const & wszPath = script.GetActPath( );
-				wstring const & wszLine = script.GetActLine( );
-				int     const   iLineNr = script.GetActLineNr( );
-				m_wstrScriptLine = wszPath + L"(" + std::to_wstring( iLineNr ) + L"): " + wszLine;
+				wstring const & wszPath = script.GetActPath();
+				wstring const & wszLine = script.GetActLine();
+				int     const   iLineNr = script.GetActLineNr();
+				m_wstrScriptLine = wszPath + L"(" + std::to_wstring(iLineNr) + L"): " + wszLine;
 			}
 			else 
 			{
 				m_wstrScriptLine = L"";
 			}
 
-			m_pStatusBar->DisplayInPart( m_iStatusBarPart, m_wstrScriptLine );
+			m_pStatusBar->DisplayInPart(m_iStatusBarPart, m_wstrScriptLine);
 		}
     }
 

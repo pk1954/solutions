@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#pragma once
+module;
 
 #include <array>
 #include "random.h"
@@ -11,16 +11,16 @@
 class MortalityTable
 {
 public:
-	static void InitClass( );
+	static void InitClass();
 
-	static unsigned int GetRate( EVO_GENERATION const age )
+	static unsigned int GetRate(EVO_GENERATION const age)
 	{
-		return m_mortalityTable[ age.GetValue() ];
+		return m_mortalityTable[age.GetValue()];
 	}
 
-	static bool IsTimeToDie( EVO_GENERATION const age, Random & random )
+	static bool IsTimeToDie(EVO_GENERATION const age, Random & random)
 	{
-		return MortalityTable::GetRate( age ) > random.NextRandomNumber();
+		return MortalityTable::GetRate(age) > random.NextRandomNumber();
 	}
 
 private:

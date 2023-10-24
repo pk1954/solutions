@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "winver.h"
 

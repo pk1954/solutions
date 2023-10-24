@@ -6,7 +6,7 @@
 #include <fstream>
 #include "EvoGenerationCmd.h"
 
-wchar_t const * const GetEvoCommandNameShort( EvoGenerationCmd::Id const cmd )
+wchar_t const * const GetEvoCommandNameShort(EvoGenerationCmd::Id const cmd)
 {
     static std::unordered_map < EvoGenerationCmd::Id, wchar_t const * const > mapNames =
     {
@@ -19,10 +19,10 @@ wchar_t const * const GetEvoCommandNameShort( EvoGenerationCmd::Id const cmd )
         { EvoGenerationCmd::Id::editSetPOI,              L"SETPOI" }
     };
 
-    return mapNames.at( cmd );
+    return mapNames.at(cmd);
 }
 
-wchar_t const * const GetEvoCommandName( EvoGenerationCmd::Id const cmd )
+wchar_t const * const GetEvoCommandName(EvoGenerationCmd::Id const cmd)
 {
     static std::unordered_map < EvoGenerationCmd::Id, wchar_t const * const > mapNames =
     {
@@ -35,14 +35,14 @@ wchar_t const * const GetEvoCommandName( EvoGenerationCmd::Id const cmd )
         { EvoGenerationCmd::Id::editSetPOI,              L"EvoGenerationCmd::Id::editSetPOI" }
     };
 
-    return mapNames.at( cmd );
+    return mapNames.at(cmd);
 }
 
-std::wostream & operator << ( std::wostream & out, EvoGenerationCmd::Id const & cmd )
+std::wostream & operator << (std::wostream & out, EvoGenerationCmd::Id const & cmd)
 {
-	if ( GenerationCmd::IsAppCmd( static_cast<GenerationCmd::Id>(cmd) ) )
-		out << GetEvoCommandNameShort( cmd  );
+	if (GenerationCmd::IsAppCmd(static_cast<GenerationCmd::Id>(cmd)))
+		out << GetEvoCommandNameShort(cmd );
 	else 
-		out << GetGenerationCmdNameShort( static_cast<GenerationCmd::Id>(cmd) );
+		out << GetGenerationCmdNameShort(static_cast<GenerationCmd::Id>(cmd));
     return out;
 };

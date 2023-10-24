@@ -2,15 +2,16 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include <fstream>
 #include "MoreTypes.h"
 #include "boolOp.h"
-#include "gridRect.h"
 #include "strategy.h"
 #include "EvolutionTypes.h"
 #include "win32_WorkThreadInterface.h"
+
+import GridRect;
 
 class ColorManager;
 class ActionTimer;
@@ -23,11 +24,11 @@ class EvoWorkThread;
 class EvoWorkThreadInterface : public WorkThreadInterface
 {
 public:
-	EvoWorkThreadInterface( );
-    ~EvoWorkThreadInterface( );
+	EvoWorkThreadInterface();
+    ~EvoWorkThreadInterface();
 
 	void Start
-    ( 
+    (
 		HWND                const,
 		ColorManager      * const,
 		ActionTimer       * const,
@@ -35,19 +36,19 @@ public:
 		Delay             * const,
 		ObserverInterface * const, 
 	    EvoHistorySysGlue * const
-    );
+   );
 
-    void PostDoEdit( GridPoint const );
-    void PostSetPOI( GridPoint const );
-    void PostSetBrushMode( tBrushMode const );
-    void PostSetBrushShape( tShape );
-	void PostSetBrushManipulator( tManipulator const );
-    void PostSetBrushIntensity( PERCENT const );
-    void PostSetColor( COLORREF const, tColorObject const, Strategy::Id const );
-    void PostSetBrushRadius( GRID_COORD const );
-	void PostBenchmark( int const );
-	void PostGotoOrigin( GridPoint const );
-	void PostGotoDeath ( GridPoint const );
+    void PostDoEdit(GridPoint const);
+    void PostSetPOI(GridPoint const);
+    void PostSetBrushMode(tBrushMode const);
+    void PostSetBrushShape(tShape);
+	void PostSetBrushManipulator(tManipulator const);
+    void PostSetBrushIntensity(PERCENT const);
+    void PostSetColor(COLORREF const, tColorObject const, Strategy::Id const);
+    void PostSetBrushRadius(GRID_COORD const);
+	void PostBenchmark(int const);
+	void PostGotoOrigin(GridPoint const);
+	void PostGotoDeath (GridPoint const);
 
 private:
 	EvoWorkThread * m_pEvoWorkThread;

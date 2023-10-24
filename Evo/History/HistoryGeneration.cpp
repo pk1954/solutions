@@ -4,14 +4,14 @@
 
 #include "HistoryGeneration.h"
 
-std::wostream & operator << ( std::wostream & out, HIST_GENERATION const & gen )
+std::wostream & operator << (std::wostream & out, HistGeneration const & gen)
 {
-    out << L" " << gen.GetLong( );
+    out << L" " << gen.GetLong();
     return out;
 }
 
-std::ostream & operator << ( std::ostream & out, HIST_GENERATION const & gen )
+std::ostream & operator << (std::ostream & out, HistGeneration const & gen)
 {
-    out << " " << gen.GetLong( );
+    out << " " << gen.GetLong();
     return out;
 }

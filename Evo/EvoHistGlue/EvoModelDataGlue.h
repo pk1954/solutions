@@ -6,67 +6,68 @@
 //
 // EvoHistGlue
 
-#pragma once
+module;
 
-#include "gridRect.h"
-#include "GridDimensions.h"
+import GridDimensions;
 #include "ModelData.h"
 #include "EvolutionCore.h"
 #include "win32_stopwatch.h"
+
+import GridRect;
 
 class EvoModelDataGlue: public ModelData
 {
 public:
 	
-    EvoModelDataGlue( )
+    EvoModelDataGlue()
     { 
-		m_pEvolutionCore = EvolutionCore::CreateCore( );
+		m_pEvolutionCore = EvolutionCore::CreateCore();
 	}
 
-	~EvoModelDataGlue( )
+	~EvoModelDataGlue()
 	{
-		EvolutionCore::DestroyModel( m_pEvolutionCore );
+		EvolutionCore::DestroyModel(m_pEvolutionCore);
 	}
 
-    EvoModelDataGlue & operator= ( EvoModelDataGlue const & );  // noncopyable class 
+    EvoModelDataGlue & operator= (EvoModelDataGlue const &);  // noncopyable class 
 
-	EvolutionCore * GetEvolutionCore( )
-	{
-		return m_pEvolutionCore;
-	}
-
-	EvolutionCore const * GetEvolutionCoreC( ) const
+	EvolutionCore * GetEvolutionCore()
 	{
 		return m_pEvolutionCore;
 	}
 
-	virtual BYTES GetModelSize( ) const
+	EvolutionCore const * GetEvolutionCoreC() const
 	{
-		return m_pEvolutionCore->GetCoreSize( ) + BYTES(sizeof(EvoModelDataGlue));
+		return m_pEvolutionCore;
 	}
 
-	virtual void CopyFrom( ModelData const * const src )
+	virtual BYTES GetModelSize() const
+	{
+		return m_pEvolutionCore->GetCoreSize() + BYTES(sizeof(EvoModelDataGlue));
+	}
+
+	virtual void CopyFrom(ModelData const * const src)
 	{
 //		stopwatch.Start();
-		m_pEvolutionCore->CopyModelData( static_cast< EvoModelDataGlue const * const >( src )->m_pEvolutionCore );
-//		stopwatch.Stop( L"Copy model" );
+		m_pEvolutionCore->CopyModelData(static_cast< EvoModelDataGlue const * const >(src)->m_pEvolutionCore);
+//		stopwatch.Stop(L"Copy model");
 	}
 
-    GridPoint FindGridPointFromId( IND_ID const id ) const
+    GridPoint FindGridPointFromId(IND_ID const id) const
 	{ 
-		return m_pEvolutionCore->FindGridPointFromId( id );
+		return m_pEvolutionCore->FindGridPointFromId(id);
 	}
 
-	virtual void OnAppCommand( GenerationCmd const );
+	virtual void OnAppCommand(GenerationCmd const);
 
-	virtual void Compute( )
+	virtual void Compute()
 	{
-		m_pEvolutionCore->Compute( );  // compute next generation
+		m_pEvolutionCore->Compute();  // compute next generation
 	}
 
-	virtual void ResetAll( )
+	virtual void ResetAll()
 	{
-		m_pEvolutionCore->ResetAll( );
+		m_pEvolutionCore->ResetAll();
 	}
 
 private:

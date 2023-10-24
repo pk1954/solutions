@@ -2,7 +2,7 @@
 //
 // EvolutionCoreInterface
 
-#pragma once
+module;
 
 #include <array>
 #include <functional>
@@ -32,19 +32,19 @@ public:
 		undefined = count
 	};
 
-	static int constexpr COUNT = static_cast<int>( Id::count );
+	static int constexpr COUNT = static_cast<int>(Id::count);
 
-	static void Apply2AllEnabledGeneTypes( function<void(Id const &)> const & );
+	static void Apply2AllEnabledGeneTypes(function<void(Id const &)> const &);
 
-	static bool IsDefined( Id const geneType )
+	static bool IsDefined(Id const geneType)
 	{
 		return geneType != Id::undefined;
 	}
 
-	static bool IsUndefined( Id const geneType )
+	static bool IsUndefined(Id const geneType)
 	{
 		return geneType == Id::undefined;
 	}
 
-	static wchar_t const * const GetName( Id const );
+	static wchar_t const * const GetName(Id const);
 };

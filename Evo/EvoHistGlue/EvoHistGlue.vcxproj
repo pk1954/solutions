@@ -149,16 +149,21 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvoGenerationCmd.h" />
     <ClInclude Include="EvoHistorySysGlue.h" />
     <ClInclude Include="EvoModelDataGlue.h" />
     <ClInclude Include="EvoModelFactory.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EvoGenerationCmd.ixx" />
     <ClCompile Include="EvoGenerationCmd.cpp" />
     <ClCompile Include="EvoHistorySysGlue.cpp" />
     <ClCompile Include="EvoModelDataGlue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\History\History.vcxproj">
+      <Project>{642c34fc-f20c-45a6-bab8-c75988c88f52}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

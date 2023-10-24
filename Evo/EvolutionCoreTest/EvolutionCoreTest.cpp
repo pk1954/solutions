@@ -4,15 +4,16 @@
 #include "version.h"
 #include <chrono>
 #include <iostream>
-#include "config.h"
 #include "trace.h"
 #include "script.h"
 #include "win32_hiResTimer.h"
-#include "gridPoint.h"
-#include "gridRect.h"
-#include "GridDimensions.h"
+import GridDimensions;
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
+
+import Config;
+import GridPoint;
+import GridRect;
 
 using std::chrono::microseconds;
 using std::chrono::milliseconds;
@@ -28,53 +29,53 @@ EvolutionCore * pCore;
 
 void testee()
 {
-	for ( int i = 0; i <= NRUNS; ++i )
+	for (int i = 0; i <= NRUNS; ++i)
 	{
-		pCore->Compute( );
+		pCore->Compute();
 	}
 }
 
 void tara()
 {
-	for ( int i = 0; i <= NRUNS; ++i )
+	for (int i = 0; i <= NRUNS; ++i)
 	{ }
 }
 
-void DoTest( )
+void DoTest()
 {
 	HiResTimer m_hrtimer;
-	wofstream  m_traceStream = OpenTraceFile( L"main_trace.out" );
+	wofstream  m_traceStream = OpenTraceFile(L"main_trace.out");
 
-	Config::SetDefaultConfiguration( );
-	Config::DefineConfigWrapperFunctions( );
-	Script::ProcessScript( L"std_configuration.in" );
+	Config::SetDefaultConfiguration();
+	Config::DefineConfigWrapperFunctions();
+	Script::ProcessScript(L"std_configuration.in");
 	GridDimensions::DefineGridSize
-	( 
-		GRID_COORD{ Config::GetConfigValueShort( Config::tId::gridWidth ) }, 
-		GRID_COORD{ Config::GetConfigValueShort( Config::tId::gridHeight ) }, 
-		Config::GetConfigValue( Config::tId::nrOfNeighbors ) 
+	(
+		GRID_COORD{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
+		GRID_COORD{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
+		Config::GetConfigValue(Config::tId::nrOfNeighbors) 
 	);
-	EvolutionCore::InitClass( GridDimensions::GetNrOfNeigbors(), nullptr, nullptr );
+	EvolutionCore::InitClass(GridDimensions::GetNrOfNeigbors(), nullptr, nullptr);
 
-	pCore = EvolutionCore::CreateCore( );
-	DefineCoreWrapperFunctions( pCore );
+	pCore = EvolutionCore::CreateCore();
+	DefineCoreWrapperFunctions(pCore);
 
-	Script::ProcessScript( L"std_script.in" );
+	Script::ProcessScript(L"std_script.in");
 
-	m_hrtimer.Start( );
-	tara( );
-	m_hrtimer.Stop( );
+	m_hrtimer.Start();
+	tara();
+	m_hrtimer.Stop();
 
-	microseconds usTara = m_hrtimer.GetDuration( );
+	microseconds usTara = m_hrtimer.GetDuration();
 	milliseconds msTara = duration_cast<milliseconds>(usTara);
 
-	m_hrtimer.Start( );
-	testee( );
-	m_hrtimer.Stop( );
+	m_hrtimer.Start();
+	testee();
+	m_hrtimer.Stop();
 
-	wcout << L"Gen " << pCore->GetEvoGenerationNr().GetValue() << L" " << pCore->GetNrOfLivingIndividuals( ) << L" individuals alive" << endl;
+	wcout << L"Gen " << pCore->GetEvoGenerationNr().GetValue() << L" " << pCore->GetNrOfLivingIndividuals() << L" individuals alive" << endl;
 
-	microseconds usBrutto = m_hrtimer.GetDuration( );
+	microseconds usBrutto = m_hrtimer.GetDuration();
 	milliseconds msBrutto = duration_cast<milliseconds>(usBrutto);
 
 	microseconds usNetto = usBrutto - usTara;
@@ -88,7 +89,7 @@ void DoTest( )
 	wcout << endl << L"*** EvolutionCoreTest finished" << endl;
 }
 
-int _tmain( int const argc, _TCHAR const * const argv[] )
+int _tmain(int const argc, _TCHAR const * const argv[])
 {
 	wcout << VER_PRODUCTNAME_STR << L" " << VER_FILE_DESCRIPTION_STR << endl;
 	wcout << L"Build at " << __DATE__ << L" " << __TIME__ << endl;
@@ -97,7 +98,7 @@ int _tmain( int const argc, _TCHAR const * const argv[] )
 	
 	try
 	{
-		DoTest( );
+		DoTest();
 	}
 	catch (...)
 	{

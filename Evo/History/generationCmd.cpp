@@ -1,12 +1,12 @@
-// generationCmd.cpp
+// GenerationCmd.cpp
 //
-// HistoryInterface
+// History
 
 
 #include <unordered_map>
 #include "GenerationCmd.h"
 
-wchar_t const * const GetGenerationCmdNameShort( GenerationCmd::Id const cmd )
+wchar_t const * const GetGenerationCmdNameShort(GenerationCmd::Id const cmd)
 {
     static std::unordered_map < GenerationCmd::Id, wchar_t const * const > mapNames =
     {
@@ -16,10 +16,10 @@ wchar_t const * const GetGenerationCmdNameShort( GenerationCmd::Id const cmd )
 	    { GenerationCmd::Id::RESET,     L"RESET" }
 	};
 
-    return mapNames.at( cmd );
+    return mapNames.at(cmd);
 }
 
-wchar_t const * const GetGenerationCmdName( GenerationCmd::Id const cmd )
+wchar_t const * const GetGenerationCmdName(GenerationCmd::Id const cmd)
 {
     static std::unordered_map < GenerationCmd::Id, wchar_t const * const > mapNames =
     {
@@ -29,12 +29,12 @@ wchar_t const * const GetGenerationCmdName( GenerationCmd::Id const cmd )
 		{ GenerationCmd::Id::RESET,     L"GenerationCmd::Id::reset"     }
 	};
 
-    return mapNames.at( cmd );
+    return mapNames.at(cmd);
 }
 
-std::wostream & operator << ( std::wostream & out, GenerationCmd const & genCmd )
+std::wostream & operator << (std::wostream & out, GenerationCmd const & genCmd)
 {
-    GenerationCmd::Id cmd = genCmd.GetCommand( );
-    out << GetGenerationCmdNameShort( cmd );
+    GenerationCmd::Id cmd = genCmd.GetCommand();
+    out << GetGenerationCmdNameShort(cmd);
     return out;
 };

@@ -2,21 +2,21 @@
 //
 // EvoWindows
 
-#pragma once
+module;
 
 #include <array>
 #include <iostream>     
 #include <sstream> 
 #include "Strategy.h"
 #include "PixelTypes.h"
-#include "gridPoint.h"
-#include "gridRect.h"
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
-#include "win32_util.h"
 #include "win32_clut.h"
 #include "win32_gridPointShape.h"
-#include "win32_textDisplay.h"
+
+import TextDisplay;
+import GridPoint;
+import GridRect;
 
 class GraphicsInterface;
 class EvoPixelCoords;
@@ -29,10 +29,10 @@ class DrawFrame
 public:
 
 	DrawFrame();
-	~DrawFrame( );
+	~DrawFrame();
 
     void Start
-	( 
+	(
 		HWND                const, 
 		EvoReadBuffer     * const, 
 		EvoPixelCoords    * const, 
@@ -41,19 +41,19 @@ public:
 		ColorManager      * const
 	);
 
-    void ResizeDrawFrame( EvolutionCore const * const );
-    void DoPaint( EvolutionCore const * );
-	void SetStripMode( tBoolOp );
-	bool SetHighlightPos( EvolutionCore const * const, PixelPoint const );
-	void HighlightShape( Shape const *, GridPoint const );
-	void CallStrategyColorDialog( HWND const, Strategy::Id const );
-	void CallHighlightColorDialog( HWND const );
-	void CallSelectionColorDialog( HWND const );
-	void AddContextMenuEntries( EvolutionCore const * const, HMENU const, PixelPoint const );
+    void ResizeDrawFrame(EvolutionCore const * const);
+    void DoPaint(EvolutionCore const *);
+	void SetStripMode(tBoolOp);
+	bool SetHighlightPos(EvolutionCore const * const, PixelPoint const);
+	void HighlightShape(Shape const *, GridPoint const);
+	void CallStrategyColorDialog(HWND const, Strategy::Id const);
+	void CallHighlightColorDialog(HWND const);
+	void CallSelectionColorDialog(HWND const);
+	void AddContextMenuEntries(EvolutionCore const * const, HMENU const, PixelPoint const);
 
 private:
-    DrawFrame             ( DrawFrame const & );  // noncopyable class 
-    DrawFrame & operator= ( DrawFrame const & );  // noncopyable class 
+    DrawFrame             (DrawFrame const &);  // noncopyable class 
+    DrawFrame & operator= (DrawFrame const &);  // noncopyable class 
 
 	HWND                m_hwnd;
 	GridPoint           m_gpHighlight;
@@ -77,17 +77,17 @@ private:
 
     std::wostringstream m_wBuffer;
 
-    void startOutputString( )  
+    void startOutputString()  
 	{ 
-		m_wBuffer.str( std::wstring() );
+		m_wBuffer.str(std::wstring());
 		m_wBuffer.clear();
 	}
 
-    COLORREF getBackgroundColor( CLUT_INDEX ) const;
-    void     setIndividualColor( EvolutionCore const * const, GridPoint const, float const ) const;
-	void     addPrimitive( GridPoint const, COLORREF const, float const ) const;
+    COLORREF getBackgroundColor(CLUT_INDEX) const;
+    void     setIndividualColor(EvolutionCore const * const, GridPoint const, float const) const;
+	void     addPrimitive(GridPoint const, COLORREF const, float const) const;
 	
-	void drawBackground ( EvolutionCore const * const );
-    void drawText       ( EvolutionCore const * const, GridRect  const & );
-    void drawIndividuals( EvolutionCore const * const, GridRect  const & );
+	void drawBackground (EvolutionCore const * const);
+    void drawText       (EvolutionCore const * const, GridRect  const &);
+    void drawIndividuals(EvolutionCore const * const, GridRect  const &);
 };

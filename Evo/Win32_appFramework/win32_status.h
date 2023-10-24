@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-#pragma once
+module;
 
 #include <string>
 #include <vector>
@@ -19,29 +19,29 @@ public:
 	StatusBar();
 
 	void Start
-	( 
+	(
 		HWND                        const, 
 		WorkThreadInterface const * const
 	);
-	void  Stop( );
+	void  Stop();
 
-	PIXEL GetHeight( ) const;
-    void  Resize( ) const;
+	PIXEL GetHeight() const;
+    void  Resize() const;
 
-    HWND WINAPI AddStaticControl( LPCTSTR );
-    HWND WINAPI AddButton       ( LPCTSTR const, HMENU const, DWORD const  );
-    HWND WINAPI AddTrackBar     ( HMENU );
+    HWND WINAPI AddStaticControl(LPCTSTR);
+    HWND WINAPI AddButton       (LPCTSTR const, HMENU const, DWORD const );
+    HWND WINAPI AddTrackBar     (HMENU);
 
-	void AddCustomControl( PIXEL const );
+	void AddCustomControl(PIXEL const);
 
-	int  NewPart( );
-	void LastPart( );
+	int  NewPart();
+	void LastPart();
 
-	void DisplayInPart( int const, std::wstring const & );
+	void DisplayInPart(int const, std::wstring const &);
 
 private:
 
-	HWND WINAPI addControl( LPCTSTR, LPCTSTR, DWORD, HMENU );
+	HWND WINAPI addControl(LPCTSTR, LPCTSTR, DWORD, HMENU);
 
 	std::vector< PIXEL > m_statWidths;
 
@@ -52,7 +52,7 @@ private:
 
 	WorkThreadInterface const * m_pWorkThreadInterface;
 
-	virtual LRESULT UserProc( UINT const, WPARAM const, LPARAM const );
+	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 
-friend static LRESULT CALLBACK OwnerDrawStatusBar( HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR );
+friend static LRESULT CALLBACK OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 };

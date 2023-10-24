@@ -1,56 +1,57 @@
 // gplIterator.h : 
 //
 
-#pragma once
+module;
 
-#include "assert.h"
-#include "gridPoint.h"
+#include <cassert>
+
+import GridPoint;
 
 class Grid;
 
 class GplIterator
 {
 public:
-    explicit GplIterator( Grid const & grid ) 
-    :   m_grid( grid ),
-        m_gpCurrent( GP_NULL )
+    explicit GplIterator(Grid const & grid) 
+    :   m_grid(grid),
+        m_gpCurrent(GP_NULL)
     { };
 
-    GridPoint Begin( )
+    GridPoint Begin()
     {
-        m_gpCurrent = m_grid.GetOldestGp( ); 
+        m_gpCurrent = m_grid.GetOldestGp(); 
         return m_gpCurrent;
     }
 
-    GridPoint GotoNext( )
+    GridPoint GotoNext()
     {
-        assert( IsInGrid( m_gpCurrent ) );
-        m_gpCurrent = m_grid.GetJuniorGp( m_gpCurrent );
+        assert(IsInGrid(m_gpCurrent));
+        m_gpCurrent = m_grid.GetJuniorGp(m_gpCurrent);
         return m_gpCurrent;
     } 
     
-    void MoveTo( GridPoint const gpNewPos ) 
+    void MoveTo(GridPoint const gpNewPos) 
     { 
         m_gpCurrent = gpNewPos; 
     };
 
-    GridPoint GetCurrent( ) const 
+    GridPoint GetCurrent() const 
     { 
         return m_gpCurrent; 
     };
 
-    bool IsAtEnd( ) const 
+    bool IsAtEnd() const 
     { 
-        return m_gpCurrent.IsNull( ); 
+        return m_gpCurrent.IsNull(); 
     };
     
-    bool IsNotAtEnd( ) const 
+    bool IsNotAtEnd() const 
     {
-        return m_gpCurrent.IsNotNull( ); 
+        return m_gpCurrent.IsNotNull(); 
     };
 
 private:
-    GplIterator( GplIterator const & ); // Disable copy constructor
+    GplIterator(GplIterator const &); // Disable copy constructor
 
 //lint -e1725         // reference member
     Grid const & m_grid;

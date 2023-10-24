@@ -30,12 +30,6 @@
     <ClInclude Include="grid_model.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gene.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="genome.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gpList.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -46,9 +40,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="interaction.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gridBrush.h">
@@ -77,7 +68,7 @@
     <ClCompile Include="food.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="genome.cpp">
+    <ClCompile Include="Genome.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="gpList.cpp">
@@ -144,6 +135,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvoPixelCoords.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Genome.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Gene.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneTypeLimits.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,7 +2,7 @@
 //
 // Evolution
 
-#pragma once
+module;
 
 class EvoAppWindow;
 class Delay;
@@ -28,7 +28,7 @@ public:
 		EvoEditorWindow   * const
 	);
 
-	virtual ~EvoController( );
+	virtual ~EvoController();
 
 	void EvoController::Initialize
 	(
@@ -36,11 +36,11 @@ public:
 		EvoWorkThreadInterface * const
 	);
 
-	bool ProcessUIcommand   ( int const, LPARAM const );
-	bool ProcessModelCommand( int const, LPARAM const );
+	bool ProcessUIcommand   (int const, LPARAM const);
+	bool ProcessModelCommand(int const, LPARAM const);
 
 private:
-	void setSizeTrackBar( PIXEL const );
+	void setSizeTrackBar(PIXEL const);
 
 	EvoAppWindow           * m_pAppWindow;
 	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
