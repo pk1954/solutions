@@ -13,6 +13,7 @@ module;
 
 module NNetWin32:ParameterDialog;
 
+import SaveCast;
 import Win32_Util_Resource;
 import WinManager;
 import Win32_Controls;
@@ -121,7 +122,16 @@ void ParameterDialog::Start(HWND const hwndParent)
 	iYpos += VERT_BLOCK_SPACE;
 
 	addParameter(hwndDlg, scanResolution, iYpos);
+	addParameter(hwndDlg, scanHorzPixels, iYpos);
+	addParameter(hwndDlg, scanVertPixels, iYpos);
 	addParameter(hwndDlg, pixelScanTime,  iYpos);
+	{
+		int  iXpos{ LEFT_SPACE };
+		HWND const hwndStatic = CreateStaticField(hwndDlg, L"Scan time", iXpos, iYpos, NAME_WIDTH, HEIGHT);
+		iXpos += NAME_WIDTH + HORZ_SPACE;
+		m_hwndScanTime = CreateStaticField(hwndDlg, L"", iXpos, iYpos, EDIT_WIDTH + HORZ_SPACE + UNIT_WIDTH, HEIGHT);
+		iYpos += HEIGHT + VERT_SPACE;
+	}
 	iYpos += HEIGHT;
 
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);
@@ -137,8 +147,10 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(1, L"Synapse");
 	paintHeader(1, L"Dendrite");
 	paintHeader(2, L"General");
-	paintHeader(2, L"Scan");
+	paintHeader(5, L"Scan");
 	refreshParameters();
+	fMicroSecs usScanTime { m_pNMWI->GetParams().ScanTime() * Cast2Float(m_pNMWI->GetScanRaster().NrOfPoints()) };
+	::SetEditField(m_hwndScanTime, Format2wstring(usScanTime));
 }
 
 void ParameterDialog::paintHeader

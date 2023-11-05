@@ -46,7 +46,9 @@ private:
 
 	IDWriteTextFormat        * m_pTextFormatHeader { nullptr };
 	NNetModelWriterInterface * m_pNMWI             { nullptr };
+	HWND                       m_hwndScanTime      { nullptr };
 	bool                       m_bEnabled          { true };
+
 
 	fPixel m_fPixPosVert;      // helper for paintHeader
 
@@ -60,7 +62,7 @@ private:
 
 	void resetParameter(ParamField &) const;
 	void applyParameter(ParamField &);
-	void addParameter  (HWND const, ParamType::Value const, int &);
+	void addParameter(HWND const, ParamType::Value const, int&);
 	void refreshParameters();
 	void applyParameters();
 	void paintHeader(int const, wstring const &);

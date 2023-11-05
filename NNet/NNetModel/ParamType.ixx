@@ -26,6 +26,8 @@ public:
 		synapseDelay,     // delay of incoming pulse in synapse
 		pulseSpeed,
 		pulseWidth,
+		scanHorzPixels,
+		scanVertPixels,
 		scanResolution,
 		pixelScanTime,
 		timeResolution,

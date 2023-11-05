@@ -34,6 +34,8 @@ wchar_t const* ParamType::GetName(ParamType::Value const p)
 		{ pulseWidth,     L"PulseWidth"      },
 		{ timeResolution, L"TimeResolution"  },
 		{ pixelScanTime,  L"PixelScanTime"   },
+		{ scanHorzPixels, L"Horizontal size" },
+		{ scanVertPixels, L"Vertical size"   },
 		{ scanResolution, L"ScanResolution"  }
 	};
 
@@ -58,6 +60,8 @@ wchar_t const* ParamType::GetUnit(ParamType::Value const p)
 		{ pulseWidth,     L"µs"    },
 		{ pixelScanTime,  L"µs"    },
 		{ timeResolution, L"µs"    },
+		{ scanHorzPixels, L"pix"   },
+		{ scanVertPixels, L"pix"   },
 		{ scanResolution, L"µm"    }
 	};
 

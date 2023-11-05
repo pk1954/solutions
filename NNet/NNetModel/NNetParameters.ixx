@@ -42,6 +42,8 @@ public:
 	fMicroSecs  PixelScanTime () const { return m_usPixelScanTime; }
 	fMicroSecs  TimeResolution() const { return m_pSignalParameters->TimeResolution(); }
 	MicroMeter  ScanResolution() const { return m_pScanRaster->Resolution(); }
+	RasterPoint ScanSize      () const { return m_pScanRaster->Size(); }
+	fMicroSecs  ScanTime      () const { return m_usPixelScanTime; }
 
 private:
 	fHertz      m_freqMax         { 50.0_fHertz };

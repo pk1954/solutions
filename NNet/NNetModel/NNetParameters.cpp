@@ -31,6 +31,8 @@ float NNetParameters::GetParameterValue(ParamType::Value const param) const
 	case pulseWidth:	 return m_pulseWidth.GetValue();
 	case pixelScanTime:  return m_usPixelScanTime.GetValue();
 	case timeResolution: return TimeResolution().GetValue();
+	case scanHorzPixels: return static_cast<float>(ScanSize().m_x);
+	case scanVertPixels: return static_cast<float>(ScanSize().m_y);
 	case scanResolution: return ScanResolution().GetValue();
 	default: assert(false);
 	}
@@ -50,19 +52,21 @@ void NNetParameters::SetParameterValue
 	case pulseFreqMax:   m_freqMax = (static_cast<fHertz>(fNewValue));
                          m_usPulseDistMin = PulseDuration(m_freqMax);
                          break;
-	case inputPeakTime:  sigGenData.SetPeakTime(static_cast<fMicroSecs> (fNewValue)); break;
-	case inputPeakFreq:  sigGenData.SetFreqPeak(static_cast<fHertz>     (fNewValue)); break;
-	case inputBaseFreq:  sigGenData.SetFreqBase(static_cast<fHertz>     (fNewValue)); break;
-	case inputPeakVolt:  sigGenData.SetAmplPeak(static_cast<mV>         (fNewValue)); break;
-	case inputBaseVolt:  sigGenData.SetAmplBase(static_cast<mV>         (fNewValue)); break;
-	case pulseSpeed:	 m_pulseSpeed      =    static_cast<meterPerSec>(fNewValue);  break;
-	case pulseWidth:	 m_pulseWidth      =    static_cast<fMicroSecs> (fNewValue);  break;
-	case threshold:      m_threshold       =    static_cast<mV>         (fNewValue);  break;
-	case synapseDelay:   m_synapseDelay    =    static_cast<fMicroSecs> (fNewValue);  break;
-	case neuronPeakVolt: m_neuronPeakVolt  =    static_cast<mV>         (fNewValue);  break;
-	case pixelScanTime:  m_usPixelScanTime =    static_cast<fMicroSecs> (fNewValue);  break;
-	case timeResolution: m_pSignalParameters->SetResolution(static_cast<fMicroSecs>(fNewValue)); break;
-	case scanResolution: m_pScanRaster      ->SetResolution(static_cast<MicroMeter>(fNewValue)); break;
+	case inputPeakTime:  sigGenData.SetPeakTime            (static_cast<fMicroSecs> (fNewValue)); break;
+	case inputPeakFreq:  sigGenData.SetFreqPeak            (static_cast<fHertz>     (fNewValue)); break;
+	case inputBaseFreq:  sigGenData.SetFreqBase            (static_cast<fHertz>     (fNewValue)); break;
+	case inputPeakVolt:  sigGenData.SetAmplPeak            (static_cast<mV>         (fNewValue)); break;
+	case inputBaseVolt:  sigGenData.SetAmplBase            (static_cast<mV>         (fNewValue)); break;
+	case pulseSpeed:	 m_pulseSpeed      =                static_cast<meterPerSec>(fNewValue);  break;
+	case pulseWidth:	 m_pulseWidth      =                static_cast<fMicroSecs> (fNewValue);  break;
+	case threshold:      m_threshold       =                static_cast<mV>         (fNewValue);  break;
+	case synapseDelay:   m_synapseDelay    =                static_cast<fMicroSecs> (fNewValue);  break;
+	case neuronPeakVolt: m_neuronPeakVolt  =                static_cast<mV>         (fNewValue);  break;
+	case pixelScanTime:  m_usPixelScanTime =                static_cast<fMicroSecs> (fNewValue);  break;
+	case timeResolution: m_pSignalParameters->SetResolution(static_cast<fMicroSecs> (fNewValue)); break;
+	case scanResolution: m_pScanRaster      ->SetResolution(static_cast<MicroMeter> (fNewValue)); break;
+	case scanHorzPixels: m_pScanRaster      ->SetWidth     (static_cast<RasterIndex>(fNewValue)); break;
+	case scanVertPixels: m_pScanRaster      ->SetHeight    (static_cast<RasterIndex>(fNewValue)); break;
 	default: assert(false);
 	}
 	NotifyAll(false);
