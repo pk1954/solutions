@@ -25,6 +25,7 @@ import FatalError;
 import NNetModel;
 import NNetSignals;
 import Observable;
+import WinManager;
 import RootWindow;
 import Types;
 import Uniform2D;
@@ -354,7 +355,7 @@ bool MainWindow::selectSigGen(SigGenId const id)
 	if (bRes)
 	{
 		m_idSigGenUnderCrsr = id;
-		SendCommand2Application(IDD_SELECT_SIGNAL_GENERATOR, id.GetValue());
+		WinManager::SendCommand2App(IDD_SELECT_SIGNAL_GENERATOR, id.GetValue());
 	}
 	return bRes;
 }
@@ -391,7 +392,7 @@ bool MainWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
 	SigGenId const idSigGen { getSigGenId(lParam) };
 	if (idSigGen == ADD_SIGGEN)
-		SendCommand2Application(IDD_NEW_SIGNAL_GENERATOR);
+		WinManager::SendCommand2App(IDD_NEW_SIGNAL_GENERATOR);
 	else if (!selectSigGen(idSigGen))
 		SetCapture();
 	return NNetWindow::OnLButtonDown(wParam, lParam);

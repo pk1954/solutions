@@ -14,8 +14,10 @@ module;
 module NNetWin32:ParameterDialog;
 
 import Win32_Util_Resource;
+import WinManager;
 import Win32_Controls;
 import Win32_Util;
+import WinManager;
 import BaseDialog;
 import NNetPreferences;
 import NNetCommands;
@@ -39,6 +41,7 @@ void ParameterDialog::resetParameter(ParamField& field) const
 {
 	::SetEditField(field.m_hwnd, m_pNMWI->GetParams().GetParameterValue(field.m_type));
 }
+
 void ParameterDialog::applyParameter(ParamField &field)   // read out edit field and write data to model
 {
 	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(field.m_type) }; 
@@ -179,7 +182,7 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	{
 	case IDD_APPLY:
 		applyParameters();
-		SendCommand2Application(IDM_RESET_DYNAMIC_DATA);
+		WinManager::SendCommand2App(IDM_RESET_DYNAMIC_DATA);
 		return true;
 
 	case IDD_RESET:

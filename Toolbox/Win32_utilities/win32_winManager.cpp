@@ -339,7 +339,7 @@ void WinManager::StoreWindowConfiguration()
     ostr.close();
 }
 
-WinManager::WinManager()
+void WinManager::Initialize()
 {
     m_upMap            = make_unique<map<RootWinId, MAP_ELEMENT>>();
     m_upWrapMoveWindow = make_unique<WrapMoveWindow>(*m_upMap.get());

@@ -32,7 +32,7 @@ export using RootWinId = NamedType<int, struct RootWinId_Parameter>;
 export class WinManager  // static class
 {
 public:
-	WinManager();
+	static void Initialize();
 
 	static void Apply2All(auto const & f)
 	{

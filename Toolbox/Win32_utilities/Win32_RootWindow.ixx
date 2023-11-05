@@ -104,21 +104,18 @@ public:
 	HWND  CreateWindowToolTip(LPWSTR const& t)                                 const { return ::CreateWindowToolTip(m_hwnd, t); }
 	HWND  CreateRectToolTip(int const id, PixelRect const& r, LPWSTR const& t) const { return ::CreateRectToolTip(m_hwnd, id, &r, t); }
 
-	LRESULT PostCommand2Application(                WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwndApp, WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand2Application(                WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwndApp, WM_COMMAND, wParam, lParam); }
-	LRESULT SendNotifyCommand      (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage(     WM_COMMAND, wParam, lParam); }
-	LRESULT PostCommand            (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage(           WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand            (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage(           WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand2Parent     (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage2Parent(    WM_COMMAND, wParam, lParam); }
-	LRESULT PostCommand2Parent     (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage2Parent(    WM_COMMAND, wParam, lParam); }
-	LRESULT PostMessage            (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const	{ return ::PostMessage(m_hwnd,       msg,     wParam, lParam); }
-	LRESULT PostMessage2Parent     (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg,     wParam, lParam); }
-	LRESULT SendMessage            (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const	{ return ::SendMessage(m_hwnd,       msg,     wParam, lParam); }
-	LRESULT SendMessage2Parent     (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg,     wParam, lParam); }
-	LRESULT SendMessage2Application(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const	{ return ::SendMessage(m_hwndApp,    msg,     wParam, lParam); }
-	LRESULT SendNotifyMessage      (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessage(m_hwnd, msg,     wParam, lParam); }
+	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage(     WM_COMMAND, wParam, lParam); }
+	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage(           WM_COMMAND, wParam, lParam); }
+	LRESULT SendCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage(           WM_COMMAND, wParam, lParam); }
+	LRESULT SendCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage2Parent(    WM_COMMAND, wParam, lParam); }
+	LRESULT PostCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage2Parent(    WM_COMMAND, wParam, lParam); }
+	LRESULT PostMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwnd,       msg,     wParam, lParam); }
+	LRESULT PostMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg,     wParam, lParam); }
+	LRESULT SendMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwnd,       msg,     wParam, lParam); }
+	LRESULT SendMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg,     wParam, lParam); }
+	LRESULT SendNotifyMessage (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessage(m_hwnd, msg,     wParam, lParam); }
 
-	LRESULT const DefWindowProc    (UINT const msg, WPARAM const wParam, LPARAM const lParam) const { return ::DefWindowProc(m_hwnd, msg, wParam, lParam); }
+	LRESULT const DefWindowProc(UINT const msg, WPARAM const wParam, LPARAM const lParam) const { return ::DefWindowProc(m_hwnd, msg, wParam, lParam); }
 
 	LRESULT SendDlgItemMessage(int const iItem, unsigned int msg, WPARAM wParam, LPARAM lParam) const { return ::SendDlgItemMessage(m_hwnd, iItem, msg, wParam, lParam); }
 
@@ -147,8 +144,8 @@ public:
 	virtual void     SetBackgroundColorRef(COLORREF const c) {}
 	virtual COLORREF GetBackgroundColorRef() const           { return RGB(0, 0, 0); }
 
-	virtual void    SetGrid  (bool const, bool const) {}
-	virtual void    SetScales(bool const, bool const) {}
+	virtual void SetGrid  (bool const, bool const) {}
+	virtual void SetScales(bool const, bool const) {}
 
 	virtual bool HasGrid()   const { return false; }
 	virtual bool HasScales() const { return false; }
@@ -189,7 +186,6 @@ private:
 	tOnOffAuto m_visibilityMode      { tOnOffAuto::on };
 	VisCrit    m_visibilityCriterion { nullptr };
 	bool       m_bShowRefreshRateDlg { true };
-	HWND       m_hwndApp             { nullptr };
 	HWND       m_hwnd                { nullptr };
 	bool       m_bParentContextMenue { false };
 

@@ -16,6 +16,7 @@ module NNetSignals:MonitorControl;
 import Win32_Util_Resource;
 import Types;
 import Signals;
+import WinManager;
 import NNetCommands;
 
 using std::vector;
@@ -521,18 +522,18 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 		break;
 
 	case IDD_DELETE_SIGNAL:
-		PostCommand2Application(wmId);
+		WinManager::PostCommand2App(wmId);
 		break;
 
 	case IDD_ADD_TRACK:
-		SendCommand2Application(wmId, static_cast<LPARAM>(findTrackPos(pixPoint.GetY())));
+		WinManager::SendCommand2App(wmId, static_cast<LPARAM>(findTrackPos(pixPoint.GetY())));
 		SendCommand(IDM_WINDOW_ON, 0);  // if window was not visible, show it now
 		break;
 
 	case IDD_DELETE_TRACK:
 		if (m_pMonitorData->GetNrOfTracks()==1)
 			PostCommand(IDM_WINDOW_OFF, 0);
-		PostCommand2Application(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
+		WinManager::PostCommand2App(wmId, static_cast<LPARAM>(m_trackNrHighlighted.GetValue()));
 		break;
 
 	case IDD_DELETE_EMPTY_TRACKS:
@@ -541,7 +542,7 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 			[this](TrackNr const trackNr)
 			{  
 				if (m_pMonitorData->IsEmptyTrack(trackNr))
-					PostCommand2Application(IDD_DELETE_TRACK, static_cast<LPARAM>(trackNr.GetValue()));
+					WinManager::PostCommand2App(IDD_DELETE_TRACK, static_cast<LPARAM>(trackNr.GetValue()));
 			}
 		);
 		break;

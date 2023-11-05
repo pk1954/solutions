@@ -19,6 +19,7 @@ import Types;
 import Preferences;
 import Win32_Util_Resource;
 import BaseRefreshRate;
+import WinManager;
 
 using std::vector;
 using std::wstring;
@@ -117,8 +118,7 @@ void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height
 void RootWindow::SetWindowHandle(HWND const hwnd) 
 { 
 	assert(hwnd);
-	m_hwnd    = hwnd;  
-	m_hwndApp = GetAncestor(m_hwnd, GA_ROOTOWNER);
+	m_hwnd = hwnd;  
 };
 
 void RootWindow::SetRefreshRate(milliseconds const msRate) const
@@ -189,7 +189,7 @@ void RootWindow::colorDialog()
 	{
 		SetBackgroundColorRef(cc.rgbResult);
 		Trigger();
-		SendCommand2Application(IDM_APP_DATA_CHANGED);
+		WinManager::SendCommand2App(IDM_APP_DATA_CHANGED);
 	}
 }
 
@@ -318,7 +318,7 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 	case IDM_DEFAULT_BK_COLOR:
 		SetDefaultBackgroundColor();
 		Trigger();
-		SendCommand2Application(IDM_APP_DATA_CHANGED);
+		WinManager::SendCommand2App(IDM_APP_DATA_CHANGED);
 		break;
 
 	default:

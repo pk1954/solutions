@@ -14,6 +14,7 @@ module NNetWin32:StatusBar;
 import Tooltip;
 import Types;
 import Script;
+import WinManager;
 
 using std::to_wstring;
 using std::wstring;
@@ -33,7 +34,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar
 	{
 
 	case WM_COMMAND:
-		pStatusBar->PostCommand2Application(LOWORD(wParam));
+		WinManager::PostCommand2App(LOWORD(wParam));
 		return true;
 
 	default: 

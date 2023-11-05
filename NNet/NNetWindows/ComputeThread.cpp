@@ -7,11 +7,13 @@ module;
 #include <memory>
 #include <cstddef>
 #include <Windows.h>
+#include "Resource.h"
 
 module NNetWin32:ComputeThread;
 
 import SlowMotionRatio;
 import Observable;
+import WinManager;
 import FatalError;
 import HiResTimer;
 import Signals;
@@ -218,6 +220,7 @@ void ComputeThread::ScanRun()
 		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)  // loop over columns
 		{ 
 			usScanTime += m_pNMWI->PixelScanTime();
+
 			while (SimulationTime::Get() < usScanTime)
 				m_pNMWI->Compute();
 
@@ -226,19 +229,15 @@ void ComputeThread::ScanRun()
 
 			if (m_bStopped)  // forced termination of scan
 			{
-				m_pNMWI->RejectImage();
-				m_pLockModelObservable->NotifyAll(false);
+				WinManager::PostCommand2App(IDM_REJECT_IMAGES);
 				goto EXIT;
 			}
 		}
 		m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
 	} 
 
-	{
-		mV mvMax { pImage->GetMax() };
-		*pImage *= 1.0f / mvMax.GetValue();
-		m_pDynamicModelObservable->NotifyAll(false);
-	}
+	*pImage *= 1.0f / pImage->GetMax().GetValue();
+	m_pDynamicModelObservable->NotifyAll(false);
 
 	EXIT:
 	m_pNMWI->SetScanRunning(false);

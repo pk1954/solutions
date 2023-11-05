@@ -71,22 +71,17 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 	DefineUtilityWrapperFunctions();
-	SignalFactory  ::Initialize(m_dynamicModelObservable);
-	Command        ::Initialize(&m_cmdStack, &m_sound);
-	NNetModelIO    ::Initialize();
+
+	WinManager       ::Initialize();
+	SignalFactory    ::Initialize(m_dynamicModelObservable);
+	Command          ::Initialize(&m_cmdStack, &m_sound);
+	CoordAnimationCmd::Initialize(&m_coordObservable);
+	BaseCommand      ::Initialize(&m_sound);
+	NNetModelIO      ::Initialize();
+
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize(&m_computeThread, &m_SlowMotionRatio);
-	m_computeThread.Initialize
-	(
-		& m_SlowMotionRatio, 
-		& m_runObservable, 
-		& m_performanceObservable, 
-		& m_dynamicModelObservable,
-		& m_lockModelObservable
-	);
-	BaseCommand::Initialize(&m_sound);
-	CoordAnimationCmd::Initialize(&m_coordObservable);
 
 	MonitorScrollState* pMonitorScrollState { NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
@@ -134,6 +129,15 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_simuRunning, 
 		m_runObservable, 
 		m_dynamicModelObservable
+	);
+
+	m_computeThread.Initialize
+	(
+		&m_SlowMotionRatio,
+		&m_runObservable,
+		&m_performanceObservable,
+		&m_dynamicModelObservable,
+		&m_lockModelObservable
 	);
 
 	m_upModel = m_nmwi.CreateNewModel();
