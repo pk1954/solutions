@@ -184,24 +184,11 @@ void ComputeThread::StandardRun()
 	}
 }
 
-void ComputeThread::prepareScan()
-{
-	Raster const raster { m_pNMWI->GetScanRaster() };
-	m_upScanMatrix = make_unique<ScanMatrix>(raster.Size());
-	m_pNMWI->Apply2AllC<Pipe>
-	(
-		[this, &raster](Pipe const& pipe)
-		{
-			m_upScanMatrix->Add2list(pipe, raster);
-		}
-	);
-}
-
 void ComputeThread::StartScan()
 {
 	StopComputation();
-	if (!m_upScanMatrix)
-		prepareScan();
+	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
+	m_pNMWI->Apply2AllC<Pipe>([this](Pipe const& p){ m_upScanMatrix->Add2list(p, m_pNMWI->GetScanRaster()); });
 	m_pNMWI->CreateImage();
 	m_pNMWI->SetScanRunning(true);
 	m_pLockModelObservable->NotifyAll(false);

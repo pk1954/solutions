@@ -79,7 +79,6 @@ private:
 
 	unique_ptr<ScanMatrix> m_upScanMatrix { };
 
-	void prepareScan();
 	void runComputation();
 	void haltComputation();
 	void StandardRun();
