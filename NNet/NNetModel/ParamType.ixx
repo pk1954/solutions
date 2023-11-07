@@ -26,12 +26,12 @@ public:
 		synapseDelay,     // delay of incoming pulse in synapse
 		pulseSpeed,
 		pulseWidth,
-		scanHorzPixels,
-		scanVertPixels,
 		scanResolution,
 		pixelScanTime,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
+		scanHorzPixels,  // do not export/import
+		scanVertPixels,  // do not export/import
 		tParameterLast = timeResolution
 	};
 

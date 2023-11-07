@@ -45,7 +45,8 @@ public:
 	void StopComputation();
 	void StartScan();
 	void StartStimulus();
-	bool IsRunning() const { return !m_bStopped; }
+	bool IsRunning    () const { return !m_bStopped; }
+	bool IsScanRunning() const { return m_pNMWI->IsScanRunning(); }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }

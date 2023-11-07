@@ -34,7 +34,8 @@ void SimulationControl::Initialize
 
 void SimulationControl::Notify(bool const bImmediate)
 {
-	bool const bIsRunning = m_pComputeThread->IsRunning();
+	bool const bIsRunning     = m_pComputeThread->IsRunning();
+	bool const bIsScanRunning = m_pComputeThread->IsScanRunning();
 
 	if (bIsRunning)
 		SetWindowText(m_pStatusBar->GetDlgItem(IDM_RUN_STOP), L"Stop");
@@ -42,7 +43,7 @@ void SimulationControl::Notify(bool const bImmediate)
 		SetWindowText(m_pStatusBar->GetDlgItem(IDM_RUN_STOP), L"Run");
 
 	EnableWindow(m_pStatusBar->GetDlgItem(IDM_FORWARD),   !bIsRunning);
-	EnableWindow(m_pStatusBar->GetDlgItem(IDM_START_SCAN), bIsRunning);
+	EnableWindow(m_pStatusBar->GetDlgItem(IDM_START_SCAN), bIsRunning && !bIsScanRunning);
 
 	Show(m_pStatusBar->GetDlgItem(IDM_START_SCAN), NNetPreferences::ScanAreaVisible());
 }
