@@ -10,9 +10,6 @@
     <ClCompile Include="WrapProtocol.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WrapSimulationTime.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NobIo.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

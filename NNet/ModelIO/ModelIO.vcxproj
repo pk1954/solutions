@@ -183,11 +183,13 @@
     <ClCompile Include="WrapSignalData.ixx" />
     <ClCompile Include="WrapSignalGenerator.ixx" />
     <ClCompile Include="WrapSignalInfo.ixx" />
-    <ClCompile Include="WrapSimulationTime.ixx" />
     <ClCompile Include="WrapVoltage.cpp" />
     <ClCompile Include="WrapVoltage.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Commands\Commands.vcxproj">
+      <Project>{7f40ede9-bae2-4924-87d3-5cd19477b54a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
       <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
     </ProjectReference>
