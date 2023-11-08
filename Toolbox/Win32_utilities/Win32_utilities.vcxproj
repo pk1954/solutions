@@ -164,6 +164,8 @@
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="IncludeCommand.ixx" />
     <ClCompile Include="OnOffPair.ixx" />
+    <ClCompile Include="StatusBar.cpp" />
+    <ClCompile Include="StatusBar.ixx" />
     <ClCompile Include="ThreadPoolTimer.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
     <ClCompile Include="TimeGraph.ixx" />

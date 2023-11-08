@@ -612,8 +612,6 @@
     <ClCompile Include="SimulationControl.cpp" />
     <ClCompile Include="SimulationControl.ixx" />
     <ClCompile Include="SlowMotionControl.ixx" />
-    <ClCompile Include="StatusBar.cpp" />
-    <ClCompile Include="StatusBar.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Commands\Commands.vcxproj">

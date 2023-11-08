@@ -48,9 +48,6 @@
     <ClCompile Include="SimulationControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StatusBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SlowMotionDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -70,9 +67,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimulationControl.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StatusBar.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ComputeThread.ixx">

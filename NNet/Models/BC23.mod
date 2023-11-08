@@ -1,5 +1,5 @@
 # NNetModel
-# Created Sun Nov  5 21:13:20 2023
+# Created Wed Nov  8 16:39:35 2023
 
 # Computer name: DESKTOP-4-PETER
 # User name: Peter
@@ -1406,9 +1406,9 @@ CreateNob 1380 pipe(16->1382)
 CreateNob 1381 pipe(1382->529)
 Voltage 0 inputLine 0
 Voltage 1 inputLine 0
-Voltage 3 fork 0
+Voltage 3 fork 99
 Voltage 5 fork 0
-Voltage 8 fork 50.99999237
+Voltage 8 fork 0
 Voltage 10 fork 0
 Voltage 13 fork 0
 Voltage 14 inputLine 0
@@ -1441,68 +1441,68 @@ Voltage 57 inputLine 0
 Voltage 58 inputLine 0
 Voltage 59 inputLine 0
 Voltage 60 inputLine 0
-Voltage 61 fork 0
+Voltage 61 fork 82.76074219
 Voltage 63 fork 0
-Voltage 65 fork 0
+Voltage 65 fork 59.16947174
 Voltage 67 fork 0
 Voltage 69 fork 0
-Voltage 71 synapse 0
+Voltage 71 synapse 36.00000763
 Voltage 73 synapse 0
-Voltage 75 synapse 84
-Voltage 76 synapse 96
-Voltage 78 knot 0
-Voltage 79 synapse 0
-Voltage 80 synapse 0
-Voltage 82 synapse 19.00000381
+Voltage 75 synapse 101.8882599
+Voltage 76 synapse 221.0708313
+Voltage 78 knot 74.0893631
+Voltage 79 synapse 96
+Voltage 80 synapse 237
+Voltage 82 synapse 0
 Voltage 84 synapse 0
-Voltage 86 synapse 0
+Voltage 86 synapse 66.94821167
 Voltage 88 synapse 0
-Voltage 90 synapse 0
-Voltage 93 synapse 0
+Voltage 90 synapse 82.88825989
+Voltage 93 synapse 82.88825989
 Voltage 96 synapse 0
-Voltage 99 synapse 0
+Voltage 99 synapse 125.9999924
 Voltage 101 synapse 0
-Voltage 102 synapse 0
-Voltage 104 synapse 64
-Voltage 106 synapse 0
-Voltage 107 synapse 0
-Voltage 108 synapse 0
-Voltage 110 synapse 0
-Voltage 112 synapse 0
-Voltage 114 synapse 0
-Voltage 116 synapse 0
-Voltage 118 synapse 0
-Voltage 120 synapse 0
-Voltage 123 knot 0
-Voltage 125 synapse 0
-Voltage 127 synapse 0
-Voltage 130 synapse 0
-Voltage 132 synapse 64
+Voltage 102 synapse 84.00000763
+Voltage 104 synapse 99
+Voltage 106 synapse 59.16947174
+Voltage 107 synapse 224.0893707
+Voltage 108 synapse 99
+Voltage 110 synapse 86.99999237
+Voltage 112 synapse 99
+Voltage 114 synapse 172.1029968
+Voltage 116 synapse 60.57219315
+Voltage 118 synapse 271.1967163
+Voltage 120 synapse 50.99999237
+Voltage 123 knot 91
+Voltage 125 synapse 155
+Voltage 127 synapse 168.0000153
+Voltage 130 synapse 190
+Voltage 132 synapse 0
 Voltage 135 fork 0
-Voltage 137 fork 0
-Voltage 139 fork 0
-Voltage 142 fork 0
-Voltage 144 fork 0
-Voltage 147 fork 63.99999619
-Voltage 149 outputLine 75
-Voltage 151 fork 0
-Voltage 153 outputLine 0
-Voltage 155 fork 0
-Voltage 157 outputLine 0
-Voltage 159 fork 0
-Voltage 161 outputLine 0
-Voltage 163 fork 0
-Voltage 165 outputLine 0
+Voltage 137 fork 75
+Voltage 139 fork 99
+Voltage 142 fork 19.00000381
+Voltage 144 fork 91.00000763
+Voltage 147 fork 92.8196106
+Voltage 149 outputLine 66.17493439
+Voltage 151 fork 96
+Voltage 153 outputLine 91
+Voltage 155 fork 64
+Voltage 157 outputLine 51.00000381
+Voltage 159 fork 103.0212402
+Voltage 161 outputLine 100.8604889
+Voltage 163 fork 82.76074219
+Voltage 165 outputLine 82.88825989
 Voltage 166 fork 0
-Voltage 170 fork 0
-Voltage 173 fork 0
+Voltage 170 fork 19.00000381
+Voltage 173 fork 75
 Voltage 176 fork 0
-Voltage 179 fork 0
-Voltage 181 fork 99
-Voltage 185 fork 0
-Voltage 189 fork 0
-Voltage 192 fork 0
-Voltage 194 fork 0
+Voltage 179 fork 50.99999237
+Voltage 181 fork 84
+Voltage 185 fork 63.99999619
+Voltage 189 fork 96
+Voltage 192 fork 36
+Voltage 194 fork 26.65176773
 Voltage 196 fork 0
 Voltage 199 fork 0
 Voltage 202 fork 0
@@ -1513,43 +1513,43 @@ Voltage 211 inputLine 0
 Voltage 212 inputLine 0
 Voltage 213 knot 0
 Voltage 214 knot 0
-Voltage 215 knot 0
+Voltage 215 knot 50.99999237
 Voltage 216 knot 0
 Voltage 217 knot 0
-Voltage 218 knot 96
-Voltage 219 knot 0
-Voltage 220 knot 0
-Voltage 221 knot 0
+Voltage 218 knot 50.99999237
+Voltage 219 knot 36.00000763
+Voltage 220 knot 100
+Voltage 221 knot 64
 Voltage 223 fork 0
-Voltage 224 knot 0
-Voltage 225 knot 36
-Voltage 226 knot 0
+Voltage 224 knot 36
+Voltage 225 knot 91
+Voltage 226 knot 142
 Voltage 227 knot 0
-Voltage 228 knot 55.00000763
+Voltage 228 knot 135.5182495
 Voltage 229 inputLine 0
 Voltage 232 synapse 0
 Voltage 235 synapse 0
 Voltage 238 synapse 0
 Voltage 241 synapse 0
-Voltage 242 synapse 0
-Voltage 243 synapse 0
-Voltage 244 synapse 0
-Voltage 245 synapse 0
-Voltage 246 synapse 0
-Voltage 249 synapse 51.00000381
-Voltage 252 synapse 0
-Voltage 255 synapse 0
-Voltage 258 synapse 19
-Voltage 261 synapse 0
-Voltage 266 synapse 0
+Voltage 242 synapse 130.0212402
+Voltage 243 synapse 130.0212402
+Voltage 244 synapse 103.0212402
+Voltage 245 synapse 135.0212402
+Voltage 246 synapse 84.00000763
+Voltage 249 synapse 200.0959015
+Voltage 252 synapse 100
+Voltage 255 synapse 156
+Voltage 258 synapse 96.75205231
+Voltage 261 synapse 96.9149704
+Voltage 266 synapse 50.99999237
 Voltage 269 synapse 0
-Voltage 272 synapse 100
+Voltage 272 synapse 75
 Voltage 273 inputLine 0
 Voltage 274 inputLine 0
 Voltage 275 inputLine 0
-Voltage 277 synapse 0
-Voltage 279 synapse 64
-Voltage 281 synapse 0
+Voltage 277 synapse 164.1967163
+Voltage 279 synapse 0
+Voltage 281 synapse 103.0000153
 Voltage 283 neuron 0
 Voltage 285 neuron 0
 Voltage 288 neuron 0
@@ -1560,161 +1560,161 @@ Voltage 298 neuron 0
 Voltage 300 neuron 0
 Voltage 303 neuron 0
 Voltage 306 neuron 0
-Voltage 308 knot 0
+Voltage 308 knot 63.99999619
 Voltage 311 knot 0
-Voltage 312 knot 0
+Voltage 312 knot 90.65176392
 Voltage 314 knot 0
-Voltage 317 knot 0
+Voltage 317 knot 118
 Voltage 320 knot 0
-Voltage 321 synapse 0
-Voltage 324 synapse 0
-Voltage 327 synapse 0
-Voltage 330 synapse 0
-Voltage 333 synapse 0
-Voltage 335 synapse 0
-Voltage 338 synapse 0
-Voltage 341 knot 0
-Voltage 344 synapse 0
-Voltage 346 synapse 0
-Voltage 348 synapse 0
-Voltage 350 synapse 0
-Voltage 353 fork 0
-Voltage 355 fork 0
-Voltage 357 fork 0
-Voltage 360 fork 0
-Voltage 362 fork 0
-Voltage 365 fork 0
+Voltage 321 synapse 75
+Voltage 324 synapse 118
+Voltage 327 synapse 64
+Voltage 330 synapse 84.00000763
+Voltage 333 synapse 135.5721893
+Voltage 335 synapse 147
+Voltage 338 synapse 199
+Voltage 341 knot 51.00000381
+Voltage 344 synapse 75
+Voltage 346 synapse 19
+Voltage 348 synapse 135.0000153
+Voltage 350 synapse 75
+Voltage 353 fork 50.99999237
+Voltage 355 fork 96
+Voltage 357 fork 84.00000763
+Voltage 360 fork 91.00000763
+Voltage 362 fork 91
+Voltage 365 fork 19
 Voltage 367 outputLine 0
-Voltage 369 fork 0
-Voltage 371 outputLine 0
+Voltage 369 fork 175
+Voltage 371 outputLine 159
 Voltage 373 fork 0
 Voltage 375 outputLine 0
-Voltage 377 fork 0
+Voltage 377 fork 36
 Voltage 378 outputLine 0
-Voltage 380 fork 0
-Voltage 382 outputLine 0
+Voltage 380 fork 157.7607422
+Voltage 382 outputLine 146.8882599
 Voltage 384 fork 0
-Voltage 388 fork 0
-Voltage 392 fork 0
-Voltage 396 fork 0
-Voltage 400 fork 0
-Voltage 404 fork 0
-Voltage 407 fork 0
-Voltage 410 fork 0
-Voltage 412 knot 0
-Voltage 415 fork 0
+Voltage 388 fork 96
+Voltage 392 fork 100
+Voltage 396 fork 50.99999237
+Voltage 400 fork 99
+Voltage 404 fork 64
+Voltage 407 fork 84
+Voltage 410 fork 126
+Voltage 412 knot 26.65176773
+Voltage 415 fork 26.65176773
 Voltage 416 knot 0
-Voltage 417 knot 0
-Voltage 418 knot 0
-Voltage 419 knot 0
-Voltage 420 knot 0
-Voltage 421 knot 0
-Voltage 422 knot 0
-Voltage 423 knot 0
+Voltage 417 knot 84
+Voltage 418 knot 132
+Voltage 419 knot 19.00000381
+Voltage 420 knot 91.00000763
+Voltage 421 knot 84.00000763
+Voltage 422 knot 63.99999619
+Voltage 423 knot 166
 Voltage 424 knot 0
 Voltage 425 knot 0
-Voltage 426 knot 0
-Voltage 427 knot 0
+Voltage 426 knot 50.99999237
+Voltage 427 knot 91.00000763
 Voltage 428 knot 0
-Voltage 429 knot 0
+Voltage 429 knot 75
 Voltage 431 fork 0
 Voltage 434 neuron 0
 Voltage 436 neuron 0
 Voltage 438 neuron 0
 Voltage 441 neuron 0
 Voltage 442 neuron 0
-Voltage 443 knot 0
-Voltage 444 knot 0
-Voltage 445 knot 0
-Voltage 446 knot 0
-Voltage 447 knot 0
-Voltage 450 synapse 0
-Voltage 453 synapse 0
-Voltage 456 synapse 0
-Voltage 459 knot 0
-Voltage 462 fork 0
-Voltage 466 synapse 0
-Voltage 468 synapse 0
-Voltage 471 fork 0
-Voltage 474 fork 0
-Voltage 477 fork 0
-Voltage 480 fork 0
-Voltage 483 fork 0
-Voltage 485 fork 0
-Voltage 488 synapse 0
-Voltage 490 fork 0
-Voltage 493 synapse 0
-Voltage 496 fork 0
-Voltage 499 synapse 0
+Voltage 443 knot 99
+Voltage 444 knot 75
+Voltage 445 knot 96
+Voltage 446 knot 100
+Voltage 447 knot 19.00000381
+Voltage 450 synapse 51.00000381
+Voltage 453 synapse 195
+Voltage 456 synapse 19
+Voltage 459 knot 19
+Voltage 462 fork 100
+Voltage 466 synapse 64
+Voltage 468 synapse 168.914978
+Voltage 471 fork 75
+Voltage 474 fork 99
+Voltage 477 fork 51.00000381
+Voltage 480 fork 84.00000763
+Voltage 483 fork 96
+Voltage 485 fork 84
+Voltage 488 synapse 180.4855347
+Voltage 490 fork 90.02124023
+Voltage 493 synapse 77.9149704
+Voltage 496 fork 39.02124023
+Voltage 499 synapse 82.76074219
 Voltage 500 neuron 0
 Voltage 503 neuron 0
 Voltage 506 neuron 0
 Voltage 509 neuron 0
 Voltage 512 fork 0
 Voltage 515 knot 0
-Voltage 517 fork 0
-Voltage 521 synapse 63.99999619
-Voltage 523 synapse 0
-Voltage 526 fork 0
+Voltage 517 fork 75
+Voltage 521 synapse 0
+Voltage 523 synapse 39.02124023
+Voltage 526 fork 64
 Voltage 528 synapse 0
 Voltage 529 neuron 0
 Voltage 532 neuron 0
 Voltage 534 neuron 0
-Voltage 537 fork 0
-Voltage 540 synapse 0
-Voltage 543 fork 0
+Voltage 537 fork 36.00000763
+Voltage 540 synapse 91.00000763
+Voltage 543 fork 196
 Voltage 546 synapse 0
-Voltage 549 fork 0
-Voltage 552 synapse 0
+Voltage 549 fork 91.00000763
+Voltage 552 synapse 96
 Voltage 555 neuron 0
 Voltage 558 neuron 0
 Voltage 561 neuron 0
 Voltage 564 fork 0
-Voltage 568 synapse 63.99999619
-Voltage 571 fork 0
-Voltage 575 synapse 0
+Voltage 568 synapse 0
+Voltage 571 fork 19.00000381
+Voltage 575 synapse 84
 Voltage 577 fork 0
 Voltage 580 synapse 0
-Voltage 583 fork 0
-Voltage 586 synapse 0
-Voltage 588 fork 0
-Voltage 591 synapse 0
-Voltage 594 fork 0
+Voltage 583 fork 190
+Voltage 586 synapse 151
+Voltage 588 fork 96
+Voltage 591 synapse 91
+Voltage 594 fork 36
 Voltage 597 synapse 0
-Voltage 600 fork 99
-Voltage 603 synapse 84.00000763
-Voltage 605 knot 0
-Voltage 608 knot 0
-Voltage 610 fork 0
-Voltage 614 synapse 0
-Voltage 617 fork 0
-Voltage 621 synapse 0
-Voltage 623 fork 0
-Voltage 627 synapse 0
+Voltage 600 fork 63.99999619
+Voltage 603 synapse 99
+Voltage 605 knot 96
+Voltage 608 knot 99
+Voltage 610 fork 99
+Voltage 614 synapse 84.00000763
+Voltage 617 fork 100
+Voltage 621 synapse 156.4855347
+Voltage 623 fork 63.99999619
+Voltage 627 synapse 99
 Voltage 630 fork 0
 Voltage 634 synapse 0
-Voltage 635 synapse 0
+Voltage 635 synapse 36
 Voltage 639 fork 0
-Voltage 642 synapse 0
+Voltage 642 synapse 100
 Voltage 646 fork 0
 Voltage 649 synapse 0
-Voltage 653 fork 0
+Voltage 653 fork 70
 Voltage 656 neuron 0
 Voltage 659 neuron 0
 Voltage 662 neuron 0
-Voltage 665 synapse 0
-Voltage 668 fork 0
+Voltage 665 synapse 171.897522
+Voltage 668 fork 81.48553467
 Voltage 671 synapse 0
 Voltage 674 fork 0
-Voltage 678 synapse 0
+Voltage 678 synapse 36
 Voltage 681 fork 0
 Voltage 684 neuron 0
-Voltage 687 neuron 0
-Voltage 690 neuron 0
-Voltage 693 synapse 0
-Voltage 695 fork 0
+Voltage 687 neuron 19
+Voltage 690 neuron 19
+Voltage 693 synapse 206.1923523
+Voltage 695 fork 12.75204754
 Voltage 698 synapse 0
-Voltage 700 synapse 0
+Voltage 700 synapse 59.16947174
 Voltage 704 fork 0
 Voltage 706 knot 0
 Voltage 709 fork 0
@@ -1722,28 +1722,28 @@ Voltage 712 neuron 0
 Voltage 714 neuron 0
 Voltage 717 neuron 0
 Voltage 720 neuron 0
-Voltage 722 synapse 0
+Voltage 722 synapse 91
 Voltage 725 fork 0
-Voltage 728 synapse 0
-Voltage 731 fork 0
-Voltage 734 synapse 0
-Voltage 737 fork 0
-Voltage 739 fork 0
+Voltage 728 synapse 15.17492962
+Voltage 731 fork 149.0893555
+Voltage 734 synapse 144.5722046
+Voltage 737 fork 82.76074219
+Voltage 739 fork 87.51824951
 Voltage 742 fork 0
-Voltage 745 fork 0
-Voltage 748 fork 0
-Voltage 751 fork 0
-Voltage 754 synapse 0
-Voltage 757 synapse 0
+Voltage 745 fork 84.00000763
+Voltage 748 fork 91
+Voltage 751 fork 91
+Voltage 754 synapse 59.93405151
+Voltage 757 synapse 12.75204754
 Voltage 761 fork 0
-Voltage 764 knot 0
-Voltage 767 synapse 0
-Voltage 770 synapse 0
-Voltage 773 synapse 0
-Voltage 776 knot 0
+Voltage 764 knot 49.86048508
+Voltage 767 synapse 87.75204468
+Voltage 770 synapse 96.75205231
+Voltage 773 synapse 84.00000763
+Voltage 776 knot 64
 Voltage 777 knot 0
 Voltage 778 knot 0
-Voltage 779 knot 0
+Voltage 779 knot 51.00000381
 Voltage 780 knot 0
 Voltage 781 neuron 0
 Voltage 783 neuron 0
@@ -1752,75 +1752,75 @@ Voltage 788 neuron 0
 Voltage 791 neuron 0
 Voltage 794 fork 0
 Voltage 796 knot 0
-Voltage 797 knot 0
+Voltage 797 knot 84.00000763
 Voltage 798 knot 0
 Voltage 799 knot 0
-Voltage 800 knot 0
-Voltage 801 knot 0
+Voltage 800 knot 99
+Voltage 801 knot 91
 Voltage 802 knot 0
-Voltage 803 knot 0
+Voltage 803 knot 36
 Voltage 804 knot 0
 Voltage 805 knot 0
-Voltage 806 knot 0
+Voltage 806 knot 75
 Voltage 807 knot 0
 Voltage 808 knot 0
-Voltage 809 knot 0
+Voltage 809 knot 91
 Voltage 810 fork 0
-Voltage 813 knot 0
+Voltage 813 knot 84.00000763
 Voltage 815 fork 0
-Voltage 818 fork 0
+Voltage 818 fork 19
 Voltage 821 fork 0
 Voltage 824 outputLine 0
-Voltage 825 outputLine 0
+Voltage 825 outputLine 36
 Voltage 826 outputLine 0
 Voltage 827 outputLine 0
 Voltage 830 fork 0
-Voltage 834 fork 0
+Voltage 834 fork 64
 Voltage 837 fork 0
 Voltage 841 fork 0
-Voltage 845 fork 0
-Voltage 847 outputLine 0
-Voltage 848 outputLine 0
-Voltage 850 fork 0
-Voltage 851 outputLine 0
-Voltage 852 fork 0
-Voltage 854 outputLine 0
-Voltage 856 fork 0
-Voltage 858 outputLine 0
-Voltage 860 fork 0
-Voltage 862 outputLine 0
-Voltage 864 fork 0
+Voltage 845 fork 84.00000763
+Voltage 847 outputLine 75
+Voltage 848 outputLine 39.02124023
+Voltage 850 fork 41.5716629
+Voltage 851 outputLine 59.16947174
+Voltage 852 fork 26.65176773
+Voltage 854 outputLine 85.86048889
+Voltage 856 fork 90.65176392
+Voltage 858 outputLine 100.8604889
+Voltage 860 fork 101.6517639
+Voltage 862 outputLine 77.65177155
+Voltage 864 fork 75
 Voltage 866 outputLine 0
 Voltage 867 outputLine 0
 Voltage 868 outputLine 0
 Voltage 870 fork 0
-Voltage 871 outputLine 0
-Voltage 873 fork 0
-Voltage 874 outputLine 0
+Voltage 871 outputLine 73.19671631
+Voltage 873 fork 36
+Voltage 874 outputLine 81.10298157
 Voltage 877 fork 0
 Voltage 878 outputLine 0
 Voltage 880 fork 0
-Voltage 881 outputLine 0
-Voltage 882 fork 0
-Voltage 883 outputLine 0
+Voltage 881 outputLine 81.10298157
+Voltage 882 fork 19
+Voltage 883 outputLine 78.55257416
 Voltage 886 synapse 0
 Voltage 888 synapse 0
 Voltage 890 synapse 0
 Voltage 892 synapse 0
 Voltage 894 knot 0
 Voltage 895 outputLine 0
-Voltage 898 synapse 0
+Voltage 898 synapse 19
 Voltage 900 synapse 0
-Voltage 902 synapse 0
-Voltage 905 synapse 0
-Voltage 907 synapse 0
-Voltage 910 synapse 0
-Voltage 913 synapse 0
+Voltage 902 synapse 77.9149704
+Voltage 905 synapse 73.19671631
+Voltage 907 synapse 73.19671631
+Voltage 910 synapse 92.19671631
+Voltage 913 synapse 59.16947174
 Voltage 914 knot 0
 Voltage 916 knot 0
-Voltage 919 knot 0
-Voltage 921 knot 0
-Voltage 923 knot 0
+Voltage 919 knot 19
+Voltage 921 knot 172.4855347
+Voltage 923 knot 84.00000763
 Voltage 926 knot 0
 Voltage 928 neuron 0
 Voltage 931 neuron 0
@@ -1841,36 +1841,36 @@ Voltage 963 inputLine 0
 Voltage 964 synapse 0
 Voltage 967 synapse 0
 Voltage 970 synapse 0
-Voltage 974 synapse 0
+Voltage 974 synapse 49.86048508
 Voltage 977 synapse 0
-Voltage 980 synapse 0
-Voltage 983 synapse 0
+Voltage 980 synapse 63.99999619
+Voltage 983 synapse 50.99999237
 Voltage 986 synapse 0
-Voltage 989 synapse 0
-Voltage 991 synapse 0
-Voltage 993 synapse 0
+Voltage 989 synapse 99
+Voltage 991 synapse 135
+Voltage 993 synapse 96
 Voltage 995 synapse 0
-Voltage 997 synapse 0
+Voltage 997 synapse 132.0959015
 Voltage 998 synapse 0
 Voltage 1001 synapse 0
 Voltage 1004 synapse 0
 Voltage 1007 synapse 0
 Voltage 1010 inputLine 0
 Voltage 1011 knot 0
-Voltage 1012 knot 0
-Voltage 1013 knot 0
+Voltage 1012 knot 19.00000381
+Voltage 1013 knot 36.00000763
 Voltage 1014 knot 0
-Voltage 1015 knot 0
+Voltage 1015 knot 26.65176773
 Voltage 1016 fork 0
 Voltage 1018 knot 0
 Voltage 1019 knot 0
 Voltage 1020 knot 0
 Voltage 1021 knot 0
 Voltage 1022 knot 0
-Voltage 1023 knot 0
+Voltage 1023 knot 96
 Voltage 1024 knot 0
-Voltage 1025 knot 0
-Voltage 1026 knot 0
+Voltage 1025 knot 19
+Voltage 1026 knot 84
 Voltage 1027 inputLine 0
 Voltage 1028 inputLine 0
 Voltage 1029 inputLine 0
@@ -1885,145 +1885,145 @@ Voltage 1050 fork 0
 Voltage 1054 fork 0
 Voltage 1058 fork 0
 Voltage 1061 fork 0
-Voltage 1065 fork 0
+Voltage 1065 fork 91
 Voltage 1068 fork 0
 Voltage 1071 fork 0
-Voltage 1075 fork 0
-Voltage 1076 outputLine 0
-Voltage 1078 fork 0
+Voltage 1075 fork 91.00000763
+Voltage 1076 outputLine 73.19671631
+Voltage 1078 fork 59.16947174
 Voltage 1080 outputLine 0
 Voltage 1082 fork 0
-Voltage 1084 outputLine 0
-Voltage 1086 fork 0
-Voltage 1088 outputLine 0
-Voltage 1090 fork 0
-Voltage 1092 outputLine 0
+Voltage 1084 outputLine 91.00000763
+Voltage 1086 fork 75
+Voltage 1088 outputLine 84
+Voltage 1090 fork 63.99999619
+Voltage 1092 outputLine 26.65176773
 Voltage 1094 fork 0
 Voltage 1097 fork 0
-Voltage 1098 outputLine 0
-Voltage 1100 fork 0
-Voltage 1101 outputLine 0
+Voltage 1098 outputLine 84.00000763
+Voltage 1100 fork 75
+Voltage 1101 outputLine 96.75205231
 Voltage 1104 fork 0
-Voltage 1105 outputLine 0
+Voltage 1105 outputLine 87.75204468
 Voltage 1107 fork 0
-Voltage 1108 outputLine 0
-Voltage 1110 fork 0
-Voltage 1111 outputLine 0
-Voltage 1114 synapse 0
+Voltage 1108 outputLine 12.75204754
+Voltage 1110 fork 100
+Voltage 1111 outputLine 59.93405151
+Voltage 1114 synapse 99
 Voltage 1116 synapse 0
 Voltage 1119 synapse 0
 Voltage 1122 synapse 0
 Voltage 1124 knot 0
-Voltage 1127 synapse 0
+Voltage 1127 synapse 64
 Voltage 1129 synapse 0
-Voltage 1131 synapse 0
+Voltage 1131 synapse 181.7607422
 Voltage 1133 synapse 0
-Voltage 1135 synapse 0
-Voltage 1137 synapse 0
-Voltage 1139 synapse 0
+Voltage 1135 synapse 100
+Voltage 1137 synapse 163
+Voltage 1139 synapse 99
 Voltage 1140 synapse 0
 Voltage 1142 synapse 0
 Voltage 1144 synapse 0
 Voltage 1146 synapse 0
-Voltage 1147 synapse 0
-Voltage 1149 synapse 0
-Voltage 1152 synapse 0
+Voltage 1147 synapse 126
+Voltage 1149 synapse 19
+Voltage 1152 synapse 180
 Voltage 1155 synapse 0
 Voltage 1158 synapse 0
-Voltage 1160 synapse 0
+Voltage 1160 synapse 103.0000076
 Voltage 1162 synapse 0
-Voltage 1164 synapse 0
-Voltage 1166 synapse 0
+Voltage 1164 synapse 19
+Voltage 1166 synapse 110
 Voltage 1168 synapse 0
-Voltage 1169 synapse 0
+Voltage 1169 synapse 150
 Voltage 1170 knot 0
 Voltage 1172 synapse 0
 Voltage 1173 synapse 0
-Voltage 1175 synapse 0
-Voltage 1177 synapse 0
-Voltage 1179 fork 0
-Voltage 1181 fork 0
+Voltage 1175 synapse 70
+Voltage 1177 synapse 91
+Voltage 1179 fork 99
+Voltage 1181 fork 51.00000381
 Voltage 1183 fork 0
-Voltage 1185 fork 0
+Voltage 1185 fork 96
 Voltage 1187 fork 0
-Voltage 1190 knot 0
-Voltage 1193 knot 0
+Voltage 1190 knot 19
+Voltage 1193 knot 91
 Voltage 1196 knot 0
-Voltage 1199 knot 0
-Voltage 1201 knot 0
-Voltage 1203 knot 0
-Voltage 1206 fork 0
-Voltage 1209 fork 0
-Voltage 1211 fork 0
-Voltage 1214 fork 0
+Voltage 1199 knot 36
+Voltage 1201 knot 91
+Voltage 1203 knot 63.99999619
+Voltage 1206 fork 99
+Voltage 1209 fork 36
+Voltage 1211 fork 84
+Voltage 1214 fork 64
 Voltage 1216 fork 0
-Voltage 1219 fork 0
+Voltage 1219 fork 96
 Voltage 1221 fork 0
-Voltage 1224 fork 0
-Voltage 1226 fork 0
+Voltage 1224 fork 96
+Voltage 1226 fork 19
 Voltage 1228 inputLine 0
 Voltage 1229 inputLine 0
-Voltage 1230 knot 0
-Voltage 1231 knot 0
-Voltage 1232 knot 0
-Voltage 1233 knot 0
-Voltage 1234 knot 0
-Voltage 1235 knot 0
-Voltage 1236 knot 0
-Voltage 1237 knot 0
-Voltage 1238 knot 0
-Voltage 1240 fork 0
-Voltage 1241 knot 0
-Voltage 1242 knot 0
-Voltage 1243 knot 0
-Voltage 1244 knot 0
-Voltage 1245 knot 0
-Voltage 1246 knot 0
-Voltage 1247 knot 0
-Voltage 1248 knot 0
-Voltage 1249 knot 0
-Voltage 1250 knot 0
-Voltage 1253 fork 0
-Voltage 1256 synapse 19.00000381
-Voltage 1259 fork 0
-Voltage 1263 synapse 0
+Voltage 1230 knot 36.00000763
+Voltage 1231 knot 99
+Voltage 1232 knot 99
+Voltage 1233 knot 63.99999619
+Voltage 1234 knot 84.00000763
+Voltage 1235 knot 36
+Voltage 1236 knot 100
+Voltage 1237 knot 51.00000381
+Voltage 1238 knot 84
+Voltage 1240 fork 96
+Voltage 1241 knot 99
+Voltage 1242 knot 75
+Voltage 1243 knot 51.00000381
+Voltage 1244 knot 100
+Voltage 1245 knot 64
+Voltage 1246 knot 100
+Voltage 1247 knot 64
+Voltage 1248 knot 19
+Voltage 1249 knot 99
+Voltage 1250 knot 51.00000381
+Voltage 1253 fork 84.00000763
+Voltage 1256 synapse 0
+Voltage 1259 fork 41.8266983
+Voltage 1263 synapse 99.84848022
 Voltage 1266 fork 0
-Voltage 1270 synapse 0
-Voltage 1273 fork 0
-Voltage 1277 synapse 0
-Voltage 1280 fork 0
-Voltage 1284 synapse 0
-Voltage 1287 fork 0
-Voltage 1291 synapse 0
+Voltage 1270 synapse 75
+Voltage 1273 fork 99
+Voltage 1277 synapse 148
+Voltage 1280 fork 100
+Voltage 1284 synapse 174
+Voltage 1287 fork 49.86048508
+Voltage 1291 synapse 81.10298157
 Voltage 1294 fork 0
 Voltage 1298 synapse 0
 Voltage 1301 fork 0
 Voltage 1305 synapse 0
-Voltage 1307 fork 0
-Voltage 1311 synapse 0
+Voltage 1307 fork 99
+Voltage 1311 synapse 160
 Voltage 1314 neuron 0
 Voltage 1317 neuron 0
 Voltage 1320 neuron 0
 Voltage 1323 neuron 0
 Voltage 1326 neuron 0
-Voltage 1329 fork 0
-Voltage 1333 synapse 0
+Voltage 1329 fork 51.00000381
+Voltage 1333 synapse 75
 Voltage 1336 fork 0
-Voltage 1340 synapse 0
+Voltage 1340 synapse 75
 Voltage 1343 fork 0
 Voltage 1347 synapse 0
 Voltage 1350 fork 0
 Voltage 1354 synapse 0
-Voltage 1357 fork 0
-Voltage 1361 synapse 0
+Voltage 1357 fork 99
+Voltage 1361 synapse 84.00000763
 Voltage 1364 fork 0
 Voltage 1368 synapse 0
 Voltage 1371 fork 0
 Voltage 1375 synapse 0
 Voltage 1378 fork 0
 Voltage 1382 synapse 0
-Voltage 2 pipe (1:0)
-Voltage 4 pipe (1:0)
+Voltage 2 pipe (1:100)
+Voltage 4 pipe (1:99)
 Voltage 6 pipe (1:0)
 Voltage 7 pipe (1:0)
 Voltage 9 pipe (1:0)
@@ -2047,78 +2047,78 @@ Voltage 47 pipe (1:0)
 Voltage 49 pipe (1:0)
 Voltage 50 pipe (1:0)
 Voltage 62 pipe (1:0)
-Voltage 64 pipe (1:0)
+Voltage 64 pipe (1:66.94821167)
 Voltage 66 pipe (1:0)
 Voltage 68 pipe (1:0)
 Voltage 70 pipe (1:0)
 Voltage 72 pipe (1:0)
-Voltage 74 pipe (1:91.00000763)
-Voltage 77 pipe (1:0)
+Voltage 74 pipe (1:117.4855423)
+Voltage 77 pipe (1:78.55257416)
 Voltage 81 pipe (1:0)
 Voltage 83 pipe (1:0)
-Voltage 85 pipe (1:0)
+Voltage 85 pipe (1:59.16947174)
 Voltage 87 pipe (1:0)
-Voltage 89 pipe (1:0)
-Voltage 91 pipe (1:0)
-Voltage 92 pipe (1:0)
+Voltage 89 pipe (1:82.76074219)
+Voltage 91 pipe (1:82.76074219)
+Voltage 92 pipe (1:81.48553467)
 Voltage 94 pipe (1:0)
 Voltage 95 pipe (1:0)
 Voltage 97 pipe (1:0)
-Voltage 98 pipe (1:0)
+Voltage 98 pipe (1:128)
 Voltage 100 pipe (1:0)
-Voltage 103 pipe (1:51.00000381)
+Voltage 103 pipe (1:96)
 Voltage 105 pipe (1:0)
-Voltage 109 pipe (1:0)
-Voltage 111 pipe (1:0)
-Voltage 113 pipe (1:0)
-Voltage 115 pipe (1:0)
+Voltage 109 pipe (1:96)
+Voltage 111 pipe (1:36.00000763)
+Voltage 113 pipe (1:100)
+Voltage 115 pipe (1:84)
 Voltage 117 pipe (1:0)
-Voltage 119 pipe (1:0)
-Voltage 121 pipe (1:0)
-Voltage 122 pipe (1:0)
-Voltage 124 pipe (1:0)
-Voltage 126 pipe (1:0)
-Voltage 128 pipe (1:0)
-Voltage 129 pipe (1:0)
-Voltage 131 pipe (1:0)
+Voltage 119 pipe (1:196)
+Voltage 121 pipe (1:50.99999237)
+Voltage 122 pipe (1:36.00000763)
+Voltage 124 pipe (1:91)
+Voltage 126 pipe (1:19)
+Voltage 128 pipe (1:84.00000763)
+Voltage 129 pipe (1:91)
+Voltage 131 pipe (1:84)
 Voltage 133 pipe (1:0)
 Voltage 134 pipe (1:0)
 Voltage 136 pipe (1:0)
-Voltage 138 pipe (1:0)
-Voltage 140 pipe (1:0)
-Voltage 141 pipe (1:0)
+Voltage 138 pipe (1:63.99999619)
+Voltage 140 pipe (1:99)
+Voltage 141 pipe (1:96)
 Voltage 143 pipe (1:0)
-Voltage 145 pipe (1:0)
-Voltage 146 pipe (1:50.99999237)
-Voltage 148 pipe (1:63.99999619)
-Voltage 150 pipe (1:0)
-Voltage 152 pipe (1:0)
-Voltage 154 pipe (1:0)
-Voltage 156 pipe (1:0)
-Voltage 158 pipe (1:0)
-Voltage 160 pipe (1:0)
-Voltage 162 pipe (1:0)
-Voltage 164 pipe (1:0)
+Voltage 145 pipe (1:84)
+Voltage 146 pipe (1:115.9340515)
+Voltage 148 pipe (1:92.8196106)
+Voltage 150 pipe (1:91)
+Voltage 152 pipe (1:96)
+Voltage 154 pipe (1:51.00000381)
+Voltage 156 pipe (1:64)
+Voltage 158 pipe (1:100.8604889)
+Voltage 160 pipe (1:103.0212402)
+Voltage 162 pipe (1:82.88825989)
+Voltage 164 pipe (1:82.76074219)
 Voltage 167 pipe (1:0)
 Voltage 168 pipe (1:0)
-Voltage 169 pipe (1:0)
+Voltage 169 pipe (1:36.00000763)
 Voltage 171 pipe (1:0)
-Voltage 172 pipe (1:0)
-Voltage 174 pipe (1:0)
+Voltage 172 pipe (1:84)
+Voltage 174 pipe (1:63.99999619)
 Voltage 175 pipe (1:0)
 Voltage 177 pipe (1:0)
-Voltage 178 pipe (1:0)
-Voltage 180 pipe (1:96)
-Voltage 182 pipe (1:99)
-Voltage 183 pipe (1:0)
-Voltage 184 pipe (1:0)
-Voltage 186 pipe (1:0)
-Voltage 187 pipe (1:0)
-Voltage 188 pipe (1:0)
-Voltage 190 pipe (1:0)
-Voltage 191 pipe (1:0)
-Voltage 193 pipe (1:0)
-Voltage 195 pipe (1:0)
+Voltage 178 pipe (1:63.99999619)
+Voltage 180 pipe (1:91.00000763)
+Voltage 182 pipe (1:84)
+Voltage 183 pipe (1:50.99999237)
+Voltage 184 pipe (1:75)
+Voltage 186 pipe (1:63.99999619)
+Voltage 187 pipe (1:99)
+Voltage 188 pipe (1:91)
+Voltage 190 pipe (1:51.00000381)
+Voltage 191 pipe (1:19)
+Voltage 193 pipe (1:39.02124023)
+Voltage 195 pipe (1:26.65176773)
 Voltage 197 pipe (1:0)
 Voltage 198 pipe (1:0)
 Voltage 200 pipe (1:0)
@@ -2137,179 +2137,179 @@ Voltage 236 pipe (1:0)
 Voltage 237 pipe (1:0)
 Voltage 239 pipe (1:0)
 Voltage 240 pipe (1:0)
-Voltage 247 pipe (1:0)
-Voltage 248 pipe (1:55.00000381)
+Voltage 247 pipe (1:125.0893707)
+Voltage 248 pipe (1:170.5721893)
 Voltage 250 pipe (1:0)
-Voltage 251 pipe (1:0)
-Voltage 253 pipe (1:0)
-Voltage 254 pipe (1:0)
-Voltage 256 pipe (1:36)
-Voltage 257 pipe (1:0)
-Voltage 259 pipe (1:0)
-Voltage 260 pipe (1:0)
+Voltage 251 pipe (1:99)
+Voltage 253 pipe (1:142)
+Voltage 254 pipe (1:113)
+Voltage 256 pipe (1:91)
+Voltage 257 pipe (1:101.6517639)
+Voltage 259 pipe (1:36)
+Voltage 260 pipe (1:81.10298157)
 Voltage 264 pipe (1:0)
-Voltage 265 pipe (1:0)
+Voltage 265 pipe (1:63.99999619)
 Voltage 267 pipe (1:0)
 Voltage 268 pipe (1:0)
 Voltage 270 pipe (1:0)
-Voltage 271 pipe (1:99)
-Voltage 276 pipe (1:0)
-Voltage 278 pipe (1:51.00000381)
-Voltage 280 pipe (1:0)
+Voltage 271 pipe (1:84)
+Voltage 276 pipe (1:66.94821167)
+Voltage 278 pipe (1:0)
+Voltage 280 pipe (1:111.0000076)
 Voltage 282 pipe (1:0)
 Voltage 284 pipe (1:0)
 Voltage 286 pipe (1:0)
 Voltage 287 pipe (1:0)
 Voltage 289 pipe (1:0)
-Voltage 290 pipe (1:0)
+Voltage 290 pipe (1:36.00000763)
 Voltage 292 pipe (1:0)
 Voltage 293 pipe (1:0)
-Voltage 295 pipe (1:0)
+Voltage 295 pipe (1:91)
 Voltage 297 pipe (1:0)
-Voltage 299 pipe (1:0)
+Voltage 299 pipe (1:73.19671631)
 Voltage 301 pipe (1:0)
 Voltage 302 pipe (1:0)
-Voltage 304 pipe (1:63.99999619)
+Voltage 304 pipe (1:92.8196106)
 Voltage 305 pipe (1:0)
-Voltage 307 pipe (1:0)
+Voltage 307 pipe (1:75)
 Voltage 309 pipe (1:0)
 Voltage 310 pipe (1:0)
 Voltage 313 pipe (1:0)
-Voltage 315 pipe (1:0)
-Voltage 316 pipe (1:0)
+Voltage 315 pipe (1:136)
+Voltage 316 pipe (1:96)
 Voltage 318 pipe (1:0)
 Voltage 319 pipe (1:0)
-Voltage 322 pipe (1:0)
-Voltage 323 pipe (1:0)
-Voltage 325 pipe (1:0)
-Voltage 326 pipe (1:0)
-Voltage 328 pipe (1:0)
-Voltage 329 pipe (1:0)
-Voltage 331 pipe (1:0)
-Voltage 332 pipe (1:0)
-Voltage 334 pipe (1:0)
-Voltage 336 pipe (1:0)
-Voltage 337 pipe (1:0)
-Voltage 339 pipe (1:0)
-Voltage 340 pipe (1:0)
-Voltage 342 pipe (1:0)
-Voltage 343 pipe (1:0)
-Voltage 345 pipe (1:0)
+Voltage 322 pipe (1:75)
+Voltage 323 pipe (1:84.00000763)
+Voltage 325 pipe (1:99)
+Voltage 326 pipe (1:96)
+Voltage 328 pipe (1:64)
+Voltage 329 pipe (1:75)
+Voltage 331 pipe (1:84.00000763)
+Voltage 332 pipe (1:91)
+Voltage 334 pipe (1:63.99999619)
+Voltage 336 pipe (1:83)
+Voltage 337 pipe (1:111)
+Voltage 339 pipe (1:99)
+Voltage 340 pipe (1:96)
+Voltage 342 pipe (1:51.00000381)
+Voltage 343 pipe (1:64)
+Voltage 345 pipe (1:84.00000763)
 Voltage 347 pipe (1:0)
-Voltage 349 pipe (1:0)
-Voltage 351 pipe (1:0)
-Voltage 352 pipe (1:0)
-Voltage 354 pipe (1:0)
-Voltage 356 pipe (1:0)
-Voltage 358 pipe (1:0)
-Voltage 359 pipe (1:0)
-Voltage 361 pipe (1:0)
-Voltage 363 pipe (1:0)
+Voltage 349 pipe (1:91)
+Voltage 351 pipe (1:75)
+Voltage 352 pipe (1:63.99999619)
+Voltage 354 pipe (1:36.00000763)
+Voltage 356 pipe (1:99)
+Voltage 358 pipe (1:84.00000763)
+Voltage 359 pipe (1:91)
+Voltage 361 pipe (1:84)
+Voltage 363 pipe (1:96)
 Voltage 364 pipe (1:0)
-Voltage 366 pipe (1:0)
-Voltage 368 pipe (1:0)
-Voltage 370 pipe (1:0)
+Voltage 366 pipe (1:19)
+Voltage 368 pipe (1:159)
+Voltage 370 pipe (1:175)
 Voltage 372 pipe (1:0)
 Voltage 374 pipe (1:0)
-Voltage 376 pipe (1:0)
-Voltage 379 pipe (1:0)
-Voltage 381 pipe (1:0)
-Voltage 383 pipe (1:0)
+Voltage 376 pipe (1:19)
+Voltage 379 pipe (1:146.8882599)
+Voltage 381 pipe (1:157.7607422)
+Voltage 383 pipe (1:19.00000381)
 Voltage 385 pipe (1:0)
 Voltage 386 pipe (1:0)
-Voltage 387 pipe (1:0)
-Voltage 389 pipe (1:0)
-Voltage 390 pipe (1:0)
-Voltage 391 pipe (1:0)
-Voltage 393 pipe (1:0)
-Voltage 394 pipe (1:0)
-Voltage 395 pipe (1:0)
-Voltage 397 pipe (1:0)
-Voltage 398 pipe (1:0)
-Voltage 399 pipe (1:0)
-Voltage 401 pipe (1:0)
-Voltage 402 pipe (1:0)
-Voltage 403 pipe (1:0)
-Voltage 405 pipe (1:0)
-Voltage 406 pipe (1:0)
-Voltage 408 pipe (1:0)
-Voltage 409 pipe (1:0)
-Voltage 411 pipe (1:0)
-Voltage 413 pipe (1:0)
-Voltage 414 pipe (1:0)
-Voltage 430 pipe (1:0)
-Voltage 432 pipe (1:0)
+Voltage 387 pipe (1:99)
+Voltage 389 pipe (1:96)
+Voltage 390 pipe (1:91.00000763)
+Voltage 391 pipe (1:99)
+Voltage 393 pipe (1:100)
+Voltage 394 pipe (1:118)
+Voltage 395 pipe (1:63.99999619)
+Voltage 397 pipe (1:50.99999237)
+Voltage 398 pipe (1:36.00000763)
+Voltage 399 pipe (1:100)
+Voltage 401 pipe (1:96)
+Voltage 402 pipe (1:75)
+Voltage 403 pipe (1:51.00000381)
+Voltage 405 pipe (1:75)
+Voltage 406 pipe (1:91.00000763)
+Voltage 408 pipe (1:148)
+Voltage 409 pipe (1:100)
+Voltage 411 pipe (1:12.75204754)
+Voltage 413 pipe (1:12.75204754)
+Voltage 414 pipe (1:39.02124023)
+Voltage 430 pipe (1:12.75204754)
+Voltage 432 pipe (1:64)
 Voltage 433 pipe (1:0)
-Voltage 435 pipe (1:0)
+Voltage 435 pipe (1:84)
 Voltage 437 pipe (1:0)
-Voltage 439 pipe (1:0)
-Voltage 440 pipe (1:0)
-Voltage 448 pipe (1:0)
-Voltage 449 pipe (1:0)
-Voltage 451 pipe (1:0)
-Voltage 452 pipe (1:0)
-Voltage 454 pipe (1:0)
+Voltage 439 pipe (1:26.65176773)
+Voltage 440 pipe (1:75)
+Voltage 448 pipe (1:64)
+Voltage 449 pipe (1:36)
+Voltage 451 pipe (1:100)
+Voltage 452 pipe (1:187)
+Voltage 454 pipe (1:36)
 Voltage 455 pipe (1:0)
-Voltage 457 pipe (1:0)
+Voltage 457 pipe (1:36)
 Voltage 458 pipe (1:0)
-Voltage 460 pipe (1:0)
-Voltage 461 pipe (1:0)
-Voltage 463 pipe (1:0)
-Voltage 464 pipe (1:0)
-Voltage 465 pipe (1:0)
-Voltage 467 pipe (1:0)
-Voltage 469 pipe (1:0)
-Voltage 470 pipe (1:0)
-Voltage 472 pipe (1:0)
-Voltage 473 pipe (1:0)
-Voltage 475 pipe (1:0)
-Voltage 476 pipe (1:0)
-Voltage 478 pipe (1:0)
-Voltage 479 pipe (1:0)
-Voltage 481 pipe (1:0)
-Voltage 482 pipe (1:0)
-Voltage 484 pipe (1:0)
-Voltage 486 pipe (1:0)
-Voltage 487 pipe (1:0)
-Voltage 489 pipe (1:0)
-Voltage 491 pipe (1:0)
-Voltage 492 pipe (1:0)
-Voltage 494 pipe (1:0)
-Voltage 495 pipe (1:0)
+Voltage 460 pipe (1:126)
+Voltage 461 pipe (1:70)
+Voltage 463 pipe (1:100)
+Voltage 464 pipe (1:75)
+Voltage 465 pipe (1:51.00000381)
+Voltage 467 pipe (1:165.1029968)
+Voltage 469 pipe (1:84.00000763)
+Voltage 470 pipe (1:64)
+Voltage 472 pipe (1:96)
+Voltage 473 pipe (1:100)
+Voltage 475 pipe (1:64)
+Voltage 476 pipe (1:36)
+Voltage 478 pipe (1:91)
+Voltage 479 pipe (1:75)
+Voltage 481 pipe (1:91.00000763)
+Voltage 482 pipe (1:99)
+Voltage 484 pipe (1:75)
+Voltage 486 pipe (1:84)
+Voltage 487 pipe (1:174.5525818)
+Voltage 489 pipe (1:90.65176392)
+Voltage 491 pipe (1:90.02124023)
+Voltage 492 pipe (1:81.10298157)
+Voltage 494 pipe (1:26.65176773)
+Voltage 495 pipe (1:49.86048508)
 Voltage 497 pipe (1:0)
-Voltage 498 pipe (1:0)
-Voltage 501 pipe (1:0)
-Voltage 502 pipe (1:0)
+Voltage 498 pipe (1:82.88825989)
+Voltage 501 pipe (1:126)
+Voltage 502 pipe (1:99)
 Voltage 504 pipe (1:0)
-Voltage 505 pipe (1:0)
-Voltage 507 pipe (1:0)
-Voltage 508 pipe (1:91.00000763)
+Voltage 505 pipe (1:19.00000381)
+Voltage 507 pipe (1:74.0893631)
+Voltage 508 pipe (1:36.00000763)
 Voltage 510 pipe (1:0)
 Voltage 511 pipe (1:0)
 Voltage 513 pipe (1:0)
 Voltage 514 pipe (1:0)
-Voltage 516 pipe (1:0)
-Voltage 518 pipe (1:0)
-Voltage 519 pipe (1:50.99999237)
-Voltage 520 pipe (1:75)
-Voltage 522 pipe (1:0)
-Voltage 524 pipe (1:0)
-Voltage 525 pipe (1:0)
+Voltage 516 pipe (1:84.00000763)
+Voltage 518 pipe (1:75)
+Voltage 519 pipe (1:0)
+Voltage 520 pipe (1:0)
+Voltage 522 pipe (1:49.86048508)
+Voltage 524 pipe (1:75)
+Voltage 525 pipe (1:51.00000381)
 Voltage 527 pipe (1:0)
 Voltage 530 pipe (1:0)
 Voltage 531 pipe (1:0)
 Voltage 533 pipe (1:0)
-Voltage 535 pipe (1:0)
-Voltage 536 pipe (1:0)
-Voltage 538 pipe (1:0)
-Voltage 539 pipe (1:0)
-Voltage 542 pipe (1:0)
-Voltage 544 pipe (1:0)
+Voltage 535 pipe (1:19.00000381)
+Voltage 536 pipe (1:50.99999237)
+Voltage 538 pipe (1:36.00000763)
+Voltage 539 pipe (1:96)
+Voltage 542 pipe (1:198)
+Voltage 544 pipe (1:196)
 Voltage 545 pipe (1:0)
-Voltage 547 pipe (1:0)
-Voltage 548 pipe (1:0)
-Voltage 550 pipe (1:0)
-Voltage 551 pipe (1:0)
+Voltage 547 pipe (1:84)
+Voltage 548 pipe (1:96)
+Voltage 550 pipe (1:91.00000763)
+Voltage 551 pipe (1:91)
 Voltage 553 pipe (1:0)
 Voltage 554 pipe (1:0)
 Voltage 556 pipe (1:0)
@@ -2319,93 +2319,93 @@ Voltage 560 pipe (1:0)
 Voltage 562 pipe (1:0)
 Voltage 563 pipe (1:0)
 Voltage 565 pipe (1:0)
-Voltage 566 pipe (1:50.99999237)
-Voltage 567 pipe (1:75)
+Voltage 566 pipe (1:0)
+Voltage 567 pipe (1:0)
 Voltage 569 pipe (1:0)
-Voltage 570 pipe (1:0)
-Voltage 572 pipe (1:0)
+Voltage 570 pipe (1:36.00000763)
+Voltage 572 pipe (1:19.00000381)
 Voltage 573 pipe (1:0)
-Voltage 574 pipe (1:0)
+Voltage 574 pipe (1:91.00000763)
 Voltage 576 pipe (1:0)
 Voltage 578 pipe (1:0)
 Voltage 579 pipe (1:0)
-Voltage 581 pipe (1:0)
-Voltage 582 pipe (1:0)
-Voltage 584 pipe (1:0)
-Voltage 585 pipe (1:0)
-Voltage 587 pipe (1:0)
-Voltage 589 pipe (1:0)
+Voltage 581 pipe (1:196)
+Voltage 582 pipe (1:180)
+Voltage 584 pipe (1:190)
+Voltage 585 pipe (1:64)
+Voltage 587 pipe (1:91.00000763)
+Voltage 589 pipe (1:96)
 Voltage 590 pipe (1:0)
-Voltage 592 pipe (1:0)
-Voltage 593 pipe (1:0)
-Voltage 595 pipe (1:0)
+Voltage 592 pipe (1:51.00000381)
+Voltage 593 pipe (1:19)
+Voltage 595 pipe (1:36)
 Voltage 596 pipe (1:0)
-Voltage 598 pipe (1:96)
-Voltage 599 pipe (1:100)
-Voltage 601 pipe (1:99)
-Voltage 602 pipe (1:75)
-Voltage 604 pipe (1:0)
-Voltage 606 pipe (1:0)
-Voltage 607 pipe (1:0)
-Voltage 609 pipe (1:0)
-Voltage 611 pipe (1:0)
+Voltage 598 pipe (1:50.99999237)
+Voltage 599 pipe (1:75)
+Voltage 601 pipe (1:63.99999619)
+Voltage 602 pipe (1:100)
+Voltage 604 pipe (1:91.00000763)
+Voltage 606 pipe (1:100)
+Voltage 607 pipe (1:96)
+Voltage 609 pipe (1:96)
+Voltage 611 pipe (1:99)
 Voltage 612 pipe (1:0)
-Voltage 613 pipe (1:0)
-Voltage 615 pipe (1:0)
-Voltage 616 pipe (1:0)
-Voltage 618 pipe (1:0)
-Voltage 619 pipe (1:0)
-Voltage 620 pipe (1:0)
-Voltage 622 pipe (1:0)
-Voltage 624 pipe (1:0)
+Voltage 613 pipe (1:87.75204468)
+Voltage 615 pipe (1:99)
+Voltage 616 pipe (1:99)
+Voltage 618 pipe (1:100)
+Voltage 619 pipe (1:82.88825989)
+Voltage 620 pipe (1:142.5525818)
+Voltage 622 pipe (1:50.99999237)
+Voltage 624 pipe (1:63.99999619)
 Voltage 625 pipe (1:0)
-Voltage 626 pipe (1:0)
+Voltage 626 pipe (1:100)
 Voltage 628 pipe (1:0)
 Voltage 629 pipe (1:0)
 Voltage 631 pipe (1:0)
 Voltage 632 pipe (1:0)
 Voltage 633 pipe (1:0)
-Voltage 636 pipe (1:0)
-Voltage 637 pipe (1:0)
+Voltage 636 pipe (1:36)
+Voltage 637 pipe (1:51.00000381)
 Voltage 638 pipe (1:0)
 Voltage 640 pipe (1:0)
 Voltage 641 pipe (1:0)
-Voltage 643 pipe (1:0)
-Voltage 644 pipe (1:0)
+Voltage 643 pipe (1:100)
+Voltage 644 pipe (1:99)
 Voltage 645 pipe (1:0)
 Voltage 647 pipe (1:0)
 Voltage 648 pipe (1:0)
 Voltage 650 pipe (1:0)
 Voltage 651 pipe (1:0)
-Voltage 652 pipe (1:0)
-Voltage 654 pipe (1:0)
-Voltage 655 pipe (1:0)
-Voltage 657 pipe (1:0)
-Voltage 658 pipe (1:0)
-Voltage 660 pipe (1:0)
-Voltage 661 pipe (1:0)
+Voltage 652 pipe (1:36)
+Voltage 654 pipe (1:70)
+Voltage 655 pipe (1:100)
+Voltage 657 pipe (1:64)
+Voltage 658 pipe (1:96)
+Voltage 660 pipe (1:51.00000381)
+Voltage 661 pipe (1:91)
 Voltage 663 pipe (1:0)
-Voltage 664 pipe (1:0)
-Voltage 666 pipe (1:0)
-Voltage 667 pipe (1:0)
-Voltage 669 pipe (1:0)
-Voltage 670 pipe (1:0)
+Voltage 664 pipe (1:19)
+Voltage 666 pipe (1:130.9634705)
+Voltage 667 pipe (1:78.55257416)
+Voltage 669 pipe (1:81.48553467)
+Voltage 670 pipe (1:82.88825989)
 Voltage 672 pipe (1:0)
 Voltage 673 pipe (1:0)
 Voltage 675 pipe (1:0)
 Voltage 676 pipe (1:0)
-Voltage 679 pipe (1:0)
+Voltage 679 pipe (1:36)
 Voltage 680 pipe (1:0)
 Voltage 682 pipe (1:0)
 Voltage 683 pipe (1:0)
 Voltage 685 pipe (1:0)
-Voltage 686 pipe (1:0)
+Voltage 686 pipe (1:51.00000381)
 Voltage 688 pipe (1:0)
-Voltage 689 pipe (1:0)
+Voltage 689 pipe (1:36)
 Voltage 691 pipe (1:0)
-Voltage 692 pipe (1:0)
-Voltage 694 pipe (1:0)
-Voltage 696 pipe (1:0)
+Voltage 692 pipe (1:36)
+Voltage 694 pipe (1:51.00000381)
+Voltage 696 pipe (1:12.75204754)
 Voltage 697 pipe (1:0)
 Voltage 699 pipe (1:0)
 Voltage 701 pipe (1:0)
@@ -2417,50 +2417,50 @@ Voltage 708 pipe (1:0)
 Voltage 710 pipe (1:0)
 Voltage 711 pipe (1:0)
 Voltage 713 pipe (1:0)
-Voltage 715 pipe (1:0)
-Voltage 716 pipe (1:0)
+Voltage 715 pipe (1:19)
+Voltage 716 pipe (1:128)
 Voltage 718 pipe (1:0)
 Voltage 719 pipe (1:0)
 Voltage 721 pipe (1:0)
-Voltage 723 pipe (1:0)
-Voltage 724 pipe (1:0)
+Voltage 723 pipe (1:91)
+Voltage 724 pipe (1:96)
 Voltage 726 pipe (1:0)
 Voltage 727 pipe (1:0)
 Voltage 729 pipe (1:0)
-Voltage 730 pipe (1:0)
-Voltage 732 pipe (1:0)
-Voltage 733 pipe (1:0)
-Voltage 735 pipe (1:0)
-Voltage 736 pipe (1:0)
-Voltage 738 pipe (1:0)
-Voltage 740 pipe (1:0)
-Voltage 741 pipe (1:0)
+Voltage 730 pipe (1:132.0959015)
+Voltage 732 pipe (1:149.0893555)
+Voltage 733 pipe (1:162.5525818)
+Voltage 735 pipe (1:84.00000763)
+Voltage 736 pipe (1:82.88825989)
+Voltage 738 pipe (1:81.10298157)
+Voltage 740 pipe (1:87.51824951)
+Voltage 741 pipe (1:111.572197)
 Voltage 743 pipe (1:0)
 Voltage 744 pipe (1:0)
-Voltage 746 pipe (1:0)
-Voltage 747 pipe (1:0)
-Voltage 749 pipe (1:0)
-Voltage 750 pipe (1:0)
-Voltage 752 pipe (1:0)
-Voltage 753 pipe (1:0)
-Voltage 755 pipe (1:0)
-Voltage 756 pipe (1:0)
-Voltage 758 pipe (1:0)
+Voltage 746 pipe (1:84.00000763)
+Voltage 747 pipe (1:91)
+Voltage 749 pipe (1:91)
+Voltage 750 pipe (1:115)
+Voltage 752 pipe (1:91)
+Voltage 753 pipe (1:96)
+Voltage 755 pipe (1:59.93405151)
+Voltage 756 pipe (1:87.51824951)
+Voltage 758 pipe (1:12.75204754)
 Voltage 759 pipe (1:0)
 Voltage 760 pipe (1:0)
 Voltage 762 pipe (1:0)
 Voltage 763 pipe (1:0)
-Voltage 765 pipe (1:0)
-Voltage 766 pipe (1:0)
-Voltage 768 pipe (1:0)
-Voltage 769 pipe (1:0)
-Voltage 771 pipe (1:0)
-Voltage 772 pipe (1:0)
-Voltage 774 pipe (1:0)
-Voltage 775 pipe (1:0)
+Voltage 765 pipe (1:49.86048508)
+Voltage 766 pipe (1:39.02124023)
+Voltage 768 pipe (1:87.75204468)
+Voltage 769 pipe (1:84.00000763)
+Voltage 771 pipe (1:96.75205231)
+Voltage 772 pipe (1:91)
+Voltage 774 pipe (1:84.00000763)
+Voltage 775 pipe (1:91)
 Voltage 782 pipe (1:0)
-Voltage 784 pipe (1:0)
-Voltage 785 pipe (1:0)
+Voltage 784 pipe (1:19)
+Voltage 785 pipe (1:75)
 Voltage 787 pipe (1:0)
 Voltage 789 pipe (1:0)
 Voltage 790 pipe (1:0)
@@ -2469,80 +2469,80 @@ Voltage 793 pipe (1:0)
 Voltage 795 pipe (1:0)
 Voltage 811 pipe (1:0)
 Voltage 812 pipe (1:0)
-Voltage 814 pipe (1:0)
+Voltage 814 pipe (1:91)
 Voltage 816 pipe (1:0)
 Voltage 817 pipe (1:0)
-Voltage 819 pipe (1:0)
-Voltage 820 pipe (1:0)
+Voltage 819 pipe (1:19)
+Voltage 820 pipe (1:36)
 Voltage 822 pipe (1:0)
 Voltage 823 pipe (1:0)
 Voltage 828 pipe (1:0)
 Voltage 829 pipe (1:0)
 Voltage 831 pipe (1:0)
-Voltage 832 pipe (1:0)
-Voltage 833 pipe (1:0)
-Voltage 835 pipe (1:0)
+Voltage 832 pipe (1:75)
+Voltage 833 pipe (1:51.00000381)
+Voltage 835 pipe (1:64)
 Voltage 836 pipe (1:0)
 Voltage 838 pipe (1:0)
 Voltage 839 pipe (1:0)
 Voltage 840 pipe (1:0)
 Voltage 842 pipe (1:0)
-Voltage 843 pipe (1:0)
-Voltage 844 pipe (1:0)
-Voltage 846 pipe (1:0)
-Voltage 849 pipe (1:0)
-Voltage 853 pipe (1:0)
-Voltage 855 pipe (1:0)
-Voltage 857 pipe (1:0)
-Voltage 859 pipe (1:0)
-Voltage 861 pipe (1:0)
-Voltage 863 pipe (1:0)
-Voltage 865 pipe (1:0)
+Voltage 843 pipe (1:91)
+Voltage 844 pipe (1:75)
+Voltage 846 pipe (1:84.00000763)
+Voltage 849 pipe (1:41.8266983)
+Voltage 853 pipe (1:26.65176773)
+Voltage 855 pipe (1:90.02124023)
+Voltage 857 pipe (1:90.65176392)
+Voltage 859 pipe (1:103.0212402)
+Voltage 861 pipe (1:101.6517639)
+Voltage 863 pipe (1:76.75204468)
+Voltage 865 pipe (1:75)
 Voltage 869 pipe (1:0)
-Voltage 872 pipe (1:0)
+Voltage 872 pipe (1:51.00000381)
 Voltage 875 pipe (1:0)
 Voltage 876 pipe (1:0)
 Voltage 879 pipe (1:0)
-Voltage 884 pipe (1:0)
+Voltage 884 pipe (1:19)
 Voltage 885 pipe (1:0)
 Voltage 887 pipe (1:0)
 Voltage 889 pipe (1:0)
 Voltage 891 pipe (1:0)
 Voltage 893 pipe (1:0)
-Voltage 896 pipe (1:0)
+Voltage 896 pipe (1:36)
 Voltage 897 pipe (1:0)
 Voltage 899 pipe (1:0)
-Voltage 901 pipe (1:0)
+Voltage 901 pipe (1:19)
 Voltage 903 pipe (1:0)
-Voltage 904 pipe (1:0)
+Voltage 904 pipe (1:77.9149704)
 Voltage 906 pipe (1:0)
-Voltage 908 pipe (1:0)
-Voltage 909 pipe (1:0)
+Voltage 908 pipe (1:36)
+Voltage 909 pipe (1:77.9149704)
 Voltage 911 pipe (1:0)
-Voltage 912 pipe (1:0)
+Voltage 912 pipe (1:66.94821167)
 Voltage 915 pipe (1:0)
 Voltage 917 pipe (1:0)
 Voltage 918 pipe (1:0)
-Voltage 920 pipe (1:0)
-Voltage 922 pipe (1:0)
-Voltage 924 pipe (1:0)
-Voltage 925 pipe (1:0)
+Voltage 920 pipe (1:19)
+Voltage 922 pipe (1:178.8882599)
+Voltage 924 pipe (1:84.00000763)
+Voltage 925 pipe (1:91)
 Voltage 927 pipe (1:0)
-Voltage 929 pipe (1:0)
-Voltage 930 pipe (1:0)
+Voltage 929 pipe (1:63.99999619)
+Voltage 930 pipe (1:12.75204754)
 Voltage 932 pipe (1:0)
 Voltage 933 pipe (1:0)
-Voltage 935 pipe (1:0)
+Voltage 935 pipe (1:19.00000381)
 Voltage 936 pipe (1:0)
 Voltage 938 pipe (1:0)
-Voltage 941 pipe (1:0)
-Voltage 942 pipe (1:0)
+Voltage 941 pipe (1:96)
+Voltage 942 pipe (1:96)
 Voltage 944 pipe (1:0)
 Voltage 945 pipe (1:0)
-Voltage 947 pipe (1:0)
-Voltage 948 pipe (1:0)
-Voltage 950 pipe (1:0)
-Voltage 952 pipe (1:0)
+Voltage 947 pipe (1:99)
+Voltage 948 pipe (1:91.00000763)
+Voltage 950 pipe (1:19)
+Voltage 952 pipe (1:36)
 Voltage 954 pipe (1:0)
 Voltage 955 pipe (1:0)
 Voltage 957 pipe (1:0)
@@ -2554,19 +2554,19 @@ Voltage 968 pipe (1:0)
 Voltage 969 pipe (1:0)
 Voltage 971 pipe (1:0)
 Voltage 972 pipe (1:0)
-Voltage 975 pipe (1:0)
-Voltage 976 pipe (1:0)
+Voltage 975 pipe (1:49.86048508)
+Voltage 976 pipe (1:39.02124023)
 Voltage 978 pipe (1:0)
 Voltage 979 pipe (1:0)
-Voltage 981 pipe (1:0)
-Voltage 982 pipe (1:0)
-Voltage 984 pipe (1:0)
-Voltage 985 pipe (1:0)
+Voltage 981 pipe (1:63.99999619)
+Voltage 982 pipe (1:50.99999237)
+Voltage 984 pipe (1:50.99999237)
+Voltage 985 pipe (1:36.00000763)
 Voltage 987 pipe (1:0)
 Voltage 988 pipe (1:0)
-Voltage 990 pipe (1:0)
-Voltage 992 pipe (1:0)
-Voltage 994 pipe (1:0)
+Voltage 990 pipe (1:100)
+Voltage 992 pipe (1:151)
+Voltage 994 pipe (1:99)
 Voltage 996 pipe (1:0)
 Voltage 999 pipe (1:0)
 Voltage 1000 pipe (1:0)
@@ -2599,124 +2599,124 @@ Voltage 1057 pipe (1:0)
 Voltage 1059 pipe (1:0)
 Voltage 1060 pipe (1:0)
 Voltage 1062 pipe (1:0)
-Voltage 1063 pipe (1:0)
-Voltage 1064 pipe (1:0)
-Voltage 1066 pipe (1:0)
+Voltage 1063 pipe (1:96)
+Voltage 1064 pipe (1:84.00000763)
+Voltage 1066 pipe (1:91)
 Voltage 1067 pipe (1:0)
 Voltage 1069 pipe (1:0)
-Voltage 1070 pipe (1:0)
+Voltage 1070 pipe (1:19)
 Voltage 1072 pipe (1:0)
-Voltage 1073 pipe (1:0)
-Voltage 1074 pipe (1:0)
-Voltage 1077 pipe (1:0)
-Voltage 1079 pipe (1:0)
+Voltage 1073 pipe (1:84)
+Voltage 1074 pipe (1:96)
+Voltage 1077 pipe (1:66.94821167)
+Voltage 1079 pipe (1:59.16947174)
 Voltage 1081 pipe (1:0)
 Voltage 1083 pipe (1:0)
-Voltage 1085 pipe (1:0)
-Voltage 1087 pipe (1:0)
-Voltage 1089 pipe (1:0)
-Voltage 1091 pipe (1:0)
-Voltage 1093 pipe (1:0)
+Voltage 1085 pipe (1:84)
+Voltage 1087 pipe (1:75)
+Voltage 1089 pipe (1:75)
+Voltage 1091 pipe (1:63.99999619)
+Voltage 1093 pipe (1:12.75204754)
 Voltage 1095 pipe (1:0)
 Voltage 1096 pipe (1:0)
-Voltage 1099 pipe (1:0)
+Voltage 1099 pipe (1:84.00000763)
 Voltage 1102 pipe (1:0)
 Voltage 1103 pipe (1:0)
 Voltage 1106 pipe (1:0)
-Voltage 1109 pipe (1:0)
-Voltage 1112 pipe (1:0)
-Voltage 1113 pipe (1:0)
+Voltage 1109 pipe (1:99)
+Voltage 1112 pipe (1:100)
+Voltage 1113 pipe (1:96)
 Voltage 1115 pipe (1:0)
 Voltage 1117 pipe (1:0)
 Voltage 1118 pipe (1:0)
 Voltage 1120 pipe (1:0)
 Voltage 1121 pipe (1:0)
 Voltage 1123 pipe (1:0)
-Voltage 1125 pipe (1:0)
-Voltage 1126 pipe (1:0)
+Voltage 1125 pipe (1:75)
+Voltage 1126 pipe (1:51.00000381)
 Voltage 1128 pipe (1:0)
-Voltage 1130 pipe (1:0)
+Voltage 1130 pipe (1:100)
 Voltage 1132 pipe (1:0)
 Voltage 1134 pipe (1:0)
-Voltage 1136 pipe (1:0)
+Voltage 1136 pipe (1:75)
 Voltage 1138 pipe (1:0)
 Voltage 1141 pipe (1:0)
-Voltage 1143 pipe (1:0)
+Voltage 1143 pipe (1:75)
 Voltage 1145 pipe (1:0)
-Voltage 1148 pipe (1:0)
-Voltage 1150 pipe (1:0)
-Voltage 1151 pipe (1:0)
-Voltage 1153 pipe (1:0)
-Voltage 1154 pipe (1:0)
+Voltage 1148 pipe (1:84.00000763)
+Voltage 1150 pipe (1:19)
+Voltage 1151 pipe (1:36)
+Voltage 1153 pipe (1:84.00000763)
+Voltage 1154 pipe (1:91)
 Voltage 1156 pipe (1:0)
 Voltage 1157 pipe (1:0)
 Voltage 1159 pipe (1:0)
-Voltage 1161 pipe (1:0)
+Voltage 1161 pipe (1:91)
 Voltage 1163 pipe (1:0)
-Voltage 1165 pipe (1:0)
-Voltage 1167 pipe (1:0)
+Voltage 1165 pipe (1:36)
+Voltage 1167 pipe (1:96)
 Voltage 1171 pipe (1:0)
 Voltage 1174 pipe (1:0)
-Voltage 1176 pipe (1:0)
-Voltage 1178 pipe (1:0)
-Voltage 1180 pipe (1:0)
-Voltage 1182 pipe (1:0)
+Voltage 1176 pipe (1:36)
+Voltage 1178 pipe (1:96)
+Voltage 1180 pipe (1:100)
+Voltage 1182 pipe (1:64)
 Voltage 1184 pipe (1:0)
-Voltage 1186 pipe (1:0)
-Voltage 1188 pipe (1:0)
+Voltage 1186 pipe (1:99)
+Voltage 1188 pipe (1:36)
 Voltage 1189 pipe (1:0)
-Voltage 1191 pipe (1:0)
-Voltage 1192 pipe (1:0)
+Voltage 1191 pipe (1:96)
+Voltage 1192 pipe (1:84.00000763)
 Voltage 1194 pipe (1:0)
 Voltage 1195 pipe (1:0)
-Voltage 1197 pipe (1:0)
-Voltage 1198 pipe (1:0)
-Voltage 1200 pipe (1:0)
-Voltage 1202 pipe (1:0)
-Voltage 1204 pipe (1:0)
-Voltage 1205 pipe (1:0)
-Voltage 1207 pipe (1:0)
-Voltage 1208 pipe (1:0)
-Voltage 1210 pipe (1:0)
-Voltage 1212 pipe (1:0)
-Voltage 1213 pipe (1:0)
-Voltage 1215 pipe (1:0)
+Voltage 1197 pipe (1:51.00000381)
+Voltage 1198 pipe (1:19)
+Voltage 1200 pipe (1:84.00000763)
+Voltage 1202 pipe (1:75)
+Voltage 1204 pipe (1:50.99999237)
+Voltage 1205 pipe (1:96)
+Voltage 1207 pipe (1:100)
+Voltage 1208 pipe (1:19)
+Voltage 1210 pipe (1:91.00000763)
+Voltage 1212 pipe (1:75)
+Voltage 1213 pipe (1:51.00000381)
+Voltage 1215 pipe (1:75)
 Voltage 1217 pipe (1:0)
-Voltage 1218 pipe (1:0)
-Voltage 1220 pipe (1:0)
-Voltage 1222 pipe (1:0)
-Voltage 1223 pipe (1:0)
+Voltage 1218 pipe (1:99)
+Voltage 1220 pipe (1:96)
+Voltage 1222 pipe (1:91.00000763)
+Voltage 1223 pipe (1:99)
 Voltage 1225 pipe (1:0)
-Voltage 1227 pipe (1:0)
-Voltage 1239 pipe (1:0)
-Voltage 1252 pipe (1:0)
+Voltage 1227 pipe (1:19)
+Voltage 1239 pipe (1:91)
+Voltage 1252 pipe (1:91)
 Voltage 1254 pipe (1:0)
-Voltage 1255 pipe (1:36.00000763)
-Voltage 1257 pipe (1:0)
-Voltage 1258 pipe (1:0)
-Voltage 1260 pipe (1:0)
-Voltage 1261 pipe (1:0)
-Voltage 1262 pipe (1:0)
+Voltage 1255 pipe (1:0)
+Voltage 1257 pipe (1:41.5716629)
+Voltage 1258 pipe (1:39.02124023)
+Voltage 1260 pipe (1:41.8266983)
+Voltage 1261 pipe (1:12.75204754)
+Voltage 1262 pipe (1:116.9362106)
 Voltage 1264 pipe (1:0)
 Voltage 1265 pipe (1:0)
 Voltage 1267 pipe (1:0)
-Voltage 1268 pipe (1:0)
-Voltage 1269 pipe (1:0)
-Voltage 1271 pipe (1:0)
-Voltage 1272 pipe (1:0)
-Voltage 1274 pipe (1:0)
-Voltage 1275 pipe (1:0)
-Voltage 1276 pipe (1:0)
-Voltage 1278 pipe (1:0)
-Voltage 1279 pipe (1:0)
-Voltage 1281 pipe (1:0)
-Voltage 1282 pipe (1:0)
-Voltage 1283 pipe (1:0)
-Voltage 1285 pipe (1:0)
-Voltage 1286 pipe (1:0)
-Voltage 1288 pipe (1:0)
+Voltage 1268 pipe (1:84.00000763)
+Voltage 1269 pipe (1:64)
+Voltage 1271 pipe (1:100)
+Voltage 1272 pipe (1:96)
+Voltage 1274 pipe (1:99)
+Voltage 1275 pipe (1:75)
+Voltage 1276 pipe (1:142.0000153)
+Voltage 1278 pipe (1:99)
+Voltage 1279 pipe (1:99)
+Voltage 1281 pipe (1:100)
+Voltage 1282 pipe (1:100)
+Voltage 1283 pipe (1:160)
+Voltage 1285 pipe (1:39.02124023)
+Voltage 1286 pipe (1:59.16947174)
+Voltage 1288 pipe (1:49.86048508)
 Voltage 1289 pipe (1:0)
-Voltage 1290 pipe (1:0)
+Voltage 1290 pipe (1:82.76074219)
 Voltage 1292 pipe (1:0)
 Voltage 1293 pipe (1:0)
 Voltage 1295 pipe (1:0)
@@ -2727,30 +2727,30 @@ Voltage 1300 pipe (1:0)
 Voltage 1302 pipe (1:0)
 Voltage 1303 pipe (1:0)
 Voltage 1304 pipe (1:0)
-Voltage 1306 pipe (1:0)
-Voltage 1308 pipe (1:0)
-Voltage 1309 pipe (1:0)
-Voltage 1310 pipe (1:0)
-Voltage 1312 pipe (1:0)
-Voltage 1313 pipe (1:0)
-Voltage 1315 pipe (1:0)
-Voltage 1316 pipe (1:0)
-Voltage 1318 pipe (1:0)
-Voltage 1319 pipe (1:0)
-Voltage 1321 pipe (1:0)
-Voltage 1322 pipe (1:0)
-Voltage 1324 pipe (1:0)
-Voltage 1325 pipe (1:0)
-Voltage 1327 pipe (1:0)
-Voltage 1328 pipe (1:0)
-Voltage 1330 pipe (1:0)
-Voltage 1331 pipe (1:0)
-Voltage 1332 pipe (1:0)
+Voltage 1306 pipe (1:96)
+Voltage 1308 pipe (1:99)
+Voltage 1309 pipe (1:91.00000763)
+Voltage 1310 pipe (1:150)
+Voltage 1312 pipe (1:90.02124023)
+Voltage 1313 pipe (1:84)
+Voltage 1315 pipe (1:96)
+Voltage 1316 pipe (1:96)
+Voltage 1318 pipe (1:99)
+Voltage 1319 pipe (1:75)
+Voltage 1321 pipe (1:50.99999237)
+Voltage 1322 pipe (1:91.00000763)
+Voltage 1324 pipe (1:99)
+Voltage 1325 pipe (1:91)
+Voltage 1327 pipe (1:64)
+Voltage 1328 pipe (1:36)
+Voltage 1330 pipe (1:51.00000381)
+Voltage 1331 pipe (1:84.00000763)
+Voltage 1332 pipe (1:64)
 Voltage 1334 pipe (1:0)
 Voltage 1335 pipe (1:0)
 Voltage 1337 pipe (1:0)
-Voltage 1338 pipe (1:0)
-Voltage 1339 pipe (1:0)
+Voltage 1338 pipe (1:63.99999619)
+Voltage 1339 pipe (1:84)
 Voltage 1341 pipe (1:0)
 Voltage 1342 pipe (1:0)
 Voltage 1344 pipe (2:0,0)
@@ -2761,11 +2761,11 @@ Voltage 1349 pipe (1:0)
 Voltage 1351 pipe (2:0,0)
 Voltage 1352 pipe (1:0)
 Voltage 1353 pipe (1:0)
-Voltage 1355 pipe (1:0)
-Voltage 1356 pipe (1:0)
-Voltage 1358 pipe (1:0)
+Voltage 1355 pipe (1:96)
+Voltage 1356 pipe (1:100)
+Voltage 1358 pipe (1:99)
 Voltage 1359 pipe (1:0)
-Voltage 1360 pipe (1:0)
+Voltage 1360 pipe (1:75)
 Voltage 1362 pipe (1:0)
 Voltage 1363 pipe (1:0)
 Voltage 1365 pipe (1:0)
@@ -2855,7 +2855,7 @@ ActiveSigGen  0
 NrOfTracks 1
 SignalInfo  ( 0| 0) source 101((4553.452148|21803.42383),3965.775391)
 SignalData  ( 0| 0) StartTime 0
-{14420:
+{17111:
 0 378.576355 4010.774902 9085.149414 16621.60156 24721.81641 33706.92578 43771.98438 53389.78516 62009.79688 69187.73438 76242.91406 
 85223.26562 92896.85938 98969.88281 102296.9375 106329.5703 113012.0547 115575.5078 116746.0156 114029.1172 114829.4297 119408.1797 122828.3828 
 124844.2969 128043.4062 123438.7734 122089.3906 123745.9453 122321.4375 124395 123866.7812 124340.8438 123066.1875 121465.1641 118301.5781 
@@ -4057,8 +4057,232 @@ SignalData  ( 0| 0) StartTime 0
 0 0 0 0 64023 0 0 0 0 24965.60938 7026 0 
 0 0 0 0 0 68834 0 8679.861328 68090.54688 0 0 841 
 13086 0 0 0 0 0 100430.9609 0 0 0 0 0 
-0 27173 0 0 33726.46094 0 0 0 
+0 27173 0 0 33726.46094 0 0 0 0 0 2867.574219 6788.774902 
+14032.1709 22449.58398 31751.76562 42133.92969 51989.98828 60840.77734 68322.79688 75611.75781 84381.875 91701.25 97839.85156 105446.8828 
+105582.9375 112190.5547 115386.0703 117641.5625 114972.2344 117715.3203 119567.4141 123013.1797 124298.3828 129353.2891 128525.4062 123844.7656 
+123095.3828 123781.9453 124677.4375 125030 125992.7812 124455.8359 121549.1953 119695.1641 117339.5781 115485.2344 114509.3438 109873.2891 
+104374.0781 101886.7578 94715.54688 87361.96094 77663.21875 72183.48438 66863.03125 59582.64844 53060.54297 48573.62109 45122.92969 39978.42188 
+36134.94922 30996.37305 26924.78125 23468.16797 20984.53906 18591.88672 16109.38281 13336.06445 10681.97656 8560.931641 6184 4272 
+2566 1740 1100.000122 380.0000305 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+1214 11660 0 3818.136963 78897.78125 0 0 59879 0 0 0 0 
+0 38 55864.74219 33700 8011 0 0 0 40598 40598 0 0 
+0 30308.43945 0 0 44991 0 0 0 0 0 21332 18352.18945 
+39687 0 0 0 0 66974 0 0 0 0 378.576355 87372.96875 
+5558 12236 0 0 0 0 0 67322 0 65906.26562 0 0 
+0 544 14116 0 0 0 0 27185.31055 720.000061 720.000061 0 0 
+0 0 0 0 20145 0 19191.3125 15708 0 0 40598 0 
+0 0 0 0 0 51463.92578 0 0 0 0 0 0 
+18111 2268 0 0 55660.30859 0 0 66974 0 0 0 0 
+0 2518 22419.09766 31517 0 0 0 0 65802 65802 0 0 
+0 13375.48633 37984.73047 72 15415 0 0 0 0 0 47225 0 
+94212.84375 0 0 0 0 38155 0 0 0 0 0 40287.12891 
+0 0 0 0 0 0 0 64023 0 25968.61133 3186.000244 0 
+0 5558 4250 0 0 0 0 3681.394531 56627.19141 56627.19141 0 0 
+0 0 0 314 13086 0 0 81677.96875 0 0 54291 0 
+0 0 0 0 0 56786.875 30109 3528 0 0 0 0 
+30196 342.0000305 0 0 19191.3125 15708 0 56296 0 0 0 0 
+0 9560 3240 78976 0 0 0 0 70113 70113 0 0 
+0 0 61275.03125 841 16808 0 0 0 0 0 57510 0 
+25047.25391 720.000061 0 0 0 23061 0 0 0 0 0 13375.48633 
+32688.53711 0 0 0 0 0 0 48697 0 0 94212.84375 0 
+0 14991 2664 0 0 0 0 0 102136.25 102136.25 0 0 
+0 0 0 1670 8176 0 0 25968.61133 3186.000244 0 62262 0 
+0 0 0 0 38 23539.58789 74062 0 0 0 0 0 
+40598 0 0 0 0 86016.9375 0 41608 0 0 0 0 
+0 18111 1799.999878 33165.18359 0 0 0 0 66974 66974 0 0 
+0 0 19191.3125 11764 0 0 0 0 0 0 65802 0 
+0 87679.85156 0 0 140 14116 0 0 0 0 0 0 
+94563.89062 0 0 0 0 0 0 34899 0 0 25047.25391 720.000061 
+0 24109 1260 0 0 0 0 0 74589.39844 74589.39844 44659 0 
+0 0 0 5558 4250 0 0 0 94994.01562 0 68834 0 
+0 0 0 0 314 11660 36730.73828 0 0 0 0 0 
+54291 0 0 0 0 25968.61133 2060 0 0 0 0 0 
+0 30196 342.0000305 6189.601074 62395.19141 0 0 0 52704 52704 0 0 
+0 0 0 86016.9375 0 0 0 0 0 0 70958 0 
+0 33165.18359 0 0 841 10216 0 0 0 0 0 0 
+80675.44531 7611 0 0 0 0 0 23061 0 0 0 83744.52344 
+0 36897 0 0 0 0 0 0 44991 44991 46802 4415 
+0 0 0 14991 2664 0 0 0 25047.25391 380.0000305 51167 0 
+0 0 0 0 1670 8176 14581.60059 32688.53711 0 0 0 0 
+63953 0 0 0 0 0 94994.01562 29457 13281 0 0 0 
+0 43988 0 0 42503.14062 0 0 0 41608 41608 0 0 
+0 0 0 47595.17188 8859 0 0 0 0 0 66974 0 
+0 8405.511719 56096.20312 0 3900 5274 0 0 0 0 0 0 
+67322 48941.53516 1799.999878 0 0 0 140 14116 0 0 0 33165.18359 
+0 50878 0 0 0 0 0 0 34899 34899 20796.63867 11764 
+0 0 0 27258 648.000061 0 0 0 0 83744.52344 0 0 
+0 0 0 0 7330 3420 0 66307.24219 0 0 0 0 
+68834 0 0 0 0 0 26845.16211 380.0000305 0 0 0 0 
+0 54291 0 0 15508.91699 27758 0 0 27173 27173 0 0 
+0 0 0 33211 19768.58398 32846 0 0 0 0 52704 0 
+0 0 42503.14062 0 12210 2988 0 0 0 0 0 0 
+70958 19349.86133 4449 0 0 0 1214 9252 0 0 0 8405.511719 
+56096.20312 49708 0 0 0 0 0 0 20145 20145 0 90095.3125 
+0 0 0 36897 0 0 0 0 0 34904.76953 0 0 
+0 0 0 0 14991 2268 0 22107.94336 9118 9118 0 0 
+68782 0 0 0 0 0 2882.200439 16702.2168 0 0 0 0 
+0 63953 0 0 0 66307.24219 0 72 15415 15415 0 0 
+0 0 0 43988 7462.575195 15326 0 0 0 0 38155 0 
+0 0 15508.91699 27758 20843 3937 0 0 0 0 0 0 
+64023 0 95182.61719 0 0 0 3900 5274 0 0 0 0 
+46117.94922 0 0 0 0 0 0 140 13086 13086 0 26135.63477 
+1500 0 0 50878 0 0 0 0 0 10329.16113 17309.22266 0 
+0 0 0 0 27258 648.000061 0 0 90095.3125 90095.3125 0 0 
+56296 0 0 0 0 0 7330 24535.14453 17003 0 0 0 
+0 70113 0 0 0 22107.94336 9118 544 11660 11660 0 0 
+0 0 0 57510 364.1982727 70859 0 0 0 0 27173 0 
+0 0 0 71481.71094 0 0 0 0 0 0 0 0 
+48697 0 27600.75586 0 0 0 12210 2988 0 0 0 0 
+16609.66016 22003 0 0 0 0 0 1214 9252 9252 0 0 
+95182.61719 0 0 62262 0 0 0 0 0 0 50757.94531 36942 
+1260 0 0 0 40598 0 0 0 26135.63477 26135.63477 1500 0 
+44991 0 0 0 0 0 18111 12597.17383 59729 0 0 0 
+0 68782 0 0 0 0 92571.39844 2518 12236 12236 0 0 
+0 0 0 65802 0 36272.86719 0 0 0 72 15415 0 
+0 0 0 23712.30469 7026 0 0 0 0 0 0 0 
+38155 0 364.1982727 79077.21875 0 0 24109 1260 0 0 0 0 
+0 101586.7734 0 0 0 0 0 5558 4250 4250 0 0 
+27600.75586 0 0 67322 0 0 0 0 0 314 28752.33984 44138 
+0 0 0 0 50878 0 0 0 0 0 93857.53906 0 
+30987 0 0 0 0 0 30196 342.0000305 50590.32812 0 0 0 
+0 56296 0 0 0 0 25406.37109 1279.999878 0 0 0 0 
+0 0 0 70113 0 10329.16113 49504.22266 0 0 841 10216 0 
+0 0 0 0 101074.3984 0 0 0 0 0 0 0 
+23061 0 0 36272.86719 0 0 33211 0 0 0 0 0 
+0 71075.10938 41572 0 0 0 0 12210 2664 2664 0 0 
+1465.591919 73827.38281 0 70552 0 0 0 0 0 1670 8176 68099.52344 
+0 0 0 0 62262 0 0 0 0 0 29259.92773 0 
+0 0 0 0 0 0 40598 0 16609.66016 23918 0 0 
+0 41608 0 0 0 0 0 93857.53906 0 0 0 0 
+0 0 0 66974 0 0 50590.32812 0 0 2518 6836 0 
+0 0 0 0 89724.52344 13490 20013 0 0 0 0 72 
+14116 0 0 11960.51855 43423.91797 0 47225 0 0 0 0 0 
+0 34899 77387 648.000061 0 0 0 24109 1260 1260 0 0 
+0 38121.09375 0 47633 0 0 0 0 0 5558 4250 23712.30469 
+7026 0 0 0 68834 0 0 0 0 0 1465.591919 73827.38281 
+0 0 0 0 0 0 54291 0 0 77051.61719 0 0 
+0 30987 0 0 0 0 0 59112.91406 5001 5001 0 0 
+0 0 0 52704 0 0 17508.69922 19706 0 9560 3240 0 
+0 0 0 0 70958 66808 0 0 0 0 0 841 
+10216 0 0 0 55660.30859 0 59879 0 0 0 0 0 
+0 23061 22061.61328 1279.999878 0 0 0 36897 0 0 0 0 
+0 11960.51855 43423.91797 0 0 0 0 0 0 14991 2664 0 
+93917.51562 0 0 0 70552 0 0 0 0 0 0 39247.09375 
+0 0 0 0 0 0 63953 0 0 25133.24805 5076 0 
+38 17350 0 0 0 0 0 47669.48047 8455.041992 8455.041992 15467 0 
+0 0 0 41608 0 0 0 81677.96875 0 21332 1799.999878 0 
+0 0 0 0 66974 18008.55664 361.0000305 0 0 0 0 3900 
+5274 0 0 0 17508.69922 19706 51928 0 0 0 0 0 
+140 14116 0 90903.82812 0 0 0 47225 0 0 0 0 
+0 0 55660.30859 0 0 0 0 0 0 27258 648.000061 0 
+25061.1875 1019.999939 0 0 60155 0 0 0 0 0 0 20705.49219 
+10783.73242 0 0 0 0 0 68834 0 0 0 94212.84375 0 
+544 11660 0 0 0 0 0 54291 24628.5625 24628.5625 9324 0 
+0 0 0 27173 0 0 0 25133.24805 5076 30196 342.0000305 0 
+0 0 0 0 52704 3681.394531 68398.04688 0 0 0 0 9560 
+2988 0 0 0 0 81677.96875 0 0 0 0 0 0 
+1214 9252 0 31125.92969 0 0 0 59879 0 0 0 0 
+0 0 19191.3125 4542 0 0 0 0 0 36897 0 0 
+0 87679.85156 0 0 44991 0 0 0 0 0 0 14991 
+37510.32422 5089 0 0 0 0 68782 0 0 0 25061.1875 1019.999939 
+1670 8176 0 0 0 0 0 63953 13375.48633 13375.48633 36245 0 
+0 0 38 15415 0 0 0 0 94212.84375 0 0 0 
+0 0 0 0 38155 0 40287.12891 0 0 0 0 21332 
+1799.999878 0 0 0 0 25968.61133 3186.000244 0 0 0 0 0 
+3900 5274 0 3681.394531 62395.19141 0 0 67322 0 0 0 0 
+0 0 140 46443.93359 8448 0 0 0 0 50878 0 0 
+0 31125.92969 0 0 34899 0 0 0 0 0 0 27258 
+16740.26953 35705 0 0 0 0 56296 0 0 0 0 87679.85156 
+7330 7334 0 0 0 0 0 70113 0 0 61275.03125 0 
+0 0 544 11660 0 0 0 0 25047.25391 720.000061 0 0 
+0 0 0 0 27173 0 13375.48633 32688.53711 0 0 0 33211 
+0 0 0 0 0 0 76719.91406 0 0 0 0 0 
+12210 2988 0 0 40287.12891 0 0 70958 0 0 0 0 
+0 0 1214 29165.17773 42708 0 0 0 0 62262 0 0 
+0 6189.601074 62395.19141 0 20145 0 0 0 0 0 0 40598 
+0 86016.9375 0 0 0 0 44991 0 0 0 0 33165.18359 
+0 0 0 0 0 0 0 68782 0 0 19191.3125 11764 
+0 0 2518 6836 0 0 0 0 0 83109.85156 0 0 
+0 0 0 72 15415 0 0 61275.03125 0 0 0 43988 
+0 0 0 0 0 0 59325.27734 25224 6705 0 0 0 
+24109 1260 0 0 14581.60059 32688.53711 0 64023 0 0 0 0 
+0 0 5558 4250 81146 0 0 0 0 67322 0 0 
+0 0 42503.14062 314 21786 0 0 0 0 0 0 50878 
+0 25968.61133 2060 0 0 0 30987 0 0 0 0 6189.601074 
+62395.19141 0 0 0 0 0 0 56296 0 0 0 86016.9375 
+0 0 7330 3240 0 0 0 0 0 98932.04688 0 0 
+0 0 0 841 10216 0 0 20796.63867 11764 11764 0 57510 
+0 0 0 0 0 0 23061 85494 0 0 0 0 
+33211 0 0 0 0 66307.24219 0 43140 0 0 0 0 
+0 0 12210 2988 25047.25391 380.0000305 0 0 0 70552 0 0 
+0 0 14581.60059 32688.53711 0 0 0 0 0 0 0 62262 
+0 0 94994.01562 0 0 0 17350 0 0 0 0 0 
+78114.1875 0 0 0 0 0 0 41608 0 0 0 26263.04688 
+2060 0 18111 2268 0 0 0 0 0 75379.51562 43471 0 
+0 0 0 2518 6836 0 0 0 90095.3125 90095.3125 0 65802 
+0 0 0 0 0 72 15415 27323.33594 0 0 0 0 
+47225 0 0 0 0 20796.63867 11764 0 0 0 0 0 
+0 0 24109 1260 0 83744.52344 0 0 0 60155 0 0 
+0 0 0 66307.24219 0 0 0 0 0 0 0 68834 
+0 0 26301.1582 380.0000305 0 314 13086 0 0 0 0 0 
+69799.82812 3303 0 0 0 0 0 30987 0 0 0 0 
+95182.61719 0 30196 342.0000305 0 0 0 0 0 56296 27201 7005 
+0 0 0 9560 3240 0 0 0 26263.04688 26263.04688 2060 53035 
+0 0 0 0 0 841 10216 8405.511719 56096.20312 0 0 0 
+59879 0 0 0 0 0 90095.3125 20645 17355 17355 0 0 
+0 0 36897 0 0 34904.76953 0 0 0 48697 0 0 
+0 0 0 37098.9375 9263 0 0 0 0 0 0 70552 
+0 0 364.1982727 79077.21875 0 1670 8176 0 0 0 0 0 
+62262 36575.55469 4071 0 0 0 38 17350 0 0 0 0 
+26301.1582 380.0000305 40598 0 0 0 0 0 0 41608 15508.91699 27758 
+0 0 0 21332 1799.999878 0 0 0 0 0 95182.61719 0 
+0 0 0 0 0 3900 5274 0 46117.94922 0 0 0 
+65802 0 0 0 0 0 26275.63867 1500 0 0 0 0 
+0 0 47225 0 0 10329.16113 49504.22266 0 0 34899 0 0 
+0 0 0 24109 48805.35547 1873.000122 0 0 0 0 0 60155 
+0 0 0 34904.76953 0 5558 3420 0 0 0 0 0 
+68834 19296.88477 10543 0 0 0 544 11660 0 0 0 0 
+364.1982727 79077.21875 0 0 0 0 0 0 0 27173 0 71481.71094 
+0 0 0 30196 342.0000305 0 0 0 0 0 27600.75586 0 
+0 0 0 0 0 9560 3240 0 16609.66016 23918 0 0 
+70958 0 0 0 0 0 841 30979.59961 0 0 0 0 
+0 0 59879 0 0 0 46117.94922 0 0 20145 0 0 
+0 0 0 36897 10880.91504 18776 0 0 0 0 0 44991 
+0 0 0 10329.16113 49504.22266 14851 4919 0 0 0 0 0 
+68782 0 92571.39844 0 0 0 1670 8176 0 0 0 0 
+0 36272.86719 0 0 0 0 0 0 38 17350 0 23712.30469 
+7026 0 0 43988 0 0 0 0 0 0 364.1982727 46450.21094 
+0 0 0 0 0 21332 1799.999878 0 0 71481.71094 0 0 
+64023 0 0 0 0 0 3900 22245.46875 26923 26923 0 0 
+0 0 67322 0 0 0 16609.66016 23918 140 14116 0 0 
+0 0 0 50878 0 81945 0 0 0 0 0 34899 
+0 0 0 0 50590.32812 0 0 0 0 0 0 0 
+60155 0 25406.37109 1279.999878 0 0 7330 3420 0 0 0 0 
+0 10329.16113 47961.22266 0 0 0 0 0 544 11660 0 0 
+92571.39844 0 0 57510 0 0 0 0 0 0 0 55242.87109 
+32865 2988 0 0 0 33211 0 0 0 23712.30469 7026 0 
+52704 0 0 0 0 0 12210 4453.595703 77068 77068 0 0 
+0 0 70958 0 0 0 0 77051.61719 1214 15364 0 0 
+0 0 0 59879 0 29259.92773 0 0 0 0 0 20145 
+0 0 0 0 16609.66016 23918 0 0 0 0 0 0 
+44991 0 0 93857.53906 0 0 18111 2268 0 0 0 0 
+0 0 104220.1953 342.0000305 0 0 0 0 2518 6836 0 0 
+25406.37109 1279.999878 0 63953 0 0 0 0 0 0 72 27375.50586 
+59194 0 0 0 0 43988 0 0 0 0 93917.51562 0 
+38155 0 0 0 0 0 21332 1799.999878 38121.09375 38121.09375 38121.09375 
 }
-SetScanArea  ( 502.3088379| 3844.541016) ( 10431.51367| 31106.70117)
-SimulationTime  66721600
+SetScanArea  ( 3213.412109| 7864.452637) ( 7813.895508| 28629.31445)
+SimulationTime  78588384
 MonitorScrollState  83.50772858 3937.370361 -539 1

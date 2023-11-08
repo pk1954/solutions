@@ -1,13 +1,12 @@
 // Status.cpp
 //
-// NNetWindows
+// Win32_utilities
 
 module;
 
 #include <string>
 #include <Windows.h>
 #include <CommCtrl.h>
-#include "Resource.h"
 
 module NNetWin32:StatusBar;
 
