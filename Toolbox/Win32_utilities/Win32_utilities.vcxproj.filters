@@ -204,5 +204,11 @@
     <ClCompile Include="StatusBar.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TimeDisplay.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeDisplay.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

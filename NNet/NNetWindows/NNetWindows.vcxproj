@@ -586,8 +586,6 @@
     <ClCompile Include="SelectionMenu.ixx" />
     <ClCompile Include="SlowMotionDisplay.cpp" />
     <ClCompile Include="SlowMotionDisplay.ixx" />
-    <ClCompile Include="TimeDisplay.cpp" />
-    <ClCompile Include="TimeDisplay.ixx" />
     <ClCompile Include="UndoRedoMenu.ixx" />
     <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="CrsrWindow.cpp" />

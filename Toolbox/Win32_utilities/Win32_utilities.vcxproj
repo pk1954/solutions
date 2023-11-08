@@ -167,6 +167,8 @@
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="StatusBar.ixx" />
     <ClCompile Include="ThreadPoolTimer.ixx" />
+    <ClCompile Include="TimeDisplay.cpp" />
+    <ClCompile Include="TimeDisplay.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
     <ClCompile Include="TimeGraph.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />

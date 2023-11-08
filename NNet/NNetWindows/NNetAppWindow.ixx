@@ -30,6 +30,7 @@ import NNetModel;
 import NNetSignals;
 import NNetCommands;
 import NNetPreferences;
+import TimeDisplay;
 import :AppTitle;
 import :NNetController;
 import :SlowMotionControl;
@@ -45,7 +46,6 @@ import :ParameterDialog;
 import :MiniWindow;
 import :NNetAppMenu;
 import :MainWindow;
-import :TimeDisplay;
 import :NNetSimuRunning;
 
 using std::wstring;

@@ -1,12 +1,12 @@
 // TimeDisplay.ixx
 //
-// NNetWindows
+// Toolbox\Win32_utilities
 
 module;
 
 #include <memory>
 
-export module NNetWin32:TimeDisplay;
+export module TimeDisplay;
 
 import ObserverInterface;
 import BaseRefreshRate;

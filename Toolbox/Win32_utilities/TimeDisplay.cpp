@@ -1,6 +1,6 @@
 // TimeDisplay.cpp
 //
-// NNetWindows
+// Toolbox\Win32_utilities
 //
 // Displays time since start of simulation in status bar field
 
@@ -11,7 +11,7 @@ module;
 #include <string> 
 #include <chrono> 
 
-module NNetWin32:TimeDisplay;
+module TimeDisplay;
 
 import Types;
 import SimulationTime;
