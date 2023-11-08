@@ -606,7 +606,6 @@
     <ClCompile Include="ParameterDlg.cpp" />
     <ClCompile Include="PerformanceWindow.cpp" />
     <ClCompile Include="PerformanceWindow.ixx" />
-    <ClCompile Include="ScriptHook.ixx" />
     <ClCompile Include="SimulationControl.cpp" />
     <ClCompile Include="SimulationControl.ixx" />
     <ClCompile Include="SlowMotionControl.ixx" />

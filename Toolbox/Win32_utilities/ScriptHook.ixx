@@ -1,12 +1,12 @@
 // ScriptHook.ixx
 //
-// NNetSimu
+// Win32_utilities
 
 module;
 
 #include <string>
 
-export module NNetWin32:ScriptHook;
+export module ScriptHook;
 
 import StatusBar;
 import ScriptStack;

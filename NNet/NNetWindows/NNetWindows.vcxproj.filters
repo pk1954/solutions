@@ -72,9 +72,6 @@
     <ClCompile Include="UndoRedoMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptHook.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CrsrWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

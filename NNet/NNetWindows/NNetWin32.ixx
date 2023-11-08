@@ -22,7 +22,6 @@ export import :NNetInputOutputUI;
 export import :NNetWindow;
 export import :ParameterDialog;
 export import :PerformanceWindow;
-export import :ScriptHook;
 export import :SelectionMenu;
 export import :SlowMotionControl;
 export import :SlowMotionDisplay;
