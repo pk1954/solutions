@@ -65,7 +65,7 @@ unsigned int ActionOptions::GetSumOfValidOptions(Genome const & genome)
 			if (GeneType::IsDefined(geneType))
 			{
 				short const sAllele = genome.GetAllele(geneType);
-				uiSum += CastToUnsignedInt(sAllele);
+				uiSum += Cast2UnsignedInt(sAllele);
 			}
 		}
 	}

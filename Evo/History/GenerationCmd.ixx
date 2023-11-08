@@ -16,6 +16,8 @@ module;
 export module GenerationCmd;
 
 import Int24;
+import Debug;
+import SaveCast;
 import HistSlotNr;
 
 export class GenerationCmd
@@ -37,8 +39,8 @@ public:
 	{ }
 
 	Id         GetCommand() const { return m_Cmd; }
-	Int24      GetParam() const { return m_Param; }
-	HistSlotNr GetSlotNr() const
+	Int24      GetParam()   const { return m_Param; }
+	HistSlotNr GetSlotNr()  const
 	{
 		assert(m_Cmd == Id::CACHED);
 		return HistSlotNr{ m_Param.GetValue() };
@@ -72,7 +74,7 @@ public:
 
 	static GenerationCmd ResetCmd(unsigned int const uiParam)
 	{
-		return GenerationCmd(Id::RESET, Int24(CastToUnsignedInt(uiParam)));
+		return GenerationCmd(Id::RESET, Int24(Cast2UnsignedInt(uiParam)));
 	}
 
 	static GenerationCmd ApplicationCmd(Id cmd, Int24 const param)

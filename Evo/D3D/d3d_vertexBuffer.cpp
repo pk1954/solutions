@@ -24,7 +24,7 @@ HRESULT VertexBuffer::LoadVertices   // lock m_d3d_vertexBuffer and load the ver
 
 	size_t bytesToLoad = m_vertexVector.size() * sizeof(Vertex);
 
-    hres = d3d_vertexBuffer->Lock(0, CastToUnsignedInt(bytesToLoad), static_cast<void**>(&pVoid), 0);
+    hres = d3d_vertexBuffer->Lock(0, Cast2UnsignedInt(bytesToLoad), static_cast<void**>(&pVoid), 0);
 	if (hres != D3D_OK)
 		return hres;
     

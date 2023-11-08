@@ -19,6 +19,7 @@ import :AnimationCmd;
 
 using std::wstring;
 using std::wostream;
+using std::make_unique;
 
 using FloatAnimationCmd = AnimationCmd<float>;
 

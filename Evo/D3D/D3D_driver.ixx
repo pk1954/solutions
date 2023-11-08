@@ -13,9 +13,8 @@ export module D3D_driver;
 import Types;
 import D3dSystem;
 import D3D_vertexBuffer;
-import GraphicsInterface;
 
-export class D3D_driver : public GraphicsInterface
+export class D3D_driver
 {
 public:
 

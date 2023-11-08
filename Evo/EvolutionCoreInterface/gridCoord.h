@@ -4,7 +4,7 @@
 
 module;
 
-import NamedType;
+import Types;
 
 using GRID_COORD = NamedType< short, struct GRID_Parameter >;
 

@@ -1,11 +1,15 @@
-// GenCmdList.h
+// GenCmdList.ixx
 //
+// History
 
 module;
 
 #include <vector>
 #include "HistoryGeneration.h"
-#include "GenerationCmd.h"
+
+export module GenCmdList;
+
+import GenerationCmd;
 
 class GenCmdList
 {
@@ -15,11 +19,11 @@ public:
         m_generationCommands.resize(genMaxNrOfGens.GetLong());
     }
 
-    GenerationCmd & operator[] (HistGeneration const gen)
-    { 
+    GenerationCmd& operator[] (HistGeneration const gen)
+    {
         return m_generationCommands.at(gen.GetLong());
     }
-    
+
     void SetGenerationCmd(HistGeneration const gen, GenerationCmd const cmd)
     {
         m_generationCommands[gen.GetLong()] = cmd;

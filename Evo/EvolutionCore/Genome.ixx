@@ -9,7 +9,6 @@ module;
 export module Genome;
 
 import Types;
-import Config;
 import Gene;
 import EvolutionTypes;
 
@@ -51,9 +50,9 @@ private:
 
 	// static members and functions
 
-	static EnumArray<           bool, Action > m_abActionEnabled;
-	static EnumArray< GeneTypeLimits, GeneType > m_aLimits;
-	static Genome                                m_genomeTemplate;
+	static EnumArray<          bool, Action>   m_abActionEnabled;
+	static EnumArray<GeneTypeLimits, GeneType> m_aLimits;
+	static Genome                              m_genomeTemplate;
 
 	static void setLimits(GeneType::Id, long, long);
 };

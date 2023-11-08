@@ -27,13 +27,7 @@
     <ClInclude Include="HistSlot.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="genCmdList.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="HistorySystemImpl.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="HistCacheItem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="HistModelData.h">
@@ -75,6 +69,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistSlotNr.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GenCmdList.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistCacheItem.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
