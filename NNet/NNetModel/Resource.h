@@ -22,9 +22,6 @@
 #define       IDI_SMALL				         121
 #define       IDC_NNETSIMU			         122
 								   	         
-#define       IDM_SLOWER                     130
-#define       IDM_FASTER                     131
-								   	         
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
 #define       IDM_SELECT                     142

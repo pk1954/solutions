@@ -1,15 +1,15 @@
 // SlowMotionControl.ixx
 //
-// NNetWindows
+// Win32_utilities
 
 module;
 
 #include <compare>
 #include <Windows.h>
-#include "Resource.h"
 
 export module NNetWin32:SlowMotionControl;
 
+import Win32_Util_Resource;
 import StatusBar;
 
 export class SlowMotionControl

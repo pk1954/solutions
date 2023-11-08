@@ -584,7 +584,6 @@
     <ClCompile Include="ParameterDlg.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="SelectionMenu.ixx" />
-    <ClCompile Include="SlowMotionControl.ixx" />
     <ClCompile Include="UndoRedoMenu.ixx" />
     <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="CrsrWindow.cpp" />
