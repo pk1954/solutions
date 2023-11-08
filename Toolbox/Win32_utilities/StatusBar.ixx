@@ -8,7 +8,7 @@ module;
 #include <vector>
 #include <Windows.h>
 
-export module NNetWin32:StatusBar;
+export module StatusBar;
 
 import Types;
 import RootWindow;

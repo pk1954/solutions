@@ -9,8 +9,8 @@ module;
 export module NNetWin32:SimulationControl;
 
 import ObserverInterface;
+import StatusBar;
 import :ComputeThread;
-import :StatusBar;
 
 export class SimulationControl: public ObserverInterface
 {

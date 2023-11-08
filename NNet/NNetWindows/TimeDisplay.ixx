@@ -10,7 +10,7 @@ export module NNetWin32:TimeDisplay;
 
 import ObserverInterface;
 import BaseRefreshRate;
-import :StatusBar;
+import StatusBar;
 
 using std::unique_ptr;
 

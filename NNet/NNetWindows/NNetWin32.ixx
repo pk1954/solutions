@@ -26,5 +26,4 @@ export import :ScriptHook;
 export import :SelectionMenu;
 export import :SlowMotionControl;
 export import :SlowMotionDisplay;
-export import :StatusBar;
 export import :UndoRedoMenu;

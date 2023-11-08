@@ -40,7 +40,7 @@ import NNetModel;
 import NNetCommands;
 import NNetSignals;
 import NNetPreferences;
-import :StatusBar;
+import StatusBar;
 import :PerformanceWindow;
 import :UndoRedoMenu;
 import :NNetInputOutputUI;

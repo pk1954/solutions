@@ -10,7 +10,7 @@ module;
 
 export module NNetWin32:SlowMotionControl;
 
-import :StatusBar;
+import StatusBar;
 
 export class SlowMotionControl
 {

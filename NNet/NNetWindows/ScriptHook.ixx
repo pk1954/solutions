@@ -8,7 +8,7 @@ module;
 
 export module NNetWin32:ScriptHook;
 
-import :StatusBar;
+import StatusBar;
 import ScriptStack;
 import Script;
 

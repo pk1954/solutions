@@ -13,8 +13,8 @@ module NNetWin32:SimulationControl;
 import NNetPreferences;
 import Win32_Util_Resource;
 import Win32_Util;
+import StatusBar;
 import :ComputeThread;
-import :StatusBar;
 
 void SimulationControl::Initialize
 (

@@ -10,7 +10,7 @@ export module NNetWin32:SlowMotionDisplay;
 
 import ObserverInterface;
 import SlowMotionRatio;
-import :StatusBar;
+import StatusBar;
 
 using std::wstring;
 

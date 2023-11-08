@@ -8,7 +8,7 @@ module;
 #include <Windows.h>
 #include <CommCtrl.h>
 
-module NNetWin32:StatusBar;
+module StatusBar;
 
 import Tooltip;
 import Types;

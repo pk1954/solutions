@@ -13,7 +13,7 @@ module NNetWin32:SlowMotionDisplay;
 import Util;
 import SaveCast;
 import SlowMotionRatio;
-import :StatusBar;
+import StatusBar;
 
 using std::to_wstring;
 

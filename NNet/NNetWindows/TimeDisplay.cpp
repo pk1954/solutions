@@ -13,8 +13,9 @@ module;
 
 module NNetWin32:TimeDisplay;
 
+import Types;
 import SimulationTime;
-import :StatusBar;
+import StatusBar;
 
 using std::make_unique;
 using std::to_wstring;
