@@ -24,5 +24,4 @@ export import :ParameterDialog;
 export import :PerformanceWindow;
 export import :SelectionMenu;
 export import :SlowMotionControl;
-export import :SlowMotionDisplay;
 export import :UndoRedoMenu;

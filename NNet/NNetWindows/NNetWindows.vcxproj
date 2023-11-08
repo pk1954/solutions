@@ -584,8 +584,7 @@
     <ClCompile Include="ParameterDlg.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="SelectionMenu.ixx" />
-    <ClCompile Include="SlowMotionDisplay.cpp" />
-    <ClCompile Include="SlowMotionDisplay.ixx" />
+    <ClCompile Include="SlowMotionControl.ixx" />
     <ClCompile Include="UndoRedoMenu.ixx" />
     <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="CrsrWindow.cpp" />
@@ -608,7 +607,6 @@
     <ClCompile Include="PerformanceWindow.ixx" />
     <ClCompile Include="SimulationControl.cpp" />
     <ClCompile Include="SimulationControl.ixx" />
-    <ClCompile Include="SlowMotionControl.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\Commands\Commands.vcxproj">

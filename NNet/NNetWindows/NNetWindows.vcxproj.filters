@@ -45,9 +45,6 @@
     <ClCompile Include="SimulationControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlowMotionDisplay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
     <ClCompile Include="ComputeThread.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlowMotionDisplay.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UndoRedoMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,9 +70,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DescriptionWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SlowMotionControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NNetController.ixx">
@@ -118,6 +109,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainScales.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SlowMotionControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -213,5 +213,11 @@
     <ClCompile Include="ScriptHook.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="SlowMotionDisplay.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SlowMotionDisplay.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,12 +1,12 @@
 // SlowMotionDisplay.ixx
 //
-// NNetWindows
+// Win32_utilities
 
 module;
 
 #include <string>
 
-export module NNetWin32:SlowMotionDisplay;
+export module SlowMotionDisplay;
 
 import ObserverInterface;
 import SlowMotionRatio;

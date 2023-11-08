@@ -165,6 +165,8 @@
     <ClCompile Include="IncludeCommand.ixx" />
     <ClCompile Include="OnOffPair.ixx" />
     <ClCompile Include="ScriptHook.ixx" />
+    <ClCompile Include="SlowMotionDisplay.cpp" />
+    <ClCompile Include="SlowMotionDisplay.ixx" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="StatusBar.ixx" />
     <ClCompile Include="ThreadPoolTimer.ixx" />
