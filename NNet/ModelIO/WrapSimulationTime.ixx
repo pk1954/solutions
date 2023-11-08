@@ -10,7 +10,7 @@ export module WrapSimulationTime;
 
 import SaveCast;
 import Types;
-import Signals;
+import SimulationTime;
 import Wrapper;
 import Script;
 

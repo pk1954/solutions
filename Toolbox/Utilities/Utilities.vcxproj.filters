@@ -93,5 +93,8 @@
     <ClCompile Include="Random.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SimulationTime.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

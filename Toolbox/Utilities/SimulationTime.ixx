@@ -1,8 +1,8 @@
 // SimulationTime.ixx
 //
-// Signals
+// Toolbox\Utilities
 
-export module Signals:SimulationTime;
+export module SimulationTime;
 
 import Types;
 

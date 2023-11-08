@@ -15,7 +15,7 @@ import Observable;
 import ObserverInterface;
 import Types;
 import DrawContext;
-import :SimulationTime;
+import SimulationTime;
 import :SignalParameters;
 
 using std::vector;

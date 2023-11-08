@@ -38,6 +38,7 @@
     <ClCompile Include="Random.ixx" />
     <ClCompile Include="Raster.cpp" />
     <ClCompile Include="Raster.ixx" />
+    <ClCompile Include="SimulationTime.ixx" />
     <ClCompile Include="SlowMotionRatio.ixx" />
     <ClCompile Include="SmoothMoveFp.ixx" />
     <ClCompile Include="SoundInterface.ixx" />

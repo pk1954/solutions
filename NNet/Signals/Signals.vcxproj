@@ -49,7 +49,6 @@
     <ClCompile Include="SignalParameters.ixx" />
     <ClCompile Include="Signals.ixx" />
     <ClCompile Include="SignalSource.ixx" />
-    <ClCompile Include="SimulationTime.ixx" />
     <ClCompile Include="Spike.ixx" />
     <ClCompile Include="Track.cpp" />
     <ClCompile Include="Track.ixx" />

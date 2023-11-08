@@ -5,8 +5,8 @@
 module Signals:SigGenDynamicData;
 
 import Types;
+import SimulationTime;
 import :Spike;
-import :SimulationTime;
 import :SigGenStaticData;
 
 void SigGenDynamicData::Reset()

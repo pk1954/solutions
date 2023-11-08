@@ -16,7 +16,7 @@ import Observable;
 import WinManager;
 import FatalError;
 import HiResTimer;
-import Signals;
+import SimulationTime;
 import NNetModel;
 import SaveCast;
 

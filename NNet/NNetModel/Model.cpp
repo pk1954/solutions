@@ -15,6 +15,7 @@ import Types;
 import Signals;
 import IoConstants;
 import Raster;
+import SimulationTime;
 import :NobException;
 import :NobType;
 import :ParamType;

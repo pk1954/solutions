@@ -47,9 +47,6 @@
     <ClCompile Include="SignalParameters.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimulationTime.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Track.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
