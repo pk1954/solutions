@@ -21,12 +21,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="HistoryCache.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="HistSlot.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="HistorySystemImpl.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -50,7 +44,7 @@
     <ClCompile Include="HistorySystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="HistoryGeneration.cpp">
+    <ClCompile Include="HistGeneration.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistorySystem.ixx">
@@ -75,6 +69,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistoryIterator.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryCache.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistSlot.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

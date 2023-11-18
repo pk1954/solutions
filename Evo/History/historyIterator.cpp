@@ -2,10 +2,15 @@
 //
 // History
 
+module;
+
 #include <cassert>
-#include "HistSlot.h"
-#include "HistoryCache.h"
-#include "HistoryIterator.h"
+
+module HistoryIterator;
+
+import HistSlot;
+import HistoryCache;
+import HistoryIterator;
 
 HistoryIterator::HistoryIterator(HistoryCache const * pHistCache) : 
     m_pHistCache(pHistCache),

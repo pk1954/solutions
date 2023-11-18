@@ -8,12 +8,12 @@ import EvolutionTypes;
 
 import GridPoint;
 
-class Grid;
+class GridModel;
 
 class GridBrush
 {
 public:
-	GridBrush(Grid * const);
+	GridBrush(GridModel * const);
 
 	virtual ~GridBrush() {};
 
@@ -36,7 +36,7 @@ public:
 
 private:
 	
-	Grid          * m_pGrid;
+	GridModel          * m_pGrid;
 	tShape			m_shape;
     tBrushMode		m_brushMode;
 	tManipulator	m_manipulator;

@@ -2,7 +2,7 @@
 //
 // EvoHistGlue
 
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "HistorySystem.h"
 import EvolutionTypes;
 #include "EvoHistorySysGlue.h"

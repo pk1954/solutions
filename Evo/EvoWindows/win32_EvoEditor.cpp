@@ -105,7 +105,7 @@ void EvoEditorWindow::UpdateEditControls() // Set state of all window widgets ac
 	{
 		{ tShape::Circle, IDM_EDIT_CIRCLE    },    
 		{ tShape::Rect,   IDM_EDIT_RECTANGLE },
-		{ tShape::Grid,   IDM_EDIT_GRID_AREA }
+		{ tShape::GridModel,   IDM_EDIT_GRID_AREA }
 	};
 
 	CheckRadioButton(IDM_EDIT_CIRCLE, IDM_EDIT_GRID_AREA, mapShapeTable.at(pCore->GetBrushShape()));
@@ -159,7 +159,7 @@ void EvoEditorWindow::setBrushShape(WORD const wId) const
 	{
 		{ IDM_EDIT_CIRCLE,    tShape::Circle },    
 		{ IDM_EDIT_RECTANGLE, tShape::Rect   },
-		{ IDM_EDIT_GRID_AREA, tShape::Grid   }
+		{ IDM_EDIT_GRID_AREA, tShape::GridModel   }
 	};
 
 	tShape const brushShape { mapShapeTable.at(wId) };

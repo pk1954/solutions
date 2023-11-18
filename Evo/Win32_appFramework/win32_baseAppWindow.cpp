@@ -4,7 +4,6 @@
 
 
 #include <chrono>
-#include "trace.h"
 #include "HistorySystem.h"
 #include "win32_util_resource.h"
 #include "UtilityWrappers.h"
@@ -18,6 +17,8 @@
 #include "win32_status.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_baseAppWindow.h"
+
+import Trace;
 
 using namespace std::literals::chrono_literals;
 

@@ -1,13 +1,17 @@
-// action.h
+// Action.ixx
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 
 #include <array>
 #include <functional>
 
-class Action
+export module Action;
+
+using std::function;
+
+export class Action
 {
 public:
 	enum class Id : unsigned short

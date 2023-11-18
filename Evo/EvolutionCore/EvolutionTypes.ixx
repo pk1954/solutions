@@ -1,6 +1,6 @@
 // EvolutionTypes.ixx
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 
@@ -23,7 +23,7 @@ std::wostream& operator<< (std::wostream& out, IND_ID const&);
 
 export ENERGY_UNITS constexpr operator"" _ENERGY_UNITS(unsigned long long ull)
 {
-	return ENERGY_UNITS(CastToShort(ull));
+	return ENERGY_UNITS(Cast2Short(ull));
 }
 
 int constexpr IMEMSIZE_MAX = 9;
@@ -77,7 +77,7 @@ export enum class tShape : unsigned short
 {
 	Circle,
 	Rect,
-	Grid,
+	GridModel,
 	undefined
 };
 

@@ -11,6 +11,9 @@ module;
 
 export module HistGeneration;
 
+using std::wostream;
+using std::ostream;
+
 export class HistGeneration
 {
 public:
@@ -50,5 +53,5 @@ private:
     long m_nr;
 };
 
-std::wostream& operator << (std::wostream&, HistGeneration const&);
-std::ostream & operator << (std::ostream &, HistGeneration const&);
+export wostream& operator << (wostream&, HistGeneration const&);
+export ostream & operator << (ostream &, HistGeneration const&);

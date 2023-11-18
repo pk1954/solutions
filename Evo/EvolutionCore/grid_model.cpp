@@ -14,7 +14,7 @@
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "gpList.h"
-#include "dump.h"
+import EvolutionDump;
 #include "Genome.h"
 #include "gridField.h"
 
@@ -28,11 +28,11 @@ import GridPOI;
     #define CHECK_INDIVIDUALS
 //#endif
 
-ObserverInterface * Grid::m_pObservers = nullptr;    // GUI call back for display of current model 
-EventInterface    * Grid::m_pEventPOI  = nullptr;
-wostringstream    * Grid::m_pProtocol  = nullptr;
+ObserverInterface * GridModel::m_pObservers = nullptr;    // GUI call back for display of current model 
+EventInterface    * GridModel::m_pEventPOI  = nullptr;
+wostringstream    * GridModel::m_pProtocol  = nullptr;
 
-void Grid::RefreshCache()
+void GridModel::RefreshCache()
 {
 	m_lFertilizerYield             = Config::GetConfigValue(Config::tId::fertilizerYield);
 	m_bPassOnEnabled               = Config::GetConfigValueBool(Config::tId::passOnEnabled);
@@ -51,7 +51,7 @@ void Grid::RefreshCache()
 	Genome::RefreshCash();
 }
 
-void Grid::InitClass
+void GridModel::InitClass
 (
 	ObserverInterface * const pObservers,
 	EventInterface    * const pEvent
@@ -64,7 +64,7 @@ void Grid::InitClass
 	MortalityTable::InitClass();
 }
 
-Grid::Grid()
+GridModel::GridModel()
     : m_gpList(),
       m_random(),
       m_idCounter(),
@@ -99,7 +99,7 @@ Grid::Grid()
 	); 
 }
 
-Grid::~Grid()
+GridModel::~GridModel()
 {
     try
     {
@@ -111,7 +111,7 @@ Grid::~Grid()
     };
 }
 
-size_t const Grid::GetGridHeapSize() const
+size_t const GridModel::GetGridHeapSize() const
 {
 	unsigned long long gridFieldSize { sizeof (GridField) };
 	unsigned long long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
@@ -119,7 +119,7 @@ size_t const Grid::GetGridHeapSize() const
 	return size_t(gridAreaSize);
 }
 
-void CheckIndividuals(Grid & grid)
+void CheckIndividuals(GridModel & grid)
 {
     int iCount = 0;
  
@@ -136,7 +136,7 @@ void CheckIndividuals(Grid & grid)
     assert(iCount == iNrOfLivingIndividuals);
 }
 
-void Grid::ResetGrid()
+void GridModel::ResetGrid()
 {
     ENERGY_UNITS enFood = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::minFood));
     Apply2Grid([&](GridPoint const gp) { getGridField(gp).ResetGridField(enFood); return false; });
@@ -144,7 +144,7 @@ void Grid::ResetGrid()
     m_random.Initialize();
 }
 
-void Grid::displayAndWait()
+void GridModel::displayAndWait()
 {
 	if (m_pObservers)
 		m_pObservers->Notify(true);
@@ -153,7 +153,7 @@ void Grid::displayAndWait()
 	m_bPOI = GridPOI::IsPoi(m_gpRun);      // POI may have changed in the meantime
 }
 
-void Grid::handleBaseConsumption(GridField & gfRun)
+void GridModel::handleBaseConsumption(GridField & gfRun)
 {
 	ENERGY_UNITS enBefore   = gfRun.GetEnergy();
 	ENERGY_UNITS enBaseCons = m_enBasicFoodConsumption + m_enMemSizeFoodConsumption * gfRun.GetMemSize().GetValue();
@@ -173,7 +173,7 @@ void Grid::handleBaseConsumption(GridField & gfRun)
 	}
 }
 
-void Grid::inspectNeighborHood()
+void GridModel::inspectNeighborHood()
 {
 	m_emptyNeighborSlots.Clear();
 	m_occupiedNeighborSlots.Clear();
@@ -195,7 +195,7 @@ void Grid::inspectNeighborHood()
 	assert(m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors());
 }
 
-Action::Id Grid::decideOnAction(GridField const & gfRun)
+Action::Id GridModel::decideOnAction(GridField const & gfRun)
 {
 	m_options.InitOptions
 	(
@@ -219,7 +219,7 @@ Action::Id Grid::decideOnAction(GridField const & gfRun)
 	return action;
 }
 
-GridField & Grid::chooseTarget()
+GridField & GridModel::chooseTarget()
 {
 	if (m_bPOI)
 	{
@@ -253,7 +253,7 @@ GridField & Grid::chooseTarget()
 	return getGridField(m_gpTarget);
 }
 
-GridField & Grid::choosePartner()
+GridField & GridModel::choosePartner()
 {
 	if (m_bPOI)
 	{
@@ -275,7 +275,7 @@ GridField & Grid::choosePartner()
 	return getGridField(m_gpPartner);
 }
 
-void Grid::actionMove(GridField & gfRun)
+void GridModel::actionMove(GridField & gfRun)
 {
 	GridField & gfTarget = chooseTarget();
 	decEnergy(gfRun, m_enMoveFoodConsumption);
@@ -292,7 +292,7 @@ void Grid::actionMove(GridField & gfRun)
 	}
 }
 
-void Grid::actionClone(GridField & gfRun)
+void GridModel::actionClone(GridField & gfRun)
 {
 	GridField & gfTarget = chooseTarget();
 	decEnergy(gfRun, m_enCloneFoodConsumption);
@@ -300,7 +300,7 @@ void Grid::actionClone(GridField & gfRun)
 	long lDonationRate = static_cast<long>(gfRun.GetAllele(GeneType::Id::cloneDonation));
 	long lParentEnergy = static_cast<long>(gfRun.GetEnergy().GetValue());
 	long lDonation = (lDonationRate * lParentEnergy) / SHRT_MAX;
-	ENERGY_UNITS enDonation = ENERGY_UNITS(CastToShort(lDonation));
+	ENERGY_UNITS enDonation = ENERGY_UNITS(Cast2Short(lDonation));
 	if (m_bPOI)
 	{
 		* m_pProtocol << L"   donation rate : " << lDonationRate << endl;
@@ -312,7 +312,7 @@ void Grid::actionClone(GridField & gfRun)
 	deleteIfDead(gfRun);
 }
 
-void Grid::actionMarry(GridField & gfRun)
+void GridModel::actionMarry(GridField & gfRun)
 {
 	GridField & gfPartner = choosePartner();
 	GridField & gfTarget  = chooseTarget ();
@@ -326,7 +326,7 @@ void Grid::actionMarry(GridField & gfRun)
 	deleteIfDead(gfRun);
 }
 
-void Grid::actionInteract(GridField & gfRun)
+void GridModel::actionInteract(GridField & gfRun)
 {
 	GridField & gfPartner = choosePartner();
 	decEnergy(gfRun, m_enInteractFoodConsumption);
@@ -341,7 +341,7 @@ void Grid::actionInteract(GridField & gfRun)
 	deleteIfDead(gfRun);
 }
 
-void Grid::actionPassOn(GridField & gfRun)
+void GridModel::actionPassOn(GridField & gfRun)
 {
 	if (m_bPOI)
 	{
@@ -352,17 +352,17 @@ void Grid::actionPassOn(GridField & gfRun)
 	deleteIfDead(gfRun);
 }
 
-void Grid::actionFertilize(GridField & gfRun)
+void GridModel::actionFertilize(GridField & gfRun)
 {
 	ENERGY_UNITS const enInvest { ENERGY_UNITS(gfRun.GetAllele(GeneType::Id::fertilInvest)) };
-	ENERGY_UNITS const yield    { CastToShort((enInvest.GetValue() * m_lFertilizerYield) / 100L) };
+	ENERGY_UNITS const yield    { Cast2Short((enInvest.GetValue() * m_lFertilizerYield) / 100L) };
 	ENERGY_UNITS const newValue { std::min(gfRun.GetFertilizer() + yield, m_enMaxFertilizer) };
 	gfRun.SetFertilizer(newValue);
 	gfRun.DecEnergy(enInvest);
 	deleteIfDead(gfRun);
 }
 
-void Grid::actionEat(GridField & gfRun)
+void GridModel::actionEat(GridField & gfRun)
 {
 	ENERGY_UNITS const enWant      = gfRun.GetAppetite();
 	ENERGY_UNITS const enStock     = gfRun.GetFoodStock();
@@ -382,12 +382,12 @@ void Grid::actionEat(GridField & gfRun)
 	deleteIfDead(gfRun);
 }
 
-void Grid::actionUndefined(GridField & gfRun)
+void GridModel::actionUndefined(GridField & gfRun)
 {
 	deleteIfDead(gfRun);
 }
 
-GridPoint Grid::ComputeNextGeneration(GridPoint const gpRun)
+GridPoint GridModel::ComputeNextGeneration(GridPoint const gpRun)
 {
 	m_gpRun = gpRun;
 	GridField & gfRun = getGridField(m_gpRun);
@@ -440,7 +440,7 @@ GridPoint Grid::ComputeNextGeneration(GridPoint const gpRun)
 	return m_gpNext;    // may be NULL_VAL
 }
 
-void Grid::EditSetStrategy
+void GridModel::EditSetStrategy
 (
     GridPoint const gp, 
     PERCENT   const intensity, // percent value
@@ -469,7 +469,7 @@ void Grid::EditSetStrategy
 	}
 }
 
-GridPoint const Grid::FindGridPoint
+GridPoint const GridModel::FindGridPoint
 (
 	GridPointBoolFunc const & func, 
 	GridRect          const & rect
@@ -487,7 +487,7 @@ GridPoint const Grid::FindGridPoint
 	return GP_NULL;
 }
 
-GridPoint const Grid::FindGridPointFromId(IND_ID const idSearchedFor) const 
+GridPoint const GridModel::FindGridPointFromId(IND_ID const idSearchedFor) const 
 { 
 	return (idSearchedFor.IsNull())
      		? GP_NULL

@@ -1,15 +1,15 @@
-// HistSlot.h : 
+// HistSlot.ixx
 //
+// History
 
-module;
+export module HistSlot;
 
-#include "HistCacheItem.h"
-#include "HistoryGeneration.h"
-
+import HistCacheItem;
+import HistGeneration;
 import HistSlotNr;
 import ModelData;
 
-class HistSlot
+export class HistSlot
 {
 public: 
 

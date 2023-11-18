@@ -1,6 +1,6 @@
 module;
 
-#include "windows.h"
+#include <Windows.h>
 
 #define STRINGIZE(s) #s
 

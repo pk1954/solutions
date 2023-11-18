@@ -1,11 +1,17 @@
 // d3d_system.cpp
 //
 
+module;
+
+#include <cassert>
 #include <d3d9.h>
 #include <d3dx9core.h>
-#include "win32_stopwatch.h"
-#include "d3d_vertexBuffer.h"
+
+module D3dSystem;
+
 import D3dSystem;
+import D3D_vertexBuffer;
+import StopWatch;
 
 D3dSystem::D3dSystem() :
 	m_bHexagon(FALSE),

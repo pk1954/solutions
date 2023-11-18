@@ -1,9 +1,9 @@
 // GridDimensions.h
 //
-// EvolutionCoreInterface
+// EvolutionCore
 //
-// knows static size of the Grid and number of neighbors
-// contains functions directly dependent on Grid size
+// knows static size of the GridModel and number of neighbors
+// contains functions directly dependent on GridModel size
 
 module;
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 	
-GridBrush::GridBrush(Grid * const pGrid) :
+GridBrush::GridBrush(GridModel * const pGrid) :
 	m_pGrid(pGrid),
 	m_shape(tShape::undefined),
 	m_brushMode(tBrushMode::undefined),
@@ -75,12 +75,12 @@ void GridBrush::SetShape(tShape const shape)
 			long    const ly          { gp.GetYvalue() };
 			long    const lDistSquare { lx * lx + ly * ly  };
 			long    const lReduction  { (m_intensity.GetValue() * lDistSquare) / lRadSquare };
-			PERCENT const reduction   { CastToShort(lReduction) };
+			PERCENT const reduction   { Cast2Short(lReduction) };
 			return m_intensity - reduction;
 		};
 		break;
 
-	case tShape::Grid:
+	case tShape::GridModel:
 	case tShape::Rect:
 		m_filter = [this](GridPoint const gp)
 		{ 
@@ -106,7 +106,7 @@ void GridBrush::SetIntensity(PERCENT const intensity)
 
 void GridBrush::operator()(GridPoint gpCenter)
 {
-	if (m_shape == tShape::Grid)
+	if (m_shape == tShape::GridModel)
 	{
 		Apply2Grid
 		(

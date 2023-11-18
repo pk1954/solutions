@@ -8,7 +8,7 @@ module;
 #include "GenerationCmd.h"
 #include "ModelInterface.h"
 #include "HistorySystem.h"
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "win32_thread.h"
 
 class ActionTimer;
@@ -102,7 +102,7 @@ protected:
 
 	void EditorCommand(GenerationCmd::Id const cmd, WPARAM const wParam)
 	{
-		GetHistorySystem()->CreateAppCommand(makeGenerationCmd(cmd, Int24(CastToUnsignedInt(wParam))));
+		GetHistorySystem()->CreateAppCommand(makeGenerationCmd(cmd, Int24(Cast2UnsignedInt(wParam))));
 	}
 
 	virtual void Compute() { m_pModel->Compute(); }

@@ -70,8 +70,8 @@ BOOL EvoWorkThread::Dispatch(MSG const msg )
 			(
 				GridPoint
 				(
-					static_cast<GridCoord>(CastToShort(msg.wParam)), 
-					static_cast<GridCoord>(CastToShort(msg.lParam))
+					static_cast<GridCoord>(Cast2Short(msg.wParam)), 
+					static_cast<GridCoord>(Cast2Short(msg.lParam))
 				),
 				static_cast<EvoWorkThreadMessage::Id>(msg.message) == EvoWorkThreadMessage::Id::GOTO_DEATH 
 			)
@@ -99,11 +99,11 @@ BOOL EvoWorkThread::Dispatch(MSG const msg )
 		break;
 
 	case EvoWorkThreadMessage::Id::DO_EDIT:
-		editorCommand(EvoGenerationCmd::Id::editDoEdit, GridPoint24(CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam)));
+		editorCommand(EvoGenerationCmd::Id::editDoEdit, GridPoint24(Cast2UnsignedInt(msg.wParam), Cast2UnsignedInt(msg.lParam)));
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_POI:
-		editorCommand(EvoGenerationCmd::Id::editSetPOI, GridPoint24(CastToUnsignedInt(msg.wParam), CastToUnsignedInt(msg.lParam)));
+		editorCommand(EvoGenerationCmd::Id::editSetPOI, GridPoint24(Cast2UnsignedInt(msg.wParam), Cast2UnsignedInt(msg.lParam)));
 		break;
 
 	case EvoWorkThreadMessage::Id::SET_STRATEGY_COLOR:

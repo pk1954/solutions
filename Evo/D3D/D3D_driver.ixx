@@ -12,6 +12,7 @@ export module D3D_driver;
 
 import Types;
 import D3dSystem;
+import D3dIndexBuffer;
 import D3D_vertexBuffer;
 
 export class D3D_driver

@@ -38,12 +38,11 @@ import GridDimensions;
 
 // scripting and tracing
 
-#include "dump.h"
-#include "trace.h"
+import EvolutionDump;
+import Trace;
 #include "errhndl.h"
-#include "script.h"
+import Script;
 #include "UtilityWrappers.h"
-#include "win32_stopwatch.h"
 #include "win32_wrappers.h"
 #include "win32_EvoEditorWrappers.h"
 #include "win32_histWrappers.h"
@@ -51,7 +50,9 @@ import GridDimensions;
 // system and resources
 
 #include "Resource.h"
+
 import D3dSystem;
+import StopWatch;
 
 // application
 
@@ -80,7 +81,7 @@ EvoAppWindow::EvoAppWindow() :
 
 	m_pEvoReadBuffer = new EvoReadBuffer(TRUE);  // use double buffering
 
-	DUMP::SetDumpStream(& std::wcout);
+	EvolutionDump::SetDumpStream(& std::wcout);
 	Config::SetDefaultConfiguration();
     Config::DefineConfigWrapperFunctions();
 	Script::ProcessScript(L"std_configuration.in");
@@ -306,8 +307,8 @@ void EvoAppWindow::configureStatusBar()
 		& m_StatusBar, 
 		m_pHistorySystem, 
 		LogarithmicTrackbar::Value2TrackbarL(0), 
-		LogarithmicTrackbar::Value2TrackbarL(CastToUnsignedLong(MAX_DELAY.count())), 
-		LogarithmicTrackbar::Value2TrackbarL(CastToUnsignedLong(DEFAULT_DELAY.count())) 
+		LogarithmicTrackbar::Value2TrackbarL(Cast2UnsignedLong(MAX_DELAY.count())), 
+		LogarithmicTrackbar::Value2TrackbarL(Cast2UnsignedLong(DEFAULT_DELAY.count())) 
 	);
 
 	iPartScriptLine = m_StatusBar.NewPart();

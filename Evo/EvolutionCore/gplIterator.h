@@ -7,12 +7,12 @@ module;
 
 import GridPoint;
 
-class Grid;
+class GridModel;
 
 class GplIterator
 {
 public:
-    explicit GplIterator(Grid const & grid) 
+    explicit GplIterator(GridModel const & grid) 
     :   m_grid(grid),
         m_gpCurrent(GP_NULL)
     { };
@@ -54,7 +54,7 @@ private:
     GplIterator(GplIterator const &); // Disable copy constructor
 
 //lint -e1725         // reference member
-    Grid const & m_grid;
+    GridModel const & m_grid;
 //lint +e1725
     GridPoint    m_gpCurrent;
 };

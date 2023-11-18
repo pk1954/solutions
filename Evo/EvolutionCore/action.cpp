@@ -1,9 +1,16 @@
-// action.cpp : 
+// Action.cpp : 
 //
 // EvolutionCore
 
-#include "Genome.h"
-#include "action.h"
+module;
+
+#include <functional>
+
+module Action;
+
+import Genome;
+
+using std::function;
 
 void Action::Apply2AllEnabledActions(function<void(Id const &)> const & func)
 {

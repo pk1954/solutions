@@ -2,7 +2,7 @@
 //
 
 #include <cassert>
-#include "script.h"
+import Script;
 #include "symtab.h"
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"
@@ -189,7 +189,7 @@ void DefineCoreWrapperFunctions(EvolutionCore * pCore)
 
 		DEF_ULONG_CONST(tShape::Rect);
 		DEF_ULONG_CONST(tShape::Circle);
-		DEF_ULONG_CONST(tShape::Grid);
+		DEF_ULONG_CONST(tShape::GridModel);
 
 		DEF_ULONG_CONST(tManipulator::set);
 		DEF_ULONG_CONST(tManipulator::max);

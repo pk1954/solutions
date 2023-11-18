@@ -1,6 +1,6 @@
 // EvoPixelCoords.h : 
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 

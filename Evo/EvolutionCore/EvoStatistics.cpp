@@ -62,7 +62,7 @@ void EvoStatistics::aquireData
 	(
 		[&](auto geneType)
 		{
-			m_XaGenes[geneType].Add(strategy, CastToUnsignedInt(core.GetAllele(gp, geneType)));
+			m_XaGenes[geneType].Add(strategy, Cast2UnsignedInt(core.GetAllele(gp, geneType)));
 		}
 	);
 

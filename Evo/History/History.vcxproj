@@ -172,9 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HistModelData.h" />
-    <ClInclude Include="HistoryCache.h" />
     <ClInclude Include="HistorySystemImpl.h" />
-    <ClInclude Include="HistSlot.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -184,12 +182,14 @@
     <ClCompile Include="HistCacheItem.ixx" />
     <ClCompile Include="HistGeneration.ixx" />
     <ClCompile Include="HistoryCache.cpp" />
-    <ClCompile Include="HistoryGeneration.cpp" />
+    <ClCompile Include="HistoryCache.ixx" />
+    <ClCompile Include="HistGeneration.cpp" />
     <ClCompile Include="HistoryIterator.cpp" />
     <ClCompile Include="HistoryIterator.ixx" />
     <ClCompile Include="HistorySystem.cpp" />
     <ClCompile Include="HistorySystem.ixx" />
     <ClCompile Include="HistorySystemImpl.cpp" />
+    <ClCompile Include="HistSlot.ixx" />
     <ClCompile Include="HistSlotNr.ixx" />
     <ClCompile Include="ModelData.ixx" />
   </ItemGroup>

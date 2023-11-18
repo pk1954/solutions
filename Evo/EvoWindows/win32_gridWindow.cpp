@@ -135,7 +135,7 @@ long GridWindow::AddContextMenuEntries(HMENU const hPopupMenu, PixelPoint const 
 
 	if (GridSelection::SelectionIsEmpty())
 	{
-		(void)AppendMenu(hPopupMenu, STD_FLAGS, IDM_FIT_ZOOM, L"Fit Grid Area");
+		(void)AppendMenu(hPopupMenu, STD_FLAGS, IDM_FIT_ZOOM, L"Fit GridModel Area");
 	}
 	else
 	{

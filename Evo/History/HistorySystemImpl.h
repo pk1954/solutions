@@ -3,7 +3,7 @@
 
 module;
 
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "HistorySystem.h"
 #include "HistoryCache.h"
 #include "genCmdList.h"

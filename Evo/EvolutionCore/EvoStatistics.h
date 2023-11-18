@@ -1,6 +1,6 @@
 // EvoStatistics.h :
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 

@@ -1,6 +1,6 @@
 // GridRect.ixx : 
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 export module GridRect;
 

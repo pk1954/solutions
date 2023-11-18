@@ -19,7 +19,7 @@ void EvolutionCore::InitClass
 )
 {
     Neighborhood::InitClass(iNrOfNeighbors);
-    Grid::InitClass(pObservers, pEvent);
+    GridModel::InitClass(pObservers, pEvent);
 }
 
 EvolutionCore * EvolutionCore::CreateCore()
@@ -59,10 +59,10 @@ bool EvolutionCore::IsEnabled(Action::Id const action)
 
 std::wostringstream* EvolutionCore::GetProtocolData()
 {
-	return Grid::GetProtocolData();
+	return GridModel::GetProtocolData();
 }
 
 void EvolutionCore::ClearProtocolData()
 {
-	Grid::ClearProtocolData();
+	GridModel::ClearProtocolData();
 }

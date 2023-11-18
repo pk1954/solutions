@@ -3,22 +3,21 @@
 
 module;
 
-
-#include "dump.h"
 #include "gridField.h"
 #include "grid_model.h"
 
+import EvolutionDump;
 import GridPoint;
 
-void GridPointList::CheckGridPointList(Grid const & grid) const
+void GridPointList::CheckGridPointList(GridModel const & grid) const
 {
-//    DUMP::Dump(L" CheckGridPointList start");
+//    EvolutionDump::Dump(L" CheckGridPointList start");
 
     if (ListIsEmpty())
     {
         assert(m_iCount == 0);
         assert(GetYoungestGp().IsNull());
-//        DUMP::Dump(L" CheckGridPointList empty");
+//        EvolutionDump::Dump(L" CheckGridPointList empty");
         return;
     }
 
@@ -29,8 +28,8 @@ void GridPointList::CheckGridPointList(Grid const & grid) const
     {
         assert(grid.IsAlive(gpRun));
         ++ iCount;
-//       DUMP::Dump(grid, gpRun);
-//        DUMP::Flush();
+//       EvolutionDump::Dump(grid, gpRun);
+//        EvolutionDump::Flush();
         if (IsYoungest(gpRun))
             break;
         else
@@ -39,7 +38,7 @@ void GridPointList::CheckGridPointList(Grid const & grid) const
             assert(IsInGrid(gpJunior));
             if (grid.GetSeniorGp(gpJunior) != gpRun)
             {
-                DUMP::Dump(L" CheckGridPointList detected inconsistency");
+                EvolutionDump::Dump(L" CheckGridPointList detected inconsistency");
                 assert(false);
             }
             gpRun = gpJunior;
@@ -48,13 +47,13 @@ void GridPointList::CheckGridPointList(Grid const & grid) const
    
     assert(iCount == m_iCount);
 
-//    DUMP::Dump(L" CheckGridPointList end");
-//	DUMP::DumpNL();
+//    EvolutionDump::Dump(L" CheckGridPointList end");
+//	EvolutionDump::DumpNL();
 }
 
 // Add: New element is added to start of list
 
-void GridPointList::AddGridPointToList(Grid & grid, GridField & gf)
+void GridPointList::AddGridPointToList(GridModel & grid, GridField & gf)
 {
 //  CHECK_GRIDPOINT_LIST(grid);
     
@@ -75,7 +74,7 @@ void GridPointList::AddGridPointToList(Grid & grid, GridField & gf)
 //  CHECK_GRIDPOINT_LIST(grid);
 }
 
-void GridPointList::ReplaceGridPointInList(Grid & grid, GridField & gf, GridField & gfNew)
+void GridPointList::ReplaceGridPointInList(GridModel & grid, GridField & gf, GridField & gfNew)
 {
     GridPoint gpJunior = gf.GetJuniorGp();
     GridPoint gpSenior = gf.GetSeniorGp();
@@ -101,7 +100,7 @@ void GridPointList::ReplaceGridPointInList(Grid & grid, GridField & gf, GridFiel
 
 // Delete: Element is deleted from list
 
-void GridPointList::DeleteGridPointFromList(Grid & grid, GridField & gf)
+void GridPointList::DeleteGridPointFromList(GridModel & grid, GridField & gf)
 {
 //	CHECK_GRIDPOINT_LIST(grid);
 	GridPoint gpJunior = gf.GetJuniorGp();

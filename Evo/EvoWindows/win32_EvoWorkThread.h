@@ -4,9 +4,12 @@
 
 module;
 
-#include "GridPoint24.h"
-#include "HistoryGeneration.h"
 #include "win32_WorkThread.h"
+
+export module EvoWorkThread;
+
+import GridPoint24;
+import HistGeneration;
 
 class Delay;
 class ActionTimer;
@@ -20,7 +23,7 @@ class EventInterface;
 class EvoHistorySysGlue;
 class EvoWorkThreadInterface;
 
-class EvoWorkThreadMessage
+export class EvoWorkThreadMessage
 {
 public:
 	enum class Id : UINT
@@ -48,7 +51,7 @@ public:
 	}
 };
 
-class EvoWorkThread: public WorkThread
+export class EvoWorkThread: public WorkThread
 {
 public:
 	EvoWorkThread

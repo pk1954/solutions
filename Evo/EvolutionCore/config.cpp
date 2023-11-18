@@ -7,10 +7,10 @@ module Config;
 #include <string>
 #include <cassert>
 #include "limits.h"
-#include "string.h"
+#include <string>
 #include <iomanip>
-#include "symtab.h"
 
+import Symtab;
 
 std::unordered_map< Config::tId, Config::tConfigItem > Config::m_mapConfigData;
 

@@ -114,7 +114,7 @@ bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
 	case IDM_MAX_SPEED:
 		{
 			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle();
-			m_pStatusBar->SetTrackBarPos(IDM_SIMULATION_SPEED,  CastToLong(MAX_DELAY.count()));                
+			m_pStatusBar->SetTrackBarPos(IDM_SIMULATION_SPEED,  Cast2Long(MAX_DELAY.count()));                
 			EnableWindow(GetDlgItem(hwndStatusBar, IDM_MAX_SPEED), FALSE);
 			m_pDelay->SetDelay(0ms);
 		}
@@ -135,7 +135,7 @@ bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
 		case IDM_SIMULATION_SPEED:
 		{
 			LONG const lLogicalPos = m_pStatusBar->GetTrackBarPos(IDM_SIMULATION_SPEED);
-			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL(CastToLong(MAX_DELAY.count())) - lLogicalPos;
+			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL(Cast2Long(MAX_DELAY.count())) - lLogicalPos;
 			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL(lValue);
 			EnableWindow(m_pStatusBar->GetDlgItem(IDM_MAX_SPEED), TRUE);
 			m_pDelay->SetDelay(milliseconds(lPos));
@@ -158,12 +158,12 @@ bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
 		break;
 
 	case IDM_SET_ZOOM:
-		m_pGridWindow->SetFieldSize(PIXEL(CastToShort(lParam)));
-		setSizeTrackBar(PIXEL(CastToShort(lParam)));
+		m_pGridWindow->SetFieldSize(PIXEL(Cast2Short(lParam)));
+		setSizeTrackBar(PIXEL(Cast2Short(lParam)));
 		break;
 
 	case IDM_ZOOM_TRACKBAR:  // comes from trackbar in statusBar
-		(void)m_pGridWindow->SetFieldSize(PIXEL(CastToShort(lParam)));
+		(void)m_pGridWindow->SetFieldSize(PIXEL(Cast2Short(lParam)));
 		break;
 
 	case IDM_REFRESH:

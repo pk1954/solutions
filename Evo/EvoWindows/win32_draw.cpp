@@ -228,7 +228,7 @@ void DrawFrame::setIndividualColor(EvolutionCore const * const pCore, GridPoint 
 	assert(static_cast<int>(strat) < Strategy::COUNT);
 	assert(energy >= 0_ENERGY_UNITS);
 
-	CLUT_INDEX const index { CastToInt(energy.GetValue()) };
+	CLUT_INDEX const index { Cast2Int(energy.GetValue()) };
 	COLORREF   const color { m_pColorManager->GetColor(tColorObject::individual, strat, index) };
     addPrimitive(gp, color, fHalfSize);
 }

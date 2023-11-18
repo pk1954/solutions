@@ -170,6 +170,14 @@
   <ItemGroup>
     <ClCompile Include="HistoryTest.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\History\History.vcxproj">
+      <Project>{642c34fc-f20c-45a6-bab8-c75988c88f52}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

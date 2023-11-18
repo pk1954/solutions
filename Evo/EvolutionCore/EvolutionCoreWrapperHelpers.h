@@ -3,8 +3,7 @@
 
 module;
 
-#include "script.h"
-
+import Script;
 import GridPoint;
 import GridRect;
 

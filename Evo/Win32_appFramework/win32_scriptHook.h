@@ -5,7 +5,7 @@
 module;
 
 #include "win32_status.h"
-#include "script.h"
+import Script;
 
 class ScriptHook : public Script_Functor
 {

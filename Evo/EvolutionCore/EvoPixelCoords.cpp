@@ -1,6 +1,6 @@
 // EvoPixelCoords.cpp
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 #include <algorithm>  // min/max templates
 import GridDimensions;
@@ -79,7 +79,7 @@ void EvoPixelCoords::CenterGrid
 
 PIXEL EvoPixelCoords::CalcMaximumFieldSize
 (
-	GridRectSize  const & gpGridRectSize,   // Grid size to fit into window
+	GridRectSize  const & gpGridRectSize,   // GridModel size to fit into window
 	PixelRectSize const & pntPixSize        // available pixel size 
 ) const
 {
@@ -128,7 +128,7 @@ PixelPoint EvoPixelCoords::Grid2PixelSize(GridPoint const gp) const
 
 	if (m_bHexagon)
 	{
-		pixX = PIXEL(CastToLong(static_cast<double>(pixX.GetValue()) * SQRT3_DIV2 + 0.5));
+		pixX = PIXEL(Cast2Long(static_cast<double>(pixX.GetValue()) * SQRT3_DIV2 + 0.5));
 	}
 
 	return PixelPoint(PIXEL(pixX), PIXEL(pixY));
@@ -175,7 +175,7 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 		double const dCi        = floor(dPixPointX/dSide);
 		double const dCx        = dPixPointX - dSide * dCi;
 
-		GridCoord const gCi    = GridCoord(CastToShort(dCi));
+		GridCoord const gCi    = GridCoord(Cast2Short(dCi));
 		bool       const bOdd   = IsOdd(gCi);
 
 		double const dPixPointY = static_cast<double>(pixPoint.GetYvalue());
@@ -184,7 +184,7 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 		double const dCy        = dTy - dFieldSize * dCj;
 		double const dCrit      = 0.5 - dCy / dFieldSize;
 
-		GridPoint gpResult(GridCoord(gCi), GridCoord(CastToShort(dCj)));
+		GridPoint gpResult(GridCoord(gCi), GridCoord(Cast2Short(dCj)));
 
 		if (dCx <= dRadius * abs(dCrit))
 		{
@@ -210,8 +210,8 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 
 		GridPoint gp = GridPoint
 		(
-			GridCoord(CastToShort(pixPoint.GetXvalue() / m_pixFieldSize.GetValue())), 
-			GridCoord(CastToShort(pixPoint.GetYvalue() / m_pixFieldSize.GetValue())) 
+			GridCoord(Cast2Short(pixPoint.GetXvalue() / m_pixFieldSize.GetValue())), 
+			GridCoord(Cast2Short(pixPoint.GetYvalue() / m_pixFieldSize.GetValue())) 
 		); 
 
 		return gp;

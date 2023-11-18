@@ -1,6 +1,6 @@
 // GeneType.h
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 

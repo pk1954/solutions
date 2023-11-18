@@ -4,7 +4,7 @@
 
 module;
 
-#include "observerInterface.h"
+import ObserverInterface;
 
 class EvolutionCore;
 class HistorySystem;

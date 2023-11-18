@@ -1,6 +1,6 @@
 // gridRect.h : 
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 #pragma once
 

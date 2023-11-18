@@ -6,7 +6,7 @@ module;
 
 #include <fstream>
 #include "boolOp.h"
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "win32_WorkThread.h"
 
 class WorkThreadInterface

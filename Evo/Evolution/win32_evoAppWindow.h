@@ -19,12 +19,13 @@ module;
 #include "win32_EvoWorkThreadInterface.h"
 #include "EvoHistorySysGlue.h"
 #include "EvoReadBuffer.h"
-#include "D3D_driver.h"
 
 // application
 
 #include "win32_evoAppMenu.h"
 #include "win32_evoController.h"
+
+import import D3D_driver;
 
 class Script;
 class FocusPoint;

@@ -1,6 +1,6 @@
 // gridPoint.h : 
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 #pragma once
 

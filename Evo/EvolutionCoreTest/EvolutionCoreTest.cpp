@@ -4,8 +4,8 @@
 #include "version.h"
 #include <chrono>
 #include <iostream>
-#include "trace.h"
-#include "script.h"
+import Trace;
+import Script;
 #include "win32_hiResTimer.h"
 import GridDimensions;
 #include "EvolutionCoreWrappers.h"

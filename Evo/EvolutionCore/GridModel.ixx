@@ -1,5 +1,6 @@
-// grid_model.h : 
+// GridModel.ixx
 //
+// EvolutionCore
 
 module;
 
@@ -8,10 +9,13 @@ module;
 #include <algorithm>
 #include <string>     
 #include <sstream>     
-#include "random.h"
-#include "gpList.h"
-#include "gridField.h"
-#include "ActionOptions.h"
+
+export module GridModel;
+
+import Random;
+import GpList;
+import GridField;
+import ActionOptions;
 import GridDimensions;
 import EvolutionTypes;
 
@@ -31,7 +35,7 @@ class ObserverInterface;
 
 using GROWTH_RATE = NamedType< int, struct GROWTH_RATE_Parameter >;
 
-class Grid
+export class GridModel
 {
 public:
 
@@ -41,8 +45,8 @@ public:
 		EventInterface    * const
 	);
 
-    Grid();
-    ~Grid();
+    GridModel();
+    ~GridModel();
 
 	void RefreshCache();
 
@@ -222,7 +226,7 @@ private:
             deleteAndReset(gf);
     }
 
-	ENERGY_UNITS Grid::getBestNeighborSlots(Neighborhood & list)
+	ENERGY_UNITS GridModel::getBestNeighborSlots(Neighborhood & list)
 	{
 		ENERGY_UNITS enMaxFoodStock = 0_ENERGY_UNITS;
 		list.Apply2All(	     [&](GridPoint const gp) { enMaxFoodStock = std::max(enMaxFoodStock, GetFoodStock(gp)); });
@@ -309,4 +313,4 @@ private:
 	static wostringstream    * m_pProtocol;
 };
 
-void CheckIndividuals(Grid &);
+void CheckIndividuals(GridModel &);

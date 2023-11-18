@@ -1,20 +1,21 @@
-// dump.h : 
+// EvoDump.ixx 
 //
+// EvolutionCore
 
 module;
 
 #include <fstream>
 #include <iostream>
 
-export module DUMP;
+export module EvolutionDump;
 
 import GridPoint;
 import GridCoord;
 
-class Grid;
+class GridModel;
 class GridField;
 
-class DUMP
+class EvolutionDump
 {
 public:
     static void SetDumpStream(std::wostream * const);
@@ -22,7 +23,7 @@ public:
     static void DumpNL();
     static void Dump(wchar_t const *);
     static void Dump(GridField const &);
-    static void Dump(Grid const &, GridPoint const);
+    static void Dump(GridModel const &, GridPoint const);
     static void Flush();
 
 private:

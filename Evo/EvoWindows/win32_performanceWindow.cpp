@@ -73,7 +73,7 @@ void PerformanceWindow::printLine
 )
 {
 	textBuf.printString(pwch1);
-	textBuf.printNumber(CastToUnsignedLong(frequency.GetValue()));
+	textBuf.printNumber(Cast2UnsignedLong(frequency.GetValue()));
 	textBuf.printString(L"Gen/s");
 	textBuf.nextLine   ();
 }

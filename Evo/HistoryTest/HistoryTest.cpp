@@ -90,7 +90,7 @@ void DoTest()
 	HistorySystem      * pHistorySys = HistorySystem::CreateHistorySystem();
 	HistTestModelFactory modelFactory;
 	HistTestModelData    modelData(0);
-	HistGeneration      histGenDemanded;
+	HistGeneration       histGenDemanded;
 
 	pHistorySys->StartHistorySystem
 	(

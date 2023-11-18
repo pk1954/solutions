@@ -1,6 +1,6 @@
 // GridPoint.ixx : 
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 

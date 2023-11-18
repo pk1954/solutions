@@ -3,7 +3,6 @@
 
 #include <cassert>
 #include <array>
-#include "dump.h"
 #include "strategy.h"
 #include "grid_model.h"
 #include "gplIterator.h"
@@ -11,6 +10,7 @@
 #include "EvolutionCoreImpl.h"
 
 import Config;
+import EvolutionDump;
 
 EvolutionCoreImpl::EvolutionCoreImpl() :
 	m_brush(& m_grid)
@@ -54,21 +54,21 @@ bool EvolutionCoreImpl::Compute()
 void EvolutionCoreImpl::DumpGridPointList() const
 {
     int iCount = 0;
-    DUMP::Dump(L"#  +++ start dump of GridPoint list");
-	DUMP::DumpNL();
+    EvolutionDump::Dump(L"#  +++ start dump of GridPoint list");
+	EvolutionDump::DumpNL();
     GplIterator iter(m_grid);
     for ((void)iter.Begin(); iter.IsNotAtEnd(); (void)iter.GotoNext())
     {
 		GridField gf = m_grid.GetGridField(iter.GetCurrent());
-        DUMP::Dump(m_grid, iter.GetCurrent());
-        DUMP::Dump(L"");
+        EvolutionDump::Dump(m_grid, iter.GetCurrent());
+        EvolutionDump::Dump(L"");
         if (++iCount >= 1000)
         {
-            DUMP::Dump(L"# +++ dumpGridPointList loop counter exceeded ");
+            EvolutionDump::Dump(L"# +++ dumpGridPointList loop counter exceeded ");
             break;
         }
     }
-    DUMP::Dump(L"#  +++ end of dump");
-	DUMP::DumpNL();
+    EvolutionDump::Dump(L"#  +++ end of dump");
+	EvolutionDump::DumpNL();
 }
 	

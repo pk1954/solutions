@@ -4,7 +4,7 @@
 
 module;
 
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "win32_baseWindow.h"
 
 class WorkThread;

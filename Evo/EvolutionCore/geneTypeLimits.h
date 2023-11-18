@@ -14,8 +14,8 @@ class GeneTypeLimits
 public:
 	void SetLimits( long const lLo, long const lHi )
 	{
-		short const sLo = CastToShort( lLo );
-		short const sHi = CastToShort( lHi );
+		short const sLo = Cast2Short( lLo );
+		short const sHi = Cast2Short( lHi );
 
 		m_sMin    = sLo;
 		m_sMax    = max( sHi, sLo );

@@ -4,9 +4,10 @@
 
 
 #include "commctrl.h"
-#include "win32_stopwatch.h"
 #include "win32_appWindowInterface.h"
 #include "win32_messagePump.h"
+
+import StopWatch;
 
 int MessagePump
 (

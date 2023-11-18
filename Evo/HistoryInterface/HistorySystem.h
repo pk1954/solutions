@@ -1,11 +1,13 @@
 // HistorySystem.h
 //
 
-#pragma once
+module;
 
-#include "observable.h"
-#include "GenerationCmd.h"
-#include "HistoryGeneration.h"
+import Observable;
+import GenerationCmd;
+import HistoryGeneration;
+
+export module HistorySystem;
 
 class ObserverInterface;
 class HistoryIterator;

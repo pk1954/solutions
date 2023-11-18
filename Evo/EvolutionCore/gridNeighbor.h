@@ -8,7 +8,7 @@ module;
 
 import GridPoint;
 
-class Grid;
+class GridModel;
 
 using std::vector;
 

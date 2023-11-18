@@ -8,11 +8,12 @@
 #include "EventInterface.h"
 #include "win32_thread.h"
 #include "win32_event.h"
-#include "win32_stopwatch.h"
 #include "win32_actionTimer.h"
 #include "win32_util_resource.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_WorkThread.h"
+
+import StopWatch;
 
 WorkThread::WorkThread
 (
@@ -142,7 +143,7 @@ BOOL WorkThread::Dispatch(MSG const msg)
 		break;
 
 	case WorkThreadMessage::Id::RESET_MODEL:
-		GetHistorySystem()->CreateAppCommand(GenerationCmd::ResetCmd(CastToUnsignedInt(msg.wParam)));
+		GetHistorySystem()->CreateAppCommand(GenerationCmd::ResetCmd(Cast2UnsignedInt(msg.wParam)));
 		if (static_cast<BOOL>(msg.wParam))
 			GetHistorySystem()->ClearAllHistory();
 		break;

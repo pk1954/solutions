@@ -1,8 +1,8 @@
 // history.cpp
 
-
 #include <cassert>
-#include "HistoryCache.h"
+
+import HistoryCache;
 
 #ifndef NDEBUG
 	#define CHECK_CONSISTENCY() checkConsistency()

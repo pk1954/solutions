@@ -5,7 +5,7 @@
 module;
 
 #include "Windows.h"
-#include "HistoryGeneration.h"
+import HistGeneration;
 
 export module GenDisplayWindow;
 

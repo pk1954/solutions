@@ -10,8 +10,8 @@ module;
 
 import GridDimensions;
 #include "EvolutionCore.h"
-#include "win32_stopwatch.h"
 
+import StopWatch;
 import GridRect;
 import ModelData;
 

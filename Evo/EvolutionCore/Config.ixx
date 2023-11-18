@@ -1,32 +1,35 @@
-// config.h : 
+// Config.ixx
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
-#pragma once
+module;
 
 #include <unordered_map>
 #include <string>
-#include "BoolOp.h"
-#include "util.h"
 
-class Config
+export module Config;
+
+import SaveCast;
+import BoolOp;
+
+export class Config
 {
 public:
 
-    virtual ~Config( ) {};
+    virtual ~Config() {};
 
-    static void SetDefaultConfiguration( );
-	static void DefineConfigWrapperFunctions( );
+    static void SetDefaultConfiguration();
+    static void DefineConfigWrapperFunctions();
 
     enum class tId : unsigned short
     {
         // general
         maxGeneration,        // Maximum number of generations, -1 means: no history system 
         nrOfHistorySlots,     // Number of history slots (if enough memory)
-		performanceDisplay,   // MODE_ON/OFF/AUTO
-		//historyDisplay,       // MODE_ON/OFF/AUTO
-		miniGridDisplay,      // MODE_ON/OFF/AUTO
-		showGridPointCoords,  // show coordinates of grid points on/off
+        performanceDisplay,   // MODE_ON/OFF/AUTO
+        //historyDisplay,       // MODE_ON/OFF/AUTO
+        miniGridDisplay,      // MODE_ON/OFF/AUTO
+        showGridPointCoords,  // show coordinates of grid points on/off
         stdMemSize,           // for strategies with memory (e.g. TFT)
         // individual energy 
         initialEnergy,
@@ -72,48 +75,48 @@ public:
         interactionPayOff_S,  // Der Spieler wurde betrogen, er bekommt S (Suckers Payoff). 
         interactionPayOff_T,  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
         interactionPayOff_P,  // Gegenseitige Defektion führt nur zu P (Penalty). 
-		// misc
-		gridWidth,            // intial width of grid in GRID_COORDS
-		gridHeight,           // intial height of grid in GRID_COORDS
-		nrOfNeighbors,        // 6 neighbors: hexagon grid, 4 or 8 neighbors: rectangle grid
-		stripMode,            // 1: strip mode on, 0: strip mode off - see D3D
-		dimmMode              // 1: dimm mode on, 0: dimm mode off - see DrawFrame
+        // misc
+        gridWidth,            // intial width of grid in GRID_COORDS
+        gridHeight,           // intial height of grid in GRID_COORDS
+        nrOfNeighbors,        // 6 neighbors: hexagon grid, 4 or 8 neighbors: rectangle grid
+        stripMode,            // 1: strip mode on, 0: strip mode off - see D3D
+        dimmMode              // 1: dimm mode on, 0: dimm mode off - see DrawFrame
     };
 
-	inline static long GetConfigValue( tId const id )
-	{
-		return m_mapConfigData.at( id );
-	}
+    inline static long GetConfigValue(tId const id)
+    {
+        return m_mapConfigData.at(id);
+    }
 
-	inline static short GetConfigValueShort( tId const id )
-	{
-		return CastToShort( GetConfigValue( id ) );
-	}
+    inline static short GetConfigValueShort(tId const id)
+    {
+        return Cast2Short(GetConfigValue(id));
+    }
 
-	inline static bool GetConfigValueBool( tId const id )
-	{
-		return GetConfigValue( id ) != 0;
-	}
+    inline static bool GetConfigValueBool(tId const id)
+    {
+        return GetConfigValue(id) != 0;
+    }
 
-	inline static tBoolOp GetConfigValueBoolOp( tId const id )
-	{
-		long const lValue = GetConfigValue( id );
-		return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
-	}
+    inline static tBoolOp GetConfigValueBoolOp(tId const id)
+    {
+        long const lValue = GetConfigValue(id);
+        return (lValue == 0) ? tBoolOp::opFalse : tBoolOp::opTrue;
+    }
 
-	inline static tOnOffAuto GetConfigValueOnOffAuto( tId const id )
-	{
-		long const lValue = GetConfigValue( id );
-		return static_cast<tOnOffAuto>(lValue);
-	}
+    inline static tOnOffAuto GetConfigValueOnOffAuto(tId const id)
+    {
+        long const lValue = GetConfigValue(id);
+        return static_cast<tOnOffAuto>(lValue);
+    }
 
-	inline static void SetConfigValueOnOffAuto( tId const id, tOnOffAuto const val )
-	{
-		SetConfigValue( id, static_cast<long>( val ) ); 
-	}
+    inline static void SetConfigValueOnOffAuto(tId const id, tOnOffAuto const val)
+    {
+        SetConfigValue(id, static_cast<long>(val));
+    }
 
-	static void SetConfigValue       ( tId const, long const );
-	static bool SetConfigValueBoolOp ( tId const, tBoolOp const );
+    static void SetConfigValue(tId const, long const);
+    static bool SetConfigValueBoolOp(tId const, tBoolOp const);
 
 private:
 
@@ -121,6 +124,5 @@ private:
 
     static std::unordered_map< tId, tConfigItem > m_mapConfigData;
 
-    static void defineConfigId( Config::tId const, std::wstring const &, long const );
+    static void defineConfigId(Config::tId const, std::wstring const&, long const);
 };
-

@@ -1,20 +1,21 @@
-// HistoryCache.h : 
+// HistoryCache.ixx
 //
 // History
 
 module;
 
-
 #include <cassert>
 #include <vector>
-#include "observerInterface.h"
-#include "HistCacheItem.h"
-#include "HistoryGeneration.h"
-#include "HistSlot.h"
 
-class ModelFactory;
+export module HistoryCache;
 
-class HistoryCache
+import ObserverInterface;
+import HistCacheItem;
+import HistGeneration;
+import HistSlotNr;
+import HistSlot;
+
+export class HistoryCache
 {
 public:
 

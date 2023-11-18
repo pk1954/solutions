@@ -1,13 +1,16 @@
 // D3D_driver.cpp
 //
 
-#include <string.h>
+#include <cassert>
+#include <string>
 #include <d3d9.h>
 #include <d3dx9core.h>
-#include "D3D_driver.h"
 
 import Types;
+import D3D_driver;
 import D3dSystem;
+
+using std::wstring;
 
 static COLORREF const CLR_WHITE = D3DCOLOR_ARGB(255, 255, 255, 255);
 
@@ -105,10 +108,10 @@ PixelRect D3D_driver::CalcGraphicsRect(std::wstring const & wstr)
 
 void D3D_driver::DisplayGraphicsText
 (
-	PixelRect    const & pixRect, 
-	std::wstring const & wstr,
-	DWORD        const   format,
-	COLORREF     const   col 
+	PixelRect const & pixRect, 
+	wstring   const & wstr,
+	DWORD     const   format,
+	COLORREF  const   col 
 )
 {
 	RECT rect(Util::PixelRect2RECT(pixRect));			  
@@ -396,10 +399,10 @@ void D3D_driver::AddfPixelLine
 {
 	D3DCOLOR    const D3Dcolor { COLORREFtoD3DCOLOR(255, color) };
 	fPixelPoint const fOrthoScaled { OrthoVector(fpp1 - fpp2, fpixWidth) };
-	m_pVertBufPrimitives->AddVertex(CastToFloat(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor);
-	m_pVertBufPrimitives->AddVertex(CastToFloat(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor);
-	m_pVertBufPrimitives->AddVertex(CastToFloat(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor);
-	m_pVertBufPrimitives->AddVertex(CastToFloat(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), CastToFloat(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor);
+	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), Cast2Float(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor);
+	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), Cast2Float(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor);
+	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), Cast2Float(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor);
+	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp2.GetXvalue() + fOrthoScaled.GetXvalue()), Cast2Float(fpp2.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor);
 }
 
 void D3D_driver::renderTriangleStrip(int const iNrOfPrimitives)
@@ -430,8 +433,8 @@ void D3D_driver::AddPipelinePoint
 {
 	D3DCOLOR D3Dcolor = COLORREFtoD3DCOLOR(255, color);
 
-	m_pVertBufStripMode->AddVertex(CastToFloat(fpp.GetXvalue() + m_fOrtho.GetXvalue()), CastToFloat(fpp.GetYvalue() + m_fOrtho.GetYvalue()), D3Dcolor);
-	m_pVertBufStripMode->AddVertex(CastToFloat(fpp.GetXvalue() - m_fOrtho.GetXvalue()), CastToFloat(fpp.GetYvalue() - m_fOrtho.GetYvalue()), D3Dcolor);
+	m_pVertBufStripMode->AddVertex(Cast2Float(fpp.GetXvalue() + m_fOrtho.GetXvalue()), Cast2Float(fpp.GetYvalue() + m_fOrtho.GetYvalue()), D3Dcolor);
+	m_pVertBufStripMode->AddVertex(Cast2Float(fpp.GetXvalue() - m_fOrtho.GetXvalue()), Cast2Float(fpp.GetYvalue() - m_fOrtho.GetYvalue()), D3Dcolor);
 }
 
 void D3D_driver::RenderPipeline()

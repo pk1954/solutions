@@ -13,7 +13,7 @@ import GridPoint;
 #define CHECK_GRIDPOINT_LIST(grid)
 #endif
 
-class Grid;
+class GridModel;
 
 //lint -sem(GridPointList::ResetGpList,initializer)
 
@@ -46,11 +46,11 @@ public:
         m_iCount = 0;
     };
 
-    void AddGridPointToList     (Grid &, GridField &);
-    void ReplaceGridPointInList (Grid &, GridField &, GridField &);
-    void DeleteGridPointFromList(Grid &, GridField &);
+    void AddGridPointToList     (GridModel &, GridField &);
+    void ReplaceGridPointInList (GridModel &, GridField &, GridField &);
+    void DeleteGridPointFromList(GridModel &, GridField &);
 
-    void CheckGridPointList(Grid const &) const;
+    void CheckGridPointList(GridModel const &) const;
 
 private:
     GridPoint m_gpOldest;

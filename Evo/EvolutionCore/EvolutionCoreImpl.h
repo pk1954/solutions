@@ -99,7 +99,7 @@ public:
 	}
 
 private:
-	Grid      m_grid;	
+	GridModel      m_grid;	
 	GridBrush m_brush;
 
     GridField const & getGridField(GridPoint const gp) const { return m_grid.GetGridField(gp); }

@@ -7,7 +7,7 @@ export module HistoryIterator;
 import HistSlotNr;
 import HistoryCache;
 import HistCacheItem;
-import HistoryGeneration;
+import HistGeneration;
 
 export class HistoryIterator
 {

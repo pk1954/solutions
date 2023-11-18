@@ -4,7 +4,8 @@
 
 #include <cassert>
 #include <d3d9.h>
-#include "d3d_vertexBuffer.h"
+
+import D3D_vertexBuffer;
 
 VertexBuffer::VertexBuffer(ULONG const ulSize)
     : m_vertexVector()

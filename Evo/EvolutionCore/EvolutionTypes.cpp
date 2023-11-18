@@ -40,7 +40,7 @@ wchar_t const * const GetShapeName(tShape const s)
     {
         { tShape::Circle, L"tShape::Circle"   },
         { tShape::Rect,   L"tShape::Rect" },
-        { tShape::Grid,   L"tShape::Grid" }
+        { tShape::GridModel,   L"tShape::GridModel" }
     };
 
     return mapShapes.at(s);

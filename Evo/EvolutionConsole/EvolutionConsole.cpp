@@ -4,8 +4,7 @@
 
 // EvolutionCore interfaces
 
-#include "trace.h"
-#include "dump.h"
+import EvolutionDump;
 #include "EvoHistorySysGlue.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCore.h"
@@ -17,8 +16,8 @@
 
 // scripting and tracing
 
-#include "script.h"
-
+import Script;
+import Trace;
 import Config;
 import GridDimensions;
 

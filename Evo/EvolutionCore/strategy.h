@@ -1,6 +1,6 @@
 // strategy.h : 
 //
-//EvolutionCoreInterface
+//EvolutionCore
 
 module;
 #include <array>

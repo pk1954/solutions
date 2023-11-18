@@ -18,8 +18,9 @@
 module;
 
 #include "synchapi.h"
-#include "observable.h"
-#include "observerInterface.h"
+
+import Observable;
+import ObserverInterface;
 
 template <typename MODEL>
 class ReadBuffer : public ObserverInterface,  // Observes producer thread

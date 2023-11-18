@@ -27,9 +27,6 @@
     <ClInclude Include="EvolutionCoreImpl.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="grid_model.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gpList.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -54,6 +51,60 @@
     <ClInclude Include="MortalityTable.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolutionCore.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolutionCoreWrapperHelpers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolutionCoreWrappers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvoPixelCoords.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="EvoStatistics.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gene.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneType.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="geneTypeLimits.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="genome.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="GridDimensions.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gridNeighbor.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gridPoint.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gridPoint24.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gridRect.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gridSelection.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelCore.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="strategy.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -65,7 +116,7 @@
     <ClCompile Include="EvolutionTypes.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="food.cpp">
+    <ClCompile Include="Food.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Genome.cpp">
@@ -119,7 +170,7 @@
     <ClCompile Include="GeneType.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="action.cpp">
+    <ClCompile Include="Action.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="gridSelection.cpp">
@@ -144,6 +195,33 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GeneTypeLimits.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvolutionTypes.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCoord.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridPOI.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridPoint.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridRect.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridModel.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoDump.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

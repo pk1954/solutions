@@ -7,10 +7,11 @@
 #include <iostream>
 #include <sstream> 
 #include <locale>
-#include "observerInterface.h"
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "HistorySystem.h"
 #include "win32_historyInfo.h"
+
+import ObserverInterface;
 
 HistInfoWindow::HistInfoWindow() :
     TextWindow(),

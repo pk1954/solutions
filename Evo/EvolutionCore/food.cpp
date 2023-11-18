@@ -1,17 +1,17 @@
-// food.cpp :
+// Food.cpp
 //
-
+// EvolutionCore
 
 #include <cassert>
 #include <limits.h>
-#include "gridNeighbor.h"
-#include "grid_model.h"
-#include "gridField.h"
 
 import Config;
 import GridRect;
+import GridNeighbor;
+import Grid_model;
+import GridField;
 
-void Grid::FoodGrowth()
+void GridModel::FoodGrowth()
 {
 	Apply2Grid
 	(
@@ -27,7 +27,7 @@ void Grid::FoodGrowth()
 				int iGrowth = (iDelta * m_enFoodGrowthRate.GetValue()) / 100;   // negative growth is possible
 				if (iGrowth == 0)                                             // if foodstock is greater than maximum
 					iGrowth = (iDelta > 0) ? 1 : -1;                            // caused by editor
-				rGF.IncFoodStock(ENERGY_UNITS{ CastToShort(iGrowth) });
+				rGF.IncFoodStock(ENERGY_UNITS{ Cast2Short(iGrowth) });
 			}
 
             rGF.ReduceFertilizer();

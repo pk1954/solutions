@@ -2,11 +2,13 @@
 //
 // EvoHistGlue
 
-#include "gridPoint24.h"
-#include "EvoGenerationCmd.h"
-#include "EvolutionCore.h"
-#include "EvoModelDataGlue.h"
+module;
 
+module EvoModelDataGlue;
+
+import GridPoint24;
+import EvoGenerationCmd;
+import EvolutionCore;
 import GridPOI;
 
 Stopwatch EvoModelDataGlue::stopwatch;

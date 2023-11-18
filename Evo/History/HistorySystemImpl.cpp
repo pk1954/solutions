@@ -3,11 +3,11 @@
 
 
 #include <cassert>
-#include "HistSlot.h"
+import HistSlot;
 import HistSlotNr;
 #include "HistoryCache.h"
 #include "HistoryIterator.h"
-#include "HistoryGeneration.h"
+import HistGeneration;
 #include "ObserverInterface.h"
 #include "HistorySystemImpl.h"
 
@@ -33,7 +33,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize.GetValue() };    assert(ullMaxNrOfSlots < LONG_MAX);
 	ULONGLONG  const ullDemanded     { static_cast<ULONGLONG>(lHistEntriesDemanded) };
 	ULONGLONG  const ullHistEntries  { min(ullDemanded, ullMaxNrOfSlots * 70 / 100) };  // use only 70% of available memory
-	HistSlotNr const nrOfSlots       { CastToShort(ullHistEntries) }; 
+	HistSlotNr const nrOfSlots       { Cast2Short(ullHistEntries) }; 
 
 	m_pHistoryCache = new HistoryCache;                    //ok
 	m_GenCmdList.Resize(genMaxNrOfGens);
@@ -169,7 +169,7 @@ ModelData const * HistorySystemImpl::GetModelData(HistGeneration const gen)
 
 // private member functions
 
-// save2History - Save Generation data (rule how to get to next generation), current Grid, etc. to new slot
+// save2History - Save Generation data (rule how to get to next generation), current GridModel, etc. to new slot
 //                Return pointer to this slot to be used for reading
 
 ModelData const * HistorySystemImpl::save2History()

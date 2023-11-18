@@ -7,8 +7,8 @@ module;
 import GridDimensions;
 #include "GridPoint.h"
 #include "EvolutionCore.h"
-#include "observable.h"
-#include "HistoryGeneration.h"
+import Observable;
+import HistGeneration;
 
 class RootWindow;
 class EvolutionCore;

@@ -1,6 +1,6 @@
 // gridSelection.h
 //
-// EvolutionCoreInterface
+// EvolutionCore
 
 module;
 
