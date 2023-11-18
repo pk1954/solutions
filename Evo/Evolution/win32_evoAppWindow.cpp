@@ -141,8 +141,8 @@ EvoAppWindow::EvoAppWindow() :
 
 	GridDimensions::DefineGridSize
 	(
-		GRID_COORD{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
-		GRID_COORD{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
+		GridCoord{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
+		GridCoord{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
 		Config::GetConfigValue(Config::tId::nrOfNeighbors) 
 	);
 };

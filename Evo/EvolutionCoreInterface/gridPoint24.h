@@ -28,7 +28,7 @@ public:
 	GridPoint Unpack() const
 	{
 		int i = GetValue();
-		GridPoint gp(GRID_COORD(i >> 12), GRID_COORD(i & 0x0fff));
+		GridPoint gp(GridCoord(i >> 12), GridCoord(i & 0x0fff));
 		return gp;
 	}
 

@@ -6,8 +6,9 @@ export module HistCacheItem;
 
 import GenerationCmd;
 import HistGeneration;
+import ModelData;
 
-class HistCacheItem
+export class HistCacheItem
 {
 public:
 
@@ -34,11 +35,11 @@ public:
         return m_pModelData;
     }
 
-    ModelData* GetModelData() { return m_pModelData; }
+    ModelData      * GetModelData()            { return m_pModelData; }
     ModelData const* GetModelDataC()     const { return m_pModelData; }
     HistGeneration   GetHistGenCounter() const { return m_genHistCounter; }
-    GenerationCmd     GetGenCmd()         const { return m_genCmd; }
-    BYTES             GetItemSize()       const { return m_pModelData->GetModelSize() + BYTES(sizeof(HistCacheItem)); }
+    GenerationCmd    GetGenCmd()         const { return m_genCmd; }
+    size_t           GetItemSize()       const { return m_pModelData->GetModelSize() + sizeof(HistCacheItem); }
 
     void ZeroHistGenCounter() { m_genHistCounter = 0L; }
     void IncHistGenCounter() { ++m_genHistCounter; }

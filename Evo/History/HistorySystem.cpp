@@ -11,7 +11,7 @@ HistorySystem * HistorySystem::CreateHistorySystem()
 	return new HistorySystemImpl();
 }
 
-BYTES HistorySystem::GetSlotWrapperSize()
+size_t HistorySystem::GetSlotWrapperSize()
 { 
-	return BYTES(sizeof(HistCacheItem));  
+	return sizeof(HistCacheItem);  
 }

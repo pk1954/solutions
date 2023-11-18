@@ -1,16 +1,21 @@
 // EvolutionTypes.cpp
 //
 
+module;
+
 #include <array>
 #include <unordered_map>
-#include "strategy.h"
-import EvolutionTypes;
+
+module EvolutionTypes;
+
+import Strategy;
 
 using std::unordered_map;
 using std::setbase;
 using std::setw;
+using std::wostream;
 
-std::wostream & operator<< (std::wostream & out, IND_ID const & id)
+wostream & operator<< (wostream & out, IND_ID const & id)
 { 
 	out << L"[" << setbase(16) << id.GetValue() << setbase(10) << L"]";
 	return out;

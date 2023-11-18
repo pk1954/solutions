@@ -11,13 +11,13 @@ module;
 #include "random.h"
 #include "gpList.h"
 #include "gridField.h"
-#include "gridPOI.h"
 #include "ActionOptions.h"
 import GridDimensions;
 import EvolutionTypes;
 
 import GridPoint;
 import GridRect;
+import GridPOI;
 
 using std::array;
 using std::vector;
@@ -103,7 +103,7 @@ public:
     GridPoint const FindGridPoint(GridPointBoolFunc const &, GridRect const &) const;
 	GridPoint const FindGridPointFromId(IND_ID const) const;
 
-	BYTES const GetGridHeapSize() const;
+	size_t const GetGridHeapSize() const;
 
 	EVO_GENERATION GetEvoGenerationNr()       const { return m_genEvo; }
     int            GetNrOfLivingIndividuals() const { return m_gpList.GetSize(); }

@@ -18,6 +18,11 @@ export class ScanPixel
 {
 public:
 
+    void Clear()
+    {
+        m_dataPoints.clear();
+    }
+
     void Add(ScanDataPoint const& dataPoint)
     {
         m_dataPoints.push_back(dataPoint);
@@ -33,6 +38,11 @@ public:
     size_t GetNrOfDataPoints() const 
     { 
         return m_dataPoints.size(); 
+    }
+
+    ScanDataPoint const& GetScanDataPoint(size_t const i) const
+    {
+        return m_dataPoints.at(i);
     }
 
     void Apply2AllScanPoints(auto const& func)

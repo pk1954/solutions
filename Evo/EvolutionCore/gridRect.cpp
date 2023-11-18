@@ -18,8 +18,8 @@ void Apply2Rect
 		gpEnd   += GridPoint(1_GRID_COORD);
 	}
 
-    for (GRID_COORD y = gpStart.GetY(); y <= gpEnd.GetY(); ++y)
-    for (GRID_COORD x = gpStart.GetX(); x <= gpEnd.GetX(); ++x)
+    for (GridCoord y = gpStart.GetY(); y <= gpEnd.GetY(); ++y)
+    for (GridCoord x = gpStart.GetX(); x <= gpEnd.GetX(); ++x)
 	{
 		func(GridPoint(x, y));
 	}

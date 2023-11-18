@@ -45,7 +45,7 @@ public:
 	void PostSetBrushManipulator(tManipulator const);
     void PostSetBrushIntensity(PERCENT const);
     void PostSetColor(COLORREF const, tColorObject const, Strategy::Id const);
-    void PostSetBrushRadius(GRID_COORD const);
+    void PostSetBrushRadius(GridCoord const);
 	void PostBenchmark(int const);
 	void PostGotoOrigin(GridPoint const);
 	void PostGotoDeath (GridPoint const);

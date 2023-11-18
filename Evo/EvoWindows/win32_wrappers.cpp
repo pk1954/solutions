@@ -87,7 +87,7 @@ class WrapPostSetBrushRadius : public Script_Functor
 public:
 	virtual void operator() (Script & script) const
 	{
-		GRID_COORD const size = ScrReadGridCoord(script);
+		GridCoord const size = ScrReadGridCoord(script);
 		m_pWorkThreadInterface->PostSetBrushRadius(size);
 	}
 };

@@ -51,8 +51,8 @@ void DoTest()
 	Script::ProcessScript(L"std_configuration.in");
 	GridDimensions::DefineGridSize
 	(
-		GRID_COORD{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
-		GRID_COORD{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
+		GridCoord{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
+		GridCoord{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
 		Config::GetConfigValue(Config::tId::nrOfNeighbors) 
 	);
 	EvolutionCore::InitClass(GridDimensions::GetNrOfNeigbors(), nullptr, nullptr);

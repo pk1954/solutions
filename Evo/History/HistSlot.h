@@ -3,11 +3,11 @@
 
 module;
 
-#include "ModelData.h"
 #include "HistCacheItem.h"
 #include "HistoryGeneration.h"
 
 import HistSlotNr;
+import ModelData;
 
 class HistSlot
 {

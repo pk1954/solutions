@@ -22,13 +22,13 @@ public:
 	void operator()(GridPoint);
     bool operator!=(GridBrush const &) const;
 
-	void SetRadius     (GRID_COORD   const);
+	void SetRadius     (GridCoord   const);
 	void SetIntensity  (PERCENT      const); 
 	void SetBrushMode  (tBrushMode   const);
 	void SetManipulator(tManipulator const);
 	void SetShape      (tShape       const);
 
-    GRID_COORD   const GetRadius     () const { return m_radius;      }
+    GridCoord   const GetRadius     () const { return m_radius;      }
 	PERCENT      const GetIntensity  () const { return m_intensity;   }
 	tShape       const GetShape      () const { return m_shape;       }
     tBrushMode   const GetBrushMode  () const { return m_brushMode;   }
@@ -41,7 +41,7 @@ private:
     tBrushMode		m_brushMode;
 	tManipulator	m_manipulator;
 	PERCENT         m_intensity;
-    GRID_COORD	    m_radius;
+    GridCoord	    m_radius;
 	ManipulatorFunc m_manFunc;
 
 	function<void   (GridPoint const, short const)> m_func;

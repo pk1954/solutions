@@ -5,13 +5,13 @@
 module;
 
 #include <functional>
-#include "gridCoord.h"
 
 export module GridPoint;
 
-import PointType;
+import Types;
+import GridCoord;
 
-export using GridPoint = PosType< GRID_COORD >;
+export using GridPoint = PosType< GridCoord >;
 
 export static GridPoint const GP_NULL(GridPoint::NULL_VAL());   // compiler generates call!
 export static GridPoint const GP_ZERO(GridPoint::ZERO_VAL());   // compiler generates call!

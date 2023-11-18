@@ -33,9 +33,9 @@ public:
     virtual PERCENT         const GetBrushIntensity       () const = 0;
     virtual tShape          const GetBrushShape           () const = 0;
     virtual tManipulator    const GetBrushManipulator     () const = 0;
-    virtual GRID_COORD      const GetBrushSize            () const = 0;
+    virtual GridCoord      const GetBrushSize            () const = 0;
     virtual tBrushMode      const GetBrushMode            () const = 0;
-	virtual BYTES           const GetGridHeapSize         () const = 0;
+	virtual size_t           const GetGridHeapSize         () const = 0;
 
 	virtual tDisplayMode    const GetDisplayMode (GridPoint const) const = 0;
 	virtual bool            const IsDead         (GridPoint const) const = 0;
@@ -61,7 +61,7 @@ public:
 	virtual	ACTION_COUNT    const GetActionCounter   (Strategy::Id const, Action::Id   const) const = 0;
 	virtual GridPoint       const FindGridPointFromId(IND_ID       const)                     const = 0;
 	  
-	BYTES const GetCoreSize();
+	size_t const GetCoreSize();
 
 // manipulating functions
 
@@ -69,7 +69,7 @@ public:
     virtual void ResetAll           () = 0;
     virtual void SetBrushManipulator(tManipulator const) = 0;
     virtual void SetBrushShape      (tShape       const) = 0;
-    virtual void SetBrushRadius     (GRID_COORD   const) = 0;
+    virtual void SetBrushRadius     (GridCoord   const) = 0;
     virtual void SetBrushIntensity  (PERCENT      const) = 0;
     virtual void SetBrushMode       (tBrushMode   const) = 0;
     virtual void ModelDoEdit        (GridPoint    const) = 0;

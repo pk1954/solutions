@@ -175,7 +175,7 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 		double const dCi        = floor(dPixPointX/dSide);
 		double const dCx        = dPixPointX - dSide * dCi;
 
-		GRID_COORD const gCi    = GRID_COORD(CastToShort(dCi));
+		GridCoord const gCi    = GridCoord(CastToShort(dCi));
 		bool       const bOdd   = IsOdd(gCi);
 
 		double const dPixPointY = static_cast<double>(pixPoint.GetYvalue());
@@ -184,7 +184,7 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 		double const dCy        = dTy - dFieldSize * dCj;
 		double const dCrit      = 0.5 - dCy / dFieldSize;
 
-		GridPoint gpResult(GRID_COORD(gCi), GRID_COORD(CastToShort(dCj)));
+		GridPoint gpResult(GridCoord(gCi), GridCoord(CastToShort(dCj)));
 
 		if (dCx <= dRadius * abs(dCrit))
 		{
@@ -210,8 +210,8 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 
 		GridPoint gp = GridPoint
 		(
-			GRID_COORD(CastToShort(pixPoint.GetXvalue() / m_pixFieldSize.GetValue())), 
-			GRID_COORD(CastToShort(pixPoint.GetYvalue() / m_pixFieldSize.GetValue())) 
+			GridCoord(CastToShort(pixPoint.GetXvalue() / m_pixFieldSize.GetValue())), 
+			GridCoord(CastToShort(pixPoint.GetYvalue() / m_pixFieldSize.GetValue())) 
 		); 
 
 		return gp;

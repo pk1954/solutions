@@ -93,7 +93,7 @@ void GridBrush::SetShape(tShape const shape)
 	}
 }
 
-void GridBrush::SetRadius(GRID_COORD const radius) 
+void GridBrush::SetRadius(GridCoord const radius) 
 { 
 	assert(radius <= MAX_GRID_COORD);
 	m_radius = radius;    

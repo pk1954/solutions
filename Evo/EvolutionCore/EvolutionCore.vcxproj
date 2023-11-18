@@ -207,7 +207,7 @@
     <ClCompile Include="Genome.ixx" />
     <ClCompile Include="gridBrush.cpp" />
     <ClCompile Include="GridDimensions.cpp" />
-    <ClCompile Include="gridPOI.cpp" />
+    <ClCompile Include="GridPOI.cpp" />
     <ClCompile Include="gridSelection.cpp" />
     <ClCompile Include="MortalityTable.cpp" />
     <ClCompile Include="Genome.cpp" />

@@ -27,6 +27,11 @@ public:
         m_scanPixels.resize(nrCols);
     }
 
+    void Clear()
+    {
+        Apply2AllScanPixels([](auto& p) { p.Clear(); });
+    }
+
     RasterIndex Size() const 
     { 
         return Cast2Int(m_scanPixels.size()); 

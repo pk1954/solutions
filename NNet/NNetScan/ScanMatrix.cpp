@@ -69,6 +69,22 @@ void ScanMatrix::Add2list
     );
 }
 
+void ScanMatrix::Clear()
+{
+    Apply2AllScanPixels([](auto &p) { p.Clear(); });
+}
+
+void ScanMatrix::Fill(NNetModelReaderInterface const& nmri)
+{
+    nmri.Apply2AllC<Pipe>
+    (
+        [this, nmri](Pipe const& p)
+        {
+            Add2list(p, nmri.GetScanRaster());
+        }
+    );
+}
+
 size_t ScanMatrix::GetNrOfSensorPoints() const
 {
     size_t nr { 0 };
@@ -84,14 +100,21 @@ float ScanMatrix::AverageDataPointsPerPixel() const
     return Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels);
 }
 
-float ScanMatrix::DataPointVariance() const
+float ScanMatrix::DataPointVariance()
 {
-    float fCenter { AverageDataPointsPerPixel() };
-    float fVariance { 0.0f };
+    float  fCenter           { AverageDataPointsPerPixel() };
+    float  fVariance         { 0.0f };
+    size_t maxNrOfDataPoints { 0 };
+    m_pScanPixelMax = nullptr;
     Apply2AllScanPixelsC
     (
-        [fCenter, &fVariance](ScanPixel const& p)
+        [this, fCenter, &fVariance, &maxNrOfDataPoints](ScanPixel const& p)
         {
+            if (p.GetNrOfDataPoints() > maxNrOfDataPoints)
+            {
+                maxNrOfDataPoints = p.GetNrOfDataPoints();
+                m_pScanPixelMax   = &p;
+            }
             float const fDiff { Cast2Float(p.GetNrOfDataPoints()) - fCenter };
             fVariance += fDiff * fDiff;
         }

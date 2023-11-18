@@ -9,11 +9,11 @@
 module;
 
 import GridDimensions;
-#include "ModelData.h"
 #include "EvolutionCore.h"
 #include "win32_stopwatch.h"
 
 import GridRect;
+import ModelData;
 
 class EvoModelDataGlue: public ModelData
 {
@@ -41,9 +41,9 @@ public:
 		return m_pEvolutionCore;
 	}
 
-	virtual BYTES GetModelSize() const
+	virtual size_t GetModelSize() const
 	{
-		return m_pEvolutionCore->GetCoreSize() + BYTES(sizeof(EvoModelDataGlue));
+		return m_pEvolutionCore->GetCoreSize() + sizeof(EvoModelDataGlue);
 	}
 
 	virtual void CopyFrom(ModelData const * const src)

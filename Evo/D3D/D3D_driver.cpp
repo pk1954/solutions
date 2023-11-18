@@ -390,7 +390,7 @@ void D3D_driver::AddfPixelLine
 (
 	fPixelPoint const & fpp1, 
 	fPixelPoint const & fpp2, 
-	fPIXEL      const   fpixWidth, 
+	fPixel      const   fpixWidth, 
 	COLORREF    const   color
 )
 {
@@ -413,7 +413,7 @@ void D3D_driver::StartPipeline
 (
 	fPixelPoint const & fppStart, 
 	fPixelPoint const & fppEnd, 
-	fPIXEL      const   fpixWidth, 
+	fPixel      const   fpixWidth, 
 	COLORREF    const   color
 )
 {
@@ -444,7 +444,7 @@ void D3D_driver::DrawPolygon
 	int         const iNrOfEdges,
 	fPixelPoint const ptPos,
 	COLORREF    const color, 
-	fPIXEL      const fPixRadius 
+	fPixel      const fPixRadius 
 )
 {
     float STEP = 2.0f * D3DX_PI / iNrOfEdges;

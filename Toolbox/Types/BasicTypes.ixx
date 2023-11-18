@@ -120,8 +120,8 @@ export using Degrees = NamedType<float, struct degrees_Parameter>;
 export constexpr Radian  operator"" _Radian (const long double r) { return Radian(Cast2Float(r)); }
 export constexpr Degrees operator"" _Degrees(const long double d) { return Degrees(Cast2Float(d)); }
 
-export inline float const RADIAN_FACTOR{ static_cast<float>(180.0 / pi) };
-export inline float const INV_RADIAN_FACTOR{ 1.0f / RADIAN_FACTOR };
+export inline float const RADIAN_FACTOR     { static_cast<float>(180.0 / pi) };
+export inline float const INV_RADIAN_FACTOR { 1.0f / RADIAN_FACTOR };
 
 export Radian  Degrees2Radian(Degrees const d) { return Radian(d.GetValue() * INV_RADIAN_FACTOR); }
 export Degrees Radian2Degrees(Radian  const r) { return Degrees(r.GetValue() * RADIAN_FACTOR); }

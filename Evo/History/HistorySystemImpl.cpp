@@ -29,7 +29,7 @@ ModelData * HistorySystemImpl::StartHistorySystem
 {
 	m_pHistCacheItemWork = new HistCacheItem(pModelFactory);  //ok
 
-	BYTES      const slotSize        { GetSlotSize() };
+	size_t      const slotSize        { GetSlotSize() };
 	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize.GetValue() };    assert(ullMaxNrOfSlots < LONG_MAX);
 	ULONGLONG  const ullDemanded     { static_cast<ULONGLONG>(lHistEntriesDemanded) };
 	ULONGLONG  const ullHistEntries  { min(ullDemanded, ullMaxNrOfSlots * 70 / 100) };  // use only 70% of available memory

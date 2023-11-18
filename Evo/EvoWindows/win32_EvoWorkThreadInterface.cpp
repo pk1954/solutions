@@ -5,7 +5,6 @@
 
 #include <cassert>
 #include "Resource.h"
-#include "gridPOI.h"
 #include "GridPoint24.h"
 import EvolutionTypes;
 #include "EvolutionCore.h"
@@ -14,6 +13,8 @@ import EvolutionTypes;
 #include "win32_script.h"
 #include "win32_EvoWorkThread.h"
 #include "win32_EvoWorkThreadInterface.h"
+
+import GridPOI;
 
 using std::wostream;
 using std::wcout;
@@ -79,7 +80,7 @@ void EvoWorkThreadInterface::PostSetBrushIntensity(PERCENT const intensity)
     WorkMessage(TRUE, static_cast<WorkThreadMessage::Id>(EvoWorkThreadMessage::Id::SET_BRUSH_INTENSITY), intensity.GetValue(), 0);
 }
 
-void EvoWorkThreadInterface::PostSetBrushRadius(GRID_COORD const radius)
+void EvoWorkThreadInterface::PostSetBrushRadius(GridCoord const radius)
 {
     if (IsTraceOn())
         TraceStream() << __func__ << L" " << radius.GetValue() << endl;

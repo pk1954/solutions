@@ -16,11 +16,11 @@
 #include "gpList.h"
 #include "dump.h"
 #include "Genome.h"
-#include "gridPOI.h"
 #include "gridField.h"
 
 import Config;
 import GridRect;
+import GridPOI;
 
 //#ifndef NDEBUG
 //    #define CHECK_INDIVIDUALS CheckIndividuals(* this)
@@ -111,12 +111,12 @@ Grid::~Grid()
     };
 }
 
-BYTES const Grid::GetGridHeapSize() const
+size_t const Grid::GetGridHeapSize() const
 {
 	unsigned long long gridFieldSize { sizeof (GridField) };
 	unsigned long long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
 	unsigned long long gridAreaSize  { GridDimensions::GridWidthVal() * gridRowSize };
-	return BYTES(gridAreaSize);
+	return size_t(gridAreaSize);
 }
 
 void CheckIndividuals(Grid & grid)
@@ -475,8 +475,8 @@ GridPoint const Grid::FindGridPoint
 	GridRect          const & rect
 ) const
 {
-	for (GRID_COORD y = rect.GetTop();  y <= rect.GetBottom(); ++y)
-	for (GRID_COORD x = rect.GetLeft(); x <= rect.GetRight();  ++x)
+	for (GridCoord y = rect.GetTop();  y <= rect.GetBottom(); ++y)
+	for (GridCoord x = rect.GetLeft(); x <= rect.GetRight();  ++x)
 	{
 		GridPoint gp { x, y };
 		if (func(gp))

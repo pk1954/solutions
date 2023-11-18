@@ -28,9 +28,6 @@
     <ClInclude Include="gridPoint24.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridCoord.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="GridDimensions.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -49,9 +46,6 @@
     <ClInclude Include="gridSelection.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridPOI.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="EvoPixelCoords.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -61,5 +55,7 @@
     <ClCompile Include="GridPoint.ixx" />
     <ClCompile Include="GridRect.ixx" />
     <ClCompile Include="EvolutionTypes.ixx" />
+    <ClCompile Include="GridCoord.ixx" />
+    <ClCompile Include="GridPOI.ixx" />
   </ItemGroup>
 </Project>

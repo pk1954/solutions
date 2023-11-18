@@ -5,7 +5,7 @@
 module;
 
 #include <memory>
-#include <cstddef>
+//#include <cstddef>
 #include <Windows.h>
 #include "Resource.h"
 
@@ -188,7 +188,7 @@ void ComputeThread::StartScan()
 {
 	StopComputation();
 	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
-	m_pNMWI->Apply2AllC<Pipe>([this](Pipe const& p){ m_upScanMatrix->Add2list(p, m_pNMWI->GetScanRaster()); });
+	m_upScanMatrix->Fill(*m_pNMWI);
 	m_pNMWI->CreateImage();
 	m_pNMWI->SetScanRunning(true);
 	m_pLockModelObservable->NotifyAll(false);
@@ -223,7 +223,7 @@ void ComputeThread::ScanRun()
 		m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
 	} 
 
-	*pImage *= 1.0f / pImage->GetMax().GetValue();
+	pImage->Normalize();
 	m_pDynamicModelObservable->NotifyAll(false);
 
 	EXIT:

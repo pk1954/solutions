@@ -12,12 +12,12 @@ GridPoint                       GridDimensions::m_gridSize       { GP_NULL };
 int                             GridDimensions::m_iNrOfNeighbors { 0 }; 
 GridDimensions::NEIGHBOR_GRID * GridDimensions::m_pGridNeighbors { nullptr };
 
-static GRID_COORD const WEST     { -1_GRID_COORD };
-static GRID_COORD const EAST     {  1_GRID_COORD };
-static GRID_COORD const NORTH    { -1_GRID_COORD };
-static GRID_COORD const SOUTH    {  1_GRID_COORD };
-static GRID_COORD const CENTER_X {  0_GRID_COORD };
-static GRID_COORD const CENTER_Y {  0_GRID_COORD };
+static GridCoord const WEST     { -1_GRID_COORD };
+static GridCoord const EAST     {  1_GRID_COORD };
+static GridCoord const NORTH    { -1_GRID_COORD };
+static GridCoord const SOUTH    {  1_GRID_COORD };
+static GridCoord const CENTER_X {  0_GRID_COORD };
+static GridCoord const CENTER_Y {  0_GRID_COORD };
 
 static std::array< GridPoint, 8 > const table8 = 
 {
@@ -61,8 +61,8 @@ static std::array< GridPoint, 4 > const table4 =
 
 void GridDimensions::DefineGridSize
 (
-	GRID_COORD const width, 
-	GRID_COORD const height,
+	GridCoord const width, 
+	GridCoord const height,
 	int const iNrOfNeighbors 
 )
 {

@@ -114,6 +114,13 @@ public:
         return valMax;
     }
 
+    void Normalize()
+    {
+		UNIT unitMax { GetMax() };
+		if (unitMax.IsNotZero())
+			*this *= 1.0f / unitMax.GetValue();
+    }
+
 private:
     vector<unique_ptr<ROW>> m_rows;
 };

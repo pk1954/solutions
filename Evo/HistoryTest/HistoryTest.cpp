@@ -2,14 +2,14 @@
 //
 
 #include <iostream>
-#include "symtab.h"
-#include "errhndl.h"
-#include "ModelData.h"
-#include "HistoryIterator.h"
-#include "HistorySystem.h"
 #include "Version.h"
 
 import Int24;
+import Symtab;
+import ErrHndl;
+import ModelData;
+import HistoryIterator;
+import HistorySystem;
 
 using std::string;
 using std::wcout;
@@ -27,9 +27,9 @@ public:
 	{
 
 	}
-	virtual BYTES GetModelSize() const
+	virtual size_t GetModelSize() const
 	{
-		return BYTES { sizeof(HistTestModelData) };
+		return sizeof(HistTestModelData);
 	}
 
 	virtual void CopyFrom(ModelData const * const src)

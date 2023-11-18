@@ -33,9 +33,9 @@ public:
     virtual PixelRect CalcGraphicsRect(std::wstring const&);
     virtual void      EndFrame(HWND const);
     virtual void      ShutDown();
-    virtual void	  AddfPixelLine(fPixelPoint const&, fPixelPoint const&, fPIXEL const, COLORREF const);
-    virtual void      DrawPolygon(int const, fPixelPoint const, COLORREF const, fPIXEL const);
-    virtual void      StartPipeline(fPixelPoint const&, fPixelPoint const&, fPIXEL const, COLORREF const);
+    virtual void	  AddfPixelLine(fPixelPoint const&, fPixelPoint const&, fPixel const, COLORREF const);
+    virtual void      DrawPolygon(int const, fPixelPoint const, COLORREF const, fPixel const);
+    virtual void      StartPipeline(fPixelPoint const&, fPixelPoint const&, fPixel const, COLORREF const);
     virtual void      AddPipelinePoint(fPixelPoint const&, COLORREF const);
     virtual void      RenderPipeline();
 

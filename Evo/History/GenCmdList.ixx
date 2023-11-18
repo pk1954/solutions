@@ -5,11 +5,12 @@
 module;
 
 #include <vector>
-#include "HistoryGeneration.h"
 
 export module GenCmdList;
 
 import GenerationCmd;
+import HistGeneration;
+import HistSlotNr;
 
 class GenCmdList
 {

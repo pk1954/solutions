@@ -6,7 +6,6 @@ module;
 
 #include <functional>
 import GridDimensions;
-#include "gridPOI.h"
 #include "grid_model.h"
 #include "gridBrush.h"
 import EvolutionTypes;
@@ -15,6 +14,7 @@ import EvolutionTypes;
 import BoolOp;
 import GridPoint;
 import GridRect;
+import GridPOI;
 
 class EventInterface;
 class ObserverInterface;
@@ -40,7 +40,7 @@ public:
 	virtual void SetBrushMode       (tBrushMode   const mode ) { m_brush.SetBrushMode  (mode );  }
 	virtual void SetBrushManipulator(tManipulator const op   ) { m_brush.SetManipulator(op   );  }
 	virtual void SetBrushShape      (tShape       const shape) { m_brush.SetShape      (shape);  }
-    virtual void SetBrushRadius     (GRID_COORD   const rad  ) { m_brush.SetRadius     (rad  );  }
+    virtual void SetBrushRadius     (GridCoord   const rad  ) { m_brush.SetRadius     (rad  );  }
     virtual void SetBrushIntensity  (PERCENT      const perc ) { m_brush.SetIntensity  (perc );  }
     virtual void ModelDoEdit        (GridPoint    const gp   ) { (m_brush)(gp); }
 
@@ -69,14 +69,14 @@ public:
     virtual short           const GetAllele     (GridPoint const gp, GeneType::Id const gene ) const { return getGenome(gp).GetAllele(gene); }
 						    	  
 	virtual EVO_GENERATION  const GetEvoGenerationNr() const { return m_grid.GetEvoGenerationNr(); }
-	virtual BYTES           const GetGridHeapSize   () const { return m_grid.GetGridHeapSize(); };
+	virtual size_t           const GetGridHeapSize   () const { return m_grid.GetGridHeapSize(); };
 
 	virtual tDisplayMode    const GetDisplayMode(GridPoint const gp) const { return m_grid.GetDisplayMode(gp); };
 
 	virtual tManipulator    const GetBrushManipulator() const { return m_brush.GetManipulator(); }
     virtual PERCENT         const GetBrushIntensity  () const { return m_brush.GetIntensity(); }
     virtual tShape          const GetBrushShape      () const { return m_brush.GetShape(); }
-    virtual GRID_COORD      const GetBrushSize       () const { return m_brush.GetRadius(); }
+    virtual GridCoord      const GetBrushSize       () const { return m_brush.GetRadius(); }
     virtual tBrushMode      const GetBrushMode       () const { return m_brush.GetBrushMode(); }
 
 	virtual int const GetNrOfLivingIndividuals() const { return m_grid.GetNrOfLivingIndividuals(); }

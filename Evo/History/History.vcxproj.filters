@@ -33,12 +33,6 @@
     <ClInclude Include="HistModelData.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="HistoryIterator.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelData.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HistoryCache.cpp">
@@ -75,6 +69,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistCacheItem.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelData.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryIterator.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

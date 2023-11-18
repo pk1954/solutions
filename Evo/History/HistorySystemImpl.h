@@ -37,15 +37,15 @@ public:
 
 	virtual void StopHistorySystem();
 
-	virtual bool			  AddHistorySlot();
+	virtual bool		   AddHistorySlot();
 
-    virtual HistSlotNr        GetNrOfUsedHistCacheSlots() const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots();    }
-    virtual HistSlotNr        GetNrOfHistCacheSlots()     const { return m_pHistoryCache->GetNrOfHistCacheSlots();        }
-    virtual HistGeneration   GetNrOfGenerations()        const { return m_pHistoryCache->GetYoungestGeneration() + 1;    }
-    virtual HistGeneration   GetYoungestGeneration()     const { return m_pHistoryCache->GetYoungestGeneration();        }
-	virtual HistGeneration   GetCurrentGeneration()      const { return m_pHistCacheItemWork->GetHistGenCounter();       }
-    virtual BYTES             GetSlotSize()               const { return m_pHistCacheItemWork->GetItemSize();             }
-	virtual bool              IsInHistoryMode()           const { return GetCurrentGeneration() < GetYoungestGeneration(); };
+    virtual HistSlotNr     GetNrOfUsedHistCacheSlots() const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots();    }
+    virtual HistSlotNr     GetNrOfHistCacheSlots()     const { return m_pHistoryCache->GetNrOfHistCacheSlots();        }
+    virtual HistGeneration GetNrOfGenerations()        const { return m_pHistoryCache->GetYoungestGeneration() + 1;    }
+    virtual HistGeneration GetYoungestGeneration()     const { return m_pHistoryCache->GetYoungestGeneration();        }
+	virtual HistGeneration GetCurrentGeneration()      const { return m_pHistCacheItemWork->GetHistGenCounter();       }
+    virtual size_t          GetSlotSize()               const { return m_pHistCacheItemWork->GetItemSize();             }
+	virtual bool           IsInHistoryMode()           const { return GetCurrentGeneration() < GetYoungestGeneration(); };
 
 	virtual void              ShutDownHistCache() { m_pHistoryCache->ShutDownHistCache(); }
 

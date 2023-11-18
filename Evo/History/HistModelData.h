@@ -3,8 +3,9 @@
 
 module;
 
-#include "ModelData.h"
 #include "GenerationCmd.h"
+
+import ModelData;
 
 class HistModelData : public ModelData
 {

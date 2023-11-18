@@ -151,8 +151,20 @@ public:
 
 	bool IsSynapse(NobId const id) const
 	{
-		Nob const* const pNob { GetConstNob(id) };
+		Nob const* const pNob{ GetConstNob(id) };
 		return pNob && pNob->IsSynapse();
+	}
+
+	bool HasParentNob(NobId const id) const
+	{
+		Nob const* const pNob{ GetConstNob(id) };
+		return pNob && pNob->HasParentNob();
+	}
+
+	Nob const *GetParentNob(NobId const id) const
+	{
+		Nob const* const pNob{ GetConstNob(id) };
+		return pNob ? pNob->GetParentNob() : nullptr;
 	}
 
 	NobId FindNobAt(MicroMeterPnt const& umPnt) const

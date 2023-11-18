@@ -95,6 +95,7 @@ void NNetAppWindow::setModelInterface()
 	m_parameterDlg     .SetModelInterface(&m_nmwi);
 	m_cmdStack         .SetModelInterface(&m_nmwi);
 	m_computeThread    .SetModelInterface(&m_nmwi);
+	m_optimizeScanArea .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
 	m_appTitle         .SetModelInterface(m_pNMRI);
@@ -450,6 +451,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_RUN_STOP:
 			m_computeThread.RunStopComputation();
+			break;
+
+		case IDM_OPTIMIZE_SCAN_AREA:
+			m_optimizeScanArea.Start();
 			break;
 
 		case IDM_SCRIPT_DIALOG:

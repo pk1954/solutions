@@ -208,8 +208,8 @@ bool EvoController::ProcessModelCommand(int const wmId, LPARAM const lParam)
 			m_pAppWindow->Stop();
 			GridDimensions::DefineGridSize
 			(
-				GRID_COORD(ResetDialog::GetNewWidth()), 
-				GRID_COORD(ResetDialog::GetNewHeight()), 
+				GridCoord(ResetDialog::GetNewWidth()), 
+				GridCoord(ResetDialog::GetNewHeight()), 
 				ResetDialog::GetNewNrOfNeighbors()
 			);
 			m_pAppWindow->Start();

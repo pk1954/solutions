@@ -7,7 +7,6 @@
 #include "PixelTypes.h"
 import GridDimensions;
 #include "gridSelection.h"
-#include "gridPOI.h"
 #include "gridPoint24.h"
 #include "EvolutionCore.h"
 #include "win32_clut.h"
@@ -25,6 +24,7 @@ import GridDimensions;
 
 import BoolOp;
 import Config;
+import GridPOI;
 
 EvoReadBuffer          * GridWindow::m_pReadBuffer             = nullptr;
 EvoWorkThreadInterface * GridWindow::m_pEvoWorkThreadInterface = nullptr;

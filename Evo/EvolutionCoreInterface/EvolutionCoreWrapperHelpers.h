@@ -8,6 +8,6 @@ module;
 import GridPoint;
 import GridRect;
 
-extern GRID_COORD ScrReadGridCoord(Script &);
+extern GridCoord ScrReadGridCoord(Script &);
 extern GridPoint  ScrReadGridPoint(Script &);
 extern GridRect   ScrReadGridRect (Script &);

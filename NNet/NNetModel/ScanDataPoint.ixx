@@ -22,6 +22,11 @@ public:
         return m_pPipe->GetVoltage(m_segNr);
     }
 
+    Pipe const& GetPipe() const
+    {
+        return *m_pPipe;
+    }
+
 private:
     Pipe        const* m_pPipe { nullptr };
     Pipe::SegNr const  m_segNr;

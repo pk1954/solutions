@@ -2,11 +2,12 @@
 //
 // EvoHistGlue
 
-#include "gridPOI.h"
 #include "gridPoint24.h"
 #include "EvoGenerationCmd.h"
 #include "EvolutionCore.h"
 #include "EvoModelDataGlue.h"
+
+import GridPOI;
 
 Stopwatch EvoModelDataGlue::stopwatch;
 
@@ -38,7 +39,7 @@ void EvoModelDataGlue::OnAppCommand(GenerationCmd const cmd)
 		break;
 
     case EvoGenerationCmd::Id::editSetBrushRadius:
-        m_pEvolutionCore->SetBrushRadius(static_cast<GRID_COORD>(param.GetValue()));
+        m_pEvolutionCore->SetBrushRadius(static_cast<GridCoord>(param.GetValue()));
 		break;
 
     case EvoGenerationCmd::Id::editSetBrushIntensity:

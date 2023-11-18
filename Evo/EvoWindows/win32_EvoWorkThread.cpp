@@ -70,8 +70,8 @@ BOOL EvoWorkThread::Dispatch(MSG const msg )
 			(
 				GridPoint
 				(
-					static_cast<GRID_COORD>(CastToShort(msg.wParam)), 
-					static_cast<GRID_COORD>(CastToShort(msg.lParam))
+					static_cast<GridCoord>(CastToShort(msg.wParam)), 
+					static_cast<GridCoord>(CastToShort(msg.lParam))
 				),
 				static_cast<EvoWorkThreadMessage::Id>(msg.message) == EvoWorkThreadMessage::Id::GOTO_DEATH 
 			)

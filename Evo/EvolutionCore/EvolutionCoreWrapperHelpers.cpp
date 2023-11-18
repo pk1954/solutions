@@ -9,20 +9,20 @@ import EvolutionTypes;
 
 import Config;
 
-GRID_COORD ScrReadGridCoord(Script & script)
+GridCoord ScrReadGridCoord(Script & script)
 {
 	unsigned short us = script.ScrReadUshort();
 	if (us > MAX_GRID_COORD.GetValue())
-		ScriptErrorHandler::throwError(777, L"GRID_COORD too big");
-    return GRID_COORD(us);
+		ScriptErrorHandler::throwError(777, L"GridCoord too big");
+    return GridCoord(us);
 }
 
 GridPoint ScrReadGridPoint(Script & script)
 {
 	script.ScrReadSpecial('(');
-    GRID_COORD const x(ScrReadGridCoord(script));
+    GridCoord const x(ScrReadGridCoord(script));
 	script.ScrReadSpecial('/');
-	GRID_COORD const y(ScrReadGridCoord(script));
+	GridCoord const y(ScrReadGridCoord(script));
 	script.ScrReadSpecial(')');
 	return GridPoint(x, y);
 }

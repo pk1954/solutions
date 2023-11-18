@@ -33,6 +33,7 @@ import NNetPreferences;
 import ScriptHook;
 import SlowMotionDisplay;
 import TimeDisplay;
+import :OptimizeScanArea;
 import :AppTitle;
 import :NNetController;
 import :SlowMotionControl;
@@ -143,6 +144,7 @@ private:
 	Observable               m_coordObservable;
 	Observable               m_activeSigGenObservable;
 	Observable               m_lockModelObservable;
+    OptimizeScanArea         m_optimizeScanArea;
 	ParameterDialog          m_parameterDlg;
 	PerformanceWindow        m_performanceWindow;
 	ScriptFile               m_scriptFile;

@@ -3,12 +3,13 @@
 
 #include "strategy.h"
 #include "Genome.h"
-#include "gridPOI.h"
 #include "grid_model.h"
 #include "gridNeighbor.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"
 #include "EvolutionCoreWrappers.h"
+
+import GridPOI;
 
 void EvolutionCore::InitClass
 (
@@ -31,9 +32,9 @@ void EvolutionCore::DestroyModel(EvolutionCore * pCore)
 	delete pCore;
 }
 
-BYTES const EvolutionCore::GetCoreSize() 
+size_t const EvolutionCore::GetCoreSize() 
 { 
-	return BYTES(sizeof(EvolutionCoreImpl)) + GetGridHeapSize(); 
+	return sizeof(EvolutionCoreImpl) + GetGridHeapSize(); 
 };
 
 unsigned int EvolutionCore::GetMaxPartnerMemory()

@@ -4,13 +4,14 @@
 #include <cassert>
 #include "script.h"
 #include "symtab.h"
-#include "gridPOI.h"
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"
 import EvolutionTypes;
 #include "EvoPixelCoords.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"
+
+import GridPOI;
 
 static EvolutionCore  * m_pCore;
 static EvoPixelCoords * m_pPixCoords;
@@ -94,7 +95,7 @@ class WrapSetBrushRadius : public Script_Functor
 public:
     virtual void operator() (Script & script) const
     {
-        GRID_COORD const size = ScrReadGridCoord(script);
+        GridCoord const size = ScrReadGridCoord(script);
         m_pCore->SetBrushRadius(size);
     }
 };

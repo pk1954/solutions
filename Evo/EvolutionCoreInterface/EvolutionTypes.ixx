@@ -6,12 +6,12 @@ module;
 
 #include <functional>
 #include <iostream>
-#include "action.h"
-#include "GeneType.h"
 
-module EvolutionTypes;
+export module EvolutionTypes;
 
 import Types;
+import GeneType;
+import Action;
 
 export using ENERGY_UNITS   = NamedType< short, struct ENERGY_UNITS_Parameter >;
 export using EVO_GENERATION = NamedType< long, struct EVO_GENERATION_Parameter >;

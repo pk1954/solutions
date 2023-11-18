@@ -5,9 +5,11 @@ module;
 
 #include <fstream>
 #include <iostream>
-#include "gridCoord.h"
+
+export module DUMP;
 
 import GridPoint;
+import GridCoord;
 
 class Grid;
 class GridField;

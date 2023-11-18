@@ -125,7 +125,7 @@
     <ClCompile Include="gridSelection.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="gridPOI.cpp">
+    <ClCompile Include="GridPOI.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="gridBrush.cpp">

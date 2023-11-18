@@ -23,6 +23,9 @@ public:
 
     ScanMatrix(RasterPoint const&);
 
+    void Clear();
+    void Fill(NNetModelReaderInterface const&);
+
     RasterPoint Size() const;
 
     mV Scan(RasterPoint const&);
@@ -35,7 +38,7 @@ public:
 
     size_t GetNrOfSensorPoints()       const;
     float  AverageDataPointsPerPixel() const;
-    float  DataPointVariance()         const;
+    float  DataPointVariance();
 
     void Apply2AllScanPixels(auto const& func)
     {
@@ -49,8 +52,11 @@ public:
             scanLine.Apply2AllScanPixelsC(func);
     }
 
+    ScanPixel const* GetMaxScanPixel() { return m_pScanPixelMax; }
+
 private:
     void addScanDataPoint(Pipe const&, Pipe::SegNr const, RasterPoint const&);
 
     vector<ScanLine> m_scanLines;
+    ScanPixel const* m_pScanPixelMax { nullptr };
 };

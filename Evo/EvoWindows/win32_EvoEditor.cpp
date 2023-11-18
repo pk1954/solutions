@@ -196,7 +196,7 @@ LRESULT EvoEditorWindow::UserProc(UINT const message, WPARAM const wParam, LPARA
 				m_pWorkThreadInterface->PostSetBrushIntensity(PERCENT(sLogicalPos));
 				break;
 			case IDM_EDIT_SIZE:
-				m_pWorkThreadInterface->PostSetBrushRadius(GRID_COORD(sLogicalPos));
+				m_pWorkThreadInterface->PostSetBrushRadius(GridCoord(sLogicalPos));
 				break;
 			default:
 				assert(false);
