@@ -53,7 +53,7 @@ EvoWorkThread::~EvoWorkThread()
 	m_pEvoHistGlue  = nullptr;
 }
 
-BOOL EvoWorkThread::Dispatch(MSG const msg )
+bool EvoWorkThread::Dispatch(MSG const msg )
 {
 	switch (static_cast<EvoWorkThreadMessage::Id>(msg.message))
 	{

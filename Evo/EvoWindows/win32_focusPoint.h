@@ -35,22 +35,22 @@ public:
 		return m_gp; 
 	}
 
-	BOOL const IsInGrid() const 
+	bool const IsInGrid() const 
 	{ 
 		return ::IsInGrid(m_gp); 
 	}
 
-	BOOL const IsAlive(EvolutionCore const & core) const 
+	bool const IsAlive(EvolutionCore const & core) const 
 	{ 
 		return core.IsAlive(m_gp); 
 	}
 
-	BOOL const IsDead(EvolutionCore const & core) const 
+	bool const IsDead(EvolutionCore const & core) const 
 	{ 
 		return core.IsDead(m_gp); 
 	}
 
-	BOOL const IsDefined(EvolutionCore const & core) const 
+	bool const IsDefined(EvolutionCore const & core) const 
 	{ 
 		return core.IsDefined(m_gp); 
 	}

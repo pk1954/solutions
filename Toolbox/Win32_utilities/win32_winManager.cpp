@@ -161,7 +161,7 @@ static bool operator != (MONITORINFO const & a, MONITORINFO const & b)
     return (a.rcMonitor != b.rcMonitor) || (a.rcWork != b.rcWork) || (a.dwFlags != b.dwFlags);
 };
 
-static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
+static bool CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
 {
     auto * const pMonStruct { (CHECK_MON_STRUCT *)dwData };
     bool         bRes       { true };
@@ -293,7 +293,7 @@ struct DUMP_MON_STRUCT    // communication between DumpWindowCoordinates and Dum
     wofstream * m_postr;
 };
 
-static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
+static bool CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
 {
     auto      * const pMonStruct { (DUMP_MON_STRUCT*)dwData };
     wofstream * const postr      { pMonStruct->m_postr };

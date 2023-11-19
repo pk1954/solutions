@@ -23,7 +23,7 @@ public:
 	BaseAppWindow();
 	virtual ~BaseAppWindow(); 
 
-	void Initialize(WorkThreadInterface * const, BOOL const);
+	void Initialize(WorkThreadInterface * const, bool const);
 
 	void Start(ModelWindow * const);
 
@@ -44,8 +44,8 @@ protected:
 private:
 
 	HWND m_hwndConsole;
-	BOOL m_bStarted;          // if true, model is visible, all functions available
-	BOOL m_bUseHistorySystem;
+	bool m_bStarted;          // if true, model is visible, all functions available
+	bool m_bUseHistorySystem;
 
 	HistWindow     m_HistWindow;
 	HistInfoWindow m_HistInfoWindow;

@@ -2,13 +2,19 @@
 //
 // History
 
+module;
 
 #include <unordered_map>
-#include "GenerationCmd.h"
+#include <iostream>
+
+module GenerationCmd;
+
+using std::unordered_map;
+using std::wostream;
 
 wchar_t const * const GetGenerationCmdNameShort(GenerationCmd::Id const cmd)
 {
-    static std::unordered_map < GenerationCmd::Id, wchar_t const * const > mapNames =
+    static unordered_map < GenerationCmd::Id, wchar_t const * const > mapNames =
     {
 		{ GenerationCmd::Id::CACHED,    L"CACHE" },
 		{ GenerationCmd::Id::NEXT_GEN,  L"NEXT"  },
@@ -21,7 +27,7 @@ wchar_t const * const GetGenerationCmdNameShort(GenerationCmd::Id const cmd)
 
 wchar_t const * const GetGenerationCmdName(GenerationCmd::Id const cmd)
 {
-    static std::unordered_map < GenerationCmd::Id, wchar_t const * const > mapNames =
+    static unordered_map < GenerationCmd::Id, wchar_t const * const > mapNames =
     {
 	    { GenerationCmd::Id::CACHED,    L"GenerationCmd::Id::cached"    },
 		{ GenerationCmd::Id::NEXT_GEN,  L"GenerationCmd::Id::nextGen"   },
@@ -32,7 +38,7 @@ wchar_t const * const GetGenerationCmdName(GenerationCmd::Id const cmd)
     return mapNames.at(cmd);
 }
 
-std::wostream & operator << (std::wostream & out, GenerationCmd const & genCmd)
+wostream & operator << (wostream & out, GenerationCmd const & genCmd)
 {
     GenerationCmd::Id cmd = genCmd.GetCommand();
     out << GetGenerationCmdNameShort(cmd);

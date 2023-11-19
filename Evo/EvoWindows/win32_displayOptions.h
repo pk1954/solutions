@@ -27,7 +27,7 @@ public:
 	void UpdateDspOptionsControls(tBrushMode const);
 	void SetDisplayMode(WORD);  // one of IDM_MUT_RATE/IDM_FERTILITY/IDM_FOOD_STOCK/IDM_FERTILIZER
     void SetIndividualsVisible();
-    BOOL AreIndividualsVisible() const;
+    bool AreIndividualsVisible() const;
 
 private:
     DspOptWindow             (DspOptWindow const &);  // noncopyable class 

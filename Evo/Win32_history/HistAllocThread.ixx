@@ -1,4 +1,4 @@
-// HistAllocThread.h
+// HistAllocThread.ixx
 //
 // Win32_history
 
@@ -8,7 +8,9 @@ import HistorySystem;
 import win32_thread;
 import HistorySystem;
 
-class HistAllocThread : public Util::Thread
+export module HistAllocThread;
+
+export class HistAllocThread : public Util::Thread
 {
 public:
 

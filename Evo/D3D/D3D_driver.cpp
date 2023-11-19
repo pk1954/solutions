@@ -1,14 +1,19 @@
 // D3D_driver.cpp
 //
 
+module;
+
 #include <cassert>
 #include <string>
 #include <d3d9.h>
 #include <d3dx9core.h>
 
+module D3D_driver;
+
 import Types;
 import D3D_driver;
 import D3dSystem;
+import Win32_PixelTypes;
 
 using std::wstring;
 
@@ -64,7 +69,7 @@ void D3D_driver::Initialize
 	HWND  const hwndApp, 
 	ULONG const ulModelWidth, 
 	ULONG const ulModelHeight, 
-	BOOL  const bHexagon 
+	bool  const bHexagon 
 ) 
 {
 	m_d3d_device = m_d3d->Create_D3D_Device(hwndApp, ulModelWidth, ulModelHeight, bHexagon);
@@ -103,7 +108,7 @@ PixelRect D3D_driver::CalcGraphicsRect(std::wstring const & wstr)
         DT_CALCRECT,       // Format
         0                  // Color
    );
-	return Util::RECT2PixelRect(rect);
+	return RECT2PixelRect(rect);
 }
 
 void D3D_driver::DisplayGraphicsText
@@ -114,7 +119,7 @@ void D3D_driver::DisplayGraphicsText
 	COLORREF  const   col 
 )
 {
-	RECT rect(Util::PixelRect2RECT(pixRect));			  
+	RECT rect(PixelRect2RECT(pixRect));			  
     assert(m_id3dx_font != nullptr);
     m_id3dx_font->DrawText
     (
@@ -463,8 +468,8 @@ void D3D_driver::DrawPolygon
 
 	for (float f = 0.0; f <= STEP * iNrOfEdges / 2; f += STEP)
 	{
-		float fX = fPixRadius.GetValue() * cos(f);
-		float fY = fPixRadius.GetValue() * sin(f);
+		float fX = fPixRadius.GetValue() * cosf(f);
+		float fY = fPixRadius.GetValue() * sinf(f);
 		m_pVertBufStripMode->AddVertex
 		(
 			ptPos.GetXvalue() + fX, 

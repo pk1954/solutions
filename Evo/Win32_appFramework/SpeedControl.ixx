@@ -1,22 +1,24 @@
-// win32_speedControl.h
+// SpeedControl.ixx
 //
 // win32_appFramework
 
 module;
 
-#include "LogarithmicTrackbar.h"
 #include "win32_util_resource.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 
-class HistorySystem;
+export module SpeedControl;
 
-class SpeedControl
+import LogarithmicTrackbar;
+import HistorySystem;
+
+export class SpeedControl
 {
 public:
 
 	static void Add(StatusBar * const, HistorySystem * const, long const, long const, long const);
-	static void Adjust(BOOL const,	WorkThreadInterface * const);
+	static void Adjust(bool const,	WorkThreadInterface * const);
 
 private:
 	static StatusBar     * m_pStatusBar;

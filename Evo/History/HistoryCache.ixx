@@ -14,6 +14,7 @@ import HistCacheItem;
 import HistGeneration;
 import HistSlotNr;
 import HistSlot;
+import ModelData;
 
 export class HistoryCache
 {
@@ -28,7 +29,7 @@ public:
     HistSlotNr GetFreeCacheSlot();
     void       RemoveHistCacheSlot(HistSlotNr const);
 
-	void HistoryCache::ResetHistCacheSlot(HistSlotNr const slotNr)  	// reset slot, but leave it in list of used slots
+	void ResetHistCacheSlot(HistSlotNr const slotNr)  	// reset slot, but leave it in list of used slots
 	{
 		getSlot(slotNr).ResetSlot();
 	}
@@ -70,12 +71,12 @@ public:
 		m_aHistSlot.clear();
 	};
 
-    HistCacheItem const * HistoryCache::GetHistCacheItemC(HistSlotNr const slotNr) const
+    HistCacheItem const * GetHistCacheItemC(HistSlotNr const slotNr) const
 	{
 		return getSlotC(slotNr).GetHistCacheItemC();
 	};
 
-	HistCacheItem * HistoryCache::GetHistCacheItem(HistSlotNr const slotNr)
+	HistCacheItem * GetHistCacheItem(HistSlotNr const slotNr)
 	{
 		return getSlot(slotNr).GetHistCacheItem();
 	};

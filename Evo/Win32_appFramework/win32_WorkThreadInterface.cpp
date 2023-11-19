@@ -53,7 +53,7 @@ void WorkThreadInterface::postGotoGeneration(HistGeneration const gen)
 
 // procedural interface of worker thread
 
-void WorkThreadInterface::PostReset(BOOL bResetHistSys)
+void WorkThreadInterface::PostReset(bool bResetHistSys)
 {
 	if (IsTraceOn())
 		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
@@ -70,7 +70,7 @@ void WorkThreadInterface::PostGenerationStep()
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::NEXT_GENERATION, 0, 0);
 }
 
-void WorkThreadInterface::PostRunGenerations(BOOL const bFirst)
+void WorkThreadInterface::PostRunGenerations(bool const bFirst)
 {
     //if (m_bTrace)
     //    * m_pTraceStream << L"PostGenerationStep" << endl;

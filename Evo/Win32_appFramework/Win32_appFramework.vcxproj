@@ -176,6 +176,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SpeedControl.ixx" />
     <ClCompile Include="win32_baseAppWindow.cpp" />
     <ClCompile Include="win32_messagePump.cpp" />
     <ClCompile Include="win32_status.cpp" />

@@ -38,7 +38,7 @@ BaseAppWindow::BaseAppWindow()
 void BaseAppWindow::Initialize
 (
 	WorkThreadInterface * const pWorkThreadInterface,
-	BOOL                  const bUseHistorySystem
+	bool                  const bUseHistorySystem
 )
 {
 	//	_CrtSetAllocHook(MyAllocHook);

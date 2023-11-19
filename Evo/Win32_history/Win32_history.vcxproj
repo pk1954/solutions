@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="GenDisplayWindow.ixx" />
     <ClCompile Include="GenDisplayWindow.cpp" />
+    <ClCompile Include="HistAllocThread.ixx" />
     <ClCompile Include="win32_historyInfo.cpp" />
     <ClCompile Include="win32_histWindow.cpp" />
   </ItemGroup>

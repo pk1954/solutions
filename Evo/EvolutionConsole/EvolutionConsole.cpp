@@ -47,7 +47,7 @@ int main(int argc, char * argv [], char * envp [])
 
 	PIXEL                    const FIELDSIZE            = 8_PIXEL;
 	EvoModelDataGlue       * const pEvoModelData        = new EvoModelDataGlue();
-	BOOL                     const bHexagonMode         = (iNrOfNeighbors == 6);
+	bool                     const bHexagonMode         = (iNrOfNeighbors == 6);
 	EvoHistorySysGlue      * const pEvoHistGlue         = new EvoHistorySysGlue();
     EvoWorkThreadInterface * const pWorkThreadInterface = new EvoWorkThreadInterface();
     HistorySystem          * const pHistorySystem       = HistorySystem::CreateHistorySystem();

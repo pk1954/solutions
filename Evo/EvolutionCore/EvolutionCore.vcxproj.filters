@@ -72,9 +72,6 @@
     <ClInclude Include="gene.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GeneType.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -222,6 +219,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvoDump.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneType.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

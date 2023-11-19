@@ -11,7 +11,7 @@ module D3dSystem;
 
 import D3dSystem;
 import D3D_vertexBuffer;
-import StopWatch;
+import Stopwatch;
 
 D3dSystem::D3dSystem() :
 	m_bHexagon(FALSE),
@@ -38,7 +38,7 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 	HWND  const hwndApp, 
 	ULONG const ulModelWidth, 
 	ULONG const ulModelHeight, 
-	BOOL  const bHexagon 
+	bool  const bHexagon 
 )
 {
 	Stopwatch stopwatch;
@@ -65,7 +65,7 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 		NULL
 	);
 
-	BOOL bAntiAliasing = (D3D_OK == hRes);
+	bool bAntiAliasing = (D3D_OK == hRes);
 
 	m_d3d_presentationParameters.Windowed               = TRUE;
 	m_d3d_presentationParameters.MultiSampleType        = bAntiAliasing ? D3DMULTISAMPLE_2_SAMPLES : D3DMULTISAMPLE_NONE;
@@ -202,7 +202,7 @@ D3dIndexBuffer * D3dSystem::createIndsIndices
 (
 	ULONG const ulModelWidth, 
 	ULONG const ulModelHeight, 
-	BOOL  const bHexagon 
+	bool  const bHexagon 
 )
 {
 	ULONG   const ulVerticesPerTriangle   = 3;

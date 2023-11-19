@@ -24,7 +24,7 @@ WorkThread::WorkThread
 	HistorySystem       * const pHistSystem,
 	ModelInterface      * const pModel,
 	WorkThreadInterface * const pWorkThreadInterface,
-	BOOL                  const bAsync
+	bool                  const bAsync
 ) :
 	m_pComputeTimer       (pActionTimer),
 	m_pEventPOI           (pEvent),   
@@ -65,7 +65,7 @@ bool WorkThread::userWantsHistoryCut() const
 
 void WorkThread::WorkMessage
 (
-	BOOL                  const isEditOperation,
+	bool                  const isEditOperation,
 	WorkThreadMessage::Id const msg, 
 	WPARAM                const wparam, 
 	LPARAM                const lparam
@@ -114,7 +114,7 @@ void WorkThread::ThreadMsgDispatcher(MSG const msg )
 	}
 }
 
-BOOL WorkThread::Dispatch(MSG const msg)
+bool WorkThread::Dispatch(MSG const msg)
 {
 	switch (static_cast<WorkThreadMessage::Id>(msg.message))
 	{
@@ -144,7 +144,7 @@ BOOL WorkThread::Dispatch(MSG const msg)
 
 	case WorkThreadMessage::Id::RESET_MODEL:
 		GetHistorySystem()->CreateAppCommand(GenerationCmd::ResetCmd(Cast2UnsignedInt(msg.wParam)));
-		if (static_cast<BOOL>(msg.wParam))
+		if (static_cast<bool>(msg.wParam))
 			GetHistorySystem()->ClearAllHistory();
 		break;
 

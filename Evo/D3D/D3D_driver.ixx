@@ -22,7 +22,7 @@ public:
     D3D_driver();
     ~D3D_driver();
 
-    virtual void      Initialize(HWND const, ULONG const, ULONG const, BOOL const);
+    virtual void      Initialize(HWND const, ULONG const, ULONG const, bool const);
     virtual bool      StartFrame(HWND const, HDC const);
     virtual void      SetFontSize(PIXEL const);
     virtual void      AddIndividual(PixelPoint const, COLORREF const, float const);
@@ -41,16 +41,17 @@ public:
     virtual void      RenderPipeline();
 
 private:
-    D3dSystem* m_d3d;
-    IDirect3DDevice9* m_d3d_device;
+    D3dSystem             * m_d3d;
+    IDirect3DDevice9      * m_d3d_device;
     LPDIRECT3DVERTEXBUFFER9 m_d3d_vertexBuffer;
     LPDIRECT3DSWAPCHAIN9    m_d3d_swapChain;
-    ID3DXFont* m_id3dx_font;
-    VertexBuffer* m_pVertBufStripMode;
-    VertexBuffer* m_pVertBufPrimitives;
+    ID3DXFont             * m_id3dx_font;
+    VertexBuffer          * m_pVertBufStripMode;
+    VertexBuffer          * m_pVertBufPrimitives;
     DWORD                   m_dwAlphaBlendable;
     DWORD                   m_dwSrcBlend;
     DWORD                   m_dwDstBlend;
+    bool                    m_bStripMode;
     fPixelPoint             m_fOrtho;       // pipelines
 
     static D3DXFONT_DESC    m_d3dx_font_desc;  // identical for all buffers, even on systems with multiple displays

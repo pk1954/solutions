@@ -27,7 +27,7 @@ int MessagePump
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	//BOOL bRes = InitCommonControlsEx(&icex);
+	//bool bRes = InitCommonControlsEx(&icex);
 	//assert(bRes);
 
 	Stopwatch stopwatch;
@@ -38,7 +38,7 @@ int MessagePump
 	HACCEL const hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(iAppResourceId));
 	HWND         hwndApp     = appWindow.GetWindowHandle();
 	MSG          msg;
-	BOOL         bRet;
+	bool         bRet;
 
 	while (bRet = GetMessage(&msg, nullptr, 0, 0) != 0)    // Main message loop
 	{

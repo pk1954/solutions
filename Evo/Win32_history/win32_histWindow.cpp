@@ -158,8 +158,8 @@ void HistWindow::paintPixelPos(HDC const hDC, PIXEL const pixPosX, HistoryIterat
     HistGeneration const genNrOfGens    = m_pHistSys->GetNrOfGenerations();
     HistGeneration const genMin = MulDiv(pixPosX.GetValue(),     genNrOfGens.GetLong(), pixClientWidth.GetValue()) + 1;
     HistGeneration       genMax = MulDiv(pixPosX.GetValue() + 1, genNrOfGens.GetLong(), pixClientWidth.GetValue());
-    BOOL                  bFoundPos = FALSE;  // Found a pixel pos representing an existing history entry
-    BOOL                  bFoundNeg = FALSE;  // Found a pixel pos representing a missing history entry
+    bool                  bFoundPos = FALSE;  // Found a pixel pos representing an existing history entry
+    bool                  bFoundNeg = FALSE;  // Found a pixel pos representing a missing history entry
 
     if (genMax < genMin)
         genMax = genMin;
@@ -208,7 +208,7 @@ void HistWindow::paintAllGenerations(HDC const hDC)
 
         for (HistGeneration genRun = 0; slotNr.IsNotNull(); ++genRun)
         {
-            BOOL bGenRunInHistory = (genRun >= histIter.GetCurrentGeneration());
+            bool bGenRunInHistory = (genRun >= histIter.GetCurrentGeneration());
             paintGeneration(hDC, genRun, bGenRunInHistory ? CLR_DARK : CLR_BACK);
             if (bGenRunInHistory)
                 slotNr = histIter.Set2Junior();

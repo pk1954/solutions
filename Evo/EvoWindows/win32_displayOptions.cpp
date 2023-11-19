@@ -80,7 +80,7 @@ void DspOptWindow::SetIndividualsVisible()
 	Button_SetCheck(GetDlgItem(IDM_INDIVIDUALS), BST_CHECKED);
 }
 
-BOOL DspOptWindow::AreIndividualsVisible() const
+bool DspOptWindow::AreIndividualsVisible() const
 {
     return (BST_CHECKED == Button_GetCheck(GetDlgItem(IDM_INDIVIDUALS)));
 }

@@ -45,7 +45,7 @@ public:
 		LAST = SET_POI
 	};
 
-	static BOOL IsValid(EvoWorkThreadMessage::Id msg)
+	static bool IsValid(EvoWorkThreadMessage::Id msg)
 	{
 		return (EvoWorkThreadMessage::Id::FIRST <= msg) && (msg <= EvoWorkThreadMessage::Id::LAST);
 	}
@@ -83,7 +83,7 @@ private:
 		GetHistorySystem()->CreateAppCommand(EvoCmd(cmd, gp24));
 	}
 
-	virtual BOOL Dispatch(MSG const);
+	virtual bool Dispatch(MSG const);
 
 	virtual void WaitTilNextActivation();
 

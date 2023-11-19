@@ -1,14 +1,18 @@
-// LogarithmicTrackBar.h
+// LogarithmicTrackBar.ixx
 //
 // Utilities
 
-#pragma once
+module;
 
-#include <assert.h>
+#include <Cassert>
 #include <math.h>       // pow
-#include "util.h"
 
-class LogarithmicTrackbar
+export module LogarithmicTrackbar;
+
+import Util;
+import SaveCast;
+
+export class LogarithmicTrackbar
 {
 public:
 	inline static double const TRACKBAR_SCALING_FACTOR { 1000.0 };

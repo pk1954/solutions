@@ -32,6 +32,7 @@
     <ClCompile Include="Geometry.ixx" />
     <ClCompile Include="Int24.ixx" />
     <ClCompile Include="IoConstants.ixx" />
+    <ClCompile Include="LogarithmicTrackBar.ixx" />
     <ClCompile Include="Observable.ixx" />
     <ClCompile Include="ObserverInterface.ixx" />
     <ClCompile Include="PixFpDimension.ixx" />

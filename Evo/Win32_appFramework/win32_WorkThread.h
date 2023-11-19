@@ -54,7 +54,7 @@ public:
 		HistorySystem       * const,
 		ModelInterface      * const,
 		WorkThreadInterface * const,
-		BOOL                  const
+		bool                  const
 	);
 	~WorkThread();
 
@@ -63,7 +63,7 @@ public:
 	
 	// WorkMessage - process incoming messages from main thread
 
-	void WorkMessage(BOOL const, WorkThreadMessage::Id const, WPARAM const, LPARAM const);
+	void WorkMessage(bool const, WorkThreadMessage::Id const, WPARAM const, LPARAM const);
 
 	void NGenerationSteps(int); 
 
@@ -72,7 +72,7 @@ public:
 		return m_genDemanded; 
 	}
 
-	BOOL IsRunning() const
+	bool IsRunning() const
 	{
 		return m_bContinue;
 	}
@@ -94,7 +94,7 @@ public:
 	}
 
 protected:
-	virtual BOOL Dispatch(MSG const);
+	virtual bool Dispatch(MSG const);
 
 	void GotoGeneration(HistGeneration const);
 
@@ -109,14 +109,14 @@ protected:
 
 	virtual void WaitTilNextActivation() = 0;
 
-	virtual void SetRunModeHook(BOOL const) {};  // hook for application when run mode starts/stops
+	virtual void SetRunModeHook(bool const) {};  // hook for application when run mode starts/stops
 
 private:
 
 	void generationRun(bool const);
 	void generationStop();
 
-	void setRunMode(BOOL const bState)
+	void setRunMode(bool const bState)
 	{
 		m_bContinue = bState;
 		SetRunModeHook(bState);
@@ -136,6 +136,6 @@ private:
 	ModelInterface      * m_pModel;           // if HistorySystem is     used: nullptr
 	WorkThreadInterface * m_pWorkThreadInterface;
     HistGeneration       m_genDemanded;
-    BOOL                  m_bContinue;
+    bool                  m_bContinue;
 	HWND                  m_hwndApplication;
 };

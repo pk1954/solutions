@@ -1,4 +1,4 @@
-// GeneType.h
+// GeneType.ixx
 //
 // EvolutionCore
 
@@ -7,7 +7,9 @@ module;
 #include <array>
 #include <functional>
 
-class GeneType
+export module GeneType;
+
+export class GeneType
 {
 public:
 	enum class Id : unsigned short

@@ -52,7 +52,6 @@ import Script;
 #include "Resource.h"
 
 import D3dSystem;
-import StopWatch;
 
 // application
 
@@ -73,8 +72,6 @@ EvoAppWindow::EvoAppWindow() :
 	m_pDspOptWindow(nullptr),
 	m_pGenerationDisplay(nullptr)
 {
-	Stopwatch stopwatch;
-
 	m_pEvoWorkThreadInterface = new EvoWorkThreadInterface();
 
 	BaseAppWindow::Initialize(m_pEvoWorkThreadInterface, TRUE);
@@ -85,8 +82,6 @@ EvoAppWindow::EvoAppWindow() :
 	Config::SetDefaultConfiguration();
     Config::DefineConfigWrapperFunctions();
 	Script::ProcessScript(L"std_configuration.in");
-
-	stopwatch.Start();
 
 	m_ColorManager.Initialize();
 
@@ -122,7 +117,7 @@ EvoAppWindow::EvoAppWindow() :
 		  m_pEvoEditorWindow
 	);
 
-	stopwatch.Stop(L"create window objects");
+//	stopwatch.Stop(L"create window objects");
 
 	m_pEvoController->Initialize(this, m_pEvoWorkThreadInterface);
 

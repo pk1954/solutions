@@ -13,5 +13,5 @@ import Win32_PIXEL;
 
 export fPixelRect Convert2fPixelRect(RECT const & rect)
 {
-	return Convert2fPixelRect(::RECT2PixelRect(rect));
+	return Convert2fPixelRect(RECT2PixelRect(rect));
 }

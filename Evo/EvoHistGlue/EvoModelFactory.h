@@ -4,8 +4,9 @@
 
 module;
 
-#include "EvolutionCore.h"
-#include "EvoModelDataGlue.h"
+import EvolutionCore;
+import EvoModelDataGlue;
+import ModelData;
 
 class EvoModelFactory: public ModelFactory
 {

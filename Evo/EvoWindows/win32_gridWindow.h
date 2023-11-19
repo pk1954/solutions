@@ -79,7 +79,7 @@ private:
     GridWindow        * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
     ObserverInterface * m_pObserverInterface;
     PixelPoint 	        m_ptLast;	 	   // Last cursor position during selection 
-    BOOL                m_bMoveAllowed;    // TRUE: move with mouse is possible
+    bool                m_bMoveAllowed;    // TRUE: move with mouse is possible
     HMENU               m_hPopupMenu;
 
 	virtual long AddContextMenuEntries(HMENU const, PixelPoint const);
@@ -97,6 +97,6 @@ private:
 	virtual void OnPaint();
 
 	void newFieldSize(PIXEL const, GridPoint const);
-    BOOL inObservedClientRect(LPARAM const);
+    bool inObservedClientRect(LPARAM const);
     void moveGrid(PixelPoint const);
 };

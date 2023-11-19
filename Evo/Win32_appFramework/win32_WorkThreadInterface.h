@@ -22,8 +22,8 @@ public:
 
 	void PostUndo();
 	void PostRedo();
-	void PostReset(BOOL);
-	void PostRunGenerations(BOOL const);
+	void PostReset(bool);
+	void PostRunGenerations(bool const);
 	void PostStopComputation();
 	void PostPrevGeneration();
 	void PostGotoGeneration(HistGeneration const);
@@ -33,17 +33,17 @@ public:
 	HistGeneration GetGenDemanded      () const { return m_pWorkThread->GetGenDemanded      (); }
 	HistGeneration GetCurrentGeneration() const { return m_pWorkThread->GetCurrentGeneration(); }
 
-	BOOL IsRunning    () const	{ return m_pWorkThread->IsRunning    (); }
-	BOOL IsAsyncThread() const	{ return m_pWorkThread->IsAsyncThread(); }
+	bool IsRunning    () const	{ return m_pWorkThread->IsRunning    (); }
+	bool IsAsyncThread() const	{ return m_pWorkThread->IsAsyncThread(); }
 
 protected:
 
-	BOOL            IsTraceOn  () const { return   m_bTrace; }
+	bool            IsTraceOn  () const { return   m_bTrace; }
 	std::wostream & TraceStream()       { return * m_pTraceStream; }
 
 	void WorkMessage
 	(
-		BOOL                  const isEditOperation,
+		bool                  const isEditOperation,
 		WorkThreadMessage::Id const msg,
 		WPARAM                const wparam, 
 		LPARAM                const lparam
@@ -59,5 +59,5 @@ private:
 
 	WorkThread     * m_pWorkThread;
     std::wostream  * m_pTraceStream;
-	BOOL             m_bTrace;
+	bool             m_bTrace;
 }; 

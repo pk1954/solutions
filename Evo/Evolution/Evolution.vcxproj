@@ -266,7 +266,6 @@
     <ClInclude Include="win32_evoAppWindow.h" />
     <ClInclude Include="win32_evoController.h" />
     <ClInclude Include="win32_resetDlg.h" />
-    <ClInclude Include="win32_speedControl.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Evolution.cpp" />

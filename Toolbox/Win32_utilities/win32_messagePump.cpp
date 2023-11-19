@@ -99,7 +99,7 @@ bool MessagePump::accelerator(MSG& msg)
 int MessagePump::Run()
 {
 	MSG  msg;
-	BOOL bRet;
+	bool bRet;
 
 	while ((bRet = GetMessage(&msg, nullptr, 0, 0)) != 0)    // Main message loop //-V559 //-V593
 	{

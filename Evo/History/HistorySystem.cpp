@@ -1,10 +1,13 @@
 // HistorySystem.cpp
 //
 
+module;
 
 #include <cassert>
-#include "HistorySystem.h"
-#include "HistorySystemImpl.h"
+
+module HistorySystem;
+
+import HistorySystemImpl;
 
 HistorySystem * HistorySystem::CreateHistorySystem()
 {

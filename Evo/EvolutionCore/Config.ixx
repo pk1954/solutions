@@ -11,6 +11,7 @@ export module Config;
 
 import SaveCast;
 import BoolOp;
+import Util;
 
 export class Config
 {

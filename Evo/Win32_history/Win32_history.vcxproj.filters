@@ -44,5 +44,8 @@
     <ClCompile Include="GenDisplayWindow.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="HistAllocThread.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

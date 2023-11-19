@@ -100,7 +100,7 @@ export inline RECT GetClRect(HWND const hwnd) // left / top always 0
 inline RECT getWindowRect(HWND const hwnd)
 {
     RECT rect;
-    BOOL bRes { GetWindowRect(hwnd, &rect) };
+    bool bRes { GetWindowRect(hwnd, &rect) };
     assert(bRes);
     return rect;
 }

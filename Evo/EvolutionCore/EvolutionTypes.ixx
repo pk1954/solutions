@@ -10,6 +10,7 @@ module;
 export module EvolutionTypes;
 
 import Types;
+import SaveCast;
 import GeneType;
 import Action;
 

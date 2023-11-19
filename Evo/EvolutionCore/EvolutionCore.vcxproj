@@ -186,7 +186,6 @@
     <ClInclude Include="EvoPixelCoords.h" />
     <ClInclude Include="EvoStatistics.h" />
     <ClInclude Include="gene.h" />
-    <ClInclude Include="GeneType.h" />
     <ClInclude Include="geneTypeLimits.h" />
     <ClInclude Include="genome.h" />
     <ClInclude Include="gpList.h" />
@@ -224,6 +223,7 @@
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Gene.ixx" />
     <ClCompile Include="GeneType.cpp" />
+    <ClCompile Include="GeneType.ixx" />
     <ClCompile Include="GeneTypeLimits.ixx" />
     <ClCompile Include="Genome.ixx" />
     <ClCompile Include="gridBrush.cpp" />

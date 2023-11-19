@@ -1,15 +1,18 @@
 // HistorySystemImpl.cpp
 //
 
+module;
 
 #include <cassert>
+
+module HistorySystemImpl;
+
 import HistSlot;
 import HistSlotNr;
-#include "HistoryCache.h"
-#include "HistoryIterator.h"
+import HistoryCache;
+import HistoryIterator;
 import HistGeneration;
-#include "ObserverInterface.h"
-#include "HistorySystemImpl.h"
+import ObserverInterface;
 
 // public member functions
 
@@ -117,7 +120,7 @@ ModelData const * HistorySystemImpl::ApproachHistGen(HistGeneration const genDem
 	assert(m_GenCmdList[0].IsCachedGeneration());      // at least initial generation is cached
 
     HistGeneration genCached   = genDemanded;  // search backwards starting with genDemanded
-    BOOL            bMicrosteps = TRUE;
+    bool            bMicrosteps = TRUE;
         
     while (m_GenCmdList[genCached].IsNotCachedGeneration())
         --genCached;

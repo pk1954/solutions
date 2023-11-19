@@ -71,7 +71,7 @@ void GridWindow::Start
 {
     assert(pixFieldSize > 0_PIXEL);
     
-	BOOL bHexagonMode = GridDimensions::GetNrOfNeigbors() == 6;
+	bool bHexagonMode = GridDimensions::GetNrOfNeigbors() == 6;
 
 	m_EvoPixelCoords.Start(pixFieldSize, bHexagonMode);
 	m_pGraphics = pGraphics;
@@ -217,7 +217,7 @@ void GridWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	m_pReadBuffer->ReleaseReadBuffer();
 }
 
-BOOL GridWindow::inObservedClientRect(LPARAM const lParam)
+bool GridWindow::inObservedClientRect(LPARAM const lParam)
 {
     if (m_pGridWindowObserved == nullptr)
         return FALSE;
@@ -285,7 +285,7 @@ void GridWindow::OnPaint()
 void GridWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
-	BOOL const bDirection = (iDelta > 0);
+	bool const bDirection = (iDelta > 0);
 	PIXEL      pixNewFieldSize;
 
 	iDelta = abs(iDelta);
@@ -328,7 +328,7 @@ void GridWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)
 {
 	EvolutionCore const * pCore   = m_pReadBuffer->LockReadBuffer();
 	tBrushMode    const   mode    = pCore->GetBrushMode();
-	BOOL          const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
+	bool          const   keyDown = GetAsyncKeyState(VK_LBUTTON) & 0x8000;
 	HCURSOR       const   hCrsr   = ((mode == tBrushMode::move) && keyDown) ? m_hCrsrMove : m_hCrsrArrow;
 	m_pReadBuffer->ReleaseReadBuffer();
 	SetCursor(hCrsr);
@@ -369,7 +369,7 @@ bool GridWindow::OnCommand(WPARAM const wParam, LPARAM const lParam)
 		cf.nFontType = SCREEN_FONTTYPE; 
 		cf.nSizeMin = 0; 
 		cf.nSizeMax = 0; 
-		BOOL bRes = ChooseFont(& cf);
+		bool bRes = ChooseFont(& cf);
 
 		m_DrawFrame.CallSelectionColorDialog(GetWindowHandle());
 	}

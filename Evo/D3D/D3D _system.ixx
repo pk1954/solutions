@@ -16,7 +16,7 @@ public:
 	D3dSystem();
 	virtual ~D3dSystem();
 
-	IDirect3DDevice9* Create_D3D_Device(HWND const, ULONG const, ULONG const, BOOL const);
+	IDirect3DDevice9* Create_D3D_Device(HWND const, ULONG const, ULONG const, bool const);
 
 	HRESULT            ResizeD3dSystem(HWND const);
 
@@ -31,10 +31,10 @@ public:
 	ULONG GetMaxNrOfPrimitives() { return m_ulMaxNrOfPrimitives; }
 	ULONG GetNrOfVertices() { return m_ulNrOfVertices; }
 
-	BOOL IsHexagonMode() { return m_bHexagon; }
+	bool IsHexagonMode() { return m_bHexagon; }
 
 private:
-	BOOL m_bHexagon;
+	bool m_bHexagon;
 
 	ULONG m_ulTrianglesPerPrimitive;
 	ULONG m_ulVerticesPerPrimitive;
@@ -43,7 +43,7 @@ private:
 
 	D3dIndexBuffer* prepareIndices(ULONG const* const, ULONG const);
 	D3dIndexBuffer* createStripIndices(ULONG const, ULONG const);
-	D3dIndexBuffer* createIndsIndices(ULONG const, ULONG const, BOOL const);
+	D3dIndexBuffer* createIndsIndices(ULONG const, ULONG const, bool const);
 	D3dIndexBuffer* createRectIndices();
 
 	void rectangleIndices(ULONG* const, ULONG const);

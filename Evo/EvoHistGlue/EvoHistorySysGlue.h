@@ -26,7 +26,7 @@ public:
     EvoHistorySysGlue();
 	virtual ~EvoHistorySysGlue() { };
 
-	EvoModelDataGlue * Start(HistorySystem * const, BOOL const	);
+	EvoModelDataGlue * Start(HistorySystem * const, bool const	);
 
 	void Stop();
 

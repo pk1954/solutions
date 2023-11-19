@@ -29,7 +29,7 @@ void EvoAppMenu::Initialize
 
 	Util::SetApplicationTitle(hwndApp, IDS_APP_TITLE);
 
-	BOOL bRes = SetMenu(hwndApp, LoadMenu(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDC_EVOLUTION_MAIN)));
+	bool bRes = SetMenu(hwndApp, LoadMenu(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDC_EVOLUTION_MAIN)));
 	assert(bRes);
 
 	m_hMenu = GetMenu(hwndApp);
@@ -56,7 +56,7 @@ void EvoAppMenu::Stop()
 
 void EvoAppMenu::AdjustVisibility()
 {
-	BOOL const bRunning = m_pWorkThreadInterface->IsRunning();
+	bool const bRunning = m_pWorkThreadInterface->IsRunning();
 
 	EnableMenuItem(m_hMenu, IDM_FORWARD,          bRunning ? MF_GRAYED : MF_ENABLED);
 	EnableMenuItem(m_hMenu, IDM_BACKWARDS,        bRunning ? MF_GRAYED : MF_ENABLED);
@@ -67,7 +67,7 @@ void EvoAppMenu::AdjustVisibility()
 	EnableMenuItem(m_hMenu, IDM_RUN,              bRunning ? MF_GRAYED : MF_ENABLED);
 	EnableMenuItem(m_hMenu, IDM_STOP,             bRunning ? MF_ENABLED : MF_GRAYED);
 
-	BOOL b = m_pWinManager->IsVisible(IDM_DISP_WINDOW);
+	bool b = m_pWinManager->IsVisible(IDM_DISP_WINDOW);
 	EnableMenuItem(m_hMenu, IDM_DISP_WINDOW, m_pWinManager->IsVisible(IDM_DISP_WINDOW) ? MF_GRAYED : MF_ENABLED);
 	EnableMenuItem(m_hMenu, IDM_EDIT_WINDOW, m_pWinManager->IsVisible(IDM_EDIT_WINDOW) ? MF_GRAYED : MF_ENABLED);
 	EnableMenuItem(m_hMenu, IDM_MAIN_WINDOW, m_pWinManager->IsVisible(IDM_MAIN_WINDOW) ? MF_GRAYED : MF_ENABLED);

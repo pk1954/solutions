@@ -18,7 +18,7 @@ EvoHistorySysGlue::EvoHistorySysGlue() :
 EvoModelDataGlue * EvoHistorySysGlue::Start
 (
 	HistorySystem * const pHistorySystem,
-	BOOL            const bAsync      
+	bool            const bAsync      
 )
 {
 	m_pHistorySystem = pHistorySystem;

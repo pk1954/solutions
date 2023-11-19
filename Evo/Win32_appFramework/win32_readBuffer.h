@@ -27,7 +27,7 @@ class ReadBuffer : public ObserverInterface,  // Observes producer thread
 	               public Observable          // Can be observed by consumer threads
 {
 public:
-	ReadBuffer(BOOL  const   bCopyModel) : 
+	ReadBuffer(bool  const   bCopyModel) : 
 		m_bCopyModel(bCopyModel),
 		m_pModelWork(nullptr),
 		m_pModel4Display(nullptr)
@@ -97,7 +97,7 @@ public:
 	}
 
 private:
-	BOOL          m_bCopyModel;  // TRUE: 2 model instances are used, copy for read access, synchronisation with SRW locks
+	bool          m_bCopyModel;  // TRUE: 2 model instances are used, copy for read access, synchronisation with SRW locks
 	SRWLOCK       m_SRWLock;
 	MODEL       * m_pModel4Display;
 	MODEL const * m_pModelWork;

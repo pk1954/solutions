@@ -48,7 +48,7 @@ void getUserInput(HWND const hwndDlg, int id, int & iResult)
 	}
 }
 
-void enableGridTypeControls(HWND const hwndDlg, BOOL const bState)
+void enableGridTypeControls(HWND const hwndDlg, bool const bState)
 {
 	EnableWindow(GetDlgItem(hwndDlg, IDM_CHANGE_GRID_TYPE_WIDTH ), bState);
 	EnableWindow(GetDlgItem(hwndDlg, IDM_CHANGE_GRID_TYPE_HEIGHT), bState);
