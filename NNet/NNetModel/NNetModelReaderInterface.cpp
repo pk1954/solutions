@@ -133,15 +133,12 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	else if (typeDst.IsPipeType       ()) pPipeDst   = static_cast<Pipe        const *>(pNobDst);
 	else if (typeDst.IsIoConnectorType()) pConnDst   = static_cast<IoConnector const *>(pNobDst);
 
-	if ((pNobSrc->GetIoMode() == pNobDst->GetIoMode()) && (pNobSrc->GetIoMode() != NobIoMode::internal))
-	{
-		return ct_connector; // case 12/13 - create Input/OutputConnector
-	}
-
 	if (pPosNobSrc)
 	{
 		if (pPipeDst)
 		{
+			if ((pNobSrc->GetIoMode() == pNobDst->GetIoMode()) && (pNobSrc->GetIoMode() != NobIoMode::internal))
+				return ct_connector; // case 12/13 - create Input/OutputConnector
 			if (pPosNobSrc->IsDirectlyConnectedTo(*pPipeDst)) 
 				return ct_none;
 			if (typeSrc.IsInputLineType())

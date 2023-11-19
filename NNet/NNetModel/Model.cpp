@@ -58,10 +58,8 @@ void Model::CheckModel() const
 
 void Model::CheckId(NobId const id) const 
 {	
-#ifdef _DEBUG
 	if (! m_upNobs->IsValidNobId(id))
 		throw NobException(id, L"");
-#endif
 }
 
 Nob const * Model::GetConstNob(NobId const id) const 
