@@ -9,6 +9,8 @@ module;
 
 export module GeneType;
 
+using std::function;
+
 export class GeneType
 {
 public:

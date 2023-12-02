@@ -1,6 +1,8 @@
 // history.cpp
 
+#include <windows.h>
 #include <cassert>
+#include <new>
 
 import HistoryCache;
 

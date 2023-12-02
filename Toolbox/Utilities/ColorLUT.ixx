@@ -23,7 +23,7 @@ public:
         m_basePoints.push_back(BasePoint(  0, Color(0.0f, 0.0f, 0.0f, 1.0f)));
         m_basePoints.push_back(BasePoint(255, Color(1.0f, 1.0f, 1.0f, 1.0f)));
         AddBasePoint( 10, Color(D2D1::ColorF::Blue));
-        AddBasePoint(255, Color(D2D1::ColorF::Snow));
+        AddBasePoint(255, Color(D2D1::ColorF::Red));
         construct();
     }
 

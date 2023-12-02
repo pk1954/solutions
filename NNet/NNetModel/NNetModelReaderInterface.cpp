@@ -223,3 +223,8 @@ MicroMeterPnt NNetModelReaderInterface::OrthoVector(NobId const idPipe) const
 	MicroMeterPnt vector { m_pModel->GetNobConstPtr<Pipe const *>(idPipe)->GetVector() };
 	return vector.OrthoVector().ScaledTo(NEURON_RADIUS*2.f);
 }
+
+fMicroSecs NNetModelReaderInterface::TotalScanTime() const 
+{ 
+	return GetParamsC().ScanTime() * Cast2Float(GetParamsC().NrOfScans() * GetScanRaster().NrOfPoints());
+}

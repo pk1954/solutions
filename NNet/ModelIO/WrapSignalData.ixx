@@ -44,7 +44,7 @@ public:
         {
             mV value{ Cast2Float(script.ScrReadFloat()) };
             if (pSignal)
-                pSignal->Add(value);
+                pSignal->Add2Signal(value);
         }
         script.ScrReadSpecial(LIST_CLOSE_BRACKET);
     }

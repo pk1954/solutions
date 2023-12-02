@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <limits.h>
 
 module HistoryIterator;
 

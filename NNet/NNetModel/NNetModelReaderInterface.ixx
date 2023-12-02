@@ -11,6 +11,7 @@ module;
 export module NNetModel:NNetModelReaderInterface;
 
 import Types;
+import SaveCast;
 import DrawContext;
 import SoundInterface;
 import Signals;
@@ -41,6 +42,8 @@ export enum class ConnectionType
 	ct_connector,
 	ct_plugConnectors
 };
+
+export using ScanImage = Vector2D<mV>;
 
 export class NNetModelReaderInterface
 {
@@ -97,15 +100,15 @@ public:
 	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
-	Vector2D<mV>     const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
+	ScanImage        const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	bool                    ScanImagePresent()                     const { return m_pModel->GetScanImageC() != nullptr; }
 	bool                    IsScanRunning()                        const { return m_pModel->IsScanRunning(); }
-
-	bool                HasMicroSensor(NobId const id) const { return GetConstNob(id)->HasMicroSensor(); }
-	MicroSensor const * GetMicroSensor(NobId const id) const { return GetConstNob(id)->GetMicroSensor(); }
-
-	SignalId SelectSignal(SignalId const id) const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
-	bool     IsAnySignalSelected()           const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
+	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
+	bool                    HasMicroSensor(NobId const id)         const { return GetConstNob(id)->HasMicroSensor(); }
+	MicroSensor      const* GetMicroSensor(NobId const id)         const { return GetConstNob(id)->GetMicroSensor(); }
+	SignalId                SelectSignal(SignalId const id)        const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
+	bool                    IsAnySignalSelected()                  const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
+	fMicroSecs              TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const
 	{

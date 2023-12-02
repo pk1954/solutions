@@ -68,7 +68,7 @@ public:
     SignalGenerator * GetSigGen        (wstring const& name)     const { return m_pModel->GetSigGenList().GetSigGen(name); }
     UPSigGen          RemoveSigGen     (SigGenId const id)             { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen          PopSigGen        ()                              { return m_pModel->GetSigGenList().PopSigGen(); }
-    Vector2D<mV>    * GetScanImage     ()                              { return m_pModel->GetScanImage(); }
+    ScanImage       * GetScanImage     ()                              { return m_pModel->GetScanImage(); }
 
     UPSigGenList & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
@@ -79,13 +79,14 @@ public:
     void SetScanArea   (MicroMeterRect const& rect)              { m_pModel->SetScanArea(rect); }
     void SetScanRunning(bool const b)                            { m_pModel->SetScanRunning(b); }
 
-    void SetDescriptionUI   (DescriptionUI & ui)    { m_pModel->SetDescriptionUI(ui); }
-    void SetModelFilePath   (wstring const & wstr)  { m_pModel->SetModelFilePath(wstr); }
-    void AddDescriptionLine (wstring const & wstr)  { m_pModel->AddDescriptionLine(wstr); }
-    void DescriptionComplete()                      { m_pModel->DescriptionComplete(); }
-    void DeselectAllNobs    () const                { m_pModel->DeselectAllNobs(); }
-    void CreateImage        ()                      { m_pModel->CreateImage(); }
-    void RejectImage        ()                      { m_pModel->RejectImage(); }
+    void SetDescriptionUI   (DescriptionUI & ui)       { m_pModel->SetDescriptionUI(ui); }
+    void SetModelFilePath   (wstring const & wstr)     { m_pModel->SetModelFilePath(wstr); }
+    void AddDescriptionLine (wstring const & wstr)     { m_pModel->AddDescriptionLine(wstr); }
+    void DescriptionComplete()                         { m_pModel->DescriptionComplete(); }
+    void DeselectAllNobs    () const                   { m_pModel->DeselectAllNobs(); }
+    void CreateImage        ()                         { m_pModel->CreateImage(); }
+    void RejectImage        ()                         { m_pModel->RejectImage(); }
+	void SetScanImage       (unique_ptr<ScanImage> up) { m_pModel->SetScanImage(move(up)); }
 
     void AddOutgoing(NobId const, Pipe *);
     void AddIncoming(NobId const, Pipe *);

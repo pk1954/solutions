@@ -37,7 +37,7 @@ public:
 private:
 	static int const LEFT_SPACE       {  16 };
 	static int const HORZ_SPACE       {   8 };
-	static int const NAME_WIDTH       { 100 };
+	static int const NAME_WIDTH       { 105 };
 	static int const EDIT_WIDTH       {  60 };
 	static int const UNIT_WIDTH       {  40 };
 	static int const VERT_SPACE       {  10 };

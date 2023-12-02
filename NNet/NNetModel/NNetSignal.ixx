@@ -31,7 +31,7 @@ public:
 
     void Notify(bool const bImmediate) final // called by compute thread!
     {
-        Add(m_sigSrc.GetSignalValue());
+        Add2Signal(m_sigSrc.GetSignalValue());
     }
 
 private:

@@ -553,7 +553,7 @@ void MainWindow::PaintGraphics()
 	if (NNetPreferences::ScanAreaVisible())
 	{
 		DrawScanArea();
-		if (Vector2D<mV> const* pScanImage { m_pNMRI->GetScanImageC() })
+		if (ScanImage const* pScanImage { m_pNMRI->GetScanImageC() })
 		{
 			drawScanImage(*pScanImage);
 		}
@@ -565,7 +565,7 @@ void MainWindow::PaintGraphics()
 	}
 }
 
-void MainWindow::drawScanImage(Vector2D<mV> const &scanImage) const
+void MainWindow::drawScanImage(ScanImage const &scanImage) const
 {
 	Raster const &raster { m_pNMRI->GetScanRaster() };
 	RasterPoint   rpRun;

@@ -1,5 +1,5 @@
 # NNetModel
-# Created Mon Nov 13 18:27:12 2023
+# Created Fri Dec  1 15:35:40 2023
 
 # Computer name: DESKTOP-4-PETER
 # User name: Peter
@@ -19,6 +19,7 @@ GlobalParameter  PulseSpeed = 120
 GlobalParameter  PulseWidth = 2000
 GlobalParameter  ScanResolution = 200
 GlobalParameter  PixelScanTime = 5000
+GlobalParameter  NumberOfScans = 1
 GlobalParameter  TimeResolution = 100
 NrOfNobs = 1383
 CreateNob 0 inputLine( ( 3967.10791| 5936.523926)->1352)
@@ -1406,7 +1407,7 @@ CreateNob 1380 pipe(16->1382)
 CreateNob 1381 pipe(1382->529)
 Voltage 0 inputLine 0
 Voltage 1 inputLine 0
-Voltage 3 fork 99
+Voltage 3 fork 0
 Voltage 5 fork 0
 Voltage 8 fork 0
 Voltage 10 fork 0
@@ -1426,7 +1427,7 @@ Voltage 28 fork 0
 Voltage 30 fork 0
 Voltage 32 fork 0
 Voltage 35 knot 0
-Voltage 37 knot 0
+Voltage 37 knot 83.21521759
 Voltage 39 knot 0
 Voltage 42 knot 0
 Voltage 45 knot 0
@@ -1441,68 +1442,68 @@ Voltage 57 inputLine 0
 Voltage 58 inputLine 0
 Voltage 59 inputLine 0
 Voltage 60 inputLine 0
-Voltage 61 fork 82.76074219
+Voltage 61 fork 96
 Voltage 63 fork 0
-Voltage 65 fork 59.16947174
+Voltage 65 fork 97.79438782
 Voltage 67 fork 0
 Voltage 69 fork 0
-Voltage 71 synapse 36.00000763
+Voltage 71 synapse 0
 Voltage 73 synapse 0
-Voltage 75 synapse 101.8882599
-Voltage 76 synapse 221.0708313
-Voltage 78 knot 74.0893631
-Voltage 79 synapse 96
-Voltage 80 synapse 237
-Voltage 82 synapse 0
-Voltage 84 synapse 0
-Voltage 86 synapse 66.94821167
-Voltage 88 synapse 0
-Voltage 90 synapse 82.88825989
-Voltage 93 synapse 82.88825989
+Voltage 75 synapse 184
+Voltage 76 synapse 163
+Voltage 78 knot 96
+Voltage 79 synapse 22.00320435
+Voltage 80 synapse 32.21521378
+Voltage 82 synapse 64.32515717
+Voltage 84 synapse 48.84921646
+Voltage 86 synapse 147.6421509
+Voltage 88 synapse 48.84921646
+Voltage 90 synapse 147.8492126
+Voltage 93 synapse 99
 Voltage 96 synapse 0
-Voltage 99 synapse 125.9999924
-Voltage 101 synapse 0
-Voltage 102 synapse 84.00000763
-Voltage 104 synapse 99
-Voltage 106 synapse 59.16947174
-Voltage 107 synapse 224.0893707
-Voltage 108 synapse 99
-Voltage 110 synapse 86.99999237
-Voltage 112 synapse 99
-Voltage 114 synapse 172.1029968
-Voltage 116 synapse 60.57219315
-Voltage 118 synapse 271.1967163
-Voltage 120 synapse 50.99999237
-Voltage 123 knot 91
-Voltage 125 synapse 155
-Voltage 127 synapse 168.0000153
-Voltage 130 synapse 190
+Voltage 99 synapse 10.52785397
+Voltage 101 synapse 10.52785397
+Voltage 102 synapse 0
+Voltage 104 synapse 119.7929382
+Voltage 106 synapse 10.52785397
+Voltage 107 synapse 96
+Voltage 108 synapse 0
+Voltage 110 synapse 84.00000763
+Voltage 112 synapse 0
+Voltage 114 synapse 19
+Voltage 116 synapse 19
+Voltage 118 synapse 87.52813721
+Voltage 120 synapse 51.00000381
+Voltage 123 knot 0
+Voltage 125 synapse 64
+Voltage 127 synapse 99
+Voltage 130 synapse 91
 Voltage 132 synapse 0
 Voltage 135 fork 0
-Voltage 137 fork 75
-Voltage 139 fork 99
-Voltage 142 fork 19.00000381
-Voltage 144 fork 91.00000763
-Voltage 147 fork 92.8196106
-Voltage 149 outputLine 66.17493439
-Voltage 151 fork 96
-Voltage 153 outputLine 91
-Voltage 155 fork 64
-Voltage 157 outputLine 51.00000381
-Voltage 159 fork 103.0212402
-Voltage 161 outputLine 100.8604889
-Voltage 163 fork 82.76074219
-Voltage 165 outputLine 82.88825989
+Voltage 137 fork 0
+Voltage 139 fork 0
+Voltage 142 fork 0
+Voltage 144 fork 0
+Voltage 147 fork 51.00000381
+Voltage 149 outputLine 36
+Voltage 151 fork 160
+Voltage 153 outputLine 150
+Voltage 155 fork 115
+Voltage 157 outputLine 87
+Voltage 159 fork 110
+Voltage 161 outputLine 84.00000763
+Voltage 163 fork 91
+Voltage 165 outputLine 84.00000763
 Voltage 166 fork 0
-Voltage 170 fork 19.00000381
-Voltage 173 fork 75
+Voltage 170 fork 0
+Voltage 173 fork 0
 Voltage 176 fork 0
-Voltage 179 fork 50.99999237
-Voltage 181 fork 84
-Voltage 185 fork 63.99999619
-Voltage 189 fork 96
-Voltage 192 fork 36
-Voltage 194 fork 26.65176773
+Voltage 179 fork 64
+Voltage 181 fork 0
+Voltage 185 fork 96
+Voltage 189 fork 99
+Voltage 192 fork 99
+Voltage 194 fork 56.21871185
 Voltage 196 fork 0
 Voltage 199 fork 0
 Voltage 202 fork 0
@@ -1513,43 +1514,43 @@ Voltage 211 inputLine 0
 Voltage 212 inputLine 0
 Voltage 213 knot 0
 Voltage 214 knot 0
-Voltage 215 knot 50.99999237
+Voltage 215 knot 0
 Voltage 216 knot 0
-Voltage 217 knot 0
-Voltage 218 knot 50.99999237
-Voltage 219 knot 36.00000763
-Voltage 220 knot 100
-Voltage 221 knot 64
-Voltage 223 fork 0
-Voltage 224 knot 36
-Voltage 225 knot 91
-Voltage 226 knot 142
-Voltage 227 knot 0
-Voltage 228 knot 135.5182495
+Voltage 217 knot 67.27294922
+Voltage 218 knot 51.00000381
+Voltage 219 knot 84
+Voltage 220 knot 91.00000763
+Voltage 221 knot 99
+Voltage 223 fork 68.325737
+Voltage 224 knot 100
+Voltage 225 knot 100
+Voltage 226 knot 91
+Voltage 227 knot 75
+Voltage 228 knot 75
 Voltage 229 inputLine 0
 Voltage 232 synapse 0
 Voltage 235 synapse 0
 Voltage 238 synapse 0
 Voltage 241 synapse 0
-Voltage 242 synapse 130.0212402
-Voltage 243 synapse 130.0212402
-Voltage 244 synapse 103.0212402
-Voltage 245 synapse 135.0212402
-Voltage 246 synapse 84.00000763
-Voltage 249 synapse 200.0959015
-Voltage 252 synapse 100
-Voltage 255 synapse 156
-Voltage 258 synapse 96.75205231
-Voltage 261 synapse 96.9149704
-Voltage 266 synapse 50.99999237
+Voltage 242 synapse 0
+Voltage 243 synapse 0
+Voltage 244 synapse 0
+Voltage 245 synapse 0
+Voltage 246 synapse 0
+Voltage 249 synapse 91
+Voltage 252 synapse 168
+Voltage 255 synapse 159
+Voltage 258 synapse 150
+Voltage 261 synapse 99
+Voltage 266 synapse 0
 Voltage 269 synapse 0
-Voltage 272 synapse 75
+Voltage 272 synapse 64.85154724
 Voltage 273 inputLine 0
 Voltage 274 inputLine 0
 Voltage 275 inputLine 0
-Voltage 277 synapse 164.1967163
+Voltage 277 synapse 0
 Voltage 279 synapse 0
-Voltage 281 synapse 103.0000153
+Voltage 281 synapse 0
 Voltage 283 neuron 0
 Voltage 285 neuron 0
 Voltage 288 neuron 0
@@ -1560,161 +1561,161 @@ Voltage 298 neuron 0
 Voltage 300 neuron 0
 Voltage 303 neuron 0
 Voltage 306 neuron 0
-Voltage 308 knot 63.99999619
+Voltage 308 knot 0
 Voltage 311 knot 0
-Voltage 312 knot 90.65176392
-Voltage 314 knot 0
-Voltage 317 knot 118
+Voltage 312 knot 0
+Voltage 314 knot 64.32515717
+Voltage 317 knot 0
 Voltage 320 knot 0
-Voltage 321 synapse 75
-Voltage 324 synapse 118
-Voltage 327 synapse 64
-Voltage 330 synapse 84.00000763
-Voltage 333 synapse 135.5721893
-Voltage 335 synapse 147
-Voltage 338 synapse 199
-Voltage 341 knot 51.00000381
-Voltage 344 synapse 75
-Voltage 346 synapse 19
-Voltage 348 synapse 135.0000153
-Voltage 350 synapse 75
-Voltage 353 fork 50.99999237
-Voltage 355 fork 96
-Voltage 357 fork 84.00000763
-Voltage 360 fork 91.00000763
-Voltage 362 fork 91
-Voltage 365 fork 19
+Voltage 321 synapse 0
+Voltage 324 synapse 0
+Voltage 327 synapse 0
+Voltage 330 synapse 0
+Voltage 333 synapse 0
+Voltage 335 synapse 0
+Voltage 338 synapse 0
+Voltage 341 knot 0
+Voltage 344 synapse 0
+Voltage 346 synapse 0
+Voltage 348 synapse 0
+Voltage 350 synapse 0
+Voltage 353 fork 0
+Voltage 355 fork 0
+Voltage 357 fork 0
+Voltage 360 fork 0
+Voltage 362 fork 0
+Voltage 365 fork 0
 Voltage 367 outputLine 0
-Voltage 369 fork 175
-Voltage 371 outputLine 159
+Voltage 369 fork 0
+Voltage 371 outputLine 0
 Voltage 373 fork 0
 Voltage 375 outputLine 0
-Voltage 377 fork 36
+Voltage 377 fork 0
 Voltage 378 outputLine 0
-Voltage 380 fork 157.7607422
-Voltage 382 outputLine 146.8882599
+Voltage 380 fork 0
+Voltage 382 outputLine 0
 Voltage 384 fork 0
-Voltage 388 fork 96
-Voltage 392 fork 100
-Voltage 396 fork 50.99999237
-Voltage 400 fork 99
-Voltage 404 fork 64
-Voltage 407 fork 84
-Voltage 410 fork 126
-Voltage 412 knot 26.65176773
-Voltage 415 fork 26.65176773
+Voltage 388 fork 0
+Voltage 392 fork 0
+Voltage 396 fork 0
+Voltage 400 fork 0
+Voltage 404 fork 0
+Voltage 407 fork 0
+Voltage 410 fork 0
+Voltage 412 knot 0
+Voltage 415 fork 56.21871185
 Voltage 416 knot 0
-Voltage 417 knot 84
-Voltage 418 knot 132
-Voltage 419 knot 19.00000381
-Voltage 420 knot 91.00000763
-Voltage 421 knot 84.00000763
-Voltage 422 knot 63.99999619
-Voltage 423 knot 166
+Voltage 417 knot 0
+Voltage 418 knot 0
+Voltage 419 knot 0
+Voltage 420 knot 0
+Voltage 421 knot 0
+Voltage 422 knot 0
+Voltage 423 knot 19
 Voltage 424 knot 0
 Voltage 425 knot 0
-Voltage 426 knot 50.99999237
-Voltage 427 knot 91.00000763
+Voltage 426 knot 0
+Voltage 427 knot 0
 Voltage 428 knot 0
-Voltage 429 knot 75
-Voltage 431 fork 0
+Voltage 429 knot 36
+Voltage 431 fork 64.85154724
 Voltage 434 neuron 0
 Voltage 436 neuron 0
 Voltage 438 neuron 0
 Voltage 441 neuron 0
 Voltage 442 neuron 0
-Voltage 443 knot 99
-Voltage 444 knot 75
-Voltage 445 knot 96
-Voltage 446 knot 100
-Voltage 447 knot 19.00000381
-Voltage 450 synapse 51.00000381
-Voltage 453 synapse 195
-Voltage 456 synapse 19
-Voltage 459 knot 19
-Voltage 462 fork 100
-Voltage 466 synapse 64
-Voltage 468 synapse 168.914978
-Voltage 471 fork 75
-Voltage 474 fork 99
-Voltage 477 fork 51.00000381
-Voltage 480 fork 84.00000763
-Voltage 483 fork 96
-Voltage 485 fork 84
-Voltage 488 synapse 180.4855347
-Voltage 490 fork 90.02124023
-Voltage 493 synapse 77.9149704
-Voltage 496 fork 39.02124023
-Voltage 499 synapse 82.76074219
+Voltage 443 knot 0
+Voltage 444 knot 0
+Voltage 445 knot 0
+Voltage 446 knot 0
+Voltage 447 knot 0
+Voltage 450 synapse 0
+Voltage 453 synapse 0
+Voltage 456 synapse 0
+Voltage 459 knot 0
+Voltage 462 fork 0
+Voltage 466 synapse 0
+Voltage 468 synapse 0
+Voltage 471 fork 0
+Voltage 474 fork 0
+Voltage 477 fork 0
+Voltage 480 fork 0
+Voltage 483 fork 0
+Voltage 485 fork 0
+Voltage 488 synapse 0
+Voltage 490 fork 0
+Voltage 493 synapse 84
+Voltage 496 fork 50.00727844
+Voltage 499 synapse 0
 Voltage 500 neuron 0
 Voltage 503 neuron 0
 Voltage 506 neuron 0
 Voltage 509 neuron 0
-Voltage 512 fork 0
-Voltage 515 knot 0
-Voltage 517 fork 75
-Voltage 521 synapse 0
-Voltage 523 synapse 39.02124023
-Voltage 526 fork 64
-Voltage 528 synapse 0
+Voltage 512 fork 68.43100739
+Voltage 515 knot 63.99999619
+Voltage 517 fork 91.00000763
+Voltage 521 synapse 96
+Voltage 523 synapse 86.00728607
+Voltage 526 fork 96
+Voltage 528 synapse 36
 Voltage 529 neuron 0
 Voltage 532 neuron 0
 Voltage 534 neuron 0
-Voltage 537 fork 36.00000763
-Voltage 540 synapse 91.00000763
-Voltage 543 fork 196
+Voltage 537 fork 0
+Voltage 540 synapse 0
+Voltage 543 fork 64
 Voltage 546 synapse 0
-Voltage 549 fork 91.00000763
+Voltage 549 fork 0
 Voltage 552 synapse 96
 Voltage 555 neuron 0
 Voltage 558 neuron 0
 Voltage 561 neuron 0
-Voltage 564 fork 0
-Voltage 568 synapse 0
-Voltage 571 fork 19.00000381
-Voltage 575 synapse 84
-Voltage 577 fork 0
-Voltage 580 synapse 0
-Voltage 583 fork 190
-Voltage 586 synapse 151
-Voltage 588 fork 96
-Voltage 591 synapse 91
-Voltage 594 fork 36
-Voltage 597 synapse 0
-Voltage 600 fork 63.99999619
-Voltage 603 synapse 99
-Voltage 605 knot 96
-Voltage 608 knot 99
-Voltage 610 fork 99
-Voltage 614 synapse 84.00000763
-Voltage 617 fork 100
-Voltage 621 synapse 156.4855347
-Voltage 623 fork 63.99999619
-Voltage 627 synapse 99
-Voltage 630 fork 0
-Voltage 634 synapse 0
-Voltage 635 synapse 36
+Voltage 564 fork 22.00320435
+Voltage 568 synapse 60.42985153
+Voltage 571 fork 0
+Voltage 575 synapse 0
+Voltage 577 fork 32.21521378
+Voltage 580 synapse 64.32515717
+Voltage 583 fork 51.00000381
+Voltage 586 synapse 99
+Voltage 588 fork 0
+Voltage 591 synapse 0
+Voltage 594 fork 100
+Voltage 597 synapse 85.52785492
+Voltage 600 fork 36
+Voltage 603 synapse 0
+Voltage 605 knot 0
+Voltage 608 knot 0
+Voltage 610 fork 0
+Voltage 614 synapse 0
+Voltage 617 fork 0
+Voltage 621 synapse 100
+Voltage 623 fork 51.00000381
+Voltage 627 synapse 0
+Voltage 630 fork 10.52785397
+Voltage 634 synapse 55.27120209
+Voltage 635 synapse 0
 Voltage 639 fork 0
-Voltage 642 synapse 100
+Voltage 642 synapse 0
 Voltage 646 fork 0
 Voltage 649 synapse 0
-Voltage 653 fork 70
+Voltage 653 fork 0
 Voltage 656 neuron 0
 Voltage 659 neuron 0
 Voltage 662 neuron 0
-Voltage 665 synapse 171.897522
-Voltage 668 fork 81.48553467
+Voltage 665 synapse 0
+Voltage 668 fork 0
 Voltage 671 synapse 0
 Voltage 674 fork 0
-Voltage 678 synapse 36
+Voltage 678 synapse 0
 Voltage 681 fork 0
 Voltage 684 neuron 0
-Voltage 687 neuron 19
-Voltage 690 neuron 19
-Voltage 693 synapse 206.1923523
-Voltage 695 fork 12.75204754
+Voltage 687 neuron 0
+Voltage 690 neuron 0
+Voltage 693 synapse 0
+Voltage 695 fork 0
 Voltage 698 synapse 0
-Voltage 700 synapse 59.16947174
+Voltage 700 synapse 0
 Voltage 704 fork 0
 Voltage 706 knot 0
 Voltage 709 fork 0
@@ -1722,28 +1723,28 @@ Voltage 712 neuron 0
 Voltage 714 neuron 0
 Voltage 717 neuron 0
 Voltage 720 neuron 0
-Voltage 722 synapse 91
+Voltage 722 synapse 0
 Voltage 725 fork 0
-Voltage 728 synapse 15.17492962
-Voltage 731 fork 149.0893555
-Voltage 734 synapse 144.5722046
-Voltage 737 fork 82.76074219
-Voltage 739 fork 87.51824951
+Voltage 728 synapse 0
+Voltage 731 fork 0
+Voltage 734 synapse 0
+Voltage 737 fork 0
+Voltage 739 fork 0
 Voltage 742 fork 0
-Voltage 745 fork 84.00000763
-Voltage 748 fork 91
-Voltage 751 fork 91
-Voltage 754 synapse 59.93405151
-Voltage 757 synapse 12.75204754
+Voltage 745 fork 0
+Voltage 748 fork 0
+Voltage 751 fork 0
+Voltage 754 synapse 0
+Voltage 757 synapse 0
 Voltage 761 fork 0
-Voltage 764 knot 49.86048508
-Voltage 767 synapse 87.75204468
-Voltage 770 synapse 96.75205231
-Voltage 773 synapse 84.00000763
-Voltage 776 knot 64
+Voltage 764 knot 0
+Voltage 767 synapse 0
+Voltage 770 synapse 0
+Voltage 773 synapse 0
+Voltage 776 knot 0
 Voltage 777 knot 0
 Voltage 778 knot 0
-Voltage 779 knot 51.00000381
+Voltage 779 knot 0
 Voltage 780 knot 0
 Voltage 781 neuron 0
 Voltage 783 neuron 0
@@ -1752,75 +1753,75 @@ Voltage 788 neuron 0
 Voltage 791 neuron 0
 Voltage 794 fork 0
 Voltage 796 knot 0
-Voltage 797 knot 84.00000763
+Voltage 797 knot 0
 Voltage 798 knot 0
 Voltage 799 knot 0
-Voltage 800 knot 99
-Voltage 801 knot 91
+Voltage 800 knot 0
+Voltage 801 knot 0
 Voltage 802 knot 0
-Voltage 803 knot 36
+Voltage 803 knot 0
 Voltage 804 knot 0
 Voltage 805 knot 0
-Voltage 806 knot 75
+Voltage 806 knot 0
 Voltage 807 knot 0
 Voltage 808 knot 0
-Voltage 809 knot 91
+Voltage 809 knot 0
 Voltage 810 fork 0
-Voltage 813 knot 84.00000763
+Voltage 813 knot 0
 Voltage 815 fork 0
-Voltage 818 fork 19
+Voltage 818 fork 0
 Voltage 821 fork 0
 Voltage 824 outputLine 0
-Voltage 825 outputLine 36
+Voltage 825 outputLine 0
 Voltage 826 outputLine 0
 Voltage 827 outputLine 0
 Voltage 830 fork 0
-Voltage 834 fork 64
+Voltage 834 fork 0
 Voltage 837 fork 0
 Voltage 841 fork 0
-Voltage 845 fork 84.00000763
-Voltage 847 outputLine 75
-Voltage 848 outputLine 39.02124023
-Voltage 850 fork 41.5716629
-Voltage 851 outputLine 59.16947174
-Voltage 852 fork 26.65176773
-Voltage 854 outputLine 85.86048889
-Voltage 856 fork 90.65176392
-Voltage 858 outputLine 100.8604889
-Voltage 860 fork 101.6517639
-Voltage 862 outputLine 77.65177155
-Voltage 864 fork 75
+Voltage 845 fork 0
+Voltage 847 outputLine 0
+Voltage 848 outputLine 0
+Voltage 850 fork 0
+Voltage 851 outputLine 0
+Voltage 852 fork 0
+Voltage 854 outputLine 0
+Voltage 856 fork 0
+Voltage 858 outputLine 0
+Voltage 860 fork 0
+Voltage 862 outputLine 0
+Voltage 864 fork 0
 Voltage 866 outputLine 0
 Voltage 867 outputLine 0
 Voltage 868 outputLine 0
 Voltage 870 fork 0
-Voltage 871 outputLine 73.19671631
-Voltage 873 fork 36
-Voltage 874 outputLine 81.10298157
+Voltage 871 outputLine 0
+Voltage 873 fork 0
+Voltage 874 outputLine 0
 Voltage 877 fork 0
 Voltage 878 outputLine 0
 Voltage 880 fork 0
-Voltage 881 outputLine 81.10298157
-Voltage 882 fork 19
-Voltage 883 outputLine 78.55257416
+Voltage 881 outputLine 0
+Voltage 882 fork 0
+Voltage 883 outputLine 0
 Voltage 886 synapse 0
 Voltage 888 synapse 0
 Voltage 890 synapse 0
 Voltage 892 synapse 0
 Voltage 894 knot 0
 Voltage 895 outputLine 0
-Voltage 898 synapse 19
+Voltage 898 synapse 0
 Voltage 900 synapse 0
-Voltage 902 synapse 77.9149704
-Voltage 905 synapse 73.19671631
-Voltage 907 synapse 73.19671631
-Voltage 910 synapse 92.19671631
-Voltage 913 synapse 59.16947174
+Voltage 902 synapse 0
+Voltage 905 synapse 0
+Voltage 907 synapse 0
+Voltage 910 synapse 0
+Voltage 913 synapse 0
 Voltage 914 knot 0
 Voltage 916 knot 0
-Voltage 919 knot 19
-Voltage 921 knot 172.4855347
-Voltage 923 knot 84.00000763
+Voltage 919 knot 0
+Voltage 921 knot 0
+Voltage 923 knot 0
 Voltage 926 knot 0
 Voltage 928 neuron 0
 Voltage 931 neuron 0
@@ -1841,36 +1842,36 @@ Voltage 963 inputLine 0
 Voltage 964 synapse 0
 Voltage 967 synapse 0
 Voltage 970 synapse 0
-Voltage 974 synapse 49.86048508
+Voltage 974 synapse 0
 Voltage 977 synapse 0
-Voltage 980 synapse 63.99999619
-Voltage 983 synapse 50.99999237
+Voltage 980 synapse 0
+Voltage 983 synapse 0
 Voltage 986 synapse 0
-Voltage 989 synapse 99
-Voltage 991 synapse 135
-Voltage 993 synapse 96
+Voltage 989 synapse 0
+Voltage 991 synapse 0
+Voltage 993 synapse 0
 Voltage 995 synapse 0
-Voltage 997 synapse 132.0959015
+Voltage 997 synapse 0
 Voltage 998 synapse 0
 Voltage 1001 synapse 0
 Voltage 1004 synapse 0
 Voltage 1007 synapse 0
 Voltage 1010 inputLine 0
 Voltage 1011 knot 0
-Voltage 1012 knot 19.00000381
-Voltage 1013 knot 36.00000763
+Voltage 1012 knot 0
+Voltage 1013 knot 0
 Voltage 1014 knot 0
-Voltage 1015 knot 26.65176773
+Voltage 1015 knot 0
 Voltage 1016 fork 0
 Voltage 1018 knot 0
 Voltage 1019 knot 0
 Voltage 1020 knot 0
 Voltage 1021 knot 0
 Voltage 1022 knot 0
-Voltage 1023 knot 96
+Voltage 1023 knot 0
 Voltage 1024 knot 0
-Voltage 1025 knot 19
-Voltage 1026 knot 84
+Voltage 1025 knot 0
+Voltage 1026 knot 0
 Voltage 1027 inputLine 0
 Voltage 1028 inputLine 0
 Voltage 1029 inputLine 0
@@ -1885,145 +1886,145 @@ Voltage 1050 fork 0
 Voltage 1054 fork 0
 Voltage 1058 fork 0
 Voltage 1061 fork 0
-Voltage 1065 fork 91
+Voltage 1065 fork 0
 Voltage 1068 fork 0
 Voltage 1071 fork 0
-Voltage 1075 fork 91.00000763
-Voltage 1076 outputLine 73.19671631
-Voltage 1078 fork 59.16947174
+Voltage 1075 fork 0
+Voltage 1076 outputLine 0
+Voltage 1078 fork 0
 Voltage 1080 outputLine 0
 Voltage 1082 fork 0
-Voltage 1084 outputLine 91.00000763
-Voltage 1086 fork 75
-Voltage 1088 outputLine 84
-Voltage 1090 fork 63.99999619
-Voltage 1092 outputLine 26.65176773
+Voltage 1084 outputLine 0
+Voltage 1086 fork 0
+Voltage 1088 outputLine 0
+Voltage 1090 fork 0
+Voltage 1092 outputLine 0
 Voltage 1094 fork 0
 Voltage 1097 fork 0
-Voltage 1098 outputLine 84.00000763
-Voltage 1100 fork 75
-Voltage 1101 outputLine 96.75205231
+Voltage 1098 outputLine 0
+Voltage 1100 fork 0
+Voltage 1101 outputLine 0
 Voltage 1104 fork 0
-Voltage 1105 outputLine 87.75204468
+Voltage 1105 outputLine 0
 Voltage 1107 fork 0
-Voltage 1108 outputLine 12.75204754
-Voltage 1110 fork 100
-Voltage 1111 outputLine 59.93405151
-Voltage 1114 synapse 99
+Voltage 1108 outputLine 0
+Voltage 1110 fork 0
+Voltage 1111 outputLine 0
+Voltage 1114 synapse 0
 Voltage 1116 synapse 0
 Voltage 1119 synapse 0
 Voltage 1122 synapse 0
 Voltage 1124 knot 0
-Voltage 1127 synapse 64
+Voltage 1127 synapse 0
 Voltage 1129 synapse 0
-Voltage 1131 synapse 181.7607422
+Voltage 1131 synapse 0
 Voltage 1133 synapse 0
-Voltage 1135 synapse 100
-Voltage 1137 synapse 163
-Voltage 1139 synapse 99
+Voltage 1135 synapse 0
+Voltage 1137 synapse 0
+Voltage 1139 synapse 0
 Voltage 1140 synapse 0
 Voltage 1142 synapse 0
 Voltage 1144 synapse 0
 Voltage 1146 synapse 0
-Voltage 1147 synapse 126
-Voltage 1149 synapse 19
-Voltage 1152 synapse 180
+Voltage 1147 synapse 0
+Voltage 1149 synapse 0
+Voltage 1152 synapse 0
 Voltage 1155 synapse 0
 Voltage 1158 synapse 0
-Voltage 1160 synapse 103.0000076
+Voltage 1160 synapse 0
 Voltage 1162 synapse 0
-Voltage 1164 synapse 19
-Voltage 1166 synapse 110
+Voltage 1164 synapse 0
+Voltage 1166 synapse 0
 Voltage 1168 synapse 0
-Voltage 1169 synapse 150
+Voltage 1169 synapse 0
 Voltage 1170 knot 0
 Voltage 1172 synapse 0
 Voltage 1173 synapse 0
-Voltage 1175 synapse 70
-Voltage 1177 synapse 91
-Voltage 1179 fork 99
-Voltage 1181 fork 51.00000381
+Voltage 1175 synapse 0
+Voltage 1177 synapse 0
+Voltage 1179 fork 0
+Voltage 1181 fork 0
 Voltage 1183 fork 0
-Voltage 1185 fork 96
+Voltage 1185 fork 0
 Voltage 1187 fork 0
-Voltage 1190 knot 19
-Voltage 1193 knot 91
+Voltage 1190 knot 0
+Voltage 1193 knot 0
 Voltage 1196 knot 0
-Voltage 1199 knot 36
-Voltage 1201 knot 91
-Voltage 1203 knot 63.99999619
-Voltage 1206 fork 99
-Voltage 1209 fork 36
-Voltage 1211 fork 84
-Voltage 1214 fork 64
+Voltage 1199 knot 0
+Voltage 1201 knot 0
+Voltage 1203 knot 0
+Voltage 1206 fork 0
+Voltage 1209 fork 0
+Voltage 1211 fork 0
+Voltage 1214 fork 0
 Voltage 1216 fork 0
-Voltage 1219 fork 96
+Voltage 1219 fork 0
 Voltage 1221 fork 0
-Voltage 1224 fork 96
-Voltage 1226 fork 19
+Voltage 1224 fork 0
+Voltage 1226 fork 0
 Voltage 1228 inputLine 0
 Voltage 1229 inputLine 0
-Voltage 1230 knot 36.00000763
-Voltage 1231 knot 99
-Voltage 1232 knot 99
-Voltage 1233 knot 63.99999619
-Voltage 1234 knot 84.00000763
-Voltage 1235 knot 36
-Voltage 1236 knot 100
-Voltage 1237 knot 51.00000381
-Voltage 1238 knot 84
-Voltage 1240 fork 96
-Voltage 1241 knot 99
-Voltage 1242 knot 75
-Voltage 1243 knot 51.00000381
-Voltage 1244 knot 100
-Voltage 1245 knot 64
-Voltage 1246 knot 100
-Voltage 1247 knot 64
-Voltage 1248 knot 19
-Voltage 1249 knot 99
-Voltage 1250 knot 51.00000381
-Voltage 1253 fork 84.00000763
+Voltage 1230 knot 0
+Voltage 1231 knot 0
+Voltage 1232 knot 0
+Voltage 1233 knot 0
+Voltage 1234 knot 0
+Voltage 1235 knot 0
+Voltage 1236 knot 0
+Voltage 1237 knot 0
+Voltage 1238 knot 0
+Voltage 1240 fork 0
+Voltage 1241 knot 0
+Voltage 1242 knot 0
+Voltage 1243 knot 0
+Voltage 1244 knot 0
+Voltage 1245 knot 0
+Voltage 1246 knot 0
+Voltage 1247 knot 0
+Voltage 1248 knot 0
+Voltage 1249 knot 0
+Voltage 1250 knot 0
+Voltage 1253 fork 0
 Voltage 1256 synapse 0
-Voltage 1259 fork 41.8266983
-Voltage 1263 synapse 99.84848022
+Voltage 1259 fork 0
+Voltage 1263 synapse 0
 Voltage 1266 fork 0
-Voltage 1270 synapse 75
-Voltage 1273 fork 99
-Voltage 1277 synapse 148
-Voltage 1280 fork 100
-Voltage 1284 synapse 174
-Voltage 1287 fork 49.86048508
-Voltage 1291 synapse 81.10298157
+Voltage 1270 synapse 0
+Voltage 1273 fork 0
+Voltage 1277 synapse 0
+Voltage 1280 fork 0
+Voltage 1284 synapse 99
+Voltage 1287 fork 42.53250885
+Voltage 1291 synapse 10.52785397
 Voltage 1294 fork 0
 Voltage 1298 synapse 0
 Voltage 1301 fork 0
 Voltage 1305 synapse 0
-Voltage 1307 fork 99
-Voltage 1311 synapse 160
+Voltage 1307 fork 0
+Voltage 1311 synapse 0
 Voltage 1314 neuron 0
 Voltage 1317 neuron 0
 Voltage 1320 neuron 0
 Voltage 1323 neuron 0
 Voltage 1326 neuron 0
-Voltage 1329 fork 51.00000381
-Voltage 1333 synapse 75
+Voltage 1329 fork 0
+Voltage 1333 synapse 0
 Voltage 1336 fork 0
-Voltage 1340 synapse 75
+Voltage 1340 synapse 36
 Voltage 1343 fork 0
 Voltage 1347 synapse 0
 Voltage 1350 fork 0
 Voltage 1354 synapse 0
-Voltage 1357 fork 99
-Voltage 1361 synapse 84.00000763
+Voltage 1357 fork 0
+Voltage 1361 synapse 91.00000763
 Voltage 1364 fork 0
 Voltage 1368 synapse 0
 Voltage 1371 fork 0
 Voltage 1375 synapse 0
 Voltage 1378 fork 0
 Voltage 1382 synapse 0
-Voltage 2 pipe (1:100)
-Voltage 4 pipe (1:99)
+Voltage 2 pipe (1:0)
+Voltage 4 pipe (1:0)
 Voltage 6 pipe (1:0)
 Voltage 7 pipe (1:0)
 Voltage 9 pipe (1:0)
@@ -2037,7 +2038,7 @@ Voltage 31 pipe (1:0)
 Voltage 33 pipe (1:0)
 Voltage 34 pipe (1:0)
 Voltage 36 pipe (1:0)
-Voltage 38 pipe (1:0)
+Voltage 38 pipe (1:83.21521759)
 Voltage 40 pipe (1:0)
 Voltage 41 pipe (1:0)
 Voltage 43 pipe (1:0)
@@ -2047,78 +2048,78 @@ Voltage 47 pipe (1:0)
 Voltage 49 pipe (1:0)
 Voltage 50 pipe (1:0)
 Voltage 62 pipe (1:0)
-Voltage 64 pipe (1:66.94821167)
+Voltage 64 pipe (1:98.79293823)
 Voltage 66 pipe (1:0)
 Voltage 68 pipe (1:0)
 Voltage 70 pipe (1:0)
 Voltage 72 pipe (1:0)
-Voltage 74 pipe (1:117.4855423)
-Voltage 77 pipe (1:78.55257416)
+Voltage 74 pipe (1:174)
+Voltage 77 pipe (1:99)
 Voltage 81 pipe (1:0)
 Voltage 83 pipe (1:0)
-Voltage 85 pipe (1:59.16947174)
+Voltage 85 pipe (1:97.79438782)
 Voltage 87 pipe (1:0)
-Voltage 89 pipe (1:82.76074219)
-Voltage 91 pipe (1:82.76074219)
-Voltage 92 pipe (1:81.48553467)
+Voltage 89 pipe (1:96)
+Voltage 91 pipe (1:96)
+Voltage 92 pipe (1:100)
 Voltage 94 pipe (1:0)
-Voltage 95 pipe (1:0)
+Voltage 95 pipe (1:10.52785397)
 Voltage 97 pipe (1:0)
-Voltage 98 pipe (1:128)
+Voltage 98 pipe (1:22.00320435)
 Voltage 100 pipe (1:0)
-Voltage 103 pipe (1:96)
+Voltage 103 pipe (1:111.5281372)
 Voltage 105 pipe (1:0)
-Voltage 109 pipe (1:96)
-Voltage 111 pipe (1:36.00000763)
-Voltage 113 pipe (1:100)
-Voltage 115 pipe (1:84)
+Voltage 109 pipe (1:0)
+Voltage 111 pipe (1:0)
+Voltage 113 pipe (1:0)
+Voltage 115 pipe (1:0)
 Voltage 117 pipe (1:0)
-Voltage 119 pipe (1:196)
-Voltage 121 pipe (1:50.99999237)
-Voltage 122 pipe (1:36.00000763)
-Voltage 124 pipe (1:91)
-Voltage 126 pipe (1:19)
-Voltage 128 pipe (1:84.00000763)
-Voltage 129 pipe (1:91)
-Voltage 131 pipe (1:84)
+Voltage 119 pipe (1:84.00000763)
+Voltage 121 pipe (1:0)
+Voltage 122 pipe (1:0)
+Voltage 124 pipe (1:0)
+Voltage 126 pipe (1:96)
+Voltage 128 pipe (1:99)
+Voltage 129 pipe (1:100)
+Voltage 131 pipe (1:0)
 Voltage 133 pipe (1:0)
 Voltage 134 pipe (1:0)
 Voltage 136 pipe (1:0)
-Voltage 138 pipe (1:63.99999619)
-Voltage 140 pipe (1:99)
-Voltage 141 pipe (1:96)
+Voltage 138 pipe (1:0)
+Voltage 140 pipe (1:0)
+Voltage 141 pipe (1:0)
 Voltage 143 pipe (1:0)
-Voltage 145 pipe (1:84)
-Voltage 146 pipe (1:115.9340515)
-Voltage 148 pipe (1:92.8196106)
-Voltage 150 pipe (1:91)
-Voltage 152 pipe (1:96)
-Voltage 154 pipe (1:51.00000381)
-Voltage 156 pipe (1:64)
-Voltage 158 pipe (1:100.8604889)
-Voltage 160 pipe (1:103.0212402)
-Voltage 162 pipe (1:82.88825989)
-Voltage 164 pipe (1:82.76074219)
+Voltage 145 pipe (1:19)
+Voltage 146 pipe (1:64)
+Voltage 148 pipe (1:51.00000381)
+Voltage 150 pipe (1:150)
+Voltage 152 pipe (1:160)
+Voltage 154 pipe (1:87)
+Voltage 156 pipe (1:115)
+Voltage 158 pipe (1:84.00000763)
+Voltage 160 pipe (1:110)
+Voltage 162 pipe (1:84.00000763)
+Voltage 164 pipe (1:91)
 Voltage 167 pipe (1:0)
 Voltage 168 pipe (1:0)
-Voltage 169 pipe (1:36.00000763)
+Voltage 169 pipe (1:0)
 Voltage 171 pipe (1:0)
-Voltage 172 pipe (1:84)
-Voltage 174 pipe (1:63.99999619)
+Voltage 172 pipe (1:0)
+Voltage 174 pipe (1:0)
 Voltage 175 pipe (1:0)
 Voltage 177 pipe (1:0)
-Voltage 178 pipe (1:63.99999619)
-Voltage 180 pipe (1:91.00000763)
-Voltage 182 pipe (1:84)
-Voltage 183 pipe (1:50.99999237)
-Voltage 184 pipe (1:75)
-Voltage 186 pipe (1:63.99999619)
-Voltage 187 pipe (1:99)
-Voltage 188 pipe (1:91)
-Voltage 190 pipe (1:51.00000381)
-Voltage 191 pipe (1:19)
-Voltage 193 pipe (1:39.02124023)
-Voltage 195 pipe (1:26.65176773)
+Voltage 178 pipe (1:51.00000381)
+Voltage 180 pipe (1:0)
+Voltage 182 pipe (1:0)
+Voltage 183 pipe (1:91.00000763)
+Voltage 184 pipe (1:99)
+Voltage 186 pipe (1:96)
+Voltage 187 pipe (1:96)
+Voltage 188 pipe (1:100)
+Voltage 190 pipe (1:100)
+Voltage 191 pipe (1:96)
+Voltage 193 pipe (1:50.00727844)
+Voltage 195 pipe (1:56.21871185)
 Voltage 197 pipe (1:0)
 Voltage 198 pipe (1:0)
 Voltage 200 pipe (1:0)
@@ -2128,7 +2129,7 @@ Voltage 204 pipe (1:0)
 Voltage 205 pipe (1:0)
 Voltage 207 pipe (1:0)
 Voltage 208 pipe (1:0)
-Voltage 222 pipe (1:0)
+Voltage 222 pipe (1:68.43100739)
 Voltage 230 pipe (1:0)
 Voltage 231 pipe (1:0)
 Voltage 233 pipe (1:0)
@@ -2137,178 +2138,178 @@ Voltage 236 pipe (1:0)
 Voltage 237 pipe (1:0)
 Voltage 239 pipe (1:0)
 Voltage 240 pipe (1:0)
-Voltage 247 pipe (1:125.0893707)
-Voltage 248 pipe (1:170.5721893)
-Voltage 250 pipe (1:0)
-Voltage 251 pipe (1:99)
-Voltage 253 pipe (1:142)
-Voltage 254 pipe (1:113)
-Voltage 256 pipe (1:91)
-Voltage 257 pipe (1:101.6517639)
-Voltage 259 pipe (1:36)
-Voltage 260 pipe (1:81.10298157)
+Voltage 247 pipe (1:96)
+Voltage 248 pipe (1:84.00000763)
+Voltage 250 pipe (1:75)
+Voltage 251 pipe (1:166)
+Voltage 253 pipe (1:91)
+Voltage 254 pipe (1:139)
+Voltage 256 pipe (1:100)
+Voltage 257 pipe (1:132)
+Voltage 259 pipe (1:100)
+Voltage 260 pipe (1:96)
 Voltage 264 pipe (1:0)
-Voltage 265 pipe (1:63.99999619)
+Voltage 265 pipe (1:0)
 Voltage 267 pipe (1:0)
 Voltage 268 pipe (1:0)
 Voltage 270 pipe (1:0)
-Voltage 271 pipe (1:84)
-Voltage 276 pipe (1:66.94821167)
+Voltage 271 pipe (1:61.16680527)
+Voltage 276 pipe (1:98.79293823)
 Voltage 278 pipe (1:0)
-Voltage 280 pipe (1:111.0000076)
+Voltage 280 pipe (1:0)
 Voltage 282 pipe (1:0)
 Voltage 284 pipe (1:0)
 Voltage 286 pipe (1:0)
 Voltage 287 pipe (1:0)
-Voltage 289 pipe (1:0)
-Voltage 290 pipe (1:36.00000763)
+Voltage 289 pipe (1:67.27294922)
+Voltage 290 pipe (1:75)
 Voltage 292 pipe (1:0)
 Voltage 293 pipe (1:0)
-Voltage 295 pipe (1:91)
-Voltage 297 pipe (1:0)
-Voltage 299 pipe (1:73.19671631)
-Voltage 301 pipe (1:0)
-Voltage 302 pipe (1:0)
-Voltage 304 pipe (1:92.8196106)
+Voltage 295 pipe (1:75)
+Voltage 297 pipe (1:91.00000763)
+Voltage 299 pipe (1:96.52813721)
+Voltage 301 pipe (1:10.52785397)
+Voltage 302 pipe (1:63.99999619)
+Voltage 304 pipe (1:51.00000381)
 Voltage 305 pipe (1:0)
-Voltage 307 pipe (1:75)
+Voltage 307 pipe (1:0)
 Voltage 309 pipe (1:0)
 Voltage 310 pipe (1:0)
-Voltage 313 pipe (1:0)
-Voltage 315 pipe (1:136)
-Voltage 316 pipe (1:96)
+Voltage 313 pipe (1:66.9571228)
+Voltage 315 pipe (1:0)
+Voltage 316 pipe (1:0)
 Voltage 318 pipe (1:0)
 Voltage 319 pipe (1:0)
-Voltage 322 pipe (1:75)
-Voltage 323 pipe (1:84.00000763)
-Voltage 325 pipe (1:99)
-Voltage 326 pipe (1:96)
-Voltage 328 pipe (1:64)
-Voltage 329 pipe (1:75)
-Voltage 331 pipe (1:84.00000763)
-Voltage 332 pipe (1:91)
-Voltage 334 pipe (1:63.99999619)
-Voltage 336 pipe (1:83)
-Voltage 337 pipe (1:111)
-Voltage 339 pipe (1:99)
-Voltage 340 pipe (1:96)
-Voltage 342 pipe (1:51.00000381)
-Voltage 343 pipe (1:64)
-Voltage 345 pipe (1:84.00000763)
+Voltage 322 pipe (1:0)
+Voltage 323 pipe (1:0)
+Voltage 325 pipe (1:0)
+Voltage 326 pipe (1:0)
+Voltage 328 pipe (1:0)
+Voltage 329 pipe (1:0)
+Voltage 331 pipe (1:0)
+Voltage 332 pipe (1:0)
+Voltage 334 pipe (1:0)
+Voltage 336 pipe (1:0)
+Voltage 337 pipe (1:0)
+Voltage 339 pipe (1:0)
+Voltage 340 pipe (1:0)
+Voltage 342 pipe (1:0)
+Voltage 343 pipe (1:0)
+Voltage 345 pipe (1:0)
 Voltage 347 pipe (1:0)
-Voltage 349 pipe (1:91)
-Voltage 351 pipe (1:75)
-Voltage 352 pipe (1:63.99999619)
-Voltage 354 pipe (1:36.00000763)
-Voltage 356 pipe (1:99)
-Voltage 358 pipe (1:84.00000763)
-Voltage 359 pipe (1:91)
-Voltage 361 pipe (1:84)
-Voltage 363 pipe (1:96)
+Voltage 349 pipe (1:0)
+Voltage 351 pipe (1:0)
+Voltage 352 pipe (1:0)
+Voltage 354 pipe (1:0)
+Voltage 356 pipe (1:0)
+Voltage 358 pipe (1:0)
+Voltage 359 pipe (1:0)
+Voltage 361 pipe (1:0)
+Voltage 363 pipe (1:0)
 Voltage 364 pipe (1:0)
-Voltage 366 pipe (1:19)
-Voltage 368 pipe (1:159)
-Voltage 370 pipe (1:175)
+Voltage 366 pipe (1:0)
+Voltage 368 pipe (1:0)
+Voltage 370 pipe (1:0)
 Voltage 372 pipe (1:0)
 Voltage 374 pipe (1:0)
-Voltage 376 pipe (1:19)
-Voltage 379 pipe (1:146.8882599)
-Voltage 381 pipe (1:157.7607422)
-Voltage 383 pipe (1:19.00000381)
+Voltage 376 pipe (1:0)
+Voltage 379 pipe (1:0)
+Voltage 381 pipe (1:0)
+Voltage 383 pipe (1:0)
 Voltage 385 pipe (1:0)
 Voltage 386 pipe (1:0)
-Voltage 387 pipe (1:99)
-Voltage 389 pipe (1:96)
-Voltage 390 pipe (1:91.00000763)
-Voltage 391 pipe (1:99)
-Voltage 393 pipe (1:100)
-Voltage 394 pipe (1:118)
-Voltage 395 pipe (1:63.99999619)
-Voltage 397 pipe (1:50.99999237)
-Voltage 398 pipe (1:36.00000763)
-Voltage 399 pipe (1:100)
-Voltage 401 pipe (1:96)
-Voltage 402 pipe (1:75)
-Voltage 403 pipe (1:51.00000381)
-Voltage 405 pipe (1:75)
-Voltage 406 pipe (1:91.00000763)
-Voltage 408 pipe (1:148)
-Voltage 409 pipe (1:100)
-Voltage 411 pipe (1:12.75204754)
-Voltage 413 pipe (1:12.75204754)
-Voltage 414 pipe (1:39.02124023)
-Voltage 430 pipe (1:12.75204754)
-Voltage 432 pipe (1:64)
+Voltage 387 pipe (1:0)
+Voltage 389 pipe (1:0)
+Voltage 390 pipe (1:0)
+Voltage 391 pipe (1:0)
+Voltage 393 pipe (1:0)
+Voltage 394 pipe (1:0)
+Voltage 395 pipe (1:0)
+Voltage 397 pipe (1:0)
+Voltage 398 pipe (1:0)
+Voltage 399 pipe (1:0)
+Voltage 401 pipe (1:0)
+Voltage 402 pipe (1:0)
+Voltage 403 pipe (1:0)
+Voltage 405 pipe (1:0)
+Voltage 406 pipe (1:0)
+Voltage 408 pipe (1:0)
+Voltage 409 pipe (1:0)
+Voltage 411 pipe (1:0)
+Voltage 413 pipe (1:61.16680527)
+Voltage 414 pipe (1:50.00727844)
+Voltage 430 pipe (1:61.16680527)
+Voltage 432 pipe (1:0)
 Voltage 433 pipe (1:0)
-Voltage 435 pipe (1:84)
+Voltage 435 pipe (1:0)
 Voltage 437 pipe (1:0)
-Voltage 439 pipe (1:26.65176773)
-Voltage 440 pipe (1:75)
-Voltage 448 pipe (1:64)
-Voltage 449 pipe (1:36)
-Voltage 451 pipe (1:100)
-Voltage 452 pipe (1:187)
-Voltage 454 pipe (1:36)
+Voltage 439 pipe (1:0)
+Voltage 440 pipe (1:0)
+Voltage 448 pipe (1:0)
+Voltage 449 pipe (1:0)
+Voltage 451 pipe (1:0)
+Voltage 452 pipe (1:0)
+Voltage 454 pipe (1:0)
 Voltage 455 pipe (1:0)
-Voltage 457 pipe (1:36)
+Voltage 457 pipe (1:0)
 Voltage 458 pipe (1:0)
-Voltage 460 pipe (1:126)
-Voltage 461 pipe (1:70)
-Voltage 463 pipe (1:100)
-Voltage 464 pipe (1:75)
-Voltage 465 pipe (1:51.00000381)
-Voltage 467 pipe (1:165.1029968)
-Voltage 469 pipe (1:84.00000763)
-Voltage 470 pipe (1:64)
-Voltage 472 pipe (1:96)
-Voltage 473 pipe (1:100)
-Voltage 475 pipe (1:64)
-Voltage 476 pipe (1:36)
-Voltage 478 pipe (1:91)
-Voltage 479 pipe (1:75)
-Voltage 481 pipe (1:91.00000763)
-Voltage 482 pipe (1:99)
-Voltage 484 pipe (1:75)
-Voltage 486 pipe (1:84)
-Voltage 487 pipe (1:174.5525818)
-Voltage 489 pipe (1:90.65176392)
-Voltage 491 pipe (1:90.02124023)
-Voltage 492 pipe (1:81.10298157)
-Voltage 494 pipe (1:26.65176773)
-Voltage 495 pipe (1:49.86048508)
+Voltage 460 pipe (1:0)
+Voltage 461 pipe (1:0)
+Voltage 463 pipe (1:0)
+Voltage 464 pipe (1:0)
+Voltage 465 pipe (1:0)
+Voltage 467 pipe (1:0)
+Voltage 469 pipe (1:0)
+Voltage 470 pipe (1:0)
+Voltage 472 pipe (1:0)
+Voltage 473 pipe (1:0)
+Voltage 475 pipe (1:0)
+Voltage 476 pipe (1:0)
+Voltage 478 pipe (1:0)
+Voltage 479 pipe (1:0)
+Voltage 481 pipe (1:0)
+Voltage 482 pipe (1:0)
+Voltage 484 pipe (1:0)
+Voltage 486 pipe (1:0)
+Voltage 487 pipe (1:0)
+Voltage 489 pipe (1:0)
+Voltage 491 pipe (1:0)
+Voltage 492 pipe (1:91.00000763)
+Voltage 494 pipe (1:56.21871185)
+Voltage 495 pipe (1:42.53250885)
 Voltage 497 pipe (1:0)
-Voltage 498 pipe (1:82.88825989)
-Voltage 501 pipe (1:126)
-Voltage 502 pipe (1:99)
-Voltage 504 pipe (1:0)
-Voltage 505 pipe (1:19.00000381)
-Voltage 507 pipe (1:74.0893631)
-Voltage 508 pipe (1:36.00000763)
-Voltage 510 pipe (1:0)
-Voltage 511 pipe (1:0)
-Voltage 513 pipe (1:0)
-Voltage 514 pipe (1:0)
-Voltage 516 pipe (1:84.00000763)
-Voltage 518 pipe (1:75)
+Voltage 498 pipe (1:0)
+Voltage 501 pipe (1:32.21521378)
+Voltage 502 pipe (1:84)
+Voltage 504 pipe (1:22.00320435)
+Voltage 505 pipe (1:75)
+Voltage 507 pipe (1:96)
+Voltage 508 pipe (1:64)
+Voltage 510 pipe (1:68.325737)
+Voltage 511 pipe (1:67.27294922)
+Voltage 513 pipe (1:68.43100739)
+Voltage 514 pipe (1:75)
+Voltage 516 pipe (1:84)
+Voltage 518 pipe (1:91.00000763)
 Voltage 519 pipe (1:0)
-Voltage 520 pipe (1:0)
-Voltage 522 pipe (1:49.86048508)
-Voltage 524 pipe (1:75)
-Voltage 525 pipe (1:51.00000381)
-Voltage 527 pipe (1:0)
+Voltage 520 pipe (1:91)
+Voltage 522 pipe (1:93.53250122)
+Voltage 524 pipe (1:91.00000763)
+Voltage 525 pipe (1:99)
+Voltage 527 pipe (1:19)
 Voltage 530 pipe (1:0)
-Voltage 531 pipe (1:0)
-Voltage 533 pipe (1:0)
-Voltage 535 pipe (1:19.00000381)
-Voltage 536 pipe (1:50.99999237)
-Voltage 538 pipe (1:36.00000763)
-Voltage 539 pipe (1:96)
-Voltage 542 pipe (1:198)
-Voltage 544 pipe (1:196)
+Voltage 531 pipe (1:19.00000381)
+Voltage 533 pipe (1:50.99999237)
+Voltage 535 pipe (1:0)
+Voltage 536 pipe (1:0)
+Voltage 538 pipe (1:0)
+Voltage 539 pipe (1:0)
+Voltage 542 pipe (1:75)
+Voltage 544 pipe (1:64)
 Voltage 545 pipe (1:0)
-Voltage 547 pipe (1:84)
-Voltage 548 pipe (1:96)
-Voltage 550 pipe (1:91.00000763)
+Voltage 547 pipe (1:0)
+Voltage 548 pipe (1:0)
+Voltage 550 pipe (1:0)
 Voltage 551 pipe (1:91)
 Voltage 553 pipe (1:0)
 Voltage 554 pipe (1:0)
@@ -2316,96 +2317,96 @@ Voltage 556 pipe (1:0)
 Voltage 557 pipe (1:0)
 Voltage 559 pipe (1:0)
 Voltage 560 pipe (1:0)
-Voltage 562 pipe (1:0)
-Voltage 563 pipe (1:0)
-Voltage 565 pipe (1:0)
+Voltage 562 pipe (1:10.52785397)
+Voltage 563 pipe (1:32.21521378)
+Voltage 565 pipe (1:22.00320435)
 Voltage 566 pipe (1:0)
-Voltage 567 pipe (1:0)
+Voltage 567 pipe (1:64.32515717)
 Voltage 569 pipe (1:0)
-Voltage 570 pipe (1:36.00000763)
-Voltage 572 pipe (1:19.00000381)
+Voltage 570 pipe (1:0)
+Voltage 572 pipe (1:0)
 Voltage 573 pipe (1:0)
-Voltage 574 pipe (1:91.00000763)
-Voltage 576 pipe (1:0)
-Voltage 578 pipe (1:0)
+Voltage 574 pipe (1:0)
+Voltage 576 pipe (1:41.16389084)
+Voltage 578 pipe (1:32.21521378)
 Voltage 579 pipe (1:0)
-Voltage 581 pipe (1:196)
-Voltage 582 pipe (1:180)
-Voltage 584 pipe (1:190)
-Voltage 585 pipe (1:64)
-Voltage 587 pipe (1:91.00000763)
-Voltage 589 pipe (1:96)
+Voltage 581 pipe (1:64)
+Voltage 582 pipe (1:36)
+Voltage 584 pipe (1:51.00000381)
+Voltage 585 pipe (1:96)
+Voltage 587 pipe (1:0)
+Voltage 589 pipe (1:0)
 Voltage 590 pipe (1:0)
-Voltage 592 pipe (1:51.00000381)
-Voltage 593 pipe (1:19)
-Voltage 595 pipe (1:36)
-Voltage 596 pipe (1:0)
-Voltage 598 pipe (1:50.99999237)
-Voltage 599 pipe (1:75)
-Voltage 601 pipe (1:63.99999619)
-Voltage 602 pipe (1:100)
-Voltage 604 pipe (1:91.00000763)
-Voltage 606 pipe (1:100)
-Voltage 607 pipe (1:96)
-Voltage 609 pipe (1:96)
-Voltage 611 pipe (1:99)
+Voltage 592 pipe (1:99)
+Voltage 593 pipe (1:99)
+Voltage 595 pipe (1:100)
+Voltage 596 pipe (1:86.00320435)
+Voltage 598 pipe (1:51.00000381)
+Voltage 599 pipe (1:19)
+Voltage 601 pipe (1:36)
+Voltage 602 pipe (1:0)
+Voltage 604 pipe (1:0)
+Voltage 606 pipe (1:0)
+Voltage 607 pipe (1:0)
+Voltage 609 pipe (1:0)
+Voltage 611 pipe (1:0)
 Voltage 612 pipe (1:0)
-Voltage 613 pipe (1:87.75204468)
-Voltage 615 pipe (1:99)
-Voltage 616 pipe (1:99)
-Voltage 618 pipe (1:100)
-Voltage 619 pipe (1:82.88825989)
-Voltage 620 pipe (1:142.5525818)
-Voltage 622 pipe (1:50.99999237)
-Voltage 624 pipe (1:63.99999619)
+Voltage 613 pipe (1:0)
+Voltage 615 pipe (1:0)
+Voltage 616 pipe (1:0)
+Voltage 618 pipe (1:0)
+Voltage 619 pipe (1:99)
+Voltage 620 pipe (1:99)
+Voltage 622 pipe (1:64)
+Voltage 624 pipe (1:51.00000381)
 Voltage 625 pipe (1:0)
-Voltage 626 pipe (1:100)
+Voltage 626 pipe (1:0)
 Voltage 628 pipe (1:0)
-Voltage 629 pipe (1:0)
-Voltage 631 pipe (1:0)
+Voltage 629 pipe (1:22.00320435)
+Voltage 631 pipe (1:10.52785397)
 Voltage 632 pipe (1:0)
-Voltage 633 pipe (1:0)
-Voltage 636 pipe (1:36)
-Voltage 637 pipe (1:51.00000381)
+Voltage 633 pipe (1:60.42985153)
+Voltage 636 pipe (1:0)
+Voltage 637 pipe (1:0)
 Voltage 638 pipe (1:0)
 Voltage 640 pipe (1:0)
 Voltage 641 pipe (1:0)
-Voltage 643 pipe (1:100)
-Voltage 644 pipe (1:99)
+Voltage 643 pipe (1:0)
+Voltage 644 pipe (1:0)
 Voltage 645 pipe (1:0)
 Voltage 647 pipe (1:0)
 Voltage 648 pipe (1:0)
 Voltage 650 pipe (1:0)
 Voltage 651 pipe (1:0)
-Voltage 652 pipe (1:36)
-Voltage 654 pipe (1:70)
-Voltage 655 pipe (1:100)
-Voltage 657 pipe (1:64)
-Voltage 658 pipe (1:96)
-Voltage 660 pipe (1:51.00000381)
-Voltage 661 pipe (1:91)
+Voltage 652 pipe (1:0)
+Voltage 654 pipe (1:0)
+Voltage 655 pipe (1:0)
+Voltage 657 pipe (1:0)
+Voltage 658 pipe (1:0)
+Voltage 660 pipe (1:0)
+Voltage 661 pipe (1:0)
 Voltage 663 pipe (1:0)
-Voltage 664 pipe (1:19)
-Voltage 666 pipe (1:130.9634705)
-Voltage 667 pipe (1:78.55257416)
-Voltage 669 pipe (1:81.48553467)
-Voltage 670 pipe (1:82.88825989)
+Voltage 664 pipe (1:0)
+Voltage 666 pipe (1:0)
+Voltage 667 pipe (1:0)
+Voltage 669 pipe (1:0)
+Voltage 670 pipe (1:0)
 Voltage 672 pipe (1:0)
 Voltage 673 pipe (1:0)
 Voltage 675 pipe (1:0)
 Voltage 676 pipe (1:0)
-Voltage 679 pipe (1:36)
+Voltage 679 pipe (1:0)
 Voltage 680 pipe (1:0)
 Voltage 682 pipe (1:0)
 Voltage 683 pipe (1:0)
 Voltage 685 pipe (1:0)
-Voltage 686 pipe (1:51.00000381)
+Voltage 686 pipe (1:0)
 Voltage 688 pipe (1:0)
-Voltage 689 pipe (1:36)
+Voltage 689 pipe (1:0)
 Voltage 691 pipe (1:0)
-Voltage 692 pipe (1:36)
-Voltage 694 pipe (1:51.00000381)
-Voltage 696 pipe (1:12.75204754)
+Voltage 692 pipe (1:0)
+Voltage 694 pipe (1:0)
+Voltage 696 pipe (1:0)
 Voltage 697 pipe (1:0)
 Voltage 699 pipe (1:0)
 Voltage 701 pipe (1:0)
@@ -2417,50 +2418,50 @@ Voltage 708 pipe (1:0)
 Voltage 710 pipe (1:0)
 Voltage 711 pipe (1:0)
 Voltage 713 pipe (1:0)
-Voltage 715 pipe (1:19)
-Voltage 716 pipe (1:128)
+Voltage 715 pipe (1:0)
+Voltage 716 pipe (1:0)
 Voltage 718 pipe (1:0)
 Voltage 719 pipe (1:0)
 Voltage 721 pipe (1:0)
-Voltage 723 pipe (1:91)
-Voltage 724 pipe (1:96)
+Voltage 723 pipe (1:0)
+Voltage 724 pipe (1:0)
 Voltage 726 pipe (1:0)
 Voltage 727 pipe (1:0)
 Voltage 729 pipe (1:0)
-Voltage 730 pipe (1:132.0959015)
-Voltage 732 pipe (1:149.0893555)
-Voltage 733 pipe (1:162.5525818)
-Voltage 735 pipe (1:84.00000763)
-Voltage 736 pipe (1:82.88825989)
-Voltage 738 pipe (1:81.10298157)
-Voltage 740 pipe (1:87.51824951)
-Voltage 741 pipe (1:111.572197)
+Voltage 730 pipe (1:0)
+Voltage 732 pipe (1:0)
+Voltage 733 pipe (1:0)
+Voltage 735 pipe (1:0)
+Voltage 736 pipe (1:0)
+Voltage 738 pipe (1:0)
+Voltage 740 pipe (1:0)
+Voltage 741 pipe (1:0)
 Voltage 743 pipe (1:0)
 Voltage 744 pipe (1:0)
-Voltage 746 pipe (1:84.00000763)
-Voltage 747 pipe (1:91)
-Voltage 749 pipe (1:91)
-Voltage 750 pipe (1:115)
-Voltage 752 pipe (1:91)
-Voltage 753 pipe (1:96)
-Voltage 755 pipe (1:59.93405151)
-Voltage 756 pipe (1:87.51824951)
-Voltage 758 pipe (1:12.75204754)
+Voltage 746 pipe (1:0)
+Voltage 747 pipe (1:0)
+Voltage 749 pipe (1:0)
+Voltage 750 pipe (1:0)
+Voltage 752 pipe (1:0)
+Voltage 753 pipe (1:0)
+Voltage 755 pipe (1:0)
+Voltage 756 pipe (1:0)
+Voltage 758 pipe (1:0)
 Voltage 759 pipe (1:0)
 Voltage 760 pipe (1:0)
 Voltage 762 pipe (1:0)
 Voltage 763 pipe (1:0)
-Voltage 765 pipe (1:49.86048508)
-Voltage 766 pipe (1:39.02124023)
-Voltage 768 pipe (1:87.75204468)
-Voltage 769 pipe (1:84.00000763)
-Voltage 771 pipe (1:96.75205231)
-Voltage 772 pipe (1:91)
-Voltage 774 pipe (1:84.00000763)
-Voltage 775 pipe (1:91)
+Voltage 765 pipe (1:0)
+Voltage 766 pipe (1:0)
+Voltage 768 pipe (1:0)
+Voltage 769 pipe (1:0)
+Voltage 771 pipe (1:0)
+Voltage 772 pipe (1:0)
+Voltage 774 pipe (1:0)
+Voltage 775 pipe (1:0)
 Voltage 782 pipe (1:0)
-Voltage 784 pipe (1:19)
-Voltage 785 pipe (1:75)
+Voltage 784 pipe (1:0)
+Voltage 785 pipe (1:0)
 Voltage 787 pipe (1:0)
 Voltage 789 pipe (1:0)
 Voltage 790 pipe (1:0)
@@ -2469,80 +2470,80 @@ Voltage 793 pipe (1:0)
 Voltage 795 pipe (1:0)
 Voltage 811 pipe (1:0)
 Voltage 812 pipe (1:0)
-Voltage 814 pipe (1:91)
+Voltage 814 pipe (1:0)
 Voltage 816 pipe (1:0)
 Voltage 817 pipe (1:0)
-Voltage 819 pipe (1:19)
-Voltage 820 pipe (1:36)
+Voltage 819 pipe (1:0)
+Voltage 820 pipe (1:0)
 Voltage 822 pipe (1:0)
 Voltage 823 pipe (1:0)
 Voltage 828 pipe (1:0)
 Voltage 829 pipe (1:0)
 Voltage 831 pipe (1:0)
-Voltage 832 pipe (1:75)
-Voltage 833 pipe (1:51.00000381)
-Voltage 835 pipe (1:64)
+Voltage 832 pipe (1:0)
+Voltage 833 pipe (1:0)
+Voltage 835 pipe (1:0)
 Voltage 836 pipe (1:0)
 Voltage 838 pipe (1:0)
 Voltage 839 pipe (1:0)
 Voltage 840 pipe (1:0)
 Voltage 842 pipe (1:0)
-Voltage 843 pipe (1:91)
-Voltage 844 pipe (1:75)
-Voltage 846 pipe (1:84.00000763)
-Voltage 849 pipe (1:41.8266983)
-Voltage 853 pipe (1:26.65176773)
-Voltage 855 pipe (1:90.02124023)
-Voltage 857 pipe (1:90.65176392)
-Voltage 859 pipe (1:103.0212402)
-Voltage 861 pipe (1:101.6517639)
-Voltage 863 pipe (1:76.75204468)
-Voltage 865 pipe (1:75)
+Voltage 843 pipe (1:0)
+Voltage 844 pipe (1:0)
+Voltage 846 pipe (1:0)
+Voltage 849 pipe (1:0)
+Voltage 853 pipe (1:0)
+Voltage 855 pipe (1:0)
+Voltage 857 pipe (1:0)
+Voltage 859 pipe (1:0)
+Voltage 861 pipe (1:0)
+Voltage 863 pipe (1:0)
+Voltage 865 pipe (1:0)
 Voltage 869 pipe (1:0)
-Voltage 872 pipe (1:51.00000381)
+Voltage 872 pipe (1:0)
 Voltage 875 pipe (1:0)
 Voltage 876 pipe (1:0)
 Voltage 879 pipe (1:0)
-Voltage 884 pipe (1:19)
+Voltage 884 pipe (1:0)
 Voltage 885 pipe (1:0)
 Voltage 887 pipe (1:0)
 Voltage 889 pipe (1:0)
 Voltage 891 pipe (1:0)
 Voltage 893 pipe (1:0)
-Voltage 896 pipe (1:36)
+Voltage 896 pipe (1:0)
 Voltage 897 pipe (1:0)
 Voltage 899 pipe (1:0)
-Voltage 901 pipe (1:19)
+Voltage 901 pipe (1:0)
 Voltage 903 pipe (1:0)
-Voltage 904 pipe (1:77.9149704)
+Voltage 904 pipe (1:0)
 Voltage 906 pipe (1:0)
-Voltage 908 pipe (1:36)
-Voltage 909 pipe (1:77.9149704)
+Voltage 908 pipe (1:0)
+Voltage 909 pipe (1:0)
 Voltage 911 pipe (1:0)
-Voltage 912 pipe (1:66.94821167)
+Voltage 912 pipe (1:0)
 Voltage 915 pipe (1:0)
 Voltage 917 pipe (1:0)
 Voltage 918 pipe (1:0)
-Voltage 920 pipe (1:19)
-Voltage 922 pipe (1:178.8882599)
-Voltage 924 pipe (1:84.00000763)
-Voltage 925 pipe (1:91)
+Voltage 920 pipe (1:0)
+Voltage 922 pipe (1:0)
+Voltage 924 pipe (1:0)
+Voltage 925 pipe (1:0)
 Voltage 927 pipe (1:0)
-Voltage 929 pipe (1:63.99999619)
-Voltage 930 pipe (1:12.75204754)
+Voltage 929 pipe (1:0)
+Voltage 930 pipe (1:0)
 Voltage 932 pipe (1:0)
 Voltage 933 pipe (1:0)
-Voltage 935 pipe (1:19.00000381)
+Voltage 935 pipe (1:0)
 Voltage 936 pipe (1:0)
 Voltage 938 pipe (1:0)
-Voltage 941 pipe (1:96)
-Voltage 942 pipe (1:96)
+Voltage 941 pipe (1:0)
+Voltage 942 pipe (1:0)
 Voltage 944 pipe (1:0)
 Voltage 945 pipe (1:0)
-Voltage 947 pipe (1:99)
-Voltage 948 pipe (1:91.00000763)
-Voltage 950 pipe (1:19)
-Voltage 952 pipe (1:36)
+Voltage 947 pipe (1:0)
+Voltage 948 pipe (1:0)
+Voltage 950 pipe (1:0)
+Voltage 952 pipe (1:0)
 Voltage 954 pipe (1:0)
 Voltage 955 pipe (1:0)
 Voltage 957 pipe (1:0)
@@ -2554,19 +2555,19 @@ Voltage 968 pipe (1:0)
 Voltage 969 pipe (1:0)
 Voltage 971 pipe (1:0)
 Voltage 972 pipe (1:0)
-Voltage 975 pipe (1:49.86048508)
-Voltage 976 pipe (1:39.02124023)
+Voltage 975 pipe (1:0)
+Voltage 976 pipe (1:0)
 Voltage 978 pipe (1:0)
 Voltage 979 pipe (1:0)
-Voltage 981 pipe (1:63.99999619)
-Voltage 982 pipe (1:50.99999237)
-Voltage 984 pipe (1:50.99999237)
-Voltage 985 pipe (1:36.00000763)
+Voltage 981 pipe (1:0)
+Voltage 982 pipe (1:0)
+Voltage 984 pipe (1:0)
+Voltage 985 pipe (1:0)
 Voltage 987 pipe (1:0)
 Voltage 988 pipe (1:0)
-Voltage 990 pipe (1:100)
-Voltage 992 pipe (1:151)
-Voltage 994 pipe (1:99)
+Voltage 990 pipe (1:0)
+Voltage 992 pipe (1:0)
+Voltage 994 pipe (1:0)
 Voltage 996 pipe (1:0)
 Voltage 999 pipe (1:0)
 Voltage 1000 pipe (1:0)
@@ -2599,124 +2600,124 @@ Voltage 1057 pipe (1:0)
 Voltage 1059 pipe (1:0)
 Voltage 1060 pipe (1:0)
 Voltage 1062 pipe (1:0)
-Voltage 1063 pipe (1:96)
-Voltage 1064 pipe (1:84.00000763)
-Voltage 1066 pipe (1:91)
+Voltage 1063 pipe (1:0)
+Voltage 1064 pipe (1:0)
+Voltage 1066 pipe (1:0)
 Voltage 1067 pipe (1:0)
 Voltage 1069 pipe (1:0)
-Voltage 1070 pipe (1:19)
+Voltage 1070 pipe (1:0)
 Voltage 1072 pipe (1:0)
-Voltage 1073 pipe (1:84)
-Voltage 1074 pipe (1:96)
-Voltage 1077 pipe (1:66.94821167)
-Voltage 1079 pipe (1:59.16947174)
+Voltage 1073 pipe (1:0)
+Voltage 1074 pipe (1:0)
+Voltage 1077 pipe (1:0)
+Voltage 1079 pipe (1:0)
 Voltage 1081 pipe (1:0)
 Voltage 1083 pipe (1:0)
-Voltage 1085 pipe (1:84)
-Voltage 1087 pipe (1:75)
-Voltage 1089 pipe (1:75)
-Voltage 1091 pipe (1:63.99999619)
-Voltage 1093 pipe (1:12.75204754)
+Voltage 1085 pipe (1:0)
+Voltage 1087 pipe (1:0)
+Voltage 1089 pipe (1:0)
+Voltage 1091 pipe (1:0)
+Voltage 1093 pipe (1:0)
 Voltage 1095 pipe (1:0)
 Voltage 1096 pipe (1:0)
-Voltage 1099 pipe (1:84.00000763)
+Voltage 1099 pipe (1:0)
 Voltage 1102 pipe (1:0)
 Voltage 1103 pipe (1:0)
 Voltage 1106 pipe (1:0)
-Voltage 1109 pipe (1:99)
-Voltage 1112 pipe (1:100)
-Voltage 1113 pipe (1:96)
+Voltage 1109 pipe (1:0)
+Voltage 1112 pipe (1:0)
+Voltage 1113 pipe (1:0)
 Voltage 1115 pipe (1:0)
 Voltage 1117 pipe (1:0)
 Voltage 1118 pipe (1:0)
 Voltage 1120 pipe (1:0)
 Voltage 1121 pipe (1:0)
 Voltage 1123 pipe (1:0)
-Voltage 1125 pipe (1:75)
-Voltage 1126 pipe (1:51.00000381)
+Voltage 1125 pipe (1:0)
+Voltage 1126 pipe (1:0)
 Voltage 1128 pipe (1:0)
-Voltage 1130 pipe (1:100)
+Voltage 1130 pipe (1:0)
 Voltage 1132 pipe (1:0)
 Voltage 1134 pipe (1:0)
-Voltage 1136 pipe (1:75)
+Voltage 1136 pipe (1:0)
 Voltage 1138 pipe (1:0)
 Voltage 1141 pipe (1:0)
-Voltage 1143 pipe (1:75)
+Voltage 1143 pipe (1:0)
 Voltage 1145 pipe (1:0)
-Voltage 1148 pipe (1:84.00000763)
-Voltage 1150 pipe (1:19)
-Voltage 1151 pipe (1:36)
-Voltage 1153 pipe (1:84.00000763)
-Voltage 1154 pipe (1:91)
+Voltage 1148 pipe (1:0)
+Voltage 1150 pipe (1:0)
+Voltage 1151 pipe (1:0)
+Voltage 1153 pipe (1:0)
+Voltage 1154 pipe (1:0)
 Voltage 1156 pipe (1:0)
 Voltage 1157 pipe (1:0)
 Voltage 1159 pipe (1:0)
-Voltage 1161 pipe (1:91)
+Voltage 1161 pipe (1:0)
 Voltage 1163 pipe (1:0)
-Voltage 1165 pipe (1:36)
-Voltage 1167 pipe (1:96)
+Voltage 1165 pipe (1:0)
+Voltage 1167 pipe (1:0)
 Voltage 1171 pipe (1:0)
 Voltage 1174 pipe (1:0)
-Voltage 1176 pipe (1:36)
-Voltage 1178 pipe (1:96)
-Voltage 1180 pipe (1:100)
-Voltage 1182 pipe (1:64)
+Voltage 1176 pipe (1:0)
+Voltage 1178 pipe (1:0)
+Voltage 1180 pipe (1:0)
+Voltage 1182 pipe (1:0)
 Voltage 1184 pipe (1:0)
-Voltage 1186 pipe (1:99)
-Voltage 1188 pipe (1:36)
+Voltage 1186 pipe (1:0)
+Voltage 1188 pipe (1:0)
 Voltage 1189 pipe (1:0)
-Voltage 1191 pipe (1:96)
-Voltage 1192 pipe (1:84.00000763)
+Voltage 1191 pipe (1:0)
+Voltage 1192 pipe (1:0)
 Voltage 1194 pipe (1:0)
 Voltage 1195 pipe (1:0)
-Voltage 1197 pipe (1:51.00000381)
-Voltage 1198 pipe (1:19)
-Voltage 1200 pipe (1:84.00000763)
-Voltage 1202 pipe (1:75)
-Voltage 1204 pipe (1:50.99999237)
-Voltage 1205 pipe (1:96)
-Voltage 1207 pipe (1:100)
-Voltage 1208 pipe (1:19)
-Voltage 1210 pipe (1:91.00000763)
-Voltage 1212 pipe (1:75)
-Voltage 1213 pipe (1:51.00000381)
-Voltage 1215 pipe (1:75)
+Voltage 1197 pipe (1:0)
+Voltage 1198 pipe (1:0)
+Voltage 1200 pipe (1:0)
+Voltage 1202 pipe (1:0)
+Voltage 1204 pipe (1:0)
+Voltage 1205 pipe (1:0)
+Voltage 1207 pipe (1:0)
+Voltage 1208 pipe (1:0)
+Voltage 1210 pipe (1:0)
+Voltage 1212 pipe (1:0)
+Voltage 1213 pipe (1:0)
+Voltage 1215 pipe (1:0)
 Voltage 1217 pipe (1:0)
-Voltage 1218 pipe (1:99)
-Voltage 1220 pipe (1:96)
-Voltage 1222 pipe (1:91.00000763)
-Voltage 1223 pipe (1:99)
+Voltage 1218 pipe (1:0)
+Voltage 1220 pipe (1:0)
+Voltage 1222 pipe (1:0)
+Voltage 1223 pipe (1:0)
 Voltage 1225 pipe (1:0)
-Voltage 1227 pipe (1:19)
-Voltage 1239 pipe (1:91)
-Voltage 1252 pipe (1:91)
+Voltage 1227 pipe (1:0)
+Voltage 1239 pipe (1:0)
+Voltage 1252 pipe (1:0)
 Voltage 1254 pipe (1:0)
 Voltage 1255 pipe (1:0)
-Voltage 1257 pipe (1:41.5716629)
-Voltage 1258 pipe (1:39.02124023)
-Voltage 1260 pipe (1:41.8266983)
-Voltage 1261 pipe (1:12.75204754)
-Voltage 1262 pipe (1:116.9362106)
+Voltage 1257 pipe (1:0)
+Voltage 1258 pipe (1:0)
+Voltage 1260 pipe (1:0)
+Voltage 1261 pipe (1:0)
+Voltage 1262 pipe (1:0)
 Voltage 1264 pipe (1:0)
 Voltage 1265 pipe (1:0)
 Voltage 1267 pipe (1:0)
-Voltage 1268 pipe (1:84.00000763)
-Voltage 1269 pipe (1:64)
-Voltage 1271 pipe (1:100)
-Voltage 1272 pipe (1:96)
-Voltage 1274 pipe (1:99)
-Voltage 1275 pipe (1:75)
-Voltage 1276 pipe (1:142.0000153)
-Voltage 1278 pipe (1:99)
-Voltage 1279 pipe (1:99)
-Voltage 1281 pipe (1:100)
+Voltage 1268 pipe (1:0)
+Voltage 1269 pipe (1:0)
+Voltage 1271 pipe (1:0)
+Voltage 1272 pipe (1:0)
+Voltage 1274 pipe (1:0)
+Voltage 1275 pipe (1:0)
+Voltage 1276 pipe (1:0)
+Voltage 1278 pipe (1:0)
+Voltage 1279 pipe (1:0)
+Voltage 1281 pipe (1:0)
 Voltage 1282 pipe (1:100)
-Voltage 1283 pipe (1:160)
-Voltage 1285 pipe (1:39.02124023)
-Voltage 1286 pipe (1:59.16947174)
-Voltage 1288 pipe (1:49.86048508)
+Voltage 1283 pipe (1:96)
+Voltage 1285 pipe (1:50.00727844)
+Voltage 1286 pipe (1:33.79439163)
+Voltage 1288 pipe (1:42.53250885)
 Voltage 1289 pipe (1:0)
-Voltage 1290 pipe (1:82.76074219)
+Voltage 1290 pipe (1:22.00320435)
 Voltage 1292 pipe (1:0)
 Voltage 1293 pipe (1:0)
 Voltage 1295 pipe (1:0)
@@ -2727,30 +2728,30 @@ Voltage 1300 pipe (1:0)
 Voltage 1302 pipe (1:0)
 Voltage 1303 pipe (1:0)
 Voltage 1304 pipe (1:0)
-Voltage 1306 pipe (1:96)
-Voltage 1308 pipe (1:99)
-Voltage 1309 pipe (1:91.00000763)
-Voltage 1310 pipe (1:150)
-Voltage 1312 pipe (1:90.02124023)
-Voltage 1313 pipe (1:84)
-Voltage 1315 pipe (1:96)
-Voltage 1316 pipe (1:96)
-Voltage 1318 pipe (1:99)
-Voltage 1319 pipe (1:75)
-Voltage 1321 pipe (1:50.99999237)
-Voltage 1322 pipe (1:91.00000763)
-Voltage 1324 pipe (1:99)
-Voltage 1325 pipe (1:91)
-Voltage 1327 pipe (1:64)
-Voltage 1328 pipe (1:36)
-Voltage 1330 pipe (1:51.00000381)
-Voltage 1331 pipe (1:84.00000763)
-Voltage 1332 pipe (1:64)
+Voltage 1306 pipe (1:0)
+Voltage 1308 pipe (1:0)
+Voltage 1309 pipe (1:0)
+Voltage 1310 pipe (1:0)
+Voltage 1312 pipe (1:0)
+Voltage 1313 pipe (1:0)
+Voltage 1315 pipe (1:0)
+Voltage 1316 pipe (1:0)
+Voltage 1318 pipe (1:0)
+Voltage 1319 pipe (1:0)
+Voltage 1321 pipe (1:0)
+Voltage 1322 pipe (1:0)
+Voltage 1324 pipe (1:0)
+Voltage 1325 pipe (1:0)
+Voltage 1327 pipe (1:0)
+Voltage 1328 pipe (1:0)
+Voltage 1330 pipe (1:0)
+Voltage 1331 pipe (1:0)
+Voltage 1332 pipe (1:0)
 Voltage 1334 pipe (1:0)
 Voltage 1335 pipe (1:0)
 Voltage 1337 pipe (1:0)
-Voltage 1338 pipe (1:63.99999619)
-Voltage 1339 pipe (1:84)
+Voltage 1338 pipe (1:51.00000381)
+Voltage 1339 pipe (1:19)
 Voltage 1341 pipe (1:0)
 Voltage 1342 pipe (1:0)
 Voltage 1344 pipe (2:0,0)
@@ -2761,11 +2762,11 @@ Voltage 1349 pipe (1:0)
 Voltage 1351 pipe (2:0,0)
 Voltage 1352 pipe (1:0)
 Voltage 1353 pipe (1:0)
-Voltage 1355 pipe (1:96)
-Voltage 1356 pipe (1:100)
-Voltage 1358 pipe (1:99)
-Voltage 1359 pipe (1:0)
-Voltage 1360 pipe (1:75)
+Voltage 1355 pipe (1:0)
+Voltage 1356 pipe (1:0)
+Voltage 1358 pipe (1:0)
+Voltage 1359 pipe (1:84)
+Voltage 1360 pipe (1:96)
 Voltage 1362 pipe (1:0)
 Voltage 1363 pipe (1:0)
 Voltage 1365 pipe (1:0)
@@ -2853,9 +2854,9 @@ SetSigGen 59 "SigGen 1"
 SetSigGen 60 "SigGen 1" 
 ActiveSigGen  0
 NrOfTracks 1
-SignalInfo  ( 0| 0) source 101((4553.452148|21803.42383),3965.775391)
+SignalInfo  ( 0| 0) source 101((6148.558105|16847.0332),2035.069336)
 SignalData  ( 0| 0) StartTime 0
-{17114:
+{45384:
 0 378.576355 4010.774902 9085.149414 16621.60156 24721.81641 33706.92578 43771.98438 53389.78516 62009.79688 69187.73438 76242.91406 
 85223.26562 92896.85938 98969.88281 102296.9375 106329.5703 113012.0547 115575.5078 116746.0156 114029.1172 114829.4297 119408.1797 122828.3828 
 124844.2969 128043.4062 123438.7734 122089.3906 123745.9453 122321.4375 124395 123866.7812 124340.8438 123066.1875 121465.1641 118301.5781 
@@ -4282,8 +4283,2363 @@ SignalData  ( 0| 0) StartTime 0
 25406.37109 1279.999878 0 63953 0 0 0 0 0 0 72 27375.50586 
 59194 0 0 0 0 43988 0 0 0 0 93917.51562 0 
 38155 0 0 0 0 0 21332 1799.999878 38121.09375 38121.09375 38121.09375 38121.09375 
-38121.09375 38121.09375 
+38121.09375 38121.09375 38121.09375 29663.52344 29663.52344 29434.52539 26842.29102 20739.04297 11961.54102 5252.348145 84.00000763 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 168.0000153 1335.383545 3569.692139 5029.619629 6752.939941 7177.824219 8903.378906 10430.0498 
+11603.92188 13841.25195 14964.94141 15972.67969 16572.25781 17248.44531 17885.89453 17805.14258 18225.02734 19896.41016 19711.69727 20253.22656 
+20820.23242 24751.05859 26543.66406 30951.08398 37604.35156 44694.05078 51509.75391 56026.00781 58881.75781 63251.74609 61581.74609 62482.34766 
+63436.58203 65614.20312 66693.96094 66805.16406 62637.42578 59916.32031 56054.28516 53699.35938 51745.32031 48906.34766 45600.00391 42080.95312 
+38610.27344 35549.71094 31954.95312 28915.94922 25696.73242 22515.94922 19290.66797 15924.55566 13808.14844 11911.5127 10349.0293 8749.797852 
+7123.076172 5725.851074 4499.123047 3316.428955 2290.033203 1443 839.999939 583 292.0000305 114.0000153 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 
+1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 
+7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 
+20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 
+55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 
+28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 
+1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 
+2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10663.27246 12921.75586 15235.98047 17101.94336 18994.65625 20465.11133 22173.88281 23617.68359 25227.26562 27319.44727 29779.98242 
+32555.0293 35207.89453 37236.84766 38915.01562 39933.20312 40759.64062 41251.91797 41534.43359 41576.32031 41788.34766 41577.60156 41325.25781 
+40538.09766 39713.05469 37989.08203 36462.40625 34485.45312 32456.0625 30595.01953 29315.41602 28810.23438 28375.2793 27967.25 27316.8457 
+26645.02539 25889.23242 25277 24642.45312 23858.24805 23655.70312 23110.83203 22369.66406 21738.86914 20865.98047 19814.21875 18930.82617 
+17907.80078 16653.14258 15063.27734 13428.0498 11944.41016 10265.39551 8698.976562 7035.172852 5547.083008 3969.849609 2781.123291 1565.427979 
+780.032959 304.0000305 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 
+2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 
+1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 
+6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 
+15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 
+49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 
+41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 
+3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 38 72 178 386 703 1115 1893 2784 3842 5037 
+6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 
+26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 
+31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 
+6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 
+3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 38 72 178 386 
+703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 
+17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 
+33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 
+17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 
+3004 3086 3052 3259 3581.275635 3983.755127 4265.978027 4427.945312 4637.65918 4743.112305 4789.838379 4727.715332 
+4556.743652 4276.928711 3964.264404 3534.756104 3026.399902 2773.194824 2431.144531 2336.246338 2241.501953 2121.910645 2144.472168 2249.188721 
+2338.869629 2552.508545 3032.581543 3644.063721 4533.955566 5432.256348 6557 7939 9304 10740 12749 15074 
+17529 20664 23441 26189 29319 33443 37859 41840 45089 47813 49504 50788 
+51451 51882 51421 50431 48731 46416 43992 41499 38400 35425 31692 27632 
+23929 21348 19304 17264 15137 13280 11566 10161 8648 8071 7243 6941 
+6941 6718 6591 6596 6874 7030 7218 7306 7210 7421 7430 7541 
+7418 7061 6470 6191 5814 5263 4895 4387 4243 4007 3679 3259 
+2747 2143 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 38 72 178 386 703 1115 1893 2784 3842 
+5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 
+24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 
+32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 
+8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 
+3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 
+304.0000305 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 
+4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 
+11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 
+37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 
+52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 
+8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 38 72 178 
+386 703 1115 1893 2784 3842 5037 6624 8562 10466 12327 14286 
+15839 17461 18703 20032 20953 21857 22846 23706 24878 25923 26347 26684 
+26702 26787 26419 25939 25405 24957 24254 23655 22999 22464 21380 20217 
+18683 17194 15899 14553 14179 13922 13366 12683 11878 11311 10815 10037 
+9264 8645 7850 7059 6657 6391 6020 5487 4939 4411 3814 3091 
+2788 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 38 72 178 386 703 1115 1893 2784 
+3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 
+22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 
+33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 
+9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 
+3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 
+576.000061 304.0000305 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 
+1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 
+6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 
+16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 
+51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 
+37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 
+2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 38 72 
+178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 
+14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 
+32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 
+23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 
+3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 
+2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 
+2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 
+8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 
+24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 
+57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 
+19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 
+133.0000153 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 38 
+72 178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 
+12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 
+31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 
+25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 
+3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 
+3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 197.2740631 
+556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 
+5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 
+12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 
+41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 
+49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 
+6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 38 72 178 386 703 1115 
+1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 
+20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 
+34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 
+12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 
+3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 
+1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 
+1650.113403 1988.886719 2438.682129 2929.267822 3710.441406 4667.971191 6067.025391 7662.88916 9431.84668 11230.02734 13273.19434 15560.63086 
+17818.92773 20154.41992 22539.30859 24630.36719 26757.61523 28819.28711 30979.08203 33198.02734 35453.08594 38375.40625 41672.44531 44924.06641 
+47666.06641 49852.40625 51965.23828 53409.26562 54868.24609 55583.84375 55932.05469 55936.19922 55724.99609 55177.41797 54080.25781 52635.71875 
+50460.81641 47420.64062 44039.86328 40016.97656 36082.22656 32765.83203 29884.80664 27264.15039 24510.26758 21608.05078 19350.41016 16946.39453 
+14960.98047 13164.17285 11259.08398 9873.849609 9062.123047 8156.428223 7376.033203 7178 7030 7218 7306 7210 
+7421 7430 7541 7418 7061 6470 6191 5814 5263 4895 4387 4243 
+4007 3679 3259 2747 2143 1636 1139 576.000061 304.0000305 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 
+2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 
+3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 
+9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 
+28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 
+57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 
+16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 2784 3842 5037 6624 8562 10466 12365 14358 15941 
+17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 
+33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20248.27344 
+17666.75586 15421.98047 13611.94336 12334.65625 11268.11133 10095.83789 8869.712891 7615.745605 6674.927734 6292.264648 5869.154297 5619.958496 
+5800.668457 5929.289551 5872.824219 6045.265625 6098.629883 6199.896973 6289.070801 6526.945801 6936.526855 7713.083496 8496.308594 9357.199219 
+10109.76367 10915.03418 11790.81152 12299.85547 12594.15234 13307.7168 14005.96387 15104.72754 16640.99219 17996.75977 19539.02734 21408.79688 
+23596.07617 26326.84766 28916.12305 31169.42773 33295.03125 34678 36058 36835 37616 37922 38176 38267 
+37992 37561 37256 36202 35427 34014 32800 31629 30524 29709 29067 28129 
+27048 25788 24385 22280 20615 18439 16642 15110 13614 12231 11376 10259 
+9563 8811 8355 8196 7829 7541 7418 7061 6470 6191 5814 5263 
+4895 4387 4243 4007 3679 3259 2747 2143 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 38 72 178 386 703 1115 1893 2784 3842 5037 
+6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 
+26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 
+31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 
+6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 
+3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 
+1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 
+7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 
+20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 
+55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 
+28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 
+1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 38 72 178 386 
+703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 
+17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 
+33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 
+17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 
+3004 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 
+2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 38 72 178 386 703 1115 1893 2784 3842 
+5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 
+24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 
+32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 
+8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 
+3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 
+304.0000305 0 0 0 0 0 0 0 0 0 0 0 
+0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 
+3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 
+10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 
+31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 
+56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 
+13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 38 72 178 
+386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 
+15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 
+33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 
+20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 
+2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 
+2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 
+877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 
+6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 
+14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 
+45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 
+45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 
+5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 38 72 
+178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 
+14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 
+32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 
+23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 
+3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 
+2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 
+2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6649.188965 6998.630859 7352.928711 
+7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 
+20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 
+55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 
+28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 
+1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 38 72 178 386 703 1115 1893 
+2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 
+21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 
+33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 
+10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 
+3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 
+1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 
+4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10042.27051 
+10866.09863 12121.04102 13283.10938 14916.41016 16728.44531 18751.06445 20831.01562 23562.41016 26753.23438 30307.2793 34755.25781 38442.84766 
+42101.03906 45635.21094 48935.98047 52581.42578 55116.25781 57398.72266 58947.81641 59534.63672 59123.86719 58105.94922 56514.21094 54308.8125 
+51260.80859 47740.15625 43551.26953 39238.05078 34844.41406 30457.39648 26812.99023 22544.17188 18451.08398 14782.84961 11630.12305 9215.427734 
+6779.032715 4978 3773 2768 1768 1081 791 461.0000305 133.0000153 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 38 72 178 386 703 1115 
+1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 
+20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 
+34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 
+12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 
+3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 
+1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 
+1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 
+6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 
+15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 
+49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 
+41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 
+3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+38 72 178 386 703 1115 1893 2784 3842 5037 6624 8562 
+10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 
+30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 
+28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 
+4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 
+3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26424.27344 28937.75 31206.96875 32807.94531 34127.66406 34953.11328 35785.89453 
+36350.69531 36571.27344 36765.4375 37082.98828 37013.03125 36660.89062 35777.86719 34441.01562 32241.20117 29814.64258 26916.92969 24368.41602 
+22162.29883 20557.36328 19506.60352 19035.26953 18421.0957 18266.03711 18013.10742 18419.40625 19362.43945 19804.06445 20180.02148 21126.41016 
+22081.23633 22733.27734 23716.24805 24181.8457 24520.02734 24354.23242 23785 23433.45508 22691.24805 22010.70312 20928.83594 19724.65625 
+18347.86914 16957.97852 15531.21289 14338.81836 13429.80078 12158.14355 10923.2832 9749.049805 8685.415039 7518.395508 6593.980469 5471.174805 
+4586.080078 3665.849365 2888.124023 2230.427734 1895.033081 2079 2617 3898 5104 6510 7829 8914 
+9822 10490 11260 11773 12122 12504 12870 13021 13312 13414 13444 13291 
+13518 14036 14595 15512 16448 17308 18277 18760 19257 19266 19427 19235 
+18838 18419 17798 16852 15887 14695 13382 11789 10432 9266 8089 6927 
+5953 5110 4503 3714 3226 2644 2418.000244 2244 2201 2269 2319 2355 
+2531 2715 2823 3178 3423 3862 4159 4314 4327 4555 4675 4687 
+4591 4387 4243 4007 3679 3259 2747 2143 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 
+4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 
+11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 
+37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 
+52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 
+8810 6947 5168 3761 3761 2450 1872 1252 594.000061 133.0000153 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 38 72 178 386 
+703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 
+17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 
+33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 
+17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 
+3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 
+2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 38 72 178 386 703 1115 1893 2784 3842 5037 
+6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 
+26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 
+31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 
+6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 
+3388 3267 3232 3131 2964 2731 2432 2067 1833.274048 1695.753662 1453.97876 1464.945557 
+1405.657227 1612.113403 1916.886719 2215.157471 2456.809082 2884.639648 3398.417969 3813.910889 4336.043457 4849.111816 5262.225586 5557.154297 
+5774.202637 5888.354492 6066.619629 6248.994141 6338.289551 6473.504395 6797.112793 7174.084473 8009.397949 8749.058594 9950.181641 11364.23438 
+12675.24414 13975.8291 15969.70312 18265.48047 20630.08594 23757.25781 26505.68555 29195.74219 31920.55469 35501.33594 39248.12109 42217.89062 
+44358.625 45986.36719 46616.07422 46894.78125 46654 46442 45781 44407 42361 39864 37213 34242 
+30859 27817 24213 20516 16922 14542 12779 10836 8817 7170 5291 3835 
+2469 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 38 72 178 
+386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 
+15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 
+33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 
+20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 
+2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 
+2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 
+2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 
+8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 
+24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 
+57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 
+19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 
+133.0000153 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 38 72 178 386 703 1115 1893 2784 3842 
+5037 6624 8562 10466 12327 14286 15839 17461 18703 20032 20953 21857 
+22846 23706 24878 25923 26347 26684 26702 26787 26419 25939 25405 24957 
+24254 23655 22999 22464 21380 20217 18683 17194 15899 14553 14179 13922 
+13366 12683 11878 11311 10815 10037 9264 8645 7850 7059 6657 6391 
+6020 5487 4939 4411 3814 3091 2788 2432 2067 1636 1139 576.000061 
+304.0000305 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 38 72 178 
+386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 
+15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 
+32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 
+23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 
+3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 
+2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 
+4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 
+11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 
+37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 
+52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 
+8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 38 72 178 386 703 1115 1893 2784 
+3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 
+22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 
+33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 
+9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 
+3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 
+576.000061 304.0000305 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 
+1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 
+7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 
+18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 
+54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 
+33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 
+1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 38 72 178 386 703 1115 1893 
+2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 
+21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 
+33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 
+10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 
+3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 
+1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 
+3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 
+9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 
+28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 
+57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 
+16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 38 
+72 178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 
+12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 
+31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 
+25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 
+3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 
+3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 38 72 178 386 703 1312.274048 
+2449.753662 3661.978027 5002.947266 6442.65918 8236.111328 10478.88477 12726.68555 14908.26758 17365.4375 19493.97266 21763.0332 23731.90039 
+25846.8457 27550.01367 29333.19531 31310.63867 33579.92969 36170.41406 38510.30469 40336.35547 41890.60547 43250.24219 44483.08984 45740.05469 
+46514.11328 47458.38672 48544.40625 49009.08203 48861.06641 48282.41797 47536.23828 45849.26172 44136.23828 41498.82812 39051.01953 36536.23438 
+34152.99219 32452.45508 30656.25586 28854.70117 26857.83203 24794.66602 22928.86914 21441.98047 19702.21875 18448.82422 17679.80078 16724.14258 
+15383.27832 14304.0498 13360.41016 12205.39551 11146.97852 9786.172852 8651.083984 7400.850098 6156.123047 4824.428711 3527.032959 2447 
+1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+38 72 178 386 703 1115 1893 2784 3842 5037 6624 8562 
+10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 
+30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 
+28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 
+4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 
+3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 
+1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 
+7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 
+18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 
+54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 
+33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 
+1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 
+2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 4161.273926 3908.753662 3816.978027 4164.947266 4491.65918 4664.114258 5084.838379 5380.716309 5551.742188 5597.927734 
+5595.264648 5627.756348 5581.399902 5433.195801 5162.14502 4768.246094 4308.50293 3757.912354 3283.473877 2825.187988 2642.869629 2552.508545 
+3032.581543 3644.063721 4533.955566 5432.256348 6557 7939 9304 10740 12749 15074 17529 20664 
+23441 26189 29319 33443 37859 41840 45089 47813 49504 50788 51451 51882 
+51421 50431 48731 46416 43992 41499 38400 35425 31692 27632 23929 21348 
+19304 17264 15137 13280 11566 10161 8648 8071 7243 6941 6718 6591 
+6596 6874 7030 7218 7306 7210 7421 7430 7541 7418 7061 6470 
+6191 5814 5263 4895 4387 4243 4007 3679 3259 2747 2143 1636 
+1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 38 72 178 386 
+703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 
+17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 
+33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 
+17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 
+3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 
+2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 
+877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 
+6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 
+14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 
+45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 
+45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 
+5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 38 72 178 386 703 1115 1893 2784 3842 5037 
+6624 8562 10466 12327 14286 15839 17461 18703 20032 20953 21857 22846 
+23706 24878 25923 26347 26684 26702 26787 26419 25939 25405 24957 24254 
+23655 22999 22464 21380 20217 18683 17194 15899 14553 14179 13922 13366 
+12683 11878 11311 10815 10037 9264 8645 7850 7059 6657 6391 6020 
+5487 4939 4411 3814 3091 2788 2432 2067 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 38 72 178 
+386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 
+15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 
+33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 
+20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 
+2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 
+2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 
+1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 
+7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 
+20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 
+55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 
+28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 
+1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 38 72 178 386 703 1115 1893 2784 3842 
+5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 
+24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 
+32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 
+8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 
+3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 
+304.0000305 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 
+4174.02832 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 
+10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 
+31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 
+56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 
+13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 38 72 178 386 703 1115 1893 2784 
+3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 
+22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 
+33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 
+9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 
+3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 
+576.000061 304.0000305 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 
+1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 
+6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 
+15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 
+49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 
+41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 
+3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 38 38 
+72 178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 
+12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 
+31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 
+25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 
+3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 
+3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 
+2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4916.890137 5661.853027 6371.027832 7035.188965 7701.629883 8467.928711 9682.430664 
+10965.30469 12531.37012 14205.59766 16628.26758 19356.08008 22409.0293 25224.0918 28499.40234 31452.44531 34319.0625 36712.02344 39699.42188 
+42641.21484 45326.27734 48412.22656 51030.83203 53187.03906 54328.21094 55023.98828 55359.42578 54687.25781 53542.72266 52136.8125 50438.63672 
+48531.86719 46427.94922 43893.21094 41367.83203 38114.80859 34533.14844 30279.26758 26530.04883 22897.4082 19265.39453 16484.97656 13927.17285 
+11648.08203 9307.849609 7572.124023 5725.427734 3893.032959 2241 1348 723.000061 171.0000153 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 38 
+72 178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 
+12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 
+31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 
+25955 23247 20051 17110 14544 12451 10929 9656 8270 8270 6873 5491 
+4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 
+3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 
+4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 
+10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 
+34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 
+54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 
+11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 38 72 178 386 703 1115 
+1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 
+20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 
+34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 
+12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 
+3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 
+1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+38 72 178 386 703 1115 1893 2784 3842 5037 6624 8562 
+10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 
+30329 31647 32722 33341 33869 34090 34028 33758 33727.27344 33452.75 32767.96875 31539.94531 
+29936.66211 27567.11133 25072.83984 22093.24805 19321.20312 16876.73047 14933.81836 13627.87109 12541.24316 11288.93457 9951.947266 8556.28125 
+7499.933105 6926.90918 6368.205078 6073.815918 6483.537109 6991.37207 7811.592773 8940.889648 10127.26367 11184.71875 12274.28906 13421.81348 
+14392.85352 15111.15137 15895.71777 16634.96484 17351.72852 18449.99414 19216.75977 20010.02734 20526.79688 21364.07617 22350.84961 23418.12305 
+24190.42773 24894.0332 25084 25407 25389 25295 25005 24621 24087 23382 22692 22093 
+21092 20835 20279 20230 19864 19522 19319 19319 19389 19480 19699 19866 
+19891 19407 18925 18025 16839 15679 14796 13852 12967 11746 10760 9626 
+8780 7732 6486 5088 4029 3090 2299 1936 1570 1207 937 627.000061 
+340.0000305 19.00000381 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 
+2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 
+2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 
+8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 
+24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 
+57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 
+19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 
+133.0000153 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 38 72 178 386 
+703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 
+17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 
+33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 
+17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 
+3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 
+2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 
+197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4052.627441 
+4648.331543 5262.380371 5780.883301 6164.61084 6453.865234 6623.63623 6840.928711 7045.739258 7140.879883 7265.349121 7561.619629 7894.666016 
+8669.460938 9332.014648 10439.4375 11751.2334 12986.24414 14198.8291 16092.70312 18339.48047 20649.08594 24080.25781 27117.68555 30366.74219 
+33584.55469 37592.33594 41700.12109 44907.89062 47169.63281 48864.36719 49507.07812 49687.78125 49301 48857 47901 46190 
+43765 40847 37733 34257 30327 27053 23209 19600 16118 13874 12271 10449 
+8506 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 38 72 178 386 703 1115 1893 2784 3842 5037 
+6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 
+26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 
+31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 
+6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 
+3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 
+1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 
+6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 
+16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 
+51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 
+37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 
+2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 38 72 178 386 703 1115 1893 2784 3842 
+5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 
+24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 
+32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 
+8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 
+3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 
+304.0000305 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 
+3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 
+9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 
+28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 
+57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 
+16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 38 72 
+178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 
+14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 
+32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 
+23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 
+3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 
+2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 197.2740631 
+556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 
+5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 
+12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 
+41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 
+49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 
+6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 38 
+72 178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 
+12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 
+31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 
+25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 
+3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 
+3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 
+1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 
+7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 
+18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 
+54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 
+33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 
+1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 38 72 178 386 703 1115 1893 
+2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 
+21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 
+33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 
+10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 
+3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 
+1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+38 72 178 386 703 1115 1893 2784 3842 5037 6624 8562 
+10466 12365 14358 16138.27246 18145.75586 19730.98047 21417.94336 22762.65625 24296.11133 26228.88867 28487.68359 30924.26562 
+33336.44531 35199.98438 36896.02344 38162.90234 39350.86328 40092.00781 40394.21484 40393.64062 40451.92578 40198.44141 39540.31641 38505.35547 
+37116.60938 35330.27734 33382.09375 31245.02734 29192.08594 27843.41016 27005.44727 26374.0625 25753.02344 25137.41016 24762.23633 24242.2793 
+24210.24805 24250.8457 24116.02539 23758.23242 23557 23504.45312 23011.24805 22886.70312 22344.83203 21664.66211 20795.87305 19708.98047 
+18635.21484 17769.82227 16804.80469 15417.14258 13670.27832 11892.0498 10321.41211 8657.395508 7169.980469 5775.174316 4510.080078 3521.849365 
+2627.124023 1790.427979 1184.032959 1131 1466 2521 3503 4406 5300 6038 6677 7154 
+7773 8217 8503 8798 9046 9062 8846 8398 7718 6869 5920 5051 
+4290 3917 3501 3048 2648 2168 1671 1100 791 461.0000305 133.0000153 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 38 72 178 386 703 1115 
+1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 
+20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 
+34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 
+12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 
+3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 
+1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 
+877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 
+6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 
+14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 
+45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 
+45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 
+5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+38 72 178 386 703 1115 1893 2784 3842 5037 6624 8562 
+10466 12365 14358 15941 17589 18853 20257 21357 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3464.275635 3788.755127 4008.978027 4124.946777 4136.65918 4044.114502 
+3983.888428 3820.805908 3538.170166 3135.972412 3047.217529 2864.903809 2963.030518 3014.599365 2998.610596 2915.061035 2820.95459 2691.289551 
+2693.065186 2766.28418 2813.755859 2974.473389 3390.913818 3928.051758 4732.887207 5535.42041 6569.751953 7939 9304 10740 
+12749 15074 17529 20664 23441 26189 29319 33443 37745 41491 44512 47036 
+48555 49695 50242 50585 50064 49042 47338 45047 42675 40262 37271 34432 
+30863 26995 23512 21179 19285 17264 15137 13280 11566 10161 8648 8071 
+7243 6941 6718 6591 6596 6874 7030 7218 7306 7210 7421 7430 
+7541 7418 7061 6470 6191 5814 5263 4895 4387 4243 4007 3679 
+3259 2747 2143 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 2067 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 
+3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 
+10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 
+31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 
+56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 
+13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 38 72 178 386 
+703 1115 1893 2784 3842 5037 6624 8562 10466 12327 14286 15839 
+17461 18703 20032 20953 21857 22846 23706 24878 25923 26347 26684 26702 
+26787 26419 25939 25405 24957 24254 23655 22999 22464 21380 20217 18683 
+17194 15899 14553 14179 13922 13366 12683 11878 11311 10815 10037 9264 
+8645 7850 7059 6657 6391 6020 5487 4939 4411 3814 3091 2788 
+2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 38 72 178 386 703 1115 1893 2784 3842 5037 
+6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 
+26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 
+31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 
+6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 
+3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 
+1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 
+6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 
+14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 
+45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 
+45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 
+5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 38 72 178 
+386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 
+15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 
+33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 
+20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 
+2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 
+2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 
+2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 
+8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 
+22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 
+56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 
+24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 
+594.000061 133.0000153 0 0 0 0 0 0 38 72 102.0000076 128 
+150 168.0000153 258 507 1068 1931 2696 4082 5169 6637 8067 9458 
+11339 12923 14170 15458 16426 17089 17532 17583 17200 16383 15216 13850 
+12614 11220 9747 8712 7538 6649 5704 5143 4480 4059 3521 3288 
+3003 2733 2593 2435 2221 1989 1697 1463 1321 1240 1248 1893 
+2784 3709 4614 5943 7503 8925 10102 11013 11658 12094 12258 12549 
+12526 12535 12316 11827 11327 10732 9968 9341 8643 7833 6885 6315 
+6036 5737 5325 4781 4428 3972 3356 3021 2568 2485 2426 2277 
+2269 2319 2355 2360 2315 2220 2398 2492 2806 3004 3086 3052 
+3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 
+1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 38 72 
+178 386 703 1115 1893 2784 3842 5037 6624 8562 10466 12365 
+14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 30329 31647 
+32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 28531 25955 
+23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 4465 3964 
+3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 3232 3131 
+2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 
+4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 
+10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 
+34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 
+54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 
+11229.0332 8810 6947 5168 3761 2450 1872 1252 594.000061 133.0000153 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 38 72 178 386 703 1115 1893 2784 
+3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 21357 
+22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 33758 
+33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 10929 
+9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 3259 
+3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 1139 
+576.000061 304.0000305 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 197.2740631 556.7541504 915.9782715 
+1232.945679 1583.657227 1998.113525 2619.887451 3375.681396 4436.267578 5791.439941 7394.970703 9211.024414 11502.88379 14151.84766 16659.02539 
+19014.19141 21356.63281 23293.93555 25378.41992 27034.30664 28946.36328 30525.61523 32650.28516 35034.08984 38068.02734 41150.09766 44392.38672 
+47092.41797 49322.06641 50786.06641 52227.41016 53487.23047 54287.27344 54979.24219 55308.84375 55157.05469 54485.19922 53038.99219 51313.42188 
+48670.25781 46040.71094 42517.82031 39100.65625 35837.86719 32881.98438 30318.22656 28234.82617 25988.80664 23643.15039 20982.26758 18610.04883 
+17173.4082 15412.39551 13906.98047 12579.17285 11290.08398 10205.84961 9458.123047 8517.428711 7736.032715 7214 6742 6774 
+6722 6502 6437 6170 6005 5795 5453 4903 4859 4675 4687 4591 
+4387 4243 4007 3679 3259 2747 2143 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 38 72 178 386 703 1115 1893 
+2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 20257 
+21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 34028 
+33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 12451 
+10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 3086 3052 
+3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 2067 1636 
+1139 576.000061 304.0000305 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 1405.657227 1612.113403 1916.886719 2260.682129 
+2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 6998.630859 7352.928711 7789.428223 8181.307617 
+8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 16930.07031 18225.02734 20106.41016 22419.23242 
+24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 51941.72266 54302.81641 55775.64062 56799.86328 
+57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 37269.39844 33304.99219 28608.17383 28608.17383 
+24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 2450 1872 1252 
+594.000061 133.0000153 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+38 72 178 386 703 1115 1893 2784 3842 5037 6624 8562 
+10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 28381 
+30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 30379 
+28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 5491 
+4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 3267 
+3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 38 72 178 386 703 1115 
+1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 18853 
+20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 34090 
+34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 14544 
+12648.27246 11485.75586 10533.97852 9430.947266 8278.65918 7103.113281 6290.837402 5960.713379 5476.745117 5148.928711 5332.264648 5603.154297 
+5732.958496 6055.668457 6227.289551 6247.824219 6174.265625 5981.62793 6004.896973 6032.070801 6223.945801 6435.527344 7014.083984 7599.308594 
+8262.203125 8816.764648 9424.03418 10458.81055 11160.85645 12018.15137 13003.7168 14005.96387 15104.72754 16640.99219 17996.75977 19539.02734 
+21408.79688 23596.07617 26364.84766 29026.12305 31343.42773 33525.03125 34956 36376 37185 38028 38479 39046 
+39446 39434 39220 39086 38157 37461 36081 34854 33624 32414 31490 30739 
+29654 28388 26905 25241 22837 20877 18477 16642 15110 13614 12231 11376 
+10259 9563 8811 8355 8196 7829 7541 7418 7061 6470 6191 5814 
+5263 4895 4387 4243 4007 3679 3259 2747 2143 1636 1139 576.000061 
+304.0000305 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 38 72 178 386 703 1115 1893 2784 3842 5037 6624 
+8562 10466 12365 14358 15941 17589 18853 20257 21357 22684 24312 26227 
+28381 30329 31647 32722 33341 33869 34090 34028 33758 33530 32896 31890 
+30379 28531 25955 23247 20051 17110 14544 12451 10929 9656 8270 6873 
+5491 4465 3964 3352 2939 3004 3086 3052 3259 3384 3427 3388 
+3267 3232 3131 2964 2731 2432 2067 1636 1139 576.000061 304.0000305 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 197.2740631 556.7541504 877.9782715 1160.945679 
+1405.657227 1612.113403 1916.886719 2260.682129 2543.267822 3007.44165 3552.972656 4174.02832 4878.890137 5589.853027 6193.027832 6649.188965 
+6998.630859 7352.928711 7789.428223 8181.307617 8689.364258 9168.59375 10004.27148 10794.09863 11943.04102 12897.10938 14213.41016 15651.44727 
+16930.07031 18225.02734 20106.41016 22419.23242 24798.27734 28200.25586 31109.84766 34269.01953 37345.20703 41287.97656 45667.42969 49047.25781 
+51941.72266 54302.81641 55775.64062 56799.86328 57065.94922 57084.21094 56399.8125 54769.80859 52235.16016 49038.29297 45569.05078 41727.41406 
+37269.39844 33304.99219 28608.17383 24008.08398 19511.84961 16351.12305 13836.42773 11229.0332 8810 6947 5168 3761 
+2450 1872 1252 594.000061 133.0000153 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 38 72 178 386 703 
+1115 1893 2784 3842 5037 6624 8562 10466 12365 14358 15941 17589 
+18853 20257 21357 22684 24312 26227 28381 30329 31647 32722 33341 33869 
+34090 34028 33758 33530 32896 31890 30379 28531 25955 23247 20051 17110 
+14544 12451 10929 9656 8270 6873 5491 4465 3964 3352 2939 3004 
+3086 3052 3259 3384 3427 3388 3267 3232 3131 2964 2731 2432 
+2067 1636 1139 576.000061 304.0000305 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 57 428 817 1066 1315 1769.272949 1991.976929 2102.769775 2413.526367 2473.319336 
+2748.076172 2784.076172 2784.076172 2894.868896 3226.625732 4014.815186 4640.641602 4502.641602 4014.815186 3608.349609 3226.625732 3014.194824 
+2784.076172 2784.076172 2748.076172 2748.076172 2628.64502 2663.059082 3231.427734 4254.21582 5094.424316 8513.052734 12863.10156 18567.57031 
+23409.45703 26442.76562 30056.49414 32671.0625 36801.05469 40446 39655 41936.75 44376.55078 45966.61719 48154.35156 46646.76562 
+46990.92188 47594.31641 49169.65625 49866.18359 49906.95703 49069.92188 52107.10547 50718.5 53513.07031 53164.88281 54746.90625 53362.13281 
+53012.57422 51380.22266 48821.08203 44799.92969 41683.18359 37995.66406 33689.94922 28942.77344 25006.81445 20220.48828 17468.14258 15188.73535 
+12905.43945 10691.24609 8873.162109 6859.183105 5988.3125 5121.546875 3660.889648 3186.339111 2962.89502 2667.557617 2300.326904 1861.202759 
+1623.186279 1339.276123 1009.472778 633.7767334 247.0000153 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 25.05628014 72.64215851 140.2309265 200.2396698 252.668335 297.5169983 
 }
-SetScanArea  ( 635.942627| 11573.54004) ( 3572.565186| 14410.73047)
-SimulationTime  78588384
-MonitorScrollState  83.50772858 3937.370361 -539 1
+SetScanArea  ( 4253.988281| 13206.93262) ( 7190.611816| 20718.78125)
+SimulationTime  81285696
+MonitorScrollState  83.50772858 3937.370361 -451 1

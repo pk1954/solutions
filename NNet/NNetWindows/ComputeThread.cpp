@@ -5,7 +5,7 @@
 module;
 
 #include <memory>
-//#include <cstddef>
+#include <vector>
 #include <Windows.h>
 #include "Resource.h"
 
@@ -22,6 +22,7 @@ import SaveCast;
 
 using std::unique_ptr;
 using std::make_unique;
+using std::vector;
 using std::byte;
 
 void ComputeThread::Initialize
@@ -197,33 +198,40 @@ void ComputeThread::StartScan()
 
 void ComputeThread::ScanRun()
 {
-	RasterPoint const imageSize  { m_upScanMatrix->Size() };
-	fMicroSecs        usScanTime { SimulationTime::Get() };
-	Vector2D<mV>    * pImage     { m_pNMWI->GetScanImage() };
-	RasterPoint       rpRun;
+	RasterPoint     const imageSize      { m_upScanMatrix->Size() };
+	fMicroSecs            usScanTime     { SimulationTime::Get() };
+	int                   iNrOfRuns      { m_pNMWI->GetNrOfScans() };
+	ScanImage           * pImageScreen   { m_pNMWI->GetScanImage() };
+	unique_ptr<ScanImage> upScanImageSum { make_unique<ScanImage>(imageSize, 0.0_mV)};
+	RasterPoint           rpRun;
 
-	for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)  // loop over rows
+	for (int iScan = 0; iScan < iNrOfRuns; ++iScan)
 	{
-		for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)  // loop over columns
-		{ 
-			usScanTime += m_pNMWI->PixelScanTime();
-
-			while (SimulationTime::Get() < usScanTime)
-				m_pNMWI->Compute();
-
-			pImage->Set(rpRun, m_upScanMatrix->Scan(rpRun));
-			m_pDynamicModelObservable->NotifyAll(false);  // screen refresh, if possible
-
-			if (m_bStopped)  // forced termination of scan
+		pImageScreen->Set(0.0_mV);
+		for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)  // loop over rows
+		{
+			for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)  // loop over columns
 			{
-				WinManager::PostCommand2App(IDM_REJECT_IMAGES);
-				goto EXIT;
-			}
-		}
-		m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
-	} 
+				usScanTime += m_pNMWI->PixelScanTime();
 
-	pImage->Normalize();
+				while (SimulationTime::Get() < usScanTime)
+				{
+					m_pNMWI->Compute();
+					m_pDynamicModelObservable->NotifyAll(false);  // screen refresh, if possible
+				}
+				pImageScreen->Set(rpRun, m_upScanMatrix->Scan(rpRun));
+				if (m_bStopped)  // forced termination of scan
+				{
+					WinManager::PostCommand2App(IDM_REJECT_IMAGES);
+					goto EXIT;
+				}
+			}
+			m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
+		}
+		*upScanImageSum.get() += *pImageScreen;
+	}
+	upScanImageSum->Normalize();
+	m_pNMWI->SetScanImage(move(upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll(false);
 
 	EXIT:

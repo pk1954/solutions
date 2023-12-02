@@ -10,6 +10,7 @@ export module Genome;
 
 import Types;
 import Gene;
+import GeneType;
 import EvolutionTypes;
 
 class Random;

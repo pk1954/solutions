@@ -28,6 +28,7 @@ public:
 		pulseWidth,
 		scanResolution,
 		pixelScanTime,
+		nrOfScans,
 		timeResolution,
 		tParameterLastGlobal = timeResolution,
 		scanHorzPixels,  // do not export/import

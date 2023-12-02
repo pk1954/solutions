@@ -50,7 +50,7 @@ public:
     void      SetStartTime(SIMU_TIME const t) { m_timeStart = t; }
 
     void Reserve(size_t const);
-    void Add(mV const);
+    void Add2Signal(mV const);
 
     void Check()       const { /**/ };
     void Dump()        const;

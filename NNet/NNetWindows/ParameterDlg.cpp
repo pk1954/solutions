@@ -125,9 +125,10 @@ void ParameterDialog::Start(HWND const hwndParent)
 	addParameter(hwndDlg, scanHorzPixels, iYpos);
 	addParameter(hwndDlg, scanVertPixels, iYpos);
 	addParameter(hwndDlg, pixelScanTime,  iYpos);
+	addParameter(hwndDlg, nrOfScans,      iYpos);
 	{
 		int  iXpos{ LEFT_SPACE };
-		HWND const hwndStatic = CreateStaticField(hwndDlg, L"Scan time", iXpos, iYpos, NAME_WIDTH, HEIGHT);
+		HWND const hwndStatic = CreateStaticField(hwndDlg, L"Total scan time", iXpos, iYpos, NAME_WIDTH, HEIGHT);
 		iXpos += NAME_WIDTH + HORZ_SPACE;
 		m_hwndScanTime = CreateStaticField(hwndDlg, L"", iXpos, iYpos, EDIT_WIDTH + HORZ_SPACE + UNIT_WIDTH, HEIGHT);
 		iYpos += HEIGHT + VERT_SPACE;
@@ -147,10 +148,9 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(1, L"Synapse");
 	paintHeader(1, L"Dendrite");
 	paintHeader(2, L"General");
-	paintHeader(5, L"Scan");
+	paintHeader(6, L"Scan");
 	refreshParameters();
-	fMicroSecs usScanTime { m_pNMWI->GetParams().ScanTime() * Cast2Float(m_pNMWI->GetScanRaster().NrOfPoints()) };
-	::SetEditField(m_hwndScanTime, Format2wstring(usScanTime));
+	::SetEditField(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
 }
 
 void ParameterDialog::paintHeader

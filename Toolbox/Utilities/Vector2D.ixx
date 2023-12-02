@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <memory>
 #include <vector>
 
@@ -29,6 +30,14 @@ struct UnitVector
         return *this;
     }
 
+    UnitVector& operator+= (UnitVector const &rhs)
+    {
+        assert(m_vector.size() == rhs.m_vector.size());
+        for (int i = 0; i < m_vector.size(); ++i)
+            m_vector[i] += rhs.m_vector[i];
+        return *this;
+    }
+
     vector<UNIT> m_vector;
 };
 
@@ -43,6 +52,13 @@ public:
         m_rows.reserve(size.m_y);
         for (int i = 0; i < size.m_y; ++i)
             m_rows.push_back(make_unique<ROW>(size.m_x, UNIT::NULL_VAL()));
+    }
+
+    Vector2D(RasterPoint const& size, UNIT const initVal)
+    {
+        m_rows.reserve(size.m_y);
+        for (int i = 0; i < size.m_y; ++i)
+            m_rows.push_back(make_unique<ROW>(size.m_x, initVal));
     }
 
     ROW& GetRow(RasterIndex const ry)
@@ -78,6 +94,14 @@ public:
     Vector2D& operator*= (float const factor)
     {
         Apply2AllRows([factor](ROW &vec) { vec *= factor; });
+        return *this;
+    }
+
+    Vector2D& operator+= (Vector2D const &rhs)
+    {
+        assert(m_rows.size() == rhs.m_rows.size());
+        for (int i = 0; i < m_rows.size(); ++i)
+            *m_rows[i].get() += *rhs.m_rows[i].get();
         return *this;
     }
 

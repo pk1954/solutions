@@ -13,7 +13,7 @@ module;
 export module GridModel;
 
 import Random;
-import GpList;
+import GridPointList;
 import GridField;
 import ActionOptions;
 import GridDimensions;

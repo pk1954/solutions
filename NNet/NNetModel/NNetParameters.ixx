@@ -44,6 +44,7 @@ public:
 	MicroMeter  ScanResolution() const { return m_pScanRaster->Resolution(); }
 	RasterPoint ScanSize      () const { return m_pScanRaster->Size(); }
 	fMicroSecs  ScanTime      () const { return m_usPixelScanTime; }
+	int         NrOfScans     () const { return m_iNrOfScans; }
 
 private:
 	fHertz      m_freqMax         { 50.0_fHertz };
@@ -54,6 +55,7 @@ private:
 	fMicroSecs  m_pulseWidth      { 2000._MicroSecs };
 	fMicroSecs  m_usPulseDistMin  { PulseDuration(m_freqMax) };
 	fMicroSecs  m_usPixelScanTime { 100._MicroSecs };
+	int         m_iNrOfScans      { 1 };
 
 	Raster           *m_pScanRaster       { nullptr };
 	SignalParameters *m_pSignalParameters { nullptr };

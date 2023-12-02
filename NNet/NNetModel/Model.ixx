@@ -145,6 +145,7 @@ public:
 	void CreateImage              ()                     { m_upImage = make_unique<Vector2D<mV>>(GetScanAreaSize()); }
 	void RejectImage              ()                     { m_upImage.release(); }
 	void SetScanRunning           (bool const b)         { m_bScanRunning = b; }
+	void SetScanImage      (unique_ptr<Vector2D<mV>> up) { m_upImage = move(up); }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;
