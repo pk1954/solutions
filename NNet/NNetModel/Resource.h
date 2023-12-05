@@ -46,8 +46,10 @@
 #define       IDM_ADD_IMPORTED_MODEL         177
 #define       IDM_RELOAD_MODEL               178
 
-#define       IDM_START_SCAN                 190
-#define       IDM_REJECT_IMAGES              191
+#define       IDM_SCAN                       190
+#define       IDM_STARTING_SCAN              191
+#define       IDM_FINISHING_SCAN             192
+#define       IDM_UNLOCK                     193
 
 #define       IDD_SCALES_UPDATE              263
 #define       IDD_GRID_UPDATE                264
@@ -124,3 +126,5 @@
 #define       IDD_ATTACH_SIG_GEN_TO_LINE     708
 #define       IDD_ATTACH_SIG_GEN_TO_CONN     709
 #define       IDD_ADD_SIG_GEN_TO_MONITOR     711
+
+#define       IDD_MEDIAN_FILTER              800

@@ -83,12 +83,12 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 
 void ParameterDialog::EnableAllEditFields()
 {
-	bool const bEnable { ! m_pNMWI->ScanImagePresent() };
-	if (bEnable != m_bEnabled)
+	bool const bEnable { ! m_pNMWI->IsScanImagePresent() };
+	if (bEnable != m_bEditParamsEnabled)
 	{
-		m_bEnabled = bEnable;
+		m_bEditParamsEnabled = bEnable;
 		for (auto& field : m_fields)
-			Edit_Enable(field.m_hwnd, m_bEnabled);
+			Edit_Enable(field.m_hwnd, m_bEditParamsEnabled);
 	}
 }
 
@@ -127,10 +127,17 @@ void ParameterDialog::Start(HWND const hwndParent)
 	addParameter(hwndDlg, pixelScanTime,  iYpos);
 	addParameter(hwndDlg, nrOfScans,      iYpos);
 	{
-		int  iXpos{ LEFT_SPACE };
+		int  iXpos { LEFT_SPACE };
 		HWND const hwndStatic = CreateStaticField(hwndDlg, L"Total scan time", iXpos, iYpos, NAME_WIDTH, HEIGHT);
 		iXpos += NAME_WIDTH + HORZ_SPACE;
 		m_hwndScanTime = CreateStaticField(hwndDlg, L"", iXpos, iYpos, EDIT_WIDTH + HORZ_SPACE + UNIT_WIDTH, HEIGHT);
+		iYpos += HEIGHT + VERT_SPACE;
+	}
+	{
+		int  iXpos { LEFT_SPACE };
+		HWND const hwndStatic = CreateStaticField(hwndDlg, L"MedianFilter", iXpos, iYpos, NAME_WIDTH, HEIGHT);
+		iXpos += NAME_WIDTH + HORZ_SPACE;
+		m_hwndMedianFilter = CreateCheckBox(hwndDlg, L"", iXpos, iYpos, 12, 12, IDD_MEDIAN_FILTER);
 		iYpos += HEIGHT + VERT_SPACE;
 	}
 	iYpos += HEIGHT;
@@ -148,7 +155,7 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(1, L"Synapse");
 	paintHeader(1, L"Dendrite");
 	paintHeader(2, L"General");
-	paintHeader(6, L"Scan");
+	paintHeader(7, L"Scan");
 	refreshParameters();
 	::SetEditField(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
 }
@@ -201,6 +208,10 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		refreshParameters();
 		return true;
 
+	case IDD_MEDIAN_FILTER:
+        NNetPreferences::m_bMedianFilter.Set(Button_GetCheck(m_hwndMedianFilter));
+		return true;
+
 	default:
 		break;
 	}
@@ -218,7 +229,7 @@ bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 	//}
 	if (message == WM_CTLCOLOREDIT)
 	{
-		SetBkColor(hdc, m_pNMWI->ScanImagePresent() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
+		SetBkColor(hdc, m_pNMWI->IsScanImagePresent() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 		return (INT_PTR)brush;
 	}

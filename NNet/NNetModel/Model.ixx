@@ -29,6 +29,8 @@ using std::make_unique;
 using std::wstring;
 using std::move;
 
+export using ScanImage = Vector2D<mV>;
+
 export class Model
 {
 public:
@@ -121,8 +123,9 @@ public:
 	MicroMeter               GetScanResolution()          const { return m_upRaster->Resolution(); }
 	RasterPoint              GetScanAreaSize()            const { return m_upRaster->Size(); }
 	Raster           const & GetScanRaster()              const { return *m_upRaster.get(); }
-	Vector2D<mV>     const * GetScanImageC()              const { return m_upImage.get(); }
-	Vector2D<mV>           * GetScanImage()                     { return m_upImage.get(); }
+	ScanImage        const * GetScanImageC()              const { return m_upImageScanned.get(); }
+	ScanImage        const * GetFilteredImageC()          const { return m_upImageFiltered.get(); }
+	ScanImage              * GetScanImage()                     { return m_upImageScanned.get(); }
 	bool                     IsScanRunning()              const { return m_bScanRunning; }
 
 	// non const functions
@@ -133,7 +136,9 @@ public:
 	void ResetModel();
 	void SetParam(ParamType::Value const, float const);
 	void SetScanArea(MicroMeterRect const&);
+	void SetScanImage(unique_ptr<ScanImage>);
 	void Reconnect(NobId const);
+	void RejectImage();
 
 	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
 	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
@@ -142,16 +147,15 @@ public:
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void CreateImage              ()                     { m_upImage = make_unique<Vector2D<mV>>(GetScanAreaSize()); }
-	void RejectImage              ()                     { m_upImage.release(); }
+	void CreateImage              ()                     { m_upImageScanned = make_unique<ScanImage>(GetScanAreaSize()); }
 	void SetScanRunning           (bool const b)         { m_bScanRunning = b; }
-	void SetScanImage      (unique_ptr<Vector2D<mV>> up) { m_upImage = move(up); }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
-	unique_ptr<Vector2D<mV>>   m_upImage;
+	unique_ptr<ScanImage>      m_upImageScanned;
+	unique_ptr<ScanImage>      m_upImageFiltered;
 	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;

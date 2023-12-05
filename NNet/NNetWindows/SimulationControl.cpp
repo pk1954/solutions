@@ -1,6 +1,6 @@
 // SimulationControl.cpp
 //
-// NNetSimu
+// NNetWindows
 
 module;
 
@@ -14,6 +14,7 @@ import NNetPreferences;
 import Win32_Util_Resource;
 import Win32_Util;
 import StatusBar;
+import SlowMotionControl;
 import :ComputeThread;
 
 void SimulationControl::Initialize
@@ -25,25 +26,46 @@ void SimulationControl::Initialize
     m_pStatusBar     = pStatusBar;
 	m_pComputeThread = pComputeThread;
 
-	m_pStatusBar->AddButton(L"SingleStep", IDM_FORWARD,    BS_PUSHBUTTON);
-	m_pStatusBar->AddButton(L"   Run    ", IDM_RUN_STOP,   BS_PUSHBUTTON);
-	m_pStatusBar->AddButton(L"   Scan   ", IDM_START_SCAN, BS_PUSHBUTTON);
+//	m_hwndSingleStep = m_pStatusBar->AddButton(L"SingleStep", IDM_FORWARD,    BS_PUSHBUTTON);
+	m_hwndRunStop    = m_pStatusBar->AddButton(L"   Run    ", IDM_RUN_STOP,   BS_PUSHBUTTON);
+	m_hwndScan       = m_pStatusBar->AddButton(L"   Scan   ", IDM_SCAN, BS_PUSHBUTTON);
 
 	Notify(true);
 }
 
 void SimulationControl::Notify(bool const bImmediate)
 {
-	bool const bIsRunning     = m_pComputeThread->IsRunning();
-	bool const bIsScanRunning = m_pComputeThread->IsScanRunning();
+	bool const bIsRunning        { m_pComputeThread->IsRunning() };
+	bool const bIsScanRunning    { m_pComputeThread->IsScanRunning() };
+	bool const bScanImagePresent { m_pComputeThread->IsScanImagePresent() };
+	bool const bScanAreaVisible  { NNetPreferences::ScanAreaVisible() };
 
-	if (bIsRunning)
-		SetWindowText(m_pStatusBar->GetDlgItem(IDM_RUN_STOP), L"Stop");
+	SetWindowText(m_hwndRunStop, bIsRunning ? L"Stop" : L"Run");
+	EnableWindow(m_hwndSingleStep, !bIsRunning);
+	SlowMotionControl::Enable(!bIsScanRunning);
+
+	if (bScanAreaVisible)
+	{
+		if (bScanImagePresent)  // Locked
+		{
+			if (bIsRunning)  // Run mode (locked)
+			{
+				if (bIsScanRunning)  // Scan mode
+					::SetDlgItemState(m_hwndScan, L" Scanning ", IDM_UNLOCK, false);
+				else
+					::SetDlgItemState(m_hwndScan, L"  Locked  ", IDM_UNLOCK, false);
+			}
+			else  // Locked mode - not running
+				::SetDlgItemState(m_hwndScan, L"  Unlock  ", IDM_UNLOCK, true);
+		}
+		else  // Not locked
+		{
+			::SetDlgItemState(m_hwndScan, L"   Scan   ", IDM_SCAN, bIsRunning);
+		}
+		Show(m_hwndScan, true);
+	}
 	else
-		SetWindowText(m_pStatusBar->GetDlgItem(IDM_RUN_STOP), L"Run");
-
-	EnableWindow(m_pStatusBar->GetDlgItem(IDM_FORWARD),   !bIsRunning);
-	EnableWindow(m_pStatusBar->GetDlgItem(IDM_START_SCAN), bIsRunning && !bIsScanRunning);
-
-	Show(m_pStatusBar->GetDlgItem(IDM_START_SCAN), NNetPreferences::ScanAreaVisible());
+	{
+		Show(m_hwndScan, false);
+	}
 }

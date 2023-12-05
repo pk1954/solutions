@@ -26,9 +26,19 @@ export inline LONG_PTR GetUserDataPtr(HWND hwnd)
     return ::GetWindowLongPtr(hwnd, GWLP_USERDATA);
 }
 
-export inline void SetUserDataPtr(HWND hwnd, LONG_PTR ptr)
+export inline LONG_PTR SetUserDataPtr(HWND hwnd, LONG_PTR ptr)
 {
-    (void) ::SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr);
+    return ::SetWindowLongPtr(hwnd, GWLP_USERDATA, ptr);
+}
+
+export inline LONG_PTR SetWindowStyle(HWND hwnd, LONG_PTR ptr)
+{
+    return ::SetWindowLongPtr(hwnd, GWL_STYLE, ptr);
+}
+
+export inline LONG_PTR SetWindowId(HWND hwnd, LONG_PTR ptr)
+{
+    return ::SetWindowLongPtr(hwnd, GWLP_ID, ptr);
 }
 
 export void SetEditField(HWND const hwndEditField, auto const value)
@@ -52,6 +62,19 @@ export bool Evaluate(HWND const, unsigned long &);
 export inline void SetText(HWND const hwnd, wchar_t const* const wstrText)
 {
     (void)::SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)(wstrText));
+}
+
+export inline void SetDlgItemState
+(
+    HWND           const hwnd, 
+    wchar_t const* const wstrText,
+    LONG_PTR       const id,
+    bool           const bEnabled
+)
+{
+	::SetWindowText(hwnd, wstrText);
+	::SetWindowId  (hwnd, id);
+	EnableWindow   (hwnd, bEnabled);
 }
 
 export inline void Show(HWND const hwnd, bool const bStateOld, bool const bStateNew)

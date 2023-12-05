@@ -45,13 +45,15 @@ public:
 	void StopComputation();
 	void StartScan();
 	void StartStimulus();
-	bool IsRunning    () const { return !m_bStopped; }
-	bool IsScanRunning() const { return m_pNMWI->IsScanRunning(); }
+	bool IsRunning         () const { return !m_bStopped; }
+	bool IsScanRunning     () const { return m_pNMWI->IsScanRunning(); }
+	bool IsScanImagePresent() const { return m_pNMWI->IsScanImagePresent(); }
 
-	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; };
+	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; }
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
-	fMicroSecs GetTimeAvailPerCycle () const { return m_usTimeAvailPerCycle; };
-	float      GetEffectiveSlowmo   () const { return m_fEffectiveSlowMo; };
+	fMicroSecs GetTimeAvailPerCycle () const { return m_usTimeAvailPerCycle; }
+	float      GetEffectiveSlowmo   () const { return m_fEffectiveSlowMo; }
+	int        GetScanNr            () const { return m_iScanNr; }
 
 private:
 
@@ -79,6 +81,7 @@ private:
 	float             m_fEffectiveSlowMo { 0.0f };
 
 	unique_ptr<ScanMatrix> m_upScanMatrix { };
+	int                    m_iScanNr      { 0 };
 
 	void runComputation();
 	void haltComputation();

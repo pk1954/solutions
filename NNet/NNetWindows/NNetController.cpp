@@ -76,7 +76,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
         return true;                    // but do not concern the model  
 
-    if (m_bBlockedUI || m_pNMRI->ScanImagePresent())
+    if (m_bBlockedUI || m_pNMRI->IsScanImagePresent())
         return true;
 
     m_pComputeThread->LockComputation();

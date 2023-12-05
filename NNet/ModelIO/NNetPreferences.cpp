@@ -36,6 +36,26 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
 
+class WrapMedianFilter : public Wrapper
+{
+public:
+    WrapMedianFilter()
+        : Wrapper(NAME)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        NNetPreferences::m_bMedianFilter.Set(script.ScrReadBool());
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bMedianFilter.Get());
+    }
+
+    inline static const wstring NAME { L"ApplyMedianFilter" };
+};
+
 class WrapScanAreaVisibility : public Wrapper
 {
 public:
@@ -163,6 +183,7 @@ void NNetPreferences::Initialize()
     Preferences::AddWrapper(make_unique<WrapReadModel>());
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
     Preferences::AddWrapper(make_unique<WrapScanAreaVisibility>());
+    Preferences::AddWrapper(make_unique<WrapMedianFilter>());
     Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());

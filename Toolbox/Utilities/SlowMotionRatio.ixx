@@ -59,12 +59,12 @@ private:
 	static unsigned int const MAX_INDEX     = 18;
 
 	unsigned int m_ratioIndex { DEFAULT_INDEX };   // index to m_ratioVector
-	float        m_fRatio     { m_ratioVector[ m_ratioIndex ] };
+	float        m_fRatio     { m_ratioVector[m_ratioIndex] };
 
 	void setIndex(unsigned int const index)
 	{
 		m_ratioIndex = index;
-		m_fRatio =  m_ratioVector[ m_ratioIndex ];
+		m_fRatio =  m_ratioVector[m_ratioIndex];
 		NotifyAll(true);
 	}
 

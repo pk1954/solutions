@@ -38,6 +38,35 @@ HWND CreateButton
 	return hwnd;
 }
 
+HWND CreateCheckBox
+(
+	HWND            const hwndParent, 
+	wchar_t const * const text, 
+	int             const x, 
+	int             const y, 
+	int             const w, 
+	int             const h, 
+	INT_PTR         const id, 
+	DWORD           const dwStyle
+)
+{
+	DWORD style { BS_AUTOCHECKBOX|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
+	HWND  hwnd  { 
+					CreateWindow
+					(
+						WC_BUTTON,
+						text,
+						style, 
+						x, y, w, h, 
+						hwndParent, 
+						reinterpret_cast<HMENU>(id), 
+						GetModuleHandle(nullptr), 
+						0
+					) 
+				};
+	return hwnd;
+}
+
 HWND CreateOwnerDrawButton(HWND const hwndParent, int const x, int const y, int const w, int const h, INT_PTR const id)
 {
 	HWND hwnd  

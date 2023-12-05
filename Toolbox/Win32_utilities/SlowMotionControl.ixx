@@ -7,7 +7,7 @@ module;
 #include <compare>
 #include <Windows.h>
 
-export module NNetWin32:SlowMotionControl;
+export module SlowMotionControl;
 
 import Win32_Util_Resource;
 import StatusBar;
@@ -18,7 +18,17 @@ public:
 
 	static void Add(StatusBar & statusBar)
 	{ 
-		statusBar.AddButton(L" Slower ", IDM_SLOWER, BS_PUSHBUTTON); 
-		statusBar.AddButton(L" Faster ", IDM_FASTER, BS_PUSHBUTTON); 
-	} 
+		m_hwndSlower = statusBar.AddButton(L" Slower ", IDM_SLOWER, BS_PUSHBUTTON); 
+		m_hwndFaster = statusBar.AddButton(L" Faster ", IDM_FASTER, BS_PUSHBUTTON); 
+	}
+
+	static void Enable(bool const bEnable)
+	{
+		EnableWindow(m_hwndSlower, bEnable);
+		EnableWindow(m_hwndFaster, bEnable);
+	}
+
+private:
+	static inline HWND m_hwndSlower;
+	static inline HWND m_hwndFaster;
 };

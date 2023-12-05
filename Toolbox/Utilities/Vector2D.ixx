@@ -7,14 +7,17 @@ module;
 #include <cassert>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 export module Vector2D;
 
+import SaveCast;
 import Raster;
 
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
+using std::ranges::sort;
 
 export template <typename UNIT>
 struct UnitVector
@@ -61,6 +64,11 @@ public:
             m_rows.push_back(make_unique<ROW>(size.m_x, initVal));
     }
 
+    RasterPoint GetSize() const
+    {
+        return RasterPoint(Width(), Height());
+    }
+
     ROW& GetRow(RasterIndex const ry)
     {
         return *m_rows.at(ry).get();
@@ -83,12 +91,28 @@ public:
 
     UNIT Get(RasterPoint const& rp) const
     {
-        return GetRow(rp.m_y).at(rp.m_x);
+        return GetRow(rp.m_y).m_vector.at(rp.m_x);
     }
 
     UNIT Get(ROW const &row, RasterIndex const rx) const
     {
         return row.at(rx);
+    }
+
+    RasterIndex Width() const
+    {
+        return Cast2Int(m_rows.at(0)->m_vector.size());
+    }
+
+    RasterIndex Height() const
+    {
+        return Cast2Int(m_rows.size());
+    }
+
+    bool IsValid(RasterPoint const &pnt) const
+    {
+        return (0 <= pnt.m_x) && (pnt.m_x < Width()) &&
+               (0 <= pnt.m_y) && (pnt.m_y < Height());
     }
 
     Vector2D& operator*= (float const factor)
@@ -99,8 +123,8 @@ public:
 
     Vector2D& operator+= (Vector2D const &rhs)
     {
-        assert(m_rows.size() == rhs.m_rows.size());
-        for (int i = 0; i < m_rows.size(); ++i)
+        assert(Height() == rhs.Height());
+        for (int i = 0; i < Height(); ++i)
             *m_rows[i].get() += *rhs.m_rows[i].get();
         return *this;
     }
@@ -143,6 +167,30 @@ public:
 		UNIT unitMax { GetMax() };
 		if (unitMax.IsNotZero())
 			*this *= 1.0f / unitMax.GetValue();
+    }
+
+    unique_ptr<Vector2D> MedianFilter() const
+    {
+        assert(m_rows.size() > 0);
+        unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
+        RasterPoint  pntRun;
+        vector<UNIT> neighbours;
+        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
+        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
+        {
+            neighbours.clear();
+            for (RasterIndex dy = -1; dy <= 1; ++dy)
+            for (RasterIndex dx = -1; dx <= 1; ++dx)
+            {
+                RasterPoint neighbour { pntRun.m_x + dx, pntRun.m_y + dy };
+                if (IsValid(neighbour))
+                    neighbours.push_back(Get(neighbour));
+            }
+            sort(neighbours);
+            UNIT median { neighbours.at(neighbours.size()/2) };
+            dst->Set(pntRun, median);
+        }
+        return move(dst);
     }
 
 private:

@@ -43,8 +43,6 @@ export enum class ConnectionType
 	ct_plugConnectors
 };
 
-export using ScanImage = Vector2D<mV>;
-
 export class NNetModelReaderInterface
 {
 public:
@@ -101,7 +99,8 @@ public:
 	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	ScanImage        const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
-	bool                    ScanImagePresent()                     const { return m_pModel->GetScanImageC() != nullptr; }
+	ScanImage        const* GetFilteredImageC()                    const { return m_pModel->GetFilteredImageC(); }
+	bool                    IsScanImagePresent()                   const { return m_pModel->GetScanImageC() != nullptr; }
 	bool                    IsScanRunning()                        const { return m_pModel->IsScanRunning(); }
 	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
 	bool                    HasMicroSensor(NobId const id)         const { return GetConstNob(id)->HasMicroSensor(); }

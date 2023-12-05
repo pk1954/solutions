@@ -44,10 +44,11 @@ private:
 	static int const VERT_BLOCK_SPACE {  30 };
 	static int const HEIGHT           {  16 };
 
-	IDWriteTextFormat        * m_pTextFormatHeader { nullptr };
-	NNetModelWriterInterface * m_pNMWI             { nullptr };
-	HWND                       m_hwndScanTime      { nullptr };
-	bool                       m_bEnabled          { true };
+	IDWriteTextFormat        * m_pTextFormatHeader  { nullptr };
+	NNetModelWriterInterface * m_pNMWI              { nullptr };
+	HWND                       m_hwndScanTime       { nullptr };
+	HWND                       m_hwndMedianFilter   { nullptr };
+	bool                       m_bEditParamsEnabled { true };
 
 
 	fPixel m_fPixPosVert;      // helper for paintHeader

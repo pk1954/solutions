@@ -5,6 +5,7 @@
 module;
 
 #include <compare>
+#include <Windows.h>
 
 export module NNetWin32:SimulationControl;
 
@@ -25,4 +26,7 @@ public:
 private:
 	ComputeThread * m_pComputeThread { nullptr };
 	StatusBar     * m_pStatusBar     { nullptr };
+	HWND            m_hwndSingleStep;
+	HWND            m_hwndRunStop;
+	HWND            m_hwndScan;
 };

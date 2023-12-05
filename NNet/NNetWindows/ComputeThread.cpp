@@ -18,6 +18,7 @@ import FatalError;
 import HiResTimer;
 import SimulationTime;
 import NNetModel;
+import NNetPreferences;
 import SaveCast;
 
 using std::unique_ptr;
@@ -205,8 +206,9 @@ void ComputeThread::ScanRun()
 	unique_ptr<ScanImage> upScanImageSum { make_unique<ScanImage>(imageSize, 0.0_mV)};
 	RasterPoint           rpRun;
 
-	for (int iScan = 0; iScan < iNrOfRuns; ++iScan)
+	for (m_iScanNr = 1; m_iScanNr <= iNrOfRuns; ++m_iScanNr)
 	{
+		WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
 		pImageScreen->Set(0.0_mV);
 		for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)  // loop over rows
 		{
@@ -222,15 +224,15 @@ void ComputeThread::ScanRun()
 				pImageScreen->Set(rpRun, m_upScanMatrix->Scan(rpRun));
 				if (m_bStopped)  // forced termination of scan
 				{
-					WinManager::PostCommand2App(IDM_REJECT_IMAGES);
+					WinManager::PostCommand2App(IDM_UNLOCK);
 					goto EXIT;
 				}
 			}
 			m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
 		}
 		*upScanImageSum.get() += *pImageScreen;
+		WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
 	}
-	upScanImageSum->Normalize();
 	m_pNMWI->SetScanImage(move(upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll(false);
 

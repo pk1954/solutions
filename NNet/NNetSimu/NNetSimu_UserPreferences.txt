@@ -5,6 +5,7 @@ SetAutoOpen  OFF
 ReadModel "D:\SW-projects\Delivery\V5_1\BC23xz2.mod"
 InputCablesVisibility 1
 ScanAreaVisibility  ON
+ApplyMedianFilter  OFF
 SetBKColor IDM_MAIN_WINDOW RGB(255,255,240)
 SetBKColor IDM_MINI_WINDOW RGB(255,255,240)
 SetBKColor IDM_MONITOR_WINDOW RGB(229,229,229)

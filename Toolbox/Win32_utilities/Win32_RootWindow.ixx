@@ -77,32 +77,33 @@ public:
 	bool          IsInClientRect(PixelPoint const& p) const { return ::IsInClientRect(m_hwnd, p); }
 	bool          IsInClientRect(PixelRect  const& r) const { return ::IsInClientRect(m_hwnd, r); }
 
-	void  SetWindowWidth (PIXEL const w, bool const b)                         const { ::SetWindowWidth (m_hwnd, w, b); }
-	void  SetWindowHeight(PIXEL const h, bool const b)                         const { ::SetWindowHeight(m_hwnd, h, b); }
-	void  SetWindowSize  (PIXEL const w, PIXEL const h, bool const b)          const { ::SetWindowSize(m_hwnd, w, h, b); }
-	bool  WindowHasCaption()                                                   const { return ::GetWindowLong(m_hwnd, GWL_STYLE) & WS_CAPTION; }
-	bool  IsWindowVisible()                                                    const { return ::IsWindowVisible(m_hwnd); }
-	HWND  SetCapture()                                                         const { return ::SetCapture(m_hwnd); }
-	HWND  SetFocus()                                                           const { return ::SetFocus(m_hwnd); }
-	HWND  GetParent()                                                          const { return ::GetParent(m_hwnd); }
-	HWND  GetDlgItem(int const i)                                              const { return ::GetDlgItem(m_hwnd, i); }
-	bool  IsCaptured()                                                         const { return ::GetCapture() == m_hwnd; }
-	int	  GetWindowTextLength()                                                const { return ::GetWindowTextLength(m_hwnd); }
-	DWORD SetWindowStyle(DWORD dwNew)                                          const { return   SetWindowLong(m_hwnd, GWL_STYLE, dwNew); }
-	bool  SetWindowText(LPCWSTR        const   s)                              const { return ::SetWindowText(m_hwnd, s); }
-	bool  SetWindowText(wstring        const & s)                              const { return   SetWindowText(s.c_str()); }
-	bool  SetWindowText(wostringstream const & s)                              const { return   SetWindowText(s.str()); }
-	bool  SetWindowText(HWND hwnd, wstring        const & s)                   const { return ::SetWindowText(hwnd, s.c_str()); }
-	bool  SetWindowText(HWND hwnd, wostringstream const & s)                   const { return   SetWindowText(hwnd, s.str()); }
-	void  CheckRadioButton(int iFirst, int iLast, int iCheck)                  const { ::CheckRadioButton(m_hwnd, iFirst, iLast, iCheck); }
-	UINT  IsDlgButtonChecked(int iIdButton)                                    const { return ::IsDlgButtonChecked(m_hwnd, iIdButton); }
-	bool  Move(PIXEL const xPos, PIXEL const yPos)                             const { return ::MoveWindow(m_hwnd, xPos, yPos); }
-	bool  Move(PixelPoint const pos)                                           const { return ::MoveWindow(m_hwnd, pos); }
-	void  Move(PixelRect const rect, bool const bRedraw)                       const { Move(rect.GetStartPoint(), rect.GetSize(), bRedraw); }
-	HWND  CreateBalloonToolTip(int const id, LPWSTR const& t)                  const { return ::CreateBalloonToolTip(m_hwnd, id, t); }
-	HWND  CreateStdToolTip(int const id, LPWSTR const& t)                      const { return ::CreateStdToolTip(m_hwnd, id, t); }
-	HWND  CreateWindowToolTip(LPWSTR const& t)                                 const { return ::CreateWindowToolTip(m_hwnd, t); }
-	HWND  CreateRectToolTip(int const id, PixelRect const& r, LPWSTR const& t) const { return ::CreateRectToolTip(m_hwnd, id, &r, t); }
+	void     SetWindowWidth (PIXEL const w, bool const b)                         const { ::SetWindowWidth (m_hwnd, w, b); }
+	void     SetWindowHeight(PIXEL const h, bool const b)                         const { ::SetWindowHeight(m_hwnd, h, b); }
+	void     SetWindowSize  (PIXEL const w, PIXEL const h, bool const b)          const { ::SetWindowSize(m_hwnd, w, h, b); }
+	bool     WindowHasCaption()                                                   const { return ::GetWindowLong(m_hwnd, GWL_STYLE) & WS_CAPTION; }
+	bool     IsWindowVisible()                                                    const { return ::IsWindowVisible(m_hwnd); }
+	HWND     SetCapture()                                                         const { return ::SetCapture(m_hwnd); }
+	HWND     SetFocus()                                                           const { return ::SetFocus(m_hwnd); }
+	HWND     GetParent()                                                          const { return ::GetParent(m_hwnd); }
+	HWND     GetDlgItem(int const i)                                              const { return ::GetDlgItem(m_hwnd, i); }
+	bool     IsCaptured()                                                         const { return ::GetCapture() == m_hwnd; }
+	int	     GetWindowTextLength()                                                const { return ::GetWindowTextLength(m_hwnd); }
+	LONG_PTR SetWindowStyle(LONG_PTR dwNew)                                       const { return ::SetWindowStyle(m_hwnd, dwNew); }
+	LONG_PTR SetWindowId   (LONG_PTR dwNew)                                       const { return ::SetWindowId   (m_hwnd, dwNew); }
+	bool     SetWindowText(LPCWSTR        const   s)                              const { return ::SetWindowText(m_hwnd, s); }
+	bool     SetWindowText(wstring        const & s)                              const { return   SetWindowText(s.c_str()); }
+	bool     SetWindowText(wostringstream const & s)                              const { return   SetWindowText(s.str()); }
+	bool     SetWindowText(HWND hwnd, wstring        const & s)                   const { return ::SetWindowText(hwnd, s.c_str()); }
+	bool     SetWindowText(HWND hwnd, wostringstream const & s)                   const { return   SetWindowText(hwnd, s.str()); }
+	void     CheckRadioButton(int iFirst, int iLast, int iCheck)                  const { ::CheckRadioButton(m_hwnd, iFirst, iLast, iCheck); }
+	UINT     IsDlgButtonChecked(int iIdButton)                                    const { return ::IsDlgButtonChecked(m_hwnd, iIdButton); }
+	bool     Move(PIXEL const xPos, PIXEL const yPos)                             const { return ::MoveWindow(m_hwnd, xPos, yPos); }
+	bool     Move(PixelPoint const pos)                                           const { return ::MoveWindow(m_hwnd, pos); }
+	void     Move(PixelRect const rect, bool const bRedraw)                       const { Move(rect.GetStartPoint(), rect.GetSize(), bRedraw); }
+	HWND     CreateBalloonToolTip(int const id, LPWSTR const& t)                  const { return ::CreateBalloonToolTip(m_hwnd, id, t); }
+	HWND     CreateStdToolTip(int const id, LPWSTR const& t)                      const { return ::CreateStdToolTip(m_hwnd, id, t); }
+	HWND     CreateWindowToolTip(LPWSTR const& t)                                 const { return ::CreateWindowToolTip(m_hwnd, t); }
+	HWND     CreateRectToolTip(int const id, PixelRect const& r, LPWSTR const& t) const { return ::CreateRectToolTip(m_hwnd, id, &r, t); }
 
 	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage(     WM_COMMAND, wParam, lParam); }
 	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage(           WM_COMMAND, wParam, lParam); }

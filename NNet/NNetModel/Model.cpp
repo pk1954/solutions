@@ -27,6 +27,7 @@ import :Synapse;
 import :SignalGenerator;
 import :UPSigGenList;
 
+using std::unique_ptr;
 using std::make_unique;
 using std::wcout;
 using std::endl;
@@ -162,4 +163,18 @@ void Model::DumpModel
 void Model::SetScanArea(MicroMeterRect const& rect)
 {
 	m_upRaster->SetRasterRect(rect);
+}
+
+void Model::SetScanImage(unique_ptr<ScanImage> up) 
+{ 
+	m_upImageScanned  = move(up); 
+	m_upImageScanned ->Normalize();
+	m_upImageFiltered = m_upImageScanned->MedianFilter();
+	m_upImageFiltered->Normalize();
+}
+
+void Model::RejectImage()
+{ 
+	m_upImageScanned.release(); 
+	m_upImageFiltered.release(); 
 }
