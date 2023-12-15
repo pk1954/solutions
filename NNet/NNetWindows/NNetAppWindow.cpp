@@ -81,7 +81,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 
 	m_simuRunning   .Initialize(&m_computeThread);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
-	m_NNetController.Initialize(&m_computeThread, &m_SlowMotionRatio);
+	m_NNetController.Initialize(&m_computeThread, &m_slowMotionRatio);
 
 	MonitorScrollState* pMonitorScrollState { NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
@@ -134,7 +134,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_computeThread.Initialize
 	(
-		&m_SlowMotionRatio,
+		&m_slowMotionRatio,
 		&m_runObservable,
 		&m_performanceObservable,
 		&m_dynamicModelObservable,
@@ -156,9 +156,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_appMenu          .Start(m_hwndApp, m_computeThread, m_cmdStack, m_sound);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
-	m_crsrWindow       .Start(m_hwndApp, & m_mainNNetWindow);
+	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp);
-	m_performanceWindow.Start(m_hwndApp, & m_computeThread, & m_SlowMotionRatio, & m_atDisplay);
+	m_performanceWindow.Start(m_hwndApp, &m_computeThread, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
@@ -243,8 +243,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetPreferences::m_bScanArea    .RegisterObserver(m_miniNNetWindow);
 	NNetPreferences::m_bScanArea    .RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bMedianFilter.RegisterObserver(m_mainNNetWindow);
-	m_SlowMotionRatio               .RegisterObserver(m_computeThread);
-	m_SlowMotionRatio               .RegisterObserver(m_slowMotionDisplay);
+	m_slowMotionRatio               .RegisterObserver(m_computeThread);
+	m_slowMotionRatio               .RegisterObserver(m_slowMotionDisplay);
 	m_nmwi.GetParams()              .RegisterObserver(m_parameterDlg);
 	m_nmwi.GetParams()              .RegisterObserver(m_computeThread);
 	Preferences::m_bSound           .RegisterObserver(m_appMenu);
@@ -276,7 +276,7 @@ void NNetAppWindow::Stop()
 	BaseWindow::Stop();
 	m_bStarted = false;
 
-	m_computeThread.LockComputation();
+	m_computeThread.StopComputation();
 
 	m_mainNNetWindow   .Stop();
 	m_miniNNetWindow   .Stop();
@@ -291,7 +291,7 @@ void NNetAppWindow::Stop()
 	m_cursorPosObservable   .UnregisterAllObservers();
 	m_performanceObservable .UnregisterAllObservers();
 	m_runObservable         .UnregisterAllObservers();
-	m_SlowMotionRatio       .UnregisterAllObservers();
+	m_slowMotionRatio       .UnregisterAllObservers();
 	m_nmwi.GetParams()      .UnregisterAllObservers();
 
 	WinManager::RemoveAll();
@@ -336,10 +336,10 @@ void NNetAppWindow::configureStatusBar()
 	m_timeDisplay.Initialize(& m_statusBar, iPart);
 
 	iPart = m_statusBar.NewPart();
-	m_simulationControl.Initialize(& m_statusBar, & m_computeThread);
+	m_simulationControl.Initialize(&m_statusBar, &m_computeThread);
 
 	iPart = m_statusBar.NewPart();
-	m_slowMotionDisplay.Initialize(& m_statusBar, & m_SlowMotionRatio, iPart);
+	m_slowMotionDisplay.Initialize(&m_statusBar, &m_slowMotionRatio, iPart);
 
 	SlowMotionControl::Add(m_statusBar);
 
@@ -418,65 +418,69 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_ABOUT:
 			m_aboutBox.Show(m_mainNNetWindow.GetWindowHandle());
-			break;
+			return true;
 
 		case IDM_DOCU:
 			ShellExecute(0, 0, L"https://nnetsimu.miraheze.org/wiki/Main_Page ", 0, 0, SW_SHOW);
-			break;
+			return true;
 
 		case IDM_EXIT:
 			PostMessage(WM_CLOSE, 0, 0);
-			break;
+			return true;
 
 		case IDM_DUMP:
 			m_nmwi.DumpModel(__FILE__, __LINE__);
 			SymbolTable::Dump(wcout);
-			break;
+			return true;
 
 		case IDM_RESET_DYNAMIC_DATA:
 			m_nmwi.ClearDynamicData();
 			m_computeThread.Reset();
 			m_dynamicModelObservable.NotifyAll(true);
-			break;
+			return true;
 
 		case IDM_SCAN:
 			m_computeThread.StartScan();
-			break;
+			return true;
 
 		case IDM_STARTING_SCAN:
 			m_statusBar.DisplayInPart(m_statusMessagePart, L"Scanning " + to_wstring(lParam) + L" of " + to_wstring(m_nmwi.GetNrOfScans()));
-			break;
+			return true;
 
 		case IDM_FINISHING_SCAN:
 			m_statusBar.ClearPart(m_statusMessagePart);
-			break;
+			return true;
 
 		case IDM_UNLOCK:
 			m_nmwi.RejectImage();
 			m_lockModelObservable.NotifyAll(false);
-			break;
+			return true;
 
 		case IDM_FORWARD:
 			m_computeThread.SingleStep();
-			break;
+			return true;
 
-		case IDM_RUN_STOP:
-			m_computeThread.RunStopComputation();
-			break;
+		case IDM_RUN:
+			m_computeThread.RunComputation();
+			return true;
+
+		case IDM_STOP:
+			m_computeThread.StopComputation();
+			return true;
 
 		case IDM_OPTIMIZE_SCAN_AREA:
 			m_optimizeScanArea.Start();
-			break;
+			return true;
 
 		case IDM_SCRIPT_DIALOG:
 			m_computeThread.StopComputation();
 			processScript();
-			break;
+			return true;
 
 		case IDM_TRIGGER_STIMULUS:
 			m_monitorWindow.StimulusTriggered();
 			m_computeThread.StartStimulus();
-			break;
+			return true;
 
 		case IDM_NEXT_SCRIPT_CMD:
 			if (ScriptStack::IsScriptActive())
@@ -485,37 +489,37 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				if (pScript && (!pScript->ProcessToken() || !pScript->ReadNextToken()) )
 					ScriptStack::CloseScript();
 			}
-			return false;
+			return true;
 
 		case IDM_NEW_MODEL:
 			if (AskNotUndoable() && AskAndSave())
 				newModel();
-			break;
+			return true;
 
 		case IDM_SAVE_MODEL:
 			if (SaveModel())
 				Preferences::WritePreferences();
-			break;
+			return true;
 
 		case IDM_IMPORT_MODEL:
 			m_cmdStack.Clear();
 			if (!NNetModelIO::Import(NNetModelIO::GetModelFileName(),	NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
 				SendCommand(IDM_NEW_MODEL, 0);
-			break;
+			return true;
 
 		case IDM_APP_DATA_CHANGED:
 			m_appTitle.SetUnsavedChanges(true);
-			break;
+			return true;
 
 		case IDD_TRIGGER_SIGNAL_DESIGNER:
 			m_signalDesigner.Trigger(false);
-			break;
+			return true;
 
 		case IDM_SAVE_MODEL_AS:
 			m_computeThread.StopComputation();
 			if (SaveModelAs())
 				Preferences::WritePreferences();
-			break;
+			return true;
 
 		case IDM_OPEN_MODEL:
 			m_cmdStack.Clear();
@@ -524,7 +528,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				askModelFile(tFileMode::read),
 				NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL)
 			);
-			break;
+			return true;
 
 		case IDM_RELOAD_MODEL:
 			if (AskNotUndoable())
@@ -532,7 +536,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_cmdStack.Clear();
 				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL));
 			}
-			break;
+			return true;
 
 		case IDM_ADD_MODULE:
 			NNetModelIO::Import
@@ -540,34 +544,34 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				askModelFile(tFileMode::read), 
 				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
 			);
-			break;
+			return true;
 
 		case IDM_CENTER_MODEL:
 			m_mainNNetWindow.CenterModel();
-			break;
+			return true;
 
 		case IDX_READ_PROGRESS_REPORT:  //no user command, only internal usage
 			m_statusBar.ReadProgressReport(m_statusMessagePart, bit_cast<Script *>(lParam));
-			break;
+			return true;
 
 		case IDX_WRITE_PROGRESS_REPORT:  //no user command, only internal usage
 			m_statusBar.WriteProgressReport(m_statusMessagePart, *bit_cast<wstring const *>(lParam));
-			break;
+			return true;
 
 		case IDX_ASK_REPLACE_MODEL:  //no user command, only internal usage
 			if (AskAndSave())
 				replaceModel();
 			m_statusBar.ClearPart(m_statusMessagePart);
-			break;
+			return true;
 
 		case IDX_REPLACE_MODEL:  //no user command, only internal usage
 			replaceModel();
 			m_statusBar.ClearPart(m_statusMessagePart);
-			break;
+			return true;
 
 		case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
 			MessageBox(nullptr, L"Could not find model file", L"Error", MB_OK);
-			break;
+			return true;
 
 		case IDX_ERROR_IN_FILE:  //no user command, only internal usage
 			MessageBox
@@ -577,7 +581,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				L"Error", 
 				MB_OK 
 			);
-			break;
+			return true;
 
 		default:
 			if (m_NNetController.HandleCommand(wmId, lParam, NP_NULL))

@@ -7,7 +7,8 @@ module;
 #include <array>
 #include <iostream>     
 #include "random.h"
-#include "EnumArray.h"
+
+import EnumArray;
 import EvolutionTypes;
 
 class Genome;

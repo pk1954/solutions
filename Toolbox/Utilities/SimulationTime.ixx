@@ -26,5 +26,5 @@ public:
 
 private:
 
-	inline static fMicroSecs m_timeStamp{ 0._MicroSecs };
+	inline static fMicroSecs m_timeStamp { 0._MicroSecs };
 };

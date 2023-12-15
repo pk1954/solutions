@@ -59,24 +59,25 @@ export inline int const IDM_FASTER              { 52 };
 
 export inline int const IDM_HIST_BUFFER_FULL    { 60 };
 
-export inline int const IDM_TRACKBAR            { 65 };
+export inline int const IDM_TRACKBAR            { 62 };
 
-export inline int const IDM_ZOOM_MODE           { 70 };
-export inline int const IDM_FIT_ZOOM            { 71 };
-export inline int const IDM_SET_ZOOM            { 72 };
-export inline int const IDM_ZOOM_IN             { 73 };
-export inline int const IDM_ZOOM_OUT            { 74 };
-export inline int const IDM_ZOOM_TRACKBAR       { 75 };
+export inline int const IDM_ZOOM_MODE           { 64 };
+export inline int const IDM_FIT_ZOOM            { 65 };
+export inline int const IDM_SET_ZOOM            { 66 };
+export inline int const IDM_ZOOM_IN             { 67 };
+export inline int const IDM_ZOOM_OUT            { 68 };
+export inline int const IDM_ZOOM_TRACKBAR       { 69 };
 
-export inline int const IDM_SIMU_MODE           { 80 };
-export inline int const IDM_FORWARD             { 81 };
-export inline int const IDM_BACKWARDS           { 82 };
-export inline int const IDM_RUN_STOP            { 83 };
-export inline int const IDM_OPTIMIZE_SCAN_AREA  { 84 };
-export inline int const IDM_EDIT_UNDO           { 86 };
-export inline int const IDM_EDIT_REDO           { 87 };
-export inline int const IDM_MAX_SPEED           { 88 };
-export inline int const IDM_SIMULATION_SPEED    { 89 };
+export inline int const IDM_SIMU_MODE           { 70 };
+export inline int const IDM_FORWARD             { 71 };
+export inline int const IDM_BACKWARDS           { 72 };
+export inline int const IDM_RUN                 { 73 };
+export inline int const IDM_STOP                { 74 };
+export inline int const IDM_OPTIMIZE_SCAN_AREA  { 75 };
+export inline int const IDM_EDIT_UNDO           { 76 };
+export inline int const IDM_EDIT_REDO           { 77 };
+export inline int const IDM_MAX_SPEED           { 78 };
+export inline int const IDM_SIMULATION_SPEED    { 80 };
 
 export inline int const IDM_MOVE                { 90 };
 export inline int const IDM_APP_DATA_CHANGED    { 91 };

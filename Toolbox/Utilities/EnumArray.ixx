@@ -1,11 +1,13 @@
-// EnumArray.h : 
+// EnumArray.ixx 
 //
-// Utilities
+// Toolbox/Utilities
 
-#pragma once
+module;
 
 #include <functional>
 #include <array>
+
+export module EnumArray;
 
 using std::array;
 using std::function;
@@ -16,7 +18,7 @@ using std::function;
 //  - the enum class "Id" has a member "count" as last element
 //  - the elements of "Id" start with 0 and are consecutive 
 
-template <typename T, typename INDEX_TYPE>
+export template <typename T, typename INDEX_TYPE>
 class EnumArray
 {
 public:

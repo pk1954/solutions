@@ -99,5 +99,8 @@
     <ClCompile Include="LogarithmicTrackBar.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnumArray.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

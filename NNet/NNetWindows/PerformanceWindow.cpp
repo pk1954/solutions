@@ -121,7 +121,7 @@ void PerformanceWindow::PaintText(TextBuffer & textBuf)
 			printMicroSecLine(textBuf, L"spent time:",    spent);
 			printFloatLine   (textBuf, L"workload:",      Cast2Float((spent / avail) * 100.0f), L"%");
 		}
-		printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
+		//printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
 		if (m_pNMRI)
 		{
 			NobType::Apply2All

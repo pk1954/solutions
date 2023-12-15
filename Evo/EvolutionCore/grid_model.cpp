@@ -14,13 +14,13 @@
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "gpList.h"
-import EvolutionDump;
 #include "Genome.h"
-#include "gridField.h"
 
 import Config;
 import GridRect;
 import GridPOI;
+import GridField;
+import EvolutionDump;
 
 //#ifndef NDEBUG
 //    #define CHECK_INDIVIDUALS CheckIndividuals(* this)

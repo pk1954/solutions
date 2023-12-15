@@ -24,24 +24,20 @@ public:
 
 	bool IncRatio()
 	{
-		if (m_ratioIndex < MAX_INDEX)
-		{
-			setIndex(m_ratioIndex + 1);
-			return true;
-		}
-		else 
+		if (m_ratioIndex >= MAX_INDEX)
 			return false;
+		++m_ratioIndex;
+		Reset();
+		return true;
 	}
 
 	bool DecRatio()
 	{
-		if (m_ratioIndex > 0)
-		{
-			setIndex(m_ratioIndex - 1);
-			return true;
-		}
-		else 
+		if (m_ratioIndex <= 0)
 			return false;
+		--m_ratioIndex;
+		Reset();
+		return true;
 	}
 
 	fMicroSecs RealTime2SimuTime(fMicroSecs const realTime) const
@@ -54,19 +50,24 @@ public:
 		return simuTime * m_fRatio;
 	}
 
+	void Reset()
+	{
+		m_fRatio = m_ratioVector[m_ratioIndex];
+		NotifyAll(true);
+	}
+
+	void Set(float const fRatio)
+	{
+		m_fRatio = fRatio;
+		NotifyAll(true);
+	}
+
 private:
 	static unsigned int const DEFAULT_INDEX =  6;
 	static unsigned int const MAX_INDEX     = 18;
 
 	unsigned int m_ratioIndex { DEFAULT_INDEX };   // index to m_ratioVector
 	float        m_fRatio     { m_ratioVector[m_ratioIndex] };
-
-	void setIndex(unsigned int const index)
-	{
-		m_ratioIndex = index;
-		m_fRatio =  m_ratioVector[m_ratioIndex];
-		NotifyAll(true);
-	}
 
 	inline static array< float, SlowMotionRatio::MAX_INDEX + 1 > const m_ratioVector
 	{

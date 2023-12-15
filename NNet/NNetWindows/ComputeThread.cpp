@@ -11,6 +11,7 @@ module;
 
 module NNetWin32:ComputeThread;
 
+import Win32_Util_Resource;
 import SlowMotionRatio;
 import Observable;
 import WinManager;
@@ -26,7 +27,7 @@ using std::make_unique;
 using std::vector;
 using std::byte;
 
-void ComputeThread::Initialize
+void ComputeThread::Initialize   // runs in main thread
 (
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
@@ -40,14 +41,13 @@ void ComputeThread::Initialize
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pLockModelObservable    = pLockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
-	AcquireSRWLockExclusive(& m_srwlStopped);
+	AcquireSRWLockExclusive(&  m_srwlModel);  // main thread has access to model
 	BeginThread(L"ComputeThread"); 
 }
 
 void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
 	m_pNMWI = pNMWI;
-//	SimulationTime::Set();
 	Reset();
 }
 
@@ -59,75 +59,16 @@ void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters 
 
 void ComputeThread::Reset()
 {
-	LockComputation();
 	m_usSimuTimeAtLastReset = SimulationTime::Get();
 	m_ticksNetRunning       = Ticks(0);
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
 	m_usSimuTimeResolution  = m_pNMWI->GetParams().TimeResolution(); 
 	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime(m_usSimuTimeResolution); 
-	UnlockComputation();
-}
-
-void ComputeThread::LockComputation()  // runs in main thread
-{
-	if (! m_bComputationLocked)
-	{
-		m_bComputationLocked = true;
-		if (! m_bStopped)      // if not already haltet, halt now
-			haltComputation();
-	}
-}
-
-void ComputeThread::UnlockComputation()   // runs in main thread
-{
-	if (m_bComputationLocked)
-	{
-		m_bComputationLocked = false;
-		if (! m_bStopped)  // both locks are released. We can start to run
-			runComputation();
-	}
-}
-
-void ComputeThread::RunStopComputation()    // runs in main thread
-{
-	m_bStopped = ! m_bStopped;
-	if (! m_bComputationLocked)  // if not already haltet, halt now
-	{
-		if (m_bStopped)
-			haltComputation();
-		else
-			runComputation();
-	}
-}
-
-void ComputeThread::StopComputation()    // runs in main thread
-{
-	if (!m_bStopped)
-	{
-		m_bStopped = true;
-		m_pRunObservable->NotifyAll(false);
-		if (!m_bComputationLocked)  // if not already stopped, stop now
-			haltComputation();
-	}
 }
 
 void ComputeThread::StartStimulus()    // runs in main thread
 {
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
-}
-
-void ComputeThread::runComputation()    // runs in main thread
-{
-	m_ticksAtLastRun = m_hrTimer.ReadHiResTimer();
-	m_pRunObservable->NotifyAll(false);
-	ReleaseSRWLockExclusive(& m_srwlStopped); // allow ComputeThread to run
-}
-
-void ComputeThread::haltComputation()    // runs in main thread
-{
-	AcquireSRWLockExclusive(& m_srwlStopped); // wait until ComputeThread has finished activities
-	m_ticksNetRunning += m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun;
-	m_pRunObservable->NotifyAll(false);
 }
 
 fMicroSecs ComputeThread::simuTimeSinceLastReset() const
@@ -150,16 +91,16 @@ long ComputeThread::getCyclesTodo() const
 	return max(0, lCycles);
 }
 
-void ComputeThread::StandardRun()
+void ComputeThread::standardRun()
 {
-	while (!(m_bStopped || m_bComputationLocked))
+	while (!m_bStopped)
 	{
 		Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
 
 		long const lCyclesTodo { getCyclesTodo() };
 		long       lCyclesDone { 0 };
 
-		while ((lCyclesDone < lCyclesTodo) && !(m_bStopped || m_bComputationLocked))
+		while ((lCyclesDone < lCyclesTodo) && !m_bStopped)
 		{
 			if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
 			{
@@ -186,18 +127,7 @@ void ComputeThread::StandardRun()
 	}
 }
 
-void ComputeThread::StartScan()
-{
-	StopComputation();
-	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
-	m_upScanMatrix->Fill(*m_pNMWI);
-	m_pNMWI->CreateImage();
-	m_pNMWI->SetScanRunning(true);
-	m_pLockModelObservable->NotifyAll(false);
-	RunStopComputation();
-}
-
-void ComputeThread::ScanRun()
+void ComputeThread::scanRun()
 {
 	RasterPoint     const imageSize      { m_upScanMatrix->Size() };
 	fMicroSecs            usScanTime     { SimulationTime::Get() };
@@ -206,6 +136,7 @@ void ComputeThread::ScanRun()
 	unique_ptr<ScanImage> upScanImageSum { make_unique<ScanImage>(imageSize, 0.0_mV)};
 	RasterPoint           rpRun;
 
+	m_bStopped = false;
 	for (m_iScanNr = 1; m_iScanNr <= iNrOfRuns; ++m_iScanNr)
 	{
 		WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
@@ -223,38 +154,68 @@ void ComputeThread::ScanRun()
 				}
 				pImageScreen->Set(rpRun, m_upScanMatrix->Scan(rpRun));
 				if (m_bStopped)  // forced termination of scan
-				{
-					WinManager::PostCommand2App(IDM_UNLOCK);
 					goto EXIT;
-				}
 			}
 			m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
 		}
 		*upScanImageSum.get() += *pImageScreen;
 		WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
 	}
-	m_pNMWI->SetScanImage(move(upScanImageSum));
+	m_pNMWI->ReplaceScanImage(move(upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll(false);
 
 	EXIT:
 	m_pNMWI->SetScanRunning(false);
-	StopComputation();
+	Reset();
+}
+
+void ComputeThread::StartScan()      // runs in main thread
+{
+	m_bStopped = true;
+	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
+	m_upScanMatrix->Fill(*m_pNMWI);
+	m_pNMWI->CreateImage();
+	m_pNMWI->SetScanRunning(true);
+	m_pLockModelObservable->NotifyAll(false);
+	RunComputation();
+}
+
+void ComputeThread::RunComputation()    // runs in main thread
+{
+	if (m_bStopped)
+	{
+		m_bStopped = false;
+		m_ticksAtLastRun = m_hrTimer.ReadHiResTimer();
+		m_pRunObservable->NotifyAll(false);
+		ReleaseSRWLockExclusive(&m_srwlModel); // allow ComputeThread to run
+	}
+}
+
+void ComputeThread::StopComputation()    // runs in main thread
+{
+	if (!m_bStopped)
+	{
+		m_bStopped = true;                      // computation will stop at the next opportunity
+		AcquireSRWLockExclusive(&m_srwlModel);  // wait until ComputeThread has finished activities
+		m_ticksNetRunning += m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun;
+		m_pRunObservable->NotifyAll(false);
+	}
 }
 
 void ComputeThread::ThreadStartupFunc()  // everything happens in startup function
 {                                        // no thread messages used
 	for (;;)
 	{
-		AcquireSRWLockExclusive(&m_srwlStopped);
+		AcquireSRWLockExclusive(&m_srwlModel);   // wait here until main thread allows access to model
 		if (m_pNMWI && m_pNMWI->IsScanRunning())
 		{
-			ScanRun();
+			scanRun();
 		}
 		else
 		{
-			StandardRun();
+			standardRun();
 		}
-		ReleaseSRWLockExclusive(&m_srwlStopped);
+		ReleaseSRWLockExclusive(&m_srwlModel);  // release access to model 
 	}
 }
 

@@ -3,11 +3,12 @@
 
 #pragma once
 
-#include "MoreTypes.h"
-#include "gene.h"
 #include "config.h"
-#include "EnumArray.h"
-#include "EvolutionTypes.h"
+
+import MoreTypes;
+import EnumArray;
+import EvolutionTypes;
+import Gene;
 
 class Random;
 

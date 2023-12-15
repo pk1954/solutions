@@ -12,7 +12,7 @@ import Random;
 import SaveCast;
 import GeneTypeLimits;
 
-class Gene
+export class Gene
 {
 public:
 	Gene()

@@ -4,13 +4,14 @@
 module;
 
 #include <iostream>     
-#include "MoreTypes.h"
-import BoolOp;
 #include "GridRect.h"
 #include "strategy.h"
 #include "ModelInterface.h"
+
+import BoolOp;
 import EvolutionTypes;
 import GridDimensions;
+import GridField;
 
 class ObserverInterface;
 class EventInterface;

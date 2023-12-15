@@ -6,8 +6,9 @@
 
 #include <unordered_map>
 #include <string>
-#include "BoolOp.h"
-#include "util.h"
+
+import BoolOp;
+import SaveCast;
 
 class Config
 {

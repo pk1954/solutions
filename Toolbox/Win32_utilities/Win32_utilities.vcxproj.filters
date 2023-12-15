@@ -222,5 +222,8 @@
     <ClCompile Include="SlowMotionControl.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="DialogItem.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

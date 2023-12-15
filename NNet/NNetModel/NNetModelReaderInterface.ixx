@@ -100,7 +100,7 @@ public:
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	ScanImage        const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	ScanImage        const* GetFilteredImageC()                    const { return m_pModel->GetFilteredImageC(); }
-	bool                    IsScanImagePresent()                   const { return m_pModel->GetScanImageC() != nullptr; }
+	bool                    ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
 	bool                    IsScanRunning()                        const { return m_pModel->IsScanRunning(); }
 	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
 	bool                    HasMicroSensor(NobId const id)         const { return GetConstNob(id)->HasMicroSensor(); }

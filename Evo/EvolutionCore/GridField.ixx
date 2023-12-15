@@ -1,16 +1,19 @@
-// gridField.h : 
+// GridField.ixx
 //
+// EvolutionCore
 
 module;
 
 #include <iostream>
-import EvolutionTypes;
 #include "interaction.h"
 #include "individual.h"
 
-import GridPoint;
+export module GridField;
 
-class GridField
+import GridPoint;
+import EvolutionTypes;
+
+export class GridField
 {
 public:
 

@@ -4,11 +4,11 @@
 
 module;
 
-#include "EnumArray.h"
-
 export module Genome;
 
+import EnumArray;
 import Types;
+import Action;
 import Gene;
 import GeneType;
 import EvolutionTypes;
@@ -41,7 +41,7 @@ public:
 
 private:
 
-	EnumArray< Gene, GeneType > m_aGene;
+	EnumArray<Gene, GeneType> m_aGene;
 
 	void setGene(GeneType::Id const type, short const sValue)
 	{

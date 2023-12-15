@@ -26,8 +26,7 @@ void SimulationControl::Initialize
     m_pStatusBar     = pStatusBar;
 	m_pComputeThread = pComputeThread;
 
-//	m_hwndSingleStep = m_pStatusBar->AddButton(L"SingleStep", IDM_FORWARD,    BS_PUSHBUTTON);
-	m_hwndRunStop    = m_pStatusBar->AddButton(L"   Run    ", IDM_RUN_STOP,   BS_PUSHBUTTON);
+	m_hwndRunStop    = m_pStatusBar->AddButton(L"   Run    ", IDM_RUN,  BS_PUSHBUTTON);
 	m_hwndScan       = m_pStatusBar->AddButton(L"   Scan   ", IDM_SCAN, BS_PUSHBUTTON);
 
 	Notify(true);
@@ -37,16 +36,19 @@ void SimulationControl::Notify(bool const bImmediate)
 {
 	bool const bIsRunning        { m_pComputeThread->IsRunning() };
 	bool const bIsScanRunning    { m_pComputeThread->IsScanRunning() };
-	bool const bScanImagePresent { m_pComputeThread->IsScanImagePresent() };
+	bool const bModelLocked      { m_pComputeThread->ModelLocked() };
 	bool const bScanAreaVisible  { NNetPreferences::ScanAreaVisible() };
 
-	SetWindowText(m_hwndRunStop, bIsRunning ? L"Stop" : L"Run");
+	if (bIsRunning)
+        ::SetDlgItemState(m_hwndRunStop, L"Stop", IDM_STOP, true);
+	else
+        ::SetDlgItemState(m_hwndRunStop, L"Run", IDM_RUN, true);
 	EnableWindow(m_hwndSingleStep, !bIsRunning);
 	SlowMotionControl::Enable(!bIsScanRunning);
 
 	if (bScanAreaVisible)
 	{
-		if (bScanImagePresent)  // Locked
+		if (bModelLocked)
 		{
 			if (bIsRunning)  // Run mode (locked)
 			{

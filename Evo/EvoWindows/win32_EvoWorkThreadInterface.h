@@ -5,13 +5,13 @@
 module;
 
 #include <fstream>
-#include "MoreTypes.h"
 #include "boolOp.h"
 #include "strategy.h"
-import EvolutionTypes;
 #include "win32_WorkThreadInterface.h"
 
 import GridRect;
+import GridField;
+import EvolutionTypes;
 
 class ColorManager;
 class ActionTimer;

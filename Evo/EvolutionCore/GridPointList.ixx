@@ -1,11 +1,13 @@
-// gpList.h : 
+// GridPointList.ixx : 
 //
+// EvolutionCore
 
 module;
 
-#include "gridField.h"
+export module GridPointList;
 
 import GridPoint;
+import GridField;
 
 #ifdef _DEBUG
 #define CHECK_GRIDPOINT_LIST(grid) CheckGridPointList(grid)
@@ -17,7 +19,7 @@ class GridModel;
 
 //lint -sem(GridPointList::ResetGpList,initializer)
 
-class GridPointList
+export class GridPointList
 {
 public:
     GridPointList() 

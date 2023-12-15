@@ -188,7 +188,6 @@
     <ClCompile Include="HistoryIterator.ixx" />
     <ClCompile Include="HistorySystem.cpp" />
     <ClCompile Include="HistorySystem.ixx" />
-    <ClCompile Include="HistorySystemImpl.cpp" />
     <ClCompile Include="HistSlot.ixx" />
     <ClCompile Include="HistSlotNr.ixx" />
     <ClCompile Include="ModelData.ixx" />

@@ -38,16 +38,10 @@
     <ClCompile Include="GenerationCmd.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="HistorySystemImpl.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="HistorySystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistGeneration.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="HistorySystem.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistGeneration.ixx">
@@ -75,6 +69,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistSlot.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistorySystem.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -85,8 +85,8 @@ public:
     void DescriptionComplete()                         { m_pModel->DescriptionComplete(); }
     void DeselectAllNobs    () const                   { m_pModel->DeselectAllNobs(); }
     void CreateImage        ()                         { m_pModel->CreateImage(); }
+	void ReplaceScanImage   (unique_ptr<ScanImage> up) { m_pModel->ReplaceScanImage(move(up)); }
     void RejectImage        ()                         { m_pModel->RejectImage(); }
-	void SetScanImage       (unique_ptr<ScanImage> up) { m_pModel->SetScanImage(move(up)); }
 
     void AddOutgoing(NobId const, Pipe *);
     void AddIncoming(NobId const, Pipe *);

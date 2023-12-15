@@ -39,15 +39,13 @@ public:
 	void ThreadMsgDispatcher(MSG const &) final { }
 	void Notify(bool const) final;
 	void SingleStep();
-	void UnlockComputation();
-	void LockComputation();
-	void RunStopComputation();
+	void RunComputation();
 	void StopComputation();
 	void StartScan();
 	void StartStimulus();
-	bool IsRunning         () const { return !m_bStopped; }
-	bool IsScanRunning     () const { return m_pNMWI->IsScanRunning(); }
-	bool IsScanImagePresent() const { return m_pNMWI->IsScanImagePresent(); }
+	bool IsRunning    () const { return !m_bStopped; }
+	bool IsScanRunning() const { return m_pNMWI->IsScanRunning(); }
+	bool ModelLocked  () const { return m_pNMWI->ModelLocked(); }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; }
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
@@ -65,10 +63,9 @@ private:
 	Observable      * m_pDynamicModelObservable { nullptr };
 	Observable      * m_pLockModelObservable    { nullptr };
 
-	bool              m_bStopped                { true };          // visible to UI
-	bool              m_bComputationLocked      { true };          // internal lock (short time)
+	bool              m_bStopped                { true };  // visible to UI
 	HiResTimer        m_hrTimer                 { };
-	SRWLOCK           m_srwlStopped             { SRWLOCK_INIT };
+	SRWLOCK           m_srwlModel               { SRWLOCK_INIT };
 
 	fMicroSecs        m_usSimuTimeAtLastReset   { 0.0_MicroSecs };
 	fMicroSecs        m_usSimuTimeResolution    { 0.0_MicroSecs };
@@ -83,10 +80,8 @@ private:
 	unique_ptr<ScanMatrix> m_upScanMatrix { };
 	int                    m_iScanNr      { 0 };
 
-	void runComputation();
-	void haltComputation();
-	void StandardRun();
-	void ScanRun();
+	void standardRun();
+	void scanRun();
 
 	fMicroSecs simuTimeSinceLastReset() const;
 	fMicroSecs netRealTimeSinceLastReset() const;

@@ -152,7 +152,7 @@ private:
 	SignalDesigner           m_signalDesigner;
 	SimulationControl        m_simulationControl;
 	SlowMotionDisplay        m_slowMotionDisplay;
-	SlowMotionRatio          m_SlowMotionRatio;
+	SlowMotionRatio          m_slowMotionRatio;
 	StatusBar                m_statusBar;
 	StatusBarDisplayFunctor  m_statusBarDispFunctor;
 	TimeDisplay              m_timeDisplay;

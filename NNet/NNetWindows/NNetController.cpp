@@ -76,10 +76,12 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
         return true;                    // but do not concern the model  
 
-    if (m_bBlockedUI || m_pNMRI->IsScanImagePresent())
+    if (m_bBlockedUI || m_pNMRI->ModelLocked())
         return true;
 
-    m_pComputeThread->LockComputation();
+    bool const bRunning = m_pComputeThread->IsRunning();
+    if (bRunning)
+        m_pComputeThread->StopComputation();
     try
     {
         bRes = processModelCommand(wmId, lParam, umPoint);
@@ -90,7 +92,8 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         m_pNMRI->DumpModel(__FILE__, __LINE__);
         FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
     }
-    m_pComputeThread->UnlockComputation();
+    if (bRunning)
+        m_pComputeThread->RunComputation();
 
     return bRes;
 }

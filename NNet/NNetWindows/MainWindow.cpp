@@ -162,10 +162,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	}
 	else  // nothing selected, cursor on background
 	{
-		if (m_pNMRI->IsScanImagePresent())    // no edit operations allowed
-		{
-		}
-		else
+		if (!m_pNMRI->ModelLocked())    // no edit operations allowed if model is locked
 		{
 			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
 			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
@@ -241,7 +238,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
 		ClearPtLast();                      // make m_ptLast invalid
-		if (m_pNMRI->IsScanImagePresent())    // no edit operations allowed
+		if (m_pNMRI->ModelLocked())    // no edit operations allowed
 			return;
 		if (setScanAreaHandle(umCrsrPos))
 			return;
@@ -270,7 +267,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam & MK_CONTROL)   // rotate
 	{
-		if (m_pNMRI->IsScanImagePresent())    // no edit operations allowed
+		if (m_pNMRI->ModelLocked())    // no edit operations allowed
 			return;
 		if (selectionCommand(wParam))
 			RotateSelectionCommand::Push(umLastPos, umCrsrPos);
@@ -289,7 +286,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	}
 	else if (crsrInScanArea(umCrsrPos))
 	{
-		if (!m_pNMRI->IsScanImagePresent())    // no edit operations allowed
+		if (!m_pNMRI->ModelLocked())    // no edit operations allowed if model is locked
 			SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob

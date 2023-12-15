@@ -165,7 +165,12 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 	m_upRaster->SetRasterRect(rect);
 }
 
-void Model::SetScanImage(unique_ptr<ScanImage> up) 
+void Model::CreateImage()
+{ 
+	m_upImageScanned = make_unique<ScanImage>(GetScanAreaSize()); 
+}
+
+void Model::ReplaceScanImage(unique_ptr<ScanImage> up) 
 { 
 	m_upImageScanned  = move(up); 
 	m_upImageScanned ->Normalize();

@@ -51,7 +51,7 @@ private:
 	void setAppTitle()
 	{
 		wstring wstr { m_bUnsavedChanges ? L" * " : L"" };
-		if (m_pNMRI->IsScanImagePresent())
+		if (m_pNMRI->ModelLocked())
 			wstr += L"  +++ model locked +++";
 		::SetApplicationTitle
 		(

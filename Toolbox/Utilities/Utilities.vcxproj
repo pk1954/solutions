@@ -27,6 +27,7 @@
     <ClCompile Include="DescriptionUI.ixx" />
     <ClCompile Include="DisplayFunctor.ixx" />
     <ClCompile Include="DrawContext.ixx" />
+    <ClCompile Include="EnumArray.ixx" />
     <ClCompile Include="EventInterface.ixx" />
     <ClCompile Include="FixedPipeline.ixx" />
     <ClCompile Include="Geometry.ixx" />

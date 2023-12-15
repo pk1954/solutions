@@ -12,7 +12,7 @@ import GenerationCmd;
 import HistGeneration;
 import HistSlotNr;
 
-class GenCmdList
+export class GenCmdList
 {
 public:
     void Resize(HistGeneration const genMaxNrOfGens)
