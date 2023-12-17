@@ -32,7 +32,6 @@ public:
 	void SetModelInterface(NNetModelWriterInterface* const);
 	void Notify(bool const) final;
 	void PaintGraphics() final;
-	void EnableAllEditFields();
 
 private:
 	static int const LEFT_SPACE       {  16 };
@@ -50,7 +49,6 @@ private:
 	HWND                       m_hwndMedianFilter   { nullptr };
 	bool                       m_bEditParamsEnabled { true };
 
-
 	fPixel m_fPixPosVert;      // helper for paintHeader
 
 	struct ParamField
@@ -64,6 +62,7 @@ private:
 	void resetParameter(ParamField &) const;
 	void applyParameter(ParamField &);
 	void addParameter(HWND const, ParamType::Value const, int&);
+	void enableAllEditFields();
 	void refreshParameters();
 	void applyParameters();
 	void paintHeader(int const, wstring const &);

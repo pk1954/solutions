@@ -30,7 +30,7 @@ void PerformanceWindow::Start
 	StartTextWindow
 	(
 		hwndParent, 
-		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 280_PIXEL }, 
+		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 350_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
 		true,
@@ -114,14 +114,14 @@ void PerformanceWindow::PaintText(TextBuffer & textBuf)
 		fMicroSecs avail { m_pComputeThread->GetTimeAvailPerCycle() };
 		fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle() };
 		printMicroSecLine(textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution());
-		printFloatLine   (textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetRatio(), L"");
+		printFloatLine   (textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetNominalSlowMo(), L"");
 		if (avail > 0._MicroSecs)
 		{
-			printMicroSecLine(textBuf, L"avail time:",    avail);
-			printMicroSecLine(textBuf, L"spent time:",    spent);
-			printFloatLine   (textBuf, L"workload:",      Cast2Float((spent / avail) * 100.0f), L"%");
+			printMicroSecLine(textBuf, L"avail time:", avail);
+			printMicroSecLine(textBuf, L"spent time:", spent);
+			printFloatLine   (textBuf, L"workload:",   Cast2Float((spent / avail) * 100.0f), L"%");
 		}
-		//printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
+//		printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
 		if (m_pNMRI)
 		{
 			NobType::Apply2All

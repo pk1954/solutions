@@ -18,9 +18,6 @@
     <ClCompile Include="ScanPixel.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScanLine.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScanMatrix.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

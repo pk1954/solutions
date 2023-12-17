@@ -9,7 +9,6 @@ module;
 export module TimeDisplay;
 
 import ObserverInterface;
-import BaseRefreshRate;
 import StatusBar;
 
 using std::unique_ptr;
@@ -23,15 +22,11 @@ public:
 
 	void Notify(bool const) final;
 
-	class RefreshRate : public BaseRefreshRate
+	class RefreshRate : public StatusBarRefreshRate
 	{
 	public:
-		RefreshRate(StatusBar *, int);
-		void Trigger(bool const = false) final;
-
-	private:
-		StatusBar * m_pStatusBar       { nullptr };
-		int         m_iPartInStatusBar { -1 };
+		using StatusBarRefreshRate::StatusBarRefreshRate;
+		void Trigger(bool const) final;
 	};
 
 private:

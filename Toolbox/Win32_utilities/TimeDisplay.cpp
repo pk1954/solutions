@@ -25,16 +25,6 @@ using namespace std::chrono;
 
 /////// inner class TimeDisplay::RefreshRate ///////
 
-TimeDisplay::RefreshRate::RefreshRate	
-(
-	StatusBar * pStatusBar,
-	int         iPartInStatusBar
-)
-  :	m_pStatusBar      (pStatusBar),
-	m_iPartInStatusBar(iPartInStatusBar)
-{ 
-}
-
 void TimeDisplay::RefreshRate::Trigger(bool const bImmediately)
 {
 	fMicroSecs const time { SimulationTime::Get() };

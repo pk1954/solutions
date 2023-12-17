@@ -12,6 +12,7 @@ export module StatusBar;
 
 import Types;
 import RootWindow;
+import BaseRefreshRate;
 import Script;
 
 using std::wstring;
@@ -59,4 +60,21 @@ private:
 	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 
 	friend static LRESULT CALLBACK OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+};
+
+export class StatusBarRefreshRate : public BaseRefreshRate
+{
+public:
+StatusBarRefreshRate
+(
+	StatusBar * pStatusBar,
+	int         iPartInStatusBar
+)
+  : m_pStatusBar(pStatusBar),
+	m_iPartInStatusBar(iPartInStatusBar)
+{}
+
+protected:
+	StatusBar * m_pStatusBar       { nullptr };
+	int         m_iPartInStatusBar { -1 };
 };

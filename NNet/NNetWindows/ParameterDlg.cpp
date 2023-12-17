@@ -35,6 +35,7 @@ ParameterDialog::~ParameterDialog() = default;
 void ParameterDialog::Notify(bool const bImmediate)
 {
 	refreshParameters();
+	enableAllEditFields();
 	BaseDialog::Notify(bImmediate);
 }
 
@@ -81,7 +82,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 		applyParameter(field);
 }
 
-void ParameterDialog::EnableAllEditFields()
+void ParameterDialog::enableAllEditFields()
 {
 	bool const bEnable { ! m_pNMWI->ModelLocked() };
 	if (bEnable != m_bEditParamsEnabled)
@@ -90,6 +91,7 @@ void ParameterDialog::EnableAllEditFields()
 		for (auto& field : m_fields)
 			Edit_Enable(field.m_hwnd, m_bEditParamsEnabled);
 	}
+	Edit_Enable(m_hwndMedianFilter, m_bEditParamsEnabled);
 }
 
 void ParameterDialog::Start(HWND const hwndParent)
@@ -233,6 +235,12 @@ bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 		return (INT_PTR)brush;
 	}
+	//if (message == WM_CTLCOLORBTN)       // is called, but no effect
+	//{
+	//	SetBkColor(hdc, m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
+	//	HGDIOBJ brush { GetStockObject(DC_BRUSH) };
+	//	return (INT_PTR)brush;
+	//}
 
 	return BaseDialog::CommonMessageHandler(message, wParam, lParam);
 }

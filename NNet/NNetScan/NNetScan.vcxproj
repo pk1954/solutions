@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ScanLine.ixx" />
     <ClCompile Include="ScanMatrix.cpp" />
     <ClCompile Include="ScanPixel.ixx" />
     <ClCompile Include="ScanMatrix.ixx" />

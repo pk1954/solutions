@@ -5,26 +5,41 @@
 module;
 
 #include <string>
+#include <sstream>
+#include <memory>
 
 export module SlowMotionDisplay;
 
 import ObserverInterface;
 import SlowMotionRatio;
+import BaseRefreshRate;
 import StatusBar;
 
 using std::wstring;
+using std::unique_ptr;
+using std::wostringstream;
 
 export class SlowMotionDisplay : public ObserverInterface
 {
 public:
-	void Initialize(StatusBar *, SlowMotionRatio *, int);
+	~SlowMotionDisplay();
+
+	void Initialize(StatusBar *, int, SlowMotionRatio const &);
 
 	void Notify(bool const) final;
 
+	class RefreshRate : public StatusBarRefreshRate
+	{
+	public:
+		RefreshRate(StatusBar *, int, SlowMotionRatio const &);
+		void Trigger(bool const) final;
+
+	private:
+		wostringstream         m_wstrBuffer;
+		SlowMotionRatio const &m_slowMotionRatio;
+	};
+
 private:
 
-	wstring           m_wstring          { };
-	int               m_iPartInStatusBar { -1 };
-	StatusBar       * m_pStatusBar       { nullptr };
-	SlowMotionRatio * m_pSlowMotionRatio { nullptr };
+	unique_ptr<RefreshRate> m_upRefreshRate;
 };

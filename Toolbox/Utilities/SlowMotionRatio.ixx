@@ -8,6 +8,7 @@ module;
 
 export module SlowMotionRatio;
 
+import BoolOp;
 import Observable;
 import Types;
 
@@ -17,57 +18,54 @@ export class SlowMotionRatio : public Observable
 {
 public:
 
-	float GetRatio() const
-	{
-		return m_fRatio;
-	}
-
 	bool IncRatio()
 	{
 		if (m_ratioIndex >= MAX_INDEX)
 			return false;
 		++m_ratioIndex;
-		Reset();
+		m_bMaxSpeed = false;
+		NotifyAll(true);
 		return true;
 	}
 
 	bool DecRatio()
 	{
-		if (m_ratioIndex <= 0)
+		if (m_bMaxSpeed || (m_ratioIndex <= 0))
 			return false;
 		--m_ratioIndex;
-		Reset();
+		NotifyAll(true);
 		return true;
 	}
 
-	fMicroSecs RealTime2SimuTime(fMicroSecs const realTime) const
+	bool MaxSpeed(tBoolOp const op)
 	{
-		return realTime / m_fRatio;
-	}
-
-	fMicroSecs SimuTime2RealTime(fMicroSecs const simuTime) const
-	{
-		return simuTime * m_fRatio;
-	}
-
-	void Reset()
-	{
-		m_fRatio = m_ratioVector[m_ratioIndex];
+		bool const bRes = m_bMaxSpeed;
+		ApplyOp(m_bMaxSpeed, op);
 		NotifyAll(true);
+		return bRes;
 	}
 
-	void Set(float const fRatio)
+	bool MaxSpeed(bool const b)
 	{
-		m_fRatio = fRatio;
-		NotifyAll(true);
+		return MaxSpeed(BoolOp(b));
 	}
+
+	void SetMeasuredSlowMo(float const fValue) 
+	{ 
+		m_fMeasuredSlowMo = fValue;  // no NotifyAll!
+	}
+
+	bool  MaxSpeed()          const { return m_bMaxSpeed; }
+	float GetNominalSlowMo()  const { return m_ratioVector[m_ratioIndex]; }
+	float GetMeasuredSlowMo() const { return m_fMeasuredSlowMo; }
 
 private:
 	static unsigned int const DEFAULT_INDEX =  6;
 	static unsigned int const MAX_INDEX     = 18;
 
-	unsigned int m_ratioIndex { DEFAULT_INDEX };   // index to m_ratioVector
-	float        m_fRatio     { m_ratioVector[m_ratioIndex] };
+	unsigned int m_ratioIndex      { DEFAULT_INDEX };   // index to m_ratioVector
+	float        m_fMeasuredSlowMo { 0.0f };
+	bool         m_bMaxSpeed       { false };
 
 	inline static array< float, SlowMotionRatio::MAX_INDEX + 1 > const m_ratioVector
 	{

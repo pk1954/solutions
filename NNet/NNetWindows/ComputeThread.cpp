@@ -12,6 +12,7 @@ module;
 module NNetWin32:ComputeThread;
 
 import Win32_Util_Resource;
+import BoolOp;
 import SlowMotionRatio;
 import Observable;
 import WinManager;
@@ -63,7 +64,7 @@ void ComputeThread::Reset()
 	m_ticksNetRunning       = Ticks(0);
 	m_ticksAtLastRun        = m_hrTimer.ReadHiResTimer();
 	m_usSimuTimeResolution  = m_pNMWI->GetParams().TimeResolution(); 
-	m_usTimeAvailPerCycle   = m_pSlowMotionRatio->SimuTime2RealTime(m_usSimuTimeResolution); 
+	m_usTimeAvailPerCycle   = m_usSimuTimeResolution * m_pSlowMotionRatio->GetNominalSlowMo(); 
 }
 
 void ComputeThread::StartStimulus()    // runs in main thread
@@ -71,71 +72,46 @@ void ComputeThread::StartStimulus()    // runs in main thread
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }
 
-fMicroSecs ComputeThread::simuTimeSinceLastReset() const
+void ComputeThread::computeAndStopOnTrigger()
 {
-	return SimulationTime::Get() - m_usSimuTimeAtLastReset;
-};
-
-fMicroSecs ComputeThread::netRealTimeSinceLastReset() const
-{
-	Ticks      ticksNet      { m_ticksNetRunning + m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun };
-	fMicroSecs usNetRealTime { m_hrTimer.TicksToMicroSecs(ticksNet) };
-	return usNetRealTime;
-}
-
-long ComputeThread::getCyclesTodo() const
-{
-	fMicroSecs const usNominalSimuTime { m_pSlowMotionRatio->RealTime2SimuTime(netRealTimeSinceLastReset()) };
-	fMicroSecs const usMissingSimuTime { usNominalSimuTime - simuTimeSinceLastReset() };          // compute missing simulation time
-	long       const lCycles           { Cast2Long(usMissingSimuTime / m_usSimuTimeResolution) }; // compute # cycles to be computed
-	return max(0, lCycles);
+	if (!m_pSlowMotionRatio->MaxSpeed())
+	{
+		fMicroSecs const usSimuTimeSinceLastReset    { SimulationTime::Get() - m_usSimuTimeAtLastReset };
+		Ticks      const ticksNet                    { m_ticksNetRunning + m_hrTimer.ReadHiResTimer() - m_ticksAtLastRun };
+		fMicroSecs const usNetRealTimeSinceLastReset { m_hrTimer.TicksToMicroSecs(ticksNet) };
+		fMicroSecs const usNominalSimuTime           { usNetRealTimeSinceLastReset / m_pSlowMotionRatio->GetNominalSlowMo() };
+		fMicroSecs const usMissingSimuTime           { usNominalSimuTime - usSimuTimeSinceLastReset }; // compute missing simulation time
+		if (usMissingSimuTime < m_usSimuTimeResolution)
+			return;
+	}
+	if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
+	{
+		m_bStopped = true;
+		m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
+	}
+	m_pDynamicModelObservable->NotifyAll(false);   // screen refresh, if possible
+	Ticks const ticksPerCycle { m_hrTimer.ReadHiResTimer() - m_ticksBeforeCompute };
+	m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs(ticksPerCycle);
+    m_ticksBeforeCompute      = m_hrTimer.ReadHiResTimer();
+	m_pSlowMotionRatio->SetMeasuredSlowMo(m_usRealTimeSpentPerCycle / m_usSimuTimeResolution);
+	m_pPerformanceObservable->NotifyAll(false);
 }
 
 void ComputeThread::standardRun()
 {
-	while (!m_bStopped)
-	{
-		Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
-
-		long const lCyclesTodo { getCyclesTodo() };
-		long       lCyclesDone { 0 };
-
-		while ((lCyclesDone < lCyclesTodo) && !m_bStopped)
-		{
-			if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
-			{
-				m_bStopped = true;
-				m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
-			}
-			m_pDynamicModelObservable->NotifyAll(false);
-			++lCyclesDone;
-		}
-
-		Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
-
-		if (lCyclesDone > 0)
-		{
-			m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs(ticksInLoop / lCyclesDone);
-			m_fEffectiveSlowMo = netRealTimeSinceLastReset() / simuTimeSinceLastReset();
-			m_pPerformanceObservable->NotifyAll(false);
-		}
-
-		fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
-		fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
-		if (usSleepTime > 10000.0_MicroSecs)
-			Sleep(10);
-	}
+	while (!m_bStopped && !m_pNMWI->IsScanRunning())
+		computeAndStopOnTrigger();
 }
 
 void ComputeThread::scanRun()
 {
+	bool            const bMaxSpeed      { m_pSlowMotionRatio->MaxSpeed(tBoolOp::opTrue) };
 	RasterPoint     const imageSize      { m_upScanMatrix->Size() };
 	fMicroSecs            usScanTime     { SimulationTime::Get() };
 	int                   iNrOfRuns      { m_pNMWI->GetNrOfScans() };
 	ScanImage           * pImageScreen   { m_pNMWI->GetScanImage() };
 	unique_ptr<ScanImage> upScanImageSum { make_unique<ScanImage>(imageSize, 0.0_mV)};
 	RasterPoint           rpRun;
-
 	m_bStopped = false;
 	for (m_iScanNr = 1; m_iScanNr <= iNrOfRuns; ++m_iScanNr)
 	{
@@ -146,12 +122,8 @@ void ComputeThread::scanRun()
 			for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)  // loop over columns
 			{
 				usScanTime += m_pNMWI->PixelScanTime();
-
 				while (SimulationTime::Get() < usScanTime)
-				{
-					m_pNMWI->Compute();
-					m_pDynamicModelObservable->NotifyAll(false);  // screen refresh, if possible
-				}
+					computeAndStopOnTrigger();
 				pImageScreen->Set(rpRun, m_upScanMatrix->Scan(rpRun));
 				if (m_bStopped)  // forced termination of scan
 					goto EXIT;
@@ -165,19 +137,17 @@ void ComputeThread::scanRun()
 	m_pDynamicModelObservable->NotifyAll(false);
 
 	EXIT:
+	m_pSlowMotionRatio->MaxSpeed(bMaxSpeed);
 	m_pNMWI->SetScanRunning(false);
 	Reset();
 }
 
 void ComputeThread::StartScan()      // runs in main thread
 {
-	m_bStopped = true;
 	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
 	m_upScanMatrix->Fill(*m_pNMWI);
 	m_pNMWI->CreateImage();
 	m_pNMWI->SetScanRunning(true);
-	m_pLockModelObservable->NotifyAll(false);
-	RunComputation();
 }
 
 void ComputeThread::RunComputation()    // runs in main thread
@@ -207,6 +177,7 @@ void ComputeThread::ThreadStartupFunc()  // everything happens in startup functi
 	for (;;)
 	{
 		AcquireSRWLockExclusive(&m_srwlModel);   // wait here until main thread allows access to model
+	    m_ticksBeforeCompute = m_hrTimer.ReadHiResTimer();
 		if (m_pNMWI && m_pNMWI->IsScanRunning())
 		{
 			scanRun();

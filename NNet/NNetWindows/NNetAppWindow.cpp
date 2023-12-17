@@ -238,6 +238,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_highlightSigObservable        .RegisterObserver(m_mainNNetWindow);
 	m_cursorPosObservable           .RegisterObserver(m_crsrWindow);
 	m_performanceObservable         .RegisterObserver(m_performanceWindow);
+	m_performanceObservable         .RegisterObserver(m_slowMotionDisplay);
 	m_runObservable                 .RegisterObserver(m_simulationControl);
 	NNetPreferences::m_bScanArea    .RegisterObserver(m_simulationControl);
 	NNetPreferences::m_bScanArea    .RegisterObserver(m_miniNNetWindow);
@@ -339,7 +340,7 @@ void NNetAppWindow::configureStatusBar()
 	m_simulationControl.Initialize(&m_statusBar, &m_computeThread);
 
 	iPart = m_statusBar.NewPart();
-	m_slowMotionDisplay.Initialize(&m_statusBar, &m_slowMotionRatio, iPart);
+	m_slowMotionDisplay.Initialize(&m_statusBar, iPart, m_slowMotionRatio);
 
 	SlowMotionControl::Add(m_statusBar);
 

@@ -13,7 +13,6 @@ module ScanMatrix;
 import Types;
 import Raster;
 import SaveCast;
-import ScanLine;
 import ScanPixel;
 import NNetModel;
 
@@ -21,35 +20,22 @@ using std::vector;
 using std::optional;
 
 ScanMatrix::ScanMatrix(RasterPoint const& size)
-{
-    m_scanLines.reserve(size.m_x);
-    for (int i = 0; i < size.m_y; ++i)
-        m_scanLines.push_back(ScanLine(size.m_x));
-}
+    :m_scanLines(size)
+{}
 
 RasterPoint ScanMatrix::Size() const
 {
-    return RasterPoint(m_scanLines.at(0).Size(), Cast2Int(m_scanLines.size()));
+    return m_scanLines.GetSize();
 }
 
 mV ScanMatrix::Scan(RasterPoint const& rp)
 {
-    return GetScanLine(rp.m_y).Scan(rp.m_x);
-}
-
-ScanLine const& ScanMatrix::GetScanLineC(RasterIndex const ry) const
-{
-    return m_scanLines.at(ry);
-}
-
-ScanLine& ScanMatrix::GetScanLine(RasterIndex const ry)
-{
-    return m_scanLines.at(ry);
+    return m_scanLines.GetRef(rp).Scan();
 }
 
 ScanPixel const& ScanMatrix::GetScanPixel(RasterPoint const& rp) const
 {
-    return GetScanLineC(rp.m_y).GetScanPixelC(rp.m_x);
+    return m_scanLines.GetConstRef(rp);
 }
 
 void ScanMatrix::Add2list
@@ -94,9 +80,9 @@ size_t ScanMatrix::GetNrOfSensorPoints() const
 
 float ScanMatrix::AverageDataPointsPerPixel() const
 {
-    assert(!m_scanLines.empty());
     size_t nrOfPoints { GetNrOfSensorPoints() };
-    size_t nrOfPixels { m_scanLines.size() * m_scanLines[0].Size() };
+    size_t nrOfPixels { m_scanLines.NrOfPoints() };
+    assert(nrOfPixels > 0);
     return Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels);
 }
 
@@ -129,7 +115,6 @@ void ScanMatrix::addScanDataPoint
     RasterPoint const& rPnt
 )
 {
-    ScanLine& scanLine { m_scanLines.at(rPnt.m_y) };
-    ScanPixel& scanPoint { scanLine.GetScanPixel(rPnt.m_x) };
+    ScanPixel& scanPoint { m_scanLines.GetRef(rPnt) };
     scanPoint.Add(ScanDataPoint(pipe, segNr));
 }

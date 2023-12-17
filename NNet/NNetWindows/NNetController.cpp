@@ -122,6 +122,10 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
             MessageBeep(MB_ICONWARNING);
         break;
 
+    case IDM_MAX_SPEED:
+        m_pSlowMotionRatio->MaxSpeed(tBoolOp::opToggle);
+        break;
+
     case IDD_ARROWS:  // comes from menu
         NNetPreferences::m_bArrows.Toggle(); // with animation
         break;

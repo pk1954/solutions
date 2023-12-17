@@ -22,6 +22,10 @@ using std::ranges::sort;
 export template <typename UNIT>
 struct UnitVector
 {
+    explicit UnitVector(size_t const siz)
+        : m_vector(siz)
+    {}
+
     UnitVector(size_t const siz, UNIT const val)
         : m_vector(siz, val)
     {}
@@ -54,7 +58,7 @@ public:
     {
         m_rows.reserve(size.m_y);
         for (int i = 0; i < size.m_y; ++i)
-            m_rows.push_back(make_unique<ROW>(size.m_x, UNIT::NULL_VAL()));
+            m_rows.push_back(make_unique<ROW>(size.m_x));
     }
 
     Vector2D(RasterPoint const& size, UNIT const initVal)
@@ -89,9 +93,19 @@ public:
         Apply2AllPixels([newVal](UNIT& val) { val = newVal; });
     }
 
-    UNIT Get(RasterPoint const& rp) const
+    UNIT& GetRef(RasterPoint const& rp)
     {
         return GetRow(rp.m_y).m_vector.at(rp.m_x);
+    }
+
+    UNIT const & GetConstRef(RasterPoint const& rp) const
+    {
+        return GetRow(rp.m_y).m_vector.at(rp.m_x);
+    }
+
+    UNIT Get(RasterPoint const& rp) const
+    {
+        return GetConstRef(rp);
     }
 
     UNIT Get(ROW const &row, RasterIndex const rx) const
@@ -101,12 +115,17 @@ public:
 
     RasterIndex Width() const
     {
-        return Cast2Int(m_rows.at(0)->m_vector.size());
+        return m_rows.empty() ? 0 : Cast2Int(m_rows.at(0)->m_vector.size());
     }
 
     RasterIndex Height() const
     {
         return Cast2Int(m_rows.size());
+    }
+
+    size_t NrOfPoints() const
+    {
+        return (m_rows.size() > 0) ? Width() * Height() : 0;
     }
 
     bool IsValid(RasterPoint const &pnt) const

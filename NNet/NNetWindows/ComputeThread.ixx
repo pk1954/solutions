@@ -50,7 +50,6 @@ public:
 	fMicroSecs GetSimuTimeResolution() const { return m_usSimuTimeResolution; }
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
 	fMicroSecs GetTimeAvailPerCycle () const { return m_usTimeAvailPerCycle; }
-	float      GetEffectiveSlowmo   () const { return m_fEffectiveSlowMo; }
 	int        GetScanNr            () const { return m_iScanNr; }
 
 private:
@@ -72,18 +71,14 @@ private:
 	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs        m_usTimeAvailPerCycle     { 0.0_MicroSecs };
 
-	Ticks             m_ticksNetRunning { 0 };
-	Ticks             m_ticksAtLastRun  { 0 };
-
-	float             m_fEffectiveSlowMo { 0.0f };
+	Ticks             m_ticksNetRunning    { 0 };
+	Ticks             m_ticksAtLastRun     { 0 };
+	Ticks             m_ticksBeforeCompute { 0 };
 
 	unique_ptr<ScanMatrix> m_upScanMatrix { };
 	int                    m_iScanNr      { 0 };
 
 	void standardRun();
 	void scanRun();
-
-	fMicroSecs simuTimeSinceLastReset() const;
-	fMicroSecs netRealTimeSinceLastReset() const;
-	long       getCyclesTodo() const;
+	void computeAndStopOnTrigger();
 };
