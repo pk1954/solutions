@@ -1,11 +1,14 @@
-// individual.cpp : 
+// Individual.cpp
 //
+// EvolutionCore
 
+module;
 
 #include <cassert>
 #include "random.h"
 #include "strategy.h"
-#include "individual.h"
+
+module Individual;
 
 import Config;
 

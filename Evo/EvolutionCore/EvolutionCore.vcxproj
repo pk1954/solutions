@@ -195,8 +195,6 @@
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridRect.h" />
     <ClInclude Include="gridSelection.h" />
-    <ClInclude Include="individual.h" />
-    <ClInclude Include="interaction.h" />
     <ClInclude Include="MortalityTable.h" />
     <ClInclude Include="PixelCore.h" />
     <ClInclude Include="strategy.h" />
@@ -234,14 +232,16 @@
     <ClCompile Include="GridPointList.ixx" />
     <ClCompile Include="GridRect.ixx" />
     <ClCompile Include="gridSelection.cpp" />
+    <ClCompile Include="Individual.ixx" />
+    <ClCompile Include="Interaction.ixx" />
     <ClCompile Include="MortalityTable.cpp" />
     <ClCompile Include="Genome.cpp" />
     <ClCompile Include="GridPointList.cpp" />
     <ClCompile Include="gridNeighbor.cpp" />
     <ClCompile Include="gridRect.cpp" />
     <ClCompile Include="grid_model.cpp" />
-    <ClCompile Include="individual.cpp" />
-    <ClCompile Include="interaction.cpp" />
+    <ClCompile Include="Individual.cpp" />
+    <ClCompile Include="Interaction.cpp" />
     <ClCompile Include="strategy.cpp" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp" />
     <ClCompile Include="EvolutionCoreWrappers.cpp" />

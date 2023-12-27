@@ -1,11 +1,11 @@
-// interaction.cpp
+// Interaction.cpp
 //
+// EvolutionCore
 
+module Interaction;
 
 import EvolutionTypes;
-#include "individual.h"
-#include "interaction.h"
-
+import Individual;
 import Config;
 
 static ENERGY_UNITS R;  // Beide kooperieren und fahren das gute Ergebnis R (Reward) ein. 

@@ -27,12 +27,6 @@
     <ClInclude Include="EvolutionCoreImpl.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="individual.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="interaction.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridBrush.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -122,10 +116,10 @@
     <ClCompile Include="gridRect.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="individual.cpp">
+    <ClCompile Include="Individual.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="interaction.cpp">
+    <ClCompile Include="Interaction.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="strategy.cpp">
@@ -219,6 +213,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GridField.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Interaction.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Individual.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

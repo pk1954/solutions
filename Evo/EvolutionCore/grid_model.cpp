@@ -9,8 +9,6 @@
 #include "MortalityTable.h"
 #include "ViewCollection.h"
 #include "strategy.h"
-#include "individual.h"
-#include "interaction.h"
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "gpList.h"
@@ -20,6 +18,8 @@ import Config;
 import GridRect;
 import GridPOI;
 import GridField;
+import Individual;
+import Interaction;
 import EvolutionDump;
 
 //#ifndef NDEBUG

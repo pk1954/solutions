@@ -1,5 +1,6 @@
-// individual.h : 
+// Individual.ixx
 //
+// Evolutioncore
 
 module;
 
@@ -8,9 +9,11 @@ module;
 #include "strategy.h"
 #include "StrategyData.h"
 
+export module Individual;
+
 class Random;
 
-class Individual
+export class Individual
 {
 public:
     

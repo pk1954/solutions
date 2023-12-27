@@ -5,12 +5,12 @@
 module;
 
 #include <iostream>
-#include "interaction.h"
-#include "individual.h"
 
 export module GridField;
 
 import GridPoint;
+import Individual;
+import Interaction;
 import EvolutionTypes;
 
 export class GridField
