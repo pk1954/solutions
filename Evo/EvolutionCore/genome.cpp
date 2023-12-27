@@ -4,11 +4,11 @@
 
 
 #include <cassert>
-#include "strategy.h"
 #include "random.h"
 #include "Genome.h"
 
 import Config;
+import Strategy;
 
 // static members and functions
 

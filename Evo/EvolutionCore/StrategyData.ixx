@@ -1,11 +1,16 @@
-// StrategyData.h : 
+// StrategyData.ixx
 //
+// EvolutionCore
 
 module;
+
 #include <array>
+
+export module StrategyData;
+
 import EvolutionTypes;
 
-class StrategyData
+export class StrategyData
 {
 public:
     StrategyData();

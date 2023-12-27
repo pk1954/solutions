@@ -6,9 +6,9 @@ module;
 
 #include <fstream>
 #include "boolOp.h"
-#include "strategy.h"
 #include "win32_WorkThreadInterface.h"
 
+import Strategy;
 import GridRect;
 import GridField;
 import EvolutionTypes;

@@ -2,13 +2,11 @@
 //
 // Win32_history
 
-module;
+export module HistAllocThread;
 
 import HistorySystem;
 import win32_thread;
 import HistorySystem;
-
-export module HistAllocThread;
 
 export class HistAllocThread : public Util::Thread
 {

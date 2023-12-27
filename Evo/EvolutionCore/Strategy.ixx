@@ -1,15 +1,21 @@
-// strategy.h : 
+// Strategy.ixx
 //
-//EvolutionCore
+// EvolutionCore
 
 module;
+
 #include <array>
 #include <functional>
+
+export module Strategy;
+
 import EvolutionTypes;
 
 class StrategyData;
 
-class Strategy
+using std::function;
+
+export class Strategy
 {
 public:
 	enum class Id : unsigned short
@@ -26,7 +32,7 @@ public:
 
 	static int constexpr COUNT = static_cast<int>(Id::count);
 
-	virtual Id   GetStrategyId()                                         const = 0;
+	virtual Id   GetStrategyId()                                        const = 0;
     virtual bool InteractWith(StrategyData &, IND_ID const)             const = 0;
     virtual void Remember    (StrategyData &, IND_ID const, bool const) const = 0;
 
@@ -41,34 +47,34 @@ public:
 	}
 };
 
-class DefectAlways: public Strategy
+export class DefectAlways: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                              const { return Id::defect; };
+    virtual Id   GetStrategyId()                                             const { return Id::defect; };
     virtual bool InteractWith(StrategyData &mData, IND_ID const lPartnerId)  const { return false; };
     virtual void Remember    (StrategyData &mData, IND_ID const, bool const) const { };
 };
 
-class CooperateAlways: public Strategy
+export class CooperateAlways: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                              const { return Id::cooperate; };
+    virtual Id   GetStrategyId()                                             const { return Id::cooperate; };
     virtual bool InteractWith(StrategyData &mData, IND_ID const lPartnerId)  const { return true; };
     virtual void Remember    (StrategyData &mData, IND_ID const, bool const) const { };
 };
 
-class Tit4Tat: public Strategy
+export class Tit4Tat: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                         const { return Id::tit4tat; };
+    virtual Id   GetStrategyId()                                        const { return Id::tit4tat; };
     virtual bool InteractWith(StrategyData &, IND_ID const)             const;
     virtual void Remember    (StrategyData &, IND_ID const, bool const) const;
 };
 
-class EmptyStrategy: public Strategy
+export class EmptyStrategy: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                         const { return Id::empty; };
+    virtual Id   GetStrategyId()                                        const { return Id::empty; };
 	virtual bool InteractWith(StrategyData &, IND_ID const)             const { return false; };
 	virtual void Remember    (StrategyData &, IND_ID const, bool const) const { };
 };

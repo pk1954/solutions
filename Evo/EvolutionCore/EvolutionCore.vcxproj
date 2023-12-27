@@ -177,8 +177,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ActionOptions.h" />
-    <ClInclude Include="config.h" />
     <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionCoreImpl.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
@@ -186,7 +184,6 @@
     <ClInclude Include="EvoPixelCoords.h" />
     <ClInclude Include="EvoStatistics.h" />
     <ClInclude Include="geneTypeLimits.h" />
-    <ClInclude Include="genome.h" />
     <ClInclude Include="gplIterator.h" />
     <ClInclude Include="gridBrush.h" />
     <ClInclude Include="GridDimensions.h" />
@@ -197,14 +194,13 @@
     <ClInclude Include="gridSelection.h" />
     <ClInclude Include="MortalityTable.h" />
     <ClInclude Include="PixelCore.h" />
-    <ClInclude Include="strategy.h" />
-    <ClInclude Include="StrategyData.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Action.ixx" />
     <ClCompile Include="ActionOptions.cpp" />
+    <ClCompile Include="ActionOptions.ixx" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="Config.ixx" />
     <ClCompile Include="dump.cpp" />
@@ -245,7 +241,9 @@
     <ClCompile Include="strategy.cpp" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp" />
     <ClCompile Include="EvolutionCoreWrappers.cpp" />
+    <ClCompile Include="Strategy.ixx" />
     <ClCompile Include="StrategyData.cpp" />
+    <ClCompile Include="StrategyData.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">

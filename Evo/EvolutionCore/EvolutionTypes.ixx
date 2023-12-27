@@ -27,7 +27,7 @@ export ENERGY_UNITS constexpr operator"" _ENERGY_UNITS(unsigned long long ull)
 	return ENERGY_UNITS(Cast2Short(ull));
 }
 
-int constexpr IMEMSIZE_MAX = 9;
+export int constexpr IMEMSIZE_MAX = 9;
 
 export enum class tDisplayMode
 {

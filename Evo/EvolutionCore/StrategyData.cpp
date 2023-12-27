@@ -1,9 +1,12 @@
 // StrategyData.cpp : 
 //
+// EvolutionCore
 
+module;
 
 #include <cassert>
-#include "StrategyData.h"
+
+module StrategyData;
 
 MEM_INDEX    StrategyData::m_uiMaxPartnerMemory                 = MEM_INDEX(0);
 unsigned int StrategyData::m_uiNrInteractionsWithKnownCulprit   = 0;

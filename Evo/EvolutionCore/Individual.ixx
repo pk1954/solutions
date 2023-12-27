@@ -5,11 +5,16 @@
 module;
 
 #include <array>
-#include "Genome.h"
-#include "strategy.h"
-#include "StrategyData.h"
 
 export module Individual;
+
+import Debug;
+import Types;
+import Genome;
+import GeneType;
+import Strategy;
+import StrategyData;
+import EvolutionTypes;
 
 class Random;
 
@@ -23,17 +28,17 @@ public:
 
     void ResetIndividual();
     
-    ENERGY_UNITS    GetEnergy    ()                       const { return m_enStock; };
-    EVO_GENERATION  GetGenBirth  ()                       const { return m_genBirth; };
-    bool            IsDead       ()                       const { return m_enStock <= 0_ENERGY_UNITS; };
-    bool            IsAlive      ()                       const { return m_enStock >  0_ENERGY_UNITS; };
-    bool            IsDefined    ()                       const { return m_id.IsNotNull(); };
-    IND_ID          GetId        ()                       const { return m_id; };
-    tOrigin         GetOrigin    ()                       const { return m_origin; }
-    Genome const &  GetGenome    ()                       const { return m_genome; }
-	Strategy::Id    GetStrategyId()                       const { return m_strategyId; }
-	MEM_INDEX       GetMemSize   ()                       const { return m_stratData.GetMemSize();  }
-    MEM_INDEX       GetMemUsed   ()                       const { return m_stratData.GetMemUsed(); }
+    ENERGY_UNITS    GetEnergy    ()                      const { return m_enStock; };
+    EVO_GENERATION  GetGenBirth  ()                      const { return m_genBirth; };
+    bool            IsDead       ()                      const { return m_enStock <= 0_ENERGY_UNITS; };
+    bool            IsAlive      ()                      const { return m_enStock >  0_ENERGY_UNITS; };
+    bool            IsDefined    ()                      const { return m_id.IsNotNull(); };
+    IND_ID          GetId        ()                      const { return m_id; };
+    tOrigin         GetOrigin    ()                      const { return m_origin; }
+    Genome const &  GetGenome    ()                      const { return m_genome; }
+	Strategy::Id    GetStrategyId()                      const { return m_strategyId; }
+	MEM_INDEX       GetMemSize   ()                      const { return m_stratData.GetMemSize();  }
+    MEM_INDEX       GetMemUsed   ()                      const { return m_stratData.GetMemUsed(); }
     short           GetAllele    (GeneType::Id const gt) const { return m_genome.GetAllele(gt); }
     IND_ID          GetMemEntry  (MEM_INDEX    const ui) const { return m_stratData.GetMemEntry(ui); }
 

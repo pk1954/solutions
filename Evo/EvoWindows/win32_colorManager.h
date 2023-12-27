@@ -4,8 +4,9 @@
 module;
 
 #include <array>
-#include "strategy.h"
 #include "win32_clut.h"
+
+import Strategy;
 
 class ColorManager
 {

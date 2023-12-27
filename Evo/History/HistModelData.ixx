@@ -1,11 +1,11 @@
-// HistModelData.h : 
+// HistModelData.ixx
 //
+// History
 
-module;
-
-#include "GenerationCmd.h"
+export module HistModelData;
 
 import ModelData;
+import GenerationCmd;
 
 class HistModelData : public ModelData
 {

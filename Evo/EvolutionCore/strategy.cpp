@@ -1,11 +1,11 @@
 // strategy.cpp : 
 //
 
-
 #include <cassert>
 #include "random.h"
-#include "StrategyData.h"
-#include "strategy.h"
+
+import StrategyData;
+import Strategy;
 
 bool Tit4Tat::InteractWith(StrategyData &data, IND_ID const idPartner) const
 {

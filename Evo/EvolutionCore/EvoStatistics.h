@@ -6,10 +6,10 @@ module;
 
 #include "XArray.h"
 #include "GridPoint.h"
-#include "strategy.h"
 
 import EnumArray;
 import EvolutionTypes;
+import Strategy;
 
 class TextBuffer;
 class EvolutionCore;

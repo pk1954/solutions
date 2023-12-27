@@ -8,7 +8,6 @@
 #include "EventInterface.h"
 #include "MortalityTable.h"
 #include "ViewCollection.h"
-#include "strategy.h"
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "gpList.h"
@@ -18,6 +17,7 @@ import Config;
 import GridRect;
 import GridPOI;
 import GridField;
+import Strategy;
 import Individual;
 import Interaction;
 import EvolutionDump;

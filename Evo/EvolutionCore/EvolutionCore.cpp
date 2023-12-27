@@ -1,7 +1,6 @@
 // EvolutionCore.cpp
 //
 
-#include "strategy.h"
 #include "Genome.h"
 #include "grid_model.h"
 #include "gridNeighbor.h"
@@ -9,6 +8,7 @@
 #include "EvolutionCoreImpl.h"
 #include "EvolutionCoreWrappers.h"
 
+import Strategy;
 import GridPOI;
 
 void EvolutionCore::InitClass

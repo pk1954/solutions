@@ -1,9 +1,11 @@
 /// HistoryTest.cpp : Defines the entry point for the console application.
 //
 
-#include <iostream>
-#include "Version.h"
 
+#include <cassert>
+#include <iostream>
+
+import Version;
 import Int24;
 import Symtab;
 import ErrHndl;

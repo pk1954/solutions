@@ -4,10 +4,11 @@
 
 #include "symtab.h"
 #include "Resource.h"
-#include "EvoGenerationCmd.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_wrappers.h"
+
+module EvoGenerationCmd;
 
 static EvoWorkThreadInterface * m_pWorkThreadInterface;
 

@@ -2,12 +2,18 @@
 //
 // EvolutionCore
 
-#include "Genome.h"
-#include "ActionOptions.h"
+module;
+
+#include <iostream>     
+
+module ActionOptions;
+
+import Genome;
 
 using std::endl;
 using std::setw;
 using std::setprecision;
+using std::wostream;
 
 void ActionOptions::set(Action::Id const action, bool const bValue)
 {
@@ -34,7 +40,7 @@ void ActionOptions::InitOptions
 	set(A::passOn,    false                                         );
 }
 
-void ActionOptions::DisplayValidOptions(std::wostream * const pOut, Genome const & genome, unsigned int const uiSum)
+void ActionOptions::DisplayValidOptions(wostream * const pOut, Genome const & genome, unsigned int const uiSum)
 {
 	* pOut << L"   valid options:" << endl;
 	Action::Apply2AllEnabledActions

@@ -2,10 +2,13 @@
 //
 // EvoHistGlue
 
+module;
+
 import HistGeneration;
-#include "HistorySystem.h"
+import HistorySystem;
 import EvolutionTypes;
-#include "EvoHistorySysGlue.h"
+
+module EvoHistorySysGlue;
 
 import Config;
 

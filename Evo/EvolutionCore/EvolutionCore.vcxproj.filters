@@ -30,16 +30,7 @@
     <ClInclude Include="gridBrush.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ActionOptions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="StrategyData.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="MortalityTable.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="config.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="EvolutionCore.h">
@@ -58,9 +49,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="geneTypeLimits.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="genome.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="GridDimensions.h">
@@ -82,9 +70,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="PixelCore.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="strategy.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -219,6 +204,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Individual.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Strategy.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyData.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionOptions.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

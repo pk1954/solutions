@@ -5,10 +5,10 @@ module;
 
 #include <iostream>     
 #include "GridRect.h"
-#include "strategy.h"
 #include "ModelInterface.h"
 
 import BoolOp;
+import Strategy;
 import EvolutionTypes;
 import GridDimensions;
 import GridField;

@@ -165,10 +165,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HistoryTest.cpp" />
+    <ClCompile Include="Version.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">

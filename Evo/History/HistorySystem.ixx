@@ -29,6 +29,7 @@ export class HistoryBufferException : public std::exception { };
 
 export class HistorySystem : public Observable
 {
+public:
     HistorySystem();
     ~HistorySystem();
 

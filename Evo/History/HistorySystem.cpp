@@ -204,10 +204,10 @@ ModelData const * HistorySystem::save2History()
         m_pHistoryCache->ResetHistCacheSlot(slotNr);
     }
 
-    CHECK_HISTORY_STRUCTURE;
+//    CHECK_HISTORY_STRUCTURE;
     ModelData const * pModelData = m_pHistoryCache->Save2CacheSlot(slotNr, m_pHistCacheItemWork);
     m_GenCmdList.SetCachedGeneration(m_pHistCacheItemWork->GetHistGenCounter(), slotNr);
-    CHECK_HISTORY_STRUCTURE;
+//    CHECK_HISTORY_STRUCTURE;
 
 	return pModelData;
 };

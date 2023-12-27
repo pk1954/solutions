@@ -6,11 +6,11 @@ module;
 
 #include <cassert>
 #include "random.h"
-#include "strategy.h"
 
 module Individual;
 
 import Config;
+import Strategy;
 
 static DefectAlways    StratD;
 static CooperateAlways StratC;

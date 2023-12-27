@@ -1,6 +1,12 @@
+// Version.ixx
+//
+// HistoryTest
+
 module;
 
-#include "winver.h"
+#include <Windows.h>
+
+export module Version;
 
 #define STRINGIZE(s) #s
 
@@ -25,7 +31,7 @@ module;
 #define VER_FILE_VERSION            VERSION_MAJOR, VERSION_MINOR, VERSION_REVISION, VERSION_BUILD
 #define VER_FILE_VERSION_STR        VER_DEBUG_RELEASE " "  VER_ARCHITECTURE " "   
 
-#define VER_PRODUCTNAME_STR         "Evolution"
+#define VER_PRODUCTNAME_STR         "HistoryTest"
 #define VER_PRODUCT_VERSION         VER_FILE_VERSION
 #define VER_PRODUCT_VERSION_STR     VER_FILE_VERSION_STR
 #define VER_ORIGINAL_FILENAME_STR   VER_PRODUCTNAME_STR ".exe"

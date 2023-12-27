@@ -3,13 +3,13 @@
 
 #include <cassert>
 #include <array>
-#include "strategy.h"
 #include "grid_model.h"
 #include "gplIterator.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
 
 import Config;
+import Strategy;
 import EvolutionDump;
 
 EvolutionCoreImpl::EvolutionCoreImpl() :

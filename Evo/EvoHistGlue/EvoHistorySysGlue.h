@@ -12,7 +12,7 @@ module;
 #include "HistAllocThread.h"
 #include "EvoModelDataGlue.h"
 #include "EvoModelFactory.h"
-#include "EvoGenerationCmd.h"
+module EvoGenerationCmd;
 
 class RootWindow;
 class EvoModelFactory;

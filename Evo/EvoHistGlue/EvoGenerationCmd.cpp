@@ -2,9 +2,12 @@
 //
 // EvoHistGlue
 
+module;
+
 #include <unordered_map>
 #include <fstream>
-#include "EvoGenerationCmd.h"
+
+module EvoGenerationCmd;
 
 wchar_t const * const GetEvoCommandNameShort(EvoGenerationCmd::Id const cmd)
 {
