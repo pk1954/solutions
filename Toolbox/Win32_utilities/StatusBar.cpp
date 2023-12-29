@@ -169,17 +169,17 @@ PIXEL StatusBar::GetHeight() const
     
 void StatusBar::Resize() const 
 {
-    (void)SendMessage(WM_SIZE, 0, 0);
+    SendMessage(WM_SIZE, 0, 0);
 }
 
 void StatusBar::DisplayInPart(int const iPart, wstring const & wstrLine) const
 {
-	(void)SendMessage(SB_SETTEXT, iPart, (LPARAM)(wstrLine.c_str()));
+	SendMessage(SB_SETTEXT, iPart, (LPARAM)(wstrLine.c_str()));
 }
 
 void StatusBar::ClearPart(int const iPart) const
 {
-	(void)SendMessage(SB_SETTEXT, iPart, (LPARAM)L"");
+	SendMessage(SB_SETTEXT, iPart, (LPARAM)L"");
 }
 
 void StatusBar::ReadProgressReport(int const iPart, Script * pScript) const

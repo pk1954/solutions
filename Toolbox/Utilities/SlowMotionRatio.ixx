@@ -41,7 +41,7 @@ public:
 	{
 		bool const bRes = m_bMaxSpeed;
 		ApplyOp(m_bMaxSpeed, op);
-		NotifyAll(true);
+		NotifyAll(false);
 		return bRes;
 	}
 

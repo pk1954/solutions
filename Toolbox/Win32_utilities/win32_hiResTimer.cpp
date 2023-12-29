@@ -11,6 +11,7 @@ module;
 module HiResTimer;
 
 import Types;
+import SaveCast;
 
 HiResTimer::HiResTimer()
 {
@@ -23,14 +24,14 @@ HiResTimer::HiResTimer()
     }
 }
 
-Ticks HiResTimer::MicroSecondsToTicks(microseconds const time) const
+Ticks HiResTimer::microSecondsToTicks(microseconds const time)
 {
 	assert(time.count() < LLONG_MAX / m_frequency.GetValue());
 	auto ullTime = static_cast<ULONGLONG>(time.count());
 	return Ticks((ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS); 
 }
 
-microseconds HiResTimer::TicksToMicroseconds(Ticks const ticks) const 
+microseconds HiResTimer::ticksToMicroseconds(Ticks const ticks)
 {
 	assert(ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS);
 	auto ullTicks = static_cast<ULONGLONG>(ticks.GetValue());
@@ -43,9 +44,19 @@ microseconds HiResTimer::TicksToMicroseconds(Ticks const ticks) const
 	return result;
 }
 
+fMicroSecs HiResTimer::TicksToMicroSecs(Ticks const ticks)
+{
+	return fMicroSecs(ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue());
+}
+
+Ticks HiResTimer::MicroSecsToTicks(fMicroSecs const us)
+{
+	return Ticks(static_cast<long long>((us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS));
+}
+
 void HiResTimer::BusyWait(microseconds const us, Ticks & ticks)
 {
-	Ticks ticksToWait = MicroSecondsToTicks(us);
+	Ticks ticksToWait = microSecondsToTicks(us);
 	if (ticks == Ticks(0))  //-V1051
 		ticks = ReadHiResTimer();
 	Ticks ticksTarget = ticks + ticksToWait;

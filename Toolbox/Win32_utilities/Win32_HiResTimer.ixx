@@ -22,13 +22,6 @@ public:
 	HiResTimer();
 	virtual ~HiResTimer() = default;
 
-	Ticks ReadHiResTimer() const
-	{
-		LARGE_INTEGER value;
-		(void)QueryPerformanceCounter(&value);
-		return Ticks(value.QuadPart);
-	}
-
 	void Start()
 	{
 		if (!m_bStarted)
@@ -64,28 +57,28 @@ public:
 	{
 		assert(!m_bStarted);
 
-		microseconds result = TicksToMicroseconds(m_ticksAccumulated);
+		microseconds result = ticksToMicroseconds(m_ticksAccumulated);
 		m_ticksAccumulated = Ticks(0);
 
 		return result;
 	}
 
-	void BusyWait(microseconds const, Ticks&);
+	static void BusyWait(microseconds const, Ticks&);
 
-	fMicroSecs TicksToMicroSecs(Ticks const ticks) const
-	{
-		return fMicroSecs(ticks.GetValue() * fMICROSECS_TO_SECONDS / m_fFrequency.GetValue());
-	}
+	static fMicroSecs TicksToMicroSecs(Ticks const);
+	static Ticks MicroSecsToTicks(fMicroSecs const);
 
-	Ticks MicroSecsToTicks(fMicroSecs const us) const
+	static Ticks ReadHiResTimer()
 	{
-		return Ticks(static_cast<long long>((us.GetValue() * m_fFrequency.GetValue()) / fMICROSECS_TO_SECONDS));
+		LARGE_INTEGER value;
+		(void)QueryPerformanceCounter(&value);
+		return Ticks(value.QuadPart);
 	}
 
 private:
 
-	long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
-	float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
+	inline static long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
+	inline static float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
 
 	bool  m_bStarted         { false };
 	Ticks m_ticksOnStart     { Ticks(0) };
@@ -94,6 +87,6 @@ private:
 	inline static Hertz  m_frequency { 0_Hertz };
 	inline static fHertz m_fFrequency{ 0.0_fHertz };
 
-	microseconds TicksToMicroseconds(Ticks const) const;
-	Ticks MicroSecondsToTicks(microseconds const) const;
+	static microseconds ticksToMicroseconds(Ticks const);
+	static Ticks microSecondsToTicks(microseconds const);
 };
