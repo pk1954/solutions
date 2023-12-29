@@ -1,4 +1,4 @@
-// EvoModelDataGlue.h
+// EvoModelDataGlue.ixx
 //
 // Glue code for adapting EVOLUTION to HISTORY system
 //
@@ -8,9 +8,10 @@
 
 module;
 
-import GridDimensions;
-#include "EvolutionCore.h"
+export module EvoModelDataGlue;
 
+import GridDimensions;
+import EvolutionCore;
 import StopWatch;
 import GridRect;
 import ModelData;
@@ -49,7 +50,7 @@ public:
 	virtual void CopyFrom(ModelData const * const src)
 	{
 //		stopwatch.Start();
-		m_pEvolutionCore->CopyModelData(static_cast< EvoModelDataGlue const * const >(src)->m_pEvolutionCore);
+		m_pEvolutionCore->CopyModelData(static_cast<EvoModelDataGlue const * const>(src)->m_pEvolutionCore);
 //		stopwatch.Stop(L"Copy model");
 	}
 

@@ -2,11 +2,13 @@
 //
 // EvolutionCore
 
+module;
 
 #include <cassert>
-#include "random.h"
-#include "Genome.h"
 
+module Genome;
+
+import Random;
 import Config;
 import Strategy;
 

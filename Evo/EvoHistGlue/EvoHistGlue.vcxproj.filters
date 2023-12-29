@@ -24,9 +24,6 @@
     <ClInclude Include="EvoModelFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EvoModelDataGlue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EvoHistorySysGlue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EvoGenerationCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoModelDataGlue.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

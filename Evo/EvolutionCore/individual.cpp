@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include "random.h"
 
 module Individual;
 
+import Random;
 import Config;
 import Strategy;
 

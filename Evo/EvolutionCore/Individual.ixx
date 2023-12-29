@@ -8,6 +8,7 @@ module;
 
 export module Individual;
 
+import Random;
 import Debug;
 import Types;
 import Genome;
@@ -15,8 +16,6 @@ import GeneType;
 import Strategy;
 import StrategyData;
 import EvolutionTypes;
-
-class Random;
 
 export class Individual
 {

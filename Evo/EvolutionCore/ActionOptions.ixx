@@ -6,15 +6,14 @@ module;
 
 #include <array>
 #include <iostream>     
-#include "random.h"
 
 export module ActionOptions;
 
+import Random;
 import EnumArray;
 import EvolutionTypes;
 import Action;
-
-class Genome;
+import Genome;
 
 using std::wostream;
 

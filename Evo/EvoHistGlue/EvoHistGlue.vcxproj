@@ -151,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EvoHistorySysGlue.h" />
-    <ClInclude Include="EvoModelDataGlue.h" />
     <ClInclude Include="EvoModelFactory.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -160,6 +159,7 @@
     <ClCompile Include="EvoGenerationCmd.cpp" />
     <ClCompile Include="EvoHistorySysGlue.cpp" />
     <ClCompile Include="EvoModelDataGlue.cpp" />
+    <ClCompile Include="EvoModelDataGlue.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\History\History.vcxproj">

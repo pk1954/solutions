@@ -5,7 +5,8 @@
 module;
 
 #include <array>
-#include "random.h"
+
+import Random;
 import EvolutionTypes;
 
 class MortalityTable

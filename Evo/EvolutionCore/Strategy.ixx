@@ -10,8 +10,7 @@ module;
 export module Strategy;
 
 import EvolutionTypes;
-
-class StrategyData;
+import StrategyData;
 
 using std::function;
 
@@ -50,25 +49,25 @@ public:
 export class DefectAlways: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                             const { return Id::defect; };
-    virtual bool InteractWith(StrategyData &mData, IND_ID const lPartnerId)  const { return false; };
-    virtual void Remember    (StrategyData &mData, IND_ID const, bool const) const { };
+    virtual Id   GetStrategyId()                                              const { return Id::defect; };
+    virtual bool InteractWith(StrategyData * const, IND_ID const lPartnerId)  const { return false; };
+    virtual void Remember    (StrategyData * const, IND_ID const, bool const) const { };
 };
 
 export class CooperateAlways: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                             const { return Id::cooperate; };
-    virtual bool InteractWith(StrategyData &mData, IND_ID const lPartnerId)  const { return true; };
-    virtual void Remember    (StrategyData &mData, IND_ID const, bool const) const { };
+    virtual Id   GetStrategyId()                                              const { return Id::cooperate; };
+    virtual bool InteractWith(StrategyData * const, IND_ID const lPartnerId)  const { return true; };
+    virtual void Remember    (StrategyData * const, IND_ID const, bool const) const { };
 };
 
 export class Tit4Tat: public Strategy
 {
 public:
-    virtual Id   GetStrategyId()                                        const { return Id::tit4tat; };
-    virtual bool InteractWith(StrategyData &, IND_ID const)             const;
-    virtual void Remember    (StrategyData &, IND_ID const, bool const) const;
+    virtual Id   GetStrategyId()                                              const { return Id::tit4tat; };
+    virtual bool InteractWith(StrategyData * const, IND_ID const)             const;
+    virtual void Remember    (StrategyData * const, IND_ID const, bool const) const;
 };
 
 export class EmptyStrategy: public Strategy

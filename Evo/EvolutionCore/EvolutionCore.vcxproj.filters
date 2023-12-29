@@ -107,7 +107,7 @@
     <ClCompile Include="Interaction.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="strategy.cpp">
+    <ClCompile Include="Strategy.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvolutionCoreImpl.cpp">

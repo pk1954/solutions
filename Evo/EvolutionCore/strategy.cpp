@@ -1,9 +1,14 @@
-// strategy.cpp : 
+// Strategy.cpp : 
 //
+// EvolutionCore
+
+module;
 
 #include <cassert>
-#include "random.h"
 
+module Strategy;
+
+import Random;
 import StrategyData;
 import Strategy;
 
@@ -30,7 +35,7 @@ void Tit4Tat::Remember(StrategyData &data, IND_ID const idPartner, bool const bP
     }
     else 	                               // We don't know him
     {
-        if (bPartnerReaction)            // He seems to be a good guy
+        if (bPartnerReaction)              // He seems to be a good guy
         {
         }
         else                               // He doesn't behave well. Put him on the list

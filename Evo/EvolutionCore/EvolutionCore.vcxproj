@@ -238,7 +238,7 @@
     <ClCompile Include="grid_model.cpp" />
     <ClCompile Include="Individual.cpp" />
     <ClCompile Include="Interaction.cpp" />
-    <ClCompile Include="strategy.cpp" />
+    <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp" />
     <ClCompile Include="EvolutionCoreWrappers.cpp" />
     <ClCompile Include="Strategy.ixx" />

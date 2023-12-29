@@ -14,6 +14,7 @@ import HistoryIterator;
 import HistorySystem;
 
 using std::string;
+using std::wstring;
 using std::wcout;
 using std::endl;
 
@@ -150,7 +151,7 @@ int _tmain(int argc, char * argv[])
 
 	for (int iCount = 1; iCount < argc; iCount++)
     {
-        std::string strCmd(argv[iCount]);
+        string strCmd(argv[iCount]);
 
 		if ((strCmd.find(".in") != string::npos) || (strCmd.find(".IN") != string::npos)) 
 		{

@@ -5,10 +5,9 @@
 export module HistAllocThread;
 
 import HistorySystem;
-import win32_thread;
-import HistorySystem;
+import Thread;
 
-export class HistAllocThread : public Util::Thread
+export class HistAllocThread : public Thread
 {
 public:
 
