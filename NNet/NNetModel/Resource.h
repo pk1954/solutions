@@ -47,9 +47,10 @@
 #define       IDM_RELOAD_MODEL               178
 
 #define       IDM_SCAN                       190
-#define       IDM_STARTING_SCAN              191
-#define       IDM_FINISHING_SCAN             192
-#define       IDM_UNLOCK                     193
+#define       IDM_SCAN_STEP                  191
+#define       IDM_STARTING_SCAN              192
+#define       IDM_FINISHING_SCAN             193
+#define       IDM_UNLOCK                     194
 
 #define       IDD_SCALES_UPDATE              263
 #define       IDD_GRID_UPDATE                264

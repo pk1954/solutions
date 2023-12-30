@@ -23,11 +23,6 @@ ScanMatrix::ScanMatrix(RasterPoint const& size)
     :m_scanLines(size)
 {}
 
-RasterPoint ScanMatrix::Size() const
-{
-    return m_scanLines.GetSize();
-}
-
 mV ScanMatrix::Scan(RasterPoint const& rp)
 {
     return m_scanLines.GetRef(rp).Scan();
@@ -62,11 +57,12 @@ void ScanMatrix::Clear()
 
 void ScanMatrix::Fill(NNetModelReaderInterface const& nmri)
 {
+    Raster const& raster = nmri.GetScanRaster();
     nmri.Apply2AllC<Pipe>
     (
-        [this, nmri](Pipe const& p)
+        [this, raster](Pipe const& p)
         {
-            Add2list(p, nmri.GetScanRaster());
+            Add2list(p, raster);
         }
     );
 }

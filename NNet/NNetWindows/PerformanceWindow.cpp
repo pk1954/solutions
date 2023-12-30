@@ -112,15 +112,15 @@ void PerformanceWindow::PaintText(TextBuffer & textBuf)
 	if (m_pComputeThread)
 	{
 		fMicroSecs avail { m_pComputeThread->GetTimeAvailPerCycle() };
-		fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle() };
+		//fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle() };
 		printMicroSecLine(textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution());
-		printFloatLine   (textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetNominalSlowMo(), L"");
-		if (avail > 0._MicroSecs)
-		{
-			printMicroSecLine(textBuf, L"avail time:", avail);
-			printMicroSecLine(textBuf, L"spent time:", spent);
-			printFloatLine   (textBuf, L"workload:",   Cast2Float((spent / avail) * 100.0f), L"%");
-		}
+		//printFloatLine   (textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetNominalSlowMo(), L"");
+		//if (avail > 0._MicroSecs)
+		//{
+		//	printMicroSecLine(textBuf, L"avail time:", avail);
+		//	printMicroSecLine(textBuf, L"spent time:", spent);
+		//	printFloatLine   (textBuf, L"workload:",   Cast2Float((spent / avail) * 100.0f), L"%");
+		//}
 //		printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
 		if (m_pNMRI)
 		{

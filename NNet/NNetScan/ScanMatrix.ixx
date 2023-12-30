@@ -14,7 +14,6 @@ import Raster;
 import SaveCast;
 import ScanPixel;
 import NNetModel;
-
 import Vector2D;
 
 using std::unique_ptr;
@@ -29,7 +28,9 @@ public:
     void Clear();
     void Fill(NNetModelReaderInterface const&);
 
-    RasterPoint Size() const;
+    RasterPoint Size  () const { return m_scanLines.GetSize(); }
+    RasterIndex Width () const { return m_scanLines.Width(); }
+    RasterIndex Height() const { return m_scanLines.Height(); }
 
     mV Scan(RasterPoint const&);
 
