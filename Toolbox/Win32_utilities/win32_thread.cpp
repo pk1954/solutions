@@ -27,16 +27,6 @@ HANDLE RunAsAsyncThread
 	return res;
 }
 
-void Thread::BeginThread
-( 
-	wstring const & strName // for debugging only
-)
-{
-	m_strThreadName = strName;
-	m_handle = RunAsAsyncThread(::ThreadProc, static_cast<void *>(this), & m_threadId);
-	assert(m_handle != nullptr);
-}
-
 void Thread::SetThreadAffinityMask(DWORD_PTR const mask)
 {
 	::SetThreadAffinityMask(m_handle, mask);
@@ -44,42 +34,29 @@ void Thread::SetThreadAffinityMask(DWORD_PTR const mask)
 
 void Thread::StartThread
 ( 
-	wstring const & strName, // for debugging only
-	bool    const   bAsync
+	wstring const & strName // for debugging only
 )
 {
-	m_bAsync = bAsync;
-	if (m_bAsync)
-	{
-		BeginThread(strName);
-		m_eventThreadStarter.Wait();
-	}
+	m_strThreadName = strName;
+	m_handle = RunAsAsyncThread(::ThreadProc, static_cast<void *>(this), & m_threadId);
+	assert(m_handle != nullptr);
+	m_eventThreadStarter.Wait();
 }
 
 void Thread::PostThreadMsg(UINT uiMsg, WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_bAsync)
-	{
-		assert(m_threadId != 0);
-		bool const bRes = ::PostThreadMessage(m_threadId, uiMsg, wParam, lParam);
-		//				DWORD err = GetLastError();
-		assert(bRes);
-	}
-	else
-	{
-		ThreadMsgDispatcher(MSG { nullptr, uiMsg, wParam, lParam });
-	}
+	assert(m_threadId != 0);
+	bool const bRes = ::PostThreadMessage(m_threadId, uiMsg, wParam, lParam);
+	//				DWORD err = GetLastError();
+	assert(bRes);
 }
 
 void Thread::Terminate()   // to be called from different thread
 {
-	if (m_bAsync)
-	{
-		TerminateNoWait();
-		WaitForSingleObject(m_handle, INFINITE);      // wait until thread has stopped
-		CloseHandle(m_handle);
-		m_handle = nullptr;
-	}
+	TerminateNoWait();
+	WaitForSingleObject(m_handle, INFINITE);      // wait until thread has stopped
+	CloseHandle(m_handle);
+	m_handle = nullptr;
 }
 
 static unsigned int __stdcall ThreadProc(void * data) 

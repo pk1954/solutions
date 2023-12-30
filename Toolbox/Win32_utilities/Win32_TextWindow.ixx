@@ -35,7 +35,6 @@ public:
 		PixelRect const&,
 		LPCTSTR   const,
 		UINT      const,
-		bool      const,
 		VisCrit   const&
 	);
 	void StopTextWindow();
@@ -68,15 +67,13 @@ public:
 		HDC             hDC_Memory,
 		PixelRectSize & pixSize,
 		TextWindow    & textWindow,
-		wstring const & strName,
-		bool            bAsync
+		wstring const & strName
 	) :
 		m_textWindow(textWindow),
 		m_hDC_Memory(hDC_Memory)
 	{
 		m_pTextBuffer = make_unique<Win32_TextBuffer>(hDC_Memory, pixSize);
-		if (bAsync)
-			StartThread(strName, bAsync);
+		StartThread(strName);
 		PostThreadMsg(anyMessageWillDo);
 	}
 

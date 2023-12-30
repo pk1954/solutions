@@ -176,6 +176,7 @@
     <ClCompile Include="TimeDisplay.ixx" />
     <ClCompile Include="TimeGraph.cpp" />
     <ClCompile Include="TimeGraph.ixx" />
+    <ClCompile Include="TimerQueueTimer.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
     <ClCompile Include="Win32_ActionTimer.ixx" />

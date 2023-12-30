@@ -31,7 +31,6 @@ void TextWindow::StartTextWindow
 	PixelRect const & rect,
 	LPCTSTR   const   szClass,
     UINT      const   uiAlpha,
-	bool      const   bAsync,
 	VisCrit   const & visibilityCriterion
 )
 {
@@ -58,8 +57,7 @@ void TextWindow::StartTextWindow
 		hDC_Memory, 
 		pixRectSize,
 		* this, 
-		szClass, 
-		bAsync 
+		szClass
 	);
 	SetDefaultBackgroundColor();
 }

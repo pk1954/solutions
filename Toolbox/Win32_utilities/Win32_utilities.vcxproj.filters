@@ -225,5 +225,8 @@
     <ClCompile Include="DialogItem.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TimerQueueTimer.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

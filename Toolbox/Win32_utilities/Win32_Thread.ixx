@@ -24,8 +24,7 @@ public:
 
 	virtual ~Thread() = default;
 
-	void BeginThread(wstring const &);
-	void StartThread(wstring const &, bool const);
+	void StartThread(wstring const &);
 
 	void SetThreadAffinityMask(DWORD_PTR const);
 
@@ -36,8 +35,6 @@ public:
 		PostThreadMessage(m_threadId, WM_QUIT, 0, 0); // PostQuitMessage(0);  doesn't work
 	}
 
-	bool IsAsyncThread() const { return m_bAsync; }
-
 	virtual void Terminate(); // Waits until thread has stopped
 	virtual void ThreadStartupFunc() {};
 	virtual void ThreadMsgDispatcher(MSG const &) = 0;
@@ -46,7 +43,6 @@ public:
 private:
 	HANDLE      m_handle             { nullptr };
 	UINT        m_threadId           { 0 };
-	bool        m_bAsync             { false };
 	Win32_Event m_eventThreadStarter { };
 	wstring     m_strThreadName      { };
 

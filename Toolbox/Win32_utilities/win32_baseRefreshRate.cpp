@@ -14,33 +14,12 @@ module BaseRefreshRate;
 import Win32_Util_Resource;
 import Win32_Util;
 import EditLineBox;
+import TimerQueueTimer;
 
 using std::wstring;
 using std::to_wstring;
-using std::bit_cast;
 using std::chrono::milliseconds;
 using namespace std::chrono;
-
-BaseRefreshRate::BaseRefreshRate()
-{}
-
-BaseRefreshRate::~BaseRefreshRate()
-{
-	deleteTimer();
-	m_hTimer = nullptr;
-}
-
-void BaseRefreshRate::SetRefreshRate(milliseconds const msRate) 
-{ 
-	m_msRefreshRate = msRate; 
-	deleteTimer();
-	startTimer(msRate);
-}
-
-milliseconds BaseRefreshRate::GetRefreshRate() const
-{ 
-	return m_msRefreshRate; 
-}
 
 void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
 {
@@ -61,34 +40,21 @@ void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
 	}
 }
 
-void BaseRefreshRate::startTimer(milliseconds const msTimer)
+void BaseRefreshRate::Notify(bool const bImmediately)
 {
-	auto dwTime = static_cast<DWORD>(msTimer.count());
-	(void)CreateTimerQueueTimer
-	(
-		& m_hTimer,                     // output parameter 
-		nullptr,                        // use default timer queue
-		(WAITORTIMERCALLBACK)TimerProc, // the timer procedure
-		static_cast<void *>(this),      // pointer to this object as parameter to TimerProc
-		dwTime,                         // timer is signaled the first time after dwTime msecs
-		dwTime,                         // timer is signaled periodically every dwTime msecs
-		0                               // no flags
-	);
-	assert(m_hTimer != nullptr);
+	m_bDirty = true;
+	if (bImmediately || (GetRefreshRate() == 0ms))
+		trigger(bImmediately);
 }
 
-void BaseRefreshRate::deleteTimer()
+void BaseRefreshRate::trigger(bool const bImmediately)
 {
-	if (m_hTimer != nullptr)
-	{
-		(void)DeleteTimerQueueTimer(nullptr, m_hTimer, INVALID_HANDLE_VALUE);
-		m_hTimer = nullptr;
-	}
+	Trigger(bImmediately);
+	m_bDirty = false;
 }
 
-void CALLBACK BaseRefreshRate::TimerProc(void * const lpParam, bool const TimerOrWaitFired)
+void BaseRefreshRate::TimerProc()
 {
-	auto const pRefreshRate = bit_cast<BaseRefreshRate *>(lpParam);
-	if (pRefreshRate->m_bDirty)
-		pRefreshRate->trigger(false);
+	if (m_bDirty)
+		trigger(false);
 }
