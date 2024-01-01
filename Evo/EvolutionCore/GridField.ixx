@@ -4,21 +4,25 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 
 export module GridField;
 
+import Types;
+import Genome;
+import Strategy;
 import GridPoint;
 import Individual;
-import Interaction;
+import InterAction;
 import EvolutionTypes;
 
 export class GridField
 {
 public:
 
-	GridField::GridField() :
-		m_gp      (GP_NULL),
+	GridField()
+	  :	m_gp      (GP_NULL),
 		m_gpSenior(GP_NULL),
 		m_gpJunior(GP_NULL),   
 		m_mutRate(),   
@@ -64,12 +68,12 @@ public:
 
     IND_ID GetMemEntry(MEM_INDEX const i) const { return m_Individual.GetMemEntry(i); }
 
-    void ResetIndividual()                   { m_Individual.ResetIndividual(); }
+    void ResetIndividual()                  { m_Individual.ResetIndividual(); }
     void SetEnergy(ENERGY_UNITS const sInc) { m_Individual.SetEnergy(sInc); }
     void DecEnergy(ENERGY_UNITS const sDec) { m_Individual.IncEnergy(- sDec); }
     void IncEnergy(ENERGY_UNITS const sInc) { m_Individual.IncEnergy(sInc); }
 
-    void ReduceFertilizer()                   { m_enFertilizer /= 2; }
+    void ReduceFertilizer()                  { m_enFertilizer /= 2; }
 	void SetFertilizer(ENERGY_UNITS const s) { setFertilizer(s); }
 
 	void CreateIndividual(IND_ID const id, EVO_GENERATION const genBirth, Strategy::Id const s)

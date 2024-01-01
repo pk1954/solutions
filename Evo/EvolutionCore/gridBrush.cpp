@@ -1,10 +1,12 @@
-// gridBrush.cpp
+// GridBrush.cpp
 //
 // EvolutionCore
 
+module;
 
 #include "grid_model.h"
-#include "gridBrush.h"
+
+module GridBrush;
 
 using namespace std;
 	

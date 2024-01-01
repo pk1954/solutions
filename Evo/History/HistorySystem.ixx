@@ -35,14 +35,13 @@ public:
 
     virtual ModelData * StartHistorySystem
     (
-		HistGeneration    const, 
+		HistGeneration     const, 
 		long               const, 
 		unsigned long long const, 
 		ModelFactory     * const
    );
 
-	virtual void StopHistorySystem();
-
+	virtual void           StopHistorySystem();
 	virtual bool		   AddHistorySlot();
 
     virtual HistSlotNr     GetNrOfUsedHistCacheSlots() const { return m_pHistoryCache->GetNrOfUsedHistCacheSlots();     }

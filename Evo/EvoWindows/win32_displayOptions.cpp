@@ -6,11 +6,12 @@
 #include <functional>
 #include "Resource.h"
 #include "windowsx.h"
-#include "gridNeighbor.h"
 #include "EvolutionCore.h"
 #include "win32_tooltip.h"
 #include "win32_baseDialog.h"
 #include "win32_displayOptions.h"
+
+import GridNeighbor;
 
 DspOptWindow::DspOptWindow() : 
 	BaseDialog()

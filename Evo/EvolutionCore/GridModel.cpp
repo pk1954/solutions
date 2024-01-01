@@ -1,17 +1,14 @@
-// grid_model.cpp :
+// GridModel.cpp :
 //
+// EvolutionCore
 
+module;
 
 #include <cassert>
 #include <cstdlib> 
 #include <cmath> 
-#include "EventInterface.h"
-#include "MortalityTable.h"
-#include "ViewCollection.h"
-#include "grid_model.h"
-#include "gplIterator.h"
-#include "gpList.h"
-#include "Genome.h"
+
+module GridModel;
 
 import Config;
 import GridRect;
@@ -21,6 +18,12 @@ import Strategy;
 import Individual;
 import Interaction;
 import EvolutionDump;
+import EventInterface;
+import MortalityTable;
+import ViewCollection;
+import GplIterator;
+import gpList;
+import Genome;
 
 //#ifndef NDEBUG
 //    #define CHECK_INDIVIDUALS CheckIndividuals(* this)

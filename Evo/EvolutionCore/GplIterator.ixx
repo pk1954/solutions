@@ -1,15 +1,17 @@
-// gplIterator.h : 
+// GplIterator.ixx
 //
+// EvolutionCore
 
 module;
 
 #include <cassert>
 
+export module GplIterator;
+
 import GridPoint;
+import GridModel;
 
-class GridModel;
-
-class GplIterator
+export class GplIterator
 {
 public:
     explicit GplIterator(GridModel const & grid) 

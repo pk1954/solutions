@@ -14,6 +14,7 @@ import Types;
 import D3D_driver;
 import D3dSystem;
 import Win32_PixelTypes;
+import Win32_PIXEL;
 
 using std::wstring;
 

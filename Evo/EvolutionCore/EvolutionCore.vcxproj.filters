@@ -21,13 +21,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gplIterator.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="EvolutionCoreImpl.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gridBrush.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="MortalityTable.h">
@@ -49,12 +43,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="geneTypeLimits.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="GridDimensions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gridNeighbor.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gridPoint.h">
@@ -92,10 +80,10 @@
     <ClCompile Include="GridPointList.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="grid_model.cpp">
+    <ClCompile Include="GridModel.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="gridNeighbor.cpp">
+    <ClCompile Include="GridNeighbor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="gridRect.cpp">
@@ -146,7 +134,7 @@
     <ClCompile Include="GridPOI.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="gridBrush.cpp">
+    <ClCompile Include="GridBrush.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="MortalityTable.cpp">
@@ -213,6 +201,18 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ActionOptions.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridDimensions.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridNeighbor.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridBrush.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GplIterator.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

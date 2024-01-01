@@ -1,9 +1,12 @@
-// gridNeighbor.cpp :
+// GridNeighbor.cpp :
 //
+// EvolutionCore
 
+module;
 
 #include "grid_model.h"
-#include "gridNeighbor.h"
+
+module GridNeighbor;
 
 import GridPoint;
 import GridRect;

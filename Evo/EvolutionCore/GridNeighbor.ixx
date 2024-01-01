@@ -1,20 +1,23 @@
-// gridNeighbor.h : 
+// GridNeighbor.ixx
 //
+// EvolutionCore
 
 module;
 
+#include <cassert>
 #include <vector>
 #include <functional>
 
-import GridPoint;
+export module GridNeighbor;
 
-class GridModel;
+import GridPoint;
+import GridModel;
 
 using std::vector;
 
-using NEIGHBORS = vector< GridPoint >;
+export using NEIGHBORS = vector<GridPoint>;
 
-class Neighborhood
+export class Neighborhood
 {
 public:
     static void InitClass(int const);

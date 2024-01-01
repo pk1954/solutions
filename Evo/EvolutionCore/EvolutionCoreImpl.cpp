@@ -4,7 +4,7 @@
 #include <cassert>
 #include <array>
 #include "grid_model.h"
-#include "gplIterator.h"
+#include "GplIterator.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
 

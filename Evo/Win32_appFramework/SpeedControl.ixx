@@ -4,7 +4,6 @@
 
 module;
 
-#include "win32_util_resource.h"
 #include "win32_WorkThreadInterface.h"
 #include "win32_status.h"
 

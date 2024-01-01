@@ -18,22 +18,20 @@ import GridField;
 import ActionOptions;
 import GridDimensions;
 import EvolutionTypes;
-
 import GridPoint;
 import GridRect;
 import GridPOI;
+import GridCircle;
+import Manipulator;
+import EventInterface;
+import ObserverInterface;
 
 using std::array;
 using std::vector;
 using std::wostringstream;
 using std::endl;
 
-class GridCircle;
-class Manipulator;
-class EventInterface;
-class ObserverInterface;
-
-using GROWTH_RATE = NamedType< int, struct GROWTH_RATE_Parameter >;
+using GROWTH_RATE = NamedType<int, struct GROWTH_RATE_Parameter>;
 
 export class GridModel
 {

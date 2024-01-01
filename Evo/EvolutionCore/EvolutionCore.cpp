@@ -3,13 +3,13 @@
 
 #include "Genome.h"
 #include "grid_model.h"
-#include "gridNeighbor.h"
 #include "EvolutionCore.h"
 #include "EvolutionCoreImpl.h"
 #include "EvolutionCoreWrappers.h"
 
 import Strategy;
 import GridPOI;
+import GridNeighbor;
 
 void EvolutionCore::InitClass
 (

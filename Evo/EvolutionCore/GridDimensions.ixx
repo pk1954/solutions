@@ -1,4 +1,4 @@
-// GridDimensions.h
+// GridDimensions.ixx
 //
 // EvolutionCore
 //
@@ -9,15 +9,17 @@ module;
 
 #include <algorithm>  // min/max templates
 #include <vector>
-#include "gridNeighbor.h"
+
+export module GridDimensions;
 
 import GridRect;
+import GridNeighbor;
 
 using std::min;
 using std::max;
 using std::vector;
 
-class GridDimensions
+export class GridDimensions
 {
 public:
 	static void DefineGridSize
@@ -27,17 +29,17 @@ public:
 		int        const
 	);
 
-	static int        const GetNrOfNeigbors() { return m_iNrOfNeighbors; }
+	static int       const GetNrOfNeigbors() { return m_iNrOfNeighbors; }
 	static GridCoord const GridWidth()       { return m_gridSize.GetX(); }
 	static GridCoord const GridHeight()      { return m_gridSize.GetY(); }
 	static GridCoord const GridMinX()        { return 0_GRID_COORD; }
 	static GridCoord const GridMinY()        { return 0_GRID_COORD; }
 	static GridCoord const GridMaxX()        { return GridWidth()  - 1_GRID_COORD; }
 	static GridCoord const GridMaxY()        { return GridHeight() - 1_GRID_COORD; }
-	static GridPoint  const GridRectSize()    { return m_gridSize; }
-	static GridPoint  const GridOrigin()      { return GP_ZERO; }
-	static GridPoint  const GridMaximum()     { return m_gridSize - 1_GRID_COORD; }
-	static GridRect   const GridRectFull()    { return GridRect(GridOrigin(), GridMaximum()); }
+	static GridPoint const GridRectSize()    { return m_gridSize; }
+	static GridPoint const GridOrigin()      { return GP_ZERO; }
+	static GridPoint const GridMaximum()     { return m_gridSize - 1_GRID_COORD; }
+	static GridRect  const GridRectFull()    { return GridRect(GridOrigin(), GridMaximum()); }
 
 	static int const GridWidthVal()  { return GridWidth() .GetValue(); }; // abbreviations for e.g. array dims
 	static int const GridHeightVal() { return GridHeight().GetValue(); };
@@ -66,7 +68,7 @@ private:
 	static NEIGHBOR_GRID * m_pGridNeighbors;
 };
 
-inline bool const Neighbors(GridPoint const a, GridPoint const b)
+export inline bool const Neighbors(GridPoint const a, GridPoint const b)
 { 
 	GridPoint  const gpDiff { a - b };
 	GridCoord const dx     { GridCoord(std::abs(gpDiff.GetXvalue())) }; 
@@ -77,7 +79,7 @@ inline bool const Neighbors(GridPoint const a, GridPoint const b)
 		  );
 }
 
-inline GridPoint const ClipToGrid(GridPoint gp) 
+export inline GridPoint const ClipToGrid(GridPoint gp) 
 { 
 	gp = GridPoint
 	(
@@ -94,12 +96,12 @@ inline GridPoint const ClipToGrid(GridPoint gp)
 	return gp;	
 }
 
-inline bool const IsInGrid(GridPoint const & gp) 
+export inline bool const IsInGrid(GridPoint const & gp) 
 { 
 	return ClipToGrid(gp) == gp;
 };
 
-inline void Apply2Rect(GridPointFunc const & func, GridRect const & rect)
+export inline void Apply2Rect(GridPointFunc const & func, GridRect const & rect)
 {
 	::Apply2Rect
 	(
@@ -109,7 +111,7 @@ inline void Apply2Rect(GridPointFunc const & func, GridRect const & rect)
 	);
 }
 
-inline void Apply2Grid(GridPointFunc const & func, bool const fWithBorders = false)
+export inline void Apply2Grid(GridPointFunc const & func, bool const fWithBorders = false)
 {
 	Apply2Rect(func, GridDimensions::GridOrigin(), GridDimensions::GridMaximum(), fWithBorders);
 }

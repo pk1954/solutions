@@ -7,7 +7,6 @@ module;
 #include <functional>
 import GridDimensions;
 #include "grid_model.h"
-#include "gridBrush.h"
 import EvolutionTypes;
 #include "EvolutionCore.h"
 
@@ -15,6 +14,7 @@ import BoolOp;
 import GridPoint;
 import GridRect;
 import GridPOI;
+import GridBrush;
 
 class EventInterface;
 class ObserverInterface;
@@ -99,7 +99,7 @@ public:
 	}
 
 private:
-	GridModel      m_grid;	
+	GridModel m_grid;	
 	GridBrush m_brush;
 
     GridField const & getGridField(GridPoint const gp) const { return m_grid.GetGridField(gp); }

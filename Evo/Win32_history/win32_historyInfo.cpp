@@ -2,14 +2,18 @@
 //
 // Win32_history
 
+module;
 
 #include <fstream>
 #include <iostream>
 #include <sstream> 
 #include <locale>
+
+module HistInfoWindow;
+
 import HistGeneration;
-#include "HistorySystem.h"
-#include "win32_historyInfo.h"
+import HistorySystem;
+import win32_historyInfo;
 
 import ObserverInterface;
 

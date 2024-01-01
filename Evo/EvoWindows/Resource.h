@@ -1,4 +1,7 @@
-module;
+// Resource.h
+//
+// EvoWindows
+
 
 // identifiers below 100 are reserved for win32_utilities
 // identifiers for application start at 100

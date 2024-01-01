@@ -25,7 +25,7 @@ public:
 
 		if (bAsync)
 		{
-			StartThread(L"HistAlloc", true);  
+			StartThread(L"HistAlloc");  
 		}
 		else
 		{

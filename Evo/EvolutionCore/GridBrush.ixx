@@ -1,16 +1,19 @@
-// gridBrush.h
+// GridBrush.ixx
 //
 // EvolutionCore
 
 module;
 
+#include <functional>
+
+export module GridBrush;
+
+import Types;
 import EvolutionTypes;
-
 import GridPoint;
+import GridModel;
 
-class GridModel;
-
-class GridBrush
+export class GridBrush
 {
 public:
 	GridBrush(GridModel * const);
