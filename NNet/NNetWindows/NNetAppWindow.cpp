@@ -277,7 +277,7 @@ void NNetAppWindow::Stop()
 	BaseWindow::Stop();
 	m_bStarted = false;
 
-	m_computeThread.StopComputation();
+	m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 
 	m_mainNNetWindow   .Stop();
 	m_miniNNetWindow   .Stop();
@@ -381,7 +381,7 @@ void NNetAppWindow::OnClose()
 {
 	if (m_bStarted)
 	{
-		m_computeThread.StopComputation();
+		m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 		if (! AskAndSave())
 			return;
 		WinManager::StoreWindowConfiguration();
@@ -436,7 +436,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_RESET_DYNAMIC_DATA:
 			m_nmwi.ClearDynamicData();
-			m_computeThread.Reset();
+			m_computeThread.PostThreadCmd(ComputeThread::TM_RESET);
 			m_dynamicModelObservable.NotifyAll(true);
 			return true;
 
@@ -462,11 +462,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_RUN:
-			m_computeThread.RunComputation();
+			m_computeThread.PostThreadCmd(ComputeThread::TM_START);
 			return true;
 
 		case IDM_STOP:
-			m_computeThread.StopComputation();
+			m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 			return true;
 
 		case IDM_OPTIMIZE_SCAN_AREA:
@@ -474,7 +474,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_SCRIPT_DIALOG:
-			m_computeThread.StopComputation();
+			m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 			processScript();
 			return true;
 
@@ -517,7 +517,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_SAVE_MODEL_AS:
-			m_computeThread.StopComputation();
+			m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 			if (SaveModelAs())
 				Preferences::WritePreferences();
 			return true;
@@ -667,7 +667,7 @@ bool NNetAppWindow::AskNotUndoable()
 
 void NNetAppWindow::newModel()
 {
-	m_computeThread.StopComputation();
+	m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 	m_mainNNetWindow.Reset();
 	ResetModelCmd::Push();
 	CreateInitialNobsCmd::Push();
@@ -679,7 +679,7 @@ void NNetAppWindow::newModel()
 
 void NNetAppWindow::replaceModel()
 {
-	m_computeThread.StopComputation();
+	m_computeThread.PostThreadCmd(ComputeThread::TM_STOP);
 	m_mainNNetWindow.Reset();
 	m_upModel = NNetModelIO::GetImportedModel();	
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);

@@ -81,7 +81,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
 
     bool const bRunning = m_pComputeThread->IsRunning();
     if (bRunning)
-        m_pComputeThread->StopComputation();
+		m_pComputeThread->PostThreadCmd(ComputeThread::TM_STOP);
     try
     {
         bRes = processModelCommand(wmId, lParam, umPoint);
@@ -93,7 +93,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
     }
     if (bRunning)
-        m_pComputeThread->RunComputation();
+		m_pComputeThread->PostThreadCmd(ComputeThread::TM_START);
 
     return bRes;
 }

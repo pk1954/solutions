@@ -45,7 +45,6 @@ void CrsrWindow::Start
 		PixelRect { 0_PIXEL, 300_PIXEL, 300_PIXEL, 525_PIXEL }, 
 		L"CrsrWindow", 
 		100, 
-		true,
 		nullptr
 	);
 //	::CreateWindowToolTip(GetWindowHandle(), L"Cursor window");

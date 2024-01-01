@@ -17,6 +17,7 @@ import Observable;
 import HiResTimer;
 
 using std::chrono::milliseconds;
+using std::chrono::microseconds;
 
 export class ActionTimer : public Observable
 {

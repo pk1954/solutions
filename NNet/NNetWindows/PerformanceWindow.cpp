@@ -33,7 +33,6 @@ void PerformanceWindow::Start
 		PixelRect { 0_PIXEL, 0_PIXEL, 300_PIXEL, 350_PIXEL }, 
 		L"PerformanceWindow", 
 		100,  // alpha
-		true,
 		nullptr
 	);
 	m_pSlowMotionRatio = pSlowMotionRatio;

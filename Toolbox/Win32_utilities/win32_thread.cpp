@@ -13,6 +13,11 @@ module Thread;
 
 using std::wstring;
 
+Thread::~Thread()
+{
+	int x = 42;
+}
+
 HANDLE RunAsAsyncThread
 (
 	unsigned int __stdcall func(void *),
@@ -38,7 +43,7 @@ void Thread::StartThread
 )
 {
 	m_strThreadName = strName;
-	m_handle = RunAsAsyncThread(::ThreadProc, static_cast<void *>(this), & m_threadId);
+	m_handle = RunAsAsyncThread(::StdThreadProc, static_cast<void *>(this), &m_threadId);
 	assert(m_handle != nullptr);
 	m_eventThreadStarter.Wait();
 }
@@ -47,7 +52,11 @@ void Thread::PostThreadMsg(UINT uiMsg, WPARAM const wParam, LPARAM const lParam)
 {
 	assert(m_threadId != 0);
 	bool const bRes = ::PostThreadMessage(m_threadId, uiMsg, wParam, lParam);
-	//				DWORD err = GetLastError();
+	DWORD err = GetLastError();
+	if (!bRes)
+	{
+		int x = 42;
+	}
 	assert(bRes);
 }
 
@@ -59,26 +68,44 @@ void Thread::Terminate()   // to be called from different thread
 	m_handle = nullptr;
 }
 
-static unsigned int __stdcall ThreadProc(void * data) 
+static ::Thread* InitializeThread(void* data)
 {
-    ::Thread * const pThread = reinterpret_cast<::Thread *>(data);
-    MSG msg;
-	INT iRes;
-
+	::Thread * const pThread = reinterpret_cast<::Thread*>(data);
+	MSG msg;
 	SetThreadDescription(GetCurrentThread(), pThread->m_strThreadName.c_str());
-	(void)PeekMessage(&msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE);  // cause creation of message queue
-
+	PeekMessage(&msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE);  // cause creation of message queue
 	pThread->m_eventThreadStarter.Continue();   // trigger waiting thread to continue
-
 	pThread->ThreadStartupFunc();
+	return pThread;
+}
 
-	while (iRes = GetMessage(&msg, nullptr, 0, 0))  // loop ends at WM_QUIT 
+static unsigned int __stdcall StdThreadProc(void * data) 
+{
+    ::Thread * const pThread = InitializeThread(data);
+
+	while (true)
 	{
-		assert(iRes > 0);
-		pThread->ThreadMsgDispatcher(msg);
+		MSG msg;
+		if (pThread->IsInGameMode())
+		{
+			BOOL incomingMessages { PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) };
+			if (msg.message == WM_QUIT)
+				goto KILL_THREAD;
+			if (incomingMessages)
+				pThread->ThreadMsgDispatcher(msg);
+			else
+				pThread->DoGameStuff();
+		}
+		else
+		{
+			int iRes = GetMessage(&msg, nullptr, 0, 0);  // loop ends at WM_QUIT 
+			if (iRes == 0)
+				goto KILL_THREAD;
+			assert(iRes > 0);
+			pThread->ThreadMsgDispatcher(msg);
+		}
 	} 
 
-	pThread->ThreadShutDownFunc();
-
-	return iRes;
+KILL_THREAD:
+	return 0;
 }

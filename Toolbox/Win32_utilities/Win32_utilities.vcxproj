@@ -160,6 +160,7 @@
     <ClCompile Include="BreakCommand.ixx" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Command.ixx" />
+    <ClCompile Include="CommandTimer.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="DialogItem.ixx" />
@@ -203,6 +204,7 @@
     <ClCompile Include="Win32_HiResTimer.ixx" />
     <ClCompile Include="Win32_MessagePump.cpp" />
     <ClCompile Include="Win32_MessagePump.ixx" />
+    <ClCompile Include="Win32_PerfCounter.ixx" />
     <ClCompile Include="Win32_PixelTypes.ixx" />
     <ClCompile Include="Win32_RootWindow.ixx" />
     <ClCompile Include="Win32_Scale.ixx" />
@@ -212,7 +214,6 @@
     <ClCompile Include="Win32_StdDialogBox.ixx" />
     <ClCompile Include="Win32_Stopwatch.ixx" />
     <ClCompile Include="Win32_TextBuffer.cpp" />
-    <ClCompile Include="Win32_HiResTimer.cpp" />
     <ClCompile Include="Win32_RootWindow.cpp" />
     <ClCompile Include="Win32_Script.cpp" />
     <ClCompile Include="Win32_Stopwatch.cpp" />

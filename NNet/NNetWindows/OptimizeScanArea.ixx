@@ -32,7 +32,7 @@ public:
 
 	void Start()
 	{
-		BeginThread(L"OptimizeScanArea");
+		StartThread(L"OptimizeScanArea");
 		m_rand.Initialize();
 	}
 

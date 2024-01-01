@@ -6,23 +6,27 @@ module;
 
 #include <memory>
 #include <Windows.h>
+#include <chrono>
 
 export module NNetWin32:ComputeThread;
 
 import Types;
 import ObserverInterface;
 import Observable;
-import HiResTimer;
+import PerfCounter;
 import Thread;
 import SlowMotionRatio;
 import NNetModel;
 import ScanMatrix;
 
+using namespace std::chrono;
 using std::unique_ptr;
 
 export class ComputeThread: public ::Thread, public ObserverInterface
 {
 public:
+
+	~ComputeThread();
 
 	void Initialize
 	(
@@ -33,14 +37,12 @@ public:
 		Observable      * const
 	);
 
-	void Reset();
 	void SetModelInterface(NNetModelWriterInterface * const);
-	void ThreadStartupFunc() final;
-	void ThreadMsgDispatcher(MSG const &) final { }
+	void ThreadMsgDispatcher(MSG const&) final;
+	void DoGameStuff() final;
+	bool IsInGameMode() const final { return IsRunning(); }
 	void Notify(bool const) final;
 	void SingleStep();
-	void RunComputation();
-	void StopComputation();
 	void StartScan();
 	void StartStimulus();
 	bool IsRunning    () const { return !m_bStopped; }
@@ -51,6 +53,11 @@ public:
 	fMicroSecs GetTimeSpentPerCycle () const { return m_usRealTimeSpentPerCycle; }
 	fMicroSecs GetTimeAvailPerCycle () const { return m_usTimeAvailPerCycle; }
 	int        GetScanNr            () const { return m_iScanNr; }
+
+	static int const TM_START { 1 };
+	static int const TM_STOP  { 2 };
+	static int const TM_SCAN  { 3 };
+	static int const TM_RESET { 4 };
 
 private:
 
@@ -63,22 +70,21 @@ private:
 	Observable      * m_pLockModelObservable    { nullptr };
 
 	bool              m_bStopped                { true };  // visible to UI
-	HiResTimer        m_hrTimer                 { };
 	SRWLOCK           m_srwlModel               { SRWLOCK_INIT };
 
-	fMicroSecs        m_usSimuTimeAtLastReset   { 0.0_MicroSecs };
 	fMicroSecs        m_usSimuTimeResolution    { 0.0_MicroSecs };
 	fMicroSecs        m_usRealTimeSpentPerCycle { 0.0_MicroSecs };
 	fMicroSecs        m_usTimeAvailPerCycle     { 0.0_MicroSecs };
 
-	Ticks             m_ticksNetRunning    { 0 };
-	Ticks             m_ticksAtLastRun     { 0 };
-	Ticks             m_ticksBeforeCompute { 0 };
+	Ticks             m_ticksPerCycle;
+	Ticks             m_ticksNextComputation;
+	Ticks             m_ticksAtStart;
 
-	unique_ptr<ScanMatrix> m_upScanMatrix { };
-	int                    m_iScanNr      { 0 };
+	unique_ptr<ScanMatrix> m_upScanMatrix      { };
+	int                    m_iScanNr           { 0 };
+	int                    m_iNrOfComputations { 0 };
 
-	void standardRun();
 	void scanRun();
 	void computeAndStopOnTrigger();
+	bool time4NextComputation() const;
 };

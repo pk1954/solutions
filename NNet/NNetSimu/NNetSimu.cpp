@@ -12,6 +12,7 @@
 
 import Win32_Util_Resource;
 import Win32_Util;
+import PerfCounter;
 import Util;
 import IoConstants;
 import Trace;
@@ -41,6 +42,8 @@ int APIENTRY wWinMain
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
     UNREFERENCED_PARAMETER(nCmdShow);
+
+	PerfCounter::Initialize();
 
 	Stopwatch stopwatch;
 	stopwatch.Start();

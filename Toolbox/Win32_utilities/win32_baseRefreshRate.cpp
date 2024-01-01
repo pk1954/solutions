@@ -18,7 +18,6 @@ import TimerQueueTimer;
 
 using std::wstring;
 using std::to_wstring;
-using std::chrono::milliseconds;
 using namespace std::chrono;
 
 void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
