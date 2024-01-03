@@ -162,10 +162,10 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
     case WM_PAINT:
         if (m_bPerfMonMode.Get())
         {
-            m_paintTimer.Start();
+            m_paintTimer.BeforeAction();
             OnPaint();
-            m_paintTimer.Stop();
-            m_usPaintTime = m_paintTimer.GetMicroSecsTilStart();
+            m_paintTimer.AfterAction();
+            m_usPaintTime = PerfCounter::TicksToMicroSecs(m_paintTimer.GetSingleActionTicks());
         }
         else
             OnPaint();

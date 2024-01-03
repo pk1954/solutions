@@ -300,8 +300,7 @@ void NNetModelIO::Export
 )
 {
     HiResTimer timer;
-    timer.Start();
-
+    timer.BeforeAction();
     m_pExportNMRI = & nmri;
     compress(nmri);
     wofstream modelFile;
@@ -314,7 +313,6 @@ void NNetModelIO::Export
     }
     modelFile.close();
     m_pExportNMRI = nullptr;
-
-    timer.Stop();
-    fMicroSecs const usTilStart { timer.GetMicroSecsTilStart() }; //for tests only
+    timer.AfterAction();
+    fMicroSecs const usTilStart { PerfCounter::TicksToMicroSecs(timer.GetSingleActionTicks()) }; //for tests only
 }

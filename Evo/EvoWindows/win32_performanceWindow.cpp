@@ -84,13 +84,9 @@ void PerformanceWindow::DoPaint(TextBuffer & textBuf)
 	microseconds const usDelay       = duration_cast<microseconds>(msDelay);
 	microseconds const usModelTime   = m_pAtComputation->GetSingleActionTime();
 	microseconds const usSum         = usModelTime + usDelay;
-	Hertz        const HertzComputed = m_pAtComputation->CalcActionFrequency(usSum);
-	Hertz        const HertzMeasured = m_pAtComputation->GetMeasuredPerformance();
 	microseconds const usDisplayTime = m_pAtDisplay->GetSingleActionTime();
 
     printLine(textBuf, L"Delay:  ", usDelay);
     printLine(textBuf, L"Model:  ", usModelTime);
-    printLine(textBuf, L"Comp:   ", HertzComputed);
-    printLine(textBuf, L"Meas:   ", HertzMeasured);
     printLine(textBuf, L"Display:", usDisplayTime);
 }

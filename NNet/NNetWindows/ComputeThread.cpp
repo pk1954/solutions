@@ -73,32 +73,22 @@ void ComputeThread::StartStimulus()    // runs in main thread
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }
 
-bool ComputeThread::time4NextComputation() const
+void ComputeThread::setRunning(bool const bMode)
 {
-	Ticks const now = PerfCounter::Read();
-	if (m_pSlowMotionRatio->MaxSpeed())
-		return true;
-	else
-	{
-		if (now >= m_ticksNextComputation)
-			return true;
-	}
-	return false;
+	m_bRunning = bMode;
+	m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
+	m_computeTimer.BeforeAction();
 }
 
 void ComputeThread::computeAndStopOnTrigger()
 {
-	m_ticksNextComputation += m_ticksPerCycle;
-	++m_iNrOfComputations;
+	m_computeClockGen.Action();
 	if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
-	{
-		m_bStopped = true;
-		m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
-	}
+		setRunning(false);
+	m_computeTimer.AfterAction();
+	m_computeTimer.BeforeAction();
 	m_pDynamicModelObservable->NotifyAll(false);   // screen refresh, if possible
-	Ticks const ticksSinceStart { PerfCounter::Read() - m_ticksAtStart };
-	m_usRealTimeSpentPerCycle = PerfCounter::TicksToMicroSecs(ticksSinceStart / m_iNrOfComputations);
-	m_pSlowMotionRatio->SetMeasuredSlowMo(m_usRealTimeSpentPerCycle / m_usSimuTimeResolution);
+	m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
 	m_pPerformanceObservable->NotifyAll(false);
 }
 
@@ -111,7 +101,7 @@ void ComputeThread::scanRun()
 	ScanImage           * pImageScreen   { m_pNMWI->GetScanImage() };
 	unique_ptr<ScanImage> upScanImageSum { make_unique<ScanImage>(imageSize, 0.0_mV)};
 	RasterPoint           rpRun;
-	m_bStopped = false;
+	setRunning(true);
 	for (m_iScanNr = 1; m_iScanNr <= iNrOfRuns; ++m_iScanNr)
 	{
 		WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
@@ -124,7 +114,7 @@ void ComputeThread::scanRun()
 				while (SimulationTime::Get() < usScanTime)
 					computeAndStopOnTrigger();
 				pImageScreen->Set(rpRun, m_upScanMatrix->Scan(rpRun));
-				if (m_bStopped)  // forced termination of scan
+				if (!IsRunning())  // forced termination of scan
 					goto EXIT;
 			}
 			m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
@@ -148,12 +138,21 @@ void ComputeThread::StartScan()      // runs in main thread
 
 void ComputeThread::DoGameStuff()
 {
-	if (IsRunning() && time4NextComputation())
+	if (IsRunning() && m_computeClockGen.Time4NextAction())
 	{
 		AcquireSRWLockExclusive(&m_srwlModel);   // wait here until main thread allows access to model
 		computeAndStopOnTrigger();
 		ReleaseSRWLockExclusive(&m_srwlModel);  // release access to model 
 	}
+}
+
+void ComputeThread::reset()
+{
+	if (m_pSlowMotionRatio->MaxSpeed())
+		m_computeClockGen.MaxSpeed();
+	else
+		m_computeClockGen.Reset(PerfCounter::MicroSecsToTicks(GetTimeAvailPerCycle()));
+	m_computeTimer.Reset();
 }
 
 void ComputeThread::ThreadMsgDispatcher(MSG const& msg)  
@@ -162,23 +161,19 @@ void ComputeThread::ThreadMsgDispatcher(MSG const& msg)
 	switch (msg.wParam)
 	{
 	case TM_START:
-		if (m_bStopped)
+		if (!IsRunning())
 		{
-			m_bStopped = false;
-			m_pRunObservable->NotifyAll(false);
+			reset();
+			setRunning(true);
 			ReleaseSRWLockExclusive(&m_srwlModel); // allow ComputeThread to run
-			m_ticksAtStart         = PerfCounter::Read();
-			m_ticksNextComputation = m_ticksAtStart;
-			m_iNrOfComputations    = 0;
 		}
 		break;
 
 	case TM_STOP:
 		if (IsRunning())
 		{
-			m_bStopped = true;                      // computation will stop at the next opportunity
-			AcquireSRWLockExclusive(&m_srwlModel);  // wait until ComputeThread has finished activities
-			m_pRunObservable->NotifyAll(false);
+			setRunning(false);
+			AcquireSRWLockExclusive(&m_srwlModel); 
 		}
 		break;
 
@@ -190,11 +185,7 @@ void ComputeThread::ThreadMsgDispatcher(MSG const& msg)
 		break;
 
 	case TM_RESET:
-		m_ticksAtStart         = PerfCounter::Read();
-		m_iNrOfComputations    = 0;
-		m_usSimuTimeResolution = m_pNMWI->GetParams().TimeResolution(); 
-		m_usTimeAvailPerCycle  = m_usSimuTimeResolution * m_pSlowMotionRatio->GetNominalSlowMo();
-		m_ticksPerCycle        = PerfCounter::MicroSecsToTicks(m_usTimeAvailPerCycle);
+		reset();
 		break;
 
 	default:

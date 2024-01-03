@@ -30,7 +30,7 @@ public:
 
 	static void BusyWait(microseconds const us, Ticks & ticks)
 	{
-		Ticks ticksToWait = MicroSecondsToTicks(us);
+		Ticks ticksToWait = MicrosecondsToTicks(us);
 		if (ticks == Ticks(0))  //-V1051
 			ticks = Read();
 		Ticks ticksTarget = ticks + ticksToWait;
@@ -58,7 +58,7 @@ public:
 		return Ticks(value.QuadPart);
 	}
 
-	static Ticks MicroSecondsToTicks(microseconds const time)
+	static Ticks MicrosecondsToTicks(microseconds const time)
 	{
 		assert(time.count() < LLONG_MAX / m_frequency.GetValue());
 		auto ullTime = static_cast<ULONGLONG>(time.count());

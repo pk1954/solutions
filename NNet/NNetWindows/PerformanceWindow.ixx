@@ -10,7 +10,7 @@ module;
 export module NNetWin32:PerformanceWindow;
 
 import SlowMotionRatio;
-import ActionTimer;
+import HiResTimer;
 import TextWindow;
 import NNetModel;
 import :ComputeThread;
@@ -26,7 +26,7 @@ public:
         HWND const, 
         ComputeThread         * const, 
         SlowMotionRatio const * const, 
-        ActionTimer           * const 
+        HiResTimer            * const 
     );
 
     void Stop();
@@ -36,7 +36,7 @@ public:
 private:
     ComputeThread                  * m_pComputeThread   { nullptr };
     NNetModelReaderInterface const * m_pNMRI            { nullptr };
-    ActionTimer                    * m_pDisplayTimer    { nullptr };
+    HiResTimer                     * m_pDisplayTimer    { nullptr };
     SlowMotionRatio          const * m_pSlowMotionRatio { nullptr };
 
     wstring GetCaption() const final { return L"PerformanceWindow"; }

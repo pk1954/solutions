@@ -12,7 +12,7 @@ module;
 export module NNetWin32:MainWindow;
 
 import Types;
-import ActionTimer;
+import HiResTimer;
 import Vector2D;
 import ColorLUT;
 import NNetModel;
@@ -40,7 +40,7 @@ public:
 		Observable&,
 		Observable&,
 		Observable&,
-		ActionTimer* const,
+		HiResTimer * const,
 		MonitorWindow const *
 	);
 
@@ -88,7 +88,7 @@ private:
 
 	MicroMeterPnt       m_umDelta                { NP_ZERO };
 	MicroMeter          m_umArrowSize            { 0._MicroMeter };
-	ActionTimer        *m_pDisplayTimer          { nullptr };
+	HiResTimer         *m_pDisplayTimer          { nullptr };
 	Observable         *m_pCoordObservable       { nullptr };
 	Observable         *m_pCursorPosObservable   { nullptr };
 	Observable         *m_pStaticModelObservable { nullptr };

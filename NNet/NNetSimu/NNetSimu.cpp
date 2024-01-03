@@ -2,6 +2,7 @@
 //
 // NNetSimu
 
+#include <iomanip>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -12,11 +13,11 @@
 
 import Win32_Util_Resource;
 import Win32_Util;
-import PerfCounter;
+import SaveCast;
 import Util;
 import IoConstants;
 import Trace;
-import Stopwatch;
+import HiResTimer;
 import MessagePump;
 import Script;
 import Scanner;
@@ -28,6 +29,12 @@ using std::unique_ptr;
 using std::wstring;
 using std::wcout;
 using std::endl;
+using std::setw;
+using std::fixed;
+using std::endl;
+using std::setprecision;
+using std::left;
+using std::right;
 
 unique_ptr<NNetAppWindow> upApp;
 
@@ -45,8 +52,8 @@ int APIENTRY wWinMain
 
 	PerfCounter::Initialize();
 
-	Stopwatch stopwatch;
-	stopwatch.Start();
+	HiResTimer hrtimer;
+	hrtimer.BeforeAction();
 
 	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
@@ -77,7 +84,13 @@ int APIENTRY wWinMain
 	upApp->Start(pump);
 	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 
-	stopwatch.Stop(COMMENT_START + L"App.Start");
+	hrtimer.AfterAction();
+	microseconds microSecs = PerfCounter::TicksToMicroseconds(hrtimer.AfterAction());
+	float        millisecs = Cast2Float(microSecs.count()) / 1000.0f;
+	wcout << setw(30) << left << COMMENT_START + L"App.Start";
+	wcout << setw(6)  << right;
+	wcout << fixed    << setprecision(2) << millisecs;
+	wcout << L" ms"   << endl;
 
 	int iRetVal = pump.Run();
 	return iRetVal;

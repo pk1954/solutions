@@ -17,7 +17,7 @@ import SlowMotionRatio;
 import DisplayFunctor;
 import Win32_Event;
 import Win32_Sound;
-import ActionTimer;
+import HiResTimer;
 import WinManager;
 import ScriptFile;
 import MessagePump;
@@ -119,8 +119,8 @@ private:
 	HWND                       m_hwndApp     { nullptr };
 
 	AboutBox                 m_aboutBox;
-	ActionTimer              m_atComputation;
-	ActionTimer              m_atDisplay;
+	HiResTimer               m_atComputation;
+	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;
 	NNetCommandStack         m_cmdStack;
 	ComputeThread            m_computeThread;

@@ -164,6 +164,7 @@
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="DialogItem.ixx" />
+    <ClCompile Include="HiResClockGen.ixx" />
     <ClCompile Include="IncludeCommand.ixx" />
     <ClCompile Include="OnOffPair.ixx" />
     <ClCompile Include="ScriptHook.ixx" />
@@ -180,7 +181,6 @@
     <ClCompile Include="TimerQueueTimer.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
-    <ClCompile Include="Win32_ActionTimer.ixx" />
     <ClCompile Include="WIn32_Animation.ixx" />
     <ClCompile Include="Win32_ArrowButton.ixx" />
     <ClCompile Include="Win32_BaseDialog.ixx" />
@@ -212,11 +212,9 @@
     <ClCompile Include="Win32_Sound.ixx" />
     <ClCompile Include="Win32_StdDialogBox.cpp" />
     <ClCompile Include="Win32_StdDialogBox.ixx" />
-    <ClCompile Include="Win32_Stopwatch.ixx" />
     <ClCompile Include="Win32_TextBuffer.cpp" />
     <ClCompile Include="Win32_RootWindow.cpp" />
     <ClCompile Include="Win32_Script.cpp" />
-    <ClCompile Include="Win32_Stopwatch.cpp" />
     <ClCompile Include="Win32_TextBuffer.ixx" />
     <ClCompile Include="Win32_TextWindow.cpp" />
     <ClCompile Include="Win32_TextWindow.ixx" />

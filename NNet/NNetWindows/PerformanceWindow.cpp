@@ -11,7 +11,7 @@ module;
 module NNetWin32:PerformanceWindow;
 
 import SlowMotionRatio;
-import ActionTimer;
+import HiResTimer;
 import NNetModel;
 import :ComputeThread;
 
@@ -24,7 +24,7 @@ void PerformanceWindow::Start
 	HWND                    const hwndParent,
 	ComputeThread         * const pComputeThread,
 	SlowMotionRatio const * const pSlowMotionRatio,
-	ActionTimer           * const pDisplayTimer
+	HiResTimer            * const pDisplayTimer
 )
 {
 	StartTextWindow
@@ -101,7 +101,7 @@ void PerformanceWindow::PaintText(TextBuffer & textBuf)
 {      
 	if (m_pDisplayTimer)
 	{
-		microseconds const usDisplayTime = m_pDisplayTimer->GetSingleActionTime();
+		microseconds const usDisplayTime = PerfCounter::TicksToMicroseconds(m_pDisplayTimer->GetSingleActionTicks());
 		textBuf.printString(L"Display:");
 		textBuf.printString(L"");
 		textBuf.printAsMillisecs(usDisplayTime);

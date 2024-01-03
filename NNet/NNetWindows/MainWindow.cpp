@@ -18,7 +18,7 @@ module;
 
 module NNetWin32:MainWindow;
 
-import ActionTimer;
+import HiResTimer;
 import NNetCommands;
 import DrawContext;
 import FatalError;
@@ -60,7 +60,7 @@ void MainWindow::Start
 	Observable          & cursorObservable,
 	Observable          & coordObservable,  
 	Observable          & pStaticModelObservable,
-	ActionTimer * const   pActionTimer,
+	HiResTimer  * const   pActionTimer,
 	MonitorWindow const * pMonitorWindow
 )
 {
@@ -486,9 +486,9 @@ void MainWindow::centerAndZoomRect
 
 void MainWindow::OnPaint()
 {
-	m_pDisplayTimer->TimerStart();
+	m_pDisplayTimer->BeforeAction();
 	NNetWindow::OnPaint();
-	m_pDisplayTimer->TimerStop();
+	m_pDisplayTimer->AfterAction();
 }
 
 /////////////////////// local functions ////////////////////////////////

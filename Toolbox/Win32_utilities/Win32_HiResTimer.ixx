@@ -2,6 +2,17 @@
 //
 // win32_utilities
 
+// Use case 1: Single action timer
+//
+// BeforeAction AfterAction GetSingleActionTicks 
+
+// Use case 2: Accumulated actions timer 
+//
+// Reset
+// Repeat { BeforeAction AfterAction }
+// GetAverageActionTicks
+//
+
 module;
 
 #include <cassert>
@@ -9,58 +20,46 @@ module;
 export module HiResTimer;
 
 import Types;
-import PerfCounter;
+import Observable;
 
-export class HiResTimer
+export import PerfCounter;
+
+export class HiResTimer : public Observable
 {
 public:
-	void Start()
+	void Reset()
 	{
-		if (!m_bRunning)
-			m_ticksOnStart = PerfCounter::Read();
-		m_bRunning = true;
+		m_ulActionCounter  = 0;
+		m_ticksAccMeasured = Ticks(0);
 	}
 
-	void Stop()
+	void BeforeAction()
 	{
-		if (m_bRunning)
-			m_ticksAccumulated += GetTicksTilStart();
-		m_bRunning = false;
+		m_ticksBeforeAction = PerfCounter::Read();
 	}
 
-	void Restart()
+	Ticks AfterAction()
 	{
-		m_ticksAccumulated = Ticks(0);
-		m_ticksOnStart = PerfCounter::Read();
-		m_bRunning = true;
+		m_ticksSingleAction = PerfCounter::Read() - m_ticksBeforeAction;
+		m_ticksAccMeasured += m_ticksSingleAction;
+		++m_ulActionCounter;
+		return m_ticksSingleAction;
 	}
 
-	Ticks GetTicksTilStart() const
+	Ticks GetSingleActionTicks() const
 	{
-		return PerfCounter::Read() - m_ticksOnStart;
+		return m_ticksSingleAction;
 	}
 
-	fMicroSecs GetMicroSecsTilStart() const
+	Ticks GetAverageActionTicks() const
 	{
-		return PerfCounter::TicksToMicroSecs(GetTicksTilStart());
-	}
-
-	microseconds GetDuration()
-	{
-		assert(!m_bRunning);
-
-		microseconds result = PerfCounter::TicksToMicroseconds(m_ticksAccumulated);
-		m_ticksAccumulated = Ticks(0);
-
-		return result;
+		return m_ticksAccMeasured / m_ulActionCounter;
 	}
 
 private:
 
-	inline static long long const MICROSECONDS_TO_SECONDS { microseconds::period::den };
-	inline static float     const fMICROSECS_TO_SECONDS   { static_cast<float>(MICROSECONDS_TO_SECONDS) };
-
-	bool  m_bRunning         { false };
-	Ticks m_ticksOnStart     { Ticks(0) };
-	Ticks m_ticksAccumulated { Ticks(0) };
+	Ticks         m_ticksBeforeAction { Ticks(0) };
+	Ticks         m_ticksSingleAction { Ticks(0) };
+	Ticks         m_ticksAccMeasured  { Ticks(0) };
+	unsigned long m_ulActionCounter   { 0 }; 
 };
