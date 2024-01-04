@@ -79,9 +79,12 @@ private:
 
 	unique_ptr<ScanMatrix> m_upScanMatrix { };
 	int                    m_iScanNr      { 0 };
+	RasterPoint            m_rpScanRun;
+	unique_ptr<ScanImage>  m_upScanImageSum;
+	fMicroSecs             m_usSimuNextPixelScan;
 
 	void reset();
-	void scanRun();
+	void scanNextPixel();
 	void setRunning(bool const);
 	void computeAndStopOnTrigger();
 };

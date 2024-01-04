@@ -10,11 +10,12 @@ module;
 export module ScanMatrix;
 
 import Types;
-import Raster;
 import SaveCast;
 import ScanPixel;
 import NNetModel;
 import Vector2D;
+
+export import Raster;
 
 using std::unique_ptr;
 using std::vector;
@@ -58,5 +59,5 @@ private:
     void addScanDataPoint(Pipe const&, Pipe::SegNr const, RasterPoint const&);
 
     Vector2D<ScanPixel> m_scanLines;
-    ScanPixel const* m_pScanPixelMax { nullptr };
+    ScanPixel const   * m_pScanPixelMax { nullptr };
 };

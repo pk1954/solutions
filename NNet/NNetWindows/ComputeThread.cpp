@@ -92,43 +92,26 @@ void ComputeThread::computeAndStopOnTrigger()
 	m_pPerformanceObservable->NotifyAll(false);
 }
 
-void ComputeThread::scanRun()
+void ComputeThread::scanNextPixel()
 {
-	bool            const bMaxSpeed      { m_pSlowMotionRatio->MaxSpeed(tBoolOp::opTrue) };
-	RasterPoint     const imageSize      { m_upScanMatrix->Size() };
-	fMicroSecs            usScanTime     { SimulationTime::Get() };
-	int                   iNrOfRuns      { m_pNMWI->GetNrOfScans() };
-	ScanImage           * pImageScreen   { m_pNMWI->GetScanImage() };
-	unique_ptr<ScanImage> upScanImageSum { make_unique<ScanImage>(imageSize, 0.0_mV)};
-	RasterPoint           rpRun;
-	setRunning(true);
-	for (m_iScanNr = 1; m_iScanNr <= iNrOfRuns; ++m_iScanNr)
-	{
-		WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
-		pImageScreen->Set(0.0_mV);
-		for (rpRun.m_y = 0; rpRun.m_y < imageSize.m_y; ++rpRun.m_y)  // loop over rows
-		{
-			for (rpRun.m_x = 0; rpRun.m_x < imageSize.m_x; ++rpRun.m_x)  // loop over columns
-			{
-				usScanTime += m_pNMWI->PixelScanTime();
-				while (SimulationTime::Get() < usScanTime)
-					computeAndStopOnTrigger();
-				pImageScreen->Set(rpRun, m_upScanMatrix->Scan(rpRun));
-				if (!IsRunning())  // forced termination of scan
-					goto EXIT;
-			}
-			m_pDynamicModelObservable->NotifyAll(true);  // force screen refresh
-		}
-		*upScanImageSum.get() += *pImageScreen;
-		WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
-	}
-	m_pNMWI->ReplaceScanImage(move(upScanImageSum));
+	m_pNMWI->GetScanImage()->Set(m_rpScanRun, m_upScanMatrix->Scan(m_rpScanRun));
+	if (++m_rpScanRun.m_x < m_upScanMatrix->Width())     // Next scan Pixel
+		return;
+	                                                     // Scan line finished
+	m_rpScanRun.m_x = 0;
+	m_pDynamicModelObservable->NotifyAll(true);          // force screen refresh
+	if (++m_rpScanRun.m_y < m_upScanMatrix->Height())
+		return;
+	                                                     // Scan finished
+	m_rpScanRun.m_y = 0;
+	*m_upScanImageSum.get() += *m_pNMWI->GetScanImage();
+	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
+	if (++m_iScanNr <= m_pNMWI->GetNrOfScans())
+		return;
+	                                                     // Scan series finished 
+	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
+	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll(false);
-
-	EXIT:
-	m_pSlowMotionRatio->MaxSpeed(bMaxSpeed);
-	m_pNMWI->SetScanRunning(false);
-	PostThreadCmd(ComputeThread::TM_RESET);
 }
 
 void ComputeThread::StartScan()      // runs in main thread
@@ -143,6 +126,11 @@ void ComputeThread::DoGameStuff()
 		AcquireSRWLockExclusive(&m_srwlModel);   // wait here until main thread allows access to model
 		computeAndStopOnTrigger();
 		ReleaseSRWLockExclusive(&m_srwlModel);  // release access to model 
+	}
+	if (m_pNMWI->IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
+	{
+		m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
+		scanNextPixel();
 	}
 }
 
@@ -182,6 +170,12 @@ void ComputeThread::ThreadMsgDispatcher(MSG const& msg)
 		m_upScanMatrix->Fill(*m_pNMWI);
 		m_pNMWI->CreateImage();
 		m_pNMWI->SetScanRunning(true);
+		m_rpScanRun = RasterPoint(0, 0);
+		m_iScanNr = 1;
+		m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
+		WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
+		m_pNMWI->GetScanImage()->Set(0.0_mV);
+		m_usSimuNextPixelScan = SimulationTime::Get();
 		break;
 
 	case TM_RESET:
