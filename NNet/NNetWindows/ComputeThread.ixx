@@ -5,7 +5,6 @@
 module;
 
 #include <memory>
-#include <Windows.h>
 #include <chrono>
 
 export module NNetWin32:ComputeThread;
@@ -16,7 +15,6 @@ import HiResClockGen;
 import ObserverInterface;
 import Observable;
 import PerfCounter;
-import Thread;
 import SlowMotionRatio;
 import NNetModel;
 import ScanMatrix;
@@ -67,10 +65,7 @@ private:
 	Observable      * m_pPerformanceObservable  { nullptr };
 	Observable      * m_pDynamicModelObservable { nullptr };
 	Observable      * m_pLockModelObservable    { nullptr };
-
-	bool              m_bRunning                { false };  // visible to UI
-	SRWLOCK           m_srwlModel               { SRWLOCK_INIT };
-
+	bool              m_bRunning                { false }; 
 	HiResClockGen     m_computeClockGen;
 	HiResTimer        m_computeTimer;
 

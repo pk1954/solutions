@@ -7,7 +7,6 @@ module;
 #include <cassert>
 #include <memory>
 #include <vector>
-#include <Windows.h>
 #include "Resource.h"
 #include <chrono>
 
@@ -48,7 +47,6 @@ void ComputeThread::Initialize   // runs in main thread
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pLockModelObservable    = pLockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
-	AcquireSRWLockExclusive(&  m_srwlModel);  // main thread has access to model
 }
 
 void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
@@ -127,9 +125,7 @@ void ComputeThread::DoGameStuff()
 {
 	if (IsRunning() && m_computeClockGen.Time4NextAction())
 	{
-		AcquireSRWLockExclusive(&m_srwlModel);   // wait here until main thread allows access to model
 		computeAndStopOnTrigger();
-		ReleaseSRWLockExclusive(&m_srwlModel);  // release access to model 
 	}
 	if (m_pNMWI->IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
 	{
@@ -153,17 +149,13 @@ void ComputeThread::StartComputation()
 	{
 		Reset();
 		setRunning(true);
-		ReleaseSRWLockExclusive(&m_srwlModel); // allow ComputeThread to run
 	}
 }
 
 void ComputeThread::StopComputation()
 {
 	if (IsRunning())
-	{
 		setRunning(false);
-		AcquireSRWLockExclusive(&m_srwlModel);
-	}
 }
 
 void ComputeThread::SingleStep() 
