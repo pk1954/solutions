@@ -137,8 +137,6 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	{
 		if (pPipeDst)
 		{
-			if ((pNobSrc->GetIoMode() == pNobDst->GetIoMode()) && (pNobSrc->GetIoMode() != NobIoMode::internal))
-				return ct_connector; // case 12/13 - create Input/OutputConnector
 			if (pPosNobSrc->IsDirectlyConnectedTo(*pPipeDst)) 
 				return ct_none;
 			if (typeSrc.IsInputLineType())
@@ -146,11 +144,16 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 			if (typeSrc.IsOutputLineType())
 				return ct_synapse;   // case 2
 		}
-		else if (pPosNobDst)
+		if (pPosNobDst)
 		{
 			if (typeSrc.IsIoLineType() && typeDst.IsIoLineType())
 			{
-				assert(typeDst != typeSrc);
+				if (typeSrc.IsInputLineType() && typeDst.IsInputLineType())
+					return ct_connector; // case 12 - create InputConnector
+
+				if (typeSrc.IsOutputLineType() && typeDst.IsOutputLineType())
+					return ct_connector; // case 13 - create OutputConnector
+
 				return ct_knot;      // case 4/5 - Input and output line plugged together. Result is a knot.
 			}
 
@@ -159,10 +162,24 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 
 			return ct_none;
 		}
-	}
+		else if (pConnDst)
+		{
+			if (typeSrc.IsInputLineType() && typeDst.IsInputConnectorType())
+				return ct_connector; // case 14 - add InputLine to InputConnector
 
-	if (pConnSrc && pConnDst && (typeDst != typeSrc) && (pConnSrc->Size() == pConnDst->Size()))
-		return ct_plugConnectors;    // case 6
+			if (typeSrc.IsOutputLineType() && typeDst.IsOutputConnectorType())
+				return ct_connector; // case 15 - add OutputLine to OutputConnector
+
+			return ct_none;
+		}
+	}
+	if (pConnSrc && pConnDst)
+	{
+		if (typeDst == typeSrc)
+			return ct_connector;         // case 16/17 - connect IO-Connectors of same type
+		else if (pConnSrc->Size() == pConnDst->Size())
+			return ct_plugConnectors;    // case 6 - IO-Connectors of opposite type with same size
+	}
 
 	return ct_none;
 }
