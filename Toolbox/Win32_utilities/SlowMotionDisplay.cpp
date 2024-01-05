@@ -73,7 +73,7 @@ void SlowMotionDisplay::Initialize
 (
 	StatusBar             * pStatusBar,
 	int                     iPartInStatusBar,
-	SlowMotionRatio const &slowMotionRatio
+	SlowMotionRatio const & slowMotionRatio
 ) 
 {
 	m_upRefreshRate = make_unique<RefreshRate>

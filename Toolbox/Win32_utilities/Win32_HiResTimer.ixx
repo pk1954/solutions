@@ -33,6 +33,14 @@ public:
 		m_ticksAccMeasured = Ticks(0);
 	}
 
+	void AfterAndBeforeAction()
+	{
+		Ticks ticksNow { PerfCounter::Read() };
+		m_ticksAccMeasured += ticksNow - m_ticksBeforeAction;
+		m_ticksBeforeAction = ticksNow;
+		++m_ulActionCounter;
+	}
+
 	void BeforeAction()
 	{
 		m_ticksBeforeAction = PerfCounter::Read();

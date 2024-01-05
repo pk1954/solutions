@@ -14,32 +14,6 @@ module MessagePump;
 
 import Win32_Util;
 
-//int MessagePump::Run(auto const gameFunc)
-//{
-//	MSG msg;
-//
-//	while (true)
-//	{
-//		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-//		{
-//			TranslateMessage(&msg);
-//			DispatchMessage(&msg);
-//			if (msg.message == WM_QUIT)
-//				break;
-//		}
-//		else
-//		{
-//			gameFunc();
-//
-//			// Run game code here
-//			// ...
-//			// ...
-//		}
-//	}
-//
-//	return (int) msg.wParam;
-//}
-
 //void MessagePump::SetAccelTable(HACCEL const haccel)
 //{
 //	m_defaultAccelTable = haccel;

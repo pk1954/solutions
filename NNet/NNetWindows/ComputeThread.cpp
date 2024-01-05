@@ -73,26 +73,53 @@ void ComputeThread::setRunning(bool const bMode)
 	m_computeTimer.BeforeAction();
 }
 
-void ComputeThread::computeAndStopOnTrigger()
+void ComputeThread::StartScan()      // runs in main thread
 {
-	m_computeClockGen.Action();
-	if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
-		setRunning(false);
-	m_computeTimer.AfterAction();
-	m_computeTimer.BeforeAction();
-	m_pDynamicModelObservable->NotifyAll(false);   // screen refresh, if possible
-	m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
-	m_pPerformanceObservable->NotifyAll(false);
+	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
+	m_upScanMatrix->Fill(*m_pNMWI);
+	m_pNMWI->CreateImage();
+	m_rpScanRun = RasterPoint(0, 0);
+	m_iScanNr = 1;
+	m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
+	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
+	Reset();
+	m_pNMWI->GetScanImage()->Set(0.0_mV);
+	m_usSimuNextPixelScan = SimulationTime::Get();
+}
+
+void ComputeThread::DoGameStuff()
+{
+	if (IsRunning() && m_computeClockGen.Time4NextAction())
+	{
+		m_computeClockGen.Action();
+		if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
+			setRunning(false);
+		m_computeTimer.AfterAndBeforeAction();
+		m_pDynamicModelObservable->NotifyAll(false);   // screen refresh, if possible
+		m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
+		m_pPerformanceObservable->NotifyAll(false);
+	}
+
+	if (IsScanRunning())
+		scanNextPixel();
 }
 
 void ComputeThread::scanNextPixel()
 {
-	m_pNMWI->GetScanImage()->Set(m_rpScanRun, m_upScanMatrix->Scan(m_rpScanRun));
+	fMicroSecs usNow { SimulationTime::Get() };
+	if (usNow < m_usSimuNextPixelScan)
+		return;
+
+	m_usSimuNextPixelScan = usNow + m_pNMWI->PixelScanTime();
+
+	mV mVpixel { m_upScanMatrix->Scan(m_rpScanRun) };
+	m_pNMWI->GetScanImage()->Set(m_rpScanRun, mVpixel);
+
 	if (++m_rpScanRun.m_x < m_upScanMatrix->Width())     // Next scan Pixel
 		return;
 	                                                     // Scan line finished
 	m_rpScanRun.m_x = 0;
-	m_pDynamicModelObservable->NotifyAll(true);          // force screen refresh
+	m_pDynamicModelObservable->NotifyAll(true);          // Force screen refresh
 	if (++m_rpScanRun.m_y < m_upScanMatrix->Height())
 		return;
 	                                                     // Scan finished
@@ -105,33 +132,7 @@ void ComputeThread::scanNextPixel()
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
 	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll(false);
-}
-
-void ComputeThread::StartScan()      // runs in main thread
-{
-	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
-	m_upScanMatrix->Fill(*m_pNMWI);
-	m_pNMWI->CreateImage();
-	m_bScanRunning = true;
-	m_rpScanRun = RasterPoint(0, 0);
-	m_iScanNr = 1;
-	m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
-	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
-	m_pNMWI->GetScanImage()->Set(0.0_mV);
-	m_usSimuNextPixelScan = SimulationTime::Get();
-}
-
-void ComputeThread::DoGameStuff()
-{
-	if (IsRunning() && m_computeClockGen.Time4NextAction())
-	{
-		computeAndStopOnTrigger();
-	}
-	if (IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
-	{
-		m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
-		scanNextPixel();
-	}
+	setRunning(false);
 }
 
 void ComputeThread::Reset()
@@ -155,7 +156,7 @@ void ComputeThread::StartComputation()
 void ComputeThread::StopComputation()
 {
 	if (IsScanRunning())
-		m_bScanRunning = false;
+		m_upScanImageSum.release();;
 	if (IsRunning())
 		setRunning(false);
 }
