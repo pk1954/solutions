@@ -180,9 +180,6 @@
     <ClCompile Include="Command.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="WIn32_Animation.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

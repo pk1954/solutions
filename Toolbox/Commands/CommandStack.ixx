@@ -46,7 +46,7 @@ public:
 private:
 
     vector<unique_ptr<BaseCommand>> m_CommandStack { };
-    size_t                      m_iIndex { 0 }; // index into m_Commandstack
+    size_t                          m_iIndex { 0 }; // index into m_Commandstack
 
     Observable* m_pStaticModelObservable { nullptr };
 

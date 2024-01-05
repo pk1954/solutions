@@ -158,7 +158,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BreakCommand.ixx" />
-    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Command.ixx" />
     <ClCompile Include="CommandTimer.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />

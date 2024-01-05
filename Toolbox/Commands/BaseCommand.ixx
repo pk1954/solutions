@@ -26,8 +26,6 @@ export class BaseCommand
 {
 public:
 
-    BaseCommand();
-
     virtual ~BaseCommand() = default;
 
     virtual void UpdateUI() = 0;
@@ -38,7 +36,7 @@ public:
 
     virtual void NextScriptCommand() const = 0;
 
-    static void Initialize(Sound* const);
+    static void Initialize(Sound* const p) { m_pSound = p; }
 
     void TargetReached();
 
@@ -52,16 +50,13 @@ protected:
 
     void AddPhase(unique_ptr<BaseCommand>);
 
-    virtual void BlockUI()   const = 0;
-    virtual void UnblockUI() const = 0;
-
     static bool      IsTraceOn()   { return m_bTrace; }
     static wostream& TraceStream() { return wcout; }
 
 private:
 
-    void doPhase  (); // runs in UI thread
-    void undoPhase(); // runs in UI thread
+    void doPhase  ();
+    void undoPhase();
 
     function<void(BaseCommand*)>    m_targetReachedFunc { nullptr };
     vector<unique_ptr<BaseCommand>> m_phases            { };

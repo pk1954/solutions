@@ -68,15 +68,11 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     {
         FatalError::Happened(static_cast<long>(lParam), L"unknown");
     }
-    else if (wmId == IDM_BLOCK_UI)
-    {
-        m_bBlockedUI = (lParam != 0);
-    }
 
     if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
         return true;                    // but do not concern the model  
 
-    if (m_bBlockedUI || m_pNMRI->ModelLocked())
+    if (m_pNMRI->ModelLocked())
         return true;
 
     bool const bRunning = m_pComputeThread->IsRunning();

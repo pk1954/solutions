@@ -47,7 +47,6 @@ private:
 	void deleteSignal       ();
 
 	bool                       m_bTrace           { true };
-	bool                       m_bBlockedUI       { false };
 	HCURSOR                    m_hCrsrWait        { nullptr };
 	ComputeThread            * m_pComputeThread   { nullptr };
 	NNetModelReaderInterface * m_pNMRI            { nullptr };

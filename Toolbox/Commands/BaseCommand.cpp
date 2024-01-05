@@ -17,16 +17,6 @@ import SoundInterface;
 
 using std::unique_ptr;
 
-BaseCommand::BaseCommand()
-{
-    int x = 42;
-}
-
-void BaseCommand::Initialize(Sound* const pSound)
-{
-    m_pSound = pSound;
-}
-
 void BaseCommand::TargetReached()
 {
     if (m_targetReachedFunc)
@@ -50,36 +40,24 @@ void BaseCommand::AddPhase(unique_ptr<BaseCommand> upCmd)
     m_phases.push_back(move(upCmd));
 }
 
-void BaseCommand::doPhase() // runs in UI thread
+void BaseCommand::doPhase()
 {
-    if (!m_phases.empty())
+    if (m_uiPhase < m_phases.size())
     {
-        if (m_uiPhase == 0)
-            BlockUI();
-        if (m_uiPhase < m_phases.size())
-        {
-            BaseCommand* const pAnimCmd { m_phases[m_uiPhase++].get() };
-            pAnimCmd->m_targetReachedFunc = &BaseCommand::doPhase;
-            pAnimCmd->Do();
-        }
-        else
-            UnblockUI();
+        BaseCommand* const pAnimCmd { m_phases[m_uiPhase++].get() };
+        pAnimCmd->m_targetReachedFunc = &BaseCommand::doPhase;
+        pAnimCmd->Do();
     }
     UpdateUI();
 }
 
-void BaseCommand::undoPhase() // runs in UI thread
+void BaseCommand::undoPhase()
 {
-    if (m_uiPhase >= m_phases.size())
-        BlockUI();
     if (m_uiPhase > 0)
     {
         BaseCommand& animCmd { *m_phases[--m_uiPhase] };
         animCmd.m_targetReachedFunc = &BaseCommand::undoPhase;
         animCmd.Undo();
     }
-    else
-        UnblockUI();
     UpdateUI();
 }
-
