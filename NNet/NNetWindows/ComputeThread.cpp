@@ -112,7 +112,7 @@ void ComputeThread::StartScan()      // runs in main thread
 	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
 	m_upScanMatrix->Fill(*m_pNMWI);
 	m_pNMWI->CreateImage();
-	m_pNMWI->SetScanRunning(true);
+	m_bScanRunning = true;
 	m_rpScanRun = RasterPoint(0, 0);
 	m_iScanNr = 1;
 	m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
@@ -127,7 +127,7 @@ void ComputeThread::DoGameStuff()
 	{
 		computeAndStopOnTrigger();
 	}
-	if (m_pNMWI->IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
+	if (IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
 	{
 		m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
 		scanNextPixel();
@@ -154,6 +154,8 @@ void ComputeThread::StartComputation()
 
 void ComputeThread::StopComputation()
 {
+	if (IsScanRunning())
+		m_bScanRunning = false;
 	if (IsRunning())
 		setRunning(false);
 }

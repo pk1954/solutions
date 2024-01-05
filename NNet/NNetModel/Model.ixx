@@ -126,7 +126,6 @@ public:
 	ScanImage        const * GetScanImageC()              const { return m_upImageScanned.get(); }
 	ScanImage        const * GetFilteredImageC()          const { return m_upImageFiltered.get(); }
 	ScanImage              * GetScanImage()                     { return m_upImageScanned.get(); }
-	bool                     IsScanRunning()              const { return m_bScanRunning; }
 
 	// non const functions
 
@@ -148,7 +147,6 @@ public:
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void SetScanRunning           (bool const b)         { m_bScanRunning = b; }
 
 private:
 	unique_ptr<UPNobList>      m_upNobs;
@@ -162,5 +160,4 @@ private:
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
-	bool                       m_bScanRunning { false };
 };

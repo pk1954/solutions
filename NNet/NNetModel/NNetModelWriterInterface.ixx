@@ -77,7 +77,6 @@ public:
     void Reconnect     (NobId const id) const                    { m_pModel->Reconnect(id); }
     void SetParam      (ParamType::Value const p, float const f) { m_pModel->SetParam(p, f); }
     void SetScanArea   (MicroMeterRect const& rect)              { m_pModel->SetScanArea(rect); }
-    void SetScanRunning(bool const b)                            { m_pModel->SetScanRunning(b); }
 
     void SetDescriptionUI   (DescriptionUI & ui)       { m_pModel->SetDescriptionUI(ui); }
     void SetModelFilePath   (wstring const & wstr)     { m_pModel->SetModelFilePath(wstr); }

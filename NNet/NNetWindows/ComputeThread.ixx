@@ -48,7 +48,7 @@ public:
 	void Reset();
 	void StartStimulus();
 	bool IsRunning    () const { return m_bRunning; }
-	bool IsScanRunning() const { return m_pNMWI->IsScanRunning(); }
+	bool IsScanRunning() const { return m_bScanRunning; }
 	bool ModelLocked  () const { return m_pNMWI->ModelLocked(); }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_pNMWI ? m_pNMWI->TimeResolution() : 0._MicroSecs; }
@@ -66,6 +66,7 @@ private:
 	Observable      * m_pDynamicModelObservable { nullptr };
 	Observable      * m_pLockModelObservable    { nullptr };
 	bool              m_bRunning                { false }; 
+	bool              m_bScanRunning            { false };
 	HiResClockGen     m_computeClockGen;
 	HiResTimer        m_computeTimer;
 
