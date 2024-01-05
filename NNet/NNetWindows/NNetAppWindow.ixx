@@ -89,6 +89,8 @@ public:
 	NNetAppWindow(NNetAppWindow const&) = delete;  // noncopyable class 
 	NNetAppWindow& operator= (NNetAppWindow const&) = delete;  // noncopyable class 
 
+		ComputeThread            m_computeThread;
+
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
@@ -123,7 +125,7 @@ private:
 	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;
 	NNetCommandStack         m_cmdStack;
-	ComputeThread            m_computeThread;
+	//ComputeThread            m_computeThread;
 	CrsrWindow               m_crsrWindow;
 	DescriptionWindow        m_descWindow;
 	MainWindow               m_mainNNetWindow;

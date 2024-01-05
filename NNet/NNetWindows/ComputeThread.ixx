@@ -24,7 +24,7 @@ import ScanMatrix;
 using namespace std::chrono;
 using std::unique_ptr;
 
-export class ComputeThread: public ::Thread, public ObserverInterface
+export class ComputeThread: public ObserverInterface
 {
 public:
 
@@ -40,12 +40,14 @@ public:
 	);
 
 	void SetModelInterface(NNetModelWriterInterface * const);
-	void ThreadMsgDispatcher(MSG const&) final;
-	void DoGameStuff() final;
-	bool IsInGameMode() const final { return IsRunning(); }
+	void DoGameStuff();
+	bool IsInGameMode() const { return IsRunning(); }
 	void Notify(bool const) final;
 	void SingleStep();
 	void StartScan();
+	void StartComputation();
+	void StopComputation();
+	void Reset();
 	void StartStimulus();
 	bool IsRunning    () const { return m_bRunning; }
 	bool IsScanRunning() const { return m_pNMWI->IsScanRunning(); }
@@ -55,11 +57,6 @@ public:
 	fMicroSecs GetTimeSpentPerCycle () const { return PerfCounter::TicksToMicroSecs(m_computeTimer.GetAverageActionTicks()); }
 	fMicroSecs GetTimeAvailPerCycle () const { return GetSimuTimeResolution() * m_pSlowMotionRatio->GetNominalSlowMo(); }
 	int        GetScanNr            () const { return m_iScanNr; }
-
-	static int const TM_START { 1 };
-	static int const TM_STOP  { 2 };
-	static int const TM_SCAN  { 3 };
-	static int const TM_RESET { 4 };
 
 private:
 
@@ -83,7 +80,6 @@ private:
 	unique_ptr<ScanImage>  m_upScanImageSum;
 	fMicroSecs             m_usSimuNextPixelScan;
 
-	void reset();
 	void scanNextPixel();
 	void setRunning(bool const);
 	void computeAndStopOnTrigger();

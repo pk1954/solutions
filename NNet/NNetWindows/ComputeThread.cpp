@@ -32,10 +32,7 @@ using std::make_unique;
 using std::vector;
 using std::byte;
 
-ComputeThread::~ComputeThread()
-{
-	Terminate();
-}
+ComputeThread::~ComputeThread() = default;
 
 void ComputeThread::Initialize   // runs in main thread
 (
@@ -52,19 +49,17 @@ void ComputeThread::Initialize   // runs in main thread
 	m_pLockModelObservable    = pLockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
 	AcquireSRWLockExclusive(&  m_srwlModel);  // main thread has access to model
-	StartThread(L"ComputeThread");
-	SetThreadAffinityMask(0x2);
 }
 
 void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
 	m_pNMWI = pNMWI;
-	PostThreadCmd(ComputeThread::TM_RESET);
+	Reset();
 }
 
 void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters have changed
 {
-	PostThreadCmd(ComputeThread::TM_RESET);
+	Reset();
 	m_pRunObservable->NotifyAll(false);
 }
 
@@ -116,7 +111,16 @@ void ComputeThread::scanNextPixel()
 
 void ComputeThread::StartScan()      // runs in main thread
 {
-	PostThreadCmd(TM_SCAN);
+	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
+	m_upScanMatrix->Fill(*m_pNMWI);
+	m_pNMWI->CreateImage();
+	m_pNMWI->SetScanRunning(true);
+	m_rpScanRun = RasterPoint(0, 0);
+	m_iScanNr = 1;
+	m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
+	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
+	m_pNMWI->GetScanImage()->Set(0.0_mV);
+	m_usSimuNextPixelScan = SimulationTime::Get();
 }
 
 void ComputeThread::DoGameStuff()
@@ -134,7 +138,7 @@ void ComputeThread::DoGameStuff()
 	}
 }
 
-void ComputeThread::reset()
+void ComputeThread::Reset()
 {
 	if (m_pSlowMotionRatio->MaxSpeed())
 		m_computeClockGen.MaxSpeed();
@@ -143,47 +147,22 @@ void ComputeThread::reset()
 	m_computeTimer.Reset();
 }
 
-void ComputeThread::ThreadMsgDispatcher(MSG const& msg)  
-{             
-	assert(msg.message == WM_COMMAND);
-	switch (msg.wParam)
+void ComputeThread::StartComputation()
+{
+	if (!IsRunning())
 	{
-	case TM_START:
-		if (!IsRunning())
-		{
-			reset();
-			setRunning(true);
-			ReleaseSRWLockExclusive(&m_srwlModel); // allow ComputeThread to run
-		}
-		break;
+		Reset();
+		setRunning(true);
+		ReleaseSRWLockExclusive(&m_srwlModel); // allow ComputeThread to run
+	}
+}
 
-	case TM_STOP:
-		if (IsRunning())
-		{
-			setRunning(false);
-			AcquireSRWLockExclusive(&m_srwlModel); 
-		}
-		break;
-
-	case TM_SCAN:
-		m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
-		m_upScanMatrix->Fill(*m_pNMWI);
-		m_pNMWI->CreateImage();
-		m_pNMWI->SetScanRunning(true);
-		m_rpScanRun = RasterPoint(0, 0);
-		m_iScanNr = 1;
-		m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
-		WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
-		m_pNMWI->GetScanImage()->Set(0.0_mV);
-		m_usSimuNextPixelScan = SimulationTime::Get();
-		break;
-
-	case TM_RESET:
-		reset();
-		break;
-
-	default:
-		assert(false);
+void ComputeThread::StopComputation()
+{
+	if (IsRunning())
+	{
+		setRunning(false);
+		AcquireSRWLockExclusive(&m_srwlModel);
 	}
 }
 

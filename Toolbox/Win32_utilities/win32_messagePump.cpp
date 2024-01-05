@@ -14,6 +14,32 @@ module MessagePump;
 
 import Win32_Util;
 
+//int MessagePump::Run(auto const gameFunc)
+//{
+//	MSG msg;
+//
+//	while (true)
+//	{
+//		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+//		{
+//			TranslateMessage(&msg);
+//			DispatchMessage(&msg);
+//			if (msg.message == WM_QUIT)
+//				break;
+//		}
+//		else
+//		{
+//			gameFunc();
+//
+//			// Run game code here
+//			// ...
+//			// ...
+//		}
+//	}
+//
+//	return (int) msg.wParam;
+//}
+
 //void MessagePump::SetAccelTable(HACCEL const haccel)
 //{
 //	m_defaultAccelTable = haccel;
@@ -96,20 +122,20 @@ bool MessagePump::accelerator(MSG& msg)
 //	return false;
 //}
 //
-int MessagePump::Run()
-{
-	MSG  msg;
-	bool bRet;
-
-	while ((bRet = GetMessage(&msg, nullptr, 0, 0)) != 0)    // Main message loop //-V559 //-V593
-	{
-		assert(bRet != -1); //-V547
-		if (! accelerator(msg))
-		{
-			(void)TranslateMessage(&msg);
-			(void)DispatchMessage(&msg);
-		}
-	}
-
-	return (int) msg.wParam;
-}
+//int MessagePump::Run()
+//{
+//	MSG  msg;
+//	bool bRet;
+//
+//	while ((bRet = GetMessage(&msg, nullptr, 0, 0)) != 0)    // Main message loop //-V559 //-V593
+//	{
+//		assert(bRet != -1); //-V547
+//		if (! accelerator(msg))
+//		{
+//			(void)TranslateMessage(&msg);
+//			(void)DispatchMessage(&msg);
+//		}
+//	}
+//
+//	return (int) msg.wParam;
+//}

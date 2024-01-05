@@ -18,7 +18,27 @@ public:
 	void SetAccelTable(HINSTANCE const, int const);
 	void RegisterWindow(HWND const, bool const);
 
-	int Run();
+int Run(auto const gameFunc)
+{
+	MSG msg;
+
+	while (true)
+	{
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+			if (msg.message == WM_QUIT)
+				break;
+		}
+		else
+		{
+			gameFunc();
+		}
+	}
+
+	return (int) msg.wParam;
+}
 
 private:
 	struct AccEntry

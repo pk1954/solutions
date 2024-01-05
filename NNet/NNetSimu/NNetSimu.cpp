@@ -92,6 +92,6 @@ int APIENTRY wWinMain
 	wcout << fixed    << setprecision(2) << millisecs;
 	wcout << L" ms"   << endl;
 
-	int iRetVal = pump.Run();
+	int iRetVal = pump.Run([]() { upApp->m_computeThread.DoGameStuff(); });
 	return iRetVal;
 }
