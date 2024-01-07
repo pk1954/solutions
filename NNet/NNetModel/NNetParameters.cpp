@@ -71,5 +71,5 @@ void NNetParameters::SetParameterValue
 	case scanVertPixels: m_pScanRaster      ->SetHeight    (static_cast<RasterIndex>(fNewValue)); break;
 	default: assert(false);
 	}
-	NotifyAll(false);
+	NotifyAll();
 }

@@ -53,7 +53,7 @@ public:
 		m_freq   = rhs.m_freq;
 		m_amplit = rhs.m_amplit;
 		m_usPeak = rhs.m_usPeak;
-		NotifyAll(false);
+		NotifyAll();
 		return *this;
 	}
 
@@ -64,43 +64,43 @@ public:
 	void SetPeakTime(fMicroSecs const t)
 	{
 		m_usPeak = t;
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	void SetFreq(BasePeak<fHertz> const freq)
 	{
 		m_freq = freq;
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	void SetFreqBase(fHertz const f)
 	{
 		m_freq.SetBase(f);
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	void SetFreqPeak(fHertz const f)
 	{
 		m_freq.SetPeak(f);
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	void SetAmpl(BasePeak<mV> const amplit)
 	{
 		m_amplit = amplit;
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	void SetAmplBase(mV const v)
 	{
 		m_amplit.SetBase(v);
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	void SetAmplPeak(mV const v)
 	{
 		m_amplit.SetPeak(v);
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	fMicroSecs CutoffTime() const

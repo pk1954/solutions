@@ -69,7 +69,7 @@ void Sensor::Recalc(UPNobList const & list)
 {
     m_dataPoints.clear();
     list.Apply2AllC<Pipe>([this](Pipe const & pipe) { add2list(pipe); });
-    NotifyAll(false);
+    NotifyAll();
 }
 
 void Sensor::add2list(Pipe const & pipe) 

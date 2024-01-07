@@ -576,7 +576,7 @@ bool MonitorControl::OnShow(WPARAM const wParam, LPARAM const lParam)
 void MonitorControl::MoveHighlightedSignal(PIXEL const pixDelta)
 {
 	m_pixMoveOffsetY += pixDelta;
-	m_pObservable->NotifyAll(false);
+	m_pObservable->NotifyAll();
 }
 
 void MonitorControl::moveOperation(PixelPoint const &pixCrsrPos)

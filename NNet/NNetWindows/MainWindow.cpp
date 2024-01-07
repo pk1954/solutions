@@ -195,13 +195,13 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
 	m_mainScales.AdjustScales();
-	m_pCoordObservable->NotifyAll(false);
+	m_pCoordObservable->NotifyAll();
 	return true;
 }
 
 bool MainWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 {
-	m_pStaticModelObservable->NotifyAll(false);
+	m_pStaticModelObservable->NotifyAll();
 	return NNetWindow::OnMove(pixPosX, pixPosY);
 };
 
@@ -229,7 +229,7 @@ bool MainWindow::crsrInScanArea(MicroMeterPnt const &umCrsrPos)
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	if (m_pCursorPosObservable)
-		m_pCursorPosObservable->NotifyAll(false);
+		m_pCursorPosObservable->NotifyAll();
 
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
@@ -449,7 +449,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 				if (GetDrawContext().Zoom(bDirection, fPixPointCrsr))   // Not ok
 				{
 					if (m_pCoordObservable)
-						m_pCoordObservable->NotifyAll(false);
+						m_pCoordObservable->NotifyAll();
 				}
 				else
 				{

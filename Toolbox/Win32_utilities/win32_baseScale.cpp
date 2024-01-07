@@ -96,8 +96,7 @@ void BaseScale::display
 
 void BaseScale::OnMouseLeave()
 {
-	Invalidate(false);
-	UpdateWindow(GetWindowHandle());
+	UpdateImmediately();
 	GraphicsWindow::OnMouseLeave();
 }
 

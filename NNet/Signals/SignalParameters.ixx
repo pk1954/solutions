@@ -24,7 +24,7 @@ public:
 	void SetSigGenStaticData(SigGenStaticData const& data)
 	{
 		m_sigGenData = data;
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 private:

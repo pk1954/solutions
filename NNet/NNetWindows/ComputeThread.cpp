@@ -58,7 +58,7 @@ void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters have changed
 {
 	Reset();
-	m_pRunObservable->NotifyAll(false);
+	m_pRunObservable->NotifyAll();
 }
 
 void ComputeThread::StartStimulus()    // runs in main thread
@@ -69,7 +69,7 @@ void ComputeThread::StartStimulus()    // runs in main thread
 void ComputeThread::setRunning(bool const bMode)
 {
 	m_bRunning = bMode;
-	m_pRunObservable->NotifyAll(false); // notify observers, that computation stopped
+	m_pRunObservable->NotifyAll(); // notify observers, that computation stopped
 	m_computeTimer.BeforeAction();
 }
 
@@ -95,9 +95,9 @@ void ComputeThread::DoGameStuff()
 		if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
 			setRunning(false);
 		m_computeTimer.AfterAndBeforeAction();
-		m_pDynamicModelObservable->NotifyAll(false);   // screen refresh, if possible
+		m_pDynamicModelObservable->NotifyAll();
 		m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
-		m_pPerformanceObservable->NotifyAll(false);
+		m_pPerformanceObservable->NotifyAll();
 	}
 
 	if (IsScanRunning())
@@ -119,7 +119,7 @@ void ComputeThread::scanNextPixel()
 		return;
 	                                                     // Scan line finished
 	m_rpScanRun.m_x = 0;
-	m_pDynamicModelObservable->NotifyAll(true);          // Force screen refresh
+	m_pDynamicModelObservable->NotifyAll(); 
 	if (++m_rpScanRun.m_y < m_upScanMatrix->Height())
 		return;
 	                                                     // Scan finished
@@ -131,7 +131,7 @@ void ComputeThread::scanNextPixel()
 	                                                     // Scan series finished 
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
 	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
-	m_pDynamicModelObservable->NotifyAll(false);
+	m_pDynamicModelObservable->NotifyAll();
 	setRunning(false);
 }
 
@@ -164,5 +164,5 @@ void ComputeThread::StopComputation()
 void ComputeThread::SingleStep() 
 { 
 	m_pNMWI->Compute();
-	m_pDynamicModelObservable->NotifyAll(false);
+	m_pDynamicModelObservable->NotifyAll();
 }

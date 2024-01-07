@@ -34,10 +34,10 @@ void SimulationControl::Initialize
 
 void SimulationControl::Notify(bool const bImmediate)
 {
-	bool const bIsRunning        { m_pComputeThread->IsRunning() };
-	bool const bIsScanRunning    { m_pComputeThread->IsScanRunning() };
-	bool const bModelLocked      { m_pComputeThread->ModelLocked() };
-	bool const bScanAreaVisible  { NNetPreferences::ScanAreaVisible() };
+	bool const bIsRunning       { m_pComputeThread->IsRunning() };
+	bool const bIsScanRunning   { m_pComputeThread->IsScanRunning() };
+	bool const bModelLocked     { m_pComputeThread->ModelLocked() };
+	bool const bScanAreaVisible { NNetPreferences::ScanAreaVisible() };
 
 	if (bIsRunning)
         ::SetDlgItemState(m_hwndRunStop, L"Stop", IDM_STOP, true);

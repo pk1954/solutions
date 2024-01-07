@@ -17,7 +17,7 @@ public:
 	{
 		m_fPixOffset   = 0.0_fPixel;
 		m_logPixelSize = LOG_UNIT(1.0f);
-		NotifyAll(false);
+		NotifyAll();
 	}
 
 	//////// transformations LOG_UNIT <---> fPixel ////////

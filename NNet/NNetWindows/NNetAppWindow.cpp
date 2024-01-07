@@ -146,10 +146,10 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_nmwi.SetDescriptionUI(m_descWindow);
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
 	m_upModel->SetHighSigObservable     (m_highlightSigObservable);
-	m_mainNNetWindow   .SetRefreshRate(200ms);
-	m_miniNNetWindow   .SetRefreshRate(200ms);
+	m_mainNNetWindow   .SetRefreshRate(300ms);
+	m_miniNNetWindow   .SetRefreshRate(500ms);
 	m_monitorWindow    .SetRefreshRate( 20ms);
-	m_crsrWindow       .SetRefreshRate(100ms);
+	m_crsrWindow       .SetRefreshRate(300ms);
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_statusBar        .SetRefreshRate(300ms);
 
@@ -265,8 +265,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	{
 		ResetModelCmd::Push();
 		CreateInitialNobsCmd::Push();
-		m_dynamicModelObservable.NotifyAll(false);
-		m_staticModelObservable.NotifyAll(false);
+		m_dynamicModelObservable.NotifyAll();
+		m_staticModelObservable.NotifyAll();
 	}
 
 	m_bStarted = true;
@@ -454,7 +454,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_UNLOCK:
 			m_nmwi.RejectImage();
-			m_lockModelObservable.NotifyAll(false);
+			m_lockModelObservable.NotifyAll();
 			return true;
 
 		case IDM_FORWARD:
@@ -671,8 +671,8 @@ void NNetAppWindow::newModel()
 	m_mainNNetWindow.Reset();
 	ResetModelCmd::Push();
 	CreateInitialNobsCmd::Push();
-	m_staticModelObservable.NotifyAll(false);
-	m_dynamicModelObservable.NotifyAll(false);
+	m_staticModelObservable.NotifyAll();
+	m_dynamicModelObservable.NotifyAll();
 	m_appTitle.SetUnsavedChanges(true);
 	m_mainNNetWindow.CenterModel();
 }
@@ -689,14 +689,14 @@ void NNetAppWindow::replaceModel()
 	setModelInterface();
 
 	m_signalDesigner.RegisterAtSigGen(m_nmwi.GetSigGenIdSelected());
-	m_dynamicModelObservable.NotifyAll(false);
-	m_staticModelObservable.NotifyAll(false);
+	m_dynamicModelObservable.NotifyAll();
+	m_staticModelObservable.NotifyAll();
 	m_nmwi.SetDescriptionUI(m_descWindow);
 	m_appTitle.SetUnsavedChanges(false);
 	m_mainNNetWindow.CenterModel();
 	m_nmwi.GetParams().RegisterObserver(m_parameterDlg);
 	m_nmwi.GetParams().RegisterObserver(m_computeThread);
-	m_nmwi.GetParams().NotifyAll(false);
+	m_nmwi.GetParams().NotifyAll();
 }
 
 void NNetAppWindow::processScript() const

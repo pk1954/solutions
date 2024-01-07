@@ -38,7 +38,7 @@ SigGenId UPSigGenList::SetActive(SigGenId const id)
     SigGenId sigGenIdOld { m_sigGenIdActive };
     m_sigGenIdActive = id;
     if (m_pActiveSigGenObservable)
-        m_pActiveSigGenObservable->NotifyAll(false);
+        m_pActiveSigGenObservable->NotifyAll();
     return sigGenIdOld;
 }
 
@@ -47,7 +47,7 @@ void UPSigGenList::SetName(SigGenId const id, wstring const& name)
     assert(IsValidSigGenId(id));
     GetSigGen(id)->SetNewName(name);
     if (m_pActiveSigGenObservable)
-        m_pActiveSigGenObservable->NotifyAll(false);
+        m_pActiveSigGenObservable->NotifyAll();
 }
 
 UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)

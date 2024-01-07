@@ -96,6 +96,27 @@ void MiniWindow::PaintGraphics()
 {
 	if (m_pObservedNNetWindow)
 	{
+	{
+		float          const EXTRA_SPACE_FACTOR { 1.2f };                               // give 20% more space (looks better)
+		MicroMeterRect const umRectMain  { m_pObservedNNetWindow->GetViewRect() };      // current position of main window view 
+		MicroMeterRect const umRectModel { m_pNMRI->GetUPNobsC().CalcEnclosingRect() }; // current extension of model
+		MicroMeterRect       umRectShow  { Union(umRectMain, umRectModel) };            // all this should be visible  
+
+		if (NNetPreferences::ScanAreaVisible())
+			umRectShow = Union(umRectShow, m_pNMRI->GetScanAreaRect());            // all this should be visible  
+
+		MicroMeter const umPixelSizeTarget
+		{
+			GetCoord().ComputeZoom
+			(
+				umRectShow.ScaleRect(NEURON_RADIUS), 
+				GetClRectSize(),
+				EXTRA_SPACE_FACTOR
+			)
+		};
+		GetCoord().Zoom(umPixelSizeTarget);
+		GetCoord().Center(umRectShow.GetCenter(), Convert2fPixelPoint(GetClRectCenter()));
+	}
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		if (NNetPreferences::ScanAreaVisible())

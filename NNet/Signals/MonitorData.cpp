@@ -32,7 +32,7 @@ void MonitorData::Reset()
 	m_tracks.clear();
 	m_idSigHighlighted.Set2Null();
 	if (m_pHighSigObservable)
-		m_pHighSigObservable->NotifyAll(false);
+		m_pHighSigObservable->NotifyAll();
 }
 
 void MonitorData::ClearDynamicData() 
@@ -72,7 +72,7 @@ SignalId MonitorData::SetHighlightedSignal(SignalId const id)
 	SignalId const signalIdOld { m_idSigHighlighted };
 	m_idSigHighlighted = id;
 	if (m_pHighSigObservable)
-		m_pHighSigObservable->NotifyAll(false);
+		m_pHighSigObservable->NotifyAll();
 	return signalIdOld;
 }
 

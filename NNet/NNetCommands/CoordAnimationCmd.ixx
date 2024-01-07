@@ -29,7 +29,7 @@ public:
         U2DAnimationCmd::UpdateUI();
         Command::UpdateUI();
         if (m_pCoordObservable)
-            m_pCoordObservable->NotifyAll(false);
+            m_pCoordObservable->NotifyAll();
     }
 
     static void Register()

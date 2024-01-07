@@ -125,12 +125,12 @@ bool MonitorWindow::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeig
 	if (m_upHorzScale->IsScaleLocked())
 		m_horzCoord.SetOffset(Convert2fPixel(-monWidth));
 	m_upStimulusButton->CenterInParentWin();
-	m_pMoveSizeObservable->NotifyAll(false);
+	m_pMoveSizeObservable->NotifyAll();
 	return true;
 }
 
 bool MonitorWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 { 
-	m_pMoveSizeObservable->NotifyAll(false);
+	m_pMoveSizeObservable->NotifyAll();
 	return BaseWindow::OnMove(pixPosX, pixPosY);
 };

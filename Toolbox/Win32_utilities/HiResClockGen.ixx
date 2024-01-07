@@ -18,8 +18,7 @@ public:
 
 	void MaxSpeed()
 	{
-		m_ticksPerCycleNominal = 0;
-		m_ticksNextComputation = PerfCounter::Read();
+		Reset(Ticks(0));
 	}
 
 	bool IsAtMaxSpeed() const

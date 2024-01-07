@@ -42,7 +42,7 @@ public:
 		m_observers.clear();
 	}
 
-	void NotifyAll(bool const bImmediately)
+	void NotifyAll(bool const bImmediately = false)
 	{
 		for (auto& v : m_observers)
 		{
