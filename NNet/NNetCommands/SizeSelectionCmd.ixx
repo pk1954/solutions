@@ -19,7 +19,7 @@ public:
 	{
 		m_umPntCenter = m_pNMWI->GetUPNobs().CenterOfGravity
 		(
-			[](Nob const & nob){ return nob.IsSelected() && nob.IsPosNob(); }
+			[](Nob const & nob){ return nob.IsSelected(); }
 		);
 	}
 

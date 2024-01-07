@@ -23,7 +23,7 @@ public:
 	{
 		SetPivotPnt
 		(
-			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const& n) { return n.IsSelected() && n.IsPosNob(); }),
+			m_pNMWI->GetUPNobs().CenterOfGravity([](Nob const& n) { return n.IsSelected(); }),
 			umPntOld,
 			umPntNew
 		);

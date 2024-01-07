@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <array>
 #include <vector>
 #include <memory>
@@ -77,21 +78,6 @@ public:
 
 	bool AnyNobsSelected() const { return any_of(m_list, IsSelected); }  //TODO: optimize , cache in bool
 
-	MicroMeterPnt CenterOfGravity(auto const& crit) const
-	{
-		MicroMeterPnt umPntRes{ MicroMeterPnt::ZERO_VAL() };
-		size_t        counter{ 0 };
-
-		for (auto& it : m_list)
-			if (it && crit(*it))
-			{
-				umPntRes += it->GetPos();
-				++counter;
-			}
-		umPntRes /= static_cast<float>(counter);
-		return umPntRes;
-	}
-
 	NobId FindNobAt(MicroMeterPnt const pnt, auto const& crit) const
 	{
 		for (size_t i = m_list.size(); i-- > 0;)
@@ -115,6 +101,27 @@ public:
 		decCounter(upT.get());
 		m_list.pop_back();
 		return move(upT);
+	}
+
+	MicroMeterPnt CenterOfGravity(auto const& crit) const
+	{
+		MicroMeterPnt umPntRes{ MicroMeterPnt::ZERO_VAL() };
+		size_t        counter{ 0 };
+
+		Apply2AllC
+		(
+			[&umPntRes, &counter, &crit](Nob const& nob) 
+			{
+				if (nob.IsPosNob() && crit(nob))
+				{
+					umPntRes += nob.GetPos();
+					++counter;
+				}
+			}
+		);
+
+		umPntRes /= static_cast<float>(counter);
+		return umPntRes;
 	}
 
 	void Apply2AllC(auto const& f) const
