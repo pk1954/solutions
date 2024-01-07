@@ -9,6 +9,8 @@ module;
 #include <iomanip>
 #include <dwrite.h>
 
+#include <iostream>
+
 module NNetSignals:Measurement;
 
 import Types;

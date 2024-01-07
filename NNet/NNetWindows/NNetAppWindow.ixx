@@ -125,7 +125,6 @@ private:
 	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;
 	NNetCommandStack         m_cmdStack;
-	//ComputeThread            m_computeThread;
 	CrsrWindow               m_crsrWindow;
 	DescriptionWindow        m_descWindow;
 	MainWindow               m_mainNNetWindow;

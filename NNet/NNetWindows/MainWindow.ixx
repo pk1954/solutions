@@ -54,7 +54,7 @@ public:
 	{
 		GetDrawContext().Move(delta);
 		if (m_pCoordObservable)
-			m_pCoordObservable->NotifyAll();
+			m_pCoordObservable->NotifyAll(true);   // update immediately
 	}
 
 	MicroMeterPnt GetCursorPos() const;

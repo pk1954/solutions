@@ -198,6 +198,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	configureStatusBar();
 	adjustChildWindows();
 
+
 	m_monitorWindow .Move(PixelRect{ 200_PIXEL,   0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
 	m_miniNNetWindow.Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
 	m_descWindow    .Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);

@@ -29,7 +29,7 @@ public:
 	void   OnLButtonDblClick(WPARAM const, LPARAM const) final { };
 	void   OnMouseMove      (WPARAM const, LPARAM const) final;
 
-	void   Notify(bool const) final;
+	void   Trigger(bool const) final;
 
 	void   ObservedNNetWindow(MainWindow * const);
 

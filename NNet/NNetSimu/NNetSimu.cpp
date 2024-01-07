@@ -84,13 +84,7 @@ int APIENTRY wWinMain
 	upApp->Start(pump);
 	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 
-	hrtimer.AfterAction();
-	microseconds microSecs = PerfCounter::TicksToMicroseconds(hrtimer.AfterAction());
-	float        millisecs = Cast2Float(microSecs.count()) / 1000.0f;
-	wcout << setw(30) << left << COMMENT_START + L"App.Start";
-	wcout << setw(6)  << right;
-	wcout << fixed    << setprecision(2) << millisecs;
-	wcout << L" ms"   << endl;
+	wcout << setw(30) << left << COMMENT_START + L"App.Start " << PerfCounter::Ticks2wstring(hrtimer.AfterAction()) << endl;
 
 	int iRetVal = pump.Run([]() { upApp->m_computeThread.DoGameStuff(); });
 	return iRetVal;

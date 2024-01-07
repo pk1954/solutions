@@ -7,6 +7,9 @@ module;
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <io.h>
+#include <fcntl.h>
+#include <windows.h>
 
 module Trace;
 
@@ -29,8 +32,10 @@ wofstream OpenTraceFile(wstring const & wszTraceFileName)
 }
 
 bool SwitchWcoutTo(wstring const & wszTraceFileName)
-{
+{ 
     FILE  * fp;
     errno_t res = _wfreopen_s(&fp, wszTraceFileName.c_str(), L"w", stdout);
+    _setmode(_fileno(stdout), _O_U8TEXT);  // set code page to UTF-8
+    SetConsoleOutputCP(CP_UTF8);           // for printing Unicode
     return res == 0;
 }

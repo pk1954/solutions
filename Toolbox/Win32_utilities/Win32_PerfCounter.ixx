@@ -6,6 +6,7 @@ module;
 
 #include <cassert>
 #include <chrono>
+#include <string>
 #include <Windows.h>
 
 export module PerfCounter;
@@ -16,6 +17,8 @@ import SaveCast;
 export using std::chrono::microseconds;
 
 export using Ticks = NamedType<long long, struct Ticks_Parameter>;
+
+using std::wstring;
 
 export class PerfCounter
 {
@@ -76,6 +79,12 @@ public:
 		);                                       // division would truncate too many significant digits
 
 		return result;
+	}
+
+	static wstring Ticks2wstring(Ticks const ticks)
+	{
+		fMicroSecs us = PerfCounter::TicksToMicroSecs(ticks);
+		return Format2wstring(us);
 	}
 
 private:
