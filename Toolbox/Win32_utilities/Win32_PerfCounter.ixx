@@ -17,8 +17,7 @@ import SaveCast;
 export using std::chrono::microseconds;
 
 export using Ticks = NamedType<long long, struct Ticks_Parameter>;
-
-using std::wstring;
+export using std::wstring;
 
 export class PerfCounter
 {

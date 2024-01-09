@@ -16,6 +16,7 @@
 module;
 
 #include <cassert>
+#include <string>
 
 export module HiResTimer;
 
@@ -62,6 +63,11 @@ public:
 	Ticks GetAverageActionTicks() const
 	{
 		return m_ticksAccMeasured / m_ulActionCounter;
+	}
+
+	wstring Average2wstring() const
+	{
+		return PerfCounter::Ticks2wstring(GetAverageActionTicks());
 	}
 
 private:

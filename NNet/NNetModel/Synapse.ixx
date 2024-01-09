@@ -93,6 +93,8 @@ public:
 
     vector<fMicroSecs> const& GetBlockList() const { return m_usBlock; }
 
+    static unsigned int Size() { return sizeof(Synapse); }
+
 private:
 
     inline static MicroMeter const PIPE_HALF { PIPE_WIDTH * 0.5f };

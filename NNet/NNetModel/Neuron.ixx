@@ -90,6 +90,8 @@ public:
 
 	Pipe const * GetIncoming(size_t i) const { return &m_inPipes.Get(i); }
 
+    static unsigned int Size() { return sizeof(Neuron); }
+
 private:
 	MicroMeterCircle m_circle;
 

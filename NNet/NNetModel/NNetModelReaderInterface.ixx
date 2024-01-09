@@ -72,6 +72,7 @@ public:
 	PosNob          const* GetConstPosNobPtr    (NobId const id)  const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
 	Nob             const* GetConstNob          (NobId const id)  const { return m_pModel->GetConstNob(id); }
 	MonitorData     const& GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
+	void                   PrintModelSize()                       const { return m_pModel->PrintModelSize(); }
 	NNetParameters  const& GetParamsC()                           const { return m_pModel->GetParams(); };
 	fMicroSecs             TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
 	fMicroSecs             PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };

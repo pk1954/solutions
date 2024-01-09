@@ -139,6 +139,8 @@ public:
 
 	friend wostream& operator<< (wostream&, Pipe const&);
 
+    static unsigned int Size() { return sizeof(Pipe); }
+
 private:
 	Nob * m_pNobStart { nullptr };  //TODO: Nob --> PosNob
 	Nob * m_pNobEnd   { nullptr };  //TODO: Nob --> PosNob

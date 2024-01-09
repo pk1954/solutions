@@ -83,6 +83,8 @@ public:
 	void CollectInput()	final { m_mVpotential = m_pPipeIn->GetPotential(); }
 	bool CompStep    () final { return false; }
 
+    static unsigned int Size() { return sizeof(Knot); }
+
 private:
 	MicroMeterCircle m_circle;
 

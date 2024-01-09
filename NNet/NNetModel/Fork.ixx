@@ -84,6 +84,8 @@ public:
 
     bool CompStep() final { return false; };
 
+    static unsigned int Size() { return sizeof(Fork); }
+
 private:
     MicroMeterCircle m_circle;
     

@@ -71,6 +71,8 @@ public:
 	size_t GetNrOfInConns () const final { return 0; }
 	size_t GetNrOfOutConns() const final { return 1; }
 
+	static unsigned int Size() { return sizeof(InputLine); }
+
 private:
 
 	SignalGenerator* m_pSigGen { StdSigGen::Get() };

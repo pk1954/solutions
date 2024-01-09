@@ -10,6 +10,8 @@ module;
 #include "Resource.h"
 #include <chrono>
 
+#include <iostream>
+
 module NNetWin32:ComputeThread;
 
 import Win32_Util_Resource;
@@ -30,6 +32,10 @@ using std::unique_ptr;
 using std::make_unique;
 using std::vector;
 using std::byte;
+
+using std::wcout;
+using std::endl;
+using std::wstring;
 
 ComputeThread::~ComputeThread() = default;
 
@@ -87,10 +93,13 @@ void ComputeThread::StartScan()      // runs in main thread
 	m_usSimuNextPixelScan = SimulationTime::Get();
 }
 
+HiResTimer tX;
+
 void ComputeThread::DoGameStuff()
 {
 	if (IsRunning() && m_computeClockGen.Time4NextAction())
 	{
+		tX.BeforeAction();
 		m_computeClockGen.Action();
 		if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
 			setRunning(false);
@@ -98,6 +107,9 @@ void ComputeThread::DoGameStuff()
 		m_pDynamicModelObservable->NotifyAll();
 		m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
 		m_pPerformanceObservable->NotifyAll();
+		tX.AfterAction();
+	wcout << L"tX = " << tX.Average2wstring() << endl;
+	wcout << L"xxxxxxxxxxxxxxxxxxxxxx" << endl;
 	}
 
 	if (IsScanRunning())

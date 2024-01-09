@@ -34,4 +34,6 @@ public:
 	NobIoMode GetIoMode() const final { return NobIoMode::output; }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const override;
+
+	static unsigned int Size() { return sizeof(OutputConnector); }
 };

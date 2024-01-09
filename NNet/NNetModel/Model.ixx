@@ -131,6 +131,7 @@ public:
 
 	Nob * GetNob(NobId const);
 
+	void PrintModelSize() const;
 	bool Compute();
 	void ResetModel();
 	void SetParam(ParamType::Value const, float const);
@@ -149,6 +150,8 @@ public:
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 private:
+	unsigned int printNobType(unsigned int, NobType::Value) const;
+
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;

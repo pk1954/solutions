@@ -181,6 +181,7 @@ void NNetModelIO::importModel()
 
     m_timer.StopTimer();
     m_upImportUI->JobFinished(res, m_wstrFile2Read);
+    m_upImportedNMWI->PrintModelSize();
 }
 
 void NNetModelIO::fixProblems()
