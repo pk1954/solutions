@@ -43,7 +43,7 @@ export class Pipe : public Nob
 public:
 	using SegNr = NamedType<int, struct segNr_Parameter>;
 
-	Pipe();
+	Pipe() = default;
 	Pipe(Nob * const, Nob * const);   //TODO: Nob --> PosNob
 	//Pipe(Pipe const &);   // copy constructor
 
@@ -80,6 +80,7 @@ public:
 
 	Radian        GetDir()       const final { return Vector2Radian(GetVector()); };
 	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
+	NobType       GetNobType()   const final { return NobType::Value::pipe; }
 	mV            GetPotential() const final { return getSegments().Get(); }
 	void          PushVoltage(mV const v) { getSegments().Push(v); }
 
@@ -116,7 +117,7 @@ public:
 	void          DrawArrows(DrawContext const&, MicroMeter const) const;
 	void          DislocateEndPoint();
 	void          DislocateStartPoint();
-	void          RecalcSegments() { m_bSegmentsDirty = true; }
+	void          RecalcSegments() { recalcSegments(); /* m_bSegmentsDirty = true; */ }
 
 	void Apply2AllSegments(auto const& func) const { getSegments().Apply2All(func); }
 
@@ -148,7 +149,7 @@ private:
 	// mutable members - lazy evaluation
 
 	mutable FixedPipeline<mV> m_segments;
-	mutable bool              m_bSegmentsDirty { true };
+//	mutable bool              m_bSegmentsDirty { true };
 
 	FixedPipeline<mV> const& getSegments() const;
 	FixedPipeline<mV>      & getSegments();

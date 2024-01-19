@@ -284,7 +284,7 @@ void NNetModelIO::compress(NNetModelReaderInterface const & nmri)
     m_nrOfcompactIds = iCount;
 }
 
-int NNetModelIO::GetCompactIdVal(NobId const id)
+short NNetModelIO::GetCompactIdVal(NobId const id)
 { 
     return m_CompactIds.Get(id.GetValue()).GetValue(); 
 }

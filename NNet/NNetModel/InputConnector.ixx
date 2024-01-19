@@ -45,7 +45,8 @@ public:
 	void CollectInput() final { /* */ };
 	void Reconnect()    final { /* nothing to connect */ };
 
-	NobIoMode GetIoMode() const final { return NobIoMode::input; }
+	NobIoMode GetIoMode()  const final { return NobIoMode::input; }
+	NobType   GetNobType() const final { return NobType::Value::inputConnector; }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 

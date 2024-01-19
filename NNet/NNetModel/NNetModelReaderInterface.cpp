@@ -15,6 +15,7 @@ import Types;
 import DrawContext;
 import :tHighlight;
 import :NobId;
+import :NNetSignal;
 import :Nob;
 import :Synapse;
 import :SignalGenerator;
@@ -244,4 +245,15 @@ MicroMeterPnt NNetModelReaderInterface::OrthoVector(NobId const idPipe) const
 fMicroSecs NNetModelReaderInterface::TotalScanTime() const 
 { 
 	return GetParamsC().ScanTime() * Cast2Float(GetParamsC().NrOfScans() * GetScanRaster().NrOfPoints());
+}
+
+SignalId NNetModelReaderInterface::FindSignalId(NNetSignalSource const * const pSigSrc) const
+{
+    return FindSignalId
+    (
+        [this, pSigSrc](Signal const& signal)
+        { 
+			return static_cast<NNetSignal const &>(signal).GetSignalSource() == pSigSrc; 
+		}
+    );
 }

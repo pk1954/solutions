@@ -19,11 +19,11 @@ import :PosNob;
 import :Knot;
 
 InputLine::InputLine(MicroMeterPnt const& upCenter)
-  : IoLine(upCenter, NobType::Value::inputLine)
+  : IoLine(upCenter)
 { }
 
 InputLine::InputLine(PosNob & posNob)
-  : IoLine(posNob.GetPos(), NobType::Value::inputLine)
+  : IoLine(posNob.GetPos())
 {
 	SetId(posNob.GetId());
 	if (posNob.IsKnot())
@@ -33,7 +33,7 @@ InputLine::InputLine(PosNob & posNob)
 }
 
 InputLine::InputLine(Pipe& pipe)
-	: IoLine(pipe.GetStartPoint(), NobType::Value::inputLine)
+	: IoLine(pipe.GetStartPoint())
 {
 	SetId(pipe.GetStartNobPtr()->GetId());
 	SetPipe(&pipe);

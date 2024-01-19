@@ -31,7 +31,12 @@ export class Signal : public ObserverInterface  // observes signal source
 {
 public:
 
-    Signal(Observable &);
+    static void Initialize(Observable * const pObs)
+    {
+        m_pDynModelObservable = pObs;
+    }
+
+    Signal();
 
     virtual ~Signal();
 
@@ -65,7 +70,8 @@ private:
 
     inline static SIG_INDEX INVALID_SIG_INDEX{ -1 };
 
-    Observable & m_dynModelObservable;
+    inline static Observable * m_pDynModelObservable;
+
     SIMU_TIME    m_timeStart { SimulationTime::Get() };
     vector<mV>   m_data;
     fMicroSecs   m_usResolution { 100._MicroSecs };

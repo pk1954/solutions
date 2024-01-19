@@ -16,12 +16,7 @@ import :IoConnector;
 
 using std::vector;
 
-OutputConnector::OutputConnector()
-    :	IoConnector(NobType::Value::outputConnector)
-{}
-
 OutputConnector::OutputConnector(vector<IoLine *> & src)
-    :	IoConnector(NobType::Value::outputConnector)
 {
     for (auto it : src)
         m_list.push_back(it);
@@ -30,7 +25,6 @@ OutputConnector::OutputConnector(vector<IoLine *> & src)
 }
 
 OutputConnector::OutputConnector(vector<IoLine *> && src)
-  :	IoConnector(NobType::Value::outputConnector)
 {
     m_list = move(src);
     ConnectIoLines();

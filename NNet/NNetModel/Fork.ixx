@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <new>
 
 export module NNetModel:Fork;
 
@@ -15,7 +16,7 @@ import :NobType;
 import :Pipe;
 import :tHighlight;
 
-export class Fork : public PosNob
+export class alignas(std::hardware_constructive_interference_size) Fork : public PosNob
 {
 public:
 
@@ -30,10 +31,11 @@ public:
     size_t GetNrOfInConns () const final { return 1; }
     size_t GetNrOfOutConns() const final { return 2; }
 
-    MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }
-    MicroMeterPnt GetPos()       const final { return m_circle.GetPos(); }
+    MicroMeter    GetExtension() const final { return KNOT_WIDTH; }
+    MicroMeterPnt GetPos()       const final { return m_pos; }
     Radian        GetDir()       const final { return Radian::NULL_VAL(); }
     NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
+    NobType       GetNobType()   const final { return NobType::Value::fork; }
 
     Pipe* GetIncoming()       { return m_pPipeIn; }
     Pipe* GetFirstOutgoing()  { return m_pPipeOut1; }
@@ -87,7 +89,7 @@ public:
     static unsigned int Size() { return sizeof(Fork); }
 
 private:
-    MicroMeterCircle m_circle;
+    MicroMeterPnt m_pos;
     
     Pipe * m_pPipeIn   { nullptr };
     Pipe * m_pPipeOut1 { nullptr };

@@ -73,6 +73,10 @@ void Model::PrintModelSize() const
 { 
 	wcout << L"sizeof(bool) " << sizeof(bool) << L" bytes" << endl;
 	wcout << L"sizeof(Nob) " << sizeof(Nob) << L" bytes" << endl;
+	wcout << L"sizeof(mV) " << sizeof(mV) << L" bytes" << endl;
+	wcout << L"sizeof(NobType) " << sizeof(NobType) << L" bytes" << endl;
+	wcout << L"sizeof(NobId) " << sizeof(NobId) << L" bytes" << endl;
+	wcout << L"sizeof(unique_ptr<MicroSensor>) " << sizeof(unique_ptr<MicroSensor>) << L" bytes" << endl;
 	wcout << L"sizeof(FixedPipeline<mV>) " << sizeof(FixedPipeline<mV>) << L" bytes" << endl;
 	unsigned int sum { 0 };
 	sum += printNobType(Fork           ::Size(), NobType::Value::fork);

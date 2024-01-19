@@ -22,8 +22,7 @@ using std::wstring;
 using std::wostringstream;
 
 Neuron::Neuron(MicroMeterPnt const& upCenter)
-	: PosNob(NobType::Value::neuron),
-	m_circle(upCenter, NEURON_RADIUS)
+	: m_pos(upCenter)
 {}
 
 //Neuron::Neuron(Neuron const& rhs)
@@ -52,7 +51,7 @@ void Neuron::init(const Neuron & rhs)
 
 void Neuron::SetPosNoFix(MicroMeterPnt const& newPos)
 {
-	m_circle.SetPos(newPos);
+	m_pos = newPos;
 }
 
 void Neuron::Recalc()
@@ -140,13 +139,14 @@ void Neuron::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 
 void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) const
 {
+	MicroMeterCircle const circle { m_pos, NEURON_RADIUS };
 	if (m_bStopOnTrigger)
 	{
-		context.FillCircle(m_circle * 1.4f, GetExteriorColor(type));
-		context.FillCircle(m_circle * 1.2f, NNetColors::INT_TRIGGER);
+		context.FillCircle(circle * 1.4f, GetExteriorColor(type));
+		context.FillCircle(circle * 1.2f, NNetColors::INT_TRIGGER);
 	}
-	context.FillCircle(m_circle, GetExteriorColor(type));
-	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * 0.5f), GetExteriorColor(type));
+	context.FillCircle(circle, GetExteriorColor(type));
+	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), NEURON_RADIUS * 0.5f), GetExteriorColor(type));
 }
 
 void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) const
@@ -157,7 +157,7 @@ void Neuron::DrawInterior(DrawContext const & context, tHighlight const type) co
 		? NNetColors::INT_TRIGGER
 		: Nob::GetInteriorColor(type, m_mVpotential)
 	};
-	context.FillCircle(m_circle * NEURON_INTERIOR, color);
+	context.FillCircle(MicroMeterCircle(m_pos, NEURON_RADIUS * NEURON_INTERIOR), color);
 	context.FillCircle(MicroMeterCircle(getAxonHillockPos(), GetExtension() * (NEURON_INTERIOR - 0.5f)), color);
 }
 
@@ -196,7 +196,7 @@ void Neuron::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 
 void Neuron::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-	m_circle.Rotate(umPntPivot, radDelta);
+	m_pos.Rotate(umPntPivot, radDelta);
 }
 
 void Neuron::Reconnect()

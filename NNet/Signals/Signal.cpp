@@ -23,15 +23,14 @@ using std::make_unique;
 
 class NNetModelIO;
 
-Signal::Signal(Observable &observable) 
-    : m_dynModelObservable(observable)
+Signal::Signal() 
 {
-    m_dynModelObservable.RegisterObserver(*this);
+    m_pDynModelObservable->RegisterObserver(*this);
 }
 
 Signal::~Signal()
 {
-    m_dynModelObservable.UnregisterObserver(*this);
+    m_pDynModelObservable->UnregisterObserver(*this);
 }
 
 //bool Signal::operator==(Signal const & rhs) const

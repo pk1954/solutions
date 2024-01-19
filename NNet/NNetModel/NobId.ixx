@@ -6,7 +6,7 @@ export module NNetModel:NobId;
 
 import Types;
 
-export using NobId = NamedType<int, struct NobIdParam>;
+export using NobId = NamedType<short, struct NobIdParam>;
 
 export inline NobId const NO_NOB(-1);
 

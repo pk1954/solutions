@@ -19,11 +19,11 @@ import :Knot;
 import :Pipe;
 
 OutputLine::OutputLine(MicroMeterPnt const& umPntCenter)
-	: IoLine(umPntCenter, NobType::Value::outputLine)
+	: IoLine(umPntCenter)
 {}
 
 OutputLine::OutputLine(PosNob & posNob)
-	: IoLine(posNob.GetPos(), NobType::Value::outputLine)
+	: IoLine(posNob.GetPos())
 {
 	SetId(posNob.GetId());
 	if (posNob.IsSynapse())
@@ -33,7 +33,7 @@ OutputLine::OutputLine(PosNob & posNob)
 }
 
 OutputLine::OutputLine(Pipe& pipe)
-	: IoLine(pipe.GetEndPoint(), NobType::Value::outputLine)
+	: IoLine(pipe.GetEndPoint())
 {
 	SetId(pipe.GetEndNobPtr()->GetId());
 	SetPipe(&pipe);

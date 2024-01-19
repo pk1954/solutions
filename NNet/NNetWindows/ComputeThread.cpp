@@ -108,8 +108,8 @@ void ComputeThread::DoGameStuff()
 		m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
 		m_pPerformanceObservable->NotifyAll();
 		tX.AfterAction();
-	wcout << L"tX = " << tX.Average2wstring() << endl;
-	wcout << L"xxxxxxxxxxxxxxxxxxxxxx" << endl;
+	    wcout << L"tX = " << tX.Average2wstring() << endl;
+	//wcout << L"xxxxxxxxxxxxxxxxxxxxxx" << endl;
 	}
 
 	if (IsScanRunning())

@@ -21,7 +21,6 @@ import Types;
 import DrawContext;
 import :NNetParameters;
 import :tHighlight;
-import :MicroSensor;
 import :NobType;
 import :NobId;
 
@@ -50,7 +49,7 @@ public:
 
 	static bool TypeFits(NobType const) { return true; }  // every nob type is a Nob
 
-	explicit Nob(NobType const);
+	Nob() = default;
 	Nob(Nob const&);
 
 	virtual ~Nob() = default;
@@ -87,8 +86,8 @@ public:
 	virtual void PosChanged    ()                                               {}
 	virtual void DirectionDirty()                                               {}
 
-	virtual void Select   (bool const bOn) { m_bSelected = bOn; }
-	virtual void Emphasize(bool const bOn) { m_bEmphasized = bOn; }
+	virtual void Select   (bool const bOn) { m_states = bOn ? (m_states | 0x1) : (m_states & 0xfe); }
+	virtual void Emphasize(bool const bOn) { m_states = bOn ? (m_states | 0x2) : (m_states & 0xfd); }
 
 	virtual mV   GetPotential()   const { return m_mVpotential; }
 	virtual bool IsCompositeNob() const { return false; }
@@ -97,34 +96,34 @@ public:
 
 	virtual void ClearDynamicData() { m_mVpotential.Set2Zero(); }
 
-	virtual void SelectAllConnected(bool const) = 0;
+	virtual void    SelectAllConnected(bool const) = 0;
+	virtual NobType GetNobType()             const = 0;
 
 	bool    IsInputNob   () const { return GetIoMode() == NobIoMode::input; }
 	bool    IsOutputNob  () const { return GetIoMode() == NobIoMode::output; }
 	bool    IsInternalNob() const { return GetIoMode() == NobIoMode::internal; }
-	bool    IsSelected   () const { return m_bSelected; }
-	bool    IsEmphasized () const { return m_bEmphasized; }
+	bool    IsSelected   () const { return m_states & 0x1; }
+	bool    IsEmphasized () const { return m_states & 0x2; }
 	bool    IsDefined    () const { return ::IsDefined(m_identifier); }
-	wstring GetTypeName  () const { return NobType::GetName(m_type.GetValue()); }
-	NobType GetNobType   () const { return m_type; }
+	wstring GetTypeName  () const { return NobType::GetName(GetNobType().GetValue()); }
 	NobId   GetId        () const { return m_identifier; }
 
 	MicroMeter GetPosX() const { return GetPos().GetX(); }
 	MicroMeter GetPosY() const { return GetPos().GetY(); }
 
-	bool IsInputConnector () const { return m_type.IsInputConnectorType(); }
-	bool IsOutputConnector() const { return m_type.IsOutputConnectorType(); }
-	bool IsIoConnector    () const { return m_type.IsIoConnectorType(); }
-	bool IsPipe           () const { return m_type.IsPipeType(); }
-	bool IsKnot           () const { return m_type.IsKnotType(); }
-	bool IsFork           () const { return m_type.IsForkType(); }
-	bool IsSynapse        () const { return m_type.IsSynapseType(); }
-	bool IsNeuron         () const { return m_type.IsNeuronType(); }
-	bool IsIoLine         () const { return m_type.IsIoLineType(); }
-	bool IsInputLine      () const { return m_type.IsInputLineType(); }
-	bool IsOutputLine     () const { return m_type.IsOutputLineType(); }
-	bool IsPosNob         () const { return m_type.IsPosNobType(); }
-	bool IsUndefined      () const { return m_type.IsUndefinedType(); }
+	bool IsInputConnector () const { return GetNobType().IsInputConnectorType(); }
+	bool IsOutputConnector() const { return GetNobType().IsOutputConnectorType(); }
+	bool IsIoConnector    () const { return GetNobType().IsIoConnectorType(); }
+	bool IsPipe           () const { return GetNobType().IsPipeType(); }
+	bool IsKnot           () const { return GetNobType().IsKnotType(); }
+	bool IsFork           () const { return GetNobType().IsForkType(); }
+	bool IsSynapse        () const { return GetNobType().IsSynapseType(); }
+	bool IsNeuron         () const { return GetNobType().IsNeuronType(); }
+	bool IsIoLine         () const { return GetNobType().IsIoLineType(); }
+	bool IsInputLine      () const { return GetNobType().IsInputLineType(); }
+	bool IsOutputLine     () const { return GetNobType().IsOutputLineType(); }
+	bool IsPosNob         () const { return GetNobType().IsPosNobType(); }
+	bool IsUndefined      () const { return GetNobType().IsUndefinedType(); }
 
 	friend wostream & operator<< (wostream &, Nob const &);
 
@@ -136,27 +135,15 @@ public:
 
 	NNetParameters const * GetParam() const { return m_pParameters; }
 
-	MicroSensor           * CreateMicroSensor();
-	MicroSensor     const * GetMicroSensor() const { return m_upMicroSensor.get(); }
-	bool                    HasMicroSensor() const { return m_upMicroSensor.get() != nullptr; }
-	unique_ptr<MicroSensor> DeleteMicroSensor()    { return move(m_upMicroSensor); }
-
-	void SetMicroSensor(unique_ptr<MicroSensor> up) { m_upMicroSensor = move(up); }
-
 protected:
 
-	mV m_mVpotential { 0._mV };
-
-	void SetType(NobType const type) { m_type = type; }
+#pragma pack(push, 1)
+	mV       m_mVpotential { 0._mV };   // 4 byte
+	NobId    m_identifier  { NO_NOB };  // 2 byte
+	uint16_t m_states      { 0 };       // 2 byte 
+#pragma pack(pop)	
 
 private:
-
-	NobType m_type        { NobType::Value::undefined };
-	NobId   m_identifier  { NO_NOB };
-	bool    m_bSelected   { false };
-	bool    m_bEmphasized { false };
-
-	unique_ptr<MicroSensor> m_upMicroSensor;
 
 	inline static NNetParameters const * m_pParameters { nullptr };
 };

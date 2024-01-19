@@ -11,6 +11,8 @@ export module NNetCommands:AddMicroSensorCmd;
 import Signals;
 import :NNetCommand;
 
+using std::move;
+
 export class AddMicroSensorCmd : public NNetCommand
 {
 public:
@@ -22,18 +24,23 @@ public:
 	)
       : m_nobId(nobId),
 		m_trackNr(trackNr)
-	{}
+	{
+		m_upMicroSensor = make_unique<MicroSensor>(m_pNMWI->GetConstNob(nobId));
+	    m_upSignal      = make_unique<NNetSignal>(m_upMicroSensor.get());   
+	}
 
 	void Do() final
 	{
 		m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
-		m_signalId = SignalFactory::MakeMicroSensorSignal(m_nobId, m_trackNr, *m_pNMWI);
+		m_signalNr = m_pNMWI->GetMonitorData().AddSignal(m_trackNr, move(m_upSignal));
+		m_pNMWI->AddMicroSensor(move(m_upMicroSensor));
 		PlaySound(L"SNAP_IN_SOUND");
 	};
 
 	void Undo() final
 	{
-		m_pNMWI->GetMonitorData().DeleteSignal(m_signalId);
+		m_upMicroSensor = m_pNMWI->RemoveMicroSensor(m_nobId);
+		m_upSignal      = m_pNMWI->GetMonitorData().DeleteSignal(SignalId(m_trackNr, m_signalNr));
 		m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
 		PlaySound(L"DISAPPEAR_SOUND");
 	};
@@ -64,7 +71,9 @@ private:
 		}
 	} m_wrapper { NAME };
 
-	NobId    const m_nobId;
-	TrackNr  const m_trackNr;
-	SignalId       m_signalId {};
+	NobId             const m_nobId;
+	TrackNr           const m_trackNr;
+	SignalNr                m_signalNr;
+	unique_ptr<Signal>      m_upSignal;
+	unique_ptr<MicroSensor> m_upMicroSensor;
 };

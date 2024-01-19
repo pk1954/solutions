@@ -13,8 +13,7 @@ import DrawContext;
 import Types;
 
 Fork::Fork(MicroMeterPnt const &center)
-  : PosNob(NobType::Value::fork),
-	m_circle(center, KNOT_WIDTH)
+  : m_pos(center)
 {}
 
 //Fork::Fork(Fork const & rhs)
@@ -64,7 +63,7 @@ void Fork::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 
 void Fork::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
-	m_circle.Rotate(umPntPivot, radDelta);
+	m_pos.Rotate(umPntPivot, radDelta);
 }
 
 void Fork::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
@@ -117,7 +116,7 @@ bool Fork::Apply2AllOutPipesB(PipeCrit const& c) const
 
 void Fork::SetPosNoFix(MicroMeterPnt const& newPos)
 {
-	m_circle.SetPos(newPos);
+	m_pos = newPos;
 }
 
 void Fork::Recalc()

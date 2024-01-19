@@ -137,7 +137,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			[hPopupMenu](int const id){ appendMenu(hPopupMenu, id); }
 		);
 
-		if (m_pNMRI->HasMicroSensor(m_nobIdHighlighted))
+		if (m_pNMRI->HasMicroSensor(m_nobIdHighlighted))   
 			appendMenu(hPopupMenu, IDD_DEL_MICRO_SENSOR);
 		else
 			appendMenu(hPopupMenu, IDD_ADD_MICRO_SENSOR);

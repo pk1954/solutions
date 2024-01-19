@@ -24,13 +24,11 @@ using std::unique_ptr;
 using std::make_unique;
 
 Knot::Knot(MicroMeterPnt const& center)
-  : PosNob(NobType::Value::knot),
-	m_circle(center, KNOT_WIDTH)
+  : m_circle(center, KNOT_WIDTH)
 {}
 
 Knot::Knot(PosNob const& posNob)
-  : PosNob(NobType::Value::knot),
-	m_circle(posNob.GetPos(), KNOT_WIDTH)
+  : m_circle(posNob.GetPos(), KNOT_WIDTH)
 {
 	SetId(posNob.GetId());
 }

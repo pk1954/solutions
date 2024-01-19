@@ -42,10 +42,11 @@ public:
 
 	void          ClearDynamicData()   final;
 	mV            GetPotential() const final;
-	MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }
-	MicroMeterPnt GetPos()       const final { return m_circle.GetPos(); }
+	MicroMeter    GetExtension() const final { return NEURON_RADIUS; }
+	MicroMeterPnt GetPos()       const final { return m_pos; }
 	Radian        GetDir()       const final { return Radian::NULL_VAL(); };
 	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
+	NobType       GetNobType()   const final { return NobType::Value::neuron; }
 
 	void Recalc     ()                                   final;
 	void SetPosNoFix(MicroMeterPnt const&)               final;
@@ -93,7 +94,8 @@ public:
     static unsigned int Size() { return sizeof(Neuron); }
 
 private:
-	MicroMeterCircle m_circle;
+//	MicroMeterCircle m_circle;
+	MicroMeterPnt m_pos;
 
 	PipeList m_inPipes;
 	Pipe   * m_pPipeAxon { nullptr };

@@ -35,11 +35,12 @@ public:
     void Dump()  const final;
     void Check() const final;
 
-    MicroMeter    GetExtension() const final { return m_circle.GetRadius(); }
-    MicroMeterPnt GetPos()       const final { return m_circle.GetPos(); }
+    MicroMeter    GetExtension() const final { return KNOT_WIDTH; }
+    MicroMeterPnt GetPos()       const final { return m_pos; }
     MicroMeterPnt GetAddPos()    const       { return m_umPntTop; }
 
     NobIoMode GetIoMode()    const final { return NobIoMode::internal; }
+    NobType   GetNobType()   const final { return NobType::Value::synapse; }
     mV        GetPotential() const final { return m_mVpotential; }
 
     void CollectInput() final;
@@ -97,24 +98,25 @@ public:
 
 private:
 
-    inline static MicroMeter const PIPE_HALF { PIPE_WIDTH * 0.5f };
-    inline static MicroMeter const RADIUS    { PIPE_HALF };
-    inline static MicroMeter const EXTENSION { PIPE_WIDTH * 0.5f };
+    inline static MicroMeter const PIPE_HALF   { PIPE_WIDTH * 0.5f };
+    inline static MicroMeter const RADIUS      { PIPE_HALF };
+    inline static MicroMeter const EXTENSION   { PIPE_WIDTH * 0.5f };
+	inline static float      const SQRT3       { sqrtf(3.0f) };
+	inline static float      const SQRT3DIV3   { SQRT3 / 3.0f };
+	inline static MicroMeter const GAP         { PIPE_WIDTH * 0.1f };
+	inline static MicroMeter const CENTER_DIST { EXTENSION * SQRT3DIV3 };
+	inline static MicroMeter const OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
 
     void drawSynapse(DrawContext const&, MicroMeter const, Color const) const;
     void recalcPosition() const;
 
-    MicroMeterCircle m_circle;  // inpipe and outpipe meet here
+    MicroMeterPnt m_pos;  // inpipe and outpipe meet here
 
     mutable MicroMeterPnt m_umPntTop    { NP_NULL }; 
-    mutable MicroMeterPnt m_umPntBase1  { NP_NULL }; 
-    mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
-    mutable MicroMeterPnt m_umPntCenter { NP_NULL };
+    //mutable MicroMeterPnt m_umPntBase1  { NP_NULL }; 
+    //mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
+    //mutable MicroMeterPnt m_umPntCenter { NP_NULL };
 
-    enum class tState { idle, leadPulse, blockedIdle, blockedPulse, trailPulse };
-    tState m_state { tState::idle };
-
-    bool              m_bBlockActive     { false };
     fMicroSecs        m_usBlockStartTime { fMicroSecs::NULL_VAL() };  // NULL_VAL : no block
     mV                m_mVaddInput       { 0._mV };
     FixedPipeline<mV> m_pulseBuffer;
@@ -123,6 +125,11 @@ private:
     Pipe *            m_pPipeAdd;
 
     vector<fMicroSecs> m_usBlock;
+
+    enum class tState  : uint8_t { idle, leadPulse, blockedIdle, blockedPulse, trailPulse };
+    tState m_state { tState::idle };
+
+    bool              m_bBlockActive     { false };
 
     bool isDefined() const { return m_pPipeIn && m_pPipeOut && m_pPipeAdd; }
     void block();

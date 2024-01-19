@@ -22,7 +22,7 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsOutputConnectorType(); }
 
-	OutputConnector();
+	OutputConnector() = default;
 	explicit OutputConnector(vector<IoLine*>&);
 	explicit OutputConnector(vector<IoLine*>&&);
 
@@ -31,7 +31,8 @@ public:
 	void CollectInput() final { /* done by output neurons */ };
 	void Reconnect()    final { /* nothing to connect */ };
 
-	NobIoMode GetIoMode() const final { return NobIoMode::output; }
+	NobIoMode GetIoMode()  const final { return NobIoMode::output; }
+	NobType   GetNobType() const final { return NobType::Value::outputConnector; }
 
 	void DrawExterior(DrawContext const&, tHighlight const) const override;
 

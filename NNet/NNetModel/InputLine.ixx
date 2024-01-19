@@ -62,7 +62,8 @@ public:
 	void DrawExterior(DrawContext const&, tHighlight const) const final;
 	void DrawInterior(DrawContext const&, tHighlight const) const final;
 
-	NobIoMode GetIoMode() const final { return NobIoMode::input; }
+	NobIoMode GetIoMode()  const final { return NobIoMode::input; }
+	NobType   GetNobType() const final { return NobType::Value::inputLine; }
 
 	void Reconnect() final;
 

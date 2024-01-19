@@ -12,17 +12,17 @@ import Types;
 import DrawContext;
 import :NNetSignalSource;
 import :NobId;
+import :Nob;
 
 using std::wostream;
-
-class Nob;
-class NNetModelIo;
 
 export class MicroSensor : public NNetSignalSource
 {
 public:
 
-    MicroSensor(Nob * const);
+    MicroSensor(Nob const * const pNob)
+        : m_pNob(pNob)
+    {}
 
     virtual ~MicroSensor() = default;
 
@@ -41,7 +41,7 @@ public:
 
 private:
 
-    Nob* m_pNob;
+    Nob const * m_pNob;
 };
 
 export MicroSensor const* Cast2MicroSensor(NNetSignalSource const* pSource)

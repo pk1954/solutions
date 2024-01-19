@@ -20,14 +20,14 @@ import :NNetSignalSource;
 using std::unique_ptr;
 using std::make_unique;
 
-SignalNr SignalFactory::addSignal
+SignalNr SignalFactory::addSignal2Monitor
 (
-    NNetSignalSource         & sigSource,
+    NNetSignalSource * const   pSigSource,
     TrackNr            const   trackNr,
     NNetModelWriterInterface & nmwi
 )
 {
-    unique_ptr<NNetSignal> upSignal { make_unique<NNetSignal>(* m_pObservable, sigSource) };   
+    unique_ptr<NNetSignal> upSignal { make_unique<NNetSignal>(pSigSource) };   
     SignalNr         const signalNr { nmwi.GetMonitorData().AddSignal(trackNr, move(upSignal)) };
     return signalNr;
 }
@@ -40,7 +40,7 @@ SignalId SignalFactory::MakeSensorSignal
 )
 {
     unique_ptr<Sensor> upSensor { make_unique<Sensor>(umCircle, nmwi.GetUPNobsC()) };        
-    SignalNr     const signalNr { addSignal(*upSensor.get(), trackNr, nmwi) };
+    SignalNr     const signalNr { addSignal2Monitor(upSensor.get(), trackNr, nmwi) };
     nmwi.GetSensorList().PushSensor(move(upSensor));                                         
     return SignalId(trackNr, signalNr);
 }
@@ -52,19 +52,6 @@ SignalId SignalFactory::MakeSigGenSignal
 )
 {
     SignalGenerator * pSigGen  { nmwi.GetSigGenSelected() };
-    SignalNr  const   signalNr { addSignal(*pSigGen, trackNr, nmwi) };
-    return SignalId(trackNr, signalNr);
-}
-
-SignalId SignalFactory::MakeMicroSensorSignal
-(
-    NobId             const   nobId,
-    TrackNr           const   trackNr,
-    NNetModelWriterInterface& nmwi
-)
-{
-    Nob          * pNob         { nmwi.GetNob(nobId) };
-    MicroSensor  * pMicroSensor { pNob->CreateMicroSensor() };
-    SignalNr const signalNr     { addSignal(*pMicroSensor, trackNr, nmwi) };
+    SignalNr  const   signalNr { addSignal2Monitor(pSigGen, trackNr, nmwi) };
     return SignalId(trackNr, signalNr);
 }

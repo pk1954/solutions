@@ -62,7 +62,8 @@ public:
 
 	bool Includes(MicroMeterPnt const&) const final;
 
-	NobIoMode GetIoMode() const final { return NobIoMode::output; }
+	NobIoMode GetIoMode()  const final { return NobIoMode::output; }
+	NobType   GetNobType() const final { return NobType::Value::outputLine; }
 
 	void Reconnect() final;
 

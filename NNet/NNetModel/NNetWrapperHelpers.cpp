@@ -61,7 +61,7 @@ SignalId ScrReadSignalId(Script& script)
 
 NobId ScrReadNobId(Script& script)
 {
-	return NobId(script.ScrReadLong());
+	return NobId(script.ScrReadShort());
 }
 
 SigGenId ScrReadSigGenId(Script& script)

@@ -21,7 +21,7 @@ using std::size_t;
 export class NobType
 {
 public:
-	enum class Value
+	enum class Value : uint8_t
 	{
 		inputConnector,
 		outputConnector,

@@ -55,6 +55,7 @@ public:
 
 	size_t Size() const { return m_pModel->Size(); }
 
+	SignalId               FindSignalId         (NNetSignalSource const * const) const;
 	bool                   IsConnectionCandidate(NobId const, NobId const) const;
 	ConnectionType         ConnectionResult     (NobId const, NobId const) const;
 	bool                   IsConnectedTo        (NobId const, NobId const) const;
@@ -103,8 +104,8 @@ public:
 	ScanImage       const* GetFilteredImageC()                    const { return m_pModel->GetFilteredImageC(); }
 	bool                   ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
 	int                    GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
-	bool                   HasMicroSensor(NobId const id)         const { return GetConstNob(id)->HasMicroSensor(); }
-	MicroSensor     const* GetMicroSensor(NobId const id)         const { return GetConstNob(id)->GetMicroSensor(); }
+	bool                   HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
+	MicroSensor     const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
 	SignalId               SelectSignal(SignalId const id)        const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
 	bool                   IsAnySignalSelected()                  const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
 	fMicroSecs             TotalScanTime()                        const;

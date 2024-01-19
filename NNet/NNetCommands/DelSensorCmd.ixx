@@ -22,12 +22,8 @@ public:
     DelSensorCmd(SensorId const& id)
         : m_sensorId(id)
     {
-        Sensor const * const pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
-        m_signalId = m_pNMWI->FindSignalId
-        (
-            [this, pSensor](Signal const& s)
-            { return static_cast<NNetSignal const &>(s).GetSignalSource() == pSensor; }
-        );
+        NNetSignalSource const * const pSigSrc { m_pNMWI->GetSensorList().GetSensor(id) };
+        m_signalId = m_pNMWI->FindSignalId(pSigSrc);
     }
 
     void Do() final

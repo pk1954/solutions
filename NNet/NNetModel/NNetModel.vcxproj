@@ -89,6 +89,7 @@
     <ClCompile Include="Synapse.cpp" />
     <ClCompile Include="Synapse.ixx" />
     <ClCompile Include="tHighlightType.ixx" />
+    <ClCompile Include="UPMicroSensorList.ixx" />
     <ClCompile Include="UPNobList.cpp" />
     <ClCompile Include="UPNobList.ixx" />
     <ClCompile Include="UPSensorList.cpp" />

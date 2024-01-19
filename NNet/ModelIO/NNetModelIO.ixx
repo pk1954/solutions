@@ -45,7 +45,7 @@ public:
 
 	static void Export(NNetModelReaderInterface const&, unique_ptr<InputOutputUI>);
 
-	static int    GetCompactIdVal(NobId const);
+	static short  GetCompactIdVal(NobId const);
 	static size_t NrOfCompactIds();
 
 	static NNetModelReaderInterface const& GetExportNMRI() { return *m_pExportNMRI; }

@@ -6,6 +6,7 @@ module;
 
 #include <memory>
 #include <cassert>
+#include <new>
 
 export module NNetModel:Knot;
 
@@ -20,7 +21,7 @@ import :NobType;
 using std::unique_ptr;
 using std::make_unique;
  
-export class Knot : public PosNob
+export class alignas(std::hardware_constructive_interference_size) Knot : public PosNob
 {
 public:
 	explicit Knot(MicroMeterPnt const&);
@@ -42,6 +43,7 @@ public:
 	Radian        GetDir()       const final { return Radian::NULL_VAL(); };
 	mV            GetPotential() const final { return m_mVpotential; }
 	NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
+	NobType       GetNobType()   const final { return NobType::Value::knot; }
 
 	Pipe* GetIncoming() { return m_pPipeIn; }
 	Pipe* GetOutgoing() { return m_pPipeOut; }

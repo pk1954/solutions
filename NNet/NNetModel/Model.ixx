@@ -7,6 +7,8 @@ module;
 #include <cassert>
 #include <memory>
 #include <string>
+#include <vector>
+#include <algorithm>
 
 export module NNetModel:Model;
 
@@ -22,11 +24,13 @@ import :ModelDescription;
 import :UPNobList;
 import :UPSigGenList;
 import :UPSensorList;
+import :UPMicroSensorList;
 import :PosNob;
 
 using std::unique_ptr;
 using std::make_unique;
 using std::wstring;
+using std::vector;
 using std::move;
 
 export using ScanImage = Vector2D<mV>;
@@ -105,27 +109,29 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList     const & GetSigGenList  ()            const { return *m_upSigGenList.get(); }
-	UPSigGenList           & GetSigGenList  ()                  { return *m_upSigGenList.get(); }
-	UPSensorList     const & GetSensorList  ()            const { return m_sensorList; }
-	UPSensorList           & GetSensorList  ()                  { return m_sensorList; }
-	UPNobList        const & GetUPNobs      ()            const { return *m_upNobs.get(); }
-	UPNobList              & GetUPNobs      ()                  { return *m_upNobs.get(); }
-	unique_ptr<UPNobList>    MoveUPNobs     ()                  { return move(m_upNobs); }
-	MonitorData      const & GetMonitorData ()            const { return m_monitorData; }
-	MonitorData            & GetMonitorData ()                  { return m_monitorData; }
-	NNetParameters   const & GetParams      ()            const { return *m_upParam.get(); }
-	NNetParameters         & GetParams      ()                  { return *m_upParam.get(); }
-	SignalParameters const & GetSignalParams()            const { return m_signalParams; }
-	SignalParameters       & GetSignalParams()                  { return m_signalParams; }
-	MicroMeterRect           GetScanAreaRect()            const { return m_upRaster->GetRasterRect(); }
-	SignalGenerator  const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
-	MicroMeter               GetScanResolution()          const { return m_upRaster->Resolution(); }
-	RasterPoint              GetScanAreaSize()            const { return m_upRaster->Size(); }
-	Raster           const & GetScanRaster()              const { return *m_upRaster.get(); }
-	ScanImage        const * GetScanImageC()              const { return m_upImageScanned.get(); }
-	ScanImage        const * GetFilteredImageC()          const { return m_upImageFiltered.get(); }
-	ScanImage              * GetScanImage()                     { return m_upImageScanned.get(); }
+	UPSigGenList      const & GetSigGenList     ()         const { return *m_upSigGenList.get(); }
+	UPSigGenList            & GetSigGenList     ()               { return *m_upSigGenList.get(); }
+	UPSensorList      const & GetSensorList     ()         const { return m_sensorList; }
+	UPSensorList            & GetSensorList     ()               { return m_sensorList; }
+	UPMicroSensorList const & GetMicroSensorList()         const { return m_microSensorList; }
+	UPMicroSensorList       & GetMicroSensorList()               { return m_microSensorList; }
+	UPNobList         const & GetUPNobs         ()         const { return *m_upNobs.get(); }
+	UPNobList               & GetUPNobs         ()               { return *m_upNobs.get(); }
+	unique_ptr<UPNobList>     MoveUPNobs        ()               { return move(m_upNobs); }
+	MonitorData       const & GetMonitorData    ()         const { return m_monitorData; }
+	MonitorData             & GetMonitorData    ()               { return m_monitorData; }
+	NNetParameters    const & GetParams         ()         const { return *m_upParam.get(); }
+	NNetParameters          & GetParams         ()               { return *m_upParam.get(); }
+	SignalParameters  const & GetSignalParams   ()         const { return m_signalParams; }
+	SignalParameters        & GetSignalParams   ()               { return m_signalParams; }
+	MicroMeterRect            GetScanAreaRect   ()         const { return m_upRaster->GetRasterRect(); }
+	SignalGenerator   const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
+	MicroMeter                GetScanResolution()          const { return m_upRaster->Resolution(); }
+	RasterPoint               GetScanAreaSize()            const { return m_upRaster->Size(); }
+	Raster            const & GetScanRaster()              const { return *m_upRaster.get(); }
+	ScanImage         const * GetScanImageC()              const { return m_upImageScanned.get(); }
+	ScanImage         const * GetFilteredImageC()          const { return m_upImageFiltered.get(); }
+	ScanImage               * GetScanImage()                     { return m_upImageScanned.get(); }
 
 	// non const functions
 
@@ -160,6 +166,7 @@ private:
 	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;
+	UPMicroSensorList          m_microSensorList;
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;

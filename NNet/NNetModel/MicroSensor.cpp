@@ -19,10 +19,6 @@ using std::endl;
 using std::wcout;
 using std::wostream;
 
-MicroSensor::MicroSensor(Nob * const pNob)
-    : m_pNob(pNob)
-{}
-
 MicroMeterPnt MicroSensor::GetPosition() const
 { 
     return m_pNob->GetCenter(); 

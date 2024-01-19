@@ -25,7 +25,6 @@ using std::make_unique;
 using std::vector;
 
 InputConnector::InputConnector(vector<IoLine *> && src)
-  : IoConnector(NobType::Value::inputConnector)
 {
     m_list = move(src);
     ConnectIoLines();

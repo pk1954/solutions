@@ -28,10 +28,6 @@ using std::wostream;
 using std::wcout;
 using std::endl;
 
-IoConnector::IoConnector(NobType const nobType)
-    :	Nob(nobType)
-{ }
-
 void IoConnector::Check() const
 {
     Nob::Check();

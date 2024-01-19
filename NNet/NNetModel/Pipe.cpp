@@ -39,17 +39,12 @@ using std::make_unique;
 using std::pair;
 using SEGMENT = vector<mV>::iterator;
 
-Pipe::Pipe()
-  :	Nob(NobType::Value::pipe)
-{}
-
 Pipe::Pipe
 (
 	Nob * const pKnotStart, //TODO: Nob --> PosNob
 	Nob * const pKnotEnd    //TODO: Nob --> PosNob
 )
-  :	Nob(NobType::Value::pipe),
-	m_pNobStart(pKnotStart),
+  :	m_pNobStart(pKnotStart),
 	m_pNobEnd  (pKnotEnd)
 {
 	assert(pKnotStart);
@@ -249,7 +244,7 @@ MicroMeterPnt Pipe::GetVector() const
 void Pipe::SetNrOfSegments(size_t const n) const
 {
 	m_segments.Resize(n, 0.0_mV);
-	m_bSegmentsDirty = false;
+// m_bSegmentsDirty = false;
 }
 
 void Pipe::recalcSegments() const
@@ -263,15 +258,15 @@ void Pipe::recalcSegments() const
 
 FixedPipeline<mV>& Pipe::getSegments()
 {
-	if (m_bSegmentsDirty)
-		recalcSegments();
+//	if (m_bSegmentsDirty)
+//		recalcSegments();
 	return m_segments;
 }
 
 FixedPipeline<mV> const& Pipe::getSegments() const
 {
-	if (m_bSegmentsDirty)
-		recalcSegments();
+//	if (m_bSegmentsDirty)
+//		recalcSegments();
 	return m_segments;
 }
 

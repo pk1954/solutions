@@ -2,6 +2,10 @@
 //
 // NNetModel
 
+module;
+
+#include <cassert>
+
 export module NNetModel:NNetSignal;
 
 import Observable;
@@ -12,29 +16,29 @@ export class NNetSignal : public Signal
 {
 public:
 
-    NNetSignal(Observable& obs, NNetSignalSource& sigSrc)
-        : Signal(obs),
-        m_sigSrc(sigSrc)
+    NNetSignal(NNetSignalSource * const pSigSrc)
+      : m_pSigSrc(pSigSrc)
     {
-        m_sigSrc.RegisterObserver(*this);
+        assert(m_pSigSrc);
+        m_pSigSrc->RegisterObserver(*this);
     }
 
     ~NNetSignal() final
     {
-        m_sigSrc.UnregisterObserver(*this);
+        m_pSigSrc->UnregisterObserver(*this);
     }
 
     NNetSignalSource const* GetSignalSource() const
     {
-        return &m_sigSrc;
+        return m_pSigSrc;
     }
 
-    void Notify(bool const bImmediate) final // called by compute thread!
+    void Notify(bool const bImmediate) final
     {
-        Add2Signal(m_sigSrc.GetSignalValue());
+        Add2Signal(m_pSigSrc->GetSignalValue());
     }
 
 private:
 
-    NNetSignalSource& m_sigSrc;
+    NNetSignalSource * m_pSigSrc;
 };

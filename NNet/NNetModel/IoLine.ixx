@@ -23,9 +23,8 @@ export class IoLine : public PosNob
 public:
 	static bool TypeFits(NobType const type) { return type.IsIoLineType(); }
 
-	IoLine(MicroMeterPnt const & upCenter, NobType const type)
-	  : PosNob(type),
-		m_pos(upCenter)
+	IoLine(MicroMeterPnt const & upCenter)
+	  : m_pos(upCenter)
 	{}
 
 	void Dump() const;

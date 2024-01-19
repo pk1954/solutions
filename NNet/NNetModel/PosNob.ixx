@@ -21,9 +21,7 @@ using std::remove_pointer_t;
 export class PosNob : public Nob
 {
 public:
-	PosNob(NobType const type)
-	  : Nob(type)
-	{ }
+	PosNob(){ }
 
 	bool operator==(PosNob const&) const;
 

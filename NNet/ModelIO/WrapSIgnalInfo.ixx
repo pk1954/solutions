@@ -22,6 +22,8 @@ import NNetWrapperHelpers;
 import NNetModel;
 import NNetModelIO;
 
+using std::make_unique;
+using std::unique_ptr;
 using std::wostream;
 using std::wstring;
 using std::endl;
@@ -42,19 +44,25 @@ public:
 
     void operator() (Script& script) const final
     {
-        SignalId const signalId { ScrReadSignalId(script) };
+        NNetModelWriterInterface & nmwi     { NNetModelIO::GetImportNMWI() };
+        SignalId             const signalId { ScrReadSignalId(script) };
         script.ScrReadString(SOURCE);
         unsigned long const ulSigSrc { script.ScrReadUlong() };
         if (ulSigSrc == Signal::SIGSRC_CIRCLE)
         {
             MicroMeterCircle umCircle = ScrReadMicroMeterCircle(script);
-            SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), NNetModelIO::GetImportNMWI());
+            SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), nmwi);
         }
         else if (ulSigSrc == Signal::SIGSRC_NOB)
         {
             NobId nobId { ScrReadNobId(script) };
             if (IsDefined(nobId))
-                SignalFactory::MakeMicroSensorSignal(nobId, signalId.GetTrackNr(), NNetModelIO::GetImportNMWI());
+            {
+ 		        unique_ptr<MicroSensor> upMicroSensor { make_unique<MicroSensor>(nmwi.GetConstNob(nobId)) };
+                unique_ptr<NNetSignal>  upSignal      { make_unique<NNetSignal>(upMicroSensor.get()) };
+		        nmwi.AddMicroSensor(move(upMicroSensor));
+                nmwi.GetMonitorData().AddSignal(signalId.GetTrackNr(), move(upSignal));
+            }
         }
         else
         {

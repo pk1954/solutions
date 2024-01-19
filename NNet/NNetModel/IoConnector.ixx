@@ -29,8 +29,6 @@ export class IoConnector : public Nob
 public:
 	static bool TypeFits(NobType const type) { return type.IsIoConnectorType(); }
 
-	explicit IoConnector(NobType const);
-
 	~IoConnector() override = default;
 
 	void AppendMenuItems(AddMenuFunc const&) const override;
