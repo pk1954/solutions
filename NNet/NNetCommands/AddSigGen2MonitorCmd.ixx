@@ -28,7 +28,7 @@ public:
 
 	void Undo() final
 	{
-		m_pNMWI->GetMonitorData().DeleteSignal(m_signalId);
+		m_pNMWI->RemoveSignal(m_signalId);
 		m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
 	};
 

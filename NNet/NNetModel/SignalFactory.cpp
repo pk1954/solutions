@@ -28,21 +28,8 @@ SignalNr SignalFactory::addSignal2Monitor
 )
 {
     unique_ptr<NNetSignal> upSignal { make_unique<NNetSignal>(pSigSource) };   
-    SignalNr         const signalNr { nmwi.GetMonitorData().AddSignal(trackNr, move(upSignal)) };
+    SignalNr         const signalNr { nmwi.GetMonitorData().AddSignal(move(upSignal), trackNr) };
     return signalNr;
-}
-
-SignalId SignalFactory::MakeSensorSignal
-(
-    MicroMeterCircle   const & umCircle,
-    TrackNr            const   trackNr,
-    NNetModelWriterInterface & nmwi
-)
-{
-    unique_ptr<Sensor> upSensor { make_unique<Sensor>(umCircle, nmwi.GetUPNobsC()) };        
-    SignalNr     const signalNr { addSignal2Monitor(upSensor.get(), trackNr, nmwi) };
-    nmwi.GetSensorList().PushSensor(move(upSensor));                                         
-    return SignalId(trackNr, signalNr);
 }
 
 SignalId SignalFactory::MakeSigGenSignal

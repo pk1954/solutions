@@ -88,8 +88,8 @@ void MonitorData::ResetHighlightedSignal()
 
 SignalNr MonitorData::AddSignal
 (
-	TrackNr      const trackNr, 
-	unique_ptr<Signal> upSignal 
+	unique_ptr<Signal> upSignal, 
+	TrackNr      const trackNr
 )
 {
 	assert(upSignal);
@@ -99,8 +99,8 @@ SignalNr MonitorData::AddSignal
 
 void MonitorData::AddSignal
 (
-	SignalId   const & id, 
-	unique_ptr<Signal> upSignal 
+	unique_ptr<Signal> upSignal,
+	SignalId   const & id
 )
 {
 	assert(upSignal);
@@ -108,7 +108,7 @@ void MonitorData::AddSignal
 	getTrack(id.GetTrackNr())->AddSignal(move(upSignal), id.GetSignalNr());
 }
 
-unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
+unique_ptr<Signal> MonitorData::RemoveSignal(SignalId const & id)
 {
 	assert(IsValid(id));
 	--m_iNrOfSignals;
@@ -120,7 +120,7 @@ unique_ptr<Signal> MonitorData::DeleteSignal(SignalId const & id)
 SignalNr MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
 	assert(IsValid(id) && IsValid(trackNrDst));
-	SignalNr sigNr { AddSignal(trackNrDst, removeSignal(id)) };
+	SignalNr sigNr { AddSignal(removeSignal(id), trackNrDst) };
 	if ((sigNr.IsNotNull()) && (IsSelected(id)))
 		SetHighlightedSignal(SignalId(trackNrDst, sigNr));
 	return sigNr;

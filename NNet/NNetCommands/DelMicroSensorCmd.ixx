@@ -28,13 +28,13 @@ public:
 	void Do() final
 	{
 		m_upMicroSensor = m_pNMWI->RemoveMicroSensor(m_nobId);
-		m_upSignal      = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
+		m_upSignal      = move(m_pNMWI->RemoveSignal(m_signalId));
 		PlaySound(L"DISAPPEAR_SOUND");
 	};
 
 	void Undo() final
 	{
-		m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
+		m_pNMWI->GetMonitorData().AddSignal(move(m_upSignal), m_signalId);
 		m_pNMWI->AddMicroSensor(move(m_upMicroSensor));
 		PlaySound(L"SNAP_IN_SOUND");
 	};

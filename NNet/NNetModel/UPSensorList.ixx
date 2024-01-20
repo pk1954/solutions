@@ -38,10 +38,9 @@ public:
 
     bool IsValid(SensorId const id) const { return id.GetValue() < m_list.size(); }
 
-    SensorId PushSensor(UPSensor);
-    UPSensor PopSensor();
+    SensorId AddSensor(UPSensor);
     UPSensor RemoveSensor(SensorId const);
-    void     InsertSensor(UPSensor, SensorId const);
+    void     AddSensor(UPSensor, SensorId const);
 
     void Apply2All(auto const & f)
     {
@@ -62,6 +61,4 @@ private:
 
     vector<UPSensor>::iterator       getSensor(SensorId const);
     vector<UPSensor>::const_iterator getSensor(SensorId const) const;
-
-    UPSensor removeSensor(vector<UPSensor>::iterator);
 };

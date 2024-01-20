@@ -84,12 +84,4 @@ private:
 		return find_if(m_list, [id](auto const& it) { return it->GetNobId() == id; });
 	}
 
-	unique_ptr<MicroSensor> removeMicroSensor(vector<unique_ptr<MicroSensor>>::iterator it)
-	{
-		if (it == m_list.end())
-			return unique_ptr<MicroSensor>(nullptr);
-		else
-			return move(*it);
-	}
-
 };

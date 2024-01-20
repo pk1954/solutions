@@ -28,14 +28,6 @@ void UPSensorList::Clear()
     m_list.clear();
 }
 
-UPSensor UPSensorList::removeSensor(vector<UPSensor>::iterator it)
-{
-    if (it == m_list.end())
-        return UPSensor(nullptr);
-    else
-        return move(*it);
-}
-
 vector<UPSensor>::iterator UPSensorList::getSensor(SensorId const id)
 {
     return m_list.begin() + id.GetValue();
@@ -46,9 +38,15 @@ vector<UPSensor>::const_iterator UPSensorList::getSensor(SensorId const id) cons
     return m_list.begin() + id.GetValue();
 }
 
-void UPSensorList::InsertSensor(UPSensor upSensor, SensorId const id)
+void UPSensorList::AddSensor(UPSensor upSensor, SensorId const id)
 {
     m_list.insert(getSensor(id), move(upSensor));
+}
+
+SensorId UPSensorList::AddSensor(UPSensor upSensor)
+{
+    m_list.push_back(move(upSensor));
+    return SensorId(Cast2Int(m_list.size()-1));
 }
 
 Sensor const * UPSensorList::GetSensor(SensorId const id) const
@@ -96,20 +94,11 @@ UPSensor UPSensorList::NewSensor
     return move(make_unique<Sensor>(circle, list));
 }
 
-SensorId UPSensorList::PushSensor(UPSensor upSensor)
-{
-    m_list.push_back(move(upSensor));
-    return SensorId(Cast2Int(m_list.size()-1));
-}
-
-UPSensor UPSensorList::PopSensor()
-{
-    unique_ptr<Sensor> upSensor { move(m_list.back()) };
-    m_list.pop_back();
-    return move(upSensor);
-}
-
 UPSensor UPSensorList::RemoveSensor(SensorId const id)
 {
-    return move(removeSensor(getSensor(id)));
+    vector<UPSensor>::iterator it { getSensor(id) };
+    if (it == m_list.end())
+        return UPSensor(nullptr);
+    else
+        return move(*it);
 }

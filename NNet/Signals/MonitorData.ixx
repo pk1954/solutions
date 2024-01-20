@@ -60,11 +60,11 @@ public:
 	void     ResetHighlightedSignal();
 
 	void               AddStimulus      (fMicroSecs const);
-	SignalNr           AddSignal        (TrackNr    const,   unique_ptr<Signal>);
-	void               AddSignal        (SignalId   const &, unique_ptr<Signal>);
-	SignalNr           MoveSignal       (SignalId   const &, TrackNr const);
-	Signal           * GetSignalPtr     (SignalId   const &);
-	Signal     const * GetConstSignalPtr(SignalId   const &) const;
+	SignalNr           AddSignal        (unique_ptr<Signal>, TrackNr  const);
+	void               AddSignal        (unique_ptr<Signal>, SignalId const &);
+	SignalNr           MoveSignal       (SignalId const &, TrackNr const);
+	Signal           * GetSignalPtr     (SignalId const &);
+	Signal     const * GetConstSignalPtr(SignalId const &) const;
 
 	Signal     const * GetHighlightedSignal()         const	{ return GetConstSignalPtr(m_idSigHighlighted);	}
 	bool			   IsAnySignalHighlighted()       const { return m_idSigHighlighted.IsNotNull(); }
@@ -77,7 +77,7 @@ public:
 	bool			   IsEmptyTrack  (TrackNr const)  const;
 	bool			   AnyEmptyTracks()               const;
 
-	unique_ptr<Signal> DeleteSignal(SignalId const&);
+	unique_ptr<Signal> RemoveSignal(SignalId const&);
 
 	Signal const * FindSignal(auto const& crit) const
 	{

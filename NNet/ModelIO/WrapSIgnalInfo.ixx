@@ -50,8 +50,11 @@ public:
         unsigned long const ulSigSrc { script.ScrReadUlong() };
         if (ulSigSrc == Signal::SIGSRC_CIRCLE)
         {
-            MicroMeterCircle umCircle = ScrReadMicroMeterCircle(script);
-            SignalFactory::MakeSensorSignal(umCircle, signalId.GetTrackNr(), nmwi);
+            MicroMeterCircle       umCircle { ScrReadMicroMeterCircle(script) };
+            unique_ptr<Sensor>     upSensor { make_unique<Sensor>(umCircle, nmwi.GetUPNobsC()) };        
+            unique_ptr<NNetSignal> upSignal { make_unique<NNetSignal>(upSensor.get()) };   
+            SignalNr         const signalNr { nmwi.AddSignal(move(upSignal), signalId.GetTrackNr()) };
+            nmwi.AddSensor(move(upSensor));                                         
         }
         else if (ulSigSrc == Signal::SIGSRC_NOB)
         {
@@ -61,7 +64,7 @@ public:
  		        unique_ptr<MicroSensor> upMicroSensor { make_unique<MicroSensor>(nmwi.GetConstNob(nobId)) };
                 unique_ptr<NNetSignal>  upSignal      { make_unique<NNetSignal>(upMicroSensor.get()) };
 		        nmwi.AddMicroSensor(move(upMicroSensor));
-                nmwi.GetMonitorData().AddSignal(signalId.GetTrackNr(), move(upSignal));
+                nmwi.AddSignal(move(upSignal), signalId.GetTrackNr());
             }
         }
         else

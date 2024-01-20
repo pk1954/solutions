@@ -18,13 +18,6 @@ export class SignalFactory
 {
 public:
 
-    static SignalId MakeSensorSignal
-    (
-        MicroMeterCircle   const &,
-        TrackNr            const,
-        NNetModelWriterInterface &
-    );
-
     static SignalId MakeSigGenSignal
     (
         TrackNr const,

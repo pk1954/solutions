@@ -28,15 +28,15 @@ public:
 
     void Do() final
     {
-        m_upSensor = move(m_pNMWI->GetSensorList ().RemoveSensor(m_sensorId));
-        m_upSignal = move(m_pNMWI->GetMonitorData().DeleteSignal(m_signalId));
+        m_upSensor = move(m_pNMWI->RemoveSensor(m_sensorId));
+        m_upSignal = move(m_pNMWI->RemoveSignal(m_signalId));
         PlaySound(L"DISAPPEAR_SOUND");
     };
 
     void Undo() final
     {
-        m_pNMWI->GetSensorList ().InsertSensor(move(m_upSensor), m_sensorId);
-        m_pNMWI->GetMonitorData().AddSignal(m_signalId, move(m_upSignal));
+        m_pNMWI->AddSensor(move(m_upSensor), m_sensorId);
+        m_pNMWI->AddSignal(move(m_upSignal), m_signalId);
         PlaySound(L"SNAP_IN_SOUND");
     };
 

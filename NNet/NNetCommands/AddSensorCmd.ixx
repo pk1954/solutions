@@ -22,20 +22,25 @@ public:
     )
       : m_umCircle(umCircle),
         m_trackNr(trackNr)
-    {}
+    {
+        m_upSensor = make_unique<Sensor>(umCircle, m_pNMWI->GetUPNobsC()); 
+        m_upSignal = make_unique<NNetSignal>(m_upSensor.get());
+    }
 
     void Do() final
     {
         m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
-        m_signalId = SignalFactory::MakeSensorSignal(m_umCircle, m_trackNr, *m_pNMWI);
+        m_signalNr = m_pNMWI->AddSignal(move(m_upSignal), m_trackNr);
+        m_sensorId = m_pNMWI->AddSensor(move(m_upSensor));                                         
         PlaySound(L"SNAP_IN_SOUND");
     };
 
     void Undo() final
     {
-        m_pNMWI->GetMonitorData().DeleteSignal(m_signalId);
-        m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
-        PlaySound(L"DISAPPEAR_SOUND");
+	   m_upSignal = m_pNMWI->RemoveSignal(SignalId(m_trackNr, m_signalNr));
+       m_upSensor = m_pNMWI->RemoveSensor(m_sensorId);                                         
+       m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
+       PlaySound(L"DISAPPEAR_SOUND");
     };
 
 	static void Register()
@@ -71,5 +76,8 @@ private:
 
     MicroMeterCircle const m_umCircle;
     TrackNr          const m_trackNr;
-    SignalId               m_signalId{};
+	SignalNr               m_signalNr;
+    SensorId               m_sensorId;
+	unique_ptr<Signal>     m_upSignal;
+	unique_ptr<Sensor>     m_upSensor;
 };
