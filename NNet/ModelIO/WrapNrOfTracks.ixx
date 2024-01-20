@@ -25,7 +25,7 @@ public:
     {
         unsigned int const uiNrOfTracks{ script.ScrReadUint() };
         for (unsigned int ui = 0; ui < uiNrOfTracks; ++ui)
-            NNetModelIO::GetImportNMWI().GetMonitorData().InsertTrack(TrackNr(0));
+            NNetModelIO::GetImportNMWI().InsertTrack(TrackNr(0));
     }
 
     void Write(wostream& out) const final

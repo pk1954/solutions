@@ -29,7 +29,7 @@ public:
 
     void Do() final
     {
-        m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
+        m_pNMWI->InsertTrack(m_trackNr);
         m_signalNr = m_pNMWI->AddSignal(move(m_upSignal), m_trackNr);
         m_sensorId = m_pNMWI->AddSensor(move(m_upSensor));                                         
         PlaySound(L"SNAP_IN_SOUND");
@@ -39,7 +39,7 @@ public:
     {
 	   m_upSignal = m_pNMWI->RemoveSignal(SignalId(m_trackNr, m_signalNr));
        m_upSensor = m_pNMWI->RemoveSensor(m_sensorId);                                         
-       m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
+       m_pNMWI->DeleteTrack(m_trackNr);
        PlaySound(L"DISAPPEAR_SOUND");
     };
 

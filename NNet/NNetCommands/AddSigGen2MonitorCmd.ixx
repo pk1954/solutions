@@ -17,19 +17,20 @@ public:
 	explicit AddSigGen2MonitorCmd(TrackNr const trackNr)
 		: m_trackNr(trackNr)
 	{
-		m_pSigGen = m_pNMWI->GetSigGenSelected();
+		m_pSigGen  = m_pNMWI->GetSigGenSelected();
+	    m_upSignal = make_unique<NNetSignal>(m_pSigGen);
 	}
 
 	void Do() final
 	{
-		m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
-		m_signalId = SignalFactory::MakeSigGenSignal(m_trackNr, *m_pNMWI);
+		m_pNMWI->InsertTrack(m_trackNr);
+		m_signalNr = m_pNMWI->AddSignal(move(m_upSignal), m_trackNr);
 	}
 
 	void Undo() final
 	{
-		m_pNMWI->RemoveSignal(m_signalId);
-		m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
+		m_upSignal = m_pNMWI->RemoveSignal(SignalId(m_trackNr, m_signalNr));
+		m_pNMWI->DeleteTrack(m_trackNr);
 	};
 
 	static void Register()
@@ -57,7 +58,8 @@ private:
 		}
 	} m_wrapper { NAME };
 
-	SignalGenerator const * m_pSigGen;
-	TrackNr         const   m_trackNr;
-	SignalId                m_signalId{};
+	SignalGenerator *  m_pSigGen;
+	TrackNr      const m_trackNr;
+	SignalNr           m_signalNr;
+	unique_ptr<Signal> m_upSignal;
 };

@@ -28,13 +28,13 @@ public:
 
     void Do() final 
     {
-        m_pNMWI->GetMonitorData().InsertTrack(m_trackNr);
+        m_pNMWI->InsertTrack(m_trackNr);
         PlaySound(L"SNAP_IN_SOUND");
     };
 
     void Undo() final
     { 
-        m_pNMWI->GetMonitorData().DeleteTrack(m_trackNr);
+        m_pNMWI->DeleteTrack(m_trackNr);
         PlaySound(L"DISAPPEAR_SOUND");
     };
 

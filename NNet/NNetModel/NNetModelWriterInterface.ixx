@@ -55,29 +55,31 @@ public:
     void ResetModel()             { m_pModel->ResetModel(); }
     void ClearDynamicData() const { m_pModel->ClearDynamicData(); }
 
-    SigGenId                FindSigGen         (wstring  const & name)  const { return m_pModel->GetSigGenList().FindSigGen(name); }
-    bool                    IsValid            (SigGenId const   id)    const { return m_pModel->GetSigGenList().IsValid(id); }
-    UPSigGen                NewSigGen          ()                             { return m_pModel->GetSigGenList().NewSigGen(); }
-    UPSigGen                NewSigGen          (wstring const & name)         { return m_pModel->GetSigGenList().NewSigGen(name); }
-    SigGenId                PushSigGen         (UPSigGen upSigGen)            { return m_pModel->GetSigGenList().PushSigGen(move(upSigGen)); }
-    SigGenId                SetSigGenActive    (SigGenId const id)            { return m_pModel->GetSigGenList().SetActive(id); }
-    void                    InsertSigGen       (UPSigGen u, SigGenId const i) { return m_pModel->GetSigGenList().InsertSigGen(move(u), i); }
-    SigGenId                GetSigGenIdSelected()                             { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }
-    SignalGenerator       * GetSigGenSelected  ()                             { return m_pModel->GetSigGenList().GetSigGenSelected(); }
-    SignalGenerator       * GetSigGen          (SigGenId const id)      const { return m_pModel->GetSigGenList().GetSigGen(id); }
-    SignalGenerator       * GetSigGen          (wstring const& name)    const { return m_pModel->GetSigGenList().GetSigGen(name); }
-    UPSigGen                RemoveSigGen       (SigGenId const id)            { return m_pModel->GetSigGenList().RemoveSigGen(id); }
-    UPSigGen                PopSigGen          ()                             { return m_pModel->GetSigGenList().PopSigGen(); }
-    ScanImage             * GetScanImage       ()                             { return m_pModel->GetScanImage(); }
-    MicroSensor           * GetMicroSensor     (NobId const id)               { return m_pModel->GetMicroSensorList().GetMicroSensor(id); }
-    unique_ptr<MicroSensor> RemoveMicroSensor  (NobId const id)               { return m_pModel->GetMicroSensorList().RemoveMicroSensor(id); }
-    void                    AddMicroSensor     (unique_ptr<MicroSensor> up)   {        m_pModel->GetMicroSensorList().AddMicroSensor(move(up)); }
-    SensorId                AddSensor          (unique_ptr<Sensor> up)        { return m_pModel->GetSensorList().AddSensor(move(up)); }
-    UPSensor                RemoveSensor       (SensorId const id)            { return m_pModel->GetSensorList().RemoveSensor(id); }
-    void                    AddSensor(UPSensor up, SensorId const id)         { return m_pModel->GetSensorList().AddSensor(move(up), id); }
-    SignalNr                AddSignal(unique_ptr<Signal> up, TrackNr const n) { return GetMonitorData().AddSignal(move(up), n); }
+    SigGenId                FindSigGen         (wstring  const & name)  const    { return m_pModel->GetSigGenList().FindSigGen(name); }
+    bool                    IsValid            (SigGenId const   id)    const    { return m_pModel->GetSigGenList().IsValid(id); }
+    UPSigGen                NewSigGen          ()                                { return m_pModel->GetSigGenList().NewSigGen(); }
+    UPSigGen                NewSigGen          (wstring const & name)            { return m_pModel->GetSigGenList().NewSigGen(name); }
+    SigGenId                PushSigGen         (UPSigGen upSigGen)               { return m_pModel->GetSigGenList().PushSigGen(move(upSigGen)); }
+    SigGenId                SetSigGenActive    (SigGenId const id)               { return m_pModel->GetSigGenList().SetActive(id); }
+    void                    InsertSigGen       (UPSigGen u, SigGenId const i)    { return m_pModel->GetSigGenList().InsertSigGen(move(u), i); }
+    SigGenId                GetSigGenIdSelected()                                { return m_pModel->GetSigGenList().GetSigGenIdSelected(); }
+    SignalGenerator       * GetSigGenSelected  ()                                { return m_pModel->GetSigGenList().GetSigGenSelected(); }
+    SignalGenerator       * GetSigGen          (SigGenId const id)      const    { return m_pModel->GetSigGenList().GetSigGen(id); }
+    SignalGenerator       * GetSigGen          (wstring const& name)    const    { return m_pModel->GetSigGenList().GetSigGen(name); }
+    UPSigGen                RemoveSigGen       (SigGenId const id)               { return m_pModel->GetSigGenList().RemoveSigGen(id); }
+    UPSigGen                PopSigGen          ()                                { return m_pModel->GetSigGenList().PopSigGen(); }
+    ScanImage             * GetScanImage       ()                                { return m_pModel->GetScanImage(); }
+    MicroSensor           * GetMicroSensor     (NobId const id)                  { return m_pModel->GetMicroSensorList().GetMicroSensor(id); }
+    unique_ptr<MicroSensor> RemoveMicroSensor  (NobId const id)                  { return m_pModel->GetMicroSensorList().RemoveMicroSensor(id); }
+    void                    AddMicroSensor     (unique_ptr<MicroSensor> up)      {        m_pModel->GetMicroSensorList().AddMicroSensor(move(up)); }
+    SensorId                AddSensor          (unique_ptr<Sensor> up)           { return m_pModel->GetSensorList().AddSensor(move(up)); }
+    UPSensor                RemoveSensor       (SensorId const id)               { return m_pModel->GetSensorList().RemoveSensor(id); }
+    void                    AddSensor(UPSensor up, SensorId const id)            { return m_pModel->GetSensorList().AddSensor(move(up), id); }
+    SignalNr                AddSignal(unique_ptr<Signal> up, TrackNr const n)    { return GetMonitorData().AddSignal(move(up), n); }
     void                    AddSignal(unique_ptr<Signal> up, SignalId  const id) { return GetMonitorData().AddSignal(move(up), id); }
-    unique_ptr<Signal>      RemoveSignal       (SignalId const& id)           { return GetMonitorData().RemoveSignal(id); }
+    unique_ptr<Signal>      RemoveSignal       (SignalId const& id)              { return GetMonitorData().RemoveSignal(id); }
+    void                    InsertTrack        (TrackNr const trackNr)           { GetMonitorData().InsertTrack(trackNr); }
+    void                    DeleteTrack        (TrackNr const trackNr)           { GetMonitorData().DeleteTrack(trackNr); }
 
     UPSigGenList & GetSigGenList() { return m_pModel->GetSigGenList(); }
     UPSensorList & GetSensorList() { return m_pModel->GetSensorList(); }
