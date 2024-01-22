@@ -28,6 +28,8 @@ public:
 
 	void UnregisterObserver(ObserverInterface const & observer)
 	{
+		if (m_observers.empty())
+			return;
 		for (auto it = m_observers.begin(); it != m_observers.end();)
 		{
 			if (*it == &observer)

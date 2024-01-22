@@ -367,19 +367,19 @@ void MainWindow::connect(NobId const idSrc, NobId const idDst)
 	case ct_fork: ConnectCreateForkCmd::Push(idSrc, idDst);  // case 1 
 		break;
 	case ct_synapse:
-		ConnectCreateSynapseCmd::Push(idSrc, idDst);  // case 2
+		ConnectCreateSynapseCmd::Push(idSrc, idDst); // case 2
 		break;
 	case ct_neuron:
-		Connect2NeuronCommand::Push(idSrc, idDst);    // case 3
+		Connect2NeuronCommand::Push(idSrc, idDst);   // case 3
 		break;
 	case ct_knot:
-		PlugIoLinesCmd::Push(idSrc, idDst);              // case 4/5
+		PlugIoLinesCmd::Push(idSrc, idDst);          // case 4/5
 		break;
 	case ct_connector:
-		Add2ConnectorCmd::Push(idSrc, idDst);     // case 12/13
+		Add2ConnectorCmd::Push(idSrc, idDst);        // case 12/13
 		break;
 	case ct_plugConnectors:
-		PlugIoConnectorsCmd::Push(idSrc, idDst);         // case 6
+		PlugIoConnectorsCmd::Push(idSrc, idDst);     // case 6
 		break;
 	default: assert(false);
 	}
