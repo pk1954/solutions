@@ -8,8 +8,10 @@ module;
 
 export module Raster;
 
+import Color;
 import Types;
 import SaveCast;
+import DrawContext;
 
 using std::optional;
 
@@ -43,6 +45,22 @@ size_t         NrOfPoints()    const { return RasterWidth() * RasterHeight(); }
 MicroMeterRect GetPointRect(RasterPoint const&) const;
 
 optional<RasterPoint> FindRasterPos(MicroMeterPnt const) const;
+
+void DrawRasterPoints
+(
+    DrawContext const& drawContext,
+    auto        const& getColor
+) const
+{
+	RasterPoint rpRun;
+	for (rpRun.m_y = 0; rpRun.m_y < RasterHeight(); ++rpRun.m_y)
+    for (rpRun.m_x = 0; rpRun.m_x < RasterWidth(); ++rpRun.m_x)
+    {
+		MicroMeterRect const umRect { GetPointRect(rpRun) };
+        Color          const col    { getColor(rpRun) };
+		drawContext.FillRectangle(umRect, col);
+    }
+}
 
 private:
 

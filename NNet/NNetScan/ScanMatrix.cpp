@@ -19,18 +19,26 @@ import NNetModel;
 using std::vector;
 using std::optional;
 
-ScanMatrix::ScanMatrix(RasterPoint const& size)
-    :m_scanLines(size)
+ScanMatrix::ScanMatrix(RasterPoint const& rpSize)
+    :m_scanPixels(rpSize)
 {}
 
 mV ScanMatrix::Scan(RasterPoint const& rp)
 {
-    return m_scanLines.GetRef(rp).Scan();
+    return m_scanPixels.GetPtr(rp)->Scan();
+}
+
+void ScanMatrix::Resize(RasterPoint const& rpSize)
+{
+    m_scanPixels.Resize(rpSize);
+    m_pScanPixelMax = nullptr;
 }
 
 ScanPixel const& ScanMatrix::GetScanPixel(RasterPoint const& rp) const
 {
-    return m_scanLines.GetConstRef(rp);
+    ScanPixel const * pPixel{ m_scanPixels.GetConstPtr(rp) };
+    assert(pPixel);
+    return *pPixel;
 }
 
 void ScanMatrix::Add2list
@@ -67,7 +75,7 @@ void ScanMatrix::Fill(NNetModelReaderInterface const& nmri)
     );
 }
 
-size_t ScanMatrix::GetNrOfSensorPoints() const
+size_t ScanMatrix::GetNrOfDataPoints() const
 {
     size_t nr { 0 };
     Apply2AllScanPixelsC([&nr](ScanPixel const& p) { nr += p.GetNrOfDataPoints(); });
@@ -76,10 +84,28 @@ size_t ScanMatrix::GetNrOfSensorPoints() const
 
 float ScanMatrix::AverageDataPointsPerPixel() const
 {
-    size_t nrOfPoints { GetNrOfSensorPoints() };
-    size_t nrOfPixels { m_scanLines.NrOfPoints() };
+    return AverageDataPointsPerPixel(GetNrOfDataPoints());
+}
+
+float ScanMatrix::AverageDataPointsPerPixel(size_t const nrOfPoints) const
+{
+    size_t const nrOfPixels { m_scanPixels.NrOfPoints() };
     assert(nrOfPixels > 0);
     return Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels);
+}
+
+size_t ScanMatrix::MaxNrOfDataPoints() const
+{
+    size_t maxNrOfDataPoints { 0 };
+    Apply2AllScanPixelsC
+    (
+        [this, &maxNrOfDataPoints](ScanPixel const& p)
+        {
+            if (p.GetNrOfDataPoints() > maxNrOfDataPoints)
+                maxNrOfDataPoints = p.GetNrOfDataPoints();
+        }
+    );
+    return maxNrOfDataPoints;
 }
 
 float ScanMatrix::DataPointVariance()
@@ -111,6 +137,6 @@ void ScanMatrix::addScanDataPoint
     RasterPoint const& rPnt
 )
 {
-    ScanPixel& scanPoint { m_scanLines.GetRef(rPnt) };
-    scanPoint.Add(ScanDataPoint(pipe, segNr));
+    if (ScanPixel * pScanPoint { m_scanPixels.GetPtr(rPnt) })
+        pScanPoint->Add(ScanDataPoint(pipe, segNr));
 }

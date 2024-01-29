@@ -4,6 +4,7 @@
 
 module;
 
+#include <optional>
 #include <iostream>
 #include <sstream> 
 #include <string> 
@@ -18,6 +19,7 @@ import Win32_Util;
 import NNetModel;
 import :MainWindow;
 
+using std::optional;
 using std::wostringstream;
 using std::setprecision;
 using std::to_wstring;
@@ -106,7 +108,12 @@ void CrsrWindow::PaintText(TextBuffer & textBuf)
 	{
 		SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
 		NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
-		if (IsDefined(nobId))
+
+		if (m_pMainWindow->IsInOptimizeMode())
+		{
+			printScanAreaInfo(textBuf, umPntCrsr);
+		}
+		else if (IsDefined(nobId))
 		{
 			printNobInfo(textBuf, umPntCrsr, nobId);
 		}
@@ -114,6 +121,45 @@ void CrsrWindow::PaintText(TextBuffer & textBuf)
 		{
 			printSignalInfo(textBuf, sigId);
 		}
+	}
+}
+
+void CrsrWindow::printScanAreaInfo
+(
+	TextBuffer         & textBuf,
+	MicroMeterPnt const& umPoint
+) const
+{
+	Raster const& raster { m_pNMRI->GetScanRaster() };
+	textBuf.printString(L"ScanArea: ");
+	textBuf.printNumber(raster.RasterWidth());
+	textBuf.printNumber(raster.RasterHeight());
+	textBuf.nextLine();
+	if (optional<RasterPoint> const rPntOpt = raster.FindRasterPos(umPoint))
+	{
+		textBuf.printString(L"Pixel: ");
+		textBuf.printNumber(rPntOpt.value().m_x);
+		textBuf.printNumber(rPntOpt.value().m_y);
+		textBuf.nextLine();
+		ScanMatrix const& scanMatrix { m_pMainWindow->GetScanMatrix() };
+		if (scanMatrix.IsValid(rPntOpt.value()))
+		{
+			size_t const nrOfPnts { scanMatrix.GetNrOfDataPoints(rPntOpt.value()) };
+			textBuf.printString(L"# data points: ");
+			textBuf.AlignLeft();  
+			textBuf.printNumber(nrOfPnts);
+			textBuf.nextLine();
+		}
+		else
+		{
+			textBuf.AlignLeft();
+			textBuf.printString(L"invalid pixel position");
+		}
+	}
+	else
+	{
+		textBuf.AlignLeft();
+		textBuf.printString(L"Cursor not in scan area");
 	}
 }
 
@@ -142,7 +188,7 @@ void CrsrWindow::printNobInfo
 	NobId         const   id
 ) const 
 {
-	Nob     const& nob { *m_pNMRI->GetConstNob(id) };
+	Nob     const& nob  { *m_pNMRI->GetConstNob(id) };
 	NobType const  type { nob.GetNobType() };
 	textBuf.nextLine();
 	textBuf.AlignRight(); 

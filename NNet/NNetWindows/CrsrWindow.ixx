@@ -41,14 +41,14 @@ private:
 
 	wstring GetCaption() const final { return L"CrsrWindow"; }
 
-	void printPositionInfo(TextBuffer &, MicroMeterPnt const &)              const;
-	void printNobInfo     (TextBuffer &, MicroMeterPnt const &, NobId const) const;
-	void printSignalInfo  (TextBuffer &, SignalId const) const;
-
-	void printMicroMeter(TextBuffer &, MicroMeter const) const;
-	void printMilliSecs (TextBuffer &, MilliSecs  const) const;
-	void printDegrees   (TextBuffer &, Degrees    const) const;
-	void printVoltage   (TextBuffer &, mV         const) const;
+	void printPositionInfo(TextBuffer&, MicroMeterPnt const &)              const;
+	void printNobInfo     (TextBuffer&, MicroMeterPnt const &, NobId const) const;
+	void printSignalInfo  (TextBuffer&, SignalId      const ) const;
+	void printMicroMeter  (TextBuffer&, MicroMeter    const ) const;
+	void printMilliSecs   (TextBuffer&, MilliSecs     const ) const;
+	void printDegrees     (TextBuffer&, Degrees       const ) const;
+	void printVoltage     (TextBuffer&, mV            const ) const;
+	void printScanAreaInfo(TextBuffer&, MicroMeterPnt const&) const;
 
 	void printFrequency(TextBuffer & textBuf, Hertz const freq) const
 	{

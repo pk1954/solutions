@@ -54,18 +54,31 @@ class Vector2D
 public:
     using ROW = UnitVector<UNIT>;
 
-    Vector2D(RasterPoint const& size)
+    void init(RasterPoint const& rpSize)
     {
-        m_rows.reserve(size.m_y);
-        for (int i = 0; i < size.m_y; ++i)
-            m_rows.push_back(make_unique<ROW>(size.m_x));
+        m_rows.reserve(rpSize.m_y);
+        for (int i = 0; i < rpSize.m_y; ++i)
+            m_rows.push_back(make_unique<ROW>(rpSize.m_x));
     }
 
-    Vector2D(RasterPoint const& size, UNIT const initVal)
+    Vector2D() {}
+
+    Vector2D(RasterPoint const& rpSize)
     {
-        m_rows.reserve(size.m_y);
-        for (int i = 0; i < size.m_y; ++i)
-            m_rows.push_back(make_unique<ROW>(size.m_x, initVal));
+        init(rpSize);
+    }
+
+    Vector2D(RasterPoint const& rpSize, UNIT const initVal)
+    {
+        m_rows.reserve(rpSize.m_y);
+        for (int i = 0; i < rpSize.m_y; ++i)
+            m_rows.push_back(make_unique<ROW>(rpSize.m_x, initVal));
+    }
+
+    void Resize(RasterPoint const& rpSize)
+    {
+        m_rows.clear();
+        init(rpSize);
     }
 
     RasterPoint GetSize() const
@@ -73,19 +86,26 @@ public:
         return RasterPoint(Width(), Height());
     }
 
-    ROW& GetRow(RasterIndex const ry)
+    ROW* GetRowPtr(RasterIndex const ry)
     {
-        return *m_rows.at(ry).get();
+        if (ry < m_rows.size())
+            return m_rows[ry].get();
+        else 
+            return nullptr;
     }
 
-    ROW const& GetRow(RasterIndex const ry) const
+    ROW const * GetConstRowPtr(RasterIndex const ry) const
     {
-        return *m_rows.at(ry).get();
+        if (ry < m_rows.size())
+            return m_rows[ry].get();
+        else 
+            return nullptr;
     }
 
     void Set(RasterPoint const& rp, UNIT val)
     {
-        GetRow(rp.m_y).m_vector.at(rp.m_x) = val;
+        if (IsValid(rp))
+            GetRowPtr(rp.m_y)->m_vector[rp.m_x] = val;
     }
 
     void Set(UNIT const newVal)
@@ -93,19 +113,28 @@ public:
         Apply2AllPixels([newVal](UNIT& val) { val = newVal; });
     }
 
-    UNIT& GetRef(RasterPoint const& rp)
+    UNIT* GetPtr(RasterPoint const& rp)
     {
-        return GetRow(rp.m_y).m_vector.at(rp.m_x);
+        if (IsValid(rp))
+            return &GetRowPtr(rp.m_y)->m_vector[rp.m_x];
+        else
+            return nullptr;
     }
 
-    UNIT const & GetConstRef(RasterPoint const& rp) const
+    UNIT const * GetConstPtr(RasterPoint const& rp) const
     {
-        return GetRow(rp.m_y).m_vector.at(rp.m_x);
+        if (IsValid(rp))
+            return &GetConstRowPtr(rp.m_y)->m_vector[rp.m_x];
+        else
+            return nullptr;
     }
 
     UNIT Get(RasterPoint const& rp) const
     {
-        return GetConstRef(rp);
+        if (UNIT const * pUnit{ GetConstPtr(rp) })
+            return *pUnit;
+        else
+            return UNIT::NULL_VAL();
     }
 
     UNIT Get(ROW const &row, RasterIndex const rx) const

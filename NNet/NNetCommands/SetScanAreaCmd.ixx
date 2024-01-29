@@ -18,7 +18,7 @@ export class SetScanAreaCmd : public NNetCommand
 {
 public:
 	SetScanAreaCmd(MicroMeterRect const& rectNew)
-		: m_rectNew(rectNew),
+	  : m_rectNew(rectNew),
 		m_rectOld(m_pNMWI->GetScanAreaRect())
 	{}
 

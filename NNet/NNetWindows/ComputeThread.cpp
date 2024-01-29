@@ -67,7 +67,7 @@ void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters 
 	m_pRunObservable->NotifyAll();
 }
 
-void ComputeThread::StartStimulus()    // runs in main thread
+void ComputeThread::StartStimulus()
 {
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }
@@ -79,7 +79,7 @@ void ComputeThread::setRunning(bool const bMode)
 	m_computeTimer.BeforeAction();
 }
 
-void ComputeThread::StartScan()      // runs in main thread
+void ComputeThread::StartScan()
 {
 	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
 	m_upScanMatrix->Fill(*m_pNMWI);

@@ -80,6 +80,10 @@ void MainWindow::Start
 	m_pDisplayTimer        = pActionTimer;
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
+    m_lut.AddBasePoint(  0, Color(D2D1::ColorF::Black));
+    m_lut.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
+    m_lut.AddBasePoint(255, Color(D2D1::ColorF::Red));
+    m_lut.Construct();
 }
 
 void MainWindow::Stop()
@@ -284,7 +288,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		SetScanAreaCmd::Push(*m_scanAreaHandleSelected, m_umDelta);
 	}
-	else if (crsrInScanArea(umCrsrPos))
+	else if (crsrInScanArea(umCrsrPos) && !m_bOptimizeMode)
 	{
 		if (!m_pNMRI->ModelLocked())    // no edit operations allowed if model is locked
 			SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
@@ -501,6 +505,9 @@ void MainWindow::PaintGraphics()
 
 	m_mainScales.Paint(*m_upGraphics.get());
 
+	if (NNetPreferences::ScanAreaVisible() && m_bOptimizeMode)
+		drawSensorDensityMap();
+
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
 		DrawExteriorInRect(pixRect, [](Nob const& n) { return n.IsPipe() && !n.IsSelected(); });
@@ -549,22 +556,24 @@ void MainWindow::PaintGraphics()
 
 	if (NNetPreferences::ScanAreaVisible())
 	{
-		DrawScanArea();
-		ScanImage const * const pScanImage
+		if (!m_bOptimizeMode)
 		{
-			NNetPreferences::ApplyMedianFilter()
-			? m_pNMRI->GetFilteredImageC()
-			: m_pNMRI->GetScanImageC()
-		};
-		if (pScanImage)
-		{
-			drawScanImage(*pScanImage);
+			DrawScanArea();
+
+			ScanImage const * const pScanImage
+			{
+				NNetPreferences::ApplyMedianFilter()
+				? m_pNMRI->GetFilteredImageC()
+				: m_pNMRI->GetScanImageC()
+			};
+			if (pScanImage)
+			{
+				drawScanImage(*pScanImage);
+				return;
+			}
 		}
-		else
-		{
-			drawScanRaster();
-			drawScanAreaHandles();
-		}
+		drawScanRaster();
+		drawScanAreaHandles();
 	}
 }
 
@@ -574,11 +583,11 @@ void MainWindow::drawScanImage(ScanImage const &scanImage) const
 	RasterPoint   rpRun;
 	for (rpRun.m_y = 0; rpRun.m_y < raster.RasterHeight(); ++rpRun.m_y)
 	{
-		UnitVector<mV> const& imageRow { scanImage.GetRow(rpRun.m_y) };
+		UnitVector<mV> const* pImageRow { scanImage.GetConstRowPtr(rpRun.m_y) };
 		for (rpRun.m_x = 0; rpRun.m_x < raster.RasterWidth(); ++rpRun.m_x)
 		{
 			MicroMeterRect const umRect { raster.GetPointRect(rpRun) };
-			mV             const mv     { imageRow.m_vector.at(rpRun.m_x)};
+			mV             const mv     { pImageRow->m_vector.at(rpRun.m_x)};
 			if (mv.IsNotNull())
 			{
 				float f = mv.GetValue();
@@ -589,6 +598,45 @@ void MainWindow::drawScanImage(ScanImage const &scanImage) const
 			}
 		}
 	}
+}
+
+ColorLUT MainWindow::sensorDensityLUT(size_t const maxNrOfDataPnts) const
+{
+	float const fAverageDataPnts { m_scanMatrix.AverageDataPointsPerPixel(maxNrOfDataPnts) };
+	float       fLutIndexAverage { 255.0f * fAverageDataPnts / Cast2Float(maxNrOfDataPnts) };
+	if (fLutIndexAverage < 1.0f)
+		fLutIndexAverage = 1.0f;
+	else if (fLutIndexAverage > 254.0f)
+		fLutIndexAverage = 254.0f;
+	int const indexAverage { Cast2Int(fLutIndexAverage) };
+	ColorLUT lut;
+    lut.AddBasePoint(           0, Color(D2D1::ColorF::Black));
+	lut.AddBasePoint(indexAverage, Color(D2D1::ColorF::Green));
+    lut.AddBasePoint(         255, Color(D2D1::ColorF::Red));
+    lut.Construct();
+	return lut;
+}
+
+void MainWindow::drawSensorDensityMap() const
+{
+	m_scanMatrix.Resize(m_pNMRI->GetScanAreaSize());
+	m_scanMatrix.Fill(*m_pNMRI);
+	size_t const maxNrOfDataPnts { m_scanMatrix.MaxNrOfDataPoints() };
+	if (maxNrOfDataPnts <= 0.0f)
+		return;
+
+	ColorLUT const lut { sensorDensityLUT(maxNrOfDataPnts) };
+
+	m_pNMRI->GetScanRaster().DrawRasterPoints
+	(
+		GetDrawContextC(), 
+		[this, &lut, maxNrOfDataPnts](auto const &rpRun) -> Color
+		{
+			size_t const nrOfPnts { m_scanMatrix.GetNrOfDataPoints(rpRun) };
+			size_t const lutIndex { (255 * nrOfPnts) / maxNrOfDataPnts };
+			return lut.Get(Cast2Int(lutIndex));
+		}
+	);
 }
 
 void MainWindow::drawScanRaster()

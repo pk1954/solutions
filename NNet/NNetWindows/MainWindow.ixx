@@ -59,9 +59,15 @@ public:
 
 	MicroMeterPnt GetCursorPos() const;
 
+	ScanMatrix const& GetScanMatrix() const 
+	{ 
+		return m_scanMatrix; 
+	}
+
 	NobId GetHighlightedNobId()         const { return m_nobIdHighlighted; }
 	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
 	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
+	bool  IsInOptimizeMode()            const { return m_bOptimizeMode; }
 
 	bool HasScales() const final { return m_mainScales.HasScales(); }
 	bool HasGrid  () const final { return m_mainScales.HasGrid(); }
@@ -100,6 +106,9 @@ private:
 	SelectionMenu       m_selectionMenu;
 	MainScales          m_mainScales;
 	ColorLUT            m_lut;
+	bool                m_bOptimizeMode          { true };
+
+	mutable ScanMatrix  m_scanMatrix;
 
 	bool       setTargetNob        (MicroMeterPnt const&);
 	bool       setScanAreaHandle   (MicroMeterPnt const&);
@@ -109,8 +118,10 @@ private:
 	void       centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool       connectionAllowed();
 	void       select(NobId const);
+	ColorLUT   sensorDensityLUT(size_t const) const;
 	void       drawScanRaster();
 	void       drawScanImage(Vector2D<mV> const&) const;
+	void	   drawSensorDensityMap() const;
 	void       drawScanAreaHandles();
 	SigGenId   getSigGenId(LPARAM const);
 	SigGenId   getSigGenId(fPixelPoint const &);
