@@ -35,7 +35,7 @@ public:
         return mVsum;
     }
 
-    size_t GetNrOfDataPoints() const 
+    size_t NrOfDataPnts() const 
     { 
         return m_dataPoints.size(); 
     }

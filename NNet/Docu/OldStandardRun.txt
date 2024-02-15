@@ -1,0 +1,30 @@
+void ComputeThread::standardRun()
+{
+	while (!m_bStopped)
+	{
+		Ticks const ticksBeforeLoop { m_hrTimer.ReadHiResTimer() };
+
+		long const lCyclesTodo { getCyclesTodo() };
+		long       lCyclesDone { 0 };
+
+		while ((lCyclesDone < lCyclesTodo) && !m_bStopped)
+		{
+			computeAndStopOnTrigger();
+			++lCyclesDone;
+		}
+
+		Ticks const ticksInLoop { m_hrTimer.ReadHiResTimer() - ticksBeforeLoop };
+
+		if (lCyclesDone > 0)
+		{
+			m_usRealTimeSpentPerCycle = m_hrTimer.TicksToMicroSecs(ticksInLoop / lCyclesDone);
+			m_fEffectiveSlowMo = netRealTimeSinceLastReset() / simuTimeSinceLastReset();
+			m_pPerformanceObservable->NotifyAll(false);
+		}
+
+		//fMicroSecs const usSpentInCompute { m_hrTimer.TicksToMicroSecs(ticksInLoop) };
+		//fMicroSecs const usSleepTime      { m_usTimeAvailPerCycle - usSpentInCompute };
+		//if (usSleepTime > 10000.0_MicroSecs)
+		//	Sleep(10);
+	}
+}

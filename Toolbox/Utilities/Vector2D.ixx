@@ -59,26 +59,51 @@ public:
         m_rows.reserve(rpSize.m_y);
         for (int i = 0; i < rpSize.m_y; ++i)
             m_rows.push_back(make_unique<ROW>(rpSize.m_x));
+        if (m_rows.back()->m_vector.size() == 0)
+        {
+            int x = 42;
+        }
     }
 
     Vector2D() {}
 
     Vector2D(RasterPoint const& rpSize)
     {
+        m_width = rpSize.m_x;
         init(rpSize);
+        Check();
     }
 
     Vector2D(RasterPoint const& rpSize, UNIT const initVal)
     {
+        m_width = rpSize.m_x;
         m_rows.reserve(rpSize.m_y);
         for (int i = 0; i < rpSize.m_y; ++i)
             m_rows.push_back(make_unique<ROW>(rpSize.m_x, initVal));
+        Check();
+    }
+
+    void Check() const
+    {
+        for (int i = 0; i < m_rows.size(); ++i)
+        {
+            size_t siz = m_rows[i]->m_vector.size();
+            if (m_rows[i]->m_vector.size() != m_width)
+            {
+                int x = 42;
+            }
+        }
     }
 
     void Resize(RasterPoint const& rpSize)
     {
-        m_rows.clear();
-        init(rpSize);
+        if (rpSize != GetSize())
+        {
+            m_width = rpSize.m_x;
+            m_rows.clear();
+            init(rpSize);
+            Check();
+        }
     }
 
     RasterPoint GetSize() const
@@ -179,18 +204,21 @@ public:
 
     void Apply2AllRows(auto const& func)
     {
+        Check();
         for (auto& upRow : m_rows)
             func(*upRow.get());
     }
 
     void Apply2AllRowsC(auto const& func) const
     {
+        Check();
         for (auto const& upRow : m_rows)
             func(*upRow.get());
     }
 
     void Apply2AllPixels(auto const& func)
     {
+        Check();
         for (auto& upRow : m_rows)
             for (UNIT& val : upRow->m_vector)
                 func(val);
@@ -198,6 +226,7 @@ public:
 
     void Apply2AllPixelsC(auto const& func) const
     {
+        Check();
         for (auto const& upRow : m_rows)
             for (UNIT& val : upRow->m_vector)
                 func(val);
@@ -243,4 +272,5 @@ public:
 
 private:
     vector<unique_ptr<ROW>> m_rows;
+    size_t m_width;
 };

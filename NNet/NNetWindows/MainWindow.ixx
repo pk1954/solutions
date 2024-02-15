@@ -15,6 +15,7 @@ import Types;
 import HiResTimer;
 import Vector2D;
 import ColorLUT;
+import ScanMatrix;
 import NNetModel;
 import NNetSignals;
 import NNetCommands;
@@ -41,7 +42,8 @@ public:
 		Observable&,
 		Observable&,
 		HiResTimer * const,
-		MonitorWindow const *
+		MonitorWindow const *,
+		ScanMatrix *
 	);
 
 	void Stop() final;
@@ -59,15 +61,10 @@ public:
 
 	MicroMeterPnt GetCursorPos() const;
 
-	ScanMatrix const& GetScanMatrix() const 
-	{ 
-		return m_scanMatrix; 
-	}
-
-	NobId GetHighlightedNobId()         const { return m_nobIdHighlighted; }
-	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
-	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
-	bool  IsInOptimizeMode()            const { return m_bOptimizeMode; }
+	NobId  GetHighlightedNobId()         const { return m_nobIdHighlighted; }
+	bool   IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
+	bool   IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
+	bool   IsInOptimizeMode()            const { return m_bOptimizeMode; }
 
 	bool HasScales() const final { return m_mainScales.HasScales(); }
 	bool HasGrid  () const final { return m_mainScales.HasGrid(); }
@@ -94,6 +91,7 @@ private:
 
 	MicroMeterPnt       m_umDelta                { NP_ZERO };
 	MicroMeter          m_umArrowSize            { 0._MicroMeter };
+	ScanMatrix         *m_pScanMatrix            { nullptr };
 	HiResTimer         *m_pDisplayTimer          { nullptr };
 	Observable         *m_pCoordObservable       { nullptr };
 	Observable         *m_pCursorPosObservable   { nullptr };
@@ -108,8 +106,6 @@ private:
 	ColorLUT            m_lut;
 	bool                m_bOptimizeMode          { true };
 
-	mutable ScanMatrix  m_scanMatrix;
-
 	bool       setTargetNob        (MicroMeterPnt const&);
 	bool       setScanAreaHandle   (MicroMeterPnt const&);
 	bool       setHighlightedNob   (MicroMeterPnt const&);
@@ -118,7 +114,7 @@ private:
 	void       centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool       connectionAllowed();
 	void       select(NobId const);
-	ColorLUT   sensorDensityLUT(size_t const) const;
+	ColorLUT   sensorDensityLUT() const;
 	void       drawScanRaster();
 	void       drawScanImage(Vector2D<mV> const&) const;
 	void	   drawSensorDensityMap() const;

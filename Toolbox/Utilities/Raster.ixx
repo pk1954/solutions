@@ -20,6 +20,16 @@ export struct RasterPoint
 {
     RasterIndex m_x;
     RasterIndex m_y;
+
+	bool operator== (RasterPoint const &rhs) const 
+    { 
+        return (m_x == rhs.m_x) && (m_y == rhs.m_y); 
+    }
+
+	bool operator!= (RasterPoint const &rhs) const 
+    { 
+        return (m_x != rhs.m_x) || (m_y != rhs.m_y); 
+    }
 };
 
 export class Raster

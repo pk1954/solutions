@@ -6,10 +6,12 @@ module;
 
 #include <memory>
 #include <vector>
+#include <Windows.h>
 
 export module ScanMatrix;
 
 import Types;
+import ObserverInterface;
 import SaveCast;
 import ScanPixel;
 import NNetModel;
@@ -20,22 +22,23 @@ export import Raster;
 using std::unique_ptr;
 using std::vector;
 
-export class ScanMatrix
+export class ScanMatrix: public ObserverInterface
 {
 public:
 
-    ScanMatrix() {};
+    ScanMatrix();
     ScanMatrix(RasterPoint const&);
 
+    void SetModelInterface(NNetModelReaderInterface* const);
+
+    void Notify(bool const) final { m_bDirty = true; }
+
+    void Prepare();
     void Clear();
-    void Fill(NNetModelReaderInterface const&);
-    void Resize(RasterPoint const&);
 
     RasterPoint Size  () const { return m_scanPixels.GetSize(); }
     RasterIndex Width () const { return m_scanPixels.Width(); }
     RasterIndex Height() const { return m_scanPixels.Height(); }
-
-    void Add2list(Pipe const&, Raster const&);
 
     mV Scan(RasterPoint const&);
 
@@ -43,15 +46,11 @@ public:
 
     ScanPixel const &GetScanPixel(RasterPoint const&) const;
 
-    size_t GetNrOfDataPoints(RasterPoint const& rp) const
-    {
-        return GetScanPixel(rp).GetNrOfDataPoints();
-    }
-        
-    size_t GetNrOfDataPoints()                     const;
-    size_t MaxNrOfDataPoints()                     const;
+    size_t NrOfDataPntsInPixel(RasterPoint const&) const;
+    size_t NrOfDataPntsInMatrix()                  const;
+    size_t MaxNrOfDataPoints()                     const { return m_maxNrOfDataPnts; }
     float  AverageDataPointsPerPixel()             const;
-    float  AverageDataPointsPerPixel(size_t const) const;
+    float  DivideByArea(size_t const)              const;
     float  DataPointVariance();
 
     void Apply2AllScanPixels(auto const& func)
@@ -64,11 +63,14 @@ public:
         m_scanPixels.Apply2AllPixelsC(func);
     }
 
-    ScanPixel const* GetMaxScanPixel() { return m_pScanPixelMax; }
-
 private:
-    void addScanDataPoint(Pipe const&, Pipe::SegNr const, RasterPoint const&);
+    void add2list(Pipe const&);
+    void findMaxNrOfDataPoints();
 
+	NNetModelReaderInterface const* m_pNMRI { nullptr };
+
+    bool                m_bDirty;
+    size_t              m_maxNrOfDataPnts;
     Vector2D<ScanPixel> m_scanPixels;
-    ScanPixel const   * m_pScanPixelMax { nullptr };
+    CRITICAL_SECTION    m_cs;
 };

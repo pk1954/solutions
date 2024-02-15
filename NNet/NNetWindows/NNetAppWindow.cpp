@@ -95,11 +95,11 @@ void NNetAppWindow::setModelInterface()
 	m_parameterDlg     .SetModelInterface(&m_nmwi);
 	m_cmdStack         .SetModelInterface(&m_nmwi);
 	m_computeThread    .SetModelInterface(&m_nmwi);
-	m_optimizeScanArea .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
 	m_appTitle         .SetModelInterface(m_pNMRI);
 	m_NNetController   .SetModelInterface(m_pNMRI);
+	m_scanMatrix       .SetModelInterface(m_pNMRI);
 	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
 	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
@@ -156,7 +156,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_appMenu          .Start(m_hwndApp, m_computeThread, m_cmdStack, m_sound);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
-	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow);
+	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow, &m_scanMatrix);
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, &m_computeThread, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
@@ -177,7 +177,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_coordObservable,
 		m_staticModelObservable,
 		& m_atDisplay,
-		& m_monitorWindow
+		& m_monitorWindow,
+		&m_scanMatrix
 	);
 
 	m_miniNNetWindow.Start(m_hwndApp, true,	5._fPixel, m_NNetController);
@@ -222,6 +223,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_dynamicModelObservable        .RegisterObserver(m_monitorWindow);
 	m_dynamicModelObservable        .RegisterObserver(m_timeDisplay);
 	m_dynamicModelObservable        .RegisterObserver(m_crsrWindow);
+	m_staticModelObservable         .RegisterObserver(m_scanMatrix);
 	m_staticModelObservable         .RegisterObserver(m_mainNNetWindow);
 	m_staticModelObservable         .RegisterObserver(m_miniNNetWindow);
 	m_staticModelObservable         .RegisterObserver(m_monitorWindow);
@@ -468,10 +470,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_STOP:
 			m_computeThread.StopComputation();
-			return true;
-
-		case IDM_OPTIMIZE_SCAN_AREA:
-			m_optimizeScanArea.Start();
 			return true;
 
 		case IDM_SCRIPT_DIALOG:

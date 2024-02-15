@@ -53,15 +53,16 @@ using std::vector;
 
 void MainWindow::Start
 (
-	HWND          const   hwndApp, 
+	HWND          const   hwndApp,
 	bool          const   bShowRefreshRateDialog,
 	fPixel        const   fPixBeaconLimit,
 	NNetController      & controller,
 	Observable          & cursorObservable,
-	Observable          & coordObservable,  
+	Observable          & coordObservable,
 	Observable          & pStaticModelObservable,
 	HiResTimer  * const   pActionTimer,
-	MonitorWindow const * pMonitorWindow
+	MonitorWindow const * pMonitorWindow,
+	ScanMatrix          * pScanMatrix
 )
 {
 	m_pStaticModelObservable = &pStaticModelObservable;
@@ -78,6 +79,7 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
+	m_pScanMatrix          = pScanMatrix;
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
     m_lut.AddBasePoint(  0, Color(D2D1::ColorF::Black));
@@ -600,9 +602,10 @@ void MainWindow::drawScanImage(ScanImage const &scanImage) const
 	}
 }
 
-ColorLUT MainWindow::sensorDensityLUT(size_t const maxNrOfDataPnts) const
+ColorLUT MainWindow::sensorDensityLUT() const
 {
-	float const fAverageDataPnts { m_scanMatrix.AverageDataPointsPerPixel(maxNrOfDataPnts) };
+	size_t const maxNrOfDataPnts { m_pScanMatrix->MaxNrOfDataPoints() };
+	float const fAverageDataPnts { m_pScanMatrix->DivideByArea(maxNrOfDataPnts) };
 	float       fLutIndexAverage { 255.0f * fAverageDataPnts / Cast2Float(maxNrOfDataPnts) };
 	if (fLutIndexAverage < 1.0f)
 		fLutIndexAverage = 1.0f;
@@ -612,31 +615,28 @@ ColorLUT MainWindow::sensorDensityLUT(size_t const maxNrOfDataPnts) const
 	ColorLUT lut;
     lut.AddBasePoint(           0, Color(D2D1::ColorF::Black));
 	lut.AddBasePoint(indexAverage, Color(D2D1::ColorF::Green));
-    lut.AddBasePoint(         255, Color(D2D1::ColorF::Red));
+    lut.AddBasePoint(         255, Color(D2D1::ColorF::Yellow));
     lut.Construct();
 	return lut;
 }
 
 void MainWindow::drawSensorDensityMap() const
 {
-	m_scanMatrix.Resize(m_pNMRI->GetScanAreaSize());
-	m_scanMatrix.Fill(*m_pNMRI);
-	size_t const maxNrOfDataPnts { m_scanMatrix.MaxNrOfDataPoints() };
-	if (maxNrOfDataPnts <= 0.0f)
-		return;
-
-	ColorLUT const lut { sensorDensityLUT(maxNrOfDataPnts) };
-
-	m_pNMRI->GetScanRaster().DrawRasterPoints
-	(
-		GetDrawContextC(), 
-		[this, &lut, maxNrOfDataPnts](auto const &rpRun) -> Color
-		{
-			size_t const nrOfPnts { m_scanMatrix.GetNrOfDataPoints(rpRun) };
-			size_t const lutIndex { (255 * nrOfPnts) / maxNrOfDataPnts };
-			return lut.Get(Cast2Int(lutIndex));
-		}
-	);
+	m_pScanMatrix->Prepare();
+	if (m_pScanMatrix->MaxNrOfDataPoints() > 0.0f)
+	{
+		ColorLUT const lut { sensorDensityLUT() };
+		m_pNMRI->GetScanRaster().DrawRasterPoints
+		(
+			GetDrawContextC(), 
+			[this, &lut](auto const &rpRun) -> Color
+			{
+				size_t const nrOfPnts { m_pScanMatrix->NrOfDataPntsInPixel(rpRun) };
+				size_t const lutIndex { (255 * nrOfPnts) / m_pScanMatrix->MaxNrOfDataPoints() };
+				return lut.Get(Cast2Int(lutIndex));
+			}
+		);
+	}
 }
 
 void MainWindow::drawScanRaster()

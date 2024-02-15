@@ -72,7 +72,6 @@ export inline int const IDM_FORWARD              { 71 };
 export inline int const IDM_BACKWARDS            { 72 };
 export inline int const IDM_RUN                  { 73 };
 export inline int const IDM_STOP                 { 74 };
-export inline int const IDM_OPTIMIZE_SCAN_AREA   { 75 };
 export inline int const IDM_EDIT_UNDO            { 76 };
 export inline int const IDM_EDIT_REDO            { 77 };
 export inline int const IDM_MAX_SPEED            { 78 };

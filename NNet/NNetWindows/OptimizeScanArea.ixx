@@ -97,7 +97,7 @@ private:
 			//pScanPixel = &m_upScanMatrix->GetScanPixel(pntRandom);
 			pScanPixel = m_upScanMatrix->GetMaxScanPixel();
 			assert(pScanPixel);
-			nrOfDataPoints = Cast2UnsignedInt(pScanPixel->GetNrOfDataPoints());
+			nrOfDataPoints = Cast2UnsignedInt(pScanPixel->NrOfDataPnts());
 		//} while (nrOfDataPoints == 0);
 		return pScanPixel->GetScanDataPoint(m_rand.NextRandomNumberScaledTo(nrOfDataPoints));
 	}

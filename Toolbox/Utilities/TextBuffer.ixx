@@ -64,13 +64,13 @@ public:
 		printString(data);
 	}
 
+	void printNumber(auto const data)
+	{
+		m_wBuffer << data;
+		printBuffer();
+	}
+
 	void printString     (wstring const &);
-	void printNumber     (int const);
-	void printNumber     (unsigned int const);
-	void printNumber     (long const);
-	void printNumber     (long long const);
-	void printNumber     (unsigned long long const);
-	void printNumber     (float const);
 	void printFloat      (float const);
 	void printPercentage (unsigned int const);
 	void printPercentage (unsigned int const, unsigned int const);

@@ -1,4 +1,4 @@
-// ComputeThread.cpp
+// Compute.cpp
 //
 // NNetWindows
 
@@ -12,9 +12,8 @@ module;
 
 #include <iostream>
 
-module NNetWin32:ComputeThread;
+module NNetWin32:Compute;
 
-import Win32_Util_Resource;
 import BoolOp;
 import SlowMotionRatio;
 import Observable;
@@ -37,9 +36,9 @@ using std::wcout;
 using std::endl;
 using std::wstring;
 
-ComputeThread::~ComputeThread() = default;
+Compute::~Compute() = default;
 
-void ComputeThread::Initialize   // runs in main thread
+void Compute::Initialize   // runs in main thread
 (
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
@@ -55,47 +54,47 @@ void ComputeThread::Initialize   // runs in main thread
 	m_pSlowMotionRatio        = pSlowMotionRatio;
 }
 
-void ComputeThread::SetModelInterface(NNetModelWriterInterface * const pNMWI)
+void Compute::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {
 	m_pNMWI = pNMWI;
 	Reset();
 }
 
-void ComputeThread::Notify(bool const bImmediate) // slowmo ratio or parameters have changed
+void Compute::Notify(bool const bImmediate) // slowmo ratio or parameters have changed
 {
 	Reset();
 	m_pRunObservable->NotifyAll();
 }
 
-void ComputeThread::StartStimulus()
+void Compute::StartStimulus()
 {
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
 }
 
-void ComputeThread::setRunning(bool const bMode)
+void Compute::setRunning(bool const bMode)
 {
 	m_bRunning = bMode;
 	m_pRunObservable->NotifyAll(); // notify observers, that computation stopped
 	m_computeTimer.BeforeAction();
 }
 
-void ComputeThread::StartScan()
+void Compute::StartScan()
 {
-	//m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
-	//m_upScanMatrix->Fill(*m_pNMWI);
-	//m_pNMWI->CreateImage();
-	//m_rpScanRun = RasterPoint(0, 0);
-	//m_iScanNr = 1;
-	//m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
-	//WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
-	//Reset();
-	//m_pNMWI->GetScanImage()->Set(0.0_mV);
-	//m_usSimuNextPixelScan = SimulationTime::Get();
+	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
+	m_upScanMatrix->Fill(*m_pNMWI);
+//	m_pNMWI->CreateImage();
+	m_rpScanRun = RasterPoint(0, 0);
+	m_iScanNr = 1;
+	m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
+	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
+	Reset();
+	m_pNMWI->GetScanImage()->Set(0.0_mV);
+	m_usSimuNextPixelScan = SimulationTime::Get();
 }
 
 HiResTimer tX;
 
-void ComputeThread::DoGameStuff()
+void Compute::DoGameStuff()
 {
 	if (IsRunning() && m_computeClockGen.Time4NextAction())
 	{
@@ -116,7 +115,7 @@ void ComputeThread::DoGameStuff()
 		scanNextPixel();
 }
 
-void ComputeThread::scanNextPixel()
+void Compute::scanNextPixel()
 {
 	fMicroSecs usNow { SimulationTime::Get() };
 	if (usNow < m_usSimuNextPixelScan)
@@ -142,12 +141,12 @@ void ComputeThread::scanNextPixel()
 		return;
 	                                                     // Scan series finished 
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
-	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
+//	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll();
 	setRunning(false);
 }
 
-void ComputeThread::Reset()
+void Compute::Reset()
 {
 	if (m_pSlowMotionRatio->MaxSpeed())
 		m_computeClockGen.MaxSpeed();
@@ -156,7 +155,7 @@ void ComputeThread::Reset()
 	m_computeTimer.Reset();
 }
 
-void ComputeThread::StartComputation()
+void Compute::StartComputation()
 {
 	if (!IsRunning())
 	{
@@ -165,7 +164,7 @@ void ComputeThread::StartComputation()
 	}
 }
 
-void ComputeThread::StopComputation()
+void Compute::StopComputation()
 {
 	if (IsScanRunning())
 		m_upScanImageSum.release();;
@@ -173,7 +172,7 @@ void ComputeThread::StopComputation()
 		setRunning(false);
 }
 
-void ComputeThread::SingleStep() 
+void Compute::SingleStep() 
 { 
 	m_pNMWI->Compute();
 	m_pDynamicModelObservable->NotifyAll();

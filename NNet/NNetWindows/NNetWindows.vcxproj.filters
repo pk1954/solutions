@@ -111,8 +111,5 @@
     <ClCompile Include="MainScales.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OptimizeScanArea.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

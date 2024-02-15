@@ -7,6 +7,7 @@
 module;
 
 #include <string>
+#include <optional>
 
 export module NNetModel:NNetModelReaderInterface;
 
@@ -31,6 +32,7 @@ import :InputLine;
 import :InputConnector;
 
 using std::wstring;
+using std::optional;
 
 export enum class ConnectionType
 {
@@ -108,6 +110,7 @@ public:
 	MicroSensor     const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
 	SignalId               SelectSignal(SignalId const id)        const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
 	bool                   IsAnySignalSelected()                  const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
+	optional<RasterPoint>  FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	fMicroSecs             TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const

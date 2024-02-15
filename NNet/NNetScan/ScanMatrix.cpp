@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <vector>
 #include <optional>
+#include <Windows.h>
 
 module ScanMatrix;
 
@@ -19,19 +20,48 @@ import NNetModel;
 using std::vector;
 using std::optional;
 
+ScanMatrix::ScanMatrix()
+{
+    InitializeCriticalSection(&m_cs);
+}
+
 ScanMatrix::ScanMatrix(RasterPoint const& rpSize)
     :m_scanPixels(rpSize)
-{}
+{
+    InitializeCriticalSection(&m_cs);
+}
+
+void ScanMatrix::SetModelInterface(NNetModelReaderInterface* const p)
+{
+    m_pNMRI = p;
+    Notify(false);
+}
+
+void ScanMatrix::Prepare()
+{
+    EnterCriticalSection(&m_cs);
+    if (m_bDirty)
+    {
+        RasterPoint rpSize { m_pNMRI->GetScanAreaSize() };
+        if (rpSize != Size())
+            m_scanPixels.Resize(m_pNMRI->GetScanAreaSize());
+        else 
+            Clear();
+        m_pNMRI->Apply2AllC<Pipe>([this](Pipe const& p){ add2list(p); });
+        findMaxNrOfDataPoints();
+        m_bDirty = false;
+    }
+    LeaveCriticalSection(&m_cs);
+}
 
 mV ScanMatrix::Scan(RasterPoint const& rp)
 {
     return m_scanPixels.GetPtr(rp)->Scan();
 }
 
-void ScanMatrix::Resize(RasterPoint const& rpSize)
+size_t ScanMatrix::NrOfDataPntsInPixel(RasterPoint const& rp) const
 {
-    m_scanPixels.Resize(rpSize);
-    m_pScanPixelMax = nullptr;
+    return GetScanPixel(rp).NrOfDataPnts();
 }
 
 ScanPixel const& ScanMatrix::GetScanPixel(RasterPoint const& rp) const
@@ -41,19 +71,18 @@ ScanPixel const& ScanMatrix::GetScanPixel(RasterPoint const& rp) const
     return *pPixel;
 }
 
-void ScanMatrix::Add2list
-(
-    Pipe   const& pipe,
-    Raster const& raster
-)
+void ScanMatrix::add2list(Pipe const& pipe)
 {
     pipe.Apply2AllSensorPoints
     (
-        raster.Resolution(),
-        [this, &raster](Pipe const& pipe, MicroMeterPnt const& umPnt, Pipe::SegNr const segNr)
+        m_pNMRI->GetScanResolution(),
+        [this](Pipe const& pipe, MicroMeterPnt const& umPnt, Pipe::SegNr const segNr)
         {
-            if (optional<RasterPoint> const rPntOpt = raster.FindRasterPos(umPnt))
-                addScanDataPoint(pipe, segNr, rPntOpt.value());
+            if (optional<RasterPoint> const rPntOpt = m_pNMRI->FindRasterPos(umPnt))
+            {
+                ScanPixel* pScanPoint{ m_scanPixels.GetPtr(rPntOpt.value()) };
+                pScanPoint->Add(ScanDataPoint(pipe, segNr));
+            }
         }
     );
 }
@@ -63,80 +92,51 @@ void ScanMatrix::Clear()
     Apply2AllScanPixels([](auto &p) { p.Clear(); });
 }
 
-void ScanMatrix::Fill(NNetModelReaderInterface const& nmri)
-{
-    Raster const& raster = nmri.GetScanRaster();
-    nmri.Apply2AllC<Pipe>
-    (
-        [this, raster](Pipe const& p)
-        {
-            Add2list(p, raster);
-        }
-    );
-}
-
-size_t ScanMatrix::GetNrOfDataPoints() const
+size_t ScanMatrix::NrOfDataPntsInMatrix() const
 {
     size_t nr { 0 };
-    Apply2AllScanPixelsC([&nr](ScanPixel const& p) { nr += p.GetNrOfDataPoints(); });
+    Apply2AllScanPixelsC([&nr](ScanPixel const& p) { nr += p.NrOfDataPnts(); });
     return nr;
 }
 
 float ScanMatrix::AverageDataPointsPerPixel() const
 {
-    return AverageDataPointsPerPixel(GetNrOfDataPoints());
+    return DivideByArea(NrOfDataPntsInMatrix());
 }
 
-float ScanMatrix::AverageDataPointsPerPixel(size_t const nrOfPoints) const
+float ScanMatrix::DivideByArea(size_t const nrOfPoints) const
 {
     size_t const nrOfPixels { m_scanPixels.NrOfPoints() };
-    assert(nrOfPixels > 0);
-    return Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels);
+    return (nrOfPixels > 0)
+        ? Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels)
+        : 0.0f;
 }
 
-size_t ScanMatrix::MaxNrOfDataPoints() const
+void ScanMatrix::findMaxNrOfDataPoints()
 {
-    size_t maxNrOfDataPoints { 0 };
+    m_maxNrOfDataPnts = 0;
     Apply2AllScanPixelsC
     (
-        [this, &maxNrOfDataPoints](ScanPixel const& p)
+        [this](ScanPixel const& p)
         {
-            if (p.GetNrOfDataPoints() > maxNrOfDataPoints)
-                maxNrOfDataPoints = p.GetNrOfDataPoints();
+            if (p.NrOfDataPnts() > m_maxNrOfDataPnts)
+                m_maxNrOfDataPnts = p.NrOfDataPnts();
         }
     );
-    return maxNrOfDataPoints;
 }
 
 float ScanMatrix::DataPointVariance()
 {
-    float  fCenter           { AverageDataPointsPerPixel() };
-    float  fVariance         { 0.0f };
-    size_t maxNrOfDataPoints { 0 };
-    m_pScanPixelMax = nullptr;
+    float  fCenter   { AverageDataPointsPerPixel() };
+    float  fVariance { 0.0f };
     Apply2AllScanPixelsC
     (
-        [this, fCenter, &fVariance, &maxNrOfDataPoints](ScanPixel const& p)
+        [this, fCenter, &fVariance](ScanPixel const& p)
         {
-            if (p.GetNrOfDataPoints() > maxNrOfDataPoints)
-            {
-                maxNrOfDataPoints = p.GetNrOfDataPoints();
-                m_pScanPixelMax   = &p;
-            }
-            float const fDiff { Cast2Float(p.GetNrOfDataPoints()) - fCenter };
+            float const fDiff { Cast2Float(p.NrOfDataPnts()) - fCenter };
             fVariance += fDiff * fDiff;
         }
     );
+    fVariance /= Cast2Float(m_scanPixels.NrOfPoints());
     return fVariance;
-}
-
-void ScanMatrix::addScanDataPoint
-(
-    Pipe        const& pipe,
-    Pipe::SegNr const  segNr,
-    RasterPoint const& rPnt
-)
-{
-    if (ScanPixel * pScanPoint { m_scanPixels.GetPtr(rPnt) })
-        pScanPoint->Add(ScanDataPoint(pipe, segNr));
 }

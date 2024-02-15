@@ -51,50 +51,10 @@ void TextBuffer::printString(wstring const & data)
 	printBuffer();
 }
 
-void TextBuffer::printNumber(int const data)
-{
-    m_wBuffer << data;
-    printBuffer();
-}
-
-void TextBuffer::printNumber(unsigned int const data)
-{
-    m_wBuffer << data;
-    printBuffer();
-}
-
-void TextBuffer::printNumber(long const data)
-{
-	m_wBuffer << data;
-	printBuffer();
-}
-
-void TextBuffer::printNumber(unsigned long long const data)
-{
-	m_wBuffer << data;
-	printBuffer();
-}
-
-void TextBuffer::printNumber(float const data)
-{
-	if (data > 0)
-		m_wBuffer << setprecision(3) << data << L"%";
-	else 
-		m_wBuffer << L"-";
-	printBuffer();
-}
-
 void TextBuffer::printFloat(float const data)
 {
 	m_wBuffer << setprecision(3) << data;
 	printBuffer();
-}
-
-void TextBuffer::printNumber(long long const data)
-{
-    m_pixHorizontalPos += m_pixHorRaster;
-    m_wBuffer << setw(13) << data;
-    printBuffer();
 }
 
 void TextBuffer::printPercentage(unsigned int data)

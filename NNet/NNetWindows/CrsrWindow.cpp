@@ -36,11 +36,13 @@ CrsrWindow::~CrsrWindow()
 
 void CrsrWindow::Start
 (
-	HWND       const         hwndParent,
-	MainWindow const * const pNNetWindow
+	HWND               const hwndParent,
+	MainWindow const * const pMainWindow,
+	ScanMatrix       * const pScanMatrix
 ) 
 {
-	m_pMainWindow = pNNetWindow;
+	m_pMainWindow = pMainWindow;
+	m_pScanMatrix = pScanMatrix;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -63,7 +65,7 @@ void CrsrWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
 	m_pNMRI = pNMRI;
 }
 
-void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um) const
+void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um)
 {
 	wostringstream wBuffer;
 	MicroMeter     umAbs { abs(um.GetValue()) };
@@ -77,7 +79,7 @@ void CrsrWindow::printMicroMeter(TextBuffer & textBuf, MicroMeter const um) cons
 	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees) const
+void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees)
 {
 	wostringstream wBuffer;
 	wBuffer << degrees << L"°";
@@ -85,14 +87,14 @@ void CrsrWindow::printDegrees(TextBuffer & textBuf, Degrees const degrees) const
 	textBuf.nextLine();
 }
 
-void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec) const
+void CrsrWindow::printMilliSecs(TextBuffer & textBuf, MilliSecs const msec)
 {
 	wostringstream wBuffer;
 	wBuffer << msec << L" msec";
 	textBuf.printString(wBuffer.str());
 }
 
-void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage) const
+void CrsrWindow::printVoltage(TextBuffer & textBuf, mV const voltage)
 {
 	wostringstream wBuffer;
 	wBuffer << voltage << L"mV";
@@ -124,16 +126,50 @@ void CrsrWindow::PaintText(TextBuffer & textBuf)
 	}
 }
 
+void CrsrWindow::printPositionInfo
+(
+	TextBuffer          & textBuf, 
+	MicroMeterPnt const & umPoint
+)
+{
+	if (umPoint.IsNull())
+	{
+		textBuf.AlignLeft();
+		textBuf.printString(L"Cursor not in model window");
+	}
+	else
+	{
+		textBuf.printString(L"Position: ");
+		printMicroMeter(textBuf, umPoint.GetX());
+		printMicroMeter(textBuf, umPoint.GetY());
+	}
+	textBuf.nextLine();
+}
+
 void CrsrWindow::printScanAreaInfo
 (
 	TextBuffer         & textBuf,
 	MicroMeterPnt const& umPoint
-) const
+)
 {
+	m_pScanMatrix->Prepare();
 	Raster const& raster { m_pNMRI->GetScanRaster() };
+	textBuf.AlignRight();
 	textBuf.printString(L"ScanArea: ");
 	textBuf.printNumber(raster.RasterWidth());
 	textBuf.printNumber(raster.RasterHeight());
+	textBuf.nextLine();
+	textBuf.printString(L"Pnts per pixel: ");
+	textBuf.nextLine();
+	textBuf.printString(L"Maximum: ");
+	textBuf.printNumber(m_pScanMatrix->MaxNrOfDataPoints());
+	textBuf.nextLine();
+	textBuf.printString(L"Average: ");
+	textBuf.printFloat(m_pScanMatrix->AverageDataPointsPerPixel());
+	textBuf.nextLine();
+	textBuf.printString(L"Variance: ");
+	textBuf.printFloat(m_pScanMatrix->DataPointVariance());
+	textBuf.nextLine();
 	textBuf.nextLine();
 	if (optional<RasterPoint> const rPntOpt = raster.FindRasterPos(umPoint))
 	{
@@ -141,44 +177,21 @@ void CrsrWindow::printScanAreaInfo
 		textBuf.printNumber(rPntOpt.value().m_x);
 		textBuf.printNumber(rPntOpt.value().m_y);
 		textBuf.nextLine();
-		ScanMatrix const& scanMatrix { m_pMainWindow->GetScanMatrix() };
-		if (scanMatrix.IsValid(rPntOpt.value()))
+		if (m_pScanMatrix->IsValid(rPntOpt.value()))
 		{
-			size_t const nrOfPnts { scanMatrix.GetNrOfDataPoints(rPntOpt.value()) };
-			textBuf.printString(L"# data points: ");
+			size_t const nrOfPnts { m_pScanMatrix->NrOfDataPntsInPixel(rPntOpt.value()) };
+			textBuf.printString(L"# Pnts: ");
 			textBuf.AlignLeft();  
 			textBuf.printNumber(nrOfPnts);
 			textBuf.nextLine();
-		}
-		else
-		{
-			textBuf.AlignLeft();
-			textBuf.printString(L"invalid pixel position");
 		}
 	}
 	else
 	{
 		textBuf.AlignLeft();
 		textBuf.printString(L"Cursor not in scan area");
+		textBuf.nextLine();
 	}
-}
-
-void CrsrWindow::printPositionInfo
-(
-	TextBuffer          & textBuf, 
-	MicroMeterPnt const & umPoint
-) const
-{
-	if (umPoint.IsNull())
-	{
-		textBuf.AlignLeft();
-		textBuf.printString(L"Cursor not in model window");
-		return;
-	}
-	textBuf.printString(L"Position: ");
-	printMicroMeter(textBuf, umPoint.GetX());
-	printMicroMeter(textBuf, umPoint.GetY());
-	textBuf.nextLine();
 }
 
 void CrsrWindow::printNobInfo
@@ -186,7 +199,7 @@ void CrsrWindow::printNobInfo
 	TextBuffer          & textBuf, 
 	MicroMeterPnt const & umPoint, 
 	NobId         const   id
-) const 
+) 
 {
 	Nob     const& nob  { *m_pNMRI->GetConstNob(id) };
 	NobType const  type { nob.GetNobType() };
@@ -245,7 +258,7 @@ void CrsrWindow::printSignalInfo
 (
 	TextBuffer   & textBuf, 
  	SignalId const id
-) const
+)
 {
 	if (NNetSignal const * pSignal { static_cast<NNetSignal const *>(m_pNMRI->GetMonitorDataC().GetConstSignalPtr(id)) })
 	{

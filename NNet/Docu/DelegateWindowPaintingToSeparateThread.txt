@@ -1,0 +1,14 @@
+When using Direct2D to paint a window, you can create a separate thread to handle the window painting. The thread can use Direct2D to draw the window contents and then send the results back to the UI thread for display.
+
+Here’s how the process works in more detail:
+
+The UI thread creates a Direct2D device context and a bitmap render target.
+The separate thread creates its own Direct2D device context and a bitmap render target.
+The separate thread uses Direct2D to draw the window contents onto its bitmap render target.
+The separate thread sends the bitmap data back to the UI thread.
+The UI thread receives the bitmap data and uses Direct2D to draw the bitmap onto its bitmap render target.
+The UI thread calls ID2D1RenderTarget::EndDraw to present the updated window contents.
+It is important to ensure that the separate thread is properly synchronized with the UI thread to avoid race conditions and other synchronization issues. Additionally, you need to ensure that the thread is properly terminated when the window is closed to avoid resource leaks and other issues.
+
+For more information on how to use Direct2D to paint a window, you can refer to the Microsoft Learn documentation.
+
