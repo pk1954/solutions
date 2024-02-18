@@ -91,7 +91,7 @@ void ParameterDialog::enableAllEditFields()
 		for (auto& field : m_fields)
 			Edit_Enable(field.m_hwnd, m_bEditParamsEnabled);
 	}
-	Edit_Enable(m_hwndMedianFilter, m_bEditParamsEnabled);
+	Edit_Enable(m_hwndFilter, m_bEditParamsEnabled);
 }
 
 void ParameterDialog::Start(HWND const hwndParent)
@@ -137,9 +137,9 @@ void ParameterDialog::Start(HWND const hwndParent)
 	}
 	{
 		int  iXpos { LEFT_SPACE };
-		HWND const hwndStatic = CreateStaticField(hwndDlg, L"MedianFilter", iXpos, iYpos, NAME_WIDTH, HEIGHT);
+		HWND const hwndStatic = CreateStaticField(hwndDlg, L"Filter", iXpos, iYpos, NAME_WIDTH, HEIGHT);
 		iXpos += NAME_WIDTH + HORZ_SPACE;
-		m_hwndMedianFilter = CreateCheckBox(hwndDlg, L"", iXpos, iYpos, 12, 12, IDD_MEDIAN_FILTER);
+		m_hwndFilter = CreateCheckBox(hwndDlg, L"", iXpos, iYpos, 12, 12, IDD_FILTER);
 		iYpos += HEIGHT + VERT_SPACE;
 	}
 	iYpos += HEIGHT;
@@ -210,8 +210,8 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		refreshParameters();
 		return true;
 
-	case IDD_MEDIAN_FILTER:
-        NNetPreferences::m_bMedianFilter.Set(Button_GetCheck(m_hwndMedianFilter));
+	case IDD_FILTER:
+        NNetPreferences::m_bFilter.Set(Button_GetCheck(m_hwndFilter));
 		return true;
 
 	default:

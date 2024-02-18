@@ -40,7 +40,7 @@ import :NNetController;
 import :DescriptionWindow;
 import :CrsrWindow;
 import :UndoRedoMenu;
-import :ComputeThread;
+import :Compute;
 import :SimulationControl;
 import :PerformanceWindow;
 import :ParameterDialog;
@@ -86,10 +86,10 @@ public:
 	virtual void Start(MessagePump&);
 	virtual void Stop();
 
+	void DoGameStuff() { m_compute.DoGameStuff(); }
+
 	NNetAppWindow(NNetAppWindow const&) = delete;  // noncopyable class 
 	NNetAppWindow& operator= (NNetAppWindow const&) = delete;  // noncopyable class 
-
-		ComputeThread            m_computeThread;
 
 private:
 
@@ -121,6 +121,7 @@ private:
 	HWND                       m_hwndApp     { nullptr };
 
 	AboutBox                 m_aboutBox;
+	Compute                  m_compute;
 	HiResTimer               m_atComputation;
 	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;

@@ -13,7 +13,7 @@ module NNetWin32:PerformanceWindow;
 import SlowMotionRatio;
 import HiResTimer;
 import NNetModel;
-import :ComputeThread;
+import :Compute;
 
 using std::wostringstream;
 using std::setprecision;
@@ -22,7 +22,7 @@ using std::fixed;
 void PerformanceWindow::Start
 (
 	HWND                    const hwndParent,
-	ComputeThread         * const pComputeThread,
+	Compute               * const pCompute,
 	SlowMotionRatio const * const pSlowMotionRatio,
 	HiResTimer            * const pDisplayTimer
 )
@@ -36,7 +36,7 @@ void PerformanceWindow::Start
 		nullptr
 	);
 	m_pSlowMotionRatio = pSlowMotionRatio;
-	m_pComputeThread   = pComputeThread;
+	m_pCompute         = pCompute;
 	m_pDisplayTimer    = pDisplayTimer;
 }
 
@@ -108,11 +108,11 @@ void PerformanceWindow::PaintText(TextBuffer & textBuf)
 		textBuf.nextLine();
 	}
 
-	if (m_pComputeThread)
+	if (m_pCompute)
 	{
-		fMicroSecs avail { m_pComputeThread->GetTimeAvailPerCycle() };
-		//fMicroSecs spent { m_pComputeThread->GetTimeSpentPerCycle() };
-		printMicroSecLine(textBuf, L"simu time res:", m_pComputeThread->GetSimuTimeResolution());
+		fMicroSecs avail { m_pCompute->GetTimeAvailPerCycle() };
+		//fMicroSecs spent { m_pCompute->GetTimeSpentPerCycle() };
+		printMicroSecLine(textBuf, L"simu time res:", m_pCompute->GetSimuTimeResolution());
 		//printFloatLine   (textBuf, L"targ slowmo:",   m_pSlowMotionRatio->GetNominalSlowMo(), L"");
 		//if (avail > 0._MicroSecs)
 		//{
@@ -120,7 +120,7 @@ void PerformanceWindow::PaintText(TextBuffer & textBuf)
 		//	printMicroSecLine(textBuf, L"spent time:", spent);
 		//	printFloatLine   (textBuf, L"workload:",   Cast2Float((spent / avail) * 100.0f), L"%");
 		//}
-//		printFloatLine   (textBuf, L"effect slomo:",  m_pComputeThread->GetEffectiveSlowmo(), L"");
+//		printFloatLine   (textBuf, L"effect slomo:",  m_pCompute->GetEffectiveSlowmo(), L"");
 		if (m_pNMRI)
 		{
 			NobType::Apply2All

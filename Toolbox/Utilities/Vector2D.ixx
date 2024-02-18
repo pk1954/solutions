@@ -59,10 +59,6 @@ public:
         m_rows.reserve(rpSize.m_y);
         for (int i = 0; i < rpSize.m_y; ++i)
             m_rows.push_back(make_unique<ROW>(rpSize.m_x));
-        if (m_rows.back()->m_vector.size() == 0)
-        {
-            int x = 42;
-        }
     }
 
     Vector2D() {}
@@ -85,6 +81,7 @@ public:
 
     void Check() const
     {
+#ifdef _DEBUG
         for (int i = 0; i < m_rows.size(); ++i)
         {
             size_t siz = m_rows[i]->m_vector.size();
@@ -93,6 +90,7 @@ public:
                 int x = 42;
             }
         }
+#endif
     }
 
     void Resize(RasterPoint const& rpSize)
@@ -270,7 +268,33 @@ public:
         return move(dst);
     }
 
+    unique_ptr<Vector2D> MeanFilter() const
+    {
+        assert(m_rows.size() > 0);
+        unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
+        RasterPoint  pntRun;
+        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
+        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
+        {
+            UNIT mean  = UNIT::ZERO_VAL();
+            int  count = 0;
+            for (RasterIndex dy = -1; dy <= 1; ++dy)
+            for (RasterIndex dx = -1; dx <= 1; ++dx)
+            {
+                RasterPoint neighbour { pntRun.m_x + dx, pntRun.m_y + dy };
+                if (IsValid(neighbour))
+                {
+                    mean += Get(neighbour);
+                    ++count;
+                }
+            }
+            mean /= Cast2Float(count);
+            dst->Set(pntRun, mean);
+        }
+        return move(dst);
+    }
+
 private:
     vector<unique_ptr<ROW>> m_rows;
-    size_t m_width;
+    size_t                  m_width;
 };

@@ -6,7 +6,6 @@ module;
 
 #include "bit"
 #include <vector>
-#include <optional>
 #include <unordered_map>
 #include <cassert>
 #include <iostream>
@@ -29,11 +28,11 @@ import WinManager;
 import RootWindow;
 import Types;
 import Uniform2D;
+import Win32_PIXEL;
 import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
 import NNetPreferences;
-import ColorLUT;
 import :NNetController;
 import :MainScales;
 
@@ -47,8 +46,6 @@ using std::wostringstream;
 using std::setprecision;
 using std::wcout;
 using std::endl;
-using std::optional;
-using std::nullopt;
 using std::vector;
 
 void MainWindow::Start
@@ -73,19 +70,19 @@ void MainWindow::Start
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
 		controller,
-		pMonitorWindow
+		pMonitorWindow,
+		pScanMatrix
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pDisplayTimer        = pActionTimer;
-	m_pScanMatrix          = pScanMatrix;
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
-    m_lut.AddBasePoint(  0, Color(D2D1::ColorF::Black));
-    m_lut.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
-    m_lut.AddBasePoint(255, Color(D2D1::ColorF::Red));
-    m_lut.Construct();
+	
+	m_hwndToolTipp = CreateWindowToolTip(nullptr);
+	SetWindowText(m_hwndToolTipp, L"hallo");
+	::MoveWindow(m_hwndToolTipp, 20_PIXEL, 20_PIXEL);
 }
 
 void MainWindow::Stop()
@@ -93,6 +90,7 @@ void MainWindow::Stop()
 	Reset();
 	m_selectionMenu.Stop();
 	NNetWindow::Stop();
+	m_hwndToolTipp = nullptr;
 }
 
 void MainWindow::Reset()
@@ -243,10 +241,10 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
-		ClearPtLast();                      // make m_ptLast invalid
+		ClearPtLast();                 // make m_ptLast invalid
 		if (m_pNMRI->ModelLocked())    // no edit operations allowed
 			return;
-		if (setScanAreaHandle(umCrsrPos))
+		if (m_pScanMatrix->SetScanAreaHandle(GetDrawContextC(), umCrsrPos))
 			return;
 		if (setHighlightedNob(umCrsrPos))
 			return;
@@ -286,9 +284,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		MoveSelectionCommand::Push(m_umDelta);
 	}
-	else if (m_scanAreaHandleSelected.has_value())    // manipulate selection area
+	else if (m_pScanMatrix->GetHandleSelected().has_value())    // manipulate selection area
 	{
-		SetScanAreaCmd::Push(*m_scanAreaHandleSelected, m_umDelta);
+		SetScanAreaCmd::Push(*m_pScanMatrix->GetHandleSelected(), m_umDelta);
 	}
 	else if (crsrInScanArea(umCrsrPos) && !m_bOptimizeMode)
 	{
@@ -507,8 +505,8 @@ void MainWindow::PaintGraphics()
 
 	m_mainScales.Paint(*m_upGraphics.get());
 
-	if (NNetPreferences::ScanAreaVisible() && m_bOptimizeMode)
-		drawSensorDensityMap();
+	if (NNetPreferences::ScanAreaVisible())
+		m_pScanMatrix->DrawScanArea(context, m_bOptimizeMode);
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -555,172 +553,6 @@ void MainWindow::PaintGraphics()
 		pSensorSelected->DrawDataPoints(m_context);
 
 	m_selectionMenu.Show(m_pNMRI->AnyNobsSelected());
-
-	if (NNetPreferences::ScanAreaVisible())
-	{
-		if (!m_bOptimizeMode)
-		{
-			DrawScanArea();
-
-			ScanImage const * const pScanImage
-			{
-				NNetPreferences::ApplyMedianFilter()
-				? m_pNMRI->GetFilteredImageC()
-				: m_pNMRI->GetScanImageC()
-			};
-			if (pScanImage)
-			{
-				drawScanImage(*pScanImage);
-				return;
-			}
-		}
-		drawScanRaster();
-		drawScanAreaHandles();
-	}
-}
-
-void MainWindow::drawScanImage(ScanImage const &scanImage) const
-{
-	Raster const &raster { m_pNMRI->GetScanRaster() };
-	RasterPoint   rpRun;
-	for (rpRun.m_y = 0; rpRun.m_y < raster.RasterHeight(); ++rpRun.m_y)
-	{
-		UnitVector<mV> const* pImageRow { scanImage.GetConstRowPtr(rpRun.m_y) };
-		for (rpRun.m_x = 0; rpRun.m_x < raster.RasterWidth(); ++rpRun.m_x)
-		{
-			MicroMeterRect const umRect { raster.GetPointRect(rpRun) };
-			mV             const mv     { pImageRow->m_vector.at(rpRun.m_x)};
-			if (mv.IsNotNull())
-			{
-				float f = mv.GetValue();
-				int   iLutPos = static_cast<int>(f * 256.0f);
-				if (iLutPos > 255)
-					iLutPos = 255;
-				GetDrawContextC().FillRectangle(umRect, m_lut.Get(iLutPos));
-			}
-		}
-	}
-}
-
-ColorLUT MainWindow::sensorDensityLUT() const
-{
-	size_t const maxNrOfDataPnts { m_pScanMatrix->MaxNrOfDataPoints() };
-	float const fAverageDataPnts { m_pScanMatrix->DivideByArea(maxNrOfDataPnts) };
-	float       fLutIndexAverage { 255.0f * fAverageDataPnts / Cast2Float(maxNrOfDataPnts) };
-	if (fLutIndexAverage < 1.0f)
-		fLutIndexAverage = 1.0f;
-	else if (fLutIndexAverage > 254.0f)
-		fLutIndexAverage = 254.0f;
-	int const indexAverage { Cast2Int(fLutIndexAverage) };
-	ColorLUT lut;
-    lut.AddBasePoint(           0, Color(D2D1::ColorF::Black));
-	lut.AddBasePoint(indexAverage, Color(D2D1::ColorF::Green));
-    lut.AddBasePoint(         255, Color(D2D1::ColorF::Yellow));
-    lut.Construct();
-	return lut;
-}
-
-void MainWindow::drawSensorDensityMap() const
-{
-	m_pScanMatrix->Prepare();
-	if (m_pScanMatrix->MaxNrOfDataPoints() > 0.0f)
-	{
-		ColorLUT const lut { sensorDensityLUT() };
-		m_pNMRI->GetScanRaster().DrawRasterPoints
-		(
-			GetDrawContextC(), 
-			[this, &lut](auto const &rpRun) -> Color
-			{
-				size_t const nrOfPnts { m_pScanMatrix->NrOfDataPntsInPixel(rpRun) };
-				size_t const lutIndex { (255 * nrOfPnts) / m_pScanMatrix->MaxNrOfDataPoints() };
-				return lut.Get(Cast2Int(lutIndex));
-			}
-		);
-	}
-}
-
-void MainWindow::drawScanRaster()
-{
-	MicroMeter const umRes { m_pNMRI->GetScanResolution() };
-
-	if (GetCoordC().Transform2fPixel(umRes) >= 8.0_fPixel)
-	{
-		Color          const colLine { NNetColors::SCAN_AREA_HANDLE };
-		MicroMeterRect const umRect  { m_pNMRI->GetScanAreaRect() };
-		RasterPoint    const rSize   { m_pNMRI->GetScanAreaSize() };
-		MicroMeter     const umYend  { umRect.GetTop()  + umRes * Cast2Float(rSize.m_y) };
-		MicroMeter     const umXend  { umRect.GetLeft() + umRes * Cast2Float(rSize.m_x) };
-		for (int x = 0; x <= rSize.m_x; ++x)
-		{
-			MicroMeter const umX { umRect.GetLeft() + umRes * Cast2Float(x) };
-			GetDrawContextC().DrawLine
-			(
-				MicroMeterPnt(umX, umRect.GetTop()),
-				MicroMeterPnt(umX, umYend),
-				0.0_MicroMeter,
-				colLine
-			);
-		}
-		for (int y = 0; y <= rSize.m_y; ++y)
-		{
-			MicroMeter const umY { umRect.GetTop() + umRes * Cast2Float(y) };
-			GetDrawContextC().DrawLine
-			(
-				MicroMeterPnt(umRect.GetLeft(), umY),
-				MicroMeterPnt(umXend, umY),
-				0.0_MicroMeter,
-				colLine
-			);
-		}
-	}
-}
-
-void MainWindow::drawScanAreaHandles()
-{
-	MicroMeter const umHandleSize { getScanAreaHandleSize() };
-	Apply2CardPoints
-	(
-		[this, umHandleSize](CardPoint const cp)
-		{
-			MicroMeterPnt  const pos    { m_pNMRI->GetScanAreaRect().CardPntPos(cp) };
-			MicroMeterRect const umRect { RectFromCenterAndExtension<MicroMeter>(pos, umHandleSize) };
-			Color          const col 
-			{ 
-				(m_scanAreaHandleSelected.has_value() && (cp == m_scanAreaHandleSelected.value()))
-				? NNetColors::INT_SELECTED 
-				: NNetColors::SCAN_AREA_HANDLE
-			};
-			GetDrawContextC().DrawTranspRect(umRect, col);
-		}
-	);
-}
-
-MicroMeter MainWindow::getScanAreaHandleSize()
-{
-	fPixel const HANDLE_SIZE { 8.0_fPixel };
-	return GetCoordC().Transform2logUnit(HANDLE_SIZE);
-}
-
-bool MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
-{
-	MicroMeter    const umSize            { getScanAreaHandleSize() };
-	optional<CardPoint> scanAreaHandleNew { nullopt };
-	Apply2CardPoints
-	(
-		[this, umSize, &umCrsrPos, &scanAreaHandleNew](CardPoint const cardPnt)
-		{ 
-			MicroMeterPnt  const pos          { m_pNMRI->GetScanAreaRect().CardPntPos(cardPnt) };
-			MicroMeterRect const umRectHandle { RectFromCenterAndExtension<MicroMeter>(pos, umSize) };
-			if (umRectHandle.Includes(umCrsrPos))
-				scanAreaHandleNew = cardPnt;
-		}
-	);
-	if (scanAreaHandleNew != m_scanAreaHandleSelected)
-	{
-		m_scanAreaHandleSelected = scanAreaHandleNew;
-		Notify(false);
-	}
-	return m_scanAreaHandleSelected.has_value();
 }
 
 void MainWindow::drawInputCable(InputLine const& inputLine) const
@@ -736,9 +568,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		case active: if (!bActive)                     return; break;
 		case none:                                	   return;
 	}
-	D2D_driver                 & graphics { *m_upGraphics.get() };
-	Uniform2D<MicroMeter> const& coord    { m_context.GetCoordC() };
-	ID2D1SolidColorBrush* const  pBrush
+	ID2D1SolidColorBrush* const pBrush
 	{
 		(IsHighlighted(inputLine) || bActive)
 		? m_pBrushSensorSelected
@@ -746,8 +576,8 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 	};
 	list.DrawInputCable
 	(
-		graphics, 
-		coord, 
+		*m_upGraphics.get(), 
+		GetCoordC(), 
 		m_mainScales.VerticalOffset(), 
 		idSigGen, 
 		inputLine, 

@@ -86,6 +86,6 @@ int APIENTRY wWinMain
 
 	wcout << setw(30) << left << COMMENT_START + L"App.Start " << PerfCounter::Ticks2wstring(hrtimer.AfterAction()) << endl;
 
-	int iRetVal = pump.Run([]() { upApp->m_computeThread.DoGameStuff(); });
+	int iRetVal = pump.Run([]() { upApp->DoGameStuff(); });
 	return iRetVal;
 }

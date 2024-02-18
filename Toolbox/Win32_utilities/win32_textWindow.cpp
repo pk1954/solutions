@@ -7,7 +7,8 @@ module;
 #include <locale>
 #include <cassert>
 #include <functional>
-#include "Windows.h"
+#include <memory>
+#include <Windows.h>
 
 module TextWindow;
 
@@ -116,4 +117,43 @@ LPARAM TextWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	AddColorCtlMenu(hPopupMenu);
 	return 0;
+}
+
+TextWindowThread::TextWindowThread
+(
+	HDC             hDC_Memory,
+	PixelRectSize & pixSize,
+	TextWindow    & textWindow,
+	wstring const & strName
+) :
+	m_textWindow(textWindow),
+	m_hDC_Memory(hDC_Memory)
+{
+	m_pTextBuffer = make_unique<Win32_TextBuffer>(hDC_Memory, pixSize);
+	StartThread(strName);
+	PostThreadMsg(anyMessageWillDo);
+}
+
+TextWindowThread::~TextWindowThread()
+{
+	Terminate();
+}
+
+void TextWindowThread::Terminate()
+{
+	DeleteDC(m_hDC_Memory);
+	m_hDC_Memory = nullptr;
+	::Thread::Terminate();
+}
+
+void TextWindowThread::Trigger()
+{
+	PostThreadMsg(anyMessageWillDo);
+}
+
+void TextWindowThread::ThreadMsgDispatcher(MSG const& msg)
+{
+	m_pTextBuffer->StartPainting();
+	m_textWindow.PaintText(*m_pTextBuffer);
+	m_textWindow.Invalidate(false);
 }

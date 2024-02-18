@@ -27,10 +27,11 @@ using std::endl;
 
 void MiniWindow::Start
 (
-	HWND       const hwndParent, 
-	bool       const bShowRefreshRateDialog,
-	fPixel     const fPixBeaconLimit,
-	NNetController & controller
+	HWND         const hwndParent, 
+	bool         const bShowRefreshRateDialog,
+	fPixel       const fPixBeaconLimit,
+	NNetController   & controller,
+	ScanMatrix * const pScanMatrix
 )
 {
 	NNetWindow::Start
@@ -40,7 +41,8 @@ void MiniWindow::Start
 		bShowRefreshRateDialog,
 		fPixBeaconLimit,
 		controller,
-		nullptr
+		nullptr,
+		pScanMatrix
 	);
 }
 
@@ -104,9 +106,10 @@ void MiniWindow::PaintGraphics()
 {
 	if (m_pObservedNNetWindow)
 	{
+		DrawContext const& context { GetDrawContextC() };
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
-		GetDrawContextC().DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
+		context.DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		if (NNetPreferences::ScanAreaVisible())
-			DrawScanArea();
+			m_pScanMatrix->DrawScanAreaBackground(context);
 	}
 }

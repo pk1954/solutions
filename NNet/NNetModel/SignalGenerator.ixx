@@ -66,7 +66,7 @@ public:
 	void           WriteName(wostream& out) const { out << DOUBLE_QUOTE << m_name << DOUBLE_QUOTE << SPACE; }
 
 	void ClearDynamicData() { m_dynData.Reset(); }
-	void Prepare(NNetParameters const&);
+	void PrepareSigGen(NNetParameters const&);
 
 	bool IsStimulusActive() const { return m_dynData.IsStimulusActive(); }
 

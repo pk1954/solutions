@@ -55,13 +55,6 @@ private:
 	void printMilliSecs   (TextBuffer&, MilliSecs     const );
 	void printDegrees     (TextBuffer&, Degrees       const );
 	void printVoltage     (TextBuffer&, mV            const );
-	void printScanAreaInfo(TextBuffer&, MicroMeterPnt const&);
-
-	void printFrequency(TextBuffer & textBuf, Hertz const freq)
-	{
-		wostringstream wBuffer;
-		wBuffer << fixed << setprecision(1) << freq << L"Hz ";
-		textBuf.printString(wBuffer.str());
-		textBuf.nextLine();
-	}
+	void printScanAreaInfo(TextBuffer&, RasterPoint   const &);
+	void printFrequency   (TextBuffer&, Hertz         const );
 };

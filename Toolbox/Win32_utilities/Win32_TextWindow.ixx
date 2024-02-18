@@ -18,7 +18,6 @@ import BaseWindow;
 import Thread;
 
 using std::unique_ptr;
-using std::make_unique;
 using std::wstring;
 
 class TextWindowThread;
@@ -29,26 +28,16 @@ public:
 	TextWindow();
 	~TextWindow() override;
 
-	void StartTextWindow
-	(
-		HWND      const,
-		PixelRect const&,
-		LPCTSTR   const,
-		UINT      const,
-		VisCrit   const&
-	);
+	void StartTextWindow(HWND const, PixelRect const&, LPCTSTR const, UINT const, VisCrit const&);
 	void StopTextWindow();
 
 	virtual void PaintText(TextBuffer&) = 0;
 
-	void Trigger(bool const = false) final;
-
+	void     Trigger(bool const = false)           final;
 	void     SetBackgroundColorRef(COLORREF const) final;
 	COLORREF GetBackgroundColorRef() const         final;
-
-	void SetDefaultBackgroundColor() override;
-
-	LPARAM AddContextMenuEntries(HMENU const) final;
+	LPARAM   AddContextMenuEntries(HMENU const)    final;
+	void     SetDefaultBackgroundColor()           override;
 
 private:
 
@@ -62,44 +51,12 @@ private:
 class TextWindowThread : public ::Thread
 {
 public:
-	TextWindowThread
-	(
-		HDC             hDC_Memory,
-		PixelRectSize & pixSize,
-		TextWindow    & textWindow,
-		wstring const & strName
-	) :
-		m_textWindow(textWindow),
-		m_hDC_Memory(hDC_Memory)
-	{
-		m_pTextBuffer = make_unique<Win32_TextBuffer>(hDC_Memory, pixSize);
-		StartThread(strName);
-		PostThreadMsg(anyMessageWillDo);
-	}
+	TextWindowThread(HDC, PixelRectSize&, TextWindow&, wstring const&);
+	~TextWindowThread()	override;
 
-	~TextWindowThread()	override
-	{
-		Terminate();
-	}
-
-	void Terminate() override
-	{
-		DeleteDC(m_hDC_Memory);
-		m_hDC_Memory = nullptr;
-		::Thread::Terminate();
-	}
-
-	virtual void Trigger()
-	{
-		PostThreadMsg(anyMessageWillDo);
-	}
-
-	void ThreadMsgDispatcher(MSG const& msg) override
-	{
-		m_pTextBuffer->StartPainting();
-		m_textWindow.PaintText(*m_pTextBuffer);
-		m_textWindow.Invalidate(false);
-	}
+	void Terminate() override;
+	virtual void Trigger();
+	void ThreadMsgDispatcher(MSG const& msg) override;
 
 	void     SetBackgroundColor(COLORREF const c) { m_pTextBuffer->SetBackgroundColor(c); }
 	COLORREF GetBackgroundColor() const           { return m_pTextBuffer->GetBackgroundColor(); };

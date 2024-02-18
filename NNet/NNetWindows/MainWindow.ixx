@@ -43,7 +43,7 @@ public:
 		Observable&,
 		HiResTimer * const,
 		MonitorWindow const *,
-		ScanMatrix *
+		ScanMatrix * const
 	);
 
 	void Stop() final;
@@ -89,22 +89,20 @@ public:
 
 private:
 
-	MicroMeterPnt       m_umDelta                { NP_ZERO };
-	MicroMeter          m_umArrowSize            { 0._MicroMeter };
-	ScanMatrix         *m_pScanMatrix            { nullptr };
-	HiResTimer         *m_pDisplayTimer          { nullptr };
-	Observable         *m_pCoordObservable       { nullptr };
-	Observable         *m_pCursorPosObservable   { nullptr };
-	Observable         *m_pStaticModelObservable { nullptr };
-	NobId               m_nobIdHighlighted       { NO_NOB };
-	NobId               m_nobIdTarget            { NO_NOB };
-	SigGenId            m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId            m_sensorIdSelected       { SensorId::NULL_VAL() };
-	optional<CardPoint> m_scanAreaHandleSelected { nullopt };
-	SelectionMenu       m_selectionMenu;
-	MainScales          m_mainScales;
-	ColorLUT            m_lut;
-	bool                m_bOptimizeMode          { true };
+	MicroMeterPnt m_umDelta                { NP_ZERO };
+	MicroMeter    m_umArrowSize            { 0._MicroMeter };
+	HiResTimer   *m_pDisplayTimer          { nullptr };
+	Observable   *m_pCoordObservable       { nullptr };
+	Observable   *m_pCursorPosObservable   { nullptr };
+	Observable   *m_pStaticModelObservable { nullptr };
+	NobId         m_nobIdHighlighted       { NO_NOB };
+	NobId         m_nobIdTarget            { NO_NOB };
+	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
+	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
+	SelectionMenu m_selectionMenu;
+	MainScales    m_mainScales;
+	bool          m_bOptimizeMode          { true };
+	HWND          m_hwndToolTipp           { nullptr };
 
 	bool       setTargetNob        (MicroMeterPnt const&);
 	bool       setScanAreaHandle   (MicroMeterPnt const&);
@@ -114,10 +112,8 @@ private:
 	void       centerAndZoomRect(UPNobList::SelMode const, float const);
 	bool       connectionAllowed();
 	void       select(NobId const);
-	ColorLUT   sensorDensityLUT() const;
 	void       drawScanRaster();
 	void       drawScanImage(Vector2D<mV> const&) const;
-	void	   drawSensorDensityMap() const;
 	void       drawScanAreaHandles();
 	SigGenId   getSigGenId(LPARAM const);
 	SigGenId   getSigGenId(fPixelPoint const &);

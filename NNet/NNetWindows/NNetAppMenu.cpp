@@ -21,36 +21,36 @@ import CommandStack;
 import NNetModel;
 import Preferences;
 import NNetPreferences;
-import :ComputeThread;
+import :Compute;
 
 using std::make_unique;
 
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS           )),
-    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND            )),
-    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN        )),
-    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS      )),
-    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE    )),
-    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU       )),
-    m_upOnOffScanArea    (make_unique<OnOffPair>(IDD_SCAN_AREA_VISIBLE))
+  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS       )),
+    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND        )),
+    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN    )),
+    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS  )),
+    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE)),
+    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU   )),
+    m_upOnOffScanArea    (make_unique<OnOffPair>(IDD_SCAN_AREA    ))
 { }
 
 NNetAppMenu::~NNetAppMenu() = default;
 
 void NNetAppMenu::Start
 (
-	HWND            const   hwndApp,
-	ComputeThread   const & computeThread,
-	CommandStack    const & commandStack,
-	Sound           const & sound
+	HWND         const   hwndApp,
+	Compute      const & compute,
+	CommandStack const & commandStack,
+	Sound        const & sound
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
 
-	m_hwndApp        = hwndApp;
-	m_pComputeThread = & computeThread;
-	m_pCommandStack  = & commandStack;
-	m_pSound         = & sound;
+	m_hwndApp       = hwndApp;
+	m_pCompute      = & compute;
+	m_pCommandStack = & commandStack;
+	m_pSound        = & sound;
 
     SendMessage(m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NNETSIMU)));
     SendMessage(m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL   )));
@@ -129,8 +129,8 @@ void NNetAppMenu::Start
 
 void NNetAppMenu::Notify(bool const bImmediately)
 {
-    ::Enable(m_hMenu, IDM_FORWARD,            ! m_pComputeThread->IsRunning());
-    ::Enable(m_hMenu, IDM_RESET_DYNAMIC_DATA, ! m_pComputeThread->IsRunning());
+    ::Enable(m_hMenu, IDM_FORWARD,            ! m_pCompute->IsRunning());
+    ::Enable(m_hMenu, IDM_RESET_DYNAMIC_DATA, ! m_pCompute->IsRunning());
 
     ::Enable(m_hMenu, IDM_DESC_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_DESC_WINDOW   )));
     ::Enable(m_hMenu, IDM_CRSR_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_CRSR_WINDOW   )));

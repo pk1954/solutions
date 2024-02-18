@@ -574,8 +574,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ComputeThread.cpp" />
-    <ClCompile Include="ComputeThread.ixx" />
+    <ClCompile Include="Compute.cpp" />
+    <ClCompile Include="Compute.ixx" />
     <ClCompile Include="MainScales.ixx" />
     <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />

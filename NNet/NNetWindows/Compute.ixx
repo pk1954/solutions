@@ -34,7 +34,8 @@ public:
 		Observable      * const,
 		Observable      * const,
 		Observable      * const,
-		Observable      * const
+		Observable      * const,
+		ScanMatrix      * const
 	);
 
 	void SetModelInterface(NNetModelWriterInterface * const);
@@ -69,8 +70,8 @@ private:
 	HiResClockGen     m_computeClockGen;
 	HiResTimer        m_computeTimer;
 
-	unique_ptr<ScanMatrix> m_upScanMatrix { };
-	int                    m_iScanNr      { 0 };
+	ScanMatrix           * m_pScanMatrix { nullptr };
+	int                    m_iScanNr     { 0 };
 	RasterPoint            m_rpScanRun;
 	unique_ptr<ScanImage>  m_upScanImageSum;
 	fMicroSecs             m_usSimuNextPixelScan;

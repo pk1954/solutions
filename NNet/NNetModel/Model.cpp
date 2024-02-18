@@ -71,13 +71,13 @@ unsigned int Model::printNobType
 
 void Model::PrintModelSize() const 
 { 
-	wcout << L"sizeof(bool) " << sizeof(bool) << L" bytes" << endl;
-	wcout << L"sizeof(Nob) " << sizeof(Nob) << L" bytes" << endl;
-	wcout << L"sizeof(mV) " << sizeof(mV) << L" bytes" << endl;
-	wcout << L"sizeof(NobType) " << sizeof(NobType) << L" bytes" << endl;
-	wcout << L"sizeof(NobId) " << sizeof(NobId) << L" bytes" << endl;
+	wcout << L"sizeof(bool) "                    << sizeof(bool)                    << L" bytes" << endl;
+	wcout << L"sizeof(Nob) "                     << sizeof(Nob)                     << L" bytes" << endl;
+	wcout << L"sizeof(mV) "                      << sizeof(mV)                      << L" bytes" << endl;
+	wcout << L"sizeof(NobType) "                 << sizeof(NobType)                 << L" bytes" << endl;
+	wcout << L"sizeof(NobId) "                   << sizeof(NobId)                   << L" bytes" << endl;
 	wcout << L"sizeof(unique_ptr<MicroSensor>) " << sizeof(unique_ptr<MicroSensor>) << L" bytes" << endl;
-	wcout << L"sizeof(FixedPipeline<mV>) " << sizeof(FixedPipeline<mV>) << L" bytes" << endl;
+	wcout << L"sizeof(FixedPipeline<mV>) "       << sizeof(FixedPipeline<mV>)       << L" bytes" << endl;
 	unsigned int sum { 0 };
 	sum += printNobType(Fork           ::Size(), NobType::Value::fork);
 	sum += printNobType(InputLine      ::Size(), NobType::Value::inputLine);
@@ -215,7 +215,7 @@ bool Model::Compute()
 	tC.BeforeAction();
 	bool bStop { false };
 	SimulationTime::Tick(m_upParam->TimeResolution());
-	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->Prepare(*m_upParam.get()); });
+	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->PrepareSigGen(*m_upParam.get()); });
 
 	t1.BeforeAction();
 	m_upNobs->Apply2AllC([]      (Nob &s) { s.CollectInput(); });
@@ -271,7 +271,7 @@ void Model::ReplaceScanImage(unique_ptr<ScanImage> up)
 { 
 	m_upImageScanned  = move(up); 
 	m_upImageScanned ->Normalize();
-	m_upImageFiltered = m_upImageScanned->MedianFilter();
+	m_upImageFiltered = m_upImageScanned->MeanFilter();
 	m_upImageFiltered->Normalize();
 }
 

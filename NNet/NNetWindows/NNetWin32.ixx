@@ -9,7 +9,7 @@ module;
 export module NNetWin32;
 
 export import :AppTitle; 
-export import :ComputeThread;
+export import :Compute;
 export import :CrsrWindow;
 export import :DescriptionWindow;
 export import :MainWindow;

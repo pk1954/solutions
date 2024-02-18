@@ -29,7 +29,7 @@ import CommandStack;
 import NNetModel;
 import Preferences;
 import NNetPreferences;
-import :ComputeThread;
+import :Compute;
 import :MainWindow;
 
 using std::to_wstring;
@@ -38,12 +38,12 @@ using std::endl;
 
 void NNetController::Initialize
 (
-    ComputeThread   * const pComputeThread,
+    Compute         * const pCompute,
     SlowMotionRatio * const pSlowMotionRatio
 ) 
 {
     m_pSlowMotionRatio = pSlowMotionRatio;
-    m_pComputeThread   = pComputeThread;
+    m_pCompute         = pCompute;
     m_hCrsrWait        = LoadCursor(NULL, IDC_WAIT);
 }
 
@@ -51,7 +51,7 @@ NNetController::~NNetController()
 {
     m_pNMRI            = nullptr;
     m_pSlowMotionRatio = nullptr;
-    m_pComputeThread   = nullptr;
+    m_pCompute   = nullptr;
     m_hCrsrWait        = nullptr;
 }
 
@@ -75,9 +75,9 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     if (m_pNMRI->ModelLocked())
         return true;
 
-    bool const bRunning = m_pComputeThread->IsRunning();
+    bool const bRunning = m_pCompute->IsRunning();
     if (bRunning)
-    	m_pComputeThread->StopComputation();
+    	m_pCompute->StopComputation();
     try
     {
         bRes = processModelCommand(wmId, lParam, umPoint);
@@ -89,7 +89,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
     }
     if (bRunning)
-    	m_pComputeThread->StartComputation();
+    	m_pCompute->StartComputation();
 
     return bRes;
 }
@@ -151,7 +151,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::none);
         break;
 
-    case IDD_SCAN_AREA_VISIBLE:
+    case IDD_SCAN_AREA:
         NNetPreferences::m_bScanArea.Toggle();
         break;
 

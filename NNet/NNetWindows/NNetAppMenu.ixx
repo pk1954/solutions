@@ -18,7 +18,7 @@ import OnOffPair;
 import CommandStack;
 import NNetModel;
 import NNetPreferences;
-import :ComputeThread;
+import :Compute;
 
 using std::wstring;
 using std::unique_ptr;
@@ -31,22 +31,22 @@ public:
 
 	void Start
 	(
-		HWND            const, 
-		ComputeThread   const &, 
-		CommandStack    const &,
-		Sound           const &
+		HWND         const, 
+		Compute      const &, 
+		CommandStack const &,
+		Sound        const &
 	);
 	void AdjustUndoRedo();
 	void Notify(bool const) final;
 
 private:
 
-	HWND                  m_hwndApp        { nullptr };
-	HMENU                 m_hMenu          { nullptr };
-	HMENU                 m_hMenuSigGen    { nullptr };
-	ComputeThread const * m_pComputeThread { nullptr };
-	CommandStack  const * m_pCommandStack  { nullptr };
-	Sound         const * m_pSound         { nullptr };
+	HWND                 m_hwndApp       { nullptr };
+	HMENU                m_hMenu         { nullptr };
+	HMENU                m_hMenuSigGen   { nullptr };
+	Compute      const * m_pCompute      { nullptr };
+	CommandStack const * m_pCommandStack { nullptr };
+	Sound        const * m_pSound        { nullptr };
 
 	unique_ptr<OnOffPair> m_upOnOffArrows;
 	unique_ptr<OnOffPair> m_upOnOffSound;

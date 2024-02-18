@@ -13,7 +13,7 @@ import SlowMotionRatio;
 import HiResTimer;
 import TextWindow;
 import NNetModel;
-import :ComputeThread;
+import :Compute;
 
 using std::wstring;
 
@@ -24,7 +24,7 @@ public:
     void Start
     (
         HWND const, 
-        ComputeThread         * const, 
+        Compute               * const, 
         SlowMotionRatio const * const, 
         HiResTimer            * const 
     );
@@ -34,7 +34,7 @@ public:
     void PaintText(TextBuffer &) final;
 
 private:
-    ComputeThread                  * m_pComputeThread   { nullptr };
+    Compute                        * m_pCompute   { nullptr };
     NNetModelReaderInterface const * m_pNMRI            { nullptr };
     HiResTimer                     * m_pDisplayTimer    { nullptr };
     SlowMotionRatio          const * m_pSlowMotionRatio { nullptr };

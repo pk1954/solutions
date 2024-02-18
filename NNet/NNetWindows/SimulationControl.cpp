@@ -15,28 +15,28 @@ import Win32_Util_Resource;
 import Win32_Util;
 import StatusBar;
 import SlowMotionControl;
-import :ComputeThread;
+import :Compute;
 
 void SimulationControl::Initialize
 (
-	StatusBar     * const pStatusBar,
-	ComputeThread * const pComputeThread
+	StatusBar * const pStatusBar,
+	Compute   * const pCompute
 ) 
 {
-    m_pStatusBar     = pStatusBar;
-	m_pComputeThread = pComputeThread;
+    m_pStatusBar = pStatusBar;
+	m_pCompute   = pCompute;
 
-	m_hwndRunStop    = m_pStatusBar->AddButton(L"   Run    ", IDM_RUN,  BS_PUSHBUTTON);
-	m_hwndScan       = m_pStatusBar->AddButton(L"   Scan   ", IDM_SCAN, BS_PUSHBUTTON);
+	m_hwndRunStop = m_pStatusBar->AddButton(L"   Run    ", IDM_RUN,  BS_PUSHBUTTON);
+	m_hwndScan    = m_pStatusBar->AddButton(L"   Scan   ", IDM_SCAN, BS_PUSHBUTTON);
 
 	Notify(true);
 }
 
 void SimulationControl::Notify(bool const bImmediate)
 {
-	bool const bIsRunning       { m_pComputeThread->IsRunning() };
-	bool const bIsScanRunning   { m_pComputeThread->IsScanRunning() };
-	bool const bModelLocked     { m_pComputeThread->ModelLocked() };
+	bool const bIsRunning       { m_pCompute->IsRunning() };
+	bool const bIsScanRunning   { m_pCompute->IsScanRunning() };
+	bool const bModelLocked     { m_pCompute->ModelLocked() };
 	bool const bScanAreaVisible { NNetPreferences::ScanAreaVisible() };
 
 	if (bIsRunning)

@@ -39,7 +39,8 @@ public:
 		bool   const,
 		fPixel const,
 		NNetController &,
-		MonitorWindow const *
+		MonitorWindow const *,
+		ScanMatrix *
 	);
 
 	void SetDefaultBackgroundColor() final;
@@ -107,10 +108,10 @@ protected:
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) override;
 
 	void DrawSensors() const;
-	void DrawScanArea() const;
 
 	NNetModelReaderInterface const* m_pNMRI          { nullptr };
 	MonitorWindow            const* m_pMonitorWindow { nullptr };
+	ScanMatrix                    * m_pScanMatrix    { nullptr };
 
 	PixelPoint GetPtLast() const { return m_ptLast; }
 

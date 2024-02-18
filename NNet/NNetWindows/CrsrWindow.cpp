@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <optional>
 #include <iostream>
 #include <sstream> 
@@ -113,7 +114,9 @@ void CrsrWindow::PaintText(TextBuffer & textBuf)
 
 		if (m_pMainWindow->IsInOptimizeMode())
 		{
-			printScanAreaInfo(textBuf, umPntCrsr);
+			optional<RasterPoint> const rPntOpt {m_pNMRI->GetScanRaster().FindRasterPos(umPntCrsr)};
+			if (rPntOpt.has_value())
+				printScanAreaInfo(textBuf, rPntOpt.value());
 		}
 		else if (IsDefined(nobId))
 		{
@@ -148,16 +151,14 @@ void CrsrWindow::printPositionInfo
 
 void CrsrWindow::printScanAreaInfo
 (
-	TextBuffer         & textBuf,
-	MicroMeterPnt const& umPoint
+	TextBuffer        & textBuf,
+	RasterPoint const & rPnt
 )
 {
-	m_pScanMatrix->Prepare();
-	Raster const& raster { m_pNMRI->GetScanRaster() };
+	m_pScanMatrix->PrepareScanMatrix();
 	textBuf.AlignRight();
 	textBuf.printString(L"ScanArea: ");
-	textBuf.printNumber(raster.RasterWidth());
-	textBuf.printNumber(raster.RasterHeight());
+	textBuf.printRasterPoint(m_pNMRI->GetScanRaster().Size());
 	textBuf.nextLine();
 	textBuf.printString(L"Pnts per pixel: ");
 	textBuf.nextLine();
@@ -171,27 +172,13 @@ void CrsrWindow::printScanAreaInfo
 	textBuf.printFloat(m_pScanMatrix->DataPointVariance());
 	textBuf.nextLine();
 	textBuf.nextLine();
-	if (optional<RasterPoint> const rPntOpt = raster.FindRasterPos(umPoint))
-	{
-		textBuf.printString(L"Pixel: ");
-		textBuf.printNumber(rPntOpt.value().m_x);
-		textBuf.printNumber(rPntOpt.value().m_y);
-		textBuf.nextLine();
-		if (m_pScanMatrix->IsValid(rPntOpt.value()))
-		{
-			size_t const nrOfPnts { m_pScanMatrix->NrOfDataPntsInPixel(rPntOpt.value()) };
-			textBuf.printString(L"# Pnts: ");
-			textBuf.AlignLeft();  
-			textBuf.printNumber(nrOfPnts);
-			textBuf.nextLine();
-		}
-	}
-	else
-	{
-		textBuf.AlignLeft();
-		textBuf.printString(L"Cursor not in scan area");
-		textBuf.nextLine();
-	}
+	textBuf.printString(L"Pixel: ");
+	textBuf.printRasterPoint(rPnt);
+	textBuf.nextLine();
+	textBuf.printString(L"# Pnts: ");
+	textBuf.AlignLeft();  
+	textBuf.printNumber( m_pScanMatrix->NrOfDataPntsInPixel(rPnt));
+	textBuf.nextLine();
 }
 
 void CrsrWindow::printNobInfo
@@ -288,4 +275,12 @@ void CrsrWindow::printSignalInfo
 			textBuf.nextLine();
 		}
 	}
+}
+
+void CrsrWindow::printFrequency(TextBuffer & textBuf, Hertz const freq)
+{
+	wostringstream wBuffer;
+	wBuffer << fixed << setprecision(1) << freq << L"Hz ";
+	textBuf.printString(wBuffer.str());
+	textBuf.nextLine();
 }

@@ -213,9 +213,6 @@
     <ClCompile Include="TimerQueueTimer.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="CommandTimer.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Win32_PerfCounter.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

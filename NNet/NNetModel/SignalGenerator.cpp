@@ -70,7 +70,7 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 	}
 }
 
-void SignalGenerator::Prepare(NNetParameters const& param)
+void SignalGenerator::PrepareSigGen(NNetParameters const& param)
 {
 	m_mVactual = m_dynData.SetTime(m_statData, param.PulseWidth());
 }

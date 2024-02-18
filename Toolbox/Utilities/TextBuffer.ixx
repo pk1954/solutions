@@ -12,6 +12,7 @@ module;
 export module TextBuffer;
 
 import SaveCast;
+import Raster;
 import Types;
 
 using std::wstring;
@@ -68,6 +69,12 @@ public:
 	{
 		m_wBuffer << data;
 		printBuffer();
+	}
+
+	void printRasterPoint(RasterPoint const &pnt)
+	{
+		printNumber(pnt.m_x);
+		printNumber(pnt.m_y);
 	}
 
 	void printString     (wstring const &);

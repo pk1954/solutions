@@ -5,21 +5,21 @@
 export module NNetWin32:NNetSimuRunning;
 
 import NNetSignals;
-import :ComputeThread;
+import :Compute;
 
 export class NNetSimuRunning : public SimuRunning
 {
 public:
-    void Initialize(ComputeThread const* pComputeThread)
+    void Initialize(Compute const* pCompute)
     {
-        m_pComputeThread = pComputeThread;
+        m_pCompute = pCompute;
     }
 
     bool IsRunning() const final 
     {
-        return m_pComputeThread->IsRunning();
+        return m_pCompute->IsRunning();
     };
 
 private:
-    ComputeThread const * m_pComputeThread;
+    Compute const * m_pCompute;
 };

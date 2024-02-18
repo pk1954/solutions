@@ -68,7 +68,7 @@
 #define       IDD_AUTO_OPEN                  312
 #define       IDD_SENSOR_PNTS                313
 #define       IDD_PERF_MON_MODE              314
-#define       IDD_SCAN_AREA_VISIBLE          315
+#define       IDD_SCAN_AREA                  315
 
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341
@@ -128,4 +128,4 @@
 #define       IDD_ATTACH_SIG_GEN_TO_CONN     709
 #define       IDD_ADD_SIG_GEN_TO_MONITOR     711
 
-#define       IDD_MEDIAN_FILTER              800
+#define       IDD_FILTER                     800

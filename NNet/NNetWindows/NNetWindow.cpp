@@ -29,7 +29,8 @@ void NNetWindow::Start
 	bool            const bShowRefreshRateDialog,
 	fPixel          const fPixLimit,
 	NNetController      & controller,
-	MonitorWindow const * pMonitorWindow
+	MonitorWindow const * pMonitorWindow,
+	ScanMatrix    * const pScanMatrix
 )
 {
 	GraphicsWindow::Initialize
@@ -42,6 +43,7 @@ void NNetWindow::Start
 	SetDefaultBackgroundColor();
 	m_pController          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
+	m_pScanMatrix          = pScanMatrix;
 	m_fPixRadiusLimit      = fPixLimit;
 	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
 	m_pBrushSensorSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
@@ -131,11 +133,6 @@ void NNetWindow::DrawSensors() const
 			}
 		}
 	);
-}
-
-void NNetWindow::DrawScanArea() const
-{
-	GetDrawContextC().FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
 }
 
 void NNetWindow::drawSignalCable

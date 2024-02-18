@@ -11,22 +11,22 @@ export module NNetWin32:SimulationControl;
 
 import ObserverInterface;
 import StatusBar;
-import :ComputeThread;
+import :Compute;
 
 export class SimulationControl: public ObserverInterface
 {
 public:
 
-	void Initialize(StatusBar * const, ComputeThread * const);
+	void Initialize(StatusBar * const, Compute * const);
 
 	~SimulationControl() override = default;
 
 	void Notify(bool const) final;
 
 private:
-	ComputeThread * m_pComputeThread { nullptr };
-	StatusBar     * m_pStatusBar     { nullptr };
-	HWND            m_hwndSingleStep;
-	HWND            m_hwndRunStop;
-	HWND            m_hwndScan;
+	Compute   * m_pCompute   { nullptr };
+	StatusBar * m_pStatusBar { nullptr };
+	HWND        m_hwndSingleStep;
+	HWND        m_hwndRunStop;
+	HWND        m_hwndScan;
 };

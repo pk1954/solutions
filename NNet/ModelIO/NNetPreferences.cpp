@@ -36,24 +36,24 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
 
-class WrapMedianFilter : public Wrapper
+class WrapFilter : public Wrapper
 {
 public:
-    WrapMedianFilter()
+    WrapFilter()
         : Wrapper(NAME)
     {}
 
     void operator() (Script& script) const final
     {
-        NNetPreferences::m_bMedianFilter.Set(script.ScrReadBool());
+        NNetPreferences::m_bFilter.Set(script.ScrReadBool());
     }
 
     void Write(wostream& out) const final
     {
-        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bMedianFilter.Get());
+        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bFilter.Get());
     }
 
-    inline static const wstring NAME { L"ApplyMedianFilter" };
+    inline static const wstring NAME { L"ApplyFilter" };
 };
 
 class WrapScanAreaVisibility : public Wrapper
@@ -183,7 +183,7 @@ void NNetPreferences::Initialize()
     Preferences::AddWrapper(make_unique<WrapReadModel>());
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
     Preferences::AddWrapper(make_unique<WrapScanAreaVisibility>());
-    Preferences::AddWrapper(make_unique<WrapMedianFilter>());
+    Preferences::AddWrapper(make_unique<WrapFilter>());
     Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());

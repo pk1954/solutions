@@ -40,11 +40,12 @@ Compute::~Compute() = default;
 
 void Compute::Initialize   // runs in main thread
 (
-	SlowMotionRatio * const pSlowMotionRatio,
-	Observable      * const pRunObservable,
-	Observable      * const pPerformanceObservable,
-	Observable      * const pDynamicModelObservable,
-	Observable      * const pLockModelObservable
+	SlowMotionRatio* const pSlowMotionRatio,
+	Observable* const pRunObservable,
+	Observable* const pPerformanceObservable,
+	Observable* const pDynamicModelObservable,
+	Observable* const pLockModelObservable,
+	ScanMatrix* const pScanMatrix
 )
 {
 	m_pRunObservable          = pRunObservable;
@@ -52,6 +53,7 @@ void Compute::Initialize   // runs in main thread
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pLockModelObservable    = pLockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
+	m_pScanMatrix             = pScanMatrix;
 }
 
 void Compute::SetModelInterface(NNetModelWriterInterface * const pNMWI)
@@ -80,25 +82,24 @@ void Compute::setRunning(bool const bMode)
 
 void Compute::StartScan()
 {
-	m_upScanMatrix = make_unique<ScanMatrix>(m_pNMWI->GetScanRaster().Size());
-	m_upScanMatrix->Fill(*m_pNMWI);
-//	m_pNMWI->CreateImage();
+	m_pScanMatrix->PrepareScanMatrix();
+	m_pNMWI->CreateImage();
 	m_rpScanRun = RasterPoint(0, 0);
 	m_iScanNr = 1;
-	m_upScanImageSum = make_unique<ScanImage>(m_upScanMatrix->Size(), 0.0_mV);
+	m_upScanImageSum = make_unique<ScanImage>(m_pScanMatrix->Size(), 0.0_mV);
 	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
 	Reset();
 	m_pNMWI->GetScanImage()->Set(0.0_mV);
 	m_usSimuNextPixelScan = SimulationTime::Get();
 }
 
-HiResTimer tX;
+//HiResTimer tX;
 
 void Compute::DoGameStuff()
 {
 	if (IsRunning() && m_computeClockGen.Time4NextAction())
 	{
-		tX.BeforeAction();
+		//tX.BeforeAction();
 		m_computeClockGen.Action();
 		if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
 			setRunning(false);
@@ -106,32 +107,28 @@ void Compute::DoGameStuff()
 		m_pDynamicModelObservable->NotifyAll();
 		m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
 		m_pPerformanceObservable->NotifyAll();
-		tX.AfterAction();
-	    wcout << L"tX = " << tX.Average2wstring() << endl;
-	//wcout << L"xxxxxxxxxxxxxxxxxxxxxx" << endl;
+		//tX.AfterAction();
+	    //wcout << L"tX = " << tX.Average2wstring() << endl;
+	    //wcout << L"xxxxxxxxxxxxxxxxxxxxxx" << endl;
 	}
 
-	if (IsScanRunning())
+	if (IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
 		scanNextPixel();
 }
 
 void Compute::scanNextPixel()
 {
-	fMicroSecs usNow { SimulationTime::Get() };
-	if (usNow < m_usSimuNextPixelScan)
-		return;
+	m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
 
-	m_usSimuNextPixelScan = usNow + m_pNMWI->PixelScanTime();
-
-	mV mVpixel { m_upScanMatrix->Scan(m_rpScanRun) };
+	mV mVpixel { m_pScanMatrix->Scan(m_rpScanRun) };
 	m_pNMWI->GetScanImage()->Set(m_rpScanRun, mVpixel);
 
-	if (++m_rpScanRun.m_x < m_upScanMatrix->Width())     // Next scan Pixel
+	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())     // Next scan Pixel
 		return;
 	                                                     // Scan line finished
 	m_rpScanRun.m_x = 0;
 	m_pDynamicModelObservable->NotifyAll(); 
-	if (++m_rpScanRun.m_y < m_upScanMatrix->Height())
+	if (++m_rpScanRun.m_y < m_pScanMatrix->Height())
 		return;
 	                                                     // Scan finished
 	m_rpScanRun.m_y = 0;

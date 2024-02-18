@@ -20,7 +20,7 @@ import CommandStack;
 import NNetModel;
 import NNetSignals;
 import NNetPreferences;
-import :ComputeThread;
+import :Compute;
 
 using std::wostream;
 using std::wcout;
@@ -30,7 +30,7 @@ export class NNetController
 public:
 	NNetController() = default;
 
-	void Initialize(ComputeThread *const, SlowMotionRatio *const);
+	void Initialize(Compute *const, SlowMotionRatio *const);
 
 	virtual ~NNetController();
 
@@ -48,7 +48,7 @@ private:
 
 	bool                       m_bTrace           { true };
 	HCURSOR                    m_hCrsrWait        { nullptr };
-	ComputeThread            * m_pComputeThread   { nullptr };
+	Compute                  * m_pCompute   { nullptr };
 	NNetModelReaderInterface * m_pNMRI            { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio { nullptr };
 };				          
