@@ -46,6 +46,14 @@ void Synapse::RecalcDelayBuffer()
 //	m_pPipeAdd = rhs.m_pPipeAdd;
 //}
 
+void Synapse::ClearDynamicData()
+{
+	PosNob::ClearDynamicData();
+    m_usBlockStartTime = fMicroSecs::NULL_VAL();
+    m_mVaddInput       = 0._mV;
+    m_pulseBuffer.Fill(0._mV);
+}
+
 void Synapse::AddIncoming(Pipe* pPipe)
 {
 	m_pPipeIn = pPipe;

@@ -225,11 +225,6 @@ bool MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
 	return false;
 }
 
-bool MainWindow::crsrInScanArea(MicroMeterPnt const &umCrsrPos)
-{
-	return NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos);
-}
-
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	if (m_pCursorPosObservable)
@@ -261,7 +256,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (ptLast.IsNull())
 		return;
 
-	if (!(wParam & MK_LBUTTON))        // Left mouse button
+	if (!(wParam & MK_LBUTTON))    // left mouse button
 		return;
 
 	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
@@ -269,10 +264,12 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (m_umDelta.IsZero())
 		return;
 
-	if (wParam & MK_CONTROL)   // rotate
+	if (m_pNMRI->ModelLocked())    // no edit operations allowed
 	{
-		if (m_pNMRI->ModelLocked())    // no edit operations allowed
-			return;
+		NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
+	}
+	else if (wParam & MK_CONTROL)   // rotate
+	{
 		if (selectionCommand(wParam))
 			RotateSelectionCommand::Push(umLastPos, umCrsrPos);
 		else if (IsDefined(m_nobIdHighlighted))           
@@ -288,10 +285,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		SetScanAreaCmd::Push(*m_pScanMatrix->GetHandleSelected(), m_umDelta);
 	}
-	else if (crsrInScanArea(umCrsrPos) && !m_bOptimizeMode)
+	else if (NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos))
 	{
-		if (!m_pNMRI->ModelLocked())    // no edit operations allowed if model is locked
-			SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
+		SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
@@ -506,7 +502,7 @@ void MainWindow::PaintGraphics()
 	m_mainScales.Paint(*m_upGraphics.get());
 
 	if (NNetPreferences::ScanAreaVisible())
-		m_pScanMatrix->DrawScanArea(context, m_bOptimizeMode);
+		m_pScanMatrix->DrawScanArea(context);
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{

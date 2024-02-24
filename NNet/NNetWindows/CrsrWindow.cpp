@@ -18,6 +18,7 @@ import Types;
 import TextBuffer;
 import Win32_Util;
 import NNetModel;
+import NNetPreferences;
 import :MainWindow;
 
 using std::optional;
@@ -112,7 +113,7 @@ void CrsrWindow::PaintText(TextBuffer & textBuf)
 		SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
 		NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
 
-		if (m_pMainWindow->IsInOptimizeMode())
+		if (NNetPreferences::ScanAreaVisible())
 		{
 			optional<RasterPoint> const rPntOpt {m_pNMRI->GetScanRaster().FindRasterPos(umPntCrsr)};
 			if (rPntOpt.has_value())

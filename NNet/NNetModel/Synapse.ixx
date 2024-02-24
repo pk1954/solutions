@@ -67,6 +67,8 @@ public:
 
     void SetAddPipe(Pipe*);
 
+    void ClearDynamicData() final;
+
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
     void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 

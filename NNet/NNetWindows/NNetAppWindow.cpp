@@ -444,6 +444,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_SCAN:
 			m_compute.StartScan();
+			m_lockModelObservable.NotifyAll();
 			return true;
 
 		case IDM_STARTING_SCAN:

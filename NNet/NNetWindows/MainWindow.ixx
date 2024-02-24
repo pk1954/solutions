@@ -61,10 +61,9 @@ public:
 
 	MicroMeterPnt GetCursorPos() const;
 
-	NobId  GetHighlightedNobId()         const { return m_nobIdHighlighted; }
-	bool   IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
-	bool   IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
-	bool   IsInOptimizeMode()            const { return m_bOptimizeMode; }
+	NobId GetHighlightedNobId()         const { return m_nobIdHighlighted; }
+	bool  IsHighlighted(NobId const id) const { return id == m_nobIdHighlighted; }
+	bool  IsHighlighted(Nob const& nob) const { return IsHighlighted(nob.GetId()); }
 
 	bool HasScales() const final { return m_mainScales.HasScales(); }
 	bool HasGrid  () const final { return m_mainScales.HasGrid(); }
@@ -101,7 +100,6 @@ private:
 	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
 	SelectionMenu m_selectionMenu;
 	MainScales    m_mainScales;
-	bool          m_bOptimizeMode          { true };
 	HWND          m_hwndToolTipp           { nullptr };
 
 	bool       setTargetNob        (MicroMeterPnt const&);
@@ -123,7 +121,6 @@ private:
 	void       drawInputCable(InputLine const &) const;
 	void       connect(NobId const, NobId const);
 	bool       selectionCommand(WPARAM const);
-	bool       crsrInScanArea(MicroMeterPnt const&);
 
 	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

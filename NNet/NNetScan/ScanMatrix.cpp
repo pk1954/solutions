@@ -300,16 +300,13 @@ void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const
 	context.FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
 }
 
-void ScanMatrix::DrawScanArea(DrawContext const& context, bool const bOptimizeMode)
+void ScanMatrix::DrawScanArea(DrawContext const& context)
 {
 	if (m_pNMRI->ModelLocked())
 		drawScanImage(context);
 	else
 	{
-		if (bOptimizeMode)
-			drawSensorDensityMap(context);
-		else
-			DrawScanAreaBackground(context);
+		drawSensorDensityMap(context);
 		drawScanAreaHandles(context);
 	}
 	drawScanRaster(context);

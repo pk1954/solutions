@@ -241,13 +241,12 @@ MicroMeterPnt Pipe::GetVector() const
 	return umVector;
 }
 
-void Pipe::SetNrOfSegments(size_t const n) const
+void Pipe::SetNrOfSegments(size_t const n)
 {
 	m_segments.Resize(n, 0.0_mV);
-// m_bSegmentsDirty = false;
 }
 
-void Pipe::recalcSegments() const
+void Pipe::RecalcSegments()
 {
 	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
 	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
@@ -258,15 +257,11 @@ void Pipe::recalcSegments() const
 
 FixedPipeline<mV>& Pipe::getSegments()
 {
-//	if (m_bSegmentsDirty)
-//		recalcSegments();
 	return m_segments;
 }
 
 FixedPipeline<mV> const& Pipe::getSegments() const
 {
-//	if (m_bSegmentsDirty)
-//		recalcSegments();
 	return m_segments;
 }
 
@@ -277,6 +272,7 @@ void Pipe::PosChanged()
 		m_pNobStart->DirectionDirty();
 	if (m_pNobEnd)
 		m_pNobEnd->DirectionDirty();
+	RecalcSegments();
 }
 
 void Pipe::SelectAllConnected(bool const bFirst)
@@ -444,11 +440,3 @@ void Pipe::Emphasize(bool const bOn)
 	if (m_pNobEnd->IsKnot())
 		static_cast<Knot *>(m_pNobEnd)->Emphasize(bOn, true);
 }
-
-//size_t Pipe::segNr2index(SegNr const segNr) const
-//{
-//	size_t index { segNr.GetValue() + m_potIndex };
-//	if (index >= GetNrOfSegments())
-//		index -= GetNrOfSegments();
-//	return index;
-//}

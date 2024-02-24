@@ -113,11 +113,11 @@ public:
 	mV            GetVoltageAt    (MicroMeterPnt const&) const;
 	SegNr         GetSegNr        (float const f)        const { return SegNr(Cast2Int(round(f * Cast2Float(GetNrOfSegments() - 1)))); }
 	mV            GetVoltage      (SegNr const segNr)    const { return getSegments().Get(segNr.GetValue()); }
-	void          SetNrOfSegments(size_t const)                    const;
+	void          SetNrOfSegments(size_t const);
 	void          DrawArrows(DrawContext const&, MicroMeter const) const;
 	void          DislocateEndPoint();
 	void          DislocateStartPoint();
-	void          RecalcSegments() { recalcSegments(); /* m_bSegmentsDirty = true; */ }
+	void          RecalcSegments();
 
 	void Apply2AllSegments(auto const& func) const { getSegments().Apply2All(func); }
 
@@ -146,16 +146,12 @@ private:
 	Nob * m_pNobStart { nullptr };  //TODO: Nob --> PosNob
 	Nob * m_pNobEnd   { nullptr };  //TODO: Nob --> PosNob
 
-	// mutable members - lazy evaluation
-
-	mutable FixedPipeline<mV> m_segments;
-//	mutable bool              m_bSegmentsDirty { true };
+	FixedPipeline<mV> m_segments;
 
 	FixedPipeline<mV> const& getSegments() const;
 	FixedPipeline<mV>      & getSegments();
 
 	MicroMeterPnt dislocation() const;
-	void          recalcSegments() const;
 };
 
 export Pipe const* Cast2Pipe(Nob const* pNob)

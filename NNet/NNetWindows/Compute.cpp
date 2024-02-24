@@ -123,7 +123,7 @@ void Compute::scanNextPixel()
 	mV mVpixel { m_pScanMatrix->Scan(m_rpScanRun) };
 	m_pNMWI->GetScanImage()->Set(m_rpScanRun, mVpixel);
 
-	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())     // Next scan Pixel
+	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())      // Next scan Pixel
 		return;
 	                                                     // Scan line finished
 	m_rpScanRun.m_x = 0;
@@ -138,7 +138,7 @@ void Compute::scanNextPixel()
 		return;
 	                                                     // Scan series finished 
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
-//	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
+	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll();
 	setRunning(false);
 }

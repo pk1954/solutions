@@ -41,7 +41,7 @@ public:
     mV   Scan(RasterPoint const&);
     bool SetScanAreaHandle(DrawContext const&, MicroMeterPnt const&);
     void DrawScanAreaBackground(DrawContext const&) const;
-    void DrawScanArea(DrawContext const&, bool const);
+    void DrawScanArea(DrawContext const&);
 
     void Notify(bool const) final { m_bDirty = true; }
 
