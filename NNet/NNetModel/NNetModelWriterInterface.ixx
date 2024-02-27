@@ -94,9 +94,10 @@ public:
     void AddDescriptionLine (wstring const & wstr)     { m_pModel->AddDescriptionLine(wstr); }
     void DescriptionComplete()                         { m_pModel->DescriptionComplete(); }
     void DeselectAllNobs    () const                   { m_pModel->DeselectAllNobs(); }
-    void CreateImage        ()                         { m_pModel->CreateImage(); }
+    void CreateScanImage    ()                         { m_pModel->CreateScanImage(); }
 	void ReplaceScanImage   (unique_ptr<ScanImage> up) { m_pModel->ReplaceScanImage(move(up)); }
-    void RejectImage        ()                         { m_pModel->RejectImage(); }
+    void RejectScanImage    ()                         { m_pModel->RejectScanImage(); }
+    void ClearScanImage     ()                         { GetScanImage()->Set(0.0_mV); }
 
     void AddOutgoing(NobId const, Pipe *);
     void AddIncoming(NobId const, Pipe *);

@@ -91,7 +91,7 @@ void ParameterDialog::enableAllEditFields()
 		for (auto& field : m_fields)
 			Edit_Enable(field.m_hwnd, m_bEditParamsEnabled);
 	}
-	Edit_Enable(m_hwndFilter, m_bEditParamsEnabled);
+//	Edit_Enable(m_hwndFilter, m_bEditParamsEnabled);
 }
 
 void ParameterDialog::Start(HWND const hwndParent)
@@ -135,14 +135,6 @@ void ParameterDialog::Start(HWND const hwndParent)
 		m_hwndScanTime = CreateStaticField(hwndDlg, L"", iXpos, iYpos, EDIT_WIDTH + HORZ_SPACE + UNIT_WIDTH, HEIGHT);
 		iYpos += HEIGHT + VERT_SPACE;
 	}
-	{
-		int  iXpos { LEFT_SPACE };
-		HWND const hwndStatic = CreateStaticField(hwndDlg, L"Filter", iXpos, iYpos, NAME_WIDTH, HEIGHT);
-		iXpos += NAME_WIDTH + HORZ_SPACE;
-		m_hwndFilter = CreateCheckBox(hwndDlg, L"", iXpos, iYpos, 12, 12, IDD_FILTER);
-		iYpos += HEIGHT + VERT_SPACE;
-	}
-	iYpos += HEIGHT;
 
 	CreateButton(hwndDlg, L"Apply", 120, iYpos, 50, 20, IDD_APPLY);
 	CreateButton(hwndDlg, L"Reset", 180, iYpos, 50, 20, IDD_RESET);
@@ -208,10 +200,6 @@ bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 
 	case IDD_RESET:
 		refreshParameters();
-		return true;
-
-	case IDD_FILTER:
-        NNetPreferences::m_bFilter.Set(Button_GetCheck(m_hwndFilter));
 		return true;
 
 	default:

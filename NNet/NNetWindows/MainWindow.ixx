@@ -113,6 +113,7 @@ private:
 	void       drawScanRaster();
 	void       drawScanImage(Vector2D<mV> const&) const;
 	void       drawScanAreaHandles();
+	void       drawModel(DrawContext const&);
 	SigGenId   getSigGenId(LPARAM const);
 	SigGenId   getSigGenId(fPixelPoint const &);
 	MicroMeter getScanAreaHandleSize();

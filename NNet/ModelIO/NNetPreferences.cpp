@@ -76,6 +76,26 @@ public:
     inline static const wstring NAME { L"ScanAreaVisibility" };
 };
 
+class WrapModelFront : public Wrapper
+{
+public:
+    WrapModelFront()
+        : Wrapper(NAME)
+    {}
+
+    void operator() (Script& script) const final
+    {
+        NNetPreferences::m_bModelFront.Set(script.ScrReadBool());
+    }
+
+    void Write(wostream& out) const final
+    {
+        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bModelFront.Get());
+    }
+
+    inline static const wstring NAME { L"ModelFront" };
+};
+
 class WrapInputCablesVisibility : public Wrapper
 {
 public:
@@ -183,6 +203,7 @@ void NNetPreferences::Initialize()
     Preferences::AddWrapper(make_unique<WrapReadModel>());
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
     Preferences::AddWrapper(make_unique<WrapScanAreaVisibility>());
+    Preferences::AddWrapper(make_unique<WrapModelFront>());
     Preferences::AddWrapper(make_unique<WrapFilter>());
     Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());

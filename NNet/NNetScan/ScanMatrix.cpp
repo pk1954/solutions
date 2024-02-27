@@ -91,6 +91,18 @@ void ScanMatrix::Clear()
     Apply2AllScanPixels([](auto &p) { p.Clear(); });
 }
 
+void ScanMatrix::DensityCorrection(ScanImage &image) const
+{
+    assert(image.GetSize() == m_scanPixels.GetSize());
+	image.Divide
+	(
+		[this](RasterPoint const& pnt)
+		{
+			return NrOfDataPntsInPixel(pnt);
+		}
+	);
+}
+
 size_t ScanMatrix::NrOfDataPntsInMatrix() const
 {
     size_t nr { 0 };
@@ -303,7 +315,9 @@ void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const
 void ScanMatrix::DrawScanArea(DrawContext const& context)
 {
 	if (m_pNMRI->ModelLocked())
+	{
 		drawScanImage(context);
+	}
 	else
 	{
 		drawSensorDensityMap(context);

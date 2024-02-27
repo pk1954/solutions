@@ -143,9 +143,9 @@ public:
 	void SetParam(ParamType::Value const, float const);
 	void Reconnect(NobId const);
 	void SetScanArea(MicroMeterRect const&);
-	void CreateImage();
+	void CreateScanImage();
 	void ReplaceScanImage(unique_ptr<ScanImage>);
-	void RejectImage();
+	void RejectScanImage();
 
 	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
 	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }

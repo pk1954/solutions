@@ -43,8 +43,6 @@ void SimulationControl::Notify(bool const bImmediate)
         ::SetDlgItemState(m_hwndRunStop, L"Stop", IDM_STOP, true);
 	else
         ::SetDlgItemState(m_hwndRunStop, L"Run", IDM_RUN, true);
-	EnableWindow(m_hwndSingleStep, !bIsRunning);
-	SlowMotionControl::Enable(!bIsScanRunning);
 
 	if (bScanAreaVisible)
 	{

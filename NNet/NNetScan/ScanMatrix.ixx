@@ -59,6 +59,8 @@ public:
     float  DivideByArea(size_t const)              const;
     float  DataPointVariance();
 
+    void DensityCorrection(ScanImage &) const;
+
     void Apply2AllScanPixels(auto const& func)
     {
         m_scanPixels.Apply2AllPixels(func);

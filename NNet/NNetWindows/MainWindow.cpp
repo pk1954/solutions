@@ -80,9 +80,9 @@ void MainWindow::Start
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
 	
-	m_hwndToolTipp = CreateWindowToolTip(nullptr);
-	SetWindowText(m_hwndToolTipp, L"hallo");
-	::MoveWindow(m_hwndToolTipp, 20_PIXEL, 20_PIXEL);
+	//m_hwndToolTipp = CreateWindowToolTip(nullptr);
+	//SetWindowText(m_hwndToolTipp, L"hallo");
+	//::MoveWindow(m_hwndToolTipp, 20_PIXEL, 20_PIXEL);
 }
 
 void MainWindow::Stop()
@@ -171,6 +171,22 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
 			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 		}
+	}
+	if (m_pNMRI->GetFilteredImageC())
+	{
+		AppendMenu
+		(
+			hPopupMenu, MF_STRING, IDD_FILTER,
+			NNetPreferences::ApplyFilter() ? L"No filter" : L"Mean filter"
+		);
+	}
+	if (NNetPreferences::ScanAreaVisible())
+	{
+		AppendMenu
+		(
+			hPopupMenu, MF_STRING, IDD_MODEL_FRONT,
+			NNetPreferences::ModelFront() ? L"Model in background" : L"Model in foreground"
+		);
 	}
 
 	m_mainScales.AppendScaleMenu(hPopupMenu, L"&Scales");
@@ -285,10 +301,6 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		SetScanAreaCmd::Push(*m_pScanMatrix->GetHandleSelected(), m_umDelta);
 	}
-	else if (NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos))
-	{
-		SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
-	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
 		MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
@@ -301,6 +313,10 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	else if (m_pNMRI->IsAnySignalSelected())
 	{
 		m_pMonitorWindow->MoveHighlightedSignal(ptCrsr.GetY() - ptLast.GetY());
+	}
+	else if (NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos))
+	{
+		SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
 	}
 	else
 	{
@@ -495,14 +511,35 @@ void MainWindow::OnPaint()
 
 void MainWindow::PaintGraphics()
 {
-	PixelRect   const  pixRect         { GetClPixelRect() };
-	DrawContext const& context         { GetDrawContextC() };
-	Sensor      const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
+	DrawContext const& context { GetDrawContextC() };
 
-	m_mainScales.Paint(*m_upGraphics.get());
+	if (m_mainScales.HasGrid())
+		m_mainScales.PaintGrid(*m_upGraphics.get());
 
 	if (NNetPreferences::ScanAreaVisible())
-		m_pScanMatrix->DrawScanArea(context);
+	{
+		if (NNetPreferences::ModelFront())
+		{
+			m_pScanMatrix->DrawScanArea(context);
+			drawModel(context );
+		}
+		else
+		{
+			drawModel(context );
+			m_pScanMatrix->DrawScanArea(context);
+		}
+	}
+	else
+	{
+		if (NNetPreferences::ModelFront())
+			drawModel(context );
+	}
+}
+
+void MainWindow::drawModel(DrawContext const& context)
+{
+	PixelRect const  pixRect         { GetClPixelRect() };
+	Sensor    const* pSensorSelected { m_pNMRI->GetSensor(m_sensorIdSelected) };
 
 	if (context.GetPixelSize() <= 5._MicroMeter)
 	{
@@ -531,7 +568,7 @@ void MainWindow::PaintGraphics()
 		}
 	}
 	else if (m_pNMRI->IsValidNobId(m_nobIdHighlighted))  // draw highlighted nob again to be sure 
-	{                                                                    // that it is in foreground
+	{                                                    // that it is in foreground
 		m_pNMRI->DrawExterior(m_nobIdHighlighted, context, tHighlight::highlighted);
 		m_pNMRI->DrawInterior(m_nobIdHighlighted, context, tHighlight::highlighted);
 	}

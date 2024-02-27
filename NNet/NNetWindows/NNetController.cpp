@@ -155,6 +155,14 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         NNetPreferences::m_bScanArea.Toggle();
         break;
 
+    case IDD_MODEL_FRONT:
+        NNetPreferences::m_bModelFront.Toggle();
+        break;
+
+    case IDD_FILTER:
+        NNetPreferences::m_bFilter.Toggle();
+        break;
+
     default:
         return false; // command has not been processed
     }

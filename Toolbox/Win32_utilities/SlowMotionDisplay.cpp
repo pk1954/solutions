@@ -50,17 +50,17 @@ void SlowMotionDisplay::RefreshRate::Trigger(bool const bImmediately)
 	m_wstrBuffer.clear();
 	m_wstrBuffer << L"slowmo ";
 
-	if (fMeasured == 0.0f)
-		m_wstrBuffer << L"  -  ";
-	else
-		m_wstrBuffer << fixed << setprecision(1) << setw(6) << fMeasured;
-
-	m_wstrBuffer << L"/";
-
 	if (m_slowMotionRatio.MaxSpeed())
 		m_wstrBuffer << L"max";
 	else
 		m_wstrBuffer << fixed << setprecision(0) << fNominal;
+
+	m_wstrBuffer << L"/";
+
+	if (fMeasured == 0.0f)
+		m_wstrBuffer << L"  -  ";
+	else
+		m_wstrBuffer << fixed << setprecision(1) << setw(6) << fMeasured;
 
 	m_pStatusBar->DisplayInPart(m_iPartInStatusBar, m_wstrBuffer.str());
 }

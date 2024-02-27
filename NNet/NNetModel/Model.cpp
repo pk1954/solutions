@@ -212,24 +212,24 @@ HiResTimer t1, t2, tC;
 
 bool Model::Compute()
 {
-	tC.BeforeAction();
+	//tC.BeforeAction();
 	bool bStop { false };
 	SimulationTime::Tick(m_upParam->TimeResolution());
 	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->PrepareSigGen(*m_upParam.get()); });
 
-	t1.BeforeAction();
+	//t1.BeforeAction();
 	m_upNobs->Apply2AllC([]      (Nob &s) { s.CollectInput(); });
-	t1.AfterAction();
+	//t1.AfterAction();
 
-	t2.BeforeAction();
+	//t2.BeforeAction();
 	m_upNobs->Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
-	t2.AfterAction();
+	//t2.AfterAction();
 
-	tC.AfterAction();
+	//tC.AfterAction();
 
-	wcout << L"t1 = " << t1.Average2wstring() << endl;
-	wcout << L"t2 = " << t2.Average2wstring() << endl;
-	wcout << L"tC = " << tC.Average2wstring() << endl;
+	//wcout << L"t1 = " << t1.Average2wstring() << endl;
+	//wcout << L"t2 = " << t2.Average2wstring() << endl;
+	//wcout << L"tC = " << tC.Average2wstring() << endl;
 
 	return bStop;
 }
@@ -262,7 +262,7 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 	m_upRaster->SetRasterRect(rect);
 }
 
-void Model::CreateImage()
+void Model::CreateScanImage()
 { 
 	m_upImageScanned = make_unique<ScanImage>(GetScanAreaSize()); 
 }
@@ -271,11 +271,14 @@ void Model::ReplaceScanImage(unique_ptr<ScanImage> up)
 { 
 	m_upImageScanned  = move(up); 
 	m_upImageScanned ->Normalize();
+	t1.BeforeAction();
 	m_upImageFiltered = m_upImageScanned->MeanFilter();
 	m_upImageFiltered->Normalize();
+	t1.AfterAction();
+	wcout << L"Mean filter = " << t1.Average2wstring() << endl;
 }
 
-void Model::RejectImage()
+void Model::RejectScanImage()
 { 
 	m_upImageScanned.release(); 
 	m_upImageFiltered.release(); 

@@ -136,20 +136,26 @@ public:
         Apply2AllPixels([newVal](UNIT& val) { val = newVal; });
     }
 
+    UNIT& GetRef(RasterPoint const& rp)
+    {
+        assert(IsValid(rp));
+        return GetRowPtr(rp.m_y)->m_vector[rp.m_x];
+    }
+
+    UNIT const& GetConstRef(RasterPoint const& rp) const
+    {
+        assert(IsValid(rp));
+        return GetConstRowPtr(rp.m_y)->m_vector[rp.m_x];
+    }
+
     UNIT* GetPtr(RasterPoint const& rp)
     {
-        if (IsValid(rp))
-            return &GetRowPtr(rp.m_y)->m_vector[rp.m_x];
-        else
-            return nullptr;
+        return IsValid(rp) ? &GetRef(rp) : nullptr;
     }
 
     UNIT const * GetConstPtr(RasterPoint const& rp) const
     {
-        if (IsValid(rp))
-            return &GetConstRowPtr(rp.m_y)->m_vector[rp.m_x];
-        else
-            return nullptr;
+        return IsValid(rp) ? &GetConstRef(rp) : nullptr;
     }
 
     UNIT Get(RasterPoint const& rp) const
@@ -198,6 +204,18 @@ public:
         for (int i = 0; i < Height(); ++i)
             *m_rows[i].get() += *rhs.m_rows[i].get();
         return *this;
+    }
+
+    void Divide(auto const &func)
+    {
+	    VisitAllPixels
+	    (
+		    [this, &func](RasterPoint const &pnt)
+		    {
+			    if (auto const div { func(pnt) })
+				    GetRef(pnt) /= Cast2Float(div);
+		    }
+	    );
     }
 
     void Apply2AllRows(auto const& func)
@@ -268,29 +286,50 @@ public:
         return move(dst);
     }
 
+    void VisitAllPixels(auto const& func)
+    {
+        RasterPoint pntRun;
+        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
+        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
+        {
+            func(pntRun);
+        }
+    }
+
+    void VisitAllPixelsC(auto const& func) const
+    {
+        RasterPoint pntRun;
+        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
+        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
+        {
+            func(pntRun);
+        }
+    }
+
     unique_ptr<Vector2D> MeanFilter() const
     {
         assert(m_rows.size() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
-        RasterPoint  pntRun;
-        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
-        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
-        {
-            UNIT mean  = UNIT::ZERO_VAL();
-            int  count = 0;
-            for (RasterIndex dy = -1; dy <= 1; ++dy)
-            for (RasterIndex dx = -1; dx <= 1; ++dx)
+        VisitAllPixelsC
+        (
+            [this, &dst](RasterPoint const& pntRun)
             {
-                RasterPoint neighbour { pntRun.m_x + dx, pntRun.m_y + dy };
-                if (IsValid(neighbour))
+                UNIT mean  = UNIT::ZERO_VAL();
+                int  count = 0;
+                for (RasterIndex dy = -1; dy <= 1; ++dy)
+                for (RasterIndex dx = -1; dx <= 1; ++dx)
                 {
-                    mean += Get(neighbour);
-                    ++count;
+                    RasterPoint neighbour { pntRun.m_x + dx, pntRun.m_y + dy };
+                    if (IsValid(neighbour))
+                    {
+                        mean += Get(neighbour);
+                        ++count;
+                    }
                 }
+                mean /= Cast2Float(count);
+                dst->Set(pntRun, mean);
             }
-            mean /= Cast2Float(count);
-            dst->Set(pntRun, mean);
-        }
+        );
         return move(dst);
     }
 

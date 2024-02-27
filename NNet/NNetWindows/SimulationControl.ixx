@@ -26,7 +26,6 @@ public:
 private:
 	Compute   * m_pCompute   { nullptr };
 	StatusBar * m_pStatusBar { nullptr };
-	HWND        m_hwndSingleStep;
 	HWND        m_hwndRunStop;
 	HWND        m_hwndScan;
 };

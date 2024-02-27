@@ -83,13 +83,13 @@ void Compute::setRunning(bool const bMode)
 void Compute::StartScan()
 {
 	m_pScanMatrix->PrepareScanMatrix();
-	m_pNMWI->CreateImage();
+	m_pNMWI->CreateScanImage();
 	m_rpScanRun = RasterPoint(0, 0);
 	m_iScanNr = 1;
 	m_upScanImageSum = make_unique<ScanImage>(m_pScanMatrix->Size(), 0.0_mV);
 	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
 	Reset();
-	m_pNMWI->GetScanImage()->Set(0.0_mV);
+	m_pNMWI->ClearScanImage();
 	m_usSimuNextPixelScan = SimulationTime::Get();
 }
 
@@ -133,11 +133,13 @@ void Compute::scanNextPixel()
 	                                                     // Scan finished
 	m_rpScanRun.m_y = 0;
 	*m_upScanImageSum.get() += *m_pNMWI->GetScanImage();
+	m_pNMWI->ClearScanImage();
 	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
 	if (++m_iScanNr <= m_pNMWI->GetNrOfScans())
 		return;
 	                                                     // Scan series finished 
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
+	m_pScanMatrix->DensityCorrection(*m_upScanImageSum.get());
 	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
 	m_pDynamicModelObservable->NotifyAll();
 	setRunning(false);

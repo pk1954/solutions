@@ -65,11 +65,13 @@ public:
 	static NNetModelReaderInterface const *GetModelInterface() { return m_pNMRI; };
 
 	static bool ScanAreaVisible() { return m_bScanArea.Get(); }
+	static bool ModelFront     () { return m_bModelFront.Get(); }
 	static bool ApplyFilter    () { return m_bFilter.Get(); }
 
 	inline static ShowArrows m_bArrows;
 	inline static BoolType   m_bSensorPoints { false };
 	inline static BoolType   m_bScanArea     { false };
+	inline static BoolType   m_bModelFront   { true  };
 	inline static BoolType   m_bFilter       { false };
 
 private:

@@ -46,7 +46,6 @@ private:
 	IDWriteTextFormat        * m_pTextFormatHeader  { nullptr };
 	NNetModelWriterInterface * m_pNMWI              { nullptr };
 	HWND                       m_hwndScanTime       { nullptr };
-	HWND                       m_hwndFilter         { nullptr };
 	bool                       m_bEditParamsEnabled { true };
 
 	fPixel m_fPixPosVert;      // helper for paintHeader

@@ -85,13 +85,10 @@ public:
 		m_upHorzScale->SetUnitOffset(fPixelPoint(5._fPixel - m_fPixScaleSize.GetX(), -3._fPixel));
 	}
 
-	void Paint(D2D_driver& graphics)
+	void PaintGrid(D2D_driver& graphics)
 	{
-		if (m_fGridDimFactor > 0.0f)
-		{
-			m_upHorzScale->DrawAuxLines(graphics, m_fGridDimFactor);
-			m_upVertScale->DrawAuxLines(graphics, m_fGridDimFactor);
-		}
+		m_upHorzScale->DrawAuxLines(graphics, m_fGridDimFactor);
+		m_upVertScale->DrawAuxLines(graphics, m_fGridDimFactor);
 	}
 
 	bool HasScales() const { return m_fPixScaleSize.IsNotZero(); }
