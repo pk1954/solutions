@@ -128,7 +128,8 @@ public:
 	) const
 	{
 		float const DATA_PNTS { 10.0f };
-		float const fIncCalc  { umResolution / (GetLength() * DATA_PNTS) };
+		MicroMeter  umLength  { GetLength() };
+		float const fIncCalc  { umResolution / (umLength * DATA_PNTS) };
 		float const fInc      { min(1.0f, fIncCalc) };
 		for (float fRun = 0.0f; fRun <= 1.0f; fRun += fInc)
 		{

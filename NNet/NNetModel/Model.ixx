@@ -130,7 +130,6 @@ public:
 	RasterPoint               GetScanAreaSize()            const { return m_upRaster->Size(); }
 	Raster            const & GetScanRaster()              const { return *m_upRaster.get(); }
 	ScanImage         const * GetScanImageC()              const { return m_upImageScanned.get(); }
-	ScanImage         const * GetFilteredImageC()          const { return m_upImageFiltered.get(); }
 	ScanImage               * GetScanImage()                     { return m_upImageScanned.get(); }
 
 	// non const functions
@@ -162,7 +161,6 @@ private:
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
 	unique_ptr<ScanImage>      m_upImageScanned;
-	unique_ptr<ScanImage>      m_upImageFiltered;
 	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;

@@ -269,17 +269,11 @@ void Model::CreateScanImage()
 
 void Model::ReplaceScanImage(unique_ptr<ScanImage> up) 
 { 
-	m_upImageScanned  = move(up); 
+	m_upImageScanned = move(up); 
 	m_upImageScanned ->Normalize();
-	t1.BeforeAction();
-	m_upImageFiltered = m_upImageScanned->MeanFilter();
-	m_upImageFiltered->Normalize();
-	t1.AfterAction();
-	wcout << L"Mean filter = " << t1.Average2wstring() << endl;
 }
 
 void Model::RejectScanImage()
 { 
 	m_upImageScanned.release(); 
-	m_upImageFiltered.release(); 
 }

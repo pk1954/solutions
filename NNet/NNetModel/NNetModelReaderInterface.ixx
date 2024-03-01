@@ -103,7 +103,6 @@ public:
 	RasterPoint            GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
 	Raster          const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	ScanImage       const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
-	ScanImage       const* GetFilteredImageC()                    const { return m_pModel->GetFilteredImageC(); }
 	bool                   ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
 	int                    GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
 	bool                   HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
@@ -111,6 +110,7 @@ public:
 	SignalId               SelectSignal(SignalId const id)        const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
 	bool                   IsAnySignalSelected()                  const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
 	optional<RasterPoint>  FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
+	MicroMeterRect         GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
 	fMicroSecs             TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const

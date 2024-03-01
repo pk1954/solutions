@@ -57,27 +57,31 @@ void Synapse::ClearDynamicData()
 void Synapse::AddIncoming(Pipe* pPipe)
 {
 	m_pPipeIn = pPipe;
+	m_bDirty = true;
 }
 
 void Synapse::AddOutgoing(Pipe* pPipe)
 {
 	m_pPipeOut = pPipe;
+	m_bDirty = true;
 }
 
 void Synapse::SetAddPipe(Pipe* const pPipe)
 {
 	m_pPipeAdd = pPipe;
+	m_bDirty = true;
 }
 
 void Synapse::SetPosNoFix(MicroMeterPnt const& newPos) 
 { 
 	m_pos = newPos; 
+	m_bDirty = true;
 }
 
 void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 {
 	m_pos.Rotate(umPntPivot, radDelta);
-	recalcPosition();
+	m_bDirty = true;
 }
 
 void Synapse::SetAllIncoming(PosNob& src)
@@ -101,36 +105,46 @@ void Synapse::MoveNob(MicroMeterPnt const& delta)
 	m_pPipeAdd->PosChanged();
 	m_pPipeIn ->PosChanged();
 	m_pPipeOut->PosChanged();
-	recalcPosition();
+	m_bDirty = true;
 }
 
-void Synapse::recalcPosition() const
+void Synapse::calcPosition() const
 {
-	//static float      const SQRT3       { sqrtf(3.0f) };
-	//static float      const SQRT3DIV3   { SQRT3 / 3.0f };
-	//static MicroMeter const GAP         { PIPE_WIDTH * 0.1f };
-	//static MicroMeter const CENTER_DIST { EXTENSION * SQRT3DIV3 };
-	//static MicroMeter const OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
+	if (m_bDirty)
+	{
+		static float      const SQRT3       { sqrtf(3.0f) };
+		static float      const SQRT3DIV3   { SQRT3 / 3.0f };
+		static MicroMeter const GAP         { PIPE_WIDTH * 0.1f };
+		static MicroMeter const CENTER_DIST { EXTENSION * SQRT3DIV3 };
+		static MicroMeter const OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
 
-	//MicroMeterPnt const umPntBaseVector { m_pPipeOut->GetEndPoint() - m_pPipeIn->GetStartPoint() };
-	//MicroMeterPnt const umPntOrtho      { umPntBaseVector.OrthoVector() };
-	//MicroMeterPnt const umPntAddDir     { GetPos() - m_pPipeAdd->GetStartPoint() };
-	//MicroMeter    const umCrit          { CrossProduct(umPntBaseVector, umPntAddDir) };
-	//float         const fDirection      { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
-	//MicroMeterPnt const umPntCenter     { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
-	//MicroMeter    const umTop           { EXTENSION * ( 2.0f * SQRT3DIV3) * fDirection };
-	//MicroMeter    const umBase          { EXTENSION * (-1.0f * SQRT3DIV3) * fDirection };
-	//MicroMeterPnt const umPntBase       { umPntCenter + umPntOrtho.ScaledTo(umBase) };
-	//MicroMeterPnt const umPntVecScaled  { umPntBaseVector.ScaledTo(EXTENSION) };
-	//m_umPntBase1  = umPntBase + umPntVecScaled;
-	//m_umPntBase2  = umPntBase - umPntVecScaled;
-	//m_umPntTop    = umPntCenter + umPntOrtho.ScaledTo(umTop);
-	//m_umPntCenter = umPntCenter;
+		MicroMeterPnt const umPntBaseVector { m_pPipeOut->GetEndPoint() - m_pPipeIn->GetStartPoint() };
+		MicroMeterPnt const umPntOrtho      { umPntBaseVector.OrthoVector() };
+		MicroMeterPnt const umPntAddDir     { GetPos() - m_pPipeAdd->GetStartPoint() };
+		MicroMeter    const umCrit          { CrossProduct(umPntBaseVector, umPntAddDir) };
+		float         const fDirection      { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
+		MicroMeterPnt const umPntCenter     { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
+		MicroMeter    const umTop           { EXTENSION * ( 2.0f * SQRT3DIV3) * fDirection };
+		MicroMeter    const umBase          { EXTENSION * (-1.0f * SQRT3DIV3) * fDirection };
+		MicroMeterPnt const umPntBase       { umPntCenter + umPntOrtho.ScaledTo(umBase) };
+		MicroMeterPnt const umPntVecScaled  { umPntBaseVector.ScaledTo(EXTENSION) };
+		m_umPntBase1  = umPntBase + umPntVecScaled;
+		m_umPntBase2  = umPntBase - umPntVecScaled;
+		m_umPntTop    = umPntCenter + umPntOrtho.ScaledTo(umTop);
+		m_umPntCenter = umPntCenter;
+		m_bDirty = false;
+	}
+}
+
+MicroMeterPnt Synapse::GetAddPos() const       
+{ 
+	calcPosition();
+    return m_umPntTop;
 }
 
 void Synapse::Recalc()
 {
-	recalcPosition();
+	calcPosition();
 	m_usBlock.clear();
 }
 
@@ -163,7 +177,7 @@ void Synapse::Dump() const
 
 void Synapse::PosChanged()
 {
-	recalcPosition();
+	m_bDirty = true;
 }
 
 void Synapse::Reconnect()
@@ -178,6 +192,7 @@ void Synapse::Link(Nob const& nobSrc, Nob2NobFunc const& f)
 	m_pPipeIn  = static_cast<Pipe*>(f(src.m_pPipeIn));
 	m_pPipeOut = static_cast<Pipe*>(f(src.m_pPipeOut));
 	m_pPipeAdd = static_cast<Pipe*>(f(src.m_pPipeAdd));
+	m_bDirty = true;
 }
 
 bool Synapse::Includes(MicroMeterPnt const& point) const
@@ -204,12 +219,14 @@ void Synapse::ReplaceIncoming(Pipe* const pDel, Pipe* const pNew)
 		m_pPipeIn = pNew;
 	else
 		assert(false);
+	m_bDirty = true;
 }
 
 void Synapse::ReplaceOutgoing(Pipe* const pDel, Pipe* const pNew)
 {
 	assert(pDel == m_pPipeOut);
 	m_pPipeOut = pNew;
+	m_bDirty = true;
 }
 
 void Synapse::Apply2AllInPipes(PipeFunc const& f)
@@ -251,21 +268,7 @@ void Synapse::drawSynapse
 	Color       const  col
 ) const
 {
-	MicroMeterPnt const umPntBaseVector { m_pPipeOut->GetEndPoint() - m_pPipeIn->GetStartPoint() };
-	MicroMeterPnt const umPntOrtho      { umPntBaseVector.OrthoVector() };
-	MicroMeterPnt const umPntAddDir     { GetPos() - m_pPipeAdd->GetStartPoint() };
-	MicroMeter    const umCrit          { CrossProduct(umPntBaseVector, umPntAddDir) };
-	float         const fDirection      { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
-	MicroMeterPnt const umPntCenter     { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
-	MicroMeter    const umTop           { EXTENSION * ( 2.0f * SQRT3DIV3) * fDirection };
-	MicroMeter    const umBase          { EXTENSION * (-1.0f * SQRT3DIV3) * fDirection };
-	MicroMeterPnt const umPntBase       { umPntCenter + umPntOrtho.ScaledTo(umBase) };
-	MicroMeterPnt const umPntVecScaled  { umPntBaseVector.ScaledTo(EXTENSION) };
-	MicroMeterPnt m_umPntBase1  = umPntBase + umPntVecScaled;
-	MicroMeterPnt m_umPntBase2  = umPntBase - umPntVecScaled;
-    MicroMeterPnt m_umPntCenter = umPntCenter;
-                  m_umPntTop    = umPntCenter + umPntOrtho.ScaledTo(umTop);
-
+	calcPosition();
 	context.FillCircle(MicroMeterCircle(m_umPntTop,   umRadius), col);
 	context.FillCircle(MicroMeterCircle(m_umPntBase1, umRadius), col);
 	context.FillCircle(MicroMeterCircle(m_umPntBase2, umRadius), col);

@@ -12,6 +12,7 @@ export module ColorLUT;
 
 import Color;
 
+using std::min;
 using std::array;
 using std::vector;
 
@@ -64,7 +65,8 @@ public:
 
     Color Get(int const pos) const
     {
-        return m_table.at(pos);
+        int const index { min(pos, 255) };
+        return m_table.at(index);
     }
 
     //void Clear()

@@ -4,13 +4,16 @@
 
 module;
 
+#include <memory>
 #include <cassert>
 #include <vector>
+#include <iostream>
 #include <optional>
 #include <Windows.h>
 
 module ScanMatrix;
 
+import HiResTimer;
 import Types;
 import Raster;
 import SaveCast;
@@ -18,9 +21,12 @@ import ColorLUT;
 import ScanPixel;
 import NNetModel;
 
+using std::unique_ptr;
 using std::vector;
 using std::optional;
 using std::nullopt;
+using std::wcout;
+using std::endl;
 
 ScanMatrix::ScanMatrix()
 {
@@ -94,13 +100,7 @@ void ScanMatrix::Clear()
 void ScanMatrix::DensityCorrection(ScanImage &image) const
 {
     assert(image.GetSize() == m_scanPixels.GetSize());
-	image.Divide
-	(
-		[this](RasterPoint const& pnt)
-		{
-			return NrOfDataPntsInPixel(pnt);
-		}
-	);
+	image.Divide([this](RasterPoint const& pnt){ return NrOfDataPntsInPixel(pnt); });
 }
 
 size_t ScanMatrix::NrOfDataPntsInMatrix() const
@@ -190,32 +190,22 @@ void ScanMatrix::drawScanRaster(DrawContext const& context)
 
 void ScanMatrix::drawScanImage(DrawContext const& context) const
 {
-    ScanImage const * const pScanImage
-	{
-		NNetPreferences::ApplyFilter()
-		? m_pNMRI->GetFilteredImageC()
-		: m_pNMRI->GetScanImageC()
-	};
+    ScanImage const * pScanImage { m_pNMRI->GetScanImageC() };
 	assert(pScanImage);
-	Raster const &raster { m_pNMRI->GetScanRaster() };
-	RasterPoint   rpRun;
-	for (rpRun.m_y = 0; rpRun.m_y < raster.RasterHeight(); ++rpRun.m_y)
+	unique_ptr<ScanImage> upFiltered;
+	if (NNetPreferences::ApplyFilter())
 	{
-		UnitVector<mV> const* pImageRow { pScanImage->GetConstRowPtr(rpRun.m_y) };
-		for (rpRun.m_x = 0; rpRun.m_x < raster.RasterWidth(); ++rpRun.m_x)
-		{
-			MicroMeterRect const umRect { raster.GetPointRect(rpRun) };
-			mV             const mv     { pImageRow->m_vector.at(rpRun.m_x)};
-			if (mv.IsNotNull())
-			{
-				float f = mv.GetValue();
-				int   iLutPos = static_cast<int>(f * 256.0f);
-				if (iLutPos > 255)
-					iLutPos = 255;
-				context.FillRectangle(umRect, m_lut.Get(iLutPos));
-			}
-		}
+		upFiltered = pScanImage->MeanFilter();
+		pScanImage = upFiltered.get();
 	}
+	m_pNMRI->GetScanRaster().DrawRasterPoints
+	(
+		context, 
+		[this, pScanImage](auto const &rp) -> Color
+		{
+			return m_lut.Get(static_cast<int>(pScanImage->Get(rp).GetValue() * 256.0f));
+		}
+	);
 }
 
 MicroMeter ScanMatrix::getScanAreaHandleSize(Uniform2D<MicroMeter> const &coord)
@@ -312,11 +302,16 @@ void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const
 	context.FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
 }
 
+static HiResTimer t1;
+
 void ScanMatrix::DrawScanArea(DrawContext const& context)
 {
 	if (m_pNMRI->ModelLocked())
 	{
+		t1.BeforeAction();
 		drawScanImage(context);
+		t1.AfterAction();
+		wcout << L"drawScanImage = " << t1.Average2wstring() << endl;
 	}
 	else
 	{

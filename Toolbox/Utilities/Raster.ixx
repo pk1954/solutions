@@ -56,20 +56,25 @@ MicroMeterRect GetPointRect(RasterPoint const&) const;
 
 optional<RasterPoint> FindRasterPos(MicroMeterPnt const) const;
 
+void Apply2AllC(auto const& func) const
+{
+    RasterIndex height { RasterHeight() };
+    RasterIndex width  { RasterWidth () };
+    RasterPoint rp;
+    for (rp.m_y = 0; rp.m_y < height; ++rp.m_y)
+    for (rp.m_x = 0; rp.m_x < width; ++rp.m_x)
+    {
+        func(rp);
+    }
+}
+
 void DrawRasterPoints
 (
-    DrawContext const& drawContext,
+    DrawContext const& context,
     auto        const& getColor
 ) const
 {
-	RasterPoint rpRun;
-	for (rpRun.m_y = 0; rpRun.m_y < RasterHeight(); ++rpRun.m_y)
-    for (rpRun.m_x = 0; rpRun.m_x < RasterWidth(); ++rpRun.m_x)
-    {
-		MicroMeterRect const umRect { GetPointRect(rpRun) };
-        Color          const col    { getColor(rpRun) };
-		drawContext.FillRectangle(umRect, col);
-    }
+    Apply2AllC([&](RasterPoint const &rp) { context.FillRectangle(GetPointRect(rp), getColor(rp)); });
 }
 
 private:

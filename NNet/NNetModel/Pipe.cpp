@@ -176,13 +176,13 @@ MicroMeterPnt Pipe::dislocation() const
 
 MicroMeterPnt Pipe::GetStartPoint() const 
 { 
-	return m_pNobStart ? m_pNobStart->GetPos() : MicroMeterPnt::NULL_VAL(); 
+	assert(m_pNobStart);
+	return m_pNobStart->GetPos();
 }
 
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	if (m_pNobEnd == nullptr)
-		return MicroMeterPnt::NULL_VAL();
+	assert(m_pNobEnd);
 	if (m_pNobEnd->IsSynapse())
 	{
 		Synapse * pSynapse { Cast2Synapse(m_pNobEnd) };

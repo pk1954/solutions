@@ -43,7 +43,10 @@ public:
     void DrawScanAreaBackground(DrawContext const&) const;
     void DrawScanArea(DrawContext const&);
 
-    void Notify(bool const) final { m_bDirty = true; }
+    void Notify(bool const) final 
+    { 
+        m_bDirty = true; 
+    }
 
     RasterPoint Size  ()                        const { return m_scanPixels.GetSize(); }
     RasterIndex Width ()                        const { return m_scanPixels.Width(); }

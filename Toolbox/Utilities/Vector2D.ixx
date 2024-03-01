@@ -19,7 +19,7 @@ using std::unique_ptr;
 using std::make_unique;
 using std::ranges::sort;
 
-export template <typename UNIT>
+template <typename UNIT>
 struct UnitVector
 {
     explicit UnitVector(size_t const siz)
@@ -262,47 +262,23 @@ public:
 			*this *= 1.0f / unitMax.GetValue();
     }
 
-    unique_ptr<Vector2D> MedianFilter() const
-    {
-        assert(m_rows.size() > 0);
-        unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
-        RasterPoint  pntRun;
-        vector<UNIT> neighbours;
-        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
-        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
-        {
-            neighbours.clear();
-            for (RasterIndex dy = -1; dy <= 1; ++dy)
-            for (RasterIndex dx = -1; dx <= 1; ++dx)
-            {
-                RasterPoint neighbour { pntRun.m_x + dx, pntRun.m_y + dy };
-                if (IsValid(neighbour))
-                    neighbours.push_back(Get(neighbour));
-            }
-            sort(neighbours);
-            UNIT median { neighbours.at(neighbours.size()/2) };
-            dst->Set(pntRun, median);
-        }
-        return move(dst);
-    }
-
     void VisitAllPixels(auto const& func)
     {
-        RasterPoint pntRun;
-        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
-        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
+        RasterPoint rp;
+        for (rp.m_y = 0; rp.m_y < Height(); ++rp.m_y)
+        for (rp.m_x = 0; rp.m_x < Width (); ++rp.m_x)
         {
-            func(pntRun);
+            func(rp);
         }
     }
 
     void VisitAllPixelsC(auto const& func) const
     {
-        RasterPoint pntRun;
-        for (pntRun.m_y = 0; pntRun.m_y < Height(); ++pntRun.m_y)
-        for (pntRun.m_x = 0; pntRun.m_x < Width (); ++pntRun.m_x)
+        RasterPoint rp;
+        for (rp.m_y = 0; rp.m_y < Height(); ++rp.m_y)
+        for (rp.m_x = 0; rp.m_x < Width (); ++rp.m_x)
         {
-            func(pntRun);
+            func(rp);
         }
     }
 
@@ -310,30 +286,62 @@ public:
     {
         assert(m_rows.size() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
-        VisitAllPixelsC
-        (
-            [this, &dst](RasterPoint const& pntRun)
-            {
-                UNIT mean  = UNIT::ZERO_VAL();
-                int  count = 0;
-                for (RasterIndex dy = -1; dy <= 1; ++dy)
-                for (RasterIndex dx = -1; dx <= 1; ++dx)
-                {
-                    RasterPoint neighbour { pntRun.m_x + dx, pntRun.m_y + dy };
-                    if (IsValid(neighbour))
-                    {
-                        mean += Get(neighbour);
-                        ++count;
-                    }
-                }
-                mean /= Cast2Float(count);
-                dst->Set(pntRun, mean);
-            }
-        );
+        VisitAllPixelsC([this, &dst](RasterPoint const& rp){ dst->Set(rp, getMeanFiltered(rp)); });
+        dst->Normalize();
+        return move(dst);
+    }
+
+    unique_ptr<Vector2D> MedianFilter() const
+    {
+        assert(m_rows.size() > 0);
+        unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
+        VisitAllPixelsC([this, &dst](RasterPoint const& rp) { dst->Set(rp, getMedianFiltered(rp)); });
+        dst->Normalize();
         return move(dst);
     }
 
 private:
+
+    void visitNeighbours
+    (
+        RasterPoint const& rp,
+        auto const & func
+    ) const
+    {
+        vector<UNIT> neighbours;
+        for (RasterIndex dy = -1; dy <= 1; ++dy)
+        for (RasterIndex dx = -1; dx <= 1; ++dx)
+        {
+            RasterPoint neighbour { rp.m_x + dx, rp.m_y + dy };
+            if (IsValid(neighbour))
+                func(neighbour);
+        }
+    }
+
+    UNIT getMeanFiltered(RasterPoint const& rp) const
+    {
+        UNIT  mean  = UNIT::ZERO_VAL();
+        float count = 0;
+        visitNeighbours
+        (
+            rp,
+            [&](RasterPoint const& neighbour)
+            {
+                mean += Get(neighbour);
+                ++count;
+            }
+        );
+        return mean/count;
+    }
+
+    UNIT getMedianFiltered(RasterPoint const& rp) const
+    {
+        vector<UNIT> neighbours;
+        visitNeighbours(rp, [&](RasterPoint const& n){ neighbours.push_back(Get(n)); });
+        sort(neighbours);
+        return neighbours.at(neighbours.size()/2);
+    }
+
     vector<unique_ptr<ROW>> m_rows;
     size_t                  m_width;
 };

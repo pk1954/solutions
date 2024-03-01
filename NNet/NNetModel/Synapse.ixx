@@ -37,7 +37,7 @@ public:
 
     MicroMeter    GetExtension() const final { return KNOT_WIDTH; }
     MicroMeterPnt GetPos()       const final { return m_pos; }
-    MicroMeterPnt GetAddPos()    const       { return m_umPntTop; }
+    MicroMeterPnt GetAddPos()    const;
 
     NobIoMode GetIoMode()    const final { return NobIoMode::internal; }
     NobType   GetNobType()   const final { return NobType::Value::synapse; }
@@ -110,14 +110,16 @@ private:
 	inline static MicroMeter const OFF_DIST    { PIPE_HALF + GAP + RADIUS }; // distance from mainpos to base line
 
     void drawSynapse(DrawContext const&, MicroMeter const, Color const) const;
-    void recalcPosition() const;
+    void calcPosition() const;
 
     MicroMeterPnt m_pos;  // inpipe and outpipe meet here
 
     mutable MicroMeterPnt m_umPntTop    { NP_NULL }; 
-    //mutable MicroMeterPnt m_umPntBase1  { NP_NULL }; 
-    //mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
-    //mutable MicroMeterPnt m_umPntCenter { NP_NULL };
+    mutable MicroMeterPnt m_umPntBase1  { NP_NULL }; 
+    mutable MicroMeterPnt m_umPntBase2  { NP_NULL };
+    mutable MicroMeterPnt m_umPntCenter { NP_NULL };
+
+    mutable bool m_bDirty { true };
 
     fMicroSecs        m_usBlockStartTime { fMicroSecs::NULL_VAL() };  // NULL_VAL : no block
     mV                m_mVaddInput       { 0._mV };
@@ -131,7 +133,7 @@ private:
     enum class tState  : uint8_t { idle, leadPulse, blockedIdle, blockedPulse, trailPulse };
     tState m_state { tState::idle };
 
-    bool              m_bBlockActive     { false };
+    bool m_bBlockActive { false };
 
     bool isDefined() const { return m_pPipeIn && m_pPipeOut && m_pPipeAdd; }
     void block();

@@ -504,7 +504,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_IMPORT_MODEL:
 			m_cmdStack.Clear();
-			if (!NNetModelIO::Import(NNetModelIO::GetModelFileName(),	NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
+			if (!NNetModelIO::Import(NNetModelIO::GetModelFileName(), NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
 				SendCommand(IDM_NEW_MODEL, 0);
 			return true;
 

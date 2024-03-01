@@ -172,7 +172,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 		}
 	}
-	if (m_pNMRI->GetFilteredImageC())
+	if (m_pNMRI->GetScanImageC())
 	{
 		AppendMenu
 		(
