@@ -295,6 +295,10 @@ void ScanMatrix::drawSensorDensityMap(DrawContext const& context)
 			}
 		);
 	}
+	else
+	{
+		DrawScanAreaBackground(context);
+	}
 }
 
 void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const

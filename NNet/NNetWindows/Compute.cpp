@@ -40,18 +40,16 @@ Compute::~Compute() = default;
 
 void Compute::Initialize   // runs in main thread
 (
-	SlowMotionRatio* const pSlowMotionRatio,
-	Observable* const pRunObservable,
-	Observable* const pPerformanceObservable,
-	Observable* const pDynamicModelObservable,
-	Observable* const pLockModelObservable,
-	ScanMatrix* const pScanMatrix
+	SlowMotionRatio * const pSlowMotionRatio,
+	Observable      * const pRunObservable,
+	Observable      * const pPerformanceObservable,
+	Observable      * const pDynamicModelObservable,
+	ScanMatrix      * const pScanMatrix
 )
 {
 	m_pRunObservable          = pRunObservable;
 	m_pPerformanceObservable  = pPerformanceObservable;
 	m_pDynamicModelObservable = pDynamicModelObservable;
-	m_pLockModelObservable    = pLockModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
 	m_pScanMatrix             = pScanMatrix;
 }

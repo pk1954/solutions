@@ -9,6 +9,7 @@ module;
 
 module NNetModel:NNetModelWriterInterface;
 
+import Observable;
 import Types;
 import :IoLinePair;
 import :NobType;
@@ -21,9 +22,9 @@ import :PosNob;
 using std::make_unique;
 using std::unique_ptr;
 
-unique_ptr<Model> NNetModelWriterInterface::CreateNewModel()
+unique_ptr<Model> NNetModelWriterInterface::CreateNewModel(Observable * const pLockModelObservable)
 {
-	unique_ptr<Model> upModel { make_unique<Model>() };
+	unique_ptr<Model> upModel { make_unique<Model>(pLockModelObservable) };
 	m_pModel = upModel.get();
 	return move(upModel);
 }

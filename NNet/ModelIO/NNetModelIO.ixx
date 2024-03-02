@@ -11,6 +11,7 @@ module;
 
 export module NNetModelIO;
 
+import Observable;
 import Types;
 import Wrapper;
 import Script;
@@ -28,7 +29,7 @@ export class NNetModelIO
 {
 public:
 
-	static void Initialize();
+	static void Initialize(Observable * const);
 
 	/// import ///
 
@@ -60,6 +61,8 @@ public:
 	}
 
 private:
+
+	inline static Observable * m_pLockModelObservable { nullptr };
 
 	inline static unique_ptr<InputOutputUI>   m_upImportUI;
 	inline static vector<unique_ptr<Wrapper>> m_wrapVector;

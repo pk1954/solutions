@@ -14,6 +14,7 @@ module NNetModel:Model;
 
 import HiResTimer;
 
+import Observable;
 import Types;
 import Signals;
 import IoConstants;
@@ -45,12 +46,14 @@ using std::setw;
 using std::right;
 using std::left;
 
-Model::Model()
+Model::Model(Observable * const	pLockModelObservable)
 {
-	m_upNobs       = make_unique<UPNobList>();
-	m_upSigGenList = make_unique<UPSigGenList>();
-	m_upRaster     = make_unique<Raster>();
-	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
+	m_pLockModelObservable = pLockModelObservable;
+	m_upNobs               = make_unique<UPNobList>();
+	m_upSigGenList         = make_unique<UPSigGenList>();
+	m_upRaster             = make_unique<Raster>();
+	m_upParam              = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
+	RejectScanImage(); 
 }
 
 unsigned int Model::printNobType
@@ -241,6 +244,7 @@ void Model::ResetModel()
 	m_upSigGenList->Clear();
 	m_sensorList.Clear();
 	m_description.ClearDescription();
+	RejectScanImage();
 	SimulationTime::Set();
 	m_wstrModelFilePath = L"";
 }
@@ -265,6 +269,7 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 void Model::CreateScanImage()
 { 
 	m_upImageScanned = make_unique<ScanImage>(GetScanAreaSize()); 
+	m_pLockModelObservable->NotifyAll();
 }
 
 void Model::ReplaceScanImage(unique_ptr<ScanImage> up) 
@@ -276,4 +281,5 @@ void Model::ReplaceScanImage(unique_ptr<ScanImage> up)
 void Model::RejectScanImage()
 { 
 	m_upImageScanned.release(); 
+	m_pLockModelObservable->NotifyAll();
 }

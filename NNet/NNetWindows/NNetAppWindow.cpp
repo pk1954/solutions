@@ -77,7 +77,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	Command          ::Initialize(&m_cmdStack, &m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 	BaseCommand      ::Initialize(&m_sound);
-	NNetModelIO      ::Initialize();
+	NNetModelIO      ::Initialize(&m_lockModelObservable);
 
 	m_simuRunning   .Initialize(&m_compute);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
@@ -138,11 +138,10 @@ void NNetAppWindow::Start(MessagePump & pump)
 		&m_runObservable,
 		&m_performanceObservable,
 		&m_dynamicModelObservable,
-		&m_lockModelObservable,
 		&m_scanMatrix
 	);
 
-	m_upModel = m_nmwi.CreateNewModel();
+	m_upModel = m_nmwi.CreateNewModel(&m_lockModelObservable);
 	m_pNMRI   = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
@@ -445,7 +444,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_SCAN:
 			m_compute.StartScan();
-			m_lockModelObservable.NotifyAll();
 			return true;
 
 		case IDM_STARTING_SCAN:
@@ -458,7 +456,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_UNLOCK:
 			m_nmwi.RejectScanImage();
-			m_lockModelObservable.NotifyAll();
 			return true;
 
 		case IDM_FORWARD:
@@ -659,7 +656,7 @@ bool NNetAppWindow::AskNotUndoable()
 {
 	if (m_appTitle.AnyUnsavedChanges())
 	{
-		int iRes = MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\nContinue?", L"Warning", MB_YESNO);
+		int iRes = MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\n\nContinue?", L"Warning", MB_YESNO);
 		return iRes == IDYES;
 	}
 	return true;

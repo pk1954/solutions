@@ -34,7 +34,6 @@ public:
 		Observable      * const,
 		Observable      * const,
 		Observable      * const,
-		Observable      * const,
 		ScanMatrix      * const
 	);
 
@@ -65,7 +64,6 @@ private:
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };
 	Observable      * m_pDynamicModelObservable { nullptr };
-	Observable      * m_pLockModelObservable    { nullptr };
 	bool              m_bRunning                { false }; 
 	HiResClockGen     m_computeClockGen;
 	HiResTimer        m_computeTimer;

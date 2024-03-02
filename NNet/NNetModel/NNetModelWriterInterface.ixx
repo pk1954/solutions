@@ -12,6 +12,7 @@ module;
 
 export module NNetModel:NNetModelWriterInterface;
 
+import Observable;
 import BoolOp;
 import Types;
 import Signals;
@@ -39,7 +40,7 @@ using std::move;
 export class NNetModelWriterInterface : public NNetModelReaderInterface
 {
 public:
-    unique_ptr<Model> CreateNewModel();
+    unique_ptr<Model> CreateNewModel(Observable * const);
 
     void  CreateInitialNobs();
     void  SelectNob          (NobId const, bool const);

@@ -124,8 +124,8 @@ void Synapse::calcPosition() const
 		MicroMeter    const umCrit          { CrossProduct(umPntBaseVector, umPntAddDir) };
 		float         const fDirection      { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
 		MicroMeterPnt const umPntCenter     { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
-		MicroMeter    const umTop           { EXTENSION * ( 2.0f * SQRT3DIV3) * fDirection };
-		MicroMeter    const umBase          { EXTENSION * (-1.0f * SQRT3DIV3) * fDirection };
+		MicroMeter    const umTop           { (CENTER_DIST * 2.0f) * fDirection };
+		MicroMeter    const umBase          { - CENTER_DIST * fDirection };
 		MicroMeterPnt const umPntBase       { umPntCenter + umPntOrtho.ScaledTo(umBase) };
 		MicroMeterPnt const umPntVecScaled  { umPntBaseVector.ScaledTo(EXTENSION) };
 		m_umPntBase1  = umPntBase + umPntVecScaled;

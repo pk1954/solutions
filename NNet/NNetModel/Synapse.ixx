@@ -67,6 +67,8 @@ public:
 
     void SetAddPipe(Pipe*);
 
+    void DirectionDirty() final { m_bDirty = true; } 
+
     void ClearDynamicData() final;
 
     void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;

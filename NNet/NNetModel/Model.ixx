@@ -39,7 +39,7 @@ export class Model
 {
 public:
 
-	Model();
+	Model(Observable * const);
 
 	// const functions
 
@@ -168,4 +168,5 @@ private:
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
+	Observable               * m_pLockModelObservable;
 };

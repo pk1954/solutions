@@ -59,8 +59,9 @@ using std::bit_cast;
 using std::endl;
 using std::setprecision;
 
-void NNetModelIO::Initialize()
+void NNetModelIO::Initialize(Observable * const pLockModelObservable)
 {
+    m_pLockModelObservable = pLockModelObservable;
     AddModelWrapper<WrapProtocol       >(L"Protocol");
     AddModelWrapper<WrapDescription    >(L"Description");
     AddModelWrapper<WrapGlobalParameter>(L"GlobalParameter");
@@ -259,7 +260,7 @@ bool NNetModelIO::Import
     m_wstrFile2Read   = wstrNewPath;
     m_upImportUI      = move(upInputUI);
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
-    m_upImportedModel = m_upImportedNMWI->CreateNewModel();
+    m_upImportedModel = m_upImportedNMWI->CreateNewModel(m_pLockModelObservable);
     ::RunAsAsyncThread(importModelThreadProc, nullptr);
     return true;
 }
