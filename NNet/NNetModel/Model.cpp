@@ -46,13 +46,17 @@ using std::setw;
 using std::right;
 using std::left;
 
-Model::Model(Observable * const	pLockModelObservable)
+void Model::Initialize(Observable * const pLockModelObservable)
 {
 	m_pLockModelObservable = pLockModelObservable;
-	m_upNobs               = make_unique<UPNobList>();
-	m_upSigGenList         = make_unique<UPSigGenList>();
-	m_upRaster             = make_unique<Raster>();
-	m_upParam              = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
+}
+
+Model::Model()
+{
+	m_upNobs       = make_unique<UPNobList>();
+	m_upSigGenList = make_unique<UPSigGenList>();
+	m_upRaster     = make_unique<Raster>();
+	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
 	RejectScanImage(); 
 }
 

@@ -39,7 +39,9 @@ export class Model
 {
 public:
 
-	Model(Observable * const);
+	static void Initialize(Observable * const);
+
+	Model();
 
 	// const functions
 
@@ -157,6 +159,8 @@ public:
 private:
 	unsigned int printNobType(unsigned int, NobType::Value) const;
 
+	inline static Observable * m_pLockModelObservable = nullptr;
+
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
@@ -168,5 +172,4 @@ private:
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
-	Observable               * m_pLockModelObservable;
 };

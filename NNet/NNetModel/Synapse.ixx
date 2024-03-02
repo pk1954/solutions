@@ -26,7 +26,6 @@ export class Synapse : public PosNob
 public:
 
     Synapse(MicroMeterPnt const&);
-    //Synapse(Synapse const&);
 
     static bool TypeFits(NobType const type) { return type.IsSynapseType(); }
 

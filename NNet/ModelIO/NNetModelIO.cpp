@@ -260,7 +260,7 @@ bool NNetModelIO::Import
     m_wstrFile2Read   = wstrNewPath;
     m_upImportUI      = move(upInputUI);
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
-    m_upImportedModel = m_upImportedNMWI->CreateNewModel(m_pLockModelObservable);
+    m_upImportedModel = m_upImportedNMWI->CreateNewModel();
     ::RunAsAsyncThread(importModelThreadProc, nullptr);
     return true;
 }

@@ -73,6 +73,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	DefineUtilityWrapperFunctions();
 
 	WinManager       ::Initialize();
+	Model            ::Initialize(&m_lockModelObservable);
 	Signal           ::Initialize(&m_dynamicModelObservable);
 	Command          ::Initialize(&m_cmdStack, &m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
@@ -141,7 +142,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		&m_scanMatrix
 	);
 
-	m_upModel = m_nmwi.CreateNewModel(&m_lockModelObservable);
+	m_upModel = m_nmwi.CreateNewModel();
 	m_pNMRI   = static_cast<NNetModelReaderInterface *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);

@@ -37,15 +37,6 @@ void Synapse::RecalcDelayBuffer()
 	m_pulseBuffer.Resize(bufSize, 0.0_mV);
 }
 
-//Synapse::Synapse(Synapse const & rhs)
-//	: PosNob(NobType::Value::synapse)
-//{
-//	PosNob::operator=(rhs);
-//	m_pPipeIn  = rhs.m_pPipeIn;
-//	m_pPipeOut = rhs.m_pPipeOut;
-//	m_pPipeAdd = rhs.m_pPipeAdd;
-//}
-
 void Synapse::ClearDynamicData()
 {
 	PosNob::ClearDynamicData();
