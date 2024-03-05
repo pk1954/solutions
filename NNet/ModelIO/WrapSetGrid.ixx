@@ -14,8 +14,6 @@ import BoolWrapper;
 import RootWindow;
 import WinManager;
 
-using std::wostream;
-using std::wstring;
 using std::endl;
 
 export class WrapSetGrid : public Wrapper

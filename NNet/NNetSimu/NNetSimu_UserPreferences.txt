@@ -2,9 +2,10 @@
 SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  OFF
-ReadModel "D:\SW-projects\Delivery\V5_1\BC23xz2.mod"
+ReadModel "D:\SW-projects\Delivery\V5_1\BC23xy.mod"
 InputCablesVisibility 1
 ScanAreaVisibility  ON
+ModelFront  OFF
 ApplyFilter  OFF
 SetBKColor IDM_MAIN_WINDOW RGB(255,255,240)
 SetBKColor IDM_MINI_WINDOW RGB(255,255,240)

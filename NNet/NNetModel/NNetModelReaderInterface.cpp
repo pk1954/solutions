@@ -33,12 +33,6 @@ bool NNetModelReaderInterface::IsSelected(NobId const id) const
 	return p ? p->IsSelected() : false; 
 }
 
-NobType NNetModelReaderInterface::GetNobType(NobId const id) const
-{
-	auto p { m_pModel->GetNobConstPtr<Nob const *>(id) };
-	return p ? p->GetNobType() : NobType::Value::undefined; 
-}
-
 Degrees NNetModelReaderInterface::GetDirection(NobId const id) const 
 { 
 	auto p { m_pModel->GetNobConstPtr<IoConnector const *>(id) };
@@ -91,17 +85,6 @@ bool NNetModelReaderInterface::GetDescriptionLine(int const iLine, wstring & wst
 	return m_pModel->GetDescriptionLine(iLine, wstrLine);
 };
 
-// IsConnectionCandidate: Sort out obvious non-candidates
-
-bool NNetModelReaderInterface::IsConnectionCandidate(NobId const idSrc, NobId const idDst) const
-{
-	if (idSrc == idDst)
-		return false; 
-	if (IsConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
-		return false;
-	return true;
-}
-
 ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, NobId const idDst) const
 {
 	using enum ConnectionType;
@@ -112,7 +95,7 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	if (::IsUndefined(idSrc))
 		return ct_none;
 
-	if (!IsConnectionCandidate(idSrc, idDst))
+	if (!m_pModel->IsConnectionCandidate(idSrc, idDst))
 		return ct_none;
 
 	NobType const typeSrc { GetNobType(idSrc) };
@@ -183,25 +166,6 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	}
 
 	return ct_none;
-}
-
-bool NNetModelReaderInterface::IsConnectedTo(NobId const idSrc, NobId const idDst) const
-{
-	if (GetNobType(idSrc).IsPipeType())
-		return isConnectedToPipe(idDst, idSrc);
-	if (GetNobType(idDst).IsPipeType())
-		return isConnectedToPipe(idSrc, idDst);
-	else
-		return false;
-}
-
-bool NNetModelReaderInterface::isConnectedToPipe(NobId const idNob, NobId const idPipe) const
-{
-	if (idNob == m_pModel->GetStartKnotId(idPipe))
-		return true;
-    if (idNob == m_pModel->GetEndKnotId(idPipe))
-		return true;
-	return false;
 }
 
 void NNetModelReaderInterface::DrawExterior

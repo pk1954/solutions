@@ -102,7 +102,6 @@ private:
 	MainScales    m_mainScales;
 	HWND          m_hwndToolTipp           { nullptr };
 
-	bool       setTargetNob        (MicroMeterPnt const&);
 	bool       setScanAreaHandle   (MicroMeterPnt const&);
 	bool       setHighlightedNob   (MicroMeterPnt const&);
 	bool       setHighlightedSensor(MicroMeterPnt const&);

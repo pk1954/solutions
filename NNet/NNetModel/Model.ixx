@@ -18,6 +18,7 @@ import Raster;
 import Signals;
 import BoolType;
 import Vector2D;
+import ColorLUT;
 import DescriptionUI;
 import :ParamType;
 import :ModelDescription;
@@ -33,7 +34,8 @@ using std::wstring;
 using std::vector;
 using std::move;
 
-export using ScanImage = Vector2D<mV>;
+export using ScanImageRaw  = Vector2D<mV>;
+export using ScanImageByte = Vector2D<ColIndex>;
 
 export class Model
 {
@@ -51,6 +53,14 @@ public:
 		Nob const* const pNob { GetConstNob(id) };
 		return (pNob && HasType<T>(*pNob)) ? static_cast<T>(pNob) : nullptr;
 	}
+
+	NobType GetNobType(NobId const id) const
+	{
+		auto p { GetNobConstPtr<Nob const *>(id) };
+		return p ? p->GetNobType() : NobType::Value::undefined; 
+	}
+
+	bool IsConnectionCandidate(NobId const, NobId const) const;
 
 	void CheckModel() const;
 	void CheckId(NobId const) const;
@@ -70,7 +80,7 @@ public:
 
 	bool  GetDescriptionLine(int const, wstring&) const;
 
-	NobId FindNobAt(MicroMeterPnt const& umPoint, auto const& crit) const // TODO: Template!
+	NobId ModelFindNobAt(MicroMeterPnt const& umPoint, auto const& crit) const // TODO: Template!
 	{
 		NobId idRes{ NO_NOB };
 
@@ -131,8 +141,8 @@ public:
 	MicroMeter                GetScanResolution()          const { return m_upRaster->Resolution(); }
 	RasterPoint               GetScanAreaSize()            const { return m_upRaster->Size(); }
 	Raster            const & GetScanRaster()              const { return *m_upRaster.get(); }
-	ScanImage         const * GetScanImageC()              const { return m_upImageScanned.get(); }
-	ScanImage               * GetScanImage()                     { return m_upImageScanned.get(); }
+	ScanImageByte     const * GetScanImageC()          const { return m_upImage.get(); }
+	ScanImageByte           * GetScanImage()                 { return m_upImage.get(); }
 
 	// non const functions
 
@@ -144,8 +154,8 @@ public:
 	void SetParam(ParamType::Value const, float const);
 	void Reconnect(NobId const);
 	void SetScanArea(MicroMeterRect const&);
-	void CreateScanImage();
-	void ReplaceScanImage(unique_ptr<ScanImage>);
+	void CreateRawScanImage();
+	void ReplaceScanImage(unique_ptr<ScanImageByte>);
 	void RejectScanImage();
 
 	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
@@ -158,13 +168,15 @@ public:
 
 private:
 	unsigned int printNobType(unsigned int, NobType::Value) const;
+	bool isConnectedToPipe(NobId const, NobId const) const;
+	bool isConnectedTo    (NobId const, NobId const) const;
 
 	inline static Observable * m_pLockModelObservable = nullptr;
 
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
-	unique_ptr<ScanImage>      m_upImageScanned;
+	unique_ptr<ScanImageByte>  m_upImage;
 	unique_ptr<Raster>         m_upRaster;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;

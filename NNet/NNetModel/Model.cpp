@@ -163,6 +163,38 @@ Nob * Model::GetNob(NobId const id)
 	return m_upNobs->GetAt(id);
 }
 
+bool Model::isConnectedToPipe(NobId const idNob, NobId const idPipe) const
+{
+	if (idNob == GetStartKnotId(idPipe))
+		return true;
+	if (idNob == GetEndKnotId(idPipe))
+		return true;
+	return false;
+}
+
+bool Model::isConnectedTo(NobId const idSrc, NobId const idDst) const
+{
+	if (GetNobType(idSrc).IsPipeType())
+		return isConnectedToPipe(idDst, idSrc);
+	if (GetNobType(idDst).IsPipeType())
+		return isConnectedToPipe(idSrc, idDst);
+	else
+		return false;
+}
+
+bool Model::IsConnectionCandidate // IsConnectionCandidate: Sort out obvious non-candidates
+(
+	NobId const idSrc, 
+	NobId const idDst
+) const
+{
+	if (idSrc == idDst)
+		return false; 
+	if (isConnectedTo(idSrc, idDst)) // if already connected we cannot connect again
+		return false;
+	return true;
+}
+
 PosNob const * Model::GetStartNobPtr(NobId const id) const 
 { 
 	return static_cast<PosNob const*>(GetNobConstPtr<Pipe const *>(id)->GetStartNobPtr());
@@ -270,20 +302,19 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 	m_upRaster->SetRasterRect(rect);
 }
 
-void Model::CreateScanImage()
+void Model::CreateRawScanImage()
 { 
-	m_upImageScanned = make_unique<ScanImage>(GetScanAreaSize()); 
+	m_upImage = make_unique<ScanImageByte>(GetScanAreaSize()); 
 	m_pLockModelObservable->NotifyAll();
 }
 
-void Model::ReplaceScanImage(unique_ptr<ScanImage> up) 
+void Model::ReplaceScanImage(unique_ptr<ScanImageByte> up) 
 { 
-	m_upImageScanned = move(up); 
-	m_upImageScanned ->Normalize();
+	m_upImage = move(up); 
 }
 
 void Model::RejectScanImage()
 { 
-	m_upImageScanned.release(); 
+	m_upImage.release(); 
 	m_pLockModelObservable->NotifyAll();
 }

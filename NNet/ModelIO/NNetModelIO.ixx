@@ -21,8 +21,6 @@ import ThreadPoolTimer;
 
 using std::unique_ptr;
 using std::make_unique;
-using std::wostream;
-using std::wstring;
 using std::vector;
 
 export class NNetModelIO

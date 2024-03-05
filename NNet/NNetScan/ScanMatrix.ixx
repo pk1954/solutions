@@ -43,10 +43,7 @@ public:
     void DrawScanAreaBackground(DrawContext const&) const;
     void DrawScanArea(DrawContext const&);
 
-    void Notify(bool const) final 
-    { 
-        m_bDirty = true; 
-    }
+    void Notify(bool const) final { m_bDirty = true; }
 
     RasterPoint Size  ()                        const { return m_scanPixels.GetSize(); }
     RasterIndex Width ()                        const { return m_scanPixels.Width(); }
@@ -62,7 +59,7 @@ public:
     float  DivideByArea(size_t const)              const;
     float  DataPointVariance();
 
-    void DensityCorrection(ScanImage &) const;
+    void DensityCorrection(ScanImageRaw &) const;
 
     void Apply2AllScanPixels(auto const& func)
     {

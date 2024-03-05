@@ -48,7 +48,7 @@ public:
 	void Reset();
 	void StartStimulus();
 	bool IsRunning    () const { return m_bRunning; }
-	bool IsScanRunning() const { return m_upScanImageSum.get(); }
+	bool IsScanRunning() const { return m_upSumImage.get(); }
 	bool ModelLocked  () const { return m_pNMWI->ModelLocked(); }
 
 	fMicroSecs GetSimuTimeResolution() const { return m_pNMWI ? m_pNMWI->TimeResolution() : 0._MicroSecs; }
@@ -68,11 +68,12 @@ private:
 	HiResClockGen     m_computeClockGen;
 	HiResTimer        m_computeTimer;
 
-	ScanMatrix           * m_pScanMatrix { nullptr };
-	int                    m_iScanNr     { 0 };
-	RasterPoint            m_rpScanRun;
-	unique_ptr<ScanImage>  m_upScanImageSum;
-	fMicroSecs             m_usSimuNextPixelScan;
+	unique_ptr<ScanImageRaw> m_upSingleImage;
+	unique_ptr<ScanImageRaw> m_upSumImage;
+	ScanMatrix             * m_pScanMatrix { nullptr };
+	int                      m_iScanNr     { 0 };
+	RasterPoint              m_rpScanRun;
+	fMicroSecs               m_usSimuNextPixelScan;
 
 	void scanNextPixel();
 	void setRunning(bool const);

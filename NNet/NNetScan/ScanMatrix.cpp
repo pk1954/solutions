@@ -13,7 +13,6 @@ module;
 
 module ScanMatrix;
 
-import HiResTimer;
 import Types;
 import Raster;
 import SaveCast;
@@ -22,11 +21,10 @@ import ScanPixel;
 import NNetModel;
 
 using std::unique_ptr;
+using std::make_unique;
 using std::vector;
 using std::optional;
 using std::nullopt;
-using std::wcout;
-using std::endl;
 
 ScanMatrix::ScanMatrix()
 {
@@ -97,7 +95,7 @@ void ScanMatrix::Clear()
     Apply2AllScanPixels([](auto &p) { p.Clear(); });
 }
 
-void ScanMatrix::DensityCorrection(ScanImage &image) const
+void ScanMatrix::DensityCorrection(ScanImageRaw &image) const
 {
     assert(image.GetSize() == m_scanPixels.GetSize());
 	image.Divide([this](RasterPoint const& pnt){ return NrOfDataPntsInPixel(pnt); });
@@ -188,22 +186,31 @@ void ScanMatrix::drawScanRaster(DrawContext const& context)
 	}
 }
 
+void normalize(ScanImageByte * const pImage)
+{
+	if (float const fMax { Cast2Float(pImage->GetMax()) })
+		pImage->Apply2AllPixels([fMax](ColIndex& i) { i = Cast2Byte((i * 255.0f) / fMax); });
+}
+
 void ScanMatrix::drawScanImage(DrawContext const& context) const
 {
-    ScanImage const * pScanImage { m_pNMRI->GetScanImageC() };
-	assert(pScanImage);
-	unique_ptr<ScanImage> upFiltered;
+	unique_ptr<ScanImageByte> upFiltered;
+	ScanImageByte     const * pImage { m_pNMRI->GetScanImageC() };
+	assert(pImage);
+
 	if (NNetPreferences::ApplyFilter())
 	{
-		upFiltered = pScanImage->MeanFilter();
-		pScanImage = upFiltered.get();
+		upFiltered = pImage->MeanFilter();
+		normalize(upFiltered.get());
+		pImage = upFiltered.get();
 	}
+
 	m_pNMRI->GetScanRaster().DrawRasterPoints
 	(
 		context, 
-		[this, pScanImage](auto const &rp) -> Color
+		[this, pImage](auto const &rp) -> Color
 		{
-			return m_lut.Get(static_cast<int>(pScanImage->Get(rp).GetValue() * 256.0f));
+			return m_lut.Get(pImage->Get(rp));
 		}
 	);
 }
@@ -306,16 +313,11 @@ void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const
 	context.FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
 }
 
-static HiResTimer t1;
-
 void ScanMatrix::DrawScanArea(DrawContext const& context)
 {
 	if (m_pNMRI->ModelLocked())
 	{
-		t1.BeforeAction();
 		drawScanImage(context);
-		t1.AfterAction();
-		wcout << L"drawScanImage = " << t1.Average2wstring() << endl;
 	}
 	else
 	{

@@ -28,8 +28,6 @@ import WrapSetScales;
 import WrapSetGrid;
 
 using std::wofstream;
-using std::wostream;
-using std::wstring;
 using std::wcout;
 using std::endl;
 using std::filesystem::exists;

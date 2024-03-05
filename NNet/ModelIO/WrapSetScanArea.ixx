@@ -13,8 +13,6 @@ import IoUtil;
 import NNetModelIO;
 import Wrapper;
 
-using std::wostream;
-using std::wstring;
 using std::endl;
 
 export class WrapSetScanArea : public Wrapper

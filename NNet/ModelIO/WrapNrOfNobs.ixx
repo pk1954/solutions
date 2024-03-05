@@ -16,7 +16,6 @@ import NNetModel;
 import IoUtil;
 import IoConstants;
 
-using std::wostream;
 using std::endl;
 
 export class WrapNrOfNobs : public Wrapper

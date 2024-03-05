@@ -58,19 +58,17 @@ public:
 	size_t Size() const { return m_pModel->Size(); }
 
 	SignalId               FindSignalId         (NNetSignalSource const * const) const;
-	bool                   IsConnectionCandidate(NobId const, NobId const) const;
 	ConnectionType         ConnectionResult     (NobId const, NobId const) const;
-	bool                   IsConnectedTo        (NobId const, NobId const) const;
 	mV                     GetVoltageAt         (NobId const, MicroMeterPnt const&) const;
 	mV                     GetVoltage           (NobId const)     const;
 	bool                   IsSelected           (NobId const)     const;
-	NobType                GetNobType           (NobId const)     const;
 	size_t                 GetNrOfSegments      (NobId const)     const;
 	size_t                 GetNrOfOutConns      (NobId const)     const;
 	size_t                 GetNrOfInConns       (NobId const)     const;
 	Degrees                GetDirection         (NobId const)     const;
 	SignalGenerator const* GetSigGenC           (NobId const)     const;
 	wstring                GetTypeName          (NobId const id)  const { return NobType::GetName(GetNobType(id).GetValue()); };
+	NobType                GetNobType           (NobId const id)  const { return m_pModel->GetNobType(id); }
 	MicroMeterPnt          GetNobPos            (NobId const id)  const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
 	PosNob          const* GetConstPosNobPtr    (NobId const id)  const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
 	Nob             const* GetConstNob          (NobId const id)  const { return m_pModel->GetConstNob(id); }
@@ -102,7 +100,7 @@ public:
 	MicroMeter             GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 	RasterPoint            GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
 	Raster          const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
-	ScanImage       const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
+	ScanImageByte   const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	bool                   ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
 	int                    GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
 	bool                   HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
@@ -173,14 +171,18 @@ public:
 		return pNob ? pNob->GetParentNob() : nullptr;
 	}
 
-	NobId FindNobAt(MicroMeterPnt const& umPnt) const
+	NobId FindAnyNobAt(MicroMeterPnt const& umPnt) const
 	{
-		return m_pModel->FindNobAt(umPnt, [](auto&) { return true; });
+		return m_pModel->ModelFindNobAt(umPnt, [](auto&) { return true; });
 	}
 
-	NobId FindNobAt(MicroMeterPnt const& umPnt, auto const& crit) const
+	NobId FindConnectionCandidate
+	(
+		MicroMeterPnt const& umPnt,
+		NobId         const id
+	) const
 	{
-		return m_pModel->FindNobAt(umPnt, crit);
+		return m_pModel->ModelFindNobAt(umPnt, [this, id](auto& s) { return m_pModel->IsConnectionCandidate(id, s.GetId()); });
 	}
 
 	bool GetDescriptionLine(int const, wstring&) const;
@@ -216,7 +218,4 @@ public:
 
 protected:
 	Model * m_pModel;
-
-private:
-	bool isConnectedToPipe(NobId const, NobId const) const;
 };

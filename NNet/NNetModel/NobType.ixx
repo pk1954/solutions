@@ -17,6 +17,7 @@ import IoConstants;
 using std::wostream;
 using std::wstring;
 using std::size_t;
+using std::uint8_t;
 
 export class NobType
 {

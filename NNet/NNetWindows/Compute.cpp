@@ -81,10 +81,11 @@ void Compute::setRunning(bool const bMode)
 void Compute::StartScan()
 {
 	m_pScanMatrix->PrepareScanMatrix();
-	m_pNMWI->CreateScanImage();
+	m_pNMWI->CreateRawScanImage();
+	m_upSingleImage = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
+	m_upSumImage    = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
 	m_rpScanRun = RasterPoint(0, 0);
 	m_iScanNr = 1;
-	m_upScanImageSum = make_unique<ScanImage>(m_pScanMatrix->Size(), 0.0_mV);
 	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
 	Reset();
 	m_pNMWI->ClearScanImage();
@@ -119,7 +120,8 @@ void Compute::scanNextPixel()
 	m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
 
 	mV mVpixel { m_pScanMatrix->Scan(m_rpScanRun) };
-	m_pNMWI->GetScanImage()->Set(m_rpScanRun, mVpixel);
+	m_upSingleImage->Set(m_rpScanRun, mVpixel);
+	m_pNMWI->GetScanImage()->Set(m_rpScanRun, 255);
 
 	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())      // Next scan Pixel
 		return;
@@ -130,15 +132,25 @@ void Compute::scanNextPixel()
 		return;
 	                                                     // Scan finished
 	m_rpScanRun.m_y = 0;
-	*m_upScanImageSum.get() += *m_pNMWI->GetScanImage();
+	*m_upSumImage.get() += *m_upSingleImage.get();
 	m_pNMWI->ClearScanImage();
 	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
 	if (++m_iScanNr <= m_pNMWI->GetNrOfScans())
 		return;
 	                                                     // Scan series finished 
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
-	m_pScanMatrix->DensityCorrection(*m_upScanImageSum.get());
-	m_pNMWI->ReplaceScanImage(move(m_upScanImageSum));
+	m_pScanMatrix->DensityCorrection(*m_upSumImage.get());
+	m_upSumImage->Normalize();
+	unique_ptr<ScanImageByte> upScanImageByte { make_unique<ScanImageByte>(m_upSumImage->GetSize())};
+	m_upSumImage->VisitAllPixelsC
+	(
+		[this, &upScanImageByte](RasterPoint const& rp) 
+		{ 
+			ColIndex index { Cast2Byte(m_upSumImage->Get(rp).GetValue() * 255.0f) };
+			upScanImageByte->Set(rp, index);  
+		}
+	);
+	m_pNMWI->ReplaceScanImage(move(upScanImageByte));
 	m_pDynamicModelObservable->NotifyAll();
 	setRunning(false);
 }
@@ -164,7 +176,7 @@ void Compute::StartComputation()
 void Compute::StopComputation()
 {
 	if (IsScanRunning())
-		m_upScanImageSum.release();;
+		m_upSumImage.release();
 	if (IsRunning())
 		setRunning(false);
 }

@@ -231,16 +231,6 @@ bool MainWindow::connectionAllowed()
 		   m_pNMRI->ConnectionResult(m_nobIdHighlighted, m_nobIdTarget);
 }
 
-bool MainWindow::setTargetNob(MicroMeterPnt const& umCrsrPos)
-{
-	m_nobIdTarget = m_pNMRI->FindNobAt
-	(
-		umCrsrPos,
-		[this](Nob const& s) { return m_pNMRI->IsConnectionCandidate(m_nobIdHighlighted, s.GetId()); }
-	);
-	return false;
-}
-
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	if (m_pCursorPosObservable)
@@ -304,7 +294,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
 		MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
-		setTargetNob(umCrsrPos);
+		m_nobIdTarget = m_pNMRI->FindConnectionCandidate(umCrsrPos, m_nobIdHighlighted);
 	}
 	else if (m_sensorIdSelected.IsNotNull())
 	{
@@ -335,7 +325,7 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
 	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(ptCrsr) };
-	NobId         const idNob     { m_pNMRI->FindNobAt(umCrsrPos) };
+	NobId         const idNob     { m_pNMRI->FindAnyNobAt(umCrsrPos) };
 	if (IsUndefined(idNob))
 		return;
 	if (m_pNMRI->IsSelected(idNob))
@@ -625,7 +615,7 @@ bool MainWindow::selectionCommand(WPARAM const wParam)
 
 bool MainWindow::setHighlightedNob(MicroMeterPnt const& umCrsrPos)
 {
-	NobId const idHighlight { m_pNMRI->FindNobAt(umCrsrPos) };
+	NobId const idHighlight { m_pNMRI->FindAnyNobAt(umCrsrPos) };
 	if (idHighlight != m_nobIdHighlighted)
 	{
 		m_nobIdHighlighted = idHighlight;

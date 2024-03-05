@@ -68,7 +68,7 @@ public:
     SignalGenerator       * GetSigGen          (wstring const& name)    const    { return m_pModel->GetSigGenList().GetSigGen(name); }
     UPSigGen                RemoveSigGen       (SigGenId const id)               { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen                PopSigGen          ()                                { return m_pModel->GetSigGenList().PopSigGen(); }
-    ScanImage             * GetScanImage       ()                                { return m_pModel->GetScanImage(); }
+    ScanImageByte         * GetScanImage       ()                                { return m_pModel->GetScanImage(); }
     MicroSensor           * GetMicroSensor     (NobId const id)                  { return m_pModel->GetMicroSensorList().GetMicroSensor(id); }
     unique_ptr<MicroSensor> RemoveMicroSensor  (NobId const id)                  { return m_pModel->GetMicroSensorList().RemoveMicroSensor(id); }
     void                    AddMicroSensor     (unique_ptr<MicroSensor> up)      {        m_pModel->GetMicroSensorList().AddMicroSensor(move(up)); }
@@ -89,15 +89,15 @@ public:
     void SetParam      (ParamType::Value const p, float const f) { m_pModel->SetParam(p, f); }
     void SetScanArea   (MicroMeterRect const& rect)              { m_pModel->SetScanArea(rect); }
 
-    void SetDescriptionUI   (DescriptionUI & ui)       { m_pModel->SetDescriptionUI(ui); }
-    void SetModelFilePath   (wstring const & wstr)     { m_pModel->SetModelFilePath(wstr); }
-    void AddDescriptionLine (wstring const & wstr)     { m_pModel->AddDescriptionLine(wstr); }
-    void DescriptionComplete()                         { m_pModel->DescriptionComplete(); }
-    void DeselectAllNobs    () const                   { m_pModel->DeselectAllNobs(); }
-    void CreateScanImage    ()                         { m_pModel->CreateScanImage(); }
-	void ReplaceScanImage   (unique_ptr<ScanImage> up) { m_pModel->ReplaceScanImage(move(up)); }
-    void RejectScanImage    ()                         { m_pModel->RejectScanImage(); }
-    void ClearScanImage     ()                         { GetScanImage()->Set(0.0_mV); }
+    void SetDescriptionUI   (DescriptionUI & ui)          { m_pModel->SetDescriptionUI(ui); }
+    void SetModelFilePath   (wstring const & wstr)        { m_pModel->SetModelFilePath(wstr); }
+    void AddDescriptionLine (wstring const & wstr)        { m_pModel->AddDescriptionLine(wstr); }
+    void DescriptionComplete()                            { m_pModel->DescriptionComplete(); }
+    void DeselectAllNobs    () const                      { m_pModel->DeselectAllNobs(); }
+    void CreateRawScanImage ()                            { m_pModel->CreateRawScanImage(); }
+	void ReplaceScanImage(unique_ptr<ScanImageByte> up)   { m_pModel->ReplaceScanImage(move(up)); }
+    void RejectScanImage    ()                            { m_pModel->RejectScanImage(); }
+    void ClearScanImage     ()                            { GetScanImage()->Set(0); }
 
     void AddOutgoing(NobId const, Pipe *);
     void AddIncoming(NobId const, Pipe *);

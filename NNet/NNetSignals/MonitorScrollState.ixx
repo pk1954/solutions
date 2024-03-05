@@ -20,8 +20,6 @@ import NNetWrapperHelpers;
 import :MonitorWindow;
 
 using std::endl;
-using std::wstring;
-using std::wostream;
 
 export class MonitorScrollState : public Wrapper
 {
