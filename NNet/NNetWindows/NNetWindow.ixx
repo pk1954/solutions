@@ -37,7 +37,6 @@ public:
 		HWND   const,
 		DWORD  const,
 		bool   const,
-		fPixel const,
 		NNetController &,
 		MonitorWindow const *,
 		ScanMatrix *
@@ -126,7 +125,6 @@ private:
 	inline static fPixel const VRADIUS { 10._fPixel };
 
 	NNetController * m_pController     { nullptr };
-	fPixel           m_fPixRadiusLimit { };
 	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
 
 	void drawSignalCable(SignalId const&, MicroMeterPnt  const&, ID2D1SolidColorBrush&) const;

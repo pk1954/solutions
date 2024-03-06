@@ -15,8 +15,6 @@ import ScriptFile;
 import Command;
 import Wrapper;
 
-using std::wstring;
-
 export class IncludeCommand
 {
 public:

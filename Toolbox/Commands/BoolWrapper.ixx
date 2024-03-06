@@ -16,9 +16,6 @@ import IoConstants;
 import Symtab;
 import Script;
 
-using std::wostream;
-using std::wstring;
-
 export inline wstring const PREF_ON  { L"ON" };
 export inline wstring const PREF_OFF { L"OFF" };
 

@@ -29,7 +29,6 @@ void MiniWindow::Start
 (
 	HWND         const hwndParent, 
 	bool         const bShowRefreshRateDialog,
-	fPixel       const fPixBeaconLimit,
 	NNetController   & controller,
 	ScanMatrix * const pScanMatrix
 )
@@ -39,7 +38,6 @@ void MiniWindow::Start
 		hwndParent, 
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		bShowRefreshRateDialog,
-		fPixBeaconLimit,
 		controller,
 		nullptr,
 		pScanMatrix

@@ -186,12 +186,6 @@ void ScanMatrix::drawScanRaster(DrawContext const& context)
 	}
 }
 
-void normalize(ScanImageByte * const pImage)
-{
-	if (float const fMax { Cast2Float(pImage->GetMax()) })
-		pImage->Apply2AllPixels([fMax](ColIndex& i) { i = Cast2Byte((i * 255.0f) / fMax); });
-}
-
 void ScanMatrix::drawScanImage(DrawContext const& context) const
 {
 	unique_ptr<ScanImageByte> upFiltered;
@@ -201,7 +195,7 @@ void ScanMatrix::drawScanImage(DrawContext const& context) const
 	if (NNetPreferences::ApplyFilter())
 	{
 		upFiltered = pImage->MeanFilter();
-		normalize(upFiltered.get());
+		upFiltered->Normalize(255.0f);
 		pImage = upFiltered.get();
 	}
 

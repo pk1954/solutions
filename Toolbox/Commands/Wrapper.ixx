@@ -15,8 +15,9 @@ export import BoolType;
 export import Script;
 export import Symtab;
 
-using std::wostream;
-using std::wstring;
+export using std::wostream;
+export using std::wstring;
+
 using std::is_base_of;
 using std::remove_pointer_t;
 

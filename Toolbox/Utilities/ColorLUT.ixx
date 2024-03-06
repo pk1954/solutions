@@ -15,7 +15,9 @@ import Color;
 using std::min;
 using std::array;
 using std::vector;
+using std::uint8_t;
 
+export using ColIndex = uint8_t;
 export class ColorLUT
 {
 public:

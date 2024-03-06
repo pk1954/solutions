@@ -6,8 +6,11 @@ module;
 
 #include <cassert>
 #include <limits>
+#include <cstdint>
 
 export module Debug;
+
+using std::uint8_t;
 
 #ifndef NDEBUG
 
@@ -27,6 +30,14 @@ constexpr void AssertFloat(SOURCE_TYPE const value)
 	assert(static_cast<long double>(value) <= static_cast<long double>((std::numeric_limits<float>::max)()));         
 	if (std::numeric_limits<SOURCE_TYPE>::is_signed)
 		assert(static_cast<long double>(value) >= static_cast<long double>((std::numeric_limits<float>::lowest)()));         
+}
+
+export template<typename SOURCE_TYPE>
+constexpr void AssertByte(SOURCE_TYPE const value) 
+{
+	assert(static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<uint8_t>::max)()));         
+	if (std::numeric_limits<SOURCE_TYPE>::is_signed)
+		assert(static_cast<long long>(value) >= static_cast<long long>((std::numeric_limits<uint8_t>::min)()));         
 }
 
 export template<typename SOURCE_TYPE>
@@ -85,6 +96,7 @@ constexpr short AssertShortSum(SOURCE_TYPE const a, SOURCE_TYPE const b)
 #else
 export template<typename SOURCE_TYPE> constexpr void AssertLimits(SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max) {} 
 export template<typename SOURCE_TYPE> constexpr void AssertFloat        (SOURCE_TYPE const value) {}
+export template<typename SOURCE_TYPE> constexpr void AssertByte         (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertShort        (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertInt          (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertLong         (SOURCE_TYPE const value) {}

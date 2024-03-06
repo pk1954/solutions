@@ -52,7 +52,6 @@ void MainWindow::Start
 (
 	HWND          const   hwndApp,
 	bool          const   bShowRefreshRateDialog,
-	fPixel        const   fPixBeaconLimit,
 	NNetController      & controller,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,
@@ -68,7 +67,6 @@ void MainWindow::Start
 		hwndApp, 
 		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		bShowRefreshRateDialog,
-		fPixBeaconLimit,
 		controller,
 		pMonitorWindow,
 		pScanMatrix

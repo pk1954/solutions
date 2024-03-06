@@ -46,6 +46,8 @@ public:
 
 	constexpr explicit NamedType(BASE_TYPE const value) : m_value(value) {}
 
+	explicit operator bool() const noexcept { return m_value != 0; }
+
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
 	constexpr NamedType GetAbs     () const { return NamedType(abs(m_value)); }
@@ -142,6 +144,11 @@ public:
 		NamedType res { a };
 		res /= i; 
 		return res; 
+	}
+
+	friend BASE_TYPE operator/ (BASE_TYPE const a, NamedType const b)
+	{ 
+		return BASE_TYPE(a / b.GetValue());
 	}
 
 	friend BASE_TYPE operator/ (NamedType const a, NamedType const b)

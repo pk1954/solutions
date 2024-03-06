@@ -27,7 +27,6 @@ void NNetWindow::Start
 	HWND            const hwndParent, 
 	DWORD           const dwStyle,
 	bool            const bShowRefreshRateDialog,
-	fPixel          const fPixLimit,
 	NNetController      & controller,
 	MonitorWindow const * pMonitorWindow,
 	ScanMatrix    * const pScanMatrix
@@ -44,7 +43,6 @@ void NNetWindow::Start
 	m_pController          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
 	m_pScanMatrix          = pScanMatrix;
-	m_fPixRadiusLimit      = fPixLimit;
 	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
 	m_pBrushSensorSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);

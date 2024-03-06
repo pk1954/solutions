@@ -13,8 +13,6 @@ import Script;
 import Symtab;
 import Wrapper;
 
-using std::wstring;
-
 export class BreakCommand
 {
 public:

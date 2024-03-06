@@ -140,7 +140,7 @@ void Compute::scanNextPixel()
 	                                                     // Scan series finished 
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
 	m_pScanMatrix->DensityCorrection(*m_upSumImage.get());
-	m_upSumImage->Normalize();
+	m_upSumImage->Normalize(1.0f);
 	unique_ptr<ScanImageByte> upScanImageByte { make_unique<ScanImageByte>(m_upSumImage->GetSize())};
 	m_upSumImage->VisitAllPixelsC
 	(
@@ -175,10 +175,14 @@ void Compute::StartComputation()
 
 void Compute::StopComputation()
 {
-	if (IsScanRunning())
-		m_upSumImage.release();
 	if (IsRunning())
 		setRunning(false);
+}
+
+void Compute::StopScan()
+{
+	m_upSumImage.release();
+	m_upSingleImage.release();
 }
 
 void Compute::SingleStep() 

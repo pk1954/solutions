@@ -34,9 +34,8 @@ public:
 
 	void Start
 	(
-		HWND   const,
-		bool   const,
-		fPixel const,
+		HWND const,
+		bool const,
 		NNetController&,
 		Observable&,
 		Observable&,

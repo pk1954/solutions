@@ -33,7 +33,7 @@ struct UnitVector
     UnitVector& operator*= (float const factor)
     {
         for (UNIT& val : m_vector)
-            val *= factor;
+            val = static_cast<UNIT>(val * factor);
         return *this;
     }
 
@@ -160,10 +160,9 @@ public:
 
     UNIT Get(RasterPoint const& rp) const
     {
-        if (UNIT const * pUnit{ GetConstPtr(rp) })
-            return *pUnit;
-        else
-            return UNIT::NULL_VAL();
+        UNIT const* pUnit{ GetConstPtr(rp) };
+        assert(pUnit);
+        return *pUnit;
     }
 
     UNIT Get(ROW const &row, RasterIndex const rx) const
@@ -250,16 +249,16 @@ public:
 
     UNIT GetMax() const
     {
-        UNIT valMax { 0.0f };
+        UNIT valMax { 0 };
         Apply2AllPixelsC([&valMax](UNIT const v){ if (v > valMax) valMax = v; });
         return valMax;
     }
 
-    void Normalize()
+    void Normalize(float const fMax)
     {
 		UNIT unitMax { GetMax() };
-		if (unitMax.IsNotZero())
-			*this *= 1.0f / unitMax.GetValue();
+		if (unitMax)
+			*this *= fMax / unitMax;
     }
 
     void VisitAllPixels(auto const& func)
@@ -287,7 +286,6 @@ public:
         assert(m_rows.size() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
         VisitAllPixelsC([this, &dst](RasterPoint const& rp){ dst->Set(rp, getMeanFiltered(rp)); });
-        dst->Normalize();
         return move(dst);
     }
 
@@ -296,7 +294,6 @@ public:
         assert(m_rows.size() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(GetSize()) };
         VisitAllPixelsC([this, &dst](RasterPoint const& rp) { dst->Set(rp, getMedianFiltered(rp)); });
-        dst->Normalize();
         return move(dst);
     }
 
@@ -320,18 +317,16 @@ private:
 
     UNIT getMeanFiltered(RasterPoint const& rp) const
     {
-        UNIT  mean  = UNIT::ZERO_VAL();
-        float count = 0;
+        float mean { 0.0f };
         visitNeighbours
         (
             rp,
             [&](RasterPoint const& neighbour)
             {
                 mean += Get(neighbour);
-                ++count;
             }
         );
-        return mean/count;
+        return static_cast<UNIT>(mean/9.0f);
     }
 
     UNIT getMedianFiltered(RasterPoint const& rp) const

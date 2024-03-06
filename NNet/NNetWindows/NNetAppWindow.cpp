@@ -172,7 +172,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 	(
 		m_hwndApp, 
 		false,
-		30._fPixel,
 		m_NNetController,
 		m_cursorPosObservable,
 		m_coordObservable,
@@ -182,7 +181,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		& m_scanMatrix
 	);
 
-	m_miniNNetWindow.Start(m_hwndApp, true,	5._fPixel, m_NNetController, &m_scanMatrix);
+	m_miniNNetWindow.Start(m_hwndApp, true,	m_NNetController, &m_scanMatrix);
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main window
 
@@ -199,7 +198,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	configureStatusBar();
 	adjustChildWindows();
-
 
 	m_monitorWindow .Move(PixelRect{ 200_PIXEL,   0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
 	m_miniNNetWindow.Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
@@ -456,6 +454,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_UNLOCK:
+			m_compute.StopScan();
 			m_nmwi.RejectScanImage();
 			return true;
 

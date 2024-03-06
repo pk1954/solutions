@@ -2,15 +2,28 @@
 //
 // Toolbox\BasicUtils
 
+module;
+
+#include <cstdint>
+
 export module SaveCast;
 
 import Debug;
+
+using std::uint8_t;
 
 export template<typename SOURCE_TYPE>
 constexpr float Cast2Float(SOURCE_TYPE const value) 
 {
 	AssertFloat(value);
 	return static_cast<float>(value);
+}
+
+export template<typename SOURCE_TYPE>
+constexpr uint8_t Cast2Byte(SOURCE_TYPE const value) 
+{
+	AssertByte(value);
+	return static_cast<uint8_t>(value);
 }
 
 export template<typename SOURCE_TYPE>

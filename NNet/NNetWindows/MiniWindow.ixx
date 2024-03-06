@@ -20,7 +20,7 @@ using std::wstring;
 export class MiniWindow : public NNetWindow
 {
 public:
-	void Start(HWND const, bool const, fPixel const, NNetController &, ScanMatrix * const);
+	void Start(HWND const, bool const, NNetController &, ScanMatrix * const);
 
 	void   OnMouseWheel     (WPARAM const, LPARAM const) final { };  // mini window cannot be zoomed 
 	bool   OnRButtonUp      (WPARAM const, LPARAM const) final { return false; }

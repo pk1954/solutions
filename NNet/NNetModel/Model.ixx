@@ -141,8 +141,8 @@ public:
 	MicroMeter                GetScanResolution()          const { return m_upRaster->Resolution(); }
 	RasterPoint               GetScanAreaSize()            const { return m_upRaster->Size(); }
 	Raster            const & GetScanRaster()              const { return *m_upRaster.get(); }
-	ScanImageByte     const * GetScanImageC()          const { return m_upImage.get(); }
-	ScanImageByte           * GetScanImage()                 { return m_upImage.get(); }
+	ScanImageByte     const * GetScanImageC()              const { return m_upImage.get(); }
+	ScanImageByte           * GetScanImage()                     { return m_upImage.get(); }
 
 	// non const functions
 

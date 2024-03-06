@@ -43,6 +43,7 @@ public:
 	void Notify(bool const) final;
 	void SingleStep();
 	void StartScan();
+	void StopScan();
 	void StartComputation();
 	void StopComputation();
 	void Reset();
