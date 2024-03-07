@@ -154,7 +154,7 @@ public:
 	void SetParam(ParamType::Value const, float const);
 	void Reconnect(NobId const);
 	void SetScanArea(MicroMeterRect const&);
-	void CreateRawScanImage();
+	void CreateScanImage();
 	void ReplaceScanImage(unique_ptr<ScanImageByte>);
 	void RejectScanImage();
 

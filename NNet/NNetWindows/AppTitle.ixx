@@ -45,7 +45,15 @@ public:
 		return m_bUnsavedChanges; 
 	}
 
-	inline static wstring const PRODUCT_NAME { L"NNetSimu 5.3" };
+	inline static wstring const PRODUCT_NAME 
+	{ 
+		L"NNetSimu 5.3 "
+#ifndef NDEBUG
+		L"release"
+#else
+		L"debug"
+#endif
+	};
 
 private:
 	void setAppTitle()

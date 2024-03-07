@@ -78,18 +78,64 @@ void Compute::setRunning(bool const bMode)
 	m_computeTimer.BeforeAction();
 }
 
+void Compute::startScanPass()
+{
+	m_pNMWI->ClearScanImage();
+	m_rpScanRun = RasterPoint(0, 0);
+	WinManager::PostCommand2App(IDM_STARTING_SCAN, ++m_iScanNr);
+}
+
 void Compute::StartScan()
 {
+	Reset();
 	m_pScanMatrix->PrepareScanMatrix();
-	m_pNMWI->CreateRawScanImage();
+	m_pNMWI->CreateScanImage();
 	m_upSingleImage = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
 	m_upSumImage    = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
-	m_rpScanRun = RasterPoint(0, 0);
-	m_iScanNr = 1;
-	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
-	Reset();
-	m_pNMWI->ClearScanImage();
+	m_iScanNr = 0;
+	startScanPass();
 	m_usSimuNextPixelScan = SimulationTime::Get();
+}
+
+void Compute::scanNextPixel()
+{
+	m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
+
+	m_upSingleImage->Set(m_rpScanRun, m_pScanMatrix->Scan(m_rpScanRun));
+	m_pNMWI->GetScanImage()->Set(m_rpScanRun, 255);      // visualize scan progress
+
+	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())      // next scan Pixel
+		return;
+	                                                     // scan line finished
+	m_rpScanRun.m_x = 0;
+	m_pDynamicModelObservable->NotifyAll(); 
+	if (++m_rpScanRun.m_y < m_pScanMatrix->Height())
+		return;
+	                                                     // scan pass finished
+	*m_upSumImage.get() += *m_upSingleImage.get();
+	startScanPass();
+	if (m_iScanNr > m_pNMWI->GetNrOfScans())
+		finishScan();                                    // scan series finished 
+}
+
+void Compute::finishScan()
+{
+	WinManager::PostCommand2App(IDM_FINISHING_SCAN);
+	m_pScanMatrix->DensityCorrection(*m_upSumImage.get());
+	m_upSumImage->Normalize(1.0f);
+	unique_ptr<ScanImageByte> upScanImageByte { make_unique<ScanImageByte>(m_upSumImage->GetSize())};
+	m_upSumImage->VisitAllPixelsC
+	(
+		[this, &upScanImageByte](RasterPoint const& rp) 
+		{ 
+			ColIndex index { Cast2Byte(m_upSumImage->Get(rp).GetValue() * 255.0f) };
+			upScanImageByte->Set(rp, index);  
+		}
+	);
+	m_pNMWI->ReplaceScanImage(move(upScanImageByte));
+	m_pDynamicModelObservable->NotifyAll();
+	StopScan();
+	setRunning(false);
 }
 
 //HiResTimer tX;
@@ -113,46 +159,6 @@ void Compute::DoGameStuff()
 
 	if (IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))
 		scanNextPixel();
-}
-
-void Compute::scanNextPixel()
-{
-	m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
-
-	mV mVpixel { m_pScanMatrix->Scan(m_rpScanRun) };
-	m_upSingleImage->Set(m_rpScanRun, mVpixel);
-	m_pNMWI->GetScanImage()->Set(m_rpScanRun, 255);
-
-	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())      // Next scan Pixel
-		return;
-	                                                     // Scan line finished
-	m_rpScanRun.m_x = 0;
-	m_pDynamicModelObservable->NotifyAll(); 
-	if (++m_rpScanRun.m_y < m_pScanMatrix->Height())
-		return;
-	                                                     // Scan finished
-	m_rpScanRun.m_y = 0;
-	*m_upSumImage.get() += *m_upSingleImage.get();
-	m_pNMWI->ClearScanImage();
-	WinManager::PostCommand2App(IDM_STARTING_SCAN, m_iScanNr);
-	if (++m_iScanNr <= m_pNMWI->GetNrOfScans())
-		return;
-	                                                     // Scan series finished 
-	WinManager::PostCommand2App(IDM_FINISHING_SCAN, m_iScanNr);
-	m_pScanMatrix->DensityCorrection(*m_upSumImage.get());
-	m_upSumImage->Normalize(1.0f);
-	unique_ptr<ScanImageByte> upScanImageByte { make_unique<ScanImageByte>(m_upSumImage->GetSize())};
-	m_upSumImage->VisitAllPixelsC
-	(
-		[this, &upScanImageByte](RasterPoint const& rp) 
-		{ 
-			ColIndex index { Cast2Byte(m_upSumImage->Get(rp).GetValue() * 255.0f) };
-			upScanImageByte->Set(rp, index);  
-		}
-	);
-	m_pNMWI->ReplaceScanImage(move(upScanImageByte));
-	m_pDynamicModelObservable->NotifyAll();
-	setRunning(false);
 }
 
 void Compute::Reset()

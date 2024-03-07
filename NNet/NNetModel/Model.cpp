@@ -302,7 +302,7 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 	m_upRaster->SetRasterRect(rect);
 }
 
-void Model::CreateRawScanImage()
+void Model::CreateScanImage()
 { 
 	m_upImage = make_unique<ScanImageByte>(GetScanAreaSize()); 
 	m_pLockModelObservable->NotifyAll();

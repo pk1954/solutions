@@ -76,6 +76,8 @@ private:
 	RasterPoint              m_rpScanRun;
 	fMicroSecs               m_usSimuNextPixelScan;
 
+	void startScanPass();
 	void scanNextPixel();
+	void finishScan();
 	void setRunning(bool const);
 };

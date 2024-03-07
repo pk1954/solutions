@@ -302,7 +302,7 @@ private:
     void visitNeighbours
     (
         RasterPoint const& rp,
-        auto const & func
+        auto        const& func
     ) const
     {
         vector<UNIT> neighbours;
@@ -317,16 +317,18 @@ private:
 
     UNIT getMeanFiltered(RasterPoint const& rp) const
     {
-        float mean { 0.0f };
+        float fCount { 0.0f };
+        float fMean  { 0.0f };
         visitNeighbours
         (
             rp,
             [&](RasterPoint const& neighbour)
             {
-                mean += Get(neighbour);
+                fMean += Get(neighbour);
+                ++fCount;
             }
         );
-        return static_cast<UNIT>(mean/9.0f);
+        return static_cast<UNIT>(fMean/fCount);
     }
 
     UNIT getMedianFiltered(RasterPoint const& rp) const
