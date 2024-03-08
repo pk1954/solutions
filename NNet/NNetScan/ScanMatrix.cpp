@@ -97,7 +97,7 @@ void ScanMatrix::Clear()
 
 void ScanMatrix::DensityCorrection(ScanImageRaw &image) const
 {
-    assert(image.GetSize() == m_scanPixels.GetSize());
+    assert(image.Size() == m_scanPixels.Size());
 	image.Divide([this](RasterPoint const& pnt){ return NrOfDataPntsInPixel(pnt); });
 }
 

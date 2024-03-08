@@ -56,9 +56,6 @@
     <ClCompile Include="win32_evoAppWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_speedControl.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Version.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

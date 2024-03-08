@@ -9,8 +9,11 @@ module;
 
 export module GridField;
 
+import Debug;
+import Random;
 import Types;
 import Genome;
+import GeneType;
 import Strategy;
 import GridPoint;
 import Individual;

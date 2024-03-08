@@ -45,7 +45,7 @@ public:
 
     void Notify(bool const) final { m_bDirty = true; }
 
-    RasterPoint Size  ()                        const { return m_scanPixels.GetSize(); }
+    RasterPoint Size  ()                        const { return m_scanPixels.Size(); }
     RasterIndex Width ()                        const { return m_scanPixels.Width(); }
     RasterIndex Height()                        const { return m_scanPixels.Height(); }
     bool        IsValid(RasterPoint const& pnt) const { return m_scanPixels.IsValid(pnt); }

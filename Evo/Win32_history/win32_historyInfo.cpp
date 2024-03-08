@@ -8,6 +8,7 @@ module;
 #include <iostream>
 #include <sstream> 
 #include <locale>
+#include "Windows.h"
 
 module HistInfoWindow;
 

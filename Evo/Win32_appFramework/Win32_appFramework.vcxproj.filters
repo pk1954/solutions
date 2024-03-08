@@ -70,5 +70,8 @@
     <ClCompile Include="SpeedControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpeedControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

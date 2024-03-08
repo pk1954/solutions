@@ -53,7 +53,7 @@ public:
         {
             WriteCmdName(out);
             out << endl << LIST_OPEN_BRACKET << endl;
-            pImage->VisitAllPixelsC
+            pImage->Size().VisitAllRasterPointsC
             (
                 [&out, pImage](RasterPoint const &rp)
                 {

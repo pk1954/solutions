@@ -1,9 +1,8 @@
-// win32_speedControl.cpp
+// SpeedControl.cpp
 //
-// win32_appFramework
+// Win32_appFramework
 
-
-#include "win32_speedControl.h"
+module SPeedControl;
 
 StatusBar     * SpeedControl::m_pStatusBar     = nullptr;
 HistorySystem * SpeedControl::m_pHistorySystem = nullptr;
@@ -15,7 +14,7 @@ void SpeedControl::Add
 	long            const lTrackBarMin,
 	long            const lTrackBarMax,
 	long            const lTrackBarInitial
-	)
+)
 { 
 	m_pStatusBar     = pStatusBar;
 	m_pHistorySystem = pHistorySystem;

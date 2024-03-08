@@ -30,6 +30,22 @@ export struct RasterPoint
     { 
         return (m_x != rhs.m_x) || (m_y != rhs.m_y); 
     }
+
+    void VisitAllRasterPoints(auto const& func)
+    {
+        RasterPoint rp;
+        for (rp.m_y = 0; rp.m_y < m_y; ++rp.m_y)
+        for (rp.m_x = 0; rp.m_x < m_x; ++rp.m_x)
+            func(rp);
+    }
+
+    void VisitAllRasterPointsC(auto const& func) const
+    {
+        RasterPoint rp;
+        for (rp.m_y = 0; rp.m_y < m_y; ++rp.m_y)
+        for (rp.m_x = 0; rp.m_x < m_x; ++rp.m_x)
+            func(rp);
+    }
 };
 
 export class Raster
@@ -62,7 +78,7 @@ void Apply2AllC(auto const& func) const
     RasterIndex width  { RasterWidth () };
     RasterPoint rp;
     for (rp.m_y = 0; rp.m_y < height; ++rp.m_y)
-    for (rp.m_x = 0; rp.m_x < width; ++rp.m_x)
+    for (rp.m_x = 0; rp.m_x < width;  ++rp.m_x)
     {
         func(rp);
     }
