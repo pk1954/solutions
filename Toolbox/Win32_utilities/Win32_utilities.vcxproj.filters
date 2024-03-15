@@ -219,5 +219,14 @@
     <ClCompile Include="HiResClockGen.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ColLutDesigner.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ColLutDesigner.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorDialog.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

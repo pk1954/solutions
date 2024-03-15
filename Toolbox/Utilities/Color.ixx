@@ -15,13 +15,13 @@ using std::wostream;
 
 export inline COLORREF Convert2COLORREF(D2D1_COLOR_F const col)
 {
-	COLORREF color = RGB
+	COLORREF colorRef = RGB
 	(
 		static_cast<BYTE>(col.r * 255.0f),
 		static_cast<BYTE>(col.g * 255.0f),
 		static_cast<BYTE>(col.b * 255.0f)
 	);
-	return color;
+	return colorRef;
 }
 
 export inline D2D1_COLOR_F Convert2ColorF(COLORREF const color)

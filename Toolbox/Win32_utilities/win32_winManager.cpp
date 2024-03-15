@@ -117,10 +117,10 @@ public:
                 out << NAME << SPACE
                     << value.m_wstr << SPACE
                     << (
-                        IsWindowVisible(value.m_hwnd)
-                        ? (IsZoomed(value.m_hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
-                        : L"SW_HIDE"
-                        )
+                          IsWindowVisible(value.m_hwnd)
+                          ? (IsZoomed(value.m_hwnd) ? L"SW_MAXIMIZE" : L"SW_SHOWNORMAL")
+                          : L"SW_HIDE"
+                       )
                     << endl;
         }
     }

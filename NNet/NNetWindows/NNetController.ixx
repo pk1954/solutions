@@ -48,7 +48,7 @@ private:
 
 	bool                       m_bTrace           { true };
 	HCURSOR                    m_hCrsrWait        { nullptr };
-	Compute                  * m_pCompute   { nullptr };
+	Compute                  * m_pCompute         { nullptr };
 	NNetModelReaderInterface * m_pNMRI            { nullptr };
 	SlowMotionRatio          * m_pSlowMotionRatio { nullptr };
 };				          

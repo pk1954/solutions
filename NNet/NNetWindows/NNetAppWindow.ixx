@@ -14,6 +14,7 @@ export module NNetWin32:NNetAppWindow;
 import AboutBox;
 import Observable;
 import SlowMotionRatio;
+import ColLutDesigner;
 import DisplayFunctor;
 import Win32_Event;
 import Win32_Sound;
@@ -126,6 +127,8 @@ private:
 	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;
 	NNetCommandStack         m_cmdStack;
+	ColorLUT                 m_colLUT;
+	ColLutDesigner           m_colLutWindow;
 	CrsrWindow               m_crsrWindow;
 	DescriptionWindow        m_descWindow;
 	MainWindow               m_mainNNetWindow;

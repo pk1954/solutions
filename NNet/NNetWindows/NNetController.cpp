@@ -98,6 +98,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 {
     switch (wmId)
     {
+    case IDM_LUT_DESIGNER:
     case IDM_SIG_DESIGNER:
     case IDM_PERF_WINDOW:
     case IDM_CRSR_WINDOW:
@@ -136,19 +137,19 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         break;
 
     case IDM_INPUT_CABLES_ALL:
-        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::all);
+        NNetPreferences::m_bInputCables.SetVisibility(ShowInputCables::tVisibility::all);
         break;
 
     case IDM_INPUT_CABLES_NONSTD:
-        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::nonStd);
+        NNetPreferences::m_bInputCables.SetVisibility(ShowInputCables::tVisibility::nonStd);
         break;
 
     case IDM_INPUT_CABLES_ACTIVE:
-        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::active);
+        NNetPreferences::m_bInputCables.SetVisibility(ShowInputCables::tVisibility::active);
         break;
 
     case IDM_INPUT_CABLES_NONE:
-        NNetPreferences::SetInputCablesVisibility(NNetPreferences::tInputCablesVisibility::none);
+        NNetPreferences::m_bInputCables.SetVisibility(ShowInputCables::tVisibility::none);
         break;
 
     case IDD_SCAN_AREA:
@@ -161,6 +162,11 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
 
     case IDD_FILTER:
         NNetPreferences::m_bFilter.Toggle();
+        break;
+
+    case IDD_SELECT_SIGNAL_GENERATOR:
+        SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)));
+        WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
         break;
 
     default:
@@ -177,11 +183,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDD_NEW_SIGNAL_GENERATOR:
         NewSigGenCmd::Push();
         WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER),IDM_WINDOW_ON);
-        break;
-
-    case IDD_SELECT_SIGNAL_GENERATOR:
-        SetActiveSigGenCmd::Push(SigGenId(Cast2Int(lParam)));
-        WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
         break;
 
     case IDD_ADD_EEG_SENSOR:

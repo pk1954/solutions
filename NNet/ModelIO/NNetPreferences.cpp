@@ -103,12 +103,12 @@ public:
 
     void operator() (Script& script) const final
     {
-        NNetPreferences::SetInputCablesVisibility(static_cast<NNetPreferences::tInputCablesVisibility>(script.ScrReadInt()));
+        NNetPreferences::m_bInputCables.SetVisibility(static_cast<ShowInputCables::tVisibility>(script.ScrReadInt()));
     }
 
     void Write(wostream& out) const final
     {
-        out << NAME << SPACE << static_cast<int>(NNetPreferences::InputCablesVisibility());
+        out << NAME << SPACE << static_cast<int>(NNetPreferences::m_bInputCables.Visibility());
     }
 
     inline static const wstring NAME { L"InputCablesVisibility" };

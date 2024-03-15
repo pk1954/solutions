@@ -36,6 +36,11 @@ export inline LONG_PTR SetWindowStyle(HWND hwnd, LONG_PTR ptr)
     return ::SetWindowLongPtr(hwnd, GWL_STYLE, ptr);
 }
 
+export inline LONG_PTR SetWindowExStyle(HWND hwnd, LONG_PTR ptr)
+{
+    return ::SetWindowLongPtr(hwnd, GWL_EXSTYLE, ptr);
+}
+
 export inline LONG_PTR SetWindowId(HWND hwnd, LONG_PTR ptr)
 {
     return ::SetWindowLongPtr(hwnd, GWLP_ID, ptr);
@@ -43,13 +48,14 @@ export inline LONG_PTR SetWindowId(HWND hwnd, LONG_PTR ptr)
 
 export void SetEditField(HWND const hwndEditField, auto const value)
 {
-    wostringstream m_wstrBuffer;
+    wostringstream m_wstrBuffer; 
     m_wstrBuffer << value;
     ::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
 }
 
 export void Enable(HMENU hMenu, unsigned int const id, bool const bCrit)
 {
+
     EnableMenuItem(hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
 }
 
@@ -95,19 +101,29 @@ export inline bool Show(HWND const hwnd, tBoolOp const op)
     return bStateOld;
 }
 
-export inline void AddWindowStyle(HWND const hwnd, DWORD const dwStyle)
+export inline DWORD GetWindowStyle(HWND const hwnd)
 {
-    DWORD const dwOldStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-    DWORD const dwNewStyle = dwOldStyle | dwStyle;
-    SetWindowLong(hwnd, GWL_EXSTYLE, dwNewStyle);
+    return GetWindowLong(hwnd, GWL_STYLE);
 }
 
-export inline void DeleteWindowStyle(HWND const hwnd, DWORD const dwStyle)
+export inline DWORD GetWindowExStyle(HWND const hwnd)
 {
-    DWORD const dwOldStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
-    DWORD const dwNewStyle = dwOldStyle & ~dwStyle;
-    LONG  const lRes = SetWindowLong(hwnd, GWL_EXSTYLE, dwNewStyle);
-    assert(lRes == dwNewStyle);
+    return GetWindowLong(hwnd, GWL_EXSTYLE);
+}
+
+export inline void AddWindowExStyle(HWND const hwnd, LONG_PTR const dwStyle)
+{
+    LONG_PTR const dwOldStyle = GetWindowExStyle(hwnd);
+    LONG_PTR const dwNewStyle = dwOldStyle | dwStyle;
+    SetWindowExStyle(hwnd, dwNewStyle);
+}
+
+export inline void DeleteWindowExStyle(HWND const hwnd, LONG_PTR const dwStyle)
+{
+    LONG_PTR const dwOldStyle = GetWindowExStyle(hwnd);
+    LONG_PTR const dwNewStyle = dwOldStyle & ~dwStyle;
+    LONG_PTR const dwRes       = SetWindowExStyle(hwnd, dwNewStyle);
+    assert(dwRes == dwNewStyle);
 }
 
 export inline MONITORINFO GetMonitorInfo(HMONITOR hMonitor)

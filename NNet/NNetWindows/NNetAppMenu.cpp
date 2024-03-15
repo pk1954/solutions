@@ -94,6 +94,7 @@ void NNetAppMenu::Start
             ::AddMenu(hMenuWindows, MF_STRING, IDM_MINI_WINDOW,    L"Show &mini window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_MONITOR_WINDOW, L"Show m&onitor window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_SIG_DESIGNER,   L"Show &signal designer window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_LUT_DESIGNER,   L"Show color lookup table window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_DESC_WINDOW,    L"Show &description window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
@@ -139,6 +140,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
     ::Enable(m_hMenu, IDM_PARAM_WINDOW,   ! WinManager::IsVisible(RootWinId(IDM_PARAM_WINDOW  )));
     ::Enable(m_hMenu, IDM_PERF_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_PERF_WINDOW   )));
     ::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
+    ::Enable(m_hMenu, IDM_LUT_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_LUT_DESIGNER  )));
 
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
     m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());

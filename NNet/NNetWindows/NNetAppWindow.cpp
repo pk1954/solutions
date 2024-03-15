@@ -80,6 +80,12 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	BaseCommand      ::Initialize(&m_sound);
 	NNetModelIO      ::Initialize(&m_lockModelObservable);
 
+	m_colLUT.AddBasePoint(  0, Color(D2D1::ColorF::Black));
+    m_colLUT.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
+    m_colLUT.AddBasePoint(255, Color(D2D1::ColorF::Red));
+    m_colLUT.Construct();
+
+	m_scanMatrix    .Initialize(m_colLUT);
 	m_simuRunning   .Initialize(&m_compute);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio);
@@ -161,6 +167,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, &m_compute, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
+	m_colLutWindow     .Start(m_hwndApp, & m_colLUT);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
 	setModelInterface();
@@ -195,6 +202,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	WinManager::AddWindow(L"IDM_PARAM_WINDOW",   RootWinId(IDM_PARAM_WINDOW  ), m_parameterDlg,                 true,  false);
 	WinManager::AddWindow(L"IDM_PERF_WINDOW",    RootWinId(IDM_PERF_WINDOW   ), m_performanceWindow,            true,  false);
 	WinManager::AddWindow(L"IDM_SIG_DESIGNER",   RootWinId(IDM_SIG_DESIGNER  ), m_signalDesigner,               true,  true );
+	WinManager::AddWindow(L"IDM_LUT_DESIGNER",   RootWinId(IDM_LUT_DESIGNER  ), m_colLutWindow,                 true,  true );
 
 	configureStatusBar();
 	adjustChildWindows();
@@ -203,6 +211,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_miniNNetWindow.Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
 	m_descWindow    .Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
 	m_signalDesigner.Move(PixelRect{ 100_PIXEL, 100_PIXEL, 600_PIXEL, 500_PIXEL }, true);
+	m_colLutWindow  .Move(PixelRect{ 200_PIXEL, 200_PIXEL, 500_PIXEL, 400_PIXEL }, true);
 
 	m_monitorWindow    .Show(false);
 	m_miniNNetWindow   .Show(true);
@@ -213,49 +222,53 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_performanceWindow.Show(true);
 	m_descWindow       .Show(true);
 	m_signalDesigner   .Show(true);
+	m_colLutWindow     .Show(true);
 
 	if (! WinManager::GetWindowConfiguration())
 		::Show(m_hwndApp, true);
 
-	m_dynamicModelObservable      .RegisterObserver(m_mainNNetWindow);
-	m_dynamicModelObservable      .RegisterObserver(m_miniNNetWindow);
-	m_dynamicModelObservable      .RegisterObserver(m_monitorWindow);
-	m_dynamicModelObservable      .RegisterObserver(m_timeDisplay);
-	m_dynamicModelObservable      .RegisterObserver(m_crsrWindow);
-	m_staticModelObservable       .RegisterObserver(m_scanMatrix);
-	m_staticModelObservable       .RegisterObserver(m_mainNNetWindow);
-	m_staticModelObservable       .RegisterObserver(m_miniNNetWindow);
-	m_staticModelObservable       .RegisterObserver(m_monitorWindow);
-	m_staticModelObservable       .RegisterObserver(m_performanceWindow);
-	m_staticModelObservable       .RegisterObserver(m_appTitle);
-	m_staticModelObservable       .RegisterObserver(m_undoRedoMenu);
-	m_staticModelObservable       .RegisterObserver(m_appMenu);
-	m_staticModelObservable       .RegisterObserver(m_parameterDlg);
-	m_lockModelObservable         .RegisterObserver(m_parameterDlg);
-	m_lockModelObservable         .RegisterObserver(m_mainNNetWindow);
-	m_lockModelObservable         .RegisterObserver(m_appTitle);
-	m_lockModelObservable         .RegisterObserver(m_simulationControl);
-	m_highlightSigObservable      .RegisterObserver(m_mainNNetWindow);
-	m_highlightSigObservable      .RegisterObserver(m_monitorWindow);
-	m_highlightSigObservable      .RegisterObserver(m_mainNNetWindow);
-	m_cursorPosObservable         .RegisterObserver(m_crsrWindow);
-	m_performanceObservable       .RegisterObserver(m_performanceWindow);
-	m_performanceObservable       .RegisterObserver(m_slowMotionDisplay);
-	m_runObservable               .RegisterObserver(m_simulationControl);
-	NNetPreferences::m_bScanArea  .RegisterObserver(m_simulationControl);
-	NNetPreferences::m_bScanArea  .RegisterObserver(m_miniNNetWindow);
-	NNetPreferences::m_bScanArea  .RegisterObserver(m_mainNNetWindow);
-	NNetPreferences::m_bModelFront.RegisterObserver(m_mainNNetWindow);
-	NNetPreferences::m_bFilter    .RegisterObserver(m_mainNNetWindow);
-	m_slowMotionRatio             .RegisterObserver(m_compute);
-	m_slowMotionRatio             .RegisterObserver(m_slowMotionDisplay);
-	m_nmwi.GetParams()            .RegisterObserver(m_parameterDlg);
-	m_nmwi.GetParams()            .RegisterObserver(m_compute);
-	Preferences::m_bSound         .RegisterObserver(m_appMenu);
-	m_coordObservable             .RegisterObserver(m_mainNNetWindow);
-	m_coordObservable             .RegisterObserver(m_miniNNetWindow);
-	m_activeSigGenObservable      .RegisterObserver(m_mainNNetWindow);
-	m_activeSigGenObservable      .RegisterObserver(m_signalDesigner);
+	m_dynamicModelObservable       .RegisterObserver(m_mainNNetWindow);
+	m_dynamicModelObservable       .RegisterObserver(m_miniNNetWindow);
+	m_dynamicModelObservable       .RegisterObserver(m_monitorWindow);
+	m_dynamicModelObservable       .RegisterObserver(m_timeDisplay);
+	m_dynamicModelObservable       .RegisterObserver(m_crsrWindow);
+	m_staticModelObservable        .RegisterObserver(m_scanMatrix);
+	m_staticModelObservable        .RegisterObserver(m_mainNNetWindow);
+	m_staticModelObservable        .RegisterObserver(m_miniNNetWindow);
+	m_staticModelObservable        .RegisterObserver(m_monitorWindow);
+	m_staticModelObservable        .RegisterObserver(m_performanceWindow);
+	m_staticModelObservable        .RegisterObserver(m_appTitle);
+	m_staticModelObservable        .RegisterObserver(m_undoRedoMenu);
+	m_staticModelObservable        .RegisterObserver(m_appMenu);
+	m_staticModelObservable        .RegisterObserver(m_parameterDlg);
+	m_lockModelObservable          .RegisterObserver(m_parameterDlg);
+	m_lockModelObservable          .RegisterObserver(m_mainNNetWindow);
+	m_lockModelObservable          .RegisterObserver(m_appTitle);
+	m_lockModelObservable          .RegisterObserver(m_simulationControl);
+	m_lockModelObservable          .RegisterObserver(m_signalDesigner);
+	m_highlightSigObservable       .RegisterObserver(m_mainNNetWindow);
+	m_highlightSigObservable       .RegisterObserver(m_monitorWindow);
+	m_highlightSigObservable       .RegisterObserver(m_mainNNetWindow);
+	m_cursorPosObservable          .RegisterObserver(m_crsrWindow);
+	m_performanceObservable        .RegisterObserver(m_performanceWindow);
+	m_performanceObservable        .RegisterObserver(m_slowMotionDisplay);
+	m_runObservable                .RegisterObserver(m_simulationControl);
+	NNetPreferences::m_bScanArea   .RegisterObserver(m_simulationControl);
+	NNetPreferences::m_bScanArea   .RegisterObserver(m_miniNNetWindow);
+	NNetPreferences::m_bScanArea   .RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_bModelFront .RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_bFilter     .RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_bInputCables.RegisterObserver(m_mainNNetWindow);
+	m_slowMotionRatio              .RegisterObserver(m_compute);
+	m_slowMotionRatio              .RegisterObserver(m_slowMotionDisplay);
+	m_nmwi.GetParams()             .RegisterObserver(m_parameterDlg);
+	m_nmwi.GetParams()             .RegisterObserver(m_compute);
+	Preferences::m_bSound          .RegisterObserver(m_appMenu);
+	m_coordObservable              .RegisterObserver(m_mainNNetWindow);
+	m_coordObservable              .RegisterObserver(m_miniNNetWindow);
+	m_activeSigGenObservable       .RegisterObserver(m_mainNNetWindow);
+	m_activeSigGenObservable       .RegisterObserver(m_signalDesigner);
+	m_colLUT                       .RegisterObserver(m_mainNNetWindow);
 
 	m_appMenu.Notify(true);
 	m_undoRedoMenu.Notify(true);

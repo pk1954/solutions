@@ -11,78 +11,64 @@ module;
 export module ColorLUT;
 
 import Color;
+import Observable;
 
-using std::min;
 using std::array;
 using std::vector;
 using std::uint8_t;
 
 export using ColIndex = uint8_t;
-export class ColorLUT
+export class ColorLUT : public Observable
 {
 public:
 
-    void AddBasePoint
-    (
-        int   pos,
-        Color col
-    )
-    {
-        for (auto it = m_basePoints.begin(); it < m_basePoints.end(); ++it)
-        {
-            if (it->pos == pos)
-            {
-                it->col = col;
-                return;
-            }
-            if (it->pos > pos)
-            {
-                m_basePoints.insert(it, BasePoint(pos, col));
-                return;
-            }
-        }
-
-        m_basePoints.push_back(BasePoint(pos, col));
-    }
-
-    void Construct()
-    {
-        assert(m_basePoints.size() >= 2);
-        for (int bpIndex = 0; bpIndex < m_basePoints.size() - 1; ++bpIndex)
-        {
-            BasePoint const& bpStart  { m_basePoints[bpIndex] };
-            BasePoint const& bpEnd    { m_basePoints[bpIndex + 1] };
-            Color     const  colStart { bpStart.col };
-            Color     const  colEnd   { bpEnd  .col };
-            Color     const  colDiff  { colEnd - colStart };
-            Color     const  colStep  { colDiff / static_cast<float>(bpEnd.pos - bpStart.pos) };
-            for (int colIndex = bpStart.pos; colIndex <= bpEnd.pos; ++colIndex)
-            {
-                m_table[colIndex] = colStart + colStep * static_cast<float>(colIndex - bpStart.pos);
-            }
-        }        
-        m_basePoints.clear();
-
-    }
-
-    Color Get(int const pos) const
-    {
-        int const index { min(pos, 255) };
-        return m_table.at(index);
-    }
-
-    //void Clear()
-    //{
-    //    m_basePoints.clear();
-    //}
-
-private:
+    inline static int MAX_INDEX { 255 };
 
     struct BasePoint
     {
-        int   pos;
-        Color col;
+        ColIndex colIndex;
+        Color    col;
     };
+
+    size_t Size() const { return m_basePoints.size(); }
+
+    bool IsMoveable(BasePoint const * const pbp)
+    {
+        if (pbp == &m_basePoints.front())
+            return false;
+        if (pbp == &m_basePoints.back())
+            return false;
+        return true;
+    }
+
+    void  AddBasePoint(ColIndex);
+    void  AddBasePoint(ColIndex, Color);
+    void  RemoveBasePoint(BasePoint * const);
+    void  Construct();
+    Color Get(ColIndex const) const;
+    void  Clear();
+
+    void Apply2AllBasePoints(auto const &func)
+    {
+        for (auto &bp : m_basePoints)
+            func(bp);
+    }
+
+    void Apply2AllBasePointsC(auto const &func) const
+    {
+        for (auto const &bp : m_basePoints)
+            func(bp);
+    }
+
+    void Apply2AllRanges(auto const &func)
+    {
+        assert(m_basePoints.size() >= 2);
+        for (int bpIndex = 0; bpIndex < m_basePoints.size() - 1; ++bpIndex)
+            func(m_basePoints[bpIndex], m_basePoints[bpIndex+1] );
+    }
+
+private:
+
     vector<BasePoint> m_basePoints;
     array<Color, 256> m_table;
 };

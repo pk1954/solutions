@@ -50,6 +50,23 @@ public:
 	}
 };
 
+export class ShowInputCables : public Observable
+{
+public:
+	enum class tVisibility { all, nonStd, active, none };
+
+	tVisibility Visibility() { return m_visibility; }
+
+	void SetVisibility(tVisibility v) 
+	{ 
+		m_visibility = v; 
+        NotifyAll(true);
+	}
+
+private:
+	inline static tVisibility m_visibility { tVisibility::nonStd };
+};
+
 export class NNetPreferences
 {
 public:
@@ -57,25 +74,20 @@ public:
 
 	static void SetModelInterface(NNetModelReaderInterface const *);
 
-	enum class tInputCablesVisibility { all, nonStd, active, none };
-
-	static tInputCablesVisibility InputCablesVisibility()   { return m_inputCablesVisibility; }
-	static void SetInputCablesVisibility(tInputCablesVisibility v) { m_inputCablesVisibility = v; }
-
 	static NNetModelReaderInterface const *GetModelInterface() { return m_pNMRI; };
 
 	static bool ScanAreaVisible() { return m_bScanArea.Get(); }
 	static bool ModelFront     () { return m_bModelFront.Get(); }
 	static bool ApplyFilter    () { return m_bFilter.Get(); }
 
-	inline static ShowArrows m_bArrows;
-	inline static BoolType   m_bSensorPoints { false };
-	inline static BoolType   m_bScanArea     { false };
-	inline static BoolType   m_bModelFront   { true  };
-	inline static BoolType   m_bFilter       { false };
+	inline static ShowInputCables m_bInputCables;
+	inline static ShowArrows      m_bArrows;
+	inline static BoolType        m_bSensorPoints { false };
+	inline static BoolType        m_bScanArea     { false };
+	inline static BoolType        m_bModelFront   { true  };
+	inline static BoolType        m_bFilter       { false };
 
 private:
 
-	inline static tInputCablesVisibility           m_inputCablesVisibility { tInputCablesVisibility::nonStd };
-	inline static NNetModelReaderInterface const * m_pNMRI                 { nullptr };
+	inline static NNetModelReaderInterface const * m_pNMRI { nullptr };
 };

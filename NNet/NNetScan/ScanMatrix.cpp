@@ -26,13 +26,10 @@ using std::vector;
 using std::optional;
 using std::nullopt;
 
-ScanMatrix::ScanMatrix()
+void ScanMatrix::Initialize(ColorLUT const& colLUT)
 {
     InitializeCriticalSection(&m_cs);
-    m_lut.AddBasePoint(  0, Color(D2D1::ColorF::Black));
-    m_lut.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
-    m_lut.AddBasePoint(255, Color(D2D1::ColorF::Red));
-    m_lut.Construct();
+	m_pLut = &colLUT;
 }
 
 void ScanMatrix::SetModelInterface(NNetModelReaderInterface* const p)
@@ -204,7 +201,7 @@ void ScanMatrix::drawScanImage(DrawContext const& context) const
 		context, 
 		[this, pImage](auto const &rp) -> Color
 		{
-			return m_lut.Get(pImage->Get(rp));
+			return m_pLut->Get(pImage->Get(rp));
 		}
 	);
 }

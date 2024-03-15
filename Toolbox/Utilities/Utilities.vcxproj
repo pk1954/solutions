@@ -23,6 +23,7 @@
     <ClCompile Include="BoolOp.ixx" />
     <ClCompile Include="BoolType.ixx" />
     <ClCompile Include="Color.ixx" />
+    <ClCompile Include="ColorLUT.cpp" />
     <ClCompile Include="ColorLUT.ixx" />
     <ClCompile Include="DescriptionUI.ixx" />
     <ClCompile Include="DisplayFunctor.ixx" />

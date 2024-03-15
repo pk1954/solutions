@@ -283,9 +283,9 @@ ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
 
 void D2D_driver::FillGradientRect
 (
-	fPixelRect   const & rect, 
-	Color const   colF1,
-	Color const   colF2 
+	fPixelRect const & rect, 
+	Color      const   colF1,
+	Color      const   colF2 
 ) const
 {
 	ID2D1GradientStopCollection * pGradientStopColl { simpleGradientStopCollection(colF1, colF2) };
@@ -568,7 +568,7 @@ void D2D_driver::FillDiamond
 (
 	fPixelPoint  const ptPos,
 	fPixel       const fPixSize,  
-	Color const colF
+	Color        const colF
 ) const
 {
 	fPixelPoint const ptOffset(fPixSize, fPixSize);

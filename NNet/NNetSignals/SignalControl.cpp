@@ -151,7 +151,7 @@ void SignalControl::drawDiam
 	if (fPixPnt.IsNotNull())
 	{
 		fPixel const size { (colType == tColor::HIGH) ? HIGH_DIAMOND : STD_DIAMOND };
-		Color  const col  { getColor(colType) };
+		Color  const col  { m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : getColor(colType) };
 		m_upGraphics->FillDiamond(fPixPnt, size, col);
 	}
 }
@@ -443,11 +443,11 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			Notify(true);
 		}
 		else  // left button not pressed: select
-	//		if (!m_pNMRI->ScanMode())
-			{ 
-				setPos(fPixCrsrPos);
-				Trigger();   // cause repaint
-			}
+		if (!m_pNMWI->ModelLocked())
+		{ 
+			setPos(fPixCrsrPos);
+			Trigger();   // cause repaint
+		}
 	}
 	NNetTimeGraph::OnMouseMove(wParam, lParam);
 }

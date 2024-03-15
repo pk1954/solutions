@@ -158,6 +158,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BreakCommand.ixx" />
+    <ClCompile Include="ColLutDesigner.cpp" />
+    <ClCompile Include="ColLutDesigner.ixx" />
+    <ClCompile Include="ColorDialog.ixx" />
     <ClCompile Include="Command.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />

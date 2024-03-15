@@ -219,7 +219,7 @@ bool MainWindow::OnSize(PIXEL const width, PIXEL const height)
 
 bool MainWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 {
-	m_pStaticModelObservable->NotifyAll();
+	m_pStaticModelObservable->NotifyAll();  //position of sensor cables
 	return NNetWindow::OnMove(pixPosX, pixPosY);
 };
 
@@ -581,9 +581,9 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 	UPSigGenList const& list     { m_pNMRI->GetSigGenList() };
 	SigGenId     const  idSigGen { list.GetSigGenId(*inputLine.GetSigGenC()) };
 	bool         const  bActive  { list.IsSelected(idSigGen) };
-	switch (NNetPreferences::InputCablesVisibility())
+	switch (NNetPreferences::m_bInputCables.Visibility())
 	{
-		using enum NNetPreferences::tInputCablesVisibility;
+		using enum ShowInputCables::tVisibility;
 		case all:                                              break;
 		case nonStd: if (IsStandardSigGenId(idSigGen)) return; break;
 		case active: if (!bActive)                     return; break;

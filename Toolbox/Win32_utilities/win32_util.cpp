@@ -85,9 +85,9 @@ bool Evaluate(HWND const hwndEditField, float & fValue)
 void MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, UINT const uiAlpha)
 {
     if (bMode)
-        AddWindowStyle(hwnd, WS_EX_LAYERED);
+        AddWindowExStyle(hwnd, WS_EX_LAYERED);
     else
-        DeleteWindowStyle(hwnd, WS_EX_LAYERED);
+        DeleteWindowExStyle(hwnd, WS_EX_LAYERED);
 
     bool const bRes = SetLayeredWindowAttributes(hwnd, crKey, (255 * uiAlpha) / 100, (crKey == 0) ? LWA_ALPHA : LWA_COLORKEY);
     assert(bRes);

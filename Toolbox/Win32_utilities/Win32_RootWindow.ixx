@@ -88,8 +88,9 @@ public:
 	HWND     GetDlgItem(int const i)                                              const { return ::GetDlgItem(m_hwnd, i); }
 	bool     IsCaptured()                                                         const { return ::GetCapture() == m_hwnd; }
 	int	     GetWindowTextLength()                                                const { return ::GetWindowTextLength(m_hwnd); }
-	LONG_PTR SetWindowStyle(LONG_PTR dwNew)                                       const { return ::SetWindowStyle(m_hwnd, dwNew); }
-	LONG_PTR SetWindowId   (LONG_PTR dwNew)                                       const { return ::SetWindowId   (m_hwnd, dwNew); }
+	LONG_PTR SetWindowStyle  (LONG_PTR dwNew)                                     const { return ::SetWindowStyle  (m_hwnd, dwNew); }
+	LONG_PTR SetWindowExStyle(LONG_PTR dwNew)                                     const { return ::SetWindowExStyle(m_hwnd, dwNew); }
+	LONG_PTR SetWindowId     (LONG_PTR dwNew)                                     const { return ::SetWindowId     (m_hwnd, dwNew); }
 	bool     SetWindowText(LPCWSTR        const   s)                              const { return ::SetWindowText(m_hwnd, s); }
 	bool     SetWindowText(wstring        const & s)                              const { return   SetWindowText(s.c_str()); }
 	bool     SetWindowText(wostringstream const & s)                              const { return   SetWindowText(s.str()); }

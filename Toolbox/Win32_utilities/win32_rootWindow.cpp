@@ -20,6 +20,7 @@ import Preferences;
 import Win32_Util_Resource;
 import BaseRefreshRate;
 import WinManager;
+import ColorDialog;
 
 using std::vector;
 using std::wstring;
@@ -176,18 +177,10 @@ void RootWindow::SetWindowVisibility(tOnOffAuto const mode)
 
 void RootWindow::colorDialog()
 {
-	static COLORREF acrCustClr[16]; // array of custom colors 
-	CHOOSECOLOR cc;                 // common dialog box structure 
-	ZeroMemory(&cc, sizeof(cc));
-	cc.lStructSize  = sizeof(cc);
-	cc.hwndOwner    = m_hwnd;
-	cc.lpCustColors = (LPDWORD)acrCustClr;
-	cc.rgbResult    = GetBackgroundColorRef();
-	cc.Flags        = CC_FULLOPEN | CC_RGBINIT;
-
-	if (ChooseColor(&cc) == TRUE)
+	COLORREF colorRef { GetBackgroundColorRef() };
+	if (ColorDialog(m_hwnd, colorRef))
 	{
-		SetBackgroundColorRef(cc.rgbResult);
+		SetBackgroundColorRef(colorRef);
 		Trigger();
 		WinManager::SendCommand2App(IDM_APP_DATA_CHANGED);
 	}

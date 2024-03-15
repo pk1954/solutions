@@ -82,5 +82,8 @@ export inline int const IDM_PERFORMANCE_NOTIFY   { 83 };
 
 export inline int const IDM_MOVE                 { 90 };
 export inline int const IDM_APP_DATA_CHANGED     { 91 };
+export inline int const IDM_ADD_SUPPORT_PNT      { 92 };
+export inline int const IDM_EDIT_SUPPORT_PNT     { 93 };
+export inline int const IDM_REMOVE_SUPPORT_PNT   { 94 };
 
 // application identifiers start at 100
