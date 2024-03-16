@@ -617,8 +617,8 @@ void MonitorControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam) 
 {
-	PixelPoint const pixCrsrPos { GetCrsrPosFromLparam(lParam) };
-	fPixel     const fPixCrsrX  { Convert2fPixel(pixCrsrPos.GetX()) };
+    fPixelPoint const fPixCrsrPos { GetCrsrPosFromLparamF(lParam) };
+	fPixel      const fPixCrsrX   { fPixCrsrPos.GetX() };
 	if (fPixCrsrX > m_fPixRightLimit)
 	{
 		if (SignalTooHigh())

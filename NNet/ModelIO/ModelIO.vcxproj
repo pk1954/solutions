@@ -170,6 +170,7 @@
     <ClCompile Include="NobIo.cpp" />
     <ClCompile Include="WrapActiveSigGen.ixx" />
     <ClCompile Include="NobIo.ixx" />
+    <ClCompile Include="WrapColorLUT.ixx" />
     <ClCompile Include="WrapDescription.ixx" />
     <ClCompile Include="WrapEmphasized.ixx" />
     <ClCompile Include="WrapGlobalParameter.ixx" />

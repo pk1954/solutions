@@ -76,6 +76,9 @@
     <ClCompile Include="WrapScanImage.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapColorLUT.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

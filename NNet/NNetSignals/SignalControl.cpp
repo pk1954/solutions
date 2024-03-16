@@ -405,8 +405,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
 	{
-		PixelPoint  const pixCrsrPos  { GetCrsrPosFromLparam(lParam) };
-		fPixelPoint const fPixCrsrPos { Convert2fPixelPoint(pixCrsrPos) };
+	    fPixelPoint const fPixCrsrPos { GetCrsrPosFromLparamF(lParam) };
 		SigGenStaticData  sigGenData(pSigGen->GetStaticData());
 
 		if (wParam & MK_LBUTTON)

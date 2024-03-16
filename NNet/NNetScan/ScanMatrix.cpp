@@ -201,7 +201,7 @@ void ScanMatrix::drawScanImage(DrawContext const& context) const
 		context, 
 		[this, pImage](auto const &rp) -> Color
 		{
-			return m_pLut->Get(pImage->Get(rp));
+			return m_pLut->GetColor(pImage->Get(rp));
 		}
 	);
 }
@@ -287,9 +287,9 @@ void ScanMatrix::drawSensorDensityMap(DrawContext const& context)
 			context, 
 			[this, &lut](auto const &rpRun) -> Color
 			{
-				size_t const nrOfPnts { NrOfDataPntsInPixel(rpRun) };
-				size_t const lutIndex { (255 * nrOfPnts) / MaxNrOfDataPoints() };
-				return lut.Get(Cast2Int(lutIndex));
+				size_t   const nrOfPnts { NrOfDataPntsInPixel(rpRun) };
+				ColIndex const colIndex { Cast2Byte((255 * nrOfPnts) / MaxNrOfDataPoints()) };
+				return lut.GetColor(colIndex);
 			}
 		);
 	}

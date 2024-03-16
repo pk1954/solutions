@@ -26,6 +26,7 @@ import Symtab;
 import NNetModelIO;
 import WrapSetScales;
 import WrapSetGrid;
+import WrapColorLUT;
 
 using std::wofstream;
 using std::wcout;
@@ -206,6 +207,7 @@ void NNetPreferences::Initialize()
     Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());
+    Preferences::AddWrapper(make_unique<WrapColorLUT>());
 
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
     Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);

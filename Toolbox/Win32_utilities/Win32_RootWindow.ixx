@@ -123,9 +123,9 @@ public:
 
 	void SetDlgText(int const iItem, wchar_t const* const wstrText) const {	::SetText(GetDlgItem(iItem), wstrText);	}
 
-	short      GetTrackBarPos(INT const idTrackbar)      const { return Cast2Short(SendDlgItemMessage(idTrackbar, TBM_GETPOS, 0, 0)); }
-	PixelPoint GetCrsrPosFromLparam(LPARAM const lParam) const { return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) }; }
-
+	short       GetTrackBarPos(INT const idTrackbar)      const { return Cast2Short(SendDlgItemMessage(idTrackbar, TBM_GETPOS, 0, 0)); }
+	PixelPoint  GetCrsrPosFromLparam (LPARAM const lParam) const { return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) }; }
+	fPixelPoint GetCrsrPosFromLparamF(LPARAM const lParam) const { return Convert2fPixelPoint(GetCrsrPosFromLparam(lParam)); }
 	PIXEL CrsrXpos(LPARAM const lParam) const { return PIXEL(GET_X_LPARAM(lParam)); }
 	PIXEL CrsrYpos(LPARAM const lParam) const { return PIXEL(GET_Y_LPARAM(lParam)); }
 

@@ -345,9 +345,7 @@ SigGenId MainWindow::getSigGenId(fPixelPoint const &fPixCrsr)
 
 SigGenId MainWindow::getSigGenId(LPARAM const lParam)
 {
-	PixelPoint  const ptCrsr   { GetCrsrPosFromLparam(lParam) };
-	fPixelPoint const fPixCrsr { Convert2fPixelPoint(ptCrsr) };
-	return getSigGenId(fPixCrsr);
+	return getSigGenId(GetCrsrPosFromLparamF(lParam));
 }
 
 bool MainWindow::selectSigGen(SigGenId const id)

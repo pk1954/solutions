@@ -7,6 +7,7 @@ module;
 #include <cassert>
 #include <array>
 #include <vector>
+#include <limits>
 
 export module ColorLUT;
 
@@ -16,58 +17,62 @@ import Observable;
 using std::array;
 using std::vector;
 using std::uint8_t;
+using std::numeric_limits;
 
-export using ColIndex = uint8_t;
+export using ColIndex    = uint8_t;
+export using BasePointNr = size_t;
+
+export BasePointNr NoBasePoint { numeric_limits<size_t>::max() };
+
+export bool IsBasePointDefined  (BasePointNr const nr) { return nr != NoBasePoint; }
+export bool IsBasePointUndefined(BasePointNr const nr) { return nr == NoBasePoint; }
+
 export class ColorLUT : public Observable
 {
 public:
 
     inline static int MAX_INDEX { 255 };
 
-    struct BasePoint
-    {
-        ColIndex colIndex;
-        Color    col;
-    };
+    static bool IsBorderIndex(ColIndex const i) { return (i == 0) || (i == ColorLUT::MAX_INDEX); }
+
+    void SetColIndex(BasePointNr const, ColIndex const);
+    void SetColor   (BasePointNr const, Color const);
 
     size_t Size() const { return m_basePoints.size(); }
 
-    bool IsMoveable(BasePoint const * const pbp)
-    {
-        if (pbp == &m_basePoints.front())
-            return false;
-        if (pbp == &m_basePoints.back())
-            return false;
-        return true;
-    }
+    bool IsMoveable  (BasePointNr const) const;
+    bool IsDeleteable(BasePointNr const) const;
 
-    void  AddBasePoint(ColIndex);
-    void  AddBasePoint(ColIndex, Color);
-    void  RemoveBasePoint(BasePoint * const);
-    void  Construct();
-    Color Get(ColIndex const) const;
-    void  Clear();
+    ColIndex GetColIndex(BasePointNr const) const;
 
-    void Apply2AllBasePoints(auto const &func)
-    {
-        for (auto &bp : m_basePoints)
-            func(bp);
-    }
-
-    void Apply2AllBasePointsC(auto const &func) const
-    {
-        for (auto const &bp : m_basePoints)
-            func(bp);
-    }
+    BasePointNr AddBasePoint(ColIndex);
+    BasePointNr AddBasePoint(ColIndex, Color);
+    void        RemoveBasePoint(BasePointNr const);
+    void        Construct();
+    Color       GetColor(ColIndex const) const;
+    Color       GetColor(BasePointNr const) const;
+    void        Clear();
 
     void Apply2AllRanges(auto const &func)
     {
         assert(m_basePoints.size() >= 2);
         for (int bpIndex = 0; bpIndex < m_basePoints.size() - 1; ++bpIndex)
-            func(m_basePoints[bpIndex], m_basePoints[bpIndex+1] );
+            func(bpIndex, bpIndex+1);
+    }
+
+    void Apply2AllBasePoints(auto const &func)
+    {
+        for (int bpIndex = 0; bpIndex < m_basePoints.size(); ++bpIndex)
+            func(bpIndex);
     }
 
 private:
+
+    struct BasePoint
+    {
+        ColIndex colIndex;
+        Color    col;
+    };
 
     vector<BasePoint> m_basePoints;
     array<Color, 256> m_table;
