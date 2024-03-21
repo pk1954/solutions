@@ -296,14 +296,6 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 		m_upRefreshRate->RefreshRateDialog(m_hwnd);
 		break;
 
-	case IDD_SOUND:
-		Preferences::m_bSound.Toggle();
-		break;
-
-	case IDD_COLOR_MENU:
-		Preferences::m_bColorMenu.Toggle();
-		break;
-
 	case IDD_COLOR_CTL:
 		colorDialog();
 		break;

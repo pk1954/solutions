@@ -80,12 +80,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 	BaseCommand      ::Initialize(&m_sound);
 	NNetModelIO      ::Initialize(&m_lockModelObservable);
 
-	m_colLUT.AddBasePoint(  0, Color(D2D1::ColorF::Black));
-    m_colLUT.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
-    m_colLUT.AddBasePoint(255, Color(D2D1::ColorF::Red));
-    m_colLUT.Construct();
-
-	m_scanMatrix    .Initialize(m_colLUT);
+	m_scanMatrix    .Initialize();
 	m_simuRunning   .Initialize(&m_compute);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio);
@@ -167,7 +162,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, &m_compute, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
-	m_colLutWindow     .Start(m_hwndApp, & m_colLUT);
+	m_colLutWindow     .Start(m_hwndApp, &NNetPreferences::m_colorLUT);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
 	setModelInterface();
@@ -259,6 +254,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetPreferences::m_bModelFront .RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bFilter     .RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bInputCables.RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_bArrows     .RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_colorLUT    .RegisterObserver(m_mainNNetWindow);
 	m_slowMotionRatio              .RegisterObserver(m_compute);
 	m_slowMotionRatio              .RegisterObserver(m_slowMotionDisplay);
 	m_nmwi.GetParams()             .RegisterObserver(m_parameterDlg);
@@ -268,14 +265,13 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_coordObservable              .RegisterObserver(m_miniNNetWindow);
 	m_activeSigGenObservable       .RegisterObserver(m_mainNNetWindow);
 	m_activeSigGenObservable       .RegisterObserver(m_signalDesigner);
-	m_colLUT                       .RegisterObserver(m_mainNNetWindow);
 
 	m_appMenu.Notify(true);
 	m_undoRedoMenu.Notify(true);
 
 	Show(true);
 
-	if (!Preferences::m_bAutoOpen.Get() || !Preferences::ReadPreferences())
+	if (!Preferences::ReadPreferences() || !Preferences::m_bAutoOpen.Get())
 	{
 		ResetModelCmd::Push();
 		CreateInitialNobsCmd::Push();

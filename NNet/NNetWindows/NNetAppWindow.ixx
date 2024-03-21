@@ -127,7 +127,6 @@ private:
 	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;
 	NNetCommandStack         m_cmdStack;
-	ColorLUT                 m_colLUT;
 	ColLutDesigner           m_colLutWindow;
 	CrsrWindow               m_crsrWindow;
 	DescriptionWindow        m_descWindow;

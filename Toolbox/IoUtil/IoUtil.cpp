@@ -8,6 +8,7 @@ module;
 #include <compare>
 #include <iostream>
 #include <iomanip>
+#include <Windows.h>
 
 module IoUtil;
 
@@ -62,6 +63,20 @@ wostream& operator<< (wostream& out, MicroMeterCircle const& circle)
     return out;
 }
 
+wostream& operator<< (wostream& out, Color const& color)
+{
+    out << setprecision(6)
+        << L"RGB"
+        << OPEN_BRACKET
+        << color.r
+        << ID_SEPARATOR
+        << color.g
+        << ID_SEPARATOR
+        << color.b
+        << CLOSE_BRACKET;
+    return out;
+}
+
 MicroMeter ScrReadMicroMeter(Script& script)
 {
     float const fValue = Cast2Float(script.ScrReadFloat());
@@ -92,7 +107,7 @@ MicroMeterCircle ScrReadMicroMeterCircle(Script& script)
     script.ScrReadSpecial(OPEN_BRACKET);
     MicroMeterPnt umCenter { ScrReadMicroMeterPnt(script) };
     script.ScrReadSpecial(ID_SEPARATOR);
-    MicroMeter      umRadius { ScrReadMicroMeter(script) };
+    MicroMeter    umRadius { ScrReadMicroMeter(script) };
     script.ScrReadSpecial(CLOSE_BRACKET);
     return MicroMeterCircle(umCenter, umRadius);
 }
@@ -106,6 +121,19 @@ tBoolOp ScrReadBoolOp(Script & script)
 {
     unsigned long ulBoolOp(script.ScrReadUlong());
     return static_cast<tBoolOp>(ulBoolOp);
+}
+
+Color ScrReadColor(Script& script)
+{
+    script.ScrReadString(L"RGB");
+    script.ScrReadSpecial(OPEN_BRACKET);
+    float fRed   { Cast2Float(script.ScrReadFloat()) };
+    script.ScrReadSpecial(ID_SEPARATOR);
+    float fGreen { Cast2Float(script.ScrReadFloat()) };
+    script.ScrReadSpecial(ID_SEPARATOR);
+    float fBlue  { Cast2Float(script.ScrReadFloat()) };
+    script.ScrReadSpecial(CLOSE_BRACKET);
+    return Color(fRed, fGreen, fBlue);
 }
 
 class WrapOpenTraceFile : public ScriptFunctor

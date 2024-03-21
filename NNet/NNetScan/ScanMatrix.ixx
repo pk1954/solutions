@@ -33,7 +33,7 @@ export class ScanMatrix: public ObserverInterface
 {
 public:
 
-    void Initialize(ColorLUT const &);
+    void Initialize();
 
     void SetModelInterface(NNetModelReaderInterface* const);
     void PrepareScanMatrix();
@@ -84,7 +84,6 @@ private:
     void       drawScanRaster(DrawContext const&);
 
 	NNetModelReaderInterface const* m_pNMRI  { nullptr };
-	ColorLUT                 const* m_pLut   { nullptr };
     bool                            m_bDirty { true };
     size_t                          m_maxNrOfDataPnts;
     Vector2D<ScanPixel>             m_scanPixels;

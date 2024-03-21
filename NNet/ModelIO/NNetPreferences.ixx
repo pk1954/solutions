@@ -17,6 +17,7 @@ export module NNetPreferences;
 import Win32_Util_Resource;
 import BoolType;
 import SoundInterface;
+import ColorLUT;
 import Wrapper;
 import WinManager;
 import NNetModelIO;
@@ -80,6 +81,7 @@ public:
 	static bool ModelFront     () { return m_bModelFront.Get(); }
 	static bool ApplyFilter    () { return m_bFilter.Get(); }
 
+	inline static ColorLUT        m_colorLUT;
 	inline static ShowInputCables m_bInputCables;
 	inline static ShowArrows      m_bArrows;
 	inline static BoolType        m_bSensorPoints { false };

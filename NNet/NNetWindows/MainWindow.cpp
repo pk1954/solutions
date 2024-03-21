@@ -517,8 +517,7 @@ void MainWindow::PaintGraphics()
 	}
 	else
 	{
-		if (NNetPreferences::ModelFront())
-			drawModel(context );
+		drawModel(context );
 	}
 }
 

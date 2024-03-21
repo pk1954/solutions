@@ -55,7 +55,7 @@ void SignalDesigner::Initialize
 
 	// coords
 
-	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 10000._MicroSecs); 
+	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs); 
 	m_horzCoord.SetPixelSize(5000.0_MicroSecs);
 	m_horzCoord.SetZoomFactor(1.3f);
 

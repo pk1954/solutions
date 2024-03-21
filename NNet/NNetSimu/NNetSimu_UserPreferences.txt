@@ -1,20 +1,21 @@
 # ***  User preferences
 SetSound  OFF
 SetColorMenu  OFF
-SetAutoOpen  OFF
-ReadModel "D:\SW-projects\Solutions\NNet\Tests\ScanImage.mod"
+SetAutoOpen  ON
+ReadModel "D:\SW-projects\Delivery\V5_1\BC23xz2.mod"
 InputCablesVisibility 1
 ScanAreaVisibility  ON
-ModelFront  OFF
-ApplyFilter  ON
-SetBKColor IDM_MAIN_WINDOW RGB(255,255,240)
-SetBKColor IDM_MINI_WINDOW RGB(255,255,240)
-SetBKColor IDM_MONITOR_WINDOW RGB(229,229,229)
-SetBKColor IDM_CRSR_WINDOW RGB(240,240,240)
-SetBKColor IDM_PERF_WINDOW RGB(240,240,240)
-SetBKColor IDM_SIG_DESIGNER RGB(255,255,255)
-
+ModelFront  ON
+ApplyFilter  OFF
 SetScales IDM_SIG_DESIGNER ON 
+
+ColorLUT 1 4
+{
+ {  0, RGB(0,0,0)}
+ { 10, RGB(0,0,1)}
+ {133, RGB(1,0,0)}
+ {255, RGB(1,1,0)}
+}
 
 ShowArrows  OFF
 ShowSensorPoints  OFF

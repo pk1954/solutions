@@ -26,10 +26,9 @@ using std::vector;
 using std::optional;
 using std::nullopt;
 
-void ScanMatrix::Initialize(ColorLUT const& colLUT)
+void ScanMatrix::Initialize()
 {
     InitializeCriticalSection(&m_cs);
-	m_pLut = &colLUT;
 }
 
 void ScanMatrix::SetModelInterface(NNetModelReaderInterface* const p)
@@ -45,8 +44,7 @@ void ScanMatrix::PrepareScanMatrix()
     {
         if (m_pNMRI->GetScanAreaSize() != Size())
             m_scanPixels.Resize(m_pNMRI->GetScanAreaSize());
-        else 
-            Clear();
+        Clear();
         m_pNMRI->Apply2AllC<Pipe>([this](Pipe const& p){ add2list(p); });
         findMaxNrOfDataPoints();
         m_bDirty = false;
@@ -201,7 +199,7 @@ void ScanMatrix::drawScanImage(DrawContext const& context) const
 		context, 
 		[this, pImage](auto const &rp) -> Color
 		{
-			return m_pLut->GetColor(pImage->Get(rp));
+			return NNetPreferences::m_colorLUT.GetColor(pImage->Get(rp));
 		}
 	);
 }

@@ -127,9 +127,17 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         NNetPreferences::m_bArrows.Toggle(); // with animation
         break;
 
+	case IDD_SOUND:
+		Preferences::m_bSound.Toggle();
+		break;
+
     case IDD_SENSOR_PNTS:
         NNetPreferences::m_bSensorPoints.Toggle();
         break;
+
+	case IDD_AUTO_OPEN:
+		Preferences::m_bAutoOpen.Toggle();
+		break;
 
     case IDD_PERF_MON_MODE:
         BaseWindow::m_bPerfMonMode.Toggle();

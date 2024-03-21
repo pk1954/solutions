@@ -124,8 +124,11 @@ public:
 
     void operator() (Script& script) const final
     {
-        NNetModelIO::SetModelFileName(script.ScrReadString());
-        WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
+        if (Preferences::m_bAutoOpen.Get())
+        {
+            NNetModelIO::SetModelFileName(script.ScrReadString());
+            WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
+        }
     }
 
     void Write(wostream& out) const final
@@ -136,64 +139,49 @@ public:
     inline static const wstring NAME { L"ReadModel" };
 };
 
-class WrapColor : public Wrapper
-{
-public:
-    WrapColor()
-        : Wrapper(NAME)
-    {}
-
-    void operator() (Script& script) const final
-    {
-        RootWinId id(script.ScrReadInt());
-        script.ScrReadString(L"RGB");
-        script.ScrReadSpecial(OPEN_BRACKET);
-        unsigned short usRed   { script.ScrReadUshort() };
-        script.ScrReadSpecial(ID_SEPARATOR);
-        unsigned short usGreen { script.ScrReadUshort() };
-        script.ScrReadSpecial(ID_SEPARATOR);
-        unsigned short usBlue  { script.ScrReadUshort() };
-        script.ScrReadSpecial(CLOSE_BRACKET);
-        RootWindow* pRootWin { WinManager::GetRootWindow(id) };
-        if (pRootWin)
-            pRootWin->SetBackgroundColorRef(RGB(usRed, usGreen, usBlue));
-        else
-        {
-            //TODO: Error message
-        }
-    }
-
-    void Write(wostream& out) const final
-    {
-        WinManager::Apply2All
-        (
-            [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
-            {
-                if (elem.m_pRootWindow)
-                    WriteBackgroundColor(out, elem);
-            }
-        );
-    }
-
-private:
-
-    inline static const wstring NAME { L"SetBKColor" };
-
-    static void WriteBackgroundColor(wostream &out, WinManager::MAP_ELEMENT const& elem)
-    {
-        COLORREF col { elem.m_pRootWindow->GetBackgroundColorRef() };
-        out << NAME << SPACE << elem.m_wstr << SPACE
-            << L"RGB"
-            << OPEN_BRACKET
-            << GetRValue(col)
-            << ID_SEPARATOR
-            << GetGValue(col)
-            << ID_SEPARATOR
-            << GetBValue(col)
-            << CLOSE_BRACKET
-            << endl;
-    }
-};
+//class WrapColor : public Wrapper
+//{
+//public:
+//    WrapColor()
+//        : Wrapper(NAME)
+//    {}
+//
+//    void operator() (Script& script) const final
+//    {
+//        RootWinId id  { script.ScrReadInt() };
+//        COLORREF  col { ScrReadColorRef(script) };
+//        if (RootWindow* pRootWin { WinManager::GetRootWindow(id) })
+//            pRootWin->SetBackgroundColorRef(col);
+//        else
+//        {
+//            //TODO: Error message
+//        }
+//    }
+//
+//    void Write(wostream& out) const final
+//    {
+//        WinManager::Apply2All
+//        (
+//            [this, &out](RootWinId const id, WinManager::MAP_ELEMENT const& elem)
+//            {
+//                if (elem.m_pRootWindow)
+//                    WriteBackgroundColor(out, elem);
+//            }
+//        );
+//    }
+//
+//private:
+//
+//    inline static const wstring NAME { L"SetBKColor" };
+//
+//    static void WriteBackgroundColor(wostream &out, WinManager::MAP_ELEMENT const& elem)
+//    {
+//        out << NAME        << SPACE 
+//            << elem.m_wstr << SPACE 
+//            << elem.m_pRootWindow->GetBackgroundColorRef() 
+//            << endl;
+//    }
+//};
 
 void NNetPreferences::Initialize()
 {
@@ -204,7 +192,7 @@ void NNetPreferences::Initialize()
     Preferences::AddWrapper(make_unique<WrapScanAreaVisibility>());
     Preferences::AddWrapper(make_unique<WrapModelFront>());
     Preferences::AddWrapper(make_unique<WrapFilter>());
-    Preferences::AddWrapper(make_unique<WrapColor>());
+   // Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());
     Preferences::AddWrapper(make_unique<WrapColorLUT>());
@@ -212,6 +200,12 @@ void NNetPreferences::Initialize()
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
     Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
     Preferences::AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
+
+    m_colorLUT.AddBasePoint(  0, Color(D2D1::ColorF::Black));
+    m_colorLUT.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
+    m_colorLUT.AddBasePoint(255, Color(D2D1::ColorF::Red));
+    m_colorLUT.Construct();
+
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)

@@ -77,6 +77,19 @@ public:
 		a = 1.0f;
 	}
 
+	Color
+	(
+		unsigned short const red,
+		unsigned short const green,
+		unsigned short const blue
+	)
+	{
+		r = static_cast<float>(red  ) / 255.0f;
+		g = static_cast<float>(green) / 255.0f;
+		b = static_cast<float>(blue ) / 255.0f;
+		a = 1.0f;
+	}
+
 	Color(COLORREF rgb)
 	{
 		r = static_cast<float>(GetRValue(rgb)) / 255.0f;
@@ -144,12 +157,4 @@ public:
 		res /= f;
 		return res;
 	}
-
-	friend wostream& operator<< (wostream& out, Color const& col)
-	{
-		out << L" " << col.r << L" " << col.g << L" " << col.b;
-		return out;
-	}
-
-private:
 };
