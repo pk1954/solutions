@@ -35,10 +35,12 @@ public:
 	{
 		PixFpDimension<fMicroSecs>& horzCoord { m_pMonitorWindow->HorzCoord() };
 		PixFpDimension<mV>        & vertCoord { m_pMonitorWindow->VertCoord() };
-		vertCoord.SetPixelSize(ScrReadVoltage(script), false);
+		vertCoord.SetPixelSize(ScrReadVoltage   (script), false);
 		horzCoord.SetPixelSize(ScrReadfMicroSecs(script), false);
-		horzCoord.SetOffset   (ScrReadfPixel(script), false);
-		m_pMonitorWindow->SetHorzScaleLocked(script.ScrReadBool());
+//		horzCoord.SetOffset   (ScrReadfPixel(script), false);
+		ScrReadfPixel(script);
+//		m_pMonitorWindow->SetHorzScaleLocked(script.ScrReadBool());
+		script.ScrReadBool();
 		m_pMonitorWindow->Notify(true);
 	}
 

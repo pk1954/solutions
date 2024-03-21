@@ -114,7 +114,7 @@ void BaseScale::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 
 void BaseScale::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if (!m_bLock2Zero)
+	if (!IsScaleLocked())
 	{
 		if (wParam & MK_LBUTTON)
 		{
@@ -150,12 +150,12 @@ bool BaseScale::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint c
 	{
 	case IDM_SCALE_UNLOCK:
 		if (m_bUnlockAllowed)
-			m_bLock2Zero = false;
+			SetBlock2Zero(false);
 		break;
 
 	case IDM_SCALE_LOCK2ZERO:
 		if (m_bUnlockAllowed)
-			m_bLock2Zero = true;
+			SetBlock2Zero(true);
 		SendCommand2Parent(wmId, 0);
 		break;
 
@@ -177,7 +177,7 @@ LPARAM BaseScale::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_bUnlockAllowed)
 	{
-		if (m_bLock2Zero)
+		if (IsScaleLocked())
 			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_UNLOCK,    L"Unlock scale");
 		else
 			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_LOCK2ZERO, L"Lock scale");

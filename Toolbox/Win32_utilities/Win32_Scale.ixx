@@ -74,22 +74,6 @@ public:
 		BaseScale::Notify(bImmediately);
 	}
 
-	Color colAnimated
-	(
-		Color const colBase,
-		Color const colTarget,
-		float const fFactor
-	)
-	{
-		Color const colorfRes
-		(
-			colBase.r + (colTarget.r - colBase.r) * fFactor,
-			colBase.g + (colTarget.g - colBase.g) * fFactor,
-			colBase.b + (colTarget.b - colBase.b) * fFactor
-		);
-		return colorfRes;
-	}
-
 	void DrawAuxLines(D2D_driver& graphics,	float const fFactor = 1.0f)
 	{
 		drawAuxLines(graphics,  1, colAnimated(graphics.GetBackgroundColor(), D2D1::ColorF::LightGray, fFactor));  // 0xD3D3D3
@@ -123,6 +107,22 @@ private:
 	mutable wostringstream m_wstrBuffer;
 
 	// private functions
+
+	Color colAnimated
+	(
+		Color const colBase,
+		Color const colTarget,
+		float const fFactor
+	)
+	{
+		Color const colorfRes
+		(
+			colBase.r + (colTarget.r - colBase.r) * fFactor,
+			colBase.g + (colTarget.g - colBase.g) * fFactor,
+			colBase.b + (colTarget.b - colBase.b) * fFactor
+		);
+		return colorfRes;
+	}
 
 	void drawAuxLines
 	(
