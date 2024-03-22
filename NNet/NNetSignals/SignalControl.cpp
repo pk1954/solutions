@@ -38,7 +38,7 @@ SignalControl::SignalControl
 {
 	m_runObservable         .RegisterObserver(*this);
 	m_dynamicModelObservable.RegisterObserver(*this);
-	SetRefreshRate(1000ms);
+	SetRefreshRate(100ms);
 }
 
 SignalControl::~SignalControl()
