@@ -87,6 +87,7 @@ NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
 
 	MonitorScrollState* pMonitorScrollState { NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
 	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
+	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
 };
 
 NNetAppWindow::~NNetAppWindow() = default;
@@ -162,7 +163,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, &m_compute, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
-	m_colLutWindow     .Start(m_hwndApp, &NNetPreferences::m_colorLUT);
+	m_colLutWindow     .Start(m_hwndApp, &NNetPreferences::m_colorLutScan);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
 	setModelInterface();
@@ -255,7 +256,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetPreferences::m_bFilter     .RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bInputCables.RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bArrows     .RegisterObserver(m_mainNNetWindow);
-	NNetPreferences::m_colorLUT    .RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_colorLutScan    .RegisterObserver(m_mainNNetWindow);
 	m_slowMotionRatio              .RegisterObserver(m_compute);
 	m_slowMotionRatio              .RegisterObserver(m_slowMotionDisplay);
 	m_nmwi.GetParams()             .RegisterObserver(m_parameterDlg);
@@ -677,6 +678,7 @@ void NNetAppWindow::newModel()
 	m_mainNNetWindow.Reset();
 	ResetModelCmd::Push();
 	CreateInitialNobsCmd::Push();
+	m_upModel->ClearDynamicData();
 	m_staticModelObservable.NotifyAll();
 	m_dynamicModelObservable.NotifyAll();
 	m_appTitle.SetUnsavedChanges(true);

@@ -199,7 +199,7 @@ void ScanMatrix::drawScanImage(DrawContext const& context) const
 		context, 
 		[this, pImage](auto const &rp) -> Color
 		{
-			return NNetPreferences::m_colorLUT.GetColor(pImage->Get(rp));
+			return NNetPreferences::m_colorLutScan.GetColor(pImage->Get(rp));
 		}
 	);
 }

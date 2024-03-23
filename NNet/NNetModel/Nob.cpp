@@ -15,6 +15,7 @@ module NNetModel:Nob;
 
 import Debug;
 import Types;
+import ColorLUT;
 import IoConstants;
 import IoUtil;
 import :tHighlight;
@@ -53,13 +54,18 @@ void Nob::SetPos(MicroMeterPnt const& umPos)
 
 Color Nob::GetInteriorColor(mV const voltage) const
 {
-	mV    const threshold      { mV(GetParam()->GetParameterValue(ParamType::Value::threshold)) };
-	float const colorComponent { min(voltage / threshold, 1.0f)};
-	float const fAlphaChannel  { IsSelected() ? 0.7f : 1.0f };
-	if (IsEmphasized() && (colorComponent < 0.01f))
+	mV    const threshold { mV(GetParam()->GetParameterValue(ParamType::Value::threshold)) };
+	float const fFactor   { min(voltage / threshold, 1.0f)};
+	if (IsEmphasized() && (fFactor < 0.01f))
 		return NNetColors::INT_EMPHASIZED;
-	else 
-		return Color(colorComponent, 0.0f, 0.0f, fAlphaChannel);
+	else
+	{
+		ColIndex const colIndex { Cast2Byte(255.0f * fFactor) };
+		Color          color    { m_pLutVoltage->GetColor(colIndex) };
+		if (IsSelected())
+			color.a = 0.7f;
+		return color;
+	}
 }
 
 Color Nob::GetExteriorColor(tHighlight const type) const

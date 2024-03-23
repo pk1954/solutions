@@ -81,7 +81,8 @@ public:
 	static bool ModelFront     () { return m_bModelFront.Get(); }
 	static bool ApplyFilter    () { return m_bFilter.Get(); }
 
-	inline static ColorLUT        m_colorLUT;
+	inline static ColorLUT        m_colorLutScan;
+	inline static ColorLUT        m_colorLutVoltage;
 	inline static ShowInputCables m_bInputCables;
 	inline static ShowArrows      m_bArrows;
 	inline static BoolType        m_bSensorPoints { false };

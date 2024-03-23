@@ -18,6 +18,7 @@ export module NNetModel:Nob;
 import BoolOp;
 import Color;
 import Types;
+import ColorLUT;
 import DrawContext;
 import :NNetParameters;
 import :tHighlight;
@@ -45,6 +46,7 @@ export using PushFunc    = function<void(UPNob)>;
 export class Nob
 {
 public:
+	static void SetColorLut(ColorLUT const& lut) { m_pLutVoltage = &lut; }
 	static void SetParams(NNetParameters const * const pParams) { m_pParameters = pParams; }
 
 	static bool TypeFits(NobType const) { return true; }  // every nob type is a Nob
@@ -145,6 +147,7 @@ protected:
 
 private:
 
+	inline static ColorLUT       const * m_pLutVoltage { nullptr };
 	inline static NNetParameters const * m_pParameters { nullptr };
 };
 

@@ -195,16 +195,20 @@ void NNetPreferences::Initialize()
    // Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());
-    Preferences::AddWrapper(make_unique<WrapColorLUT>());
+    Preferences::AddWrapper(make_unique<WrapColorLUT>(NNetPreferences::m_colorLutScan));
 
     Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
     Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
     Preferences::AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
 
-    m_colorLUT.AddBasePoint(  0, Color(D2D1::ColorF::Black));
-    m_colorLUT.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
-    m_colorLUT.AddBasePoint(255, Color(D2D1::ColorF::Red));
-    m_colorLUT.Construct();
+    m_colorLutScan.AddBasePoint(  0, Color(D2D1::ColorF::Black));
+    m_colorLutScan.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
+    m_colorLutScan.AddBasePoint(255, Color(D2D1::ColorF::Red));
+    m_colorLutScan.Construct();
+
+    m_colorLutVoltage.AddBasePoint(  0, Color(D2D1::ColorF::Black));
+    m_colorLutVoltage.AddBasePoint(255, Color(D2D1::ColorF::Red));
+    m_colorLutVoltage.Construct();
 
 }
 
