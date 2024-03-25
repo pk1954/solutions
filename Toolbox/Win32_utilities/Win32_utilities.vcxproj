@@ -164,7 +164,8 @@
     <ClCompile Include="Command.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
-    <ClCompile Include="DialogItem.ixx" />
+    <ClCompile Include="DescriptionWindow.cpp" />
+    <ClCompile Include="DescriptionWindow.ixx" />
     <ClCompile Include="HiResClockGen.ixx" />
     <ClCompile Include="IncludeCommand.ixx" />
     <ClCompile Include="OnOffPair.ixx" />

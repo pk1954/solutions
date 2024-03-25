@@ -207,9 +207,6 @@
     <ClCompile Include="SlowMotionControl.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="DialogItem.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="TimerQueueTimer.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -226,6 +223,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ColorDialog.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptionWindow.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="DescriptionWindow.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

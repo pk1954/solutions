@@ -14,8 +14,7 @@ using std::vector;
 export class MessagePump
 {
 public:
-	//void SetAccelTable(HACCEL const);
-	void SetAccelTable(HINSTANCE const, int const);
+	void SetAccelTable(HACCEL const);
 	void RegisterWindow(HWND const, bool const);
 
 int Run(auto const gameFunc)
@@ -26,10 +25,13 @@ int Run(auto const gameFunc)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-			if (msg.message == WM_QUIT)
-				break;
+			if (!accelerator(msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+				if (msg.message == WM_QUIT)
+					break;
+			}
 		}
 		else
 		{

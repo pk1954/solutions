@@ -1,20 +1,20 @@
 // DescriptionWindow.cpp
 //
-// NNetWindows
+// win32_utilities
 
 module;
 
 #include <memory>
 #include <string>
 #include <array>
-#include <iostream>
+#include <bit>
 #include <Windows.h>
 #include <windowsx.h>
 #include <CommCtrl.h>
-#include "Resource.h"
 
 module NNetWin32:DescriptionWindow;
 
+import Win32_Util_Resource;
 import Preferences;
 
 using std::array;

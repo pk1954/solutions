@@ -10,6 +10,7 @@ module;
 
 module NNetWin32:SelectionMenu;
 
+import Win32_Util_Resource;
 import Win32_Controls;
 import NNetModel;
 import Win32_Util;

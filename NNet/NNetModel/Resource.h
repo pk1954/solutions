@@ -24,10 +24,6 @@
 								   	         
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
-#define       IDM_SELECT                     142
-#define       IDM_DESELECT                   143
-#define       IDM_SELECT_ALL                 144 
-#define       IDM_DELETE                     150
 								   	         
 #define       IDX_READ_PROGRESS_REPORT       160
 #define       IDX_WRITE_PROGRESS_REPORT      161

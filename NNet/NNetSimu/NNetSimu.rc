@@ -4,7 +4,6 @@
 
 #include <windows.h>
 #include <commctrl.h>
-#include <richedit.h>
 #include "Resource.h"
 
 //
@@ -27,19 +26,3 @@ SNAP_IN_SOUND      WAVE "locking-a-door.wav"
 UNLOCK_SOUND       WAVE "door-unlocking.wav"
 SELECTION_SOUND    WAVE "tap.wav"
 NOT_POSSIBLE_SOUND WAVE "no.wav"
-
-//
-// Accelerator resources
-//
-LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
-IDC_NNET_SIMU_MAIN ACCELERATORS
-{
-    "z",       IDM_UNDO,            VIRTKEY, CONTROL
-    "y",       IDM_REDO,            VIRTKEY, CONTROL
-    "a",       IDM_SELECT_ALL,      VIRTKEY, CONTROL
-    "s",       IDM_SAVE_MODEL,      VIRTKEY, CONTROL
-    "c",       IDM_COPY_SELECTION,  VIRTKEY, CONTROL
-    VK_BACK,   IDM_UNDO,            VIRTKEY, ALT
-    VK_DELETE, IDM_DELETE,          VIRTKEY
-    VK_ESCAPE, IDM_ESCAPE,          VIRTKEY
-}

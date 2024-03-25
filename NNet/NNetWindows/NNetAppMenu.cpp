@@ -78,7 +78,7 @@ void NNetAppMenu::Start
     ::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)hBitmapUndo);
     ::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)hBitmapRedo);
 
-    HMENU hMenuAction = ::PopupMenu(m_hMenu, L"&Action");
+    HMENU hMenuAction = ::PopupMenu(m_hMenu, L"Action");
     {
         ::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
         ::AddMenu(hMenuAction, MF_STRING, IDM_UNLOCK,             L"&Unlock model");

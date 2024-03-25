@@ -9,10 +9,10 @@ module;
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
-#include "Resource.h"
 
 module NNetModel:Nob;
 
+import Win32_Util_Resource;
 import Debug;
 import Types;
 import ColorLUT;

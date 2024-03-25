@@ -1,6 +1,6 @@
 // DescriptionWindow.ixx
 //
-// NNetWindows
+// win32_utilities
 
 module;
 
@@ -11,7 +11,6 @@ module;
 export module NNetWin32:DescriptionWindow;
 
 import Types;
-import Preferences;
 import BaseWindow;
 import DescriptionUI;
 

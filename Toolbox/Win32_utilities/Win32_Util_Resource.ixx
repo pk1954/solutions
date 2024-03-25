@@ -34,7 +34,12 @@ export inline int const IDM_DEFAULT_BK_COLOR     { 13 };
 export inline int const IDM_WINDOW_ON            { 20 };
 export inline int const IDM_WINDOW_OFF           { 21 };
 export inline int const IDM_WINDOW_AUTO          { 22 };
-                                                
+
+export inline int const IDM_SELECT               { 25 };
+export inline int const IDM_DESELECT             { 26 };
+export inline int const IDM_SELECT_ALL           { 27 };
+export inline int const IDM_DELETE               { 28 };
+
 export inline int const IDM_APPL_WINDOW          { 30 };
 export inline int const IDM_MAIN_WINDOW          { 31 };
 export inline int const IDM_STATUS_BAR           { 32 };
