@@ -82,17 +82,19 @@ public:
 	static wstring        GetName(NobType::Value const);
 	static NobType::Value GetTypeFromName(wstring const&);
 
-	bool IsPipeType           () const { return m_value == Value::pipe; }
-	bool IsDefinedType        () const { return m_value != Value::undefined; }
-	bool IsUndefinedType      () const { return m_value == Value::undefined; }
-	bool IsKnotType           () const { return m_value == Value::knot; }
-	bool IsForkType           () const { return m_value == Value::fork; }
-	bool IsSynapseType        () const { return m_value == Value::synapse; }
-	bool IsNeuronType         () const { return m_value == Value::neuron; }
-	bool IsInputLineType      () const { return m_value == Value::inputLine; }
-	bool IsOutputLineType     () const { return m_value == Value::outputLine; }
-	bool IsInputConnectorType () const { return m_value == Value::inputConnector; }
-	bool IsOutputConnectorType() const { return m_value == Value::outputConnector; }
+	bool IsOfType(NobType::Value const t) const { return m_value == t; }
+
+	bool IsDefinedType        () const { return !IsOfType(Value::undefined); }
+	bool IsUndefinedType      () const { return  IsOfType(Value::undefined); }
+	bool IsPipeType           () const { return  IsOfType(Value::pipe); }
+	bool IsKnotType           () const { return  IsOfType(Value::knot); }
+	bool IsForkType           () const { return  IsOfType(Value::fork); }
+	bool IsSynapseType        () const { return  IsOfType(Value::synapse); }
+	bool IsNeuronType         () const { return  IsOfType(Value::neuron); }
+	bool IsInputLineType      () const { return  IsOfType(Value::inputLine); }
+	bool IsOutputLineType     () const { return  IsOfType(Value::outputLine); }
+	bool IsInputConnectorType () const { return  IsOfType(Value::inputConnector); }
+	bool IsOutputConnectorType() const { return  IsOfType(Value::outputConnector); }
 
 	bool IsIoConnectorType() const
 	{

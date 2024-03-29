@@ -26,6 +26,7 @@ import :UPNobList;
 import :UPSigGenList;
 import :UPSensorList;
 import :UPMicroSensorList;
+import :NNetEvent;
 import :PosNob;
 
 using std::unique_ptr;
@@ -36,6 +37,7 @@ using std::move;
 
 export using ScanImageRaw  = Vector2D<mV>;
 export using ScanImageByte = Vector2D<ColIndex>;
+export using EventList     = vector<unique_ptr<NNetEvent>>;
 
 export class Model
 {
@@ -80,6 +82,8 @@ public:
 
 	bool  GetDescriptionLine(int const, wstring&) const;
 
+	void PrintModelSize() const;
+
 	NobId ModelFindNobAt(MicroMeterPnt const& umPoint, auto const& crit) const // TODO: Template!
 	{
 		NobId idRes{ NO_NOB };
@@ -121,34 +125,36 @@ public:
 
 	// access functions to members 
 
-	UPSigGenList      const & GetSigGenList     ()         const { return *m_upSigGenList.get(); }
-	UPSigGenList            & GetSigGenList     ()               { return *m_upSigGenList.get(); }
-	UPSensorList      const & GetSensorList     ()         const { return m_sensorList; }
-	UPSensorList            & GetSensorList     ()               { return m_sensorList; }
-	UPMicroSensorList const & GetMicroSensorList()         const { return m_microSensorList; }
-	UPMicroSensorList       & GetMicroSensorList()               { return m_microSensorList; }
-	UPNobList         const & GetUPNobs         ()         const { return *m_upNobs.get(); }
-	UPNobList               & GetUPNobs         ()               { return *m_upNobs.get(); }
-	unique_ptr<UPNobList>     MoveUPNobs        ()               { return move(m_upNobs); }
-	MonitorData       const & GetMonitorData    ()         const { return m_monitorData; }
-	MonitorData             & GetMonitorData    ()               { return m_monitorData; }
-	NNetParameters    const & GetParams         ()         const { return *m_upParam.get(); }
-	NNetParameters          & GetParams         ()               { return *m_upParam.get(); }
-	SignalParameters  const & GetSignalParams   ()         const { return m_signalParams; }
-	SignalParameters        & GetSignalParams   ()               { return m_signalParams; }
-	MicroMeterRect            GetScanAreaRect   ()         const { return m_upRaster->GetRasterRect(); }
-	SignalGenerator   const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
-	MicroMeter                GetScanResolution()          const { return m_upRaster->Resolution(); }
-	RasterPoint               GetScanAreaSize()            const { return m_upRaster->Size(); }
-	Raster            const & GetScanRaster()              const { return *m_upRaster.get(); }
-	ScanImageByte     const * GetScanImageC()              const { return m_upImage.get(); }
-	ScanImageByte           * GetScanImage()                     { return m_upImage.get(); }
+	UPSigGenList      const & GetSigGenList     () const { return *m_upSigGenList.get(); }
+	UPSensorList      const & GetSensorList     () const { return m_sensorList; }
+	UPMicroSensorList const & GetMicroSensorList() const { return m_microSensorList; }
+	UPNobList         const & GetUPNobs         () const { return *m_upNobs.get(); }
+	MonitorData       const & GetMonitorData    () const { return m_monitorData; }
+	NNetParameters    const & GetParams         () const { return *m_upParam.get(); }
+	SignalParameters  const & GetSignalParams   () const { return m_signalParams; }
+	MicroMeterRect            GetScanAreaRect   () const { return m_upRaster->GetRasterRect(); }
+	MicroMeter                GetScanResolution () const { return m_upRaster->Resolution(); }
+	RasterPoint               GetScanAreaSize   () const { return m_upRaster->Size(); }
+	Raster            const & GetScanRaster     () const { return *m_upRaster.get(); }
+	ScanImageByte     const * GetScanImageC     () const { return m_upImage.get(); }
+	EventList         const & GetEventList      () const { return m_events; }
+
+	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
 
 	// non const functions
 
 	Nob * GetNob(NobId const);
 
-	void PrintModelSize() const;
+	ScanImageByte       * GetScanImage      () { return m_upImage.get(); }
+	UPSigGenList        & GetSigGenList     () { return *m_upSigGenList.get(); }
+	UPSensorList        & GetSensorList     () { return m_sensorList; }
+	UPMicroSensorList   & GetMicroSensorList() { return m_microSensorList; }
+	UPNobList           & GetUPNobs         () { return *m_upNobs.get(); }
+	MonitorData         & GetMonitorData    () { return m_monitorData; }
+	NNetParameters      & GetParams         () { return *m_upParam.get(); }
+	SignalParameters    & GetSignalParams   () { return m_signalParams; }
+	unique_ptr<UPNobList> MoveUPNobs        () { return move(m_upNobs); }
+
 	bool Compute();
 	void ResetModel();
 	void SetParam(ParamType::Value const, float const);
@@ -157,6 +163,7 @@ public:
 	void CreateScanImage();
 	void ReplaceScanImage(unique_ptr<ScanImageByte>);
 	void RejectScanImage();
+	void AddEvent(EventType const &);
 
 	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
 	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
@@ -184,4 +191,5 @@ private:
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
+	EventList                  m_events;
 };

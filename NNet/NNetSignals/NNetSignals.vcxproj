@@ -600,6 +600,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EventViewer.cpp" />
+    <ClCompile Include="EventViewer.ixx" />
     <ClCompile Include="Measurement.cpp" />
     <ClCompile Include="Measurement.ixx" />
     <ClCompile Include="MonitorControl.cpp" />

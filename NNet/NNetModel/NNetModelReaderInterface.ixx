@@ -75,6 +75,7 @@ public:
 	MonitorData     const& GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	void                   PrintModelSize()                       const { return m_pModel->PrintModelSize(); }
 	NNetParameters  const& GetParamsC()                           const { return m_pModel->GetParams(); };
+	EventList       const& GetEventList()                         const { return m_pModel->GetEventList(); }
 	fMicroSecs             TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
 	fMicroSecs             PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };
 	wstring                GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
@@ -171,19 +172,8 @@ public:
 		return pNob ? pNob->GetParentNob() : nullptr;
 	}
 
-	NobId FindAnyNobAt(MicroMeterPnt const& umPnt) const
-	{
-		return m_pModel->ModelFindNobAt(umPnt, [](auto&) { return true; });
-	}
-
-	NobId FindConnectionCandidate
-	(
-		MicroMeterPnt const& umPnt,
-		NobId         const id
-	) const
-	{
-		return m_pModel->ModelFindNobAt(umPnt, [this, id](auto& s) { return m_pModel->IsConnectionCandidate(id, s.GetId()); });
-	}
+	NobId FindAnyNobAt           (MicroMeterPnt const&) const;
+	NobId FindConnectionCandidate(MicroMeterPnt const&,	NobId const) const;
 
 	bool GetDescriptionLine(int const, wstring&) const;
 

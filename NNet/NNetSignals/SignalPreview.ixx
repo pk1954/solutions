@@ -2,10 +2,6 @@
 //
 // NNetSignals
 
-module;
-
-#include <compare>
-
 export module NNetSignals:SignalPreview;
 
 import Types;

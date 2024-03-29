@@ -242,5 +242,8 @@
     <ClCompile Include="UPMicroSensorList.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetEvent.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

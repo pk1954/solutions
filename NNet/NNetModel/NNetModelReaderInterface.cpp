@@ -168,6 +168,27 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 	return ct_none;
 }
 
+NobId NNetModelReaderInterface::FindAnyNobAt(MicroMeterPnt const& umPnt) const
+{
+	return m_pModel->ModelFindNobAt(umPnt, [](auto&) { return true; });
+}
+
+NobId NNetModelReaderInterface::FindConnectionCandidate
+(
+	MicroMeterPnt const& umPnt,
+	NobId         const id
+) const
+{
+	return m_pModel->ModelFindNobAt
+	(
+		umPnt, 
+		[this, id](auto& s) 
+		{ 
+			return m_pModel->IsConnectionCandidate(id, s.GetId()); 
+		}
+	);
+}
+
 void NNetModelReaderInterface::DrawExterior
 (
 	NobId       const   id,

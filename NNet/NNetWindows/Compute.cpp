@@ -69,6 +69,7 @@ void Compute::Notify(bool const bImmediate) // slowmo ratio or parameters have c
 void Compute::StartStimulus()
 {
 	m_pNMWI->GetSigGenSelected()->StartStimulus();
+	m_pNMWI->AddEvent(EventType::stimulus);
 }
 
 void Compute::setRunning(bool const bMode)
@@ -90,6 +91,7 @@ void Compute::StartScan()
 	Reset();
 	m_pScanMatrix->PrepareScanMatrix();
 	m_pNMWI->CreateScanImage();
+	m_pNMWI->AddEvent(EventType::startScan);
 	m_upSingleImage = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
 	m_upSumImage    = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
 	m_iScanNr = 0;
@@ -176,6 +178,7 @@ void Compute::StartComputation()
 	{
 		Reset();
 		setRunning(true);
+		m_pNMWI->AddEvent(EventType::run);
 	}
 }
 
@@ -189,6 +192,7 @@ void Compute::StopScan()
 {
 	m_upSumImage.release();
 	m_upSingleImage.release();
+	m_pNMWI->AddEvent(EventType::stopScan);
 }
 
 void Compute::SingleStep() 

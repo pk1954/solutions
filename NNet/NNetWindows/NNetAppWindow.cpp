@@ -256,7 +256,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	NNetPreferences::m_bFilter     .RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bInputCables.RegisterObserver(m_mainNNetWindow);
 	NNetPreferences::m_bArrows     .RegisterObserver(m_mainNNetWindow);
-	NNetPreferences::m_colorLutScan    .RegisterObserver(m_mainNNetWindow);
+	NNetPreferences::m_colorLutScan.RegisterObserver(m_mainNNetWindow);
 	m_slowMotionRatio              .RegisterObserver(m_compute);
 	m_slowMotionRatio              .RegisterObserver(m_slowMotionDisplay);
 	m_nmwi.GetParams()             .RegisterObserver(m_parameterDlg);
@@ -494,7 +494,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			if (ScriptStack::IsScriptActive())
 			{
 				Script * const pScript { ScriptStack::GetScript() };
-				if (pScript && (!pScript->ProcessToken() || !pScript->ReadNextToken()) )
+				if (pScript && (!pScript->ProcessToken() || !pScript->ReadNextToken()))
 					ScriptStack::CloseScript();
 			}
 			return true;

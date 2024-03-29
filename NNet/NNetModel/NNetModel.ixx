@@ -21,6 +21,7 @@ export import :Model;
 export import :ModelDescription;
 export import :Neuron;
 export import :NNetColors;
+export import :NNetEvent;
 export import :NNetModelReaderInterface;
 export import :NNetModelWriterInterface;
 export import :NNetParameters;

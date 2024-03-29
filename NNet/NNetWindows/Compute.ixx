@@ -6,6 +6,7 @@ module;
 
 #include <memory>
 #include <chrono>
+#include <vector>
 
 export module NNetWin32:Compute;
 
@@ -21,6 +22,7 @@ import ScanMatrix;
 
 using namespace std::chrono;
 using std::unique_ptr;
+using std::vector;
 
 export class Compute: public ObserverInterface
 {

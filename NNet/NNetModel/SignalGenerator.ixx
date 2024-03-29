@@ -35,8 +35,6 @@ public:
 
 	~SignalGenerator() final = default;
 
-//	static SignalGenerator StdSigGen;
-
 	NNetSignalSource::Type SignalSourceType() const final { return NNetSignalSource::Type::generator; }
 
 	mV   GetSignalValue() const final { return m_mVactual; };

@@ -5,7 +5,6 @@
 module;
 
 #include <string>
-#include <compare>
 #include <Windows.h>
 
 export module NNetWin32:DescriptionWindow;
