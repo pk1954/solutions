@@ -200,7 +200,6 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 		runObservable,
 		dynamicModelObservable,
 		*m_pSimuRunning,
-		&m_horzCoord,
 		m_fGridDimFactor
 	);
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);

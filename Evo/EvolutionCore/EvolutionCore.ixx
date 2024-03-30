@@ -1,17 +1,20 @@
-// EvolutionCore.h
+// EvolutionCore.ixx
 //
+// EvolutionCore
 
 module;
 
 #include <iostream>     
-#include "GridRect.h"
-#include "ModelInterface.h"
+
+export module EvolutionCore;
 
 import BoolOp;
 import Strategy;
 import EvolutionTypes;
 import GridDimensions;
 import GridField;
+import GridRect;
+import ModelInterface;
 
 class ObserverInterface;
 class EventInterface;
@@ -34,9 +37,9 @@ public:
     virtual PERCENT         const GetBrushIntensity       () const = 0;
     virtual tShape          const GetBrushShape           () const = 0;
     virtual tManipulator    const GetBrushManipulator     () const = 0;
-    virtual GridCoord      const GetBrushSize            () const = 0;
+    virtual GridCoord       const GetBrushSize            () const = 0;
     virtual tBrushMode      const GetBrushMode            () const = 0;
-	virtual size_t           const GetGridHeapSize         () const = 0;
+	virtual size_t          const GetGridHeapSize         () const = 0;
 
 	virtual tDisplayMode    const GetDisplayMode (GridPoint const) const = 0;
 	virtual bool            const IsDead         (GridPoint const) const = 0;

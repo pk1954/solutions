@@ -22,7 +22,7 @@ import GraphicsWindow;
 export class TimeGraph : public GraphicsWindow
 {
 public:
-	TimeGraph(HWND const hwndParent);
+	TimeGraph(HWND const, LPCTSTR const);
 
 	~TimeGraph() override;
 

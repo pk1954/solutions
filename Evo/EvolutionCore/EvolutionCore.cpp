@@ -1,15 +1,20 @@
 // EvolutionCore.cpp
 //
+// EvolutionCore
 
-#include "Genome.h"
-#include "grid_model.h"
-#include "EvolutionCore.h"
-#include "EvolutionCoreImpl.h"
-#include "EvolutionCoreWrappers.h"
+module;
 
+//#include "EvolutionCore.h"
+//#include "EvolutionCoreImpl.h"
+//#include "EvolutionCoreWrappers.h"
+
+module EvolutionCore;
+
+import Genome;
 import Strategy;
 import GridPOI;
 import GridNeighbor;
+import GridModel;
 
 void EvolutionCore::InitClass
 (

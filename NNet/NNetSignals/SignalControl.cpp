@@ -27,10 +27,9 @@ SignalControl::SignalControl
 	Observable                 & runObservable,
 	Observable                 & dynamicModelObservable,
 	SimuRunning          const & simuRunning,
-	PixFpDimension<fMicroSecs> * pHorzCoord,
 	float                      & fGridDimFactor
 )
-  : NNetTimeGraph(hwndParent),
+  : NNetTimeGraph(hwndParent, L"ClassSignalControl"),
 	m_runObservable(runObservable),
 	m_dynamicModelObservable(dynamicModelObservable),
 	m_simuRunning(simuRunning),

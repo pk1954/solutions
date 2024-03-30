@@ -17,12 +17,16 @@ import GraphicsWindow;
 
 using std::round;
 
-TimeGraph::TimeGraph(HWND const hwndParent)
+TimeGraph::TimeGraph
+(
+	HWND    const hwndParent,
+	LPCTSTR const szClass
+)
 {
 	GraphicsWindow::Initialize
 	(
 		hwndParent, 
-		L"ClassTimeGraph", 
+		szClass, 
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	SetDefaultBackgroundColor();

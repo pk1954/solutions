@@ -43,7 +43,7 @@ public:
         : m_sigGenId(id)
     {}
 
-    SigGenId GetId() { return m_sigGenId; }
+    SigGenId GetId() const { return m_sigGenId; }
 
     EventType Type() const final { return EventType::stimulus; }
 

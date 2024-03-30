@@ -134,7 +134,9 @@ public:
 	static void Interact(GridField & gfA, GridField & gfB, std::wostream * pOut)
 	{
 //		int siz = sizeof(GridField);
-		INTERACTION::Interact(gfA.m_Individual, gfB.m_Individual, pOut);
+		Individual& iA { gfA.m_Individual };
+		Individual& iB { gfB.m_Individual };
+		INTERACTION::Interact(iA, iB, pOut);
 	};
 
 private:

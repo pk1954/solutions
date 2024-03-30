@@ -177,16 +177,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvolutionCore.h" />
     <ClInclude Include="EvolutionCoreImpl.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
     <ClInclude Include="EvolutionCoreWrappers.h" />
     <ClInclude Include="EvoPixelCoords.h" />
     <ClInclude Include="EvoStatistics.h" />
     <ClInclude Include="geneTypeLimits.h" />
-    <ClInclude Include="gridPoint.h" />
     <ClInclude Include="gridPoint24.h" />
-    <ClInclude Include="gridRect.h" />
     <ClInclude Include="gridSelection.h" />
     <ClInclude Include="MortalityTable.h" />
     <ClInclude Include="PixelCore.h" />
@@ -202,6 +199,7 @@
     <ClCompile Include="dump.cpp" />
     <ClCompile Include="EvoDump.ixx" />
     <ClCompile Include="EvolutionCore.cpp" />
+    <ClCompile Include="EvolutionCore.ixx" />
     <ClCompile Include="EvolutionCoreImpl.cpp" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="EvolutionTypes.ixx" />

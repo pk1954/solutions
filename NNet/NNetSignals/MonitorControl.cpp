@@ -39,12 +39,11 @@ MonitorControl::MonitorControl
 	PixFpDimension<mV>         & vertCoord,
 	Observable                 & observable
 )
-  : NNetTimeGraph(hwndParent),
+  : NNetTimeGraph(hwndParent, L"ClassMonitorControl"),
 	m_vertCoord(vertCoord),
 	m_sound    (sound)
 {
 	SetHorzCoord(&horzCoord);
-	GraphicsWindow::Initialize(hwndParent, L"ClassMonitorControl", WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE);
 	m_measurement.Initialize(m_upGraphics.get());
 	m_pTextFormat = m_upGraphics->NewTextFormat(16.f);
 	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);

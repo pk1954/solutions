@@ -22,7 +22,7 @@ SignalPreview::SignalPreview
 	PixFpDimension<fMicroSecs> & horzCoord,
 	PixFpDimension<mV>         & vertCoord
 )
-  : NNetTimeGraph(baseWinParent.GetWindowHandle()),
+  : NNetTimeGraph(baseWinParent.GetWindowHandle(), L"ClassSignalPreview"),
 	m_vertCoord(vertCoord)
 {
 	m_vertCoord.RegisterObserver(*this);

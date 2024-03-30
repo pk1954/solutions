@@ -23,8 +23,12 @@ import Signals;
 export class NNetTimeGraph : public TimeGraph
 {
 public:
-	NNetTimeGraph(HWND const hwndParent)
-		:TimeGraph(hwndParent)
+	NNetTimeGraph
+	(
+		HWND    const hwndParent,
+		LPCTSTR const szClass
+	)
+		:TimeGraph(hwndParent, szClass)
 	{}
 
 	virtual void SetModelInterface(NNetModelWriterInterface* const p)

@@ -32,7 +32,6 @@ public:
 		Observable&,
 		Observable&,
 		SimuRunning const&,
-		PixFpDimension<fMicroSecs>*,
 		float &
 	);
 

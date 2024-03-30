@@ -11,6 +11,8 @@ import :NNetTimeGraph;
 export class EventViewer : public NNetTimeGraph
 {
 public:
+	EventViewer(HWND const);
+
 private:
 	void PaintGraphics() final;
 };

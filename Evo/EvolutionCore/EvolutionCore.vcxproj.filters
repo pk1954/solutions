@@ -27,9 +27,6 @@
     <ClInclude Include="MortalityTable.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="EvolutionCore.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="EvolutionCoreWrapperHelpers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -45,13 +42,7 @@
     <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridPoint.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="gridPoint24.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gridRect.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gridSelection.h">
@@ -213,6 +204,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GplIterator.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvolutionCore.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
