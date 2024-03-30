@@ -328,13 +328,14 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		fPixWidth = HIGH_WIDTH;
 	}
 
-	fPixel fPixMinSignal = PaintCurve
+	fPixel fPixMinSignal = TimeGraph::Paint
 	(
 		[this, fPixOffsetY, pSig](fMicroSecs const t) 
 		{ 
 			return getSignalPoint(*pSig, t, fPixOffsetY); 
 		},
 		usSimuStart, usSimuStop, 
+		GetParams()->TimeResolution(),
 		pBrush,
 		fPixWidth
 	);

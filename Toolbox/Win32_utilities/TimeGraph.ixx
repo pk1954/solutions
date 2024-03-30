@@ -105,6 +105,8 @@ protected:
 	fPixel xRightBorder() const { return m_fPixRightBorder; }
 	fPixel yBottom     () const { return m_fPixBottom; }
 
+	fPixel getY(fPixel const fPix) const { return yBottom() - fPix; }
+
 	fMicroSecs getMaxTime() const { return GetTime(xRight()); }
 
 private:

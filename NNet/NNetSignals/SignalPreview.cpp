@@ -44,7 +44,7 @@ void SignalPreview::PaintGraphics()
 		fMicroSecs       const   umPulseWidth { pParams->PulseWidth() };
 
 		dynData.StartStimulus();
-		PaintCurve
+		TimeGraph::Paint
 		(
 			[this, &dynData, &statData, umPulseWidth](fMicroSecs const stimuTime)
 			{
@@ -53,6 +53,7 @@ void SignalPreview::PaintGraphics()
 			}, 
 			0.0_MicroSecs,
 			GetTime(xRight()),
+			GetParams()->TimeResolution(),
 			m_upGraphics->CreateBrush(D2D1::ColorF::Black),
 			STD_WIDTH
 		);

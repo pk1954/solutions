@@ -30,16 +30,11 @@ void EventViewer::PaintGraphics()
 			break;
 		case EventType::stimulus:
 			{
-				StimulusEvent const *pStimEvent { static_cast<StimulusEvent const*>(e.get()) };
-				SigGenId      const  sigGenId   { pStimEvent->GetId() };
-				//PaintCurve
-				//(
-				//	[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
-				//	0.0_MicroSecs,
-				//	GetTime(xRight()),
-				//	m_upGraphics->CreateBrush(D2D1::ColorF::Black),
-				//	STD_WIDTH
-				//);
+				StimulusEvent   const* pStimEvent { static_cast<StimulusEvent const*>(e.get()) };
+				SigGenId        const  sigGenId   { pStimEvent->GetId() };
+				SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(sigGenId) };
+				PaintFreqCurve(pSigGen);
+				PaintVoltCurve(pSigGen);
 			}
 			break;
 		case EventType::startScan:

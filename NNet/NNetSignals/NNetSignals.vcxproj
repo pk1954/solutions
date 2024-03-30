@@ -610,6 +610,7 @@
     <ClCompile Include="MonitorWindow.cpp" />
     <ClCompile Include="MonitorWindow.ixx" />
     <ClCompile Include="NNetSignals.ixx" />
+    <ClCompile Include="NNetTimeGraph.cpp" />
     <ClCompile Include="NNetTimeGraph.ixx" />
     <ClCompile Include="SignalControl.cpp" />
     <ClCompile Include="SignalControl.ixx" />

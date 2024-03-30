@@ -23,11 +23,11 @@ using namespace std::chrono;
 
 SignalControl::SignalControl
 (
-	HWND                 const   hwndParent,
-	Observable                 & runObservable,
-	Observable                 & dynamicModelObservable,
-	SimuRunning          const & simuRunning,
-	float                      & fGridDimFactor
+	HWND        const  hwndParent,
+	Observable       & runObservable,
+	Observable       & dynamicModelObservable,
+	SimuRunning const& simuRunning,
+	float            & fGridDimFactor
 )
   : NNetTimeGraph(hwndParent, L"ClassSignalControl"),
 	m_runObservable(runObservable),
@@ -50,36 +50,6 @@ SignalControl::~SignalControl()
 		vertCoordFreq().UnregisterObserver(*this);
 	if (m_pVertScaleVolt)
 		vertCoordVolt().UnregisterObserver(*this);
-}
-
-void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
-{
-	if (m_pVertScaleFreq)
-		vertCoordFreq().UnregisterObserver(*this);
-	m_pVertScaleFreq = pScale;
-	if (m_pVertScaleFreq)
-		vertCoordFreq().RegisterObserver(*this);
-}
-
-void SignalControl::SetVertScaleVolt(Scale<mV> * pScale)
-{
-	if (m_pVertScaleVolt)
-		vertCoordVolt().UnregisterObserver(*this);
-	m_pVertScaleVolt = pScale;
-	if (m_pVertScaleVolt)
-		vertCoordVolt().RegisterObserver(*this);
-}
-
-void SignalControl::SetHorzScale(Scale<fMicroSecs>* pScale)
-{
-	if (m_pHorzScale)
-		m_pHorzScale->GetDimension().UnregisterObserver(*this);
-	m_pHorzScale = pScale;
-	if (m_pHorzScale)
-	{
-		SetHorzCoord(&m_pHorzScale->GetDimension());
-		m_pHorzScale->GetDimension().RegisterObserver(*this);
-	}
 }
 
 fHertz SignalControl::getFreq(fPixel const fPixY) const
@@ -128,7 +98,7 @@ void SignalControl::drawLine
 	if (fPixPntStart.IsNotNull() && fPixPntEnd.IsNotNull())
 	{
 		fPixel width { (colType == tColor::HIGH) ? HIGH_WIDTH : STD_WIDTH };
-		Color  col   { getColor(colType) };
+		Color  col   { GetColor(colType) };
 		col.a = 0.2f;
 
 		if ((fPixPntStart.GetX() != fPixPntEnd.GetX()) && (fPixPntStart.GetY() != fPixPntEnd.GetY()))
@@ -150,32 +120,33 @@ void SignalControl::drawDiam
 	if (fPixPnt.IsNotNull())
 	{
 		fPixel const size { (colType == tColor::HIGH) ? HIGH_DIAMOND : STD_DIAMOND };
-		Color  const col  { m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : getColor(colType) };
+		Color  const col  { m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : GetColor(colType) };
 		m_upGraphics->FillDiamond(fPixPnt, size, col);
 	}
 }
 
 void SignalControl::paintRunControls(fMicroSecs const time) const
 {
+	SignalGenerator  const* pSigGen{ m_pNMWI->GetSigGenSelected() };
 	if (m_pVertScaleFreq)
 	{
-		fPixelPoint pntFreq       { pixPntStimulusFreq(time) };
+		fPixelPoint pntFreq       { pixPntStimulusFreq(pSigGen, time) };
 		fPixelPoint pntFreqLeft   { fPixelPoint(       xLeft(), pntFreq.GetY()) };
 		fPixelPoint pntFreqBottom { fPixelPoint(pntFreq.GetX(), yBottom())      };
-		m_upGraphics->DrawLine(pntFreq, pntFreqLeft,   1.0_fPixel, getColor(tColor::FREQ));
-		m_upGraphics->DrawLine(pntFreq, pntFreqBottom, 1.0_fPixel, getColor(tColor::TIME));
-		m_upGraphics->FillDiamond(pntFreq, STD_DIAMOND, getColor(tColor::FREQ));
+		m_upGraphics->DrawLine(pntFreq, pntFreqLeft,   1.0_fPixel, GetColor(tColor::FREQ));
+		m_upGraphics->DrawLine(pntFreq, pntFreqBottom, 1.0_fPixel, GetColor(tColor::TIME));
+		m_upGraphics->FillDiamond(pntFreq, STD_DIAMOND, GetColor(tColor::FREQ));
 	}
 
 	if (m_pVertScaleVolt)
 	{
-		fPixelPoint const pntVolt       { pixPntStimulusVolt(time) };
+		fPixelPoint const pntVolt       { pixPntStimulusVolt(pSigGen, time) };
 		fPixel      const dirPos        { m_pVertScaleFreq ? xRight() : xLeft () };
 		fPixelPoint const pntVoltBase   { fPixelPoint(        dirPos, pntVolt.GetY()) };
 		fPixelPoint const pntVoltBottom { fPixelPoint(pntVolt.GetX(), yBottom())      };
-		m_upGraphics->DrawLine(pntVolt, pntVoltBase,   1.0_fPixel, getColor(tColor::VOLT));
-		m_upGraphics->DrawLine(pntVolt, pntVoltBottom, 1.0_fPixel, getColor(tColor::TIME));
-		m_upGraphics->FillDiamond(pntVolt, STD_DIAMOND, getColor(tColor::VOLT));
+		m_upGraphics->DrawLine(pntVolt, pntVoltBase,   1.0_fPixel, GetColor(tColor::VOLT));
+		m_upGraphics->DrawLine(pntVolt, pntVoltBottom, 1.0_fPixel, GetColor(tColor::TIME));
+		m_upGraphics->FillDiamond(pntVolt, STD_DIAMOND, GetColor(tColor::VOLT));
 	}
 }
 
@@ -228,17 +199,17 @@ void SignalControl::calcHandles()
 
 	if (m_pVertScaleFreq)
 	{
-		m_handles[static_cast<int>(tPos::BASE_FREQ)] = fPixelPoint(xLeft(), yBaseFreq());
-		m_handles[static_cast<int>(tPos::PEAK_FREQ)] = fPixelPoint(xLeft(), yPeakFreq());
-		m_handles[static_cast<int>(tPos::TIME_FREQ)] = fPixelPoint(xPeak(), yPeakFreq());
+		m_handles[static_cast<int>(tPos::BASE_FREQ)] = fPixelPoint(xLeft (), yBaseFreq());
+		m_handles[static_cast<int>(tPos::PEAK_FREQ)] = fPixelPoint(xLeft (), yPeakFreq());
+		m_handles[static_cast<int>(tPos::TIME_FREQ)] = fPixelPoint(xPeak (), yPeakFreq());
 		m_handles[static_cast<int>(tPos::BASA_FREQ)] = fPixelPoint(xRight(), yBaseFreq());
 	}
 	if (m_pVertScaleVolt)
 	{
 		fPixel const dirPos  { m_pVertScaleFreq ? xRight() : xLeft() };
 		fPixel const dirPosA { m_pVertScaleFreq ? xLeft() : xRight() };
-		m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(dirPos, yBaseAmplit());
-		m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(dirPos, aPeakAmplit());
+		m_handles[static_cast<int>(tPos::BASE_VOLT)] = fPixelPoint(dirPos,  yBaseAmplit());
+		m_handles[static_cast<int>(tPos::PEAK_VOLT)] = fPixelPoint(dirPos,  aPeakAmplit());
 		m_handles[static_cast<int>(tPos::TIME_VOLT)] = fPixelPoint(xPeak(), aPeakAmplit());
 		m_handles[static_cast<int>(tPos::BASA_VOLT)] = fPixelPoint(dirPosA, yBaseAmplit());
 	}
@@ -269,14 +240,42 @@ void SignalControl::paintEditControls() const
 	drawDiam(tColor::TIME, tPos::TIME);
 }
 
+void SignalControl::PaintFreqCurve(SignalGenerator const * pSigGen)
+{
+	TimeGraph::Paint
+	(
+		[this, pSigGen](fMicroSecs const t){ return pixPntStimulusFreq(pSigGen, t); }, 
+		0.0_MicroSecs,
+		GetTime(xRight()),
+		GetParams()->TimeResolution(),
+		m_upGraphics->CreateBrush(GetColor(tColor::FREQ)),
+		STD_WIDTH
+	);
+}
+
+void SignalControl::PaintVoltCurve(SignalGenerator const * pSigGen)
+{
+	TimeGraph::Paint
+	(
+		[this, pSigGen](fMicroSecs const t) { return pixPntStimulusVolt(pSigGen, t); },
+		0.0_MicroSecs,
+		GetTime(xRight()),
+		GetParams()->TimeResolution(),
+		m_upGraphics->CreateBrush(GetColor(tColor::VOLT)),
+		STD_WIDTH
+	);
+}
+
 void SignalControl::PaintGraphics()
 {
 	if (m_fGridDimFactor > 0.0f)
 	{
 		if (m_pVertScaleFreq)
 			m_pVertScaleFreq->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
+
 		if (m_pVertScaleVolt && !m_pVertScaleFreq)
 			m_pVertScaleVolt->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
+
 		if (m_pHorzScale)
 			m_pHorzScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
 	}
@@ -293,24 +292,8 @@ void SignalControl::PaintGraphics()
 			paintRunControls(pSigGen->GetStimulusTime());
 		}
 
-		if (m_pVertScaleFreq)
-			PaintCurve
-			(
-				[this](fMicroSecs const t){ return pixPntStimulusFreq(t); }, 
-				0.0_MicroSecs,
-				GetTime(xRight()),
-				m_upGraphics->CreateBrush(getColor(tColor::FREQ)),
-				STD_WIDTH
-			);
-		if (m_pVertScaleVolt)
-			PaintCurve
-			(
-				[this](fMicroSecs const t){ return pixPntStimulusVolt(t); }, 
-				0.0_MicroSecs,
-				GetTime(xRight()),
-				m_upGraphics->CreateBrush(getColor(tColor::VOLT)),
-				STD_WIDTH
-			);
+		PaintFreqCurve(pSigGen);
+		PaintVoltCurve(pSigGen);
 	}
 }
 

@@ -82,10 +82,10 @@ public:
 
 private:
 
-	mV                 m_mVactual;
-	SigGenStaticData   m_statData;
-	SigGenDynamicData  m_dynData;
-	wstring            m_name;
+	mV                m_mVactual;
+	SigGenStaticData  m_statData;
+	SigGenDynamicData m_dynData;
+	wstring           m_name;
 
 	inline static IDWriteTextFormat* m_pTextFormat     { nullptr }; //lazy definition
 	inline static IDWriteTextFormat* m_pTextFormatPlus { nullptr }; //lazy definition
