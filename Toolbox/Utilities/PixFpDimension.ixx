@@ -78,26 +78,6 @@ public:
 		return zoomFactor(fFactor, fPixCenter, Transform2logUnitPos(fPixCenter), bNotify);
 	}
 
-	bool zoomFactor
-	(
-		float    const fFactor,
-		fPixel   const fPixCenter,
-		LOG_UNIT const logCenter,
-		bool     const bNotify = true
-	)
-	{
-		LOG_UNIT logNewSize { m_logPixelSize * fFactor };
-		if (IsValidPixelSize(logNewSize))
-		{
-			m_logPixelSize = logNewSize;                                   // now zoom
-			m_fPixOffset   = Transform2fPixelSize(logCenter) - fPixCenter; // and fix offset
-			if (bNotify)
-				NotifyAll(true);
-			return true;
-		}
-		return false;
-	}
-
 	PixFpDimension operator+= (PixFpDimension const a)
 	{
 		m_fPixOffset   += a.m_fPixOffset;
@@ -174,6 +154,26 @@ public:
 			NotifyAll(true);
 	}
 
+	bool Adjust
+	(
+		LOG_UNIT const logStart,
+		LOG_UNIT const logEnd,
+		fPixel   const fPixStart,
+		fPixel   const fPixEnd
+	)
+	{
+		LOG_UNIT const logDiff         { logEnd - logStart };
+		fPixel   const fPixDiff        { fPixEnd - fPixStart };
+		LOG_UNIT const logPixelSizeNew { logDiff / fPixDiff.GetValue() };
+		if (IsValidPixelSize(logPixelSizeNew))
+		{
+			m_logPixelSize = logPixelSizeNew;
+			m_fPixOffset = fPixel(logEnd / m_logPixelSize) - fPixEnd;
+			return true;
+		}
+		return false;
+	}
+
 private:
 
 	fPixel   m_fPixOffset      { 0.0_fPixel };
@@ -185,5 +185,25 @@ private:
 	float calcFactor(bool const bDirection) const
 	{
 		return bDirection ? 1.0f / m_fZoomFactor : m_fZoomFactor;
+	}
+
+	bool zoomFactor
+	(
+		float    const fFactor,
+		fPixel   const fPixCenter,
+		LOG_UNIT const logCenter,
+		bool     const bNotify = true
+	)
+	{
+		LOG_UNIT logNewSize { m_logPixelSize * fFactor };
+		if (IsValidPixelSize(logNewSize))
+		{
+			m_logPixelSize = logNewSize;                                         // now zoom
+			m_fPixOffset   = Transform2fPixelSize(logCenter) - fPixCenter; // and fix offset
+			if (bNotify)
+				NotifyAll(true);
+			return true;
+		}
+		return false;
 	}
 };

@@ -22,7 +22,7 @@ public:
         : m_timeStamp(SimulationTime::Get())
     {}
 
-    fMicroSecs GetTimeStamp() { return m_timeStamp; }
+    fMicroSecs GetTimeStamp() const { return m_timeStamp; }
 
     virtual EventType Type() const = 0;
 

@@ -330,7 +330,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 
 	fPixel fPixMinSignal = TimeGraph::Paint
 	(
-		[this, fPixOffsetY, pSig](fMicroSecs const t) 
+		[this, fPixOffsetY, pSig](fMicroSecs const t)
 		{ 
 			return getSignalPoint(*pSig, t, fPixOffsetY); 
 		},

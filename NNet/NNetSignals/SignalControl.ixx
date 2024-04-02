@@ -46,9 +46,6 @@ public:
 	bool HasScales() const final { return true; }
 	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 
-	void PaintFreqCurve(SignalGenerator const*);
-	void PaintVoltCurve(SignalGenerator const*);
-
 private:
 
 	enum class tPos { NONE, TIME, BASE_FREQ, PEAK_FREQ, TIME_FREQ, BASE_VOLT, PEAK_VOLT, TIME_VOLT, BASA_FREQ, BASA_VOLT };
@@ -84,11 +81,15 @@ private:
 	fHertz getFreq(fPixelPoint const& p) const { return getFreq(p.GetY()); }
 	mV     getVolt(fPixelPoint const& p) const { return getVolt(p.GetY()); }
 
-	fPixel xPeak      () const { return xTime(GetSigGenStaticData()->GetPeakTime()); }
-	fPixel aPeakAmplit() const { return yVolt(GetSigGenStaticData()->GetAmplitude().Peak()); }
-	fPixel yBaseAmplit() const { return yVolt(GetSigGenStaticData()->GetAmplitude().Base()); }
-	fPixel yPeakFreq  () const { return yFreq(GetSigGenStaticData()->GetFrequency().Peak()); }
-	fPixel yBaseFreq  () const { return yFreq(GetSigGenStaticData()->GetFrequency().Base()); }
+	SignalGenerator  const * sigGenSelected  () const { return m_pNMWI->GetSigGenSelected(); }
+	SigGenId                 sigGenIdSelected() const { return m_pNMWI->GetSigGenIdSelected(); }
+	SigGenStaticData const * sigGenStaticData() const { return &sigGenSelected()->GetStaticData(); }
+
+	fPixel xPeak      () const { return xTime(sigGenStaticData()->GetPeakTime()); }
+	fPixel aPeakAmplit() const { return yVolt(sigGenStaticData()->GetAmplitude().Peak()); }
+	fPixel yBaseAmplit() const { return yVolt(sigGenStaticData()->GetAmplitude().Base()); }
+	fPixel yPeakFreq  () const { return yFreq(sigGenStaticData()->GetFrequency().Peak()); }
+	fPixel yBaseFreq  () const { return yFreq(sigGenStaticData()->GetFrequency().Base()); }
 
 	void calcHandles();
 	void paintRunControls(fMicroSecs const) const;

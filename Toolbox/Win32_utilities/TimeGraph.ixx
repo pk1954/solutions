@@ -35,6 +35,9 @@ public:
 
 protected:
 
+	fPixel const STD_WIDTH  { 1.0_fPixel };
+	fPixel const HIGH_WIDTH { 3.0_fPixel };
+
 	fPixel Paint
 	(
 		auto                  getPoint,
@@ -43,7 +46,7 @@ protected:
 		fMicroSecs      const usResolution,
 		ID2D1SolidColorBrush* pBrush,
 		fPixel          const fPixWidth
-	) const
+) const
 	{
 		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
 		fPixel           fPixMinSignal { fPixel::MAX_VAL() };
@@ -62,7 +65,7 @@ protected:
 					fPixMinSignal = actPoint.GetY();
 
 				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-				m_upGraphics->DrawLine(prevPoint, stepPoint, fPixWidth, *pBrush);
+				m_upGraphics->DrawLine(prevPoint, stepPoint, STD_WIDTH, *pBrush);
 				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, *pBrush);
 				prevPoint = actPoint;
 			}

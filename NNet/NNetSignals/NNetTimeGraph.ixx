@@ -44,41 +44,35 @@ public:
 
 protected:
 
-	fPixel const STD_WIDTH  { 1.0_fPixel };
-	fPixel const HIGH_WIDTH { 3.0_fPixel };
-
 	NNetModelWriterInterface* m_pNMWI { nullptr };
 
 	Scale<fHertz>     * m_pVertScaleFreq { nullptr };
 	Scale<mV>         * m_pVertScaleVolt { nullptr };
 	Scale<fMicroSecs> * m_pHorzScale     { nullptr };
 
-	SignalGenerator  const * GetSigGenSelected  () const { return m_pNMWI->GetSigGenSelected(); }
-	SignalGenerator        * GetSigGenSelected  ()       { return m_pNMWI->GetSigGenSelected(); }
-	SigGenId                 GetSigGenIdSelected() const { return m_pNMWI->GetSigGenIdSelected(); }
-	SigGenStaticData const * GetSigGenStaticData() const { return &GetSigGenSelected()->GetStaticData(); }
-	NNetParameters         * GetParams          () const { return &m_pNMWI->GetParams(); }
+	NNetParameters    * GetParams() const { return &m_pNMWI->GetParams(); }
 
-	PixFpDimension<fHertz>      & vertCoordFreq()        { return m_pVertScaleFreq->GetDimension(); }
-	PixFpDimension<mV>          & vertCoordVolt()        { return m_pVertScaleVolt->GetDimension(); }
+	void PaintFreqCurve(SignalGenerator const*, fMicroSecs const = 0.0_MicroSecs);
+	void PaintVoltCurve(SignalGenerator const*, fMicroSecs const = 0.0_MicroSecs);
 
-	PixFpDimension<fHertz> const& vertCoordFreqC() const { return m_pVertScaleFreq->GetDimension(); }
-	PixFpDimension<mV>     const& vertCoordVoltC() const { return m_pVertScaleVolt->GetDimension(); }
+	Color GetColor(tColor const type) const	{ return m_colTable[static_cast<int>(type)]; }
 
 	fPixel yFreq(fHertz const freq) const { return getY(vertCoordFreqC().Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV     const volt) const { return getY(vertCoordVoltC().Transform2fPixelPos(volt)); }
 
-	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
-	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
+	PixFpDimension<fHertz> const& vertCoordFreqC() const { return m_pVertScaleFreq->GetDimension(); }
+	PixFpDimension<mV>     const& vertCoordVoltC() const { return m_pVertScaleVolt->GetDimension(); }
+
+	PixFpDimension<fHertz>      & vertCoordFreq()        { return m_pVertScaleFreq->GetDimension(); }
+	PixFpDimension<mV>          & vertCoordVolt()        { return m_pVertScaleVolt->GetDimension(); }
+
 	fPixelPoint pixPntStimulusFreq(SignalGenerator const *p, fMicroSecs const t) const { return pixPntFreq(t, p->GetStimulusFrequency(t)); }
 	fPixelPoint pixPntStimulusVolt(SignalGenerator const *p, fMicroSecs const t) const { return pixPntVolt(t, p->GetStimulusAmplitude(t)); }
 
-	void PaintFreqCurve(SignalGenerator const*);
-	void PaintVoltCurve(SignalGenerator const*);
-
-	Color GetColor(tColor const type) const	{ return m_colTable[static_cast<int>(type)]; }
-
 private:
+	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
+	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
+
 	array<Color, 4> m_colTable
 	{
 		D2D1::ColorF::Black, // FREQ
@@ -86,5 +80,4 @@ private:
 		D2D1::ColorF::Black, // TIME
 		D2D1::ColorF::Red    // HIGH
 	};
-
 };

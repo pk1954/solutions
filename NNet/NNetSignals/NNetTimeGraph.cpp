@@ -69,13 +69,17 @@ void NNetTimeGraph::SetHorzScale(Scale<fMicroSecs>* pScale)
 	}
 }
 
-void NNetTimeGraph::PaintFreqCurve(SignalGenerator const * pSigGen)
+void NNetTimeGraph::PaintFreqCurve
+(
+	SignalGenerator const * pSigGen,
+	fMicroSecs      const   umStart
+)
 {
 	if (m_pVertScaleFreq)
 		TimeGraph::Paint
 		(
 			[this, pSigGen](fMicroSecs const t){ return pixPntStimulusFreq(pSigGen, t); }, 
-			0.0_MicroSecs,
+			umStart,
 			GetTime(xRight()),
 			GetParams()->TimeResolution(),
 			m_upGraphics->CreateBrush(GetColor(tColor::FREQ)),
@@ -83,13 +87,17 @@ void NNetTimeGraph::PaintFreqCurve(SignalGenerator const * pSigGen)
 		);
 }
 
-void NNetTimeGraph::PaintVoltCurve(SignalGenerator const * pSigGen)
+void NNetTimeGraph::PaintVoltCurve
+(
+	SignalGenerator const * pSigGen,
+	fMicroSecs      const   umStart
+)
 {
 	if (m_pVertScaleVolt)
 		TimeGraph::Paint
 		(
 			[this, pSigGen](fMicroSecs const t) { return pixPntStimulusVolt(pSigGen, t); },
-			0.0_MicroSecs,
+			umStart,
 			GetTime(xRight()),
 			GetParams()->TimeResolution(),
 			m_upGraphics->CreateBrush(GetColor(tColor::VOLT)),

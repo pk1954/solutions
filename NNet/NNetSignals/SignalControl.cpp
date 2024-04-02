@@ -240,32 +240,6 @@ void SignalControl::paintEditControls() const
 	drawDiam(tColor::TIME, tPos::TIME);
 }
 
-void SignalControl::PaintFreqCurve(SignalGenerator const * pSigGen)
-{
-	TimeGraph::Paint
-	(
-		[this, pSigGen](fMicroSecs const t){ return pixPntStimulusFreq(pSigGen, t); }, 
-		0.0_MicroSecs,
-		GetTime(xRight()),
-		GetParams()->TimeResolution(),
-		m_upGraphics->CreateBrush(GetColor(tColor::FREQ)),
-		STD_WIDTH
-	);
-}
-
-void SignalControl::PaintVoltCurve(SignalGenerator const * pSigGen)
-{
-	TimeGraph::Paint
-	(
-		[this, pSigGen](fMicroSecs const t) { return pixPntStimulusVolt(pSigGen, t); },
-		0.0_MicroSecs,
-		GetTime(xRight()),
-		GetParams()->TimeResolution(),
-		m_upGraphics->CreateBrush(GetColor(tColor::VOLT)),
-		STD_WIDTH
-	);
-}
-
 void SignalControl::PaintGraphics()
 {
 	if (m_fGridDimFactor > 0.0f)
@@ -280,7 +254,7 @@ void SignalControl::PaintGraphics()
 			m_pHorzScale->DrawAuxLines(*m_upGraphics.get(), m_fGridDimFactor);
 	}
 
-	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
+	if (SignalGenerator const * pSigGen { sigGenSelected() })
 	{
 		if (!m_simuRunning.IsRunning())
 		{
@@ -300,7 +274,7 @@ void SignalControl::PaintGraphics()
 float SignalControl::ScaleFactorTimeCoord() const
 {
 	fMicroSecs const maxVisible { getMaxTime() };
-	fMicroSecs const maxValue   { GetSigGenStaticData()->CutoffTime() };
+	fMicroSecs const maxValue   { sigGenStaticData()->CutoffTime() };
 	float      const factor     { maxValue / maxVisible };
 	return factor;
 }
@@ -308,7 +282,7 @@ float SignalControl::ScaleFactorTimeCoord() const
 float SignalControl::ScaleFactorFreqCoord() const
 {
 	fHertz const maxVisible { getFreq(0.0_fPixel) * 0.9f };
-	fHertz const maxValue   { GetSigGenStaticData()->GetFrequency().Peak() };
+	fHertz const maxValue   { sigGenStaticData()->GetFrequency().Peak() };
 	float  const factor     { maxValue / maxVisible };
 	return factor;
 }
@@ -316,7 +290,7 @@ float SignalControl::ScaleFactorFreqCoord() const
 float SignalControl::ScaleFactorVoltCoord() const
 {
 	mV    const maxVisible { getVolt(0.0_fPixel) * 0.9f };
-	mV    const maxValue   { GetSigGenStaticData()->GetAmplitude().Peak() };
+	mV    const maxValue   { sigGenStaticData()->GetAmplitude().Peak() };
 	float const factor     { maxValue / maxVisible };
 	return factor;
 }
@@ -385,7 +359,7 @@ bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if (SignalGenerator const * pSigGen { GetSigGenSelected() })
+	if (SignalGenerator const * pSigGen { sigGenSelected() })
 	{
 	    fPixelPoint const fPixCrsrPos { GetCrsrPosFromLparamF(lParam) };
 		SigGenStaticData  sigGenData(pSigGen->GetStaticData());
@@ -420,7 +394,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			default:
 				break;
 			}
-			SetSigGenStaticDataCmd::Push(GetSigGenIdSelected(), sigGenData);
+			SetSigGenStaticDataCmd::Push(sigGenIdSelected(), sigGenData);
 			Notify(true);
 		}
 		else  // left button not pressed: select
