@@ -33,6 +33,9 @@ public:
 	PixFpDimension<fMicroSecs>       * GetHorzCoord ()       { return m_pHorzCoord; }
 	PixFpDimension<fMicroSecs> const * GetHorzCoordC() const { return m_pHorzCoord; }
 
+	fMicroSecs Pixel2scaleTime(fPixel     const fPix)    const { return GetHorzCoordC()->Transform2logUnitPos(fPix); }
+	fPixel     Scale2pixelTime(fMicroSecs const usScale) const { return GetHorzCoordC()->Transform2fPixelPos(usScale); }
+
 protected:
 
 	fPixel const STD_WIDTH  { 1.0_fPixel };

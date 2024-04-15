@@ -42,7 +42,7 @@ private:
 	bool       IsTraceOn  () const { return m_bTrace; }
 	wostream & TraceStream()       { return wcout; }
 
-	bool processUIcommand   (int const, LPARAM const);
+	bool processUIcommand   (int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
 	bool processModelCommand(int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
 	void deleteSignal       ();
 

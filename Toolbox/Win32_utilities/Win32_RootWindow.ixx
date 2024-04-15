@@ -66,14 +66,15 @@ public:
 	PixelRectSize GetWindowSize()                     const { return ::GetWindowSize(m_hwnd); }
 	PixelRectSize GetClRectSize()                     const { return ::GetClRectSize(m_hwnd); }
 	PixelRect     GetClPixelRect()                    const { return ::GetClPixelRect(m_hwnd); }
+	PixelRect     GetWindowRect()                     const { return ::GetWindowRect(m_hwnd); }
 	PIXEL         GetClientWindowHeight()             const { return ::GetClientWindowHeight(m_hwnd); }
 	PIXEL         GetClientWindowWidth()              const { return ::GetClientWindowWidth(m_hwnd); }
 	bool          CrsrInClientRect()                  const { return ::CrsrInClientRect(m_hwnd); }
 	PixelPoint    GetRelativeCrsrPosition()           const { return ::GetRelativeCrsrPosition(m_hwnd); }
 	PixelPoint    GetClRectCenter()                   const { return ::GetClRectCenter(m_hwnd); }
 	bool          CrsrOutOfClientRect()               const { return IsOutOfClientRect(GetRelativeCrsrPosition()); }
-	PixelPoint    Client2Screen(PixelPoint  const& p) const { return ::Client2Screen(m_hwnd, p); }
-	PixelPoint    Screen2Client(PixelPoint  const& p) const { return ::Screen2Client(m_hwnd, p); }
+	PixelPoint    Client2Screen (PixelPoint const& p) const { return ::Client2Screen(m_hwnd, p); }
+	PixelPoint    Screen2Client (PixelPoint const& p) const { return ::Screen2Client(m_hwnd, p); }
 	bool          IsInClientRect(PixelPoint const& p) const { return ::IsInClientRect(m_hwnd, p); }
 	bool          IsInClientRect(PixelRect  const& r) const { return ::IsInClientRect(m_hwnd, r); }
 
@@ -105,6 +106,7 @@ public:
 	HWND     CreateStdToolTip(int const id, LPWSTR const& t)                      const { return ::CreateStdToolTip(m_hwnd, id, t); }
 	HWND     CreateWindowToolTip(LPWSTR const& t)                                 const { return ::CreateWindowToolTip(m_hwnd, t); }
 	HWND     CreateRectToolTip(int const id, PixelRect const& r, LPWSTR const& t) const { return ::CreateRectToolTip(m_hwnd, id, &r, t); }
+	void     BringWindowToTop()                                                   const { ::BringWindowToTop(m_hwnd); }
 
 	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage(     WM_COMMAND, wParam, lParam); }
 	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage(           WM_COMMAND, wParam, lParam); }
@@ -123,11 +125,11 @@ public:
 
 	void SetDlgText(int const iItem, wchar_t const* const wstrText) const {	::SetText(GetDlgItem(iItem), wstrText);	}
 
-	short       GetTrackBarPos(INT const idTrackbar)      const { return Cast2Short(SendDlgItemMessage(idTrackbar, TBM_GETPOS, 0, 0)); }
+	short       GetTrackBarPos       (INT    const idTbar) const { return Cast2Short(SendDlgItemMessage(idTbar, TBM_GETPOS, 0, 0)); }
 	PixelPoint  GetCrsrPosFromLparam (LPARAM const lParam) const { return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) }; }
 	fPixelPoint GetCrsrPosFromLparamF(LPARAM const lParam) const { return Convert2fPixelPoint(GetCrsrPosFromLparam(lParam)); }
-	PIXEL CrsrXpos(LPARAM const lParam) const { return PIXEL(GET_X_LPARAM(lParam)); }
-	PIXEL CrsrYpos(LPARAM const lParam) const { return PIXEL(GET_Y_LPARAM(lParam)); }
+	PIXEL       CrsrXpos             (LPARAM const lParam) const { return PIXEL(GET_X_LPARAM(lParam)); }
+	PIXEL       CrsrYpos             (LPARAM const lParam) const { return PIXEL(GET_Y_LPARAM(lParam)); }
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
 

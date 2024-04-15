@@ -109,6 +109,8 @@ void NNetAppWindow::setModelInterface()
 	m_performanceWindow.SetModelInterface(m_pNMRI);
 	NNetPreferences   ::SetModelInterface(m_pNMRI);
 	Nob::SetParams(&m_pNMRI->GetParamsC());
+	if (m_upEventViewer)
+		m_upEventViewer->SetModelInterface(&m_nmwi);
 }
 
 void NNetAppWindow::Start(MessagePump & pump)
@@ -185,6 +187,8 @@ void NNetAppWindow::Start(MessagePump & pump)
 	);
 
 	m_miniNNetWindow.Start(m_hwndApp, true,	m_NNetController, &m_scanMatrix);
+
+//	m_upEventViewer = make_unique<EventViewer>(m_hwndApp);
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main window
 
@@ -461,6 +465,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_FINISHING_SCAN:
 			m_statusBar.ClearPart(m_statusMessagePart);
+			m_upEventViewer->Move(0_PIXEL, 0_PIXEL, 200_PIXEL, 100_PIXEL, true);
+			m_upEventViewer->Show(true);
 			return true;
 
 		case IDM_UNLOCK:

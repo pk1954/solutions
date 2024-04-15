@@ -54,13 +54,13 @@ fMicroSecs TimeGraph::GetTime(fPixelPoint const & p) const
 fMicroSecs TimeGraph::GetTime(fPixel const fPixX) const 
 { 
 	assert(m_pHorzCoord);
-	return m_pHorzCoord->Transform2logUnitPos(fPixX);
+	return Pixel2scaleTime(fPixX);
 }
 
 fPixel TimeGraph::xTime(fMicroSecs const time) const 
 { 
 	assert(m_pHorzCoord);
-	return m_pHorzCoord->Transform2fPixelPos(time);
+	return Scale2pixelTime(time);
 }
 
 bool TimeGraph::OnSize(PIXEL const width, PIXEL const height)

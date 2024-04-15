@@ -87,8 +87,11 @@ public:
 
 	void PaintGrid(D2D_driver& graphics)
 	{
-		m_upHorzScale->DrawAuxLines(graphics, m_fGridDimFactor);
-		m_upVertScale->DrawAuxLines(graphics, m_fGridDimFactor);
+		if (HasGrid())
+		{
+			m_upHorzScale->DrawAuxLines(graphics, m_fGridDimFactor);
+			m_upVertScale->DrawAuxLines(graphics, m_fGridDimFactor);
+		}
 	}
 
 	bool HasScales() const { return m_fPixScaleSize.IsNotZero(); }

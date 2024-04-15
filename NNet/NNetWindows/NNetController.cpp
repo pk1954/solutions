@@ -69,8 +69,8 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         FatalError::Happened(static_cast<long>(lParam), L"unknown");
     }
 
-    if (processUIcommand(wmId, lParam)) // handle all commands that affect the UI
-        return true;                    // but do not concern the model  
+    if (processUIcommand(wmId, lParam, umPoint)) // handle all commands that affect the UI
+        return true;                             // but do not concern the model  
 
     if (m_pNMRI->ModelLocked())
         return true;
@@ -94,7 +94,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     return bRes;
 }
 
-bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
+bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, MicroMeterPnt const umPoint)
 {
     switch (wmId)
     {
@@ -177,6 +177,23 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam)
         WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER), IDM_WINDOW_ON);
         break;
 
+    case IDD_ADD_EEG_SENSOR:
+        AddSensorCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
+        WinManager::SendCommand(RootWinId(IDM_MONITOR_WINDOW), IDM_WINDOW_ON);
+        break;
+
+    case IDD_DELETE_SIGNAL:
+        deleteSignal();
+        break;
+
+    case IDD_ADD_TRACK:
+        InsertTrackCommand::Push(TrackNr(Cast2Int(lParam)));
+        break;
+
+    case IDD_DELETE_TRACK:
+        DeleteTrackCommand::Push(TrackNr(Cast2Int(lParam)));
+        break;
+
     default:
         return false; // command has not been processed
     }
@@ -191,11 +208,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDD_NEW_SIGNAL_GENERATOR:
         NewSigGenCmd::Push();
         WinManager::SendCommand(RootWinId(IDM_SIG_DESIGNER),IDM_WINDOW_ON);
-        break;
-
-    case IDD_ADD_EEG_SENSOR:
-        AddSensorCmd::Push(MicroMeterCircle(umPoint, NEURON_RADIUS * 5), TrackNr(0));
-        WinManager::SendCommand(RootWinId(IDM_MONITOR_WINDOW), IDM_WINDOW_ON);
         break;
 
     case IDM_COPY_SELECTION:
@@ -215,18 +227,6 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 
     case IDM_ADD_IMPORTED_MODEL:
         AddModuleCommand::Push();
-        break;
-
-    case IDD_DELETE_SIGNAL:
-        deleteSignal();
-        break;
-
-    case IDD_ADD_TRACK:
-        InsertTrackCommand::Push(TrackNr(Cast2Int(lParam)));
-        break;
-
-    case IDD_DELETE_TRACK:
-        DeleteTrackCommand::Push(TrackNr(Cast2Int(lParam)));
         break;
 
     default:

@@ -215,6 +215,7 @@ void RootWindow::Trigger(bool const bImmediately)
 	else
 		Invalidate(false);
 }
+
 void RootWindow::FillBackground(HDC const hDC, COLORREF const col) const
 {
 	SetBkColor(hDC, col);

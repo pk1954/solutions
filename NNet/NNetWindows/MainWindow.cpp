@@ -165,10 +165,8 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	else  // nothing selected, cursor on background
 	{
 		if (!m_pNMRI->ModelLocked())    // no edit operations allowed if model is locked
-		{
 			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
-			appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
-		}
+		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
 	if (m_pNMRI->GetScanImageC())
 	{
@@ -241,13 +239,13 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
 		ClearPtLast();                 // make m_ptLast invalid
+		if (setHighlightedSensor(umCrsrPos))
+			return;
 		if (m_pNMRI->ModelLocked())    // no edit operations allowed
 			return;
 		if (m_pScanMatrix->SetScanAreaHandle(GetDrawContextC(), umCrsrPos))
 			return;
 		if (setHighlightedNob(umCrsrPos))
-			return;
-		if (setHighlightedSensor(umCrsrPos))
 			return;
 		if (selectSignalHandle(umCrsrPos))
 			return;
@@ -268,7 +266,11 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (m_umDelta.IsZero())
 		return;
 
-	if (m_pNMRI->ModelLocked())    // no edit operations allowed
+	if (m_sensorIdSelected.IsNotNull())
+	{
+		MoveSensorCmd::Push(m_sensorIdSelected, m_umDelta);
+	}
+	else if (m_pNMRI->ModelLocked())    // no edit operations allowed
 	{
 		NNetMove(ptCrsr - ptLast);     // move view by manipulating coordinate system 
 	}
@@ -293,10 +295,6 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
 		m_nobIdTarget = m_pNMRI->FindConnectionCandidate(umCrsrPos, m_nobIdHighlighted);
-	}
-	else if (m_sensorIdSelected.IsNotNull())
-	{
-		MoveSensorCmd::Push(m_sensorIdSelected, m_umDelta);
 	}
 	else if (m_pNMRI->IsAnySignalSelected())
 	{
@@ -497,27 +495,24 @@ void MainWindow::OnPaint()
 
 void MainWindow::PaintGraphics()
 {
-	DrawContext const& context { GetDrawContextC() };
-
-	if (m_mainScales.HasGrid())
-		m_mainScales.PaintGrid(*m_upGraphics.get());
+	m_mainScales.PaintGrid(*m_upGraphics.get());
 
 	if (NNetPreferences::ScanAreaVisible())
 	{
 		if (NNetPreferences::ModelFront())
 		{
-			m_pScanMatrix->DrawScanArea(context);
-			drawModel(context );
+			m_pScanMatrix->DrawScanArea(m_context);
+			drawModel(m_context );
 		}
 		else
 		{
-			drawModel(context );
-			m_pScanMatrix->DrawScanArea(context);
+			drawModel(m_context);
+			m_pScanMatrix->DrawScanArea(m_context);
 		}
 	}
 	else
 	{
-		drawModel(context );
+		drawModel(m_context );
 	}
 }
 

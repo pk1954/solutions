@@ -77,14 +77,11 @@ private:
 	fPixel      calcTrackHeight() const;
 	fPixelPoint calcDiamondPos () const;
 
-	fMicroSecs pixel2scaleTime(fPixel     const fPix)    const { return GetHorzCoordC()->Transform2logUnitPos(fPix); }
-	fPixel     scale2pixelTime(fMicroSecs const usScale) const { return GetHorzCoordC()->Transform2fPixelPos(usScale); }
-
 	fMicroSecs scale2simuTime (fMicroSecs const usScale) const { return usScale + SimulationTime::Get(); }
 	fMicroSecs simu2scaleTime (fMicroSecs const usSimu)  const { return usSimu  - SimulationTime::Get(); }
 
-	fMicroSecs pixel2simuTime (fPixel     const fPix)    const { return scale2simuTime(pixel2scaleTime(fPix)); }
-	fPixel     simu2pixelTime (fMicroSecs const usSimu)  const { return scale2pixelTime(simu2scaleTime(usSimu)); }
+	fMicroSecs pixel2simuTime (fPixel     const fPix)    const { return scale2simuTime(Pixel2scaleTime(fPix)); }
+	fPixel     simu2pixelTime (fMicroSecs const usSimu)  const { return Scale2pixelTime(simu2scaleTime(usSimu)); }
 
 	void paintWarningRect    () const;
 	void paintStimulusMarkers() const;
