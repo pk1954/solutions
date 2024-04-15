@@ -47,7 +47,7 @@ public:
 
 	inline static wstring const PRODUCT_NAME 
 	{ 
-		L"NNetSimu 5.4 "
+		L"NNetSimu 5.5 "
 #ifndef NDEBUG
 		L"release"
 #else
