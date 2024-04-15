@@ -465,8 +465,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_FINISHING_SCAN:
 			m_statusBar.ClearPart(m_statusMessagePart);
-			m_upEventViewer->Move(0_PIXEL, 0_PIXEL, 200_PIXEL, 100_PIXEL, true);
-			m_upEventViewer->Show(true);
+			if (m_upEventViewer)
+			{
+				m_upEventViewer->Move(0_PIXEL, 0_PIXEL, 200_PIXEL, 100_PIXEL, true);
+				m_upEventViewer->Show(true);
+			}
 			return true;
 
 		case IDM_UNLOCK:
