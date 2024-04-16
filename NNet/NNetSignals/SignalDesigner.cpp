@@ -105,8 +105,8 @@ void SignalDesigner::Initialize
 	m_upSignalControl[0]->SetHorzScale(m_upHorzScale[0].get());
 	m_upSignalControl[1]->SetHorzScale(m_upHorzScale[1].get());
 
-	m_gridObservable.RegisterObserver(*m_upSignalControl[0].get());
-	m_gridObservable.RegisterObserver(*m_upSignalControl[1].get());
+	m_upHorzScale[0]->GetDimension().RegisterObserver(*this);
+	m_upHorzScale[1]->GetDimension().RegisterObserver(*this);
 
 	// buttons
 

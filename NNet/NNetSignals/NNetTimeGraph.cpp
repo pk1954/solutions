@@ -57,18 +57,6 @@ void NNetTimeGraph::SetVertScaleVolt(Scale<mV> * pScale)
 		vertCoordVolt().RegisterObserver(*this);
 }
 
-void NNetTimeGraph::SetHorzScale(Scale<fMicroSecs>* pScale)
-{
-	if (m_pHorzScale)
-		m_pHorzScale->GetDimension().UnregisterObserver(*this);
-	m_pHorzScale = pScale;
-	if (m_pHorzScale)
-	{
-		SetHorzCoord(&m_pHorzScale->GetDimension());
-		m_pHorzScale->GetDimension().RegisterObserver(*this);
-	}
-}
-
 void NNetTimeGraph::PaintFreqCurve
 (
 	SignalGenerator const * pSigGen,

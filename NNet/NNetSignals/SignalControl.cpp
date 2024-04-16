@@ -52,6 +52,12 @@ SignalControl::~SignalControl()
 		vertCoordVolt().UnregisterObserver(*this);
 }
 
+void SignalControl::SetHorzScale(Scale<fMicroSecs> * pHorzScale)
+{
+	m_pHorzScale = pHorzScale;
+	SetHorzCoord(&m_pHorzScale->GetDimension());
+}
+
 fHertz SignalControl::getFreq(fPixel const fPixY) const
 {
 	fHertz fRes { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };

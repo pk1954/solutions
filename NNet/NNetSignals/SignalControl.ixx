@@ -43,6 +43,8 @@ public:
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
 
+	void SetHorzScale(Scale<fMicroSecs>*);
+
 	bool HasScales() const final { return true; }
 	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 
@@ -57,6 +59,7 @@ private:
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
 
+	Scale<fMicroSecs> * m_pHorzScale { nullptr };
 	SimuRunning const & m_simuRunning;
 	Observable        & m_runObservable;
 	Observable        & m_dynamicModelObservable;

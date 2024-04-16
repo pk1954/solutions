@@ -18,13 +18,6 @@ EventViewer::EventViewer
 )
   : NNetTimeGraph(hwndParent, L"ClassEventViewer")
 {
-	GraphicsWindow::Initialize
-	(
-		hwndParent, 
-		L"ClassEventViewer", 
-		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
-	);
-
 	SetHorzCoord(&m_horzCoord);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	SetBackgroundColorRef(D2D1::ColorF::Green);

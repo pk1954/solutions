@@ -28,7 +28,7 @@ public:
 
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
 
-	virtual void SetHorzCoord(PixFpDimension<fMicroSecs>*);
+	void SetHorzCoord(PixFpDimension<fMicroSecs>*);
 
 	PixFpDimension<fMicroSecs>       * GetHorzCoord ()       { return m_pHorzCoord; }
 	PixFpDimension<fMicroSecs> const * GetHorzCoordC() const { return m_pHorzCoord; }

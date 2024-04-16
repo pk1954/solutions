@@ -36,7 +36,6 @@ public:
 	
 	void SetVertScaleFreq(Scale<fHertz>*);
 	void SetVertScaleVolt(Scale<mV>*);
-	void SetHorzScale    (Scale<fMicroSecs>*);
 
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
 
@@ -48,7 +47,6 @@ protected:
 
 	Scale<fHertz>     * m_pVertScaleFreq { nullptr };
 	Scale<mV>         * m_pVertScaleVolt { nullptr };
-	Scale<fMicroSecs> * m_pHorzScale     { nullptr };
 
 	NNetParameters    * GetParams() const { return &m_pNMWI->GetParams(); }
 
