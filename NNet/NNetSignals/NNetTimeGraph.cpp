@@ -39,31 +39,13 @@ void NNetTimeGraph::SetDefaultBackgroundColor()
 	SetBackgroundColorRef(D2D1::ColorF::Ivory); 
 }
 
-void NNetTimeGraph::SetVertScaleFreq(Scale<fHertz> * pScale)
-{
-	if (m_pVertScaleFreq)
-		vertCoordFreq().UnregisterObserver(*this);
-	m_pVertScaleFreq = pScale;
-	if (m_pVertScaleFreq)
-		vertCoordFreq().RegisterObserver(*this);
-}
-
-void NNetTimeGraph::SetVertScaleVolt(Scale<mV> * pScale)
-{
-	if (m_pVertScaleVolt)
-		vertCoordVolt().UnregisterObserver(*this);
-	m_pVertScaleVolt = pScale;
-	if (m_pVertScaleVolt)
-		vertCoordVolt().RegisterObserver(*this);
-}
-
 void NNetTimeGraph::PaintFreqCurve
 (
 	SignalGenerator const * pSigGen,
 	fMicroSecs      const   umStart
 )
 {
-	if (m_pVertScaleFreq)
+	if (m_pVertCoordFreq)
 		TimeGraph::Paint
 		(
 			[this, pSigGen](fMicroSecs const t){ return pixPntStimulusFreq(pSigGen, t); }, 
@@ -81,7 +63,7 @@ void NNetTimeGraph::PaintVoltCurve
 	fMicroSecs      const   umStart
 )
 {
-	if (m_pVertScaleVolt)
+	if (m_pVertCoordVolt)
 		TimeGraph::Paint
 		(
 			[this, pSigGen](fMicroSecs const t) { return pixPntStimulusVolt(pSigGen, t); },

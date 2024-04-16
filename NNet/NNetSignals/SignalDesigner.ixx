@@ -50,7 +50,7 @@ public:
 	void    SetGrid(bool const, bool const)       final;
 
 	bool    HasScales() const final { return m_upSignalControl[0]->HasScales(); }
-	bool    HasGrid  () const final { return m_upSignalControl[0]->HasGrid(); }
+	bool    HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 
 	void    SetModelInterface(NNetModelWriterInterface * const);
 	void    RegisterAtSigGen(SigGenId const);

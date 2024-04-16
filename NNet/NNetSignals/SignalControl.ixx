@@ -43,10 +43,11 @@ public:
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
 
-	void SetHorzScale(Scale<fMicroSecs>*);
+	void SetHorzScale    (Scale<fMicroSecs>*);
+	void SetVertScaleFreq(Scale<fHertz>*);
+	void SetVertScaleVolt(Scale<mV>*);
 
 	bool HasScales() const final { return true; }
-	bool HasGrid  () const final { return m_fGridDimFactor > 0.0f; }
 
 private:
 
@@ -59,7 +60,9 @@ private:
 	fPixel const STD_DIAMOND  { 5.0_fPixel };
 	fPixel const HIGH_DIAMOND { 8.0_fPixel };
 
-	Scale<fMicroSecs> * m_pHorzScale { nullptr };
+	Scale<fMicroSecs> * m_pHorzScale     { nullptr };
+	Scale<fHertz>     * m_pVertScaleFreq { nullptr };
+	Scale<mV>         * m_pVertScaleVolt { nullptr };
 	SimuRunning const & m_simuRunning;
 	Observable        & m_runObservable;
 	Observable        & m_dynamicModelObservable;
@@ -80,6 +83,9 @@ private:
 
 	fHertz getFreq(fPixel const) const;
 	mV     getVolt(fPixel const) const;
+
+	PixFpDimension<fHertz> &vertCoordFreq() { return m_pVertScaleFreq->GetDimension(); }
+	PixFpDimension<mV>     &vertCoordVolt() { return m_pVertScaleVolt->GetDimension(); }
 
 	fHertz getFreq(fPixelPoint const& p) const { return getFreq(p.GetY()); }
 	mV     getVolt(fPixelPoint const& p) const { return getVolt(p.GetY()); }

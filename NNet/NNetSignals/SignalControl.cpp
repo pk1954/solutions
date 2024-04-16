@@ -46,10 +46,8 @@ SignalControl::~SignalControl()
 		GetParams()->UnregisterObserver(*this);
 	m_runObservable         .UnregisterObserver(*this);
 	m_dynamicModelObservable.UnregisterObserver(*this);
-	if (m_pVertScaleFreq)
-		vertCoordFreq().UnregisterObserver(*this);
-	if (m_pVertScaleVolt)
-		vertCoordVolt().UnregisterObserver(*this);
+	SetVertScaleFreq(nullptr);
+	SetVertScaleVolt(nullptr);
 }
 
 void SignalControl::SetHorzScale(Scale<fMicroSecs> * pHorzScale)
@@ -58,9 +56,41 @@ void SignalControl::SetHorzScale(Scale<fMicroSecs> * pHorzScale)
 	SetHorzCoord(&m_pHorzScale->GetDimension());
 }
 
+void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
+{
+	if (m_pVertScaleFreq)
+		vertCoordFreq().UnregisterObserver(*this);
+	m_pVertScaleFreq = pScale;
+	if (m_pVertScaleFreq)
+	{
+		vertCoordFreq().RegisterObserver(*this);
+		SetVertCoordFreq(&vertCoordFreq());
+	}
+	else
+	{
+		SetVertCoordFreq(nullptr);
+	}
+}
+
+void SignalControl::SetVertScaleVolt(Scale<mV> * pScale)
+{
+	if (m_pVertScaleVolt)
+		vertCoordVolt().UnregisterObserver(*this);
+	m_pVertScaleVolt = pScale;
+	if (m_pVertScaleVolt)
+	{
+		vertCoordVolt().RegisterObserver(*this);
+		SetVertCoordVolt(&vertCoordVolt());
+	}
+	else
+	{
+		SetVertCoordVolt(nullptr);
+	}
+}
+
 fHertz SignalControl::getFreq(fPixel const fPixY) const
 {
-	fHertz fRes { vertCoordFreqC().Transform2logUnitPos(getY(fPixY)) };
+	fHertz fRes { m_pVertScaleFreq->GetDimension().Transform2logUnitPos(getY(fPixY)) };
 	if (snap2Grid())
 	{
 		fHertz const fRaster { m_pVertScaleFreq->GetRaster() };
@@ -71,7 +101,7 @@ fHertz SignalControl::getFreq(fPixel const fPixY) const
 
 mV SignalControl::getVolt(fPixel const fPixY) const
 {
-	mV fRes { vertCoordVoltC().Transform2logUnitPos(getY(fPixY)) };
+	mV fRes { m_pVertScaleVolt->GetDimension().Transform2logUnitPos(getY(fPixY)) };
 	if (snap2Grid())
 	{
 		mV const fRaster { m_pVertScaleVolt->GetRaster() };
