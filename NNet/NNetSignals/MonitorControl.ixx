@@ -61,7 +61,6 @@ private:
 	bool OnLButtonUp      (WPARAM const, LPARAM const) final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const) final;
 	void OnChar           (WPARAM const, LPARAM const) final { /* */ };
-	void OnMouseWheel     (WPARAM const, LPARAM const) final;
 	bool OnSize           (PIXEL  const, PIXEL  const) final;
 
 	void        moveOperation  (PixelPoint const &);

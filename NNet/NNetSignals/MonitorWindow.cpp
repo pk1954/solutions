@@ -134,3 +134,21 @@ bool MonitorWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 	m_pMoveSizeObservable->NotifyAll();
 	return BaseWindow::OnMove(pixPosX, pixPosY);
 };
+
+bool MonitorWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+{  
+	int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
+	bool const bDirection { iDelta > 0 };
+	bool       bResult    { true };
+
+	for (int iSteps = abs(iDelta); (iSteps > 0) && bResult; --iSteps)
+	{
+		bResult = bShiftKey 
+		? m_horzCoord.ZoomDir(bDirection, 0.0_fPixel)
+		: m_vertCoord.ZoomDir(bDirection, 0.0_fPixel);
+	}
+	if (!bResult)
+		MessageBeep(MB_ICONWARNING);
+	return true;
+}

@@ -48,12 +48,23 @@ SignalControl::~SignalControl()
 	m_dynamicModelObservable.UnregisterObserver(*this);
 	SetVertScaleFreq(nullptr);
 	SetVertScaleVolt(nullptr);
+	SetHorzScale(nullptr);
 }
 
 void SignalControl::SetHorzScale(Scale<fMicroSecs> * pHorzScale)
 {
+	if (m_pHorzScale)
+		m_pHorzScale->GetDimension().UnregisterObserver(*this);
 	m_pHorzScale = pHorzScale;
-	SetHorzCoord(&m_pHorzScale->GetDimension());
+	if (m_pHorzScale)
+	{
+		m_pHorzScale->GetDimension().RegisterObserver(*this);
+		SetHorzCoord(&m_pHorzScale->GetDimension());
+	}
+	else
+	{
+		SetHorzCoord(nullptr);
+	}
 }
 
 void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)

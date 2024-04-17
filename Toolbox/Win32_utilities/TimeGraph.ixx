@@ -24,17 +24,15 @@ export class TimeGraph : public GraphicsWindow
 public:
 	TimeGraph(HWND const, LPCTSTR const);
 
-	~TimeGraph() override;
+	~TimeGraph() override {};
 
 	void SetRightBorder(fPixel const b) { m_fPixRightBorder = b; }
+	void SetHorzCoord(PixFpDimension<fMicroSecs> const * pCoord) { m_pHorzCoord = pCoord; }
 
-	void SetHorzCoord(PixFpDimension<fMicroSecs>*);
+	PixFpDimension<fMicroSecs> const * GetHorzCoord() const { return m_pHorzCoord; }
 
-	PixFpDimension<fMicroSecs>       * GetHorzCoord ()       { return m_pHorzCoord; }
-	PixFpDimension<fMicroSecs> const * GetHorzCoordC() const { return m_pHorzCoord; }
-
-	fMicroSecs Pixel2scaleTime(fPixel     const fPix)    const { return GetHorzCoordC()->Transform2logUnitPos(fPix); }
-	fPixel     Scale2pixelTime(fMicroSecs const usScale) const { return GetHorzCoordC()->Transform2fPixelPos(usScale); }
+	fMicroSecs Pixel2scaleTime(fPixel     const fPix)    const { return GetHorzCoord()->Transform2logUnitPos(fPix); }
+	fPixel     Scale2pixelTime(fMicroSecs const usScale) const { return GetHorzCoord()->Transform2fPixelPos(usScale); }
 
 protected:
 
@@ -117,7 +115,7 @@ protected:
 
 private:
 
-	PixFpDimension<fMicroSecs> * m_pHorzCoord { nullptr };
+	PixFpDimension<fMicroSecs> const * m_pHorzCoord { nullptr };
 
 	fPixel m_fPixRightBorder { 0.0_fPixel };
 	fPixel m_fPixRight       { 0.0_fPixel };

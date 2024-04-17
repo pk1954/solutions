@@ -44,22 +44,22 @@ protected:
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
-	virtual void OnDrawItem         (WPARAM const, DRAWITEMSTRUCT const * const) { /* empty */ };;
-	virtual void OnScaleCommand     (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnPaint            ()                           { /* empty */ };
-	virtual void OnLButtonDblClick  (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnNCLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnMouseWheel       (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnChar             (WPARAM const, LPARAM const) { /* empty */ };
-	virtual void OnNotify           (WPARAM const, LPARAM const) { /* empty */ };
-	virtual bool OnRButtonDown      (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnRButtonUp        (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnLButtonDown      (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnLButtonUp        (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnShow             (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnSetCursor        (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnTimer            (WPARAM const, LPARAM const) { return false; };
-	virtual bool OnCtlColorStatic   (WPARAM const, LPARAM const) { return false; };
+	virtual void OnDrawItem         (WPARAM const, DRAWITEMSTRUCT const * const) { /* empty */ }
+	virtual void OnScaleCommand     (WPARAM const, LPARAM const) { /* empty */ }
+	virtual void OnPaint            ()                           { /* empty */ }
+	virtual void OnLButtonDblClick  (WPARAM const, LPARAM const) { /* empty */ }
+	virtual void OnNCLButtonDblClick(WPARAM const, LPARAM const) { /* empty */ }
+	virtual void OnChar             (WPARAM const, LPARAM const) { /* empty */ }
+	virtual void OnNotify           (WPARAM const, LPARAM const) { /* empty */ }
+	virtual bool OnMouseWheel       (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnRButtonDown      (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnRButtonUp        (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnLButtonDown      (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnLButtonUp        (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnShow             (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnSetCursor        (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnTimer            (WPARAM const, LPARAM const) { return false; }
+	virtual bool OnCtlColorStatic   (WPARAM const, LPARAM const) { return false; }
 	virtual void OnMouseHover       (WPARAM const, LPARAM const);
 	virtual void OnMouseMove        (WPARAM const, LPARAM const);
 	virtual void OnMouseLeave       ();

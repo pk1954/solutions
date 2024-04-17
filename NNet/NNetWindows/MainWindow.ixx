@@ -77,7 +77,7 @@ public:
 	void OnChar           (WPARAM const, LPARAM const)                   final;
 	bool OnCommand        (WPARAM const, LPARAM const, PixelPoint const) final;
 	bool OnRButtonDown    (WPARAM const, LPARAM const)                   final;
-	void OnMouseWheel     (WPARAM const, LPARAM const)                   final;
+	bool OnMouseWheel     (WPARAM const, LPARAM const)                   final;
 	void OnMouseMove      (WPARAM const, LPARAM const)                   final;
 	void OnLButtonDblClick(WPARAM const, LPARAM const)                   final;
 	bool OnLButtonUp      (WPARAM const, LPARAM const)                   final;

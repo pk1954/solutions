@@ -42,7 +42,7 @@ private:
 
 	void OnPaint     () final { /* all painting done by edit control */ }
 	bool OnSize      (PIXEL  const, PIXEL  const) final;
-	void OnMouseWheel(WPARAM const, LPARAM const) final;
+	bool OnMouseWheel(WPARAM const, LPARAM const) final;
 	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 
 	bool delChar();

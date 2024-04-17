@@ -42,13 +42,10 @@ protected:
 
 	NNetModelWriterInterface* m_pNMWI { nullptr };
 
-	PixFpDimension<fHertz> * m_pVertCoordFreq { nullptr };
-	PixFpDimension<mV>     * m_pVertCoordVolt { nullptr };
-
 	NNetParameters * GetParams() const { return &m_pNMWI->GetParams(); }
 
-	void SetVertCoordFreq(PixFpDimension<fHertz> *pCoord) { m_pVertCoordFreq = pCoord; }
-	void SetVertCoordVolt(PixFpDimension<mV>     *pCoord) { m_pVertCoordVolt = pCoord; }
+	void SetVertCoordFreq(PixFpDimension<fHertz> const *pCoord) { m_pVertCoordFreq = pCoord; }
+	void SetVertCoordVolt(PixFpDimension<mV>     const *pCoord) { m_pVertCoordVolt = pCoord; }
 
 	void PaintFreqCurve(SignalGenerator const*, fMicroSecs const = 0.0_MicroSecs);
 	void PaintVoltCurve(SignalGenerator const*, fMicroSecs const = 0.0_MicroSecs);
@@ -64,6 +61,9 @@ protected:
 private:
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }
 	fPixelPoint pixPntVolt(fMicroSecs const t, mV     const v) const { return fPixelPoint(xTime(t), yVolt(v)); }
+
+	PixFpDimension<fHertz> const * m_pVertCoordFreq { nullptr };
+	PixFpDimension<mV>     const * m_pVertCoordVolt { nullptr };
 
 	array<Color, 4> m_colTable
 	{

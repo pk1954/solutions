@@ -164,7 +164,7 @@ private:
 		);
 	}
 
-	void OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
+	bool OnMouseWheel(WPARAM const wParam, LPARAM const lParam) final
 	{
 		if (IsZoomAllowed())
 		{
@@ -186,6 +186,7 @@ private:
 				MessageBeep(MB_ICONWARNING);
 		}
 		GraphicsWindow::OnMouseWheel(wParam, lParam);
+		return true;
 	}
 
 	bool ZoomCoordFactor(float const factor, fPixel const fPixCenter) final

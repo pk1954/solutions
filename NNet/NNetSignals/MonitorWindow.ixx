@@ -65,10 +65,11 @@ private:
 
 	inline static fMicroSecs const DEFAULT_PIXEL_SIZE{ 100.0_MicroSecs };
 
-	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
-	void OnPaint  ()                                             final;
-	bool OnMove   (PIXEL  const, PIXEL const)                    final;
-	bool OnSize   (PIXEL  const, PIXEL const)                    final;
+	bool OnCommand   (WPARAM const, LPARAM const, PixelPoint const) final;
+	void OnPaint     ()                                             final;
+	bool OnMove      (PIXEL  const, PIXEL  const)                   final;
+	bool OnSize      (PIXEL  const, PIXEL  const)                   final;
+	bool OnMouseWheel(WPARAM const, LPARAM const)                   final;
 
 	wstring GetCaption() const final;
 

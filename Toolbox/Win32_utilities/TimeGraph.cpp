@@ -32,20 +32,6 @@ TimeGraph::TimeGraph
 	SetDefaultBackgroundColor();
 };
 
-void TimeGraph::SetHorzCoord(PixFpDimension<fMicroSecs>* pHorzCoord)
-{
-	assert(!m_pHorzCoord);
-	m_pHorzCoord = pHorzCoord;
-	assert(m_pHorzCoord);
-	m_pHorzCoord->RegisterObserver(*this);
-}
-
-TimeGraph::~TimeGraph()
-{
-	if (m_pHorzCoord)
-		m_pHorzCoord->UnregisterObserver(*this);
-}
-
 fMicroSecs TimeGraph::GetTime(fPixelPoint const & p) const 
 { 
 	return GetTime(p.GetX()); 

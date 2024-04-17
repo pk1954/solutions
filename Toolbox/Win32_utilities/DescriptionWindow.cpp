@@ -258,7 +258,7 @@ bool DescriptionWindow::OnSize(PIXEL const width, PIXEL const height)
     return true;
 }
 
-void DescriptionWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+bool DescriptionWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
     int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
     bool const bDirection { iDelta > 0 };
@@ -271,4 +271,5 @@ void DescriptionWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
     }
     if (!bResult)
         MessageBeep(MB_ICONWARNING);
+	return true;
 }

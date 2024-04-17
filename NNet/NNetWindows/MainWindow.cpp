@@ -418,7 +418,7 @@ bool MainWindow::OnRButtonDown(WPARAM const wParam, LPARAM const lParam)
 	return false;
 }
 
-void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+bool MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
 	static float const ZOOM_FACTOR { 1.1f };
 
@@ -459,6 +459,7 @@ void MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		}
 	}
 	Notify(false); 
+	return true;
 }
 
 void MainWindow::centerAndZoomRect

@@ -22,10 +22,10 @@ export class MiniWindow : public NNetWindow
 public:
 	void Start(HWND const, bool const, NNetController &, ScanMatrix * const);
 
-	void   OnMouseWheel     (WPARAM const, LPARAM const) final { };  // mini window cannot be zoomed 
+	bool   OnMouseWheel     (WPARAM const, LPARAM const) final { return true;  }  // mini window cannot be zoomed 
 	bool   OnRButtonUp      (WPARAM const, LPARAM const) final { return false; }
 	bool   OnRButtonDown    (WPARAM const, LPARAM const) final { return false; }
-	bool   OnLButtonUp      (WPARAM const, LPARAM const) final { return false; };
+	bool   OnLButtonUp      (WPARAM const, LPARAM const) final { return false; }
 	void   OnLButtonDblClick(WPARAM const, LPARAM const) final { };
 	void   OnMouseMove      (WPARAM const, LPARAM const) final;
 
