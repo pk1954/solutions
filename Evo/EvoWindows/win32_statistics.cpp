@@ -5,13 +5,11 @@
 
 #include "resource.h"
 #include "Strsafe.h"
-#include "XArray.h"
 #include "gridSelection.h"
 #include "EvolutionCore.h"
 #include "EvoStatistics.h"
 #include "EvoReadBuffer.h"
 #include "win32_baseWindow.h"
-#include "win32_statistics.h"
 
 import GridRect;
 

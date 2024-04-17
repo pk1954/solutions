@@ -1,18 +1,17 @@
-// EvoPixelCoords.h : 
+// EvoPixelCoords.ixx
 //
 // EvolutionCore
 
 module;
 
-#include "PixelTypes.h"
-#include "SmoothMove.h"
+export module EvoPixelCoords;
 
+import Types;
+import SmoothMoveFp;
 import GridPoint;
 import GridRect;
 
-class EvolutionCore;
-
-class EvoPixelCoords
+export class EvoPixelCoords
 {
 public:
 
@@ -53,11 +52,11 @@ private:
 	bool       isValidFieldSize(PIXEL const) const; 
     PixelPoint calcCenterOffset(GridPoint const, PixelPoint const);
 
-    PixelPoint m_pixOffset;
-    PIXEL      m_pixFieldSize;
-    SmoothMove m_smoothMove;
-    bool       m_bMoving;
-	bool       m_bHexagon;
+    PixelPoint   m_pixOffset;
+    PIXEL        m_pixFieldSize;
+    SmoothMoveFp m_smoothMove;
+    bool         m_bMoving;
+	bool         m_bHexagon;
 };
 
 PIXEL const MINIMUM_FIELD_SIZE =    1_PIXEL;

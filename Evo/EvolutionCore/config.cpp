@@ -1,4 +1,4 @@
-// config.cpp : 
+// Config.cpp : 
 //
 
 module Config;

@@ -1,4 +1,4 @@
-// gridSelection.cpp
+// GridSelection.cpp
 //
 // EvolutionCore
 

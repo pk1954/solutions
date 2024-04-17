@@ -6,13 +6,8 @@
 #include "Windowsx.h"
 #include "Windows.h"
 #include "Resource.h"
-#include "LogarithmicTrackbar.h"
-import GridDimensions;
 #include "EvoHistorySysGlue.h"
-#include "win32_aboutBox.h"
 #include "win32_evoAppWindow.h"
-#include "win32_script.h"
-#include "win32_winManager.h"
 #include "win32_delay.h"
 #include "win32_speedControl.h"
 #include "win32_zoomControl.h"
@@ -26,7 +21,12 @@ import GridDimensions;
 #include "win32_EvoWorkThreadInterface.h"
 #include "win32_evoController.h"
 
+import LogarithmicTrackbar;
+import Script;
+import WinManager;
+import GridDimensions;
 import Config;
+import AboutBox;
 
 using namespace std::chrono;
 

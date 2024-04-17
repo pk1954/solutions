@@ -5,9 +5,10 @@
 module;
 
 #include <fstream>
-#include "boolOp.h"
-import HistGeneration;
 #include "win32_WorkThread.h"
+
+import BoolOp;
+import HistGeneration;
 
 class WorkThreadInterface
 {

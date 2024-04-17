@@ -20,35 +20,40 @@ EventViewer::EventViewer
 {
 	SetHorzCoord(&m_horzCoord);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
+	m_horzCoord.SetPixelSize(5000.0_MicroSecs);
 	SetBackgroundColorRef(D2D1::ColorF::Green);
 	BringWindowToTop();
 }
 
 void EventViewer::PaintGraphics()
 {
-	PixelRect rectxxx = GetWindowRect();
+	//PixelRect rectxxx = GetWindowRect();
+	//fPixelRect rect;
+	//rect.SetBottom(GetClientHeight());
+	//for (auto const& e : m_pNMWI->GetEventList())
+	//{
+	//	if (e->Type() == EventType::startScan)
+	//		rect.SetLeft(Scale2pixelTime(e->GetTimeStamp()));
+	//	else if (e->Type() == EventType::stopScan)
+	//		rect.SetRight(Scale2pixelTime(e->GetTimeStamp()));
+	//}
+	//m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
+	//for (auto const& e : m_pNMWI->GetEventList())
+	//{
+	//	if (e->Type() == EventType::stimulus)
+	//	{
+	//		StimulusEvent   const* pStimEvent { static_cast<StimulusEvent const*>(e.get()) };
+	//		SigGenId        const  sigGenId   { pStimEvent->GetId() };
+	//		SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(sigGenId) };
+	//		fMicroSecs      const  umStimulus { pStimEvent->GetTimeStamp() };
+	//		PaintFreqCurve(pSigGen, umStimulus);
+	//		PaintVoltCurve(pSigGen, umStimulus);
+	//	}
+	//}
 	fPixelRect rect;
 	rect.SetBottom(GetClientHeight());
-	for (auto const& e : m_pNMWI->GetEventList())
-	{
-		if (e->Type() == EventType::startScan)
-			rect.SetLeft(Scale2pixelTime(e->GetTimeStamp()));
-		else if (e->Type() == EventType::stopScan)
-			rect.SetRight(Scale2pixelTime(e->GetTimeStamp()));
-	}
-	m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
-	for (auto const& e : m_pNMWI->GetEventList())
-	{
-		if (e->Type() == EventType::stimulus)
-		{
-			StimulusEvent   const* pStimEvent { static_cast<StimulusEvent const*>(e.get()) };
-			SigGenId        const  sigGenId   { pStimEvent->GetId() };
-			SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(sigGenId) };
-			fMicroSecs      const  umStimulus { pStimEvent->GetTimeStamp() };
-			PaintFreqCurve(pSigGen, umStimulus);
-			PaintVoltCurve(pSigGen, umStimulus);
-		}
-	}
+	rect.SetRight (100._fPixel);
+	m_upGraphics->FillRectangle(rect, Color(D2D1::ColorF::DarkGray));
 };
 
 bool EventViewer::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeight)

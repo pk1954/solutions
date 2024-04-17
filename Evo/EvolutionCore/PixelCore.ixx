@@ -1,14 +1,17 @@
-// PixelCore.h
+// PixelCore.ixx
 //
+// EvolutionCore
 
-#pragma once
+module;
 
-#include "PixelTypes.h"
+export module PixelCore;
+
+import Types;
 
 class PixelCoordinates;
 class EvolutionCore;
 
-class PixelCore
+export class PixelCore
 {
 public:
 	PixelCore

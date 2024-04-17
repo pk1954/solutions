@@ -314,6 +314,10 @@ void SignalControl::PaintGraphics()
 		PaintFreqCurve(pSigGen);
 		PaintVoltCurve(pSigGen);
 	}
+	fPixelRect rect;
+	rect.SetBottom(GetClientHeight());
+	rect.SetRight (100._fPixel);
+	m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
 }
 
 float SignalControl::ScaleFactorTimeCoord() const

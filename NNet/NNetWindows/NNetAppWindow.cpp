@@ -188,7 +188,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 
 	m_miniNNetWindow.Start(m_hwndApp, true,	m_NNetController, &m_scanMatrix);
 
-//	m_upEventViewer = make_unique<EventViewer>(m_hwndApp);
+	m_upEventViewer = make_unique<EventViewer>(m_mainNNetWindow.GetWindowHandle());
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main window
 

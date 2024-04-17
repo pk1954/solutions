@@ -1,4 +1,4 @@
-// gridRect.cpp :
+// GridRect.cpp :
 //
 // EvolutionCore
 

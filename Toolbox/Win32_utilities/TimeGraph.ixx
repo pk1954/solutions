@@ -47,7 +47,7 @@ protected:
 		fMicroSecs      const usResolution,
 		ID2D1SolidColorBrush* pBrush,
 		fPixel          const fPixWidth
-) const
+	) const
 	{
 		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
 		fPixel           fPixMinSignal { fPixel::MAX_VAL() };

@@ -1,20 +1,18 @@
-// EvoStatistics.h :
+// EvoStatistics.ixx
 //
 // EvolutionCore
 
 module;
 
-#include "XArray.h"
-#include "GridPoint.h"
+export module EvoStatistics;
 
 import EnumArray;
 import EvolutionTypes;
 import Strategy;
+import GridPoint;
+import XArray;
 
-class TextBuffer;
-class EvolutionCore;
-
-template <typename T>
+export template <typename T>
 class XaCounter : public XArray< T, Strategy::COUNT >
 {
 public:

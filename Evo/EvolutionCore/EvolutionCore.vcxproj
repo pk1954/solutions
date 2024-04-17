@@ -180,21 +180,17 @@
     <ClInclude Include="EvolutionCoreImpl.h" />
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
     <ClInclude Include="EvolutionCoreWrappers.h" />
-    <ClInclude Include="EvoPixelCoords.h" />
-    <ClInclude Include="EvoStatistics.h" />
     <ClInclude Include="geneTypeLimits.h" />
     <ClInclude Include="gridPoint24.h" />
     <ClInclude Include="gridSelection.h" />
     <ClInclude Include="MortalityTable.h" />
-    <ClInclude Include="PixelCore.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Action.ixx" />
     <ClCompile Include="ActionOptions.cpp" />
     <ClCompile Include="ActionOptions.ixx" />
-    <ClCompile Include="config.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Config.ixx" />
     <ClCompile Include="dump.cpp" />
     <ClCompile Include="EvoDump.ixx" />
@@ -204,7 +200,9 @@
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="EvolutionTypes.ixx" />
     <ClCompile Include="EvoPixelCoords.cpp" />
+    <ClCompile Include="EvoPixelCoords.ixx" />
     <ClCompile Include="EvoStatistics.cpp" />
+    <ClCompile Include="EvoStatistics.ixx" />
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Gene.ixx" />
     <ClCompile Include="GeneType.cpp" />
@@ -225,17 +223,18 @@
     <ClCompile Include="GridPoint.ixx" />
     <ClCompile Include="GridPointList.ixx" />
     <ClCompile Include="GridRect.ixx" />
-    <ClCompile Include="gridSelection.cpp" />
+    <ClCompile Include="GridSelection.cpp" />
     <ClCompile Include="Individual.ixx" />
     <ClCompile Include="Interaction.ixx" />
     <ClCompile Include="MortalityTable.cpp" />
     <ClCompile Include="Genome.cpp" />
     <ClCompile Include="GridPointList.cpp" />
     <ClCompile Include="GridNeighbor.cpp" />
-    <ClCompile Include="gridRect.cpp" />
+    <ClCompile Include="GridRect.cpp" />
     <ClCompile Include="GridModel.cpp" />
     <ClCompile Include="Individual.cpp" />
     <ClCompile Include="Interaction.cpp" />
+    <ClCompile Include="PixelCore.ixx" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp" />
     <ClCompile Include="EvolutionCoreWrappers.cpp" />
