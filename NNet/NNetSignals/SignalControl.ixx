@@ -37,8 +37,6 @@ public:
 
 	~SignalControl() final;
 
-	LPARAM AddContextMenuEntries(HMENU const) final;
-
 	float ScaleFactorTimeCoord() const;
 	float ScaleFactorFreqCoord() const;
 	float ScaleFactorVoltCoord() const;
@@ -47,7 +45,7 @@ public:
 	void SetVertScaleFreq(Scale<fHertz>*);
 	void SetVertScaleVolt(Scale<mV>*);
 
-	bool HasScales() const final { return true; }
+	bool HasScales() const final { return m_fGridDimFactor > 0.0f; }
 
 private:
 
@@ -69,8 +67,6 @@ private:
 	float             & m_fGridDimFactor;
 	tPos                m_moveMode       { tPos::NONE };
 
-	bool snap2Grid() const { return m_fGridDimFactor > 0.0f; }
-
 	void PaintGraphics() final;
 
 	bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
@@ -83,9 +79,6 @@ private:
 
 	fHertz getFreq(fPixel const) const;
 	mV     getVolt(fPixel const) const;
-
-	PixFpDimension<fHertz> &vertCoordFreq() { return m_pVertScaleFreq->GetDimension(); }
-	PixFpDimension<mV>     &vertCoordVolt() { return m_pVertScaleVolt->GetDimension(); }
 
 	fHertz getFreq(fPixelPoint const& p) const { return getFreq(p.GetY()); }
 	mV     getVolt(fPixelPoint const& p) const { return getVolt(p.GetY()); }

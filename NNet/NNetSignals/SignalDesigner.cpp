@@ -40,14 +40,11 @@ void SignalDesigner::Initialize
 	Observable        &dynamicModelObservable
 )
 {
-	HWND hwndSigDes = StartBaseWindow
+	HWND hwndSigDes = GraphicsWindow::Initialize
 	(
 		hwndParent,
-		CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
 		L"ClassSigDesWindow",
-		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE,
-		nullptr,
-		nullptr
+		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE
 	);
 
 	runObservable.RegisterObserver(*this);
@@ -177,6 +174,8 @@ void SignalDesigner::AddSigGenMenu
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	AddSigGenMenu(hPopupMenu, m_pNMWI->GetSigGenIdSelected());
+	AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_GRID, L"Grid on/off");
+	GraphicsWindow::AddContextMenuEntries(hPopupMenu);
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }
 

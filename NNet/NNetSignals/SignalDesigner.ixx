@@ -17,7 +17,7 @@ import Observable;
 import PixFpDimension;
 import ArrowButton;
 import Direct2D;
-import BaseWindow;
+import GraphicsWindow;
 import Scale;
 import BaseScale;
 import NNetModel;
@@ -30,7 +30,7 @@ using std::array;
 using std::wstring;
 using std::unique_ptr;
 
-export class SignalDesigner : public BaseWindow
+export class SignalDesigner : public GraphicsWindow
 {
 public:
 	void Initialize
@@ -48,6 +48,7 @@ public:
 	wstring GetCaption()                    const final;
 	void    Trigger(bool const)                   final;
 	void    SetGrid(bool const, bool const)       final;
+	void    PaintGraphics()                       final { /* nothing to paint */ }
 
 	bool    HasScales() const final { return m_upSignalControl[0]->HasScales(); }
 	bool    HasGrid  () const final { return m_fGridDimFactor > 0.0f; }

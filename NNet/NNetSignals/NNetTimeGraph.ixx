@@ -31,8 +31,7 @@ public:
 
 	virtual void SetModelInterface(NNetModelWriterInterface* const);
 
-	//void SetBackgroundColorRef(COLORREF const) override;
-	void SetDefaultBackgroundColor()           override;
+	void SetDefaultBackgroundColor() override;
 	
 	enum class tColor { FREQ, VOLT, TIME, HIGH };
 

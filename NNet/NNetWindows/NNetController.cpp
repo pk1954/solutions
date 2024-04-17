@@ -160,6 +160,10 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
         NNetPreferences::m_bInputCables.SetVisibility(ShowInputCables::tVisibility::none);
         break;
 
+    case IDD_COLOR_MENU:
+        Preferences::m_bColorMenu.Toggle();
+        break;
+
     case IDD_SCAN_AREA:
         NNetPreferences::m_bScanArea.Toggle();
         break;

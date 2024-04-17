@@ -7,11 +7,9 @@ module;
 #include <chrono>
 #include <algorithm>  // min/max/abs templates
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetSignals:SignalControl;
 
-import Win32_Util_Resource;
 import Types;
 import NNetModel;
 import NNetCommands;
@@ -51,14 +49,14 @@ SignalControl::~SignalControl()
 	SetHorzScale(nullptr);
 }
 
-void SignalControl::SetHorzScale(Scale<fMicroSecs> * pHorzScale)
+void SignalControl::SetHorzScale(Scale<fMicroSecs> * pScale)
 {
 	if (m_pHorzScale)
-		m_pHorzScale->GetDimension().UnregisterObserver(*this);
-	m_pHorzScale = pHorzScale;
+		m_pHorzScale->UnregisterObserver(*this);
+	m_pHorzScale = pScale;
 	if (m_pHorzScale)
 	{
-		m_pHorzScale->GetDimension().RegisterObserver(*this);
+		m_pHorzScale->RegisterObserver(*this);
 		SetHorzCoord(&m_pHorzScale->GetDimension());
 	}
 	else
@@ -70,12 +68,12 @@ void SignalControl::SetHorzScale(Scale<fMicroSecs> * pHorzScale)
 void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
 {
 	if (m_pVertScaleFreq)
-		vertCoordFreq().UnregisterObserver(*this);
+		m_pVertScaleFreq->UnregisterObserver(*this);
 	m_pVertScaleFreq = pScale;
 	if (m_pVertScaleFreq)
 	{
-		vertCoordFreq().RegisterObserver(*this);
-		SetVertCoordFreq(&vertCoordFreq());
+		m_pVertScaleFreq->RegisterObserver(*this);
+		SetVertCoordFreq(&m_pVertScaleFreq->GetDimension());
 	}
 	else
 	{
@@ -86,12 +84,12 @@ void SignalControl::SetVertScaleFreq(Scale<fHertz> * pScale)
 void SignalControl::SetVertScaleVolt(Scale<mV> * pScale)
 {
 	if (m_pVertScaleVolt)
-		vertCoordVolt().UnregisterObserver(*this);
+		m_pVertScaleVolt->UnregisterObserver(*this);
 	m_pVertScaleVolt = pScale;
 	if (m_pVertScaleVolt)
 	{
-		vertCoordVolt().RegisterObserver(*this);
-		SetVertCoordVolt(&vertCoordVolt());
+		m_pVertScaleVolt->RegisterObserver(*this);
+		SetVertCoordVolt(&m_pVertScaleVolt->GetDimension());
 	}
 	else
 	{
@@ -102,7 +100,7 @@ void SignalControl::SetVertScaleVolt(Scale<mV> * pScale)
 fHertz SignalControl::getFreq(fPixel const fPixY) const
 {
 	fHertz fRes { m_pVertScaleFreq->GetDimension().Transform2logUnitPos(getY(fPixY)) };
-	if (snap2Grid())
+	if (HasScales())
 	{
 		fHertz const fRaster { m_pVertScaleFreq->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -113,7 +111,7 @@ fHertz SignalControl::getFreq(fPixel const fPixY) const
 mV SignalControl::getVolt(fPixel const fPixY) const
 {
 	mV fRes { m_pVertScaleVolt->GetDimension().Transform2logUnitPos(getY(fPixY)) };
-	if (snap2Grid())
+	if (HasScales())
 	{
 		mV const fRaster { m_pVertScaleVolt->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -124,7 +122,7 @@ mV SignalControl::getVolt(fPixel const fPixY) const
 fMicroSecs SignalControl::getTime(fPixelPoint const &p) const
 {
 	fMicroSecs fRes { NNetTimeGraph::GetTime(p.GetX()) };
-	if (snap2Grid())
+	if (HasScales())
 	{
 		fMicroSecs const fRaster { m_pHorzScale->GetRaster() };
 		fRes = fRaster * round(fRes / fRaster);
@@ -379,29 +377,9 @@ void SignalControl::testPos
 	}
 }
 
-LPARAM SignalControl::AddContextMenuEntries(HMENU const hPopupMenu)
-{
-	AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_GRID, L"Grid on/off");
-	NNetTimeGraph::AddContextMenuEntries(hPopupMenu);
-	return 0L; // will be forwarded to HandleContextMenuCommand
-}
-
 bool SignalControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	bool bRes = false;
-
-	switch (int const wmId = LOWORD(wParam))
-	{
-	case IDM_SCALE_GRID:
-		SendCommand2Parent(wParam, lParam);
-		break;
-
-	default:
-		bRes = BaseWindow::OnCommand(wParam, lParam, pixPoint);
-		break;
-	}
-
-	return bRes;
+	return SendCommand2Parent(wParam, lParam);
 }
 
 void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)

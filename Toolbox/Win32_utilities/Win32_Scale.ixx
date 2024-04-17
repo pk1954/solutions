@@ -83,6 +83,9 @@ public:
 
 	void DisplayUnit(bool const bOn) { m_bDisplayUnit = bOn; }
 
+	void RegisterObserver  (ObserverInterface       & observer)	{ m_pixCoord.RegisterObserver(observer); }
+	void UnregisterObserver(ObserverInterface const & observer) { m_pixCoord.UnregisterObserver(observer); }
+
 	PixFpDimension<LogUnits> & GetDimension() { return m_pixCoord; }
 
 	LogUnits GetRaster() const { return m_logTickDist; }

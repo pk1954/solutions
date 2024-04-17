@@ -29,11 +29,6 @@ void NNetTimeGraph::SetModelInterface(NNetModelWriterInterface* const p)
 	GetParams()->RegisterObserver(*this);
 }
 
-//void NNetTimeGraph::SetBackgroundColorRef(COLORREF const c)
-//{
-//	GetParentRootWindow()->SetBackgroundColorRef(c);
-//}
-
 void NNetTimeGraph::SetDefaultBackgroundColor()
 { 
 	SetBackgroundColorRef(D2D1::ColorF::Ivory); 
