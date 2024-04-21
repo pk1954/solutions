@@ -7,7 +7,7 @@ InputCablesVisibility 1
 ScanAreaVisibility  ON
 ModelFront  ON
 ApplyFilter  OFF
-SetScales IDM_SIG_DESIGNER ON 
+
 
 ColorLUT 1 4
 {

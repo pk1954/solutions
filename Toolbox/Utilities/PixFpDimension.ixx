@@ -159,19 +159,22 @@ public:
 		LOG_UNIT const logStart,
 		LOG_UNIT const logEnd,
 		fPixel   const fPixStart,
-		fPixel   const fPixEnd
+		fPixel   const fPixEnd,
+		bool     const bNotify = true
 	)
 	{
-		LOG_UNIT const logDiff         { logEnd - logStart };
-		fPixel   const fPixDiff        { fPixEnd - fPixStart };
+		LOG_UNIT const logDiff  { logEnd - logStart };
+		fPixel   const fPixDiff { fPixEnd - fPixStart };
+		if (fPixDiff == 0._fPixel)
+			return false;
 		LOG_UNIT const logPixelSizeNew { logDiff / fPixDiff.GetValue() };
-		if (IsValidPixelSize(logPixelSizeNew))
-		{
-			m_logPixelSize = logPixelSizeNew;
-			m_fPixOffset = fPixel(logEnd / m_logPixelSize) - fPixEnd;
-			return true;
-		}
-		return false;
+		if (!IsValidPixelSize(logPixelSizeNew))
+			return false;
+		m_logPixelSize = logPixelSizeNew;
+		m_fPixOffset   = fPixel(logEnd / m_logPixelSize) - fPixEnd;
+		if (bNotify)
+			NotifyAll(true);
+		return true;
 	}
 
 private:
@@ -198,7 +201,7 @@ private:
 		LOG_UNIT logNewSize { m_logPixelSize * fFactor };
 		if (IsValidPixelSize(logNewSize))
 		{
-			m_logPixelSize = logNewSize;                                         // now zoom
+			m_logPixelSize = logNewSize;                                   // now zoom
 			m_fPixOffset   = Transform2fPixelSize(logCenter) - fPixCenter; // and fix offset
 			if (bNotify)
 				NotifyAll(true);

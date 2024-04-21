@@ -328,7 +328,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		fPixWidth = HIGH_WIDTH;
 	}
 
-	fPixel fPixMinSignal = TimeGraph::Paint
+	fPixel fPixMinSignal = Paint
 	(
 		[this, fPixOffsetY, pSig](fMicroSecs const t)
 		{ 

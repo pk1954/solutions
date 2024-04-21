@@ -172,13 +172,18 @@ void Compute::Reset()
 	m_computeTimer.Reset();
 }
 
+void Compute::ClearImages()
+{
+	m_upSumImage.release();
+	m_upSingleImage.release();
+}
+
 void Compute::StartComputation()
 {
 	if (!IsRunning())
 	{
 		Reset();
 		setRunning(true);
-		m_pNMWI->AddEvent(EventType::run);
 	}
 }
 
@@ -190,8 +195,7 @@ void Compute::StopComputation()
 
 void Compute::StopScan()
 {
-	m_upSumImage.release();
-	m_upSingleImage.release();
+	ClearImages();
 	m_pNMWI->AddEvent(EventType::stopScan);
 }
 

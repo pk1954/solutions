@@ -12,7 +12,7 @@ import Signals;
 
 export enum class EventType
 {
-	run, stimulus, startScan, stopScan
+	stimulus, startScan, stopScan
 };
 
 export class NNetEvent
@@ -28,12 +28,6 @@ public:
 
 private:
     fMicroSecs m_timeStamp;
-};
-
-export class RunEvent : public NNetEvent
-{
-public:
-    EventType Type() const final { return EventType::run; }
 };
 
 export class StimulusEvent : public NNetEvent

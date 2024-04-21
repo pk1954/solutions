@@ -129,21 +129,6 @@ void D2D_driver::Resize()
 	}
 }
 
-fPixelRectSize D2D_driver::GetClRectSize() const 
-{ 
-	return Convert2fPixelRectSize(::GetClRectSize(m_hwnd));
-}
-
-fPixel D2D_driver::GetClRectWidth() const
-{
-	return Convert2fPixel(::GetClientWindowWidth(m_hwnd));
-}
-
-fPixel D2D_driver::GetClRectHeight() const
-{
-	return Convert2fPixel(::GetClientWindowHeight(m_hwnd));
-}
-
 void D2D_driver::ShutDown()
 {
 	discardResources();
@@ -213,6 +198,38 @@ void D2D_driver::DisplayText
 ) const
 {
 	DisplayText(rect, wstr, *m_pBrushForeground, pTextFormat);
+}
+
+void D2D_driver::DisplayText
+(
+	wstring            const& wstr,
+	ID2D1Brush         const& brush,
+	IDWriteTextFormat* const  pTextFormat
+) const
+{
+	IDWriteTextFormat* pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
+	fPixelRect  const  rect   { GetClRect() };
+	D2D1_RECT_F const  d2Rect { convertD2D(rect) };
+	m_pRenderTarget->DrawText(wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, const_cast<ID2D1Brush*>(&brush));
+}
+
+void D2D_driver::DisplayText
+(
+	wstring            const& wstr,
+	Color              const  colF,
+	IDWriteTextFormat* const  pTextFormat
+) const
+{
+	DisplayText(GetClRect(), wstr, colF, pTextFormat);
+}
+
+void D2D_driver::DisplayText
+(
+	wstring            const& wstr,
+	IDWriteTextFormat* const  pTextFormat
+) const
+{
+	DisplayText(wstr, *m_pBrushForeground, pTextFormat);
 }
 
 void D2D_driver::DrawRectangle(fPixelRect const& rect, Color const colF, fPixel const fPixWidth) const

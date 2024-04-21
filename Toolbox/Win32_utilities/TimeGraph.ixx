@@ -73,7 +73,7 @@ protected:
 		}
 		else
 		{
-			fPixel fPixYmin { prevPoint.GetY() };
+			fPixel fPixYmin = prevPoint.GetY();
 
 			for (fMicroSecs time = timeStart + usResolution; time < timeEnd; time += usResolution)
 			{

@@ -323,9 +323,6 @@ void Model::AddEvent(EventType const& type)
 {
 	switch (type)
 	{
-	case EventType::run:
-		m_events.push_back(make_unique<RunEvent>());
-		break;
 	case EventType::stimulus:
 		m_events.push_back(make_unique<StimulusEvent>(m_upSigGenList->GetSigGenIdSelected()));
 		break;

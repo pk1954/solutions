@@ -15,6 +15,7 @@ export module Direct2D;
 
 import Color;
 import Types;
+import Win32_PIXEL;
 
 using std::function;
 using std::wstring;
@@ -45,9 +46,6 @@ public:
     void Display(function<void()>);
     void ShutDown();
     void SetStdFontSize(float const);
-    void DisplayText         (fPixelRect    const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr) const;
-    void DisplayText         (fPixelRect    const&, wstring const&, Color const,         IDWriteTextFormat* = nullptr) const;
-    void DisplayText         (fPixelRect    const&, wstring const&,                      IDWriteTextFormat* = nullptr) const;
     void DrawRectangle       (fPixelRect    const&, Color const, fPixel const)                                         const;
     void FillRectangle       (fPixelRect    const&, Color const)                                                       const;
     void ClearRectangle      (fPixelRect    const&)                                                                    const;
@@ -71,7 +69,7 @@ public:
     void DrawEllipse         (fPixelEllipse const&, Color const,        fPixel const)                                  const;
     void DrawEllipse         (fPixelEllipse const&,                     fPixel const)                                  const;
     void FillArrow           (fPixelPoint const,    fPixelPoint const,  fPixel const, fPixel const, Color const)       const;
-    void FillDiamond         (fPixelPoint const,    fPixel const,       Color const)                                   const;
+    void FillDiamond         (fPixelPoint const,    fPixel const,       Color  const)                                  const;
     void DrawRoundedRectangle(fPixelRect const&,    Color const,        fPixel const, fPixel const)                    const;
     void FillRoundedRectangle(fPixelRect const&,    Color const,        fPixel const)                                  const;
     void UpDownArrow         (bool  const,          fPixelRect  const &, Color const)                                  const;
@@ -83,13 +81,21 @@ public:
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, Color const,    fPixel const) const;
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, ID2D1SolidColorBrush*, fPixel const) const;
 
-    fPixelRectSize GetClRectSize  () const;
-    fPixel         GetClRectWidth () const;
-    fPixel         GetClRectHeight() const;
+    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, Color const,         IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&,                      IDWriteTextFormat* = nullptr) const;
 
-    IDWriteTextFormat * NewTextFormat(float const) const;
+    void DisplayText(wstring const&, ID2D1Brush const&, IDWriteTextFormat* = nullptr) const;
+    void DisplayText(wstring const&, Color       const, IDWriteTextFormat* = nullptr) const;
+    void DisplayText(wstring const&,                    IDWriteTextFormat* = nullptr) const;
 
-    ID2D1SolidColorBrush* CreateBrush(Color const) const;
+    fPixelRect     GetClRect      () const { return Convert2fPixelRect    (::GetClPixelRect      (m_hwnd)); }
+    fPixelRectSize GetClRectSize  () const { return Convert2fPixelRectSize(::GetClRectSize       (m_hwnd)); }
+    fPixel         GetClRectWidth () const { return Convert2fPixel        (::GetClientWindowWidth(m_hwnd)); }
+    fPixel         GetClRectHeight() const { return Convert2fPixel        (::GetClientWindowHeight(m_hwnd));}
+
+    IDWriteTextFormat    * NewTextFormat(float const) const;
+    ID2D1SolidColorBrush * CreateBrush  (Color const) const;
         
     void SetForegroundColor(Color const);
     void SetBackgroundColor(Color const);

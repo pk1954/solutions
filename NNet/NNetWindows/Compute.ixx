@@ -50,6 +50,7 @@ public:
 	void StopComputation();
 	void Reset();
 	void StartStimulus();
+	void ClearImages();
 	bool IsRunning    () const { return m_bRunning; }
 	bool IsScanRunning() const { return m_upSumImage.get(); }
 	bool ModelLocked  () const { return m_pNMWI->ModelLocked(); }
