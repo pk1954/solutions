@@ -44,6 +44,9 @@ public:
 	PointType operator- () const { return PointType { -m_x, -m_y }; };
 	PointType operator+ () const { return PointType { +m_x, +m_y }; };
 
+	void MoveHorz(BASE_TYPE const offset) {	m_x += offset; }
+	void MoveVert(BASE_TYPE const offset) {	m_y += offset; }
+
 	BASE_TYPE GetX() const { return m_x; }
 	BASE_TYPE GetY() const { return m_y; }
 

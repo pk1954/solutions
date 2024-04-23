@@ -25,7 +25,12 @@ private:
 	PixFpDimension<fMicroSecs> m_horzCoord;
 	PixFpDimension<mV>         m_vertCoordVolt;
 
+	fMicroSecs scanStartTime() const;
+	fMicroSecs scanStopTime () const;
+
 	void adjust(PixelRectSize const);
+	void adjustHorz(fPixel const);
+	void adjustVert(fPixel const);
 	void PaintGraphics() final;
 	bool OnSize(PIXEL const, PIXEL const) final;
 };

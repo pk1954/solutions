@@ -175,9 +175,9 @@ void SignalControl::paintRunControls(fMicroSecs const time) const
 	SignalGenerator  const* pSigGen{ m_pNMWI->GetSigGenSelected() };
 	if (m_pVertScaleFreq)
 	{
-		fPixelPoint pntFreq       { pixPntStimulusFreq(pSigGen, time) };
-		fPixelPoint pntFreqLeft   { fPixelPoint(       xLeft(), pntFreq.GetY()) };
-		fPixelPoint pntFreqBottom { fPixelPoint(pntFreq.GetX(), yBottom())      };
+		fPixelPoint const pntFreq       { fPPStimFreq(pSigGen, time) };
+		fPixelPoint const pntFreqLeft   { fPixelPoint(       xLeft(), pntFreq.GetY()) };
+		fPixelPoint const pntFreqBottom { fPixelPoint(pntFreq.GetX(), yBottom())      };
 		m_upGraphics->DrawLine(pntFreq, pntFreqLeft,   1.0_fPixel, GetColor(tColor::FREQ));
 		m_upGraphics->DrawLine(pntFreq, pntFreqBottom, 1.0_fPixel, GetColor(tColor::TIME));
 		m_upGraphics->FillDiamond(pntFreq, STD_DIAMOND, GetColor(tColor::FREQ));
@@ -185,7 +185,7 @@ void SignalControl::paintRunControls(fMicroSecs const time) const
 
 	if (m_pVertScaleVolt)
 	{
-		fPixelPoint const pntVolt       { pixPntStimulusVolt(pSigGen, time) };
+		fPixelPoint const pntVolt       { fPPStimVolt(pSigGen, time) };
 		fPixel      const dirPos        { m_pVertScaleFreq ? xRight() : xLeft () };
 		fPixelPoint const pntVoltBase   { fPixelPoint(        dirPos, pntVolt.GetY()) };
 		fPixelPoint const pntVoltBottom { fPixelPoint(pntVolt.GetX(), yBottom())      };
@@ -318,7 +318,7 @@ void SignalControl::PaintGraphics()
 
 float SignalControl::ScaleFactorTimeCoord() const
 {
-	fMicroSecs const maxVisible { getMaxTime() };
+	fMicroSecs const maxVisible { GetTime(xRight()) };
 	fMicroSecs const maxValue   { sigGenStaticData()->CutoffTime() };
 	float      const factor     { maxValue / maxVisible };
 	return factor;

@@ -34,18 +34,14 @@ void NNetTimeGraph::SetDefaultBackgroundColor()
 	SetBackgroundColorRef(D2D1::ColorF::Ivory); 
 }
 
-void NNetTimeGraph::PaintFreqCurve
-(
-	SignalGenerator const * pSigGen,
-	fMicroSecs      const   umStart
-)
+void NNetTimeGraph::PaintFreqCurve(SignalGenerator const * pSigGen)
 {
 	if (!m_pVertCoordFreq)
 		return;
 	Paint
 	(
-		[this, pSigGen](fMicroSecs const t){ return pixPntStimulusFreq(pSigGen, t); }, 
-		umStart,
+		[this, pSigGen](fMicroSecs const t){ return fPPStimFreq(pSigGen, t); },
+		max(0.0_MicroSecs, GetTime(0.0_fPixel)),
 		GetTime(xRight()),
 		GetParams()->TimeResolution(),
 		m_upGraphics->CreateBrush(GetColor(tColor::FREQ)),
@@ -53,18 +49,14 @@ void NNetTimeGraph::PaintFreqCurve
 	);
 }
 
-void NNetTimeGraph::PaintVoltCurve
-(
-	SignalGenerator const * pSigGen,
-	fMicroSecs      const   umStart
-)
+void NNetTimeGraph::PaintVoltCurve(SignalGenerator const * pSigGen)
 {
 	if (!m_pVertCoordVolt)
 		return;
 	Paint
 	(
-		[this, pSigGen](fMicroSecs const t) { return pixPntStimulusVolt(pSigGen, t); },
-		umStart,
+		[this, pSigGen](fMicroSecs const t) { return fPPStimVolt(pSigGen, t); },
+		max(0.0_MicroSecs, GetTime(0.0_fPixel)),
 		GetTime(xRight()),
 		GetParams()->TimeResolution(),
 		m_upGraphics->CreateBrush(GetColor(tColor::VOLT)),

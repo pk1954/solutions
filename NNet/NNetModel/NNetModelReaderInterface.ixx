@@ -206,6 +206,13 @@ public:
 		GetUPNobsC().Apply2AllInRectC<T>(r, func);
 	}
 
+	void Apply2allEvents(EventType const type,	auto const& func) const
+	{
+		for (auto const& e : GetEventList())
+			if (e->Type() == type)
+				func(static_cast<StimulusEvent const*>(e.get()));
+	}
+
 protected:
 	Model * m_pModel;
 };

@@ -141,7 +141,7 @@ private:
 	BasePeak<mV>     m_amplit;
 	fMicroSecs       m_usPeak;
 
-	inline static float const CUT_OFF_FACTOR{ 10.0f };
+	inline static float const CUT_OFF_FACTOR { 10.0f };
 
 	template <typename T>
 	T getStimulusValue

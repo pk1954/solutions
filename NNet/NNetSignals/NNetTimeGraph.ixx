@@ -46,16 +46,16 @@ protected:
 	void SetVertCoordFreq(PixFpDimension<fHertz> const *pCoord) { m_pVertCoordFreq = pCoord; }
 	void SetVertCoordVolt(PixFpDimension<mV>     const *pCoord) { m_pVertCoordVolt = pCoord; }
 
-	void PaintFreqCurve(SignalGenerator const*, fMicroSecs const = 0.0_MicroSecs);
-	void PaintVoltCurve(SignalGenerator const*, fMicroSecs const = 0.0_MicroSecs);
+	void PaintFreqCurve(SignalGenerator const*);
+	void PaintVoltCurve(SignalGenerator const*);
 
 	Color GetColor(tColor const type) const	{ return m_colTable[static_cast<int>(type)]; }
 
 	fPixel yFreq(fHertz const freq) const { return getY(m_pVertCoordFreq->Transform2fPixelPos(freq)); }
 	fPixel yVolt(mV     const volt) const { return getY(m_pVertCoordVolt->Transform2fPixelPos(volt)); }
 
-	fPixelPoint pixPntStimulusFreq(SignalGenerator const *p, fMicroSecs const t) const { return pixPntFreq(t, p->GetStimulusFrequency(t)); }
-	fPixelPoint pixPntStimulusVolt(SignalGenerator const *p, fMicroSecs const t) const { return pixPntVolt(t, p->GetStimulusAmplitude(t)); }
+	fPixelPoint fPPStimFreq(SignalGenerator const *p, fMicroSecs const t) const { return pixPntFreq(t, p->GetStimulusFrequency(t)); }
+	fPixelPoint fPPStimVolt(SignalGenerator const *p, fMicroSecs const t) const { return pixPntVolt(t, p->GetStimulusAmplitude(t)); }
 
 private:
 	fPixelPoint pixPntFreq(fMicroSecs const t, fHertz const f) const { return fPixelPoint(xTime(t), yFreq(f)); }

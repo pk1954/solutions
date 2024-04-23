@@ -154,6 +154,13 @@ public:
 			NotifyAll(true);
 	}
 
+	void SetOffset(LOG_UNIT const offset, bool const bNotify = true)
+	{
+		m_fPixOffset = Transform2fPixelSize(offset);
+		if (bNotify)
+			NotifyAll(true);
+	}
+
 	bool Adjust
 	(
 		LOG_UNIT const logStart,
@@ -171,7 +178,7 @@ public:
 		if (!IsValidPixelSize(logPixelSizeNew))
 			return false;
 		m_logPixelSize = logPixelSizeNew;
-		m_fPixOffset   = fPixel(logEnd / m_logPixelSize) - fPixEnd;
+		m_fPixOffset   = Transform2fPixelSize(logEnd) - fPixEnd;
 		if (bNotify)
 			NotifyAll(true);
 		return true;

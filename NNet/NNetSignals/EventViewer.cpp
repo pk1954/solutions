@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <Windows.h>
 
 module NNetSignals:EventViewer;
@@ -27,15 +28,8 @@ EventViewer::EventViewer
 
 void EventViewer::PaintGraphics()
 {
-	fMicroSecs usStartScan;
-	fMicroSecs usStopScan;
-	for (auto const& e : m_pNMWI->GetEventList())
-	{
-		if (e->Type() == EventType::startScan)
-			usStartScan = e->GetTimeStamp();
-		else if (e->Type() == EventType::stopScan)
-			usStopScan = e->GetTimeStamp();
-	}
+	fMicroSecs usStartScan { scanStartTime() };
+	fMicroSecs usStopScan  { scanStopTime() };
 	fPixelRect rect
 	{
 		Scale2pixelTime(usStartScan),  // left
@@ -46,39 +40,46 @@ void EventViewer::PaintGraphics()
 	m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
 
 	bool bStimulus = false;
-	for (auto const& e : m_pNMWI->GetEventList())
-	{
-		if (e->Type() == EventType::stimulus)
+	m_pNMWI->Apply2allEvents
+	(
+		EventType::stimulus,
+		[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
 		{
-			StimulusEvent   const* pStimEvent { static_cast<StimulusEvent const*>(e.get()) };
 			SigGenId        const  sigGenId   { pStimEvent->GetId() };
 			SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(sigGenId) };
 			fMicroSecs      const  usStimulus { pStimEvent->GetTimeStamp() };
-			fMicroSecs      const  usStart    { max(0._MicroSecs, usStimulus - usStartScan) };
-			PaintVoltCurve(pSigGen, usStart);
+			fMicroSecs      const  usOffset   { usStimulus - usStartScan };
+			m_horzCoord.SetOffset(usOffset, false);
+			PaintVoltCurve(pSigGen);
 			bStimulus = true;
 		}
-	}
+	);
 	if (!bStimulus)
 		m_upGraphics->DisplayText(L"No stimulus");
 };
 
 void EventViewer::adjust(PixelRectSize const clientSize)
 {
-	if (m_pNMWI == nullptr)
-		return;
-
-	EventList  const& list    { m_pNMWI->GetEventList() };
-	fMicroSecs const  usStart { list.front()->GetTimeStamp() };
-	fMicroSecs const  usEnd   { list.back ()->GetTimeStamp() };
-	m_horzCoord.Adjust(0._MicroSecs, usEnd - usStart, 0._fPixel, Convert2fPixel(clientSize.GetX()));
-
-	mV mvPeakMax { 0._mV };
-	for (auto const& e : list)
+	if (m_pNMWI)
 	{
-		if (e->Type() == EventType::stimulus)
+		adjustHorz(Convert2fPixel(clientSize.GetX()));
+		adjustVert(Convert2fPixel(clientSize.GetY()));
+	}
+}
+
+void EventViewer::adjustHorz(fPixel const fPixWidth)
+{
+	 m_horzCoord.Adjust(0._MicroSecs, m_pNMWI->TotalScanTime(), 0._fPixel, fPixWidth);
+}
+
+void EventViewer::adjustVert(fPixel const fPixHeight)
+{
+	mV mvPeakMax { 0._mV };
+	m_pNMWI->Apply2allEvents
+	(
+		EventType::stimulus,
+		[this, &mvPeakMax](StimulusEvent const* pStimEvent)
 		{
-			StimulusEvent   const* pStimEvent   { static_cast<StimulusEvent const*>(e.get()) };
 			SigGenId        const  sigGenId     { pStimEvent->GetId() };
 			SignalGenerator const* pSigGen      { m_pNMWI->GetSigGenC(sigGenId) };
 			BasePeak<mV>    const& voltBasePeak { pSigGen->Amplitude() };
@@ -86,8 +87,24 @@ void EventViewer::adjust(PixelRectSize const clientSize)
 			if (mvPeak > mvPeakMax)
 				mvPeakMax = mvPeak;
 		}
-	}
-	m_vertCoordVolt.Adjust(-mvPeakMax * 0.1f, mvPeakMax * 1.1f, 0._fPixel, Convert2fPixel(clientSize.GetY()));
+	);
+	m_vertCoordVolt.Adjust(-mvPeakMax * 0.1f, mvPeakMax * 1.1f, 0._fPixel,fPixHeight);
+}
+
+fMicroSecs EventViewer::scanStartTime() const
+{
+	fMicroSecs us { fMicroSecs::NULL_VAL() };
+	m_pNMWI->Apply2allEvents(EventType::startScan, [&us](NNetEvent const* e){ us = e->GetTimeStamp(); });
+	assert(us.IsNotNull());
+	return us;
+}
+
+fMicroSecs EventViewer::scanStopTime() const
+{
+	fMicroSecs us { fMicroSecs::NULL_VAL() };
+	m_pNMWI->Apply2allEvents(EventType::stopScan, [&us](NNetEvent const* e){ us = e->GetTimeStamp(); });
+	assert(us.IsNotNull());
+	return us;
 }
 
 bool EventViewer::OnSize(PIXEL const width, PIXEL const height)
