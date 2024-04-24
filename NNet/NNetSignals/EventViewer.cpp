@@ -23,13 +23,13 @@ EventViewer::EventViewer
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	adjust(GetWindowSize());
-	//SetBackgroundColorRef(D2D1::ColorF::Green);
+	SetDefaultBackgroundColor();
 }
 
 void EventViewer::PaintGraphics()
 {
-	fMicroSecs usStartScan { scanStartTime() };
-	fMicroSecs usStopScan  { scanStopTime() };
+	fMicroSecs usStartScan { scanTime(EventType::startScan) };
+	fMicroSecs usStopScan  { scanTime(EventType::stopScan) };
 	fPixelRect rect
 	{
 		Scale2pixelTime(usStartScan),  // left
@@ -45,8 +45,7 @@ void EventViewer::PaintGraphics()
 		EventType::stimulus,
 		[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
 		{
-			SigGenId        const  sigGenId   { pStimEvent->GetId() };
-			SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(sigGenId) };
+			SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(pStimEvent->GetId()) };
 			fMicroSecs      const  usStimulus { pStimEvent->GetTimeStamp() };
 			fMicroSecs      const  usOffset   { usStimulus - usStartScan };
 			m_horzCoord.SetOffset(usOffset, false);
@@ -80,29 +79,19 @@ void EventViewer::adjustVert(fPixel const fPixHeight)
 		EventType::stimulus,
 		[this, &mvPeakMax](StimulusEvent const* pStimEvent)
 		{
-			SigGenId        const  sigGenId     { pStimEvent->GetId() };
-			SignalGenerator const* pSigGen      { m_pNMWI->GetSigGenC(sigGenId) };
-			BasePeak<mV>    const& voltBasePeak { pSigGen->Amplitude() };
-			mV              const  mvPeak       { voltBasePeak.Peak() };
+			SignalGenerator const* pSigGen { m_pNMWI->GetSigGenC(pStimEvent->GetId()) };
+			mV              const  mvPeak  { pSigGen->Amplitude().Peak() };
 			if (mvPeak > mvPeakMax)
 				mvPeakMax = mvPeak;
 		}
 	);
-	m_vertCoordVolt.Adjust(-mvPeakMax * 0.1f, mvPeakMax * 1.1f, 0._fPixel,fPixHeight);
+	m_vertCoordVolt.Adjust(-mvPeakMax * 0.1f, mvPeakMax * 1.1f, 0._fPixel, fPixHeight);
 }
 
-fMicroSecs EventViewer::scanStartTime() const
+fMicroSecs EventViewer::scanTime(EventType const t) const
 {
 	fMicroSecs us { fMicroSecs::NULL_VAL() };
-	m_pNMWI->Apply2allEvents(EventType::startScan, [&us](NNetEvent const* e){ us = e->GetTimeStamp(); });
-	assert(us.IsNotNull());
-	return us;
-}
-
-fMicroSecs EventViewer::scanStopTime() const
-{
-	fMicroSecs us { fMicroSecs::NULL_VAL() };
-	m_pNMWI->Apply2allEvents(EventType::stopScan, [&us](NNetEvent const* e){ us = e->GetTimeStamp(); });
+	m_pNMWI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimeStamp(); });
 	assert(us.IsNotNull());
 	return us;
 }

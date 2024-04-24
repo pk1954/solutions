@@ -156,9 +156,7 @@ public:
 
 	void SetOffset(LOG_UNIT const offset, bool const bNotify = true)
 	{
-		m_fPixOffset = Transform2fPixelSize(offset);
-		if (bNotify)
-			NotifyAll(true);
+		SetOffset(Transform2fPixelSize(offset), bNotify);
 	}
 
 	bool Adjust

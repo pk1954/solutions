@@ -25,8 +25,7 @@ private:
 	PixFpDimension<fMicroSecs> m_horzCoord;
 	PixFpDimension<mV>         m_vertCoordVolt;
 
-	fMicroSecs scanStartTime() const;
-	fMicroSecs scanStopTime () const;
+	fMicroSecs scanTime(EventType const) const;
 
 	void adjust(PixelRectSize const);
 	void adjustHorz(fPixel const);
