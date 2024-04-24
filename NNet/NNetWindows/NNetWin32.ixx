@@ -22,5 +22,7 @@ export import :NNetInputOutputUI;
 export import :NNetWindow;
 export import :ParameterDialog;
 export import :PerformanceWindow;
+export import :ScanPanel;
+export import :ScanViewer;
 export import :SelectionMenu;
 export import :UndoRedoMenu;

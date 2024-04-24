@@ -582,6 +582,8 @@
     <ClCompile Include="NNetSimuRunning.ixx" />
     <ClCompile Include="NNetWin32.ixx" />
     <ClCompile Include="ParameterDlg.ixx" />
+    <ClCompile Include="ScanPanel.ixx" />
+    <ClCompile Include="ScanViewer.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="SelectionMenu.ixx" />
     <ClCompile Include="UndoRedoMenu.ixx" />

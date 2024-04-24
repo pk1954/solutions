@@ -105,5 +105,11 @@
     <ClCompile Include="Compute.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScanPanel.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScanViewer.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -99,7 +99,6 @@ private:
 	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
 	SelectionMenu m_selectionMenu;
 	MainScales    m_mainScales;
-	HWND          m_hwndToolTipp           { nullptr };
 
 	bool       setScanAreaHandle   (MicroMeterPnt const&);
 	bool       setHighlightedNob   (MicroMeterPnt const&);

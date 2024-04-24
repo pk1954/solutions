@@ -77,10 +77,6 @@ void MainWindow::Start
 	m_pDisplayTimer        = pActionTimer;
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
-	
-	//m_hwndToolTipp = CreateWindowToolTip(nullptr);
-	//SetWindowText(m_hwndToolTipp, L"hallo");
-	//::MoveWindow(m_hwndToolTipp, 20_PIXEL, 20_PIXEL);
 }
 
 void MainWindow::Stop()
@@ -88,7 +84,6 @@ void MainWindow::Stop()
 	Reset();
 	m_selectionMenu.Stop();
 	NNetWindow::Stop();
-	m_hwndToolTipp = nullptr;
 }
 
 void MainWindow::Reset()

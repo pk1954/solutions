@@ -53,7 +53,6 @@ void CrsrWindow::Start
 		100, 
 		nullptr
 	);
-//	::CreateWindowToolTip(GetWindowHandle(), L"Cursor window");
 }
 
 void CrsrWindow::Stop()

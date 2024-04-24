@@ -4,6 +4,7 @@
 
 module;
 
+#include <Windows.h>
 #include <string>
 
 export module NNetSignals:EventViewer;
