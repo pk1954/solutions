@@ -157,6 +157,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppStartProtocol.ixx" />
     <ClCompile Include="BreakCommand.ixx" />
     <ClCompile Include="ColLutDesigner.cpp" />
     <ClCompile Include="ColLutDesigner.ixx" />

@@ -38,6 +38,8 @@ void NNetViewerAppWindow::Start(MessagePump& pump)
 	);
 
 	m_statusBar.Start(m_hwndApp);
+
+	Show(true);
 }
 
 void NNetViewerAppWindow::Stop()

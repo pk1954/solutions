@@ -65,8 +65,9 @@ using std::wcout;
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
 
-NNetAppWindow::NNetAppWindow(wstring const & wstrProductName)
+NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 {
+	m_pwstrProductName = &wstrProductName;
 	m_aboutBox.SetProductName(wstrProductName);
 	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
@@ -125,7 +126,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		nullptr
 	);
 
-	m_appTitle.Initialize(m_hwndApp);
+	m_appTitle.Initialize(m_hwndApp, *m_pwstrProductName);
 
 	NNetPreferences::Initialize();
 

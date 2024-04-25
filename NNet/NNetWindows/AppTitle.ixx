@@ -19,9 +19,14 @@ using std::wstring;
 export class AppTitle : public ObserverInterface
 {
 public:
-	void Initialize(HWND const hwndApp)
+	void Initialize
+	(
+		HWND    const   hwndApp,
+		wstring const & wstrProductName
+	)
 	{
-		m_hwndApp = hwndApp;
+		m_hwndApp          = hwndApp;
+		m_pwstrProductName = &wstrProductName;
 	}
 
 	void SetModelInterface(NNetModelReaderInterface const * const pNMRI)
@@ -45,16 +50,6 @@ public:
 		return m_bUnsavedChanges; 
 	}
 
-	inline static wstring const PRODUCT_NAME 
-	{ 
-		L"NNetSimu 5.5 "
-#ifndef NDEBUG
-		L"release"
-#else
-		L"debug"
-#endif
-	};
-
 private:
 	void setAppTitle()
 	{
@@ -64,12 +59,13 @@ private:
 		::SetApplicationTitle
 		(
 			m_hwndApp, 
-			PRODUCT_NAME,
+			*m_pwstrProductName,
 			m_pNMRI->GetModelFilePath() + wstr 
 		);
 	}
 
-	HWND                             m_hwndApp         { nullptr };
-	NNetModelReaderInterface const * m_pNMRI           { nullptr };
-	bool                             m_bUnsavedChanges { false }; 
+	HWND                             m_hwndApp          { nullptr };
+	wstring                  const * m_pwstrProductName { nullptr };
+	NNetModelReaderInterface const * m_pNMRI            { nullptr };
+	bool                             m_bUnsavedChanges  { false }; 
 };

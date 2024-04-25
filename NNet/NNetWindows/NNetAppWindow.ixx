@@ -1,6 +1,6 @@
 // NNetAppWindow.ixx
 //
-// NNetSimu
+// NNetWindows
 
 module;
 
@@ -94,9 +94,10 @@ private:
 
 	int                        m_statusMessagePart{ };
 	unique_ptr<Model>          m_upModel;
-	NNetModelReaderInterface * m_pNMRI       { nullptr };
-	HWND                       m_hwndConsole { nullptr };
-	HWND                       m_hwndApp     { nullptr };
+	NNetModelReaderInterface * m_pNMRI            { nullptr };
+	HWND                       m_hwndConsole      { nullptr };
+	HWND                       m_hwndApp          { nullptr };
+	wstring            const * m_pwstrProductName { nullptr };
 
 	AboutBox                 m_aboutBox;
 	Compute                  m_compute;

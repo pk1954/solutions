@@ -11,6 +11,7 @@
 #include "Resource.h"
 #include "CommCtrl.h"
 
+import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
 import SaveCast;
@@ -62,15 +63,13 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
+	static wstring const PRODUCT_NAME { L"NNetSimu 5.5 " + BUILD_MODE };
+
 	SwitchWcoutTo(L"main_trace.out");
 
-	wcout << COMMENT_START << L"Application start at " << GetCurrentDateAndTime();
-	wcout << COMMENT_START << L"Version:       "       << AppTitle::PRODUCT_NAME  << endl;
-	wcout << COMMENT_START << L"Build date:    "       << COMPILE_TIMESTAMP       << endl;
-	wcout << COMMENT_START << L"Computer name: "       << ::GetComputerName()     << endl;
-	wcout << COMMENT_START << L"User name:     "       << ::GetUserName()         << endl;
+	PrintAppStartProtocol(PRODUCT_NAME);
 
-	upApp = make_unique<NNetAppWindow>(AppTitle::PRODUCT_NAME);
+	upApp = make_unique<NNetAppWindow>(PRODUCT_NAME);
 
 	Accelerators acc;
 	MessagePump  pump;

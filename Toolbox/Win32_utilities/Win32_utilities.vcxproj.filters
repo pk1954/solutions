@@ -234,5 +234,8 @@
     <ClCompile Include="StatusBarDisplayFunctor.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="AppStartProtocol.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,7 +19,16 @@ import Types;
 using std::wostringstream;
 using std::wstring;
 
-export inline LPCWSTR COMPILE_TIMESTAMP { _T(__DATE__) L" " _T(__TIME__) };
+export inline const LPCWSTR COMPILE_TIMESTAMP { _T(__DATE__) L" " _T(__TIME__) };
+
+export inline const wstring BUILD_MODE
+{ 
+#ifndef NDEBUG
+	L"debug"
+#else
+	L"release"
+#endif
+};
 
 export inline LONG_PTR GetUserDataPtr(HWND hwnd)
 {
