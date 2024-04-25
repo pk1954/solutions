@@ -8,12 +8,12 @@ module;
 #include <cassert>
 #include <iostream>
 #include <Windows.h>
-#include "Resource.h"
 
 export module NNetWin32:NNetInputOutputUI;
 
 import InputOutputUI;
 import WinManager;
+import Win32_Util_Resource;
 
 using std::unique_ptr;
 using std::make_unique;

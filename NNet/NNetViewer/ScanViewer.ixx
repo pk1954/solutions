@@ -1,6 +1,6 @@
 // ScanViewer.ixx
 //
-// NNetWindows
+// NNetViewer
 
 module;
 

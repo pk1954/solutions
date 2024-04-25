@@ -304,8 +304,9 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 
 void Model::CreateScanImage()
 { 
-	m_upImage = make_unique<ScanImageByte>(GetScanAreaSize()); 
-	m_pLockModelObservable->NotifyAll();
+	m_upImage = make_unique<ScanImageByte>(GetScanAreaSize());
+	if (m_pLockModelObservable)
+		m_pLockModelObservable->NotifyAll();
 }
 
 void Model::ReplaceScanImage(unique_ptr<ScanImageByte> up) 
@@ -316,7 +317,8 @@ void Model::ReplaceScanImage(unique_ptr<ScanImageByte> up)
 void Model::RejectScanImage()
 { 
 	m_upImage.release(); 
-	m_pLockModelObservable->NotifyAll();
+	if (m_pLockModelObservable)
+		m_pLockModelObservable->NotifyAll();
 }
 
 void Model::AddEvent(EventType const& type)

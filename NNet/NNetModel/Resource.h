@@ -25,12 +25,8 @@
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
 								   	         
-#define       IDX_READ_PROGRESS_REPORT       160
-#define       IDX_WRITE_PROGRESS_REPORT      161
 #define       IDX_REPLACE_MODEL              162
 #define       IDX_ASK_REPLACE_MODEL          163
-#define       IDX_FILE_NOT_FOUND             164
-#define       IDX_ERROR_IN_FILE              165
 
 #define       IDM_SAVE_MODEL                 170
 #define       IDM_ASK_AND_SAVE_MODEL         171

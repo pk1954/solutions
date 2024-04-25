@@ -178,7 +178,7 @@ private:
 	bool isConnectedToPipe(NobId const, NobId const) const;
 	bool isConnectedTo    (NobId const, NobId const) const;
 
-	inline static Observable * m_pLockModelObservable = nullptr;
+	inline static Observable* m_pLockModelObservable { nullptr };
 
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;

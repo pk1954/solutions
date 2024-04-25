@@ -574,6 +574,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="Compute.cpp" />
     <ClCompile Include="Compute.ixx" />
     <ClCompile Include="MainScales.ixx" />
@@ -582,12 +583,9 @@
     <ClCompile Include="NNetSimuRunning.ixx" />
     <ClCompile Include="NNetWin32.ixx" />
     <ClCompile Include="ParameterDlg.ixx" />
-    <ClCompile Include="ScanPanel.ixx" />
-    <ClCompile Include="ScanViewer.ixx" />
     <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="SelectionMenu.ixx" />
     <ClCompile Include="UndoRedoMenu.ixx" />
-    <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="CrsrWindow.cpp" />
     <ClCompile Include="CrsrWindow.ixx" />
     <ClCompile Include="MainWindow.cpp" />

@@ -21,8 +21,8 @@ import HiResTimer;
 import MessagePump;
 import Script;
 import Scanner;
-import Accelerators;
 import NNetWin32;
+import NNetViewerAppWindow;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -32,7 +32,7 @@ using std::endl;
 using std::setw;
 using std::left;
 
-unique_ptr<NNetAppWindow> upApp;
+unique_ptr<NNetViewerAppWindow> upApp;
 
 int APIENTRY wWinMain
 (
@@ -62,7 +62,7 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	SwitchWcoutTo(L"main_trace.out");
+	SwitchWcoutTo(L"viewer.out");
 
 	wcout << COMMENT_START << L"Application start at " << GetCurrentDateAndTime();
 	wcout << COMMENT_START << L"Version:       "       << AppTitle::PRODUCT_NAME  << endl;
@@ -70,11 +70,9 @@ int APIENTRY wWinMain
 	wcout << COMMENT_START << L"Computer name: "       << ::GetComputerName()     << endl;
 	wcout << COMMENT_START << L"User name:     "       << ::GetUserName()         << endl;
 
-	upApp = make_unique<NNetAppWindow>(AppTitle::PRODUCT_NAME);
+	upApp = make_unique<NNetViewerAppWindow>(AppTitle::PRODUCT_NAME);
 
-	Accelerators acc;
 	MessagePump  pump;
-	pump.SetAccelTable(acc.Get());
 	upApp->Start(pump);
 	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 

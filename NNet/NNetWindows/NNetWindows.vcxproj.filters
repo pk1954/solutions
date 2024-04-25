@@ -45,9 +45,6 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AppTitle.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PerformanceWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -105,10 +102,7 @@
     <ClCompile Include="Compute.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScanPanel.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScanViewer.ixx">
+    <ClCompile Include="AppTitle.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

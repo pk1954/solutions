@@ -175,6 +175,7 @@
     <ClCompile Include="SlowMotionDisplay.ixx" />
     <ClCompile Include="StatusBar.cpp" />
     <ClCompile Include="StatusBar.ixx" />
+    <ClCompile Include="StatusBarDisplayFunctor.ixx" />
     <ClCompile Include="ThreadPoolTimer.ixx" />
     <ClCompile Include="TimeDisplay.cpp" />
     <ClCompile Include="TimeDisplay.ixx" />

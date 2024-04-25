@@ -1,6 +1,6 @@
 // ScanPanel.ixx
 //
-// NNetWindows
+// NNetViewer
 
 module;
 
