@@ -23,6 +23,7 @@ import NNetPreferences;
 import :Compute;
 
 using std::wostream;
+using std::wstring;
 using std::wcout;
 
 export class NNetController
@@ -36,6 +37,8 @@ public:
 
 	void SetModelInterface(NNetModelReaderInterface * const);
 	bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL);
+
+	static wstring AskModelFile(enum class tFileMode const);
 
 private:
 

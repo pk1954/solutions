@@ -51,7 +51,11 @@ public:
 
     void Write(wostream& out) const final
     {
-        MonitorData const& monitorData{ NNetModelIO::GetExportNMRI().GetMonitorDataC() };
+        NNetModelReaderInterface const &nmri { NNetModelIO::GetExportNMRI() };
+        if (nmri.ModelLocked())
+            return;
+
+        MonitorData const& monitorData { nmri.GetMonitorDataC() };
         monitorData.Apply2AllSignalIdsC
         (
             [this, &out, &monitorData](SignalId const idSignal)

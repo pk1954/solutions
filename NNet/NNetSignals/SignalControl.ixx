@@ -16,7 +16,6 @@ import Color;
 import PixFpDimension;
 import Direct2D;
 import NNetModel;
-import NNetCommands;
 import :NNetTimeGraph;
 import :SimuRunning;
 

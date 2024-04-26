@@ -8,13 +8,13 @@ ScanAreaVisibility  ON
 ModelFront  ON
 ApplyFilter  OFF
 
-
-ColorLUT 1 4
+ColorLUT 1 5
 {
  {  0, RGB(0,0,0)}
  { 10, RGB(0,0,1)}
- {133, RGB(1,0,0)}
- {255, RGB(1,1,0)}
+ { 95, RGB(0.5,1,0)}
+ {159, RGB(1,1,0)}
+ {255, RGB(1,0,0)}
 }
 
 ShowArrows  OFF

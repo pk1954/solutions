@@ -88,7 +88,6 @@ private:
 	bool    AskAndSave();
 	bool    AskNotUndoable();
 	void    WriteModel();
-	wstring askModelFile(enum class tFileMode const) const;
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 

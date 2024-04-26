@@ -47,7 +47,7 @@ private:
 	void OnClose  ()                                             final;
 
 	void    configureStatusBar();
-	wstring askModelFile(enum class tFileMode const) const;
+	wstring AskModelFile(enum class tFileMode const) const;
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 

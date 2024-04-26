@@ -319,6 +319,8 @@ void MainWindow::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 	NobId         const idNob     { m_pNMRI->FindAnyNobAt(umCrsrPos) };
 	if (IsUndefined(idNob))
 		return;
+	if (m_pNMRI->ModelLocked())    // no edit operations allowed
+		return;
 	if (m_pNMRI->IsSelected(idNob))
 	{
 		DeselectModuleCmd::Push();

@@ -15,6 +15,7 @@ module NNetWin32:NNetController;
 import Win32_Util_Resource;
 import SlowMotionRatio;
 import Scanner;
+import ScriptFile;
 import SaveCast;
 import Observable;
 import StdDialogBox;
@@ -27,10 +28,12 @@ import UndoCommand;
 import RedoCommand;
 import CommandStack;
 import NNetModel;
+import NNetModelIO;
 import Preferences;
 import NNetPreferences;
 import :Compute;
 import :MainWindow;
+import :NNetInputOutputUI;
 
 using std::to_wstring;
 using std::wcout;
@@ -55,6 +58,11 @@ NNetController::~NNetController()
     m_hCrsrWait        = nullptr;
 }
 
+wstring NNetController::AskModelFile(enum class tFileMode const mode)
+{
+	return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
+}
+
 void NNetController::SetModelInterface(NNetModelReaderInterface * const pNMRI)
 {
     m_pNMRI = pNMRI;
@@ -73,7 +81,10 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
         return true;                             // but do not concern the model  
 
     if (m_pNMRI->ModelLocked())
+    {
+   		MessageBox(nullptr, L"Unlock model to perform this command", L"Model is locked", MB_OK);
         return true;
+    }
 
     bool const bRunning = m_pCompute->IsRunning();
     if (bRunning)
@@ -98,6 +109,14 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
 {
     switch (wmId)
     {
+    case IDM_UNDO:
+        UndoCommand::Push();
+        break;
+
+    case IDM_REDO:
+        RedoCommand::Push();
+        break;
+
     case IDM_LUT_DESIGNER:
     case IDM_SIG_DESIGNER:
     case IDM_PERF_WINDOW:
@@ -221,15 +240,15 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
         Script::StopProcessing();
         break;
 
-    case IDM_UNDO:
-        UndoCommand::Push();
+   	case IDM_ADD_MODULE:
+		NNetModelIO::Import
+		(
+			AskModelFile(tFileMode::read), 
+			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
+		);
         break;
 
-    case IDM_REDO:
-        RedoCommand::Push();
-        break;
-
-    case IDM_ADD_IMPORTED_MODEL:
+   case IDM_ADD_IMPORTED_MODEL:
         AddModuleCommand::Push();
         break;
 

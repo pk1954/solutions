@@ -49,6 +49,7 @@ import NNetModel;
 import ThreadPoolTimer;
 
 using std::filesystem::exists;
+using std::filesystem::path;
 using std::wofstream;
 using std::wostream;
 using std::wostringstream;
@@ -182,9 +183,9 @@ void NNetModelIO::importModel()
         res = InputOutputUI::Result::errorInFile;
     }
 
+    m_upImportedNMWI->PrintModelSize();
     m_timer.StopTimer();
     m_upImportUI->JobFinished(res, m_wstrFile2Read);
-    m_upImportedNMWI->PrintModelSize();
 }
 
 void NNetModelIO::fixProblems()
@@ -308,7 +309,10 @@ void NNetModelIO::Export
     m_pExportNMRI = & nmri;
     compress(nmri);
     wofstream modelFile;
-    modelFile.open(nmri.GetModelFilePath());
+    path modelPath { nmri.GetModelFilePath() };
+    if (nmri.ModelLocked())
+        modelPath.replace_extension(L"scan");
+    modelFile.open(modelPath);
     writeHeader(modelFile);
     for (auto const & it : m_wrapVector)
     {

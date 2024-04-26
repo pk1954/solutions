@@ -27,10 +27,13 @@ public:
 
     void Write(wostream & out) const final
     {
-        NNetModelReaderInterface const& nmwi{ NNetModelIO::GetExportNMRI() };
-        nmwi.Apply2AllC<PosNob     >([this, &out](PosNob      const& s) { writeVoltage(out, s); });
-        nmwi.Apply2AllC<Pipe       >([this, &out](Pipe        const& s) { writeVoltage(out, s); });
-        nmwi.Apply2AllC<IoConnector>([this, &out](IoConnector const& s) { writeVoltage(out, s); });
+        NNetModelReaderInterface const &nmri { NNetModelIO::GetExportNMRI() };
+        if (!nmri.ModelLocked())
+        {
+            nmri.Apply2AllC<PosNob     >([this, &out](PosNob      const& s) { writeVoltage(out, s); });
+            nmri.Apply2AllC<Pipe       >([this, &out](Pipe        const& s) { writeVoltage(out, s); });
+            nmri.Apply2AllC<IoConnector>([this, &out](IoConnector const& s) { writeVoltage(out, s); });
+        }
     };
 
 private:

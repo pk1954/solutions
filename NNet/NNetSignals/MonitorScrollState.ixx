@@ -6,6 +6,7 @@ module;
 
 #include <string>
 #include <iostream>
+#include <Resource.h>
 
 export module NNetSignals:MonitorScrollState;
 
@@ -14,7 +15,7 @@ import IoConstants;
 import Script;
 import Symtab;
 import SaveCast;
-import NNetModelIO;
+import WinManager;
 import Wrapper;
 import NNetWrapperHelpers;
 import :MonitorWindow;
@@ -26,38 +27,31 @@ export class MonitorScrollState : public Wrapper
 public:
 	using Wrapper::Wrapper;
 
-	void SetMonitorWindow(MonitorWindow* const pMonitorWindow)
-	{
-		m_pMonitorWindow = pMonitorWindow;
-	}
-
 	void operator() (Script& script) const final
 	{
-		PixFpDimension<fMicroSecs>& horzCoord { m_pMonitorWindow->HorzCoord() };
-		PixFpDimension<mV>        & vertCoord { m_pMonitorWindow->VertCoord() };
+		MonitorWindow             * pMonWin   { static_cast<MonitorWindow*>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW))) };
+		PixFpDimension<fMicroSecs>& horzCoord { pMonWin->HorzCoord() };
+		PixFpDimension<mV>        & vertCoord { pMonWin->VertCoord() };
 		vertCoord.SetPixelSize(ScrReadVoltage   (script), false);
 		horzCoord.SetPixelSize(ScrReadfMicroSecs(script), false);
 //		horzCoord.SetOffset   (ScrReadfPixel(script), false);
 		ScrReadfPixel(script);
 //		m_pMonitorWindow->SetHorzScaleLocked(script.ScrReadBool());
 		script.ScrReadBool();
-		m_pMonitorWindow->Notify(true);
+		pMonWin->Notify(true);
 	}
 
 	void Write(wostream& out) const final
 	{
-		PixFpDimension<fMicroSecs>& horzCoord { m_pMonitorWindow->HorzCoord() };
-		PixFpDimension<mV>& vertCoord { m_pMonitorWindow->VertCoord() };
+		MonitorWindow             * pMonWin   { static_cast<MonitorWindow*>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW))) };
+		PixFpDimension<fMicroSecs>& horzCoord { pMonWin->HorzCoord() };
+		PixFpDimension<mV>        & vertCoord { pMonWin->VertCoord() };
 
 		WriteCmdName(out);
 		out << vertCoord.GetPixelSize() 
 			<< horzCoord.GetPixelSize() 
 			<< horzCoord.GetPixelOffset() 
-			<< SPACE << m_pMonitorWindow->IsHorzScaleLocked()
+			<< SPACE << pMonWin->IsHorzScaleLocked()
 			<< endl;
 	}
-
-private:
-
-	MonitorWindow* m_pMonitorWindow { nullptr };
 };

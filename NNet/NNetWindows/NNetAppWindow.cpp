@@ -86,8 +86,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio);
 
-	MonitorScrollState* pMonitorScrollState { NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState") };
-	pMonitorScrollState->SetMonitorWindow(&m_monitorWindow);
+	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");
 	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
 };
 
@@ -417,11 +416,6 @@ void NNetAppWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	m_mainNNetWindow.OnChar(wParam, lParam);
 }
 
-wstring NNetAppWindow::askModelFile(enum class tFileMode const mode) const
-{
-	return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
-}
-
 bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);
@@ -543,7 +537,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_cmdStack.Clear();
 			NNetModelIO::Import
 			(
-				askModelFile(tFileMode::read),
+				NNetController::AskModelFile(tFileMode::read),
 				NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL)
 			);
 			return true;
@@ -554,14 +548,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 				m_cmdStack.Clear();
 				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL));
 			}
-			return true;
-
-		case IDM_ADD_MODULE:
-			NNetModelIO::Import
-			(
-				askModelFile(tFileMode::read), 
-				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
-			);
 			return true;
 
 		case IDM_CENTER_MODEL:
@@ -632,7 +618,7 @@ bool NNetAppWindow::SaveModelAs()
 	}
 	else
 	{
-		wstrModelPath = askModelFile(tFileMode::write);
+		wstrModelPath = NNetController::AskModelFile(tFileMode::write);
 		bool const bRes = wstrModelPath != L"";
 		if (bRes)
 		{

@@ -190,14 +190,12 @@ bool Synapse::Includes(MicroMeterPnt const& point) const
 {
 	MicroMeterCircle const circle               { m_pos, KNOT_WIDTH };
 	bool             const bCircleIncludesPnt   { circle.Includes(point) };
-
-	MicroMeterPnt const umPntBaseVector { m_pPipeOut->GetEndPoint() - m_pPipeIn->GetStartPoint() };
-	MicroMeterPnt const umPntOrtho      { umPntBaseVector.OrthoVector() };
-	MicroMeterPnt const umPntAddDir     { GetPos() - m_pPipeAdd->GetStartPoint() };
-	MicroMeter    const umCrit          { CrossProduct(umPntBaseVector, umPntAddDir) };
-	float         const fDirection      { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
-	MicroMeterPnt const umPntCenter     { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
-
+	MicroMeterPnt    const umPntBaseVector      { m_pPipeOut->GetEndPoint() - m_pPipeIn->GetStartPoint() };
+	MicroMeterPnt    const umPntOrtho           { umPntBaseVector.OrthoVector() };
+	MicroMeterPnt    const umPntAddDir          { GetPos() - m_pPipeAdd->GetStartPoint() };
+	MicroMeter       const umCrit               { CrossProduct(umPntBaseVector, umPntAddDir) };
+	float            const fDirection           { (umCrit > 0._MicroMeter) ? 1.0f : -1.0f };
+	MicroMeterPnt    const umPntCenter          { GetPos() + umPntOrtho.ScaledTo((CENTER_DIST + OFF_DIST) * fDirection) };
 	bool             const bTriangleIncludesPnt { Distance(point, umPntCenter) <= EXTENSION	};
 	return bCircleIncludesPnt || bTriangleIncludesPnt;
 }
