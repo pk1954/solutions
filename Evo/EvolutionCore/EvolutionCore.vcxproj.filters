@@ -33,12 +33,6 @@
     <ClInclude Include="geneTypeLimits.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gridPoint24.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gridSelection.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp">
@@ -204,6 +198,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PixelCore.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSelection.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="GridPoint24.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,7 +8,7 @@ import Types;
 import GridPoint;
 import GridCoord;
 
-using GridRectSize = SizeType<GridCoord>;
-using GridRect     = RectType<GridCoord>;
+export using GridRectSize = SizeType<GridCoord>;
+export using GridRect     = RectType<GridCoord>;
 
-void Apply2Rect(GridPointFunc const&, GridPoint const, GridPoint const, bool const = false);
+export void Apply2Rect(GridPointFunc const&, GridPoint const, GridPoint const, bool const = false);

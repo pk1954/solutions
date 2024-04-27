@@ -1,4 +1,4 @@
-// gridPoint24.h : 
+// GridPoint24.ixx : 
 //
 // GridPoint packed as Int24
 

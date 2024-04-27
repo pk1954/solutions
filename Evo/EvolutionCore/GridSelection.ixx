@@ -1,14 +1,13 @@
-// gridSelection.h
+// GridSelection.ixx
 //
 // EvolutionCore
 
 module;
 
 import GridDimensions;
-
 import GridRect;
 
-class GridSelection
+export class GridSelection
 {
 public:
 	static void ResetSelection()

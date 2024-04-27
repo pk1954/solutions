@@ -1,13 +1,19 @@
-#pragma once
+// XArray.ixx
+//
+// ToolBox\Utilities
 
-#include <assert.h>
+module;
+
+#include <cassert>
 #include <array>
 #include <limits>
 #include <functional>
 
+export module XArray;
+
 using std::function;
 
-template <typename T>
+export template <typename T>
 void DivNonZero(T & op, T const div)
 {
     if (div == 0)
@@ -16,14 +22,14 @@ void DivNonZero(T & op, T const div)
         op /= div;
 }
 
-template <typename T, size_t SIZE>
+export template <typename T, size_t SIZE>
 void DivNonZero(std::array<T, SIZE> & a, std::array<T, SIZE> const & div)
 {
     for (unsigned int uiRun = 0; uiRun < SIZE; ++uiRun)
         DivNonZero(a[ uiRun ], div[ uiRun ]);
 }
 
-template <typename T, size_t SIZE> class XArray
+export template <typename T, size_t SIZE> class XArray
 {
 public:
     XArray()

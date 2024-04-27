@@ -5,11 +5,11 @@
 module;
 
 #include "Windows.h"
-import HistGeneration;
 
 export module GenDisplayWindow;
 
 import BaseWindow;
+import HistGeneration;
 
 export class GenDisplayWindow : public BaseWindow
 {

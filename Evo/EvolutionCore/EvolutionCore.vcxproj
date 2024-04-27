@@ -181,8 +181,6 @@
     <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
     <ClInclude Include="EvolutionCoreWrappers.h" />
     <ClInclude Include="geneTypeLimits.h" />
-    <ClInclude Include="gridPoint24.h" />
-    <ClInclude Include="gridSelection.h" />
     <ClInclude Include="MortalityTable.h" />
   </ItemGroup>
   <ItemGroup>
@@ -221,9 +219,11 @@
     <ClCompile Include="GridPOI.cpp" />
     <ClCompile Include="GridPOI.ixx" />
     <ClCompile Include="GridPoint.ixx" />
+    <ClCompile Include="GridPoint24.ixx" />
     <ClCompile Include="GridPointList.ixx" />
     <ClCompile Include="GridRect.ixx" />
     <ClCompile Include="GridSelection.cpp" />
+    <ClCompile Include="GridSelection.ixx" />
     <ClCompile Include="Individual.ixx" />
     <ClCompile Include="Interaction.ixx" />
     <ClCompile Include="MortalityTable.cpp" />
