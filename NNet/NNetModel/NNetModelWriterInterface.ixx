@@ -42,6 +42,7 @@ public:
     unique_ptr<Model> CreateNewModel();
 
     void  CreateInitialNobs();
+    void  SetScanTimeNow();
     void  SelectNob          (NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob             (NobId const);
@@ -96,9 +97,9 @@ public:
     void ClearScanImage     ()                                        { GetScanImage()->Set(0); }
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }
-
-    void AddOutgoing(NobId const, Pipe *);
-    void AddIncoming(NobId const, Pipe *);
+    void SetScanTime        (time_t const t)                          { m_pModel->SetScanTime(t); }
+    void AddOutgoing        (NobId const id, Pipe* p)                 { GetPosNob(id).AddOutgoing(p); }
+    void AddIncoming        (NobId const id, Pipe* p)                 { GetPosNob(id).AddIncoming(p); }
 
     PosNob & GetPosNob(NobId const);
 

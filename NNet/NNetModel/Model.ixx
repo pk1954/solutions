@@ -5,6 +5,7 @@
 module;
 
 #include <cassert>
+#include <ctime>
 #include <memory>
 #include <string>
 #include <vector>
@@ -138,6 +139,7 @@ public:
 	Raster            const & GetScanRaster     () const { return *m_upRaster.get(); }
 	ScanImageByte     const * GetScanImageC     () const { return m_upImage.get(); }
 	EventList         const & GetEventList      () const { return m_events; }
+	time_t                    GetScanTime       () const { return m_timeScan; }
 
 	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
 
@@ -172,7 +174,8 @@ public:
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-
+	void SetScanTime              (time_t const t)       { m_timeScan = t; }
+	
 private:
 	unsigned int printNobType(unsigned int, NobType::Value) const;
 	bool isConnectedToPipe(NobId const, NobId const) const;
@@ -183,8 +186,9 @@ private:
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;
 	unique_ptr<NNetParameters> m_upParam;
-	unique_ptr<ScanImageByte>  m_upImage;
 	unique_ptr<Raster>         m_upRaster;
+	unique_ptr<ScanImageByte>  m_upImage;
+	time_t                     m_timeScan;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;
 	UPMicroSensorList          m_microSensorList;

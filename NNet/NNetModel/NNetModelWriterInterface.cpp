@@ -4,6 +4,8 @@
 
 module;
 
+#include <ctime>
+#include <chrono>
 #include <cassert>
 #include <memory>
 
@@ -21,6 +23,7 @@ import :PosNob;
 
 using std::make_unique;
 using std::unique_ptr;
+using std::chrono::system_clock;
 
 unique_ptr<Model> NNetModelWriterInterface::CreateNewModel()
 {
@@ -47,16 +50,15 @@ PosNob & NNetModelWriterInterface::GetPosNob(NobId const id)
 	return *pPosNob;
 }
 
-void NNetModelWriterInterface::AddOutgoing(NobId const id, Pipe* p) { GetPosNob(id).AddOutgoing(p); }
-void NNetModelWriterInterface::AddIncoming(NobId const id, Pipe* p) { GetPosNob(id).AddIncoming(p); }
-
 void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 {
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })
 		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
 
-void NNetModelWriterInterface::SetScanArea(MicroMeterRect const &rect)
-{
-	m_pModel->SetScanArea(rect);
+void NNetModelWriterInterface::SetScanTimeNow()
+{ 
+	auto   currentTime   = system_clock::now();
+	time_t currentTime_t = system_clock::to_time_t(currentTime);
+	SetScanTime(currentTime_t);
 }

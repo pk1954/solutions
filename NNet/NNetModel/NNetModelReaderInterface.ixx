@@ -110,6 +110,7 @@ public:
 	bool                   IsAnySignalSelected()                  const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
 	optional<RasterPoint>  FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect         GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
+	time_t                 GetScanTime()                          const { return m_pModel->GetScanTime(); }
 	fMicroSecs             TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const

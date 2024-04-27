@@ -9,7 +9,6 @@ module;
 #include <vector>
 #include "Resource.h"
 #include <chrono>
-
 #include <iostream>
 
 module NNetWin32:Compute;
@@ -31,7 +30,7 @@ using std::unique_ptr;
 using std::make_unique;
 using std::vector;
 using std::byte;
-
+using std::time_t;
 using std::wcout;
 using std::endl;
 using std::wstring;
@@ -134,6 +133,7 @@ void Compute::finishScan()
 			upScanImageByte->Set(rp, index);  
 		}
 	);
+	m_pNMWI->SetScanTimeNow();
 	m_pNMWI->ReplaceScanImage(move(upScanImageByte));
 	m_pDynamicModelObservable->NotifyAll();
 	StopScan();

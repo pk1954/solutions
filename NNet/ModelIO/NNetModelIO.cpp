@@ -38,6 +38,7 @@ import WrapNrOfTracks;
 import WrapActiveSigGen;
 import WrapEmphasized;
 import WrapScanImage;
+import WrapScanTime;
 import WrapSignalInfo;
 import WrapGlobalParameter;
 import WrapSetScanArea;
@@ -78,6 +79,7 @@ void NNetModelIO::Initialize(Observable * const pLockModelObservable)
     AddModelWrapper<WrapSignalInfo     >(L"SignalInfo");
     AddModelWrapper<WrapSignalData     >(L"SignalData");
     AddModelWrapper<WrapSetScanArea    >(L"SetScanArea");
+    AddModelWrapper<WrapScanTime       >(L"ScanTime");
     AddModelWrapper<WrapScanImage      >(L"ScanImage");
     AddModelWrapper<WrapSimulationTime >(L"SimulationTime");
 
@@ -274,8 +276,8 @@ void NNetModelIO::writeHeader(wostream & out)
 {
     out << COMMENT_SYMBOL << L" NNetModel"       << endl;
     out << COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime() << endl;
-    out << COMMENT_SYMBOL << L" Computer name: " << ::GetComputerName()       << endl;
-    out << COMMENT_SYMBOL << L" User name: "     << ::GetUserName()           << endl; 
+    out << COMMENT_SYMBOL << L" Computer name: " << ::GetComputerName()     << endl;
+    out << COMMENT_SYMBOL << L" User name: "     << ::GetUserName()         << endl; 
     out << endl;
 }
 
