@@ -38,7 +38,7 @@ import WrapNrOfTracks;
 import WrapActiveSigGen;
 import WrapEmphasized;
 import WrapScanImage;
-import WrapScanTime;
+//import WrapTimeStamp;
 import WrapSignalInfo;
 import WrapGlobalParameter;
 import WrapSetScanArea;
@@ -79,9 +79,9 @@ void NNetModelIO::Initialize(Observable * const pLockModelObservable)
     AddModelWrapper<WrapSignalInfo     >(L"SignalInfo");
     AddModelWrapper<WrapSignalData     >(L"SignalData");
     AddModelWrapper<WrapSetScanArea    >(L"SetScanArea");
-    AddModelWrapper<WrapScanTime       >(L"ScanTime");
     AddModelWrapper<WrapScanImage      >(L"ScanImage");
     AddModelWrapper<WrapSimulationTime >(L"SimulationTime");
+    //AddModelWrapper<WrapTimeStamp      >(L"TimeStamp");
 
     NobType::Apply2All
     (

@@ -28,6 +28,7 @@
     <ClCompile Include="Preferences.ixx" />
     <ClCompile Include="RedoCommand.ixx" />
     <ClCompile Include="StdStackCommand.ixx" />
+    <ClCompile Include="TimeStamp.ixx" />
     <ClCompile Include="UndoCommand.ixx" />
     <ClCompile Include="WrapInclude.cpp" />
     <ClCompile Include="Wrapper.ixx" />

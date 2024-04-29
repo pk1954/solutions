@@ -79,7 +79,7 @@
     <ClCompile Include="WrapColorLUT.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WrapScanTime.ixx">
+    <ClCompile Include="WrapTimeStamp.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
