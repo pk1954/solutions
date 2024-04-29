@@ -19,15 +19,15 @@ export class NNetEvent
 {
 public:
     NNetEvent()
-        : m_timeStamp(SimulationTime::Get())
+        : m_timestamp(SimulationTime::Get())
     {}
 
-    fMicroSecs GetTimeStamp() const { return m_timeStamp; }
+    fMicroSecs GetTimestamp() const { return m_timestamp; }
 
     virtual EventType Type() const = 0;
 
 private:
-    fMicroSecs m_timeStamp;
+    fMicroSecs m_timestamp;
 };
 
 export class StimulusEvent : public NNetEvent

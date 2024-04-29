@@ -11,20 +11,20 @@ export class SimulationTime
 public:
 	static void Set(fMicroSecs const newVal = 0._MicroSecs)
 	{
-		m_timeStamp = newVal;
+		m_timestamp = newVal;
 	}
 
 	static fMicroSecs Get()
 	{
-		return m_timeStamp;
+		return m_timestamp;
 	}
 
 	static void Tick(fMicroSecs const timeInc)
 	{
-		m_timeStamp += timeInc;
+		m_timestamp += timeInc;
 	}
 
 private:
 
-	inline static fMicroSecs m_timeStamp { 0._MicroSecs };
+	inline static fMicroSecs m_timestamp { 0._MicroSecs };
 };

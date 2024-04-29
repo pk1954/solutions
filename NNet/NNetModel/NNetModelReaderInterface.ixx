@@ -111,11 +111,12 @@ public:
 	optional<RasterPoint>  FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect         GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
 	time_t                 GetScanTime()                          const { return m_pModel->GetScanTime(); }
+	void                   Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
 	fMicroSecs             TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const
 	{
-		Nob const* const pNob{ GetConstNob(id) };
+		Nob const* const pNob { GetConstNob(id) };
 		return pNob && pNob->IsInputLine();
 	}
 

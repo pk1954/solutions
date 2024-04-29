@@ -108,5 +108,8 @@
     <ClCompile Include="XArray.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimestampList.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

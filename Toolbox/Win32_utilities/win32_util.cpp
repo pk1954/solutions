@@ -6,7 +6,6 @@ module;
 
 #include <cassert>
 #include <iomanip>
-#include <time.h>
 #include <string>
 #include <iostream>
 #include <Windows.h>

@@ -46,7 +46,7 @@ void EventViewer::PaintGraphics()
 		[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
 		{
 			SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(pStimEvent->GetId()) };
-			fMicroSecs      const  usStimulus { pStimEvent->GetTimeStamp() };
+			fMicroSecs      const  usStimulus { pStimEvent->GetTimestamp() };
 			fMicroSecs      const  usOffset   { usStimulus - usStartScan };
 			m_horzCoord.SetOffset(usOffset, false);
 			PaintVoltCurve(pSigGen);
@@ -91,7 +91,7 @@ void EventViewer::adjustVert(fPixel const fPixHeight)
 fMicroSecs EventViewer::scanTime(EventType const t) const
 {
 	fMicroSecs us { fMicroSecs::NULL_VAL() };
-	m_pNMWI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimeStamp(); });
+	m_pNMWI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimestamp(); });
 	assert(us.IsNotNull());
 	return us;
 }

@@ -54,8 +54,5 @@
     <ClCompile Include="WrapSimulationTime.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeStamp.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

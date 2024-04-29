@@ -21,6 +21,7 @@ import BoolType;
 import Vector2D;
 import ColorLUT;
 import DescriptionUI;
+import TimestampList;
 import :ParamType;
 import :ModelDescription;
 import :UPNobList;
@@ -139,7 +140,7 @@ public:
 	Raster            const & GetScanRaster     () const { return *m_upRaster.get(); }
 	ScanImageByte     const * GetScanImageC     () const { return m_upImage.get(); }
 	EventList         const & GetEventList      () const { return m_events; }
-	time_t                    GetScanTime       () const { return m_timeScan; }
+	time_t                    GetScanTime       () const { return m_timestamps.GetTimestamp(SCANTIME); }
 
 	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
 
@@ -174,9 +175,13 @@ public:
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void SetScanTime              (time_t const t)       { m_timeScan = t; }
-	
+	void SetScanTime              (time_t const t)       { m_timestamps.SetTimestamp(SCANTIME, t); }
+	void SetScanTimeNow           ()                     { m_timestamps.SetTimestampNow(SCANTIME); }
+	void Apply2AllTimestamps      (auto const& f)  const { m_timestamps.Apply2All(f); }
+
 private:
+	inline static const wstring SCANTIME { L"ScanTime" };
+
 	unsigned int printNobType(unsigned int, NobType::Value) const;
 	bool isConnectedToPipe(NobId const, NobId const) const;
 	bool isConnectedTo    (NobId const, NobId const) const;
@@ -188,7 +193,6 @@ private:
 	unique_ptr<NNetParameters> m_upParam;
 	unique_ptr<Raster>         m_upRaster;
 	unique_ptr<ScanImageByte>  m_upImage;
-	time_t                     m_timeScan;
 	SignalParameters           m_signalParams;
 	UPSensorList               m_sensorList;
 	UPMicroSensorList          m_microSensorList;
@@ -196,4 +200,5 @@ private:
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
 	EventList                  m_events;
+	TimestampList              m_timestamps;
 };

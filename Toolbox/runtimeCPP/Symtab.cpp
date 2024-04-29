@@ -103,7 +103,7 @@ wostream& operator<< (wostream& out, Symbol const& symbol)
 
 Symbol const & SymbolTable::GetSymbolFromName(wstring const & wstrKey)
 {
-    auto const iter = m_upSymbolTab->find(wstrKey);
+    auto const iter { m_upSymbolTab->find(wstrKey) };
 
     if (iter == m_upSymbolTab->end())
         ScriptErrorHandler::symbolError(wstrKey);
@@ -113,7 +113,7 @@ Symbol const & SymbolTable::GetSymbolFromName(wstring const & wstrKey)
 
 wstring const & SymbolTable::GetSymbolName(Symbol const & symbol)
 {
-    auto const iter = m_upReverseTab->find(symbol);
+    auto const iter { m_upReverseTab->find(symbol) };
 
     assert(iter != m_upReverseTab->end());
 

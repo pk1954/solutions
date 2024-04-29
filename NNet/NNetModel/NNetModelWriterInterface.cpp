@@ -55,10 +55,3 @@ void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })
 		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
-
-void NNetModelWriterInterface::SetScanTimeNow()
-{ 
-	auto   currentTime   = system_clock::now();
-	time_t currentTime_t = system_clock::to_time_t(currentTime);
-	SetScanTime(currentTime_t);
-}
