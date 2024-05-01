@@ -65,14 +65,14 @@ private:
 export class StatusBarRefreshRate : public BaseRefreshRate
 {
 public:
-StatusBarRefreshRate
-(
-	StatusBar * pStatusBar,
-	int         iPartInStatusBar
-)
-  : m_pStatusBar(pStatusBar),
-	m_iPartInStatusBar(iPartInStatusBar)
-{}
+	StatusBarRefreshRate
+	(
+		StatusBar * pStatusBar,
+		int         iPartInStatusBar
+	)
+	  : m_pStatusBar(pStatusBar),
+		m_iPartInStatusBar(iPartInStatusBar)
+	{}
 
 protected:
 	StatusBar * m_pStatusBar       { nullptr };

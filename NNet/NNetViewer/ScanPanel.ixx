@@ -6,12 +6,12 @@ module;
 
 #include <memory>
 
-export module NNetWin32:ScanPanel;
+export module ScanPanel;
 
 import BaseWindow;
 import NNetSignals;
 import NNetModel;
-import :NNetWindow;
+import NNetWin32;
 
 using std::unique_ptr;
 

@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -144,13 +144,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetViewer.cpp" />
-    <ClCompile Include="NNetViewerAppMenu.cpp" />
-    <ClCompile Include="NNetViewerAppMenu.ixx" />
-    <ClCompile Include="NNetViewerAppWindow.cpp" />
-    <ClCompile Include="NNetViewerAppWindow.ixx" />
+    <ClCompile Include="ScanViewerMenu.cpp" />
+    <ClCompile Include="ScanViewerMenu.ixx" />
+    <ClCompile Include="ScanViewerWindow.cpp" />
     <ClCompile Include="ScanPanel.ixx" />
-    <ClCompile Include="ScanViewer.ixx" />
+    <ClCompile Include="ScanViewerWindow.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NNetViewer.rc" />

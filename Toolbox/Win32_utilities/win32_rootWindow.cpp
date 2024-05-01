@@ -281,6 +281,9 @@ bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint 
 {
 	switch (UINT const uiCmdId { LOWORD(wParam) })
 	{
+	case 0:             // unclear origin
+		return true;
+
 	case IDM_WINDOW_ON:
 		SetWindowVisibility(tOnOffAuto::on);
 		break;

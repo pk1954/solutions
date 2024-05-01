@@ -90,8 +90,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
 };
 
-NNetAppWindow::~NNetAppWindow() = default;
-
 void NNetAppWindow::setModelInterface()
 {
 	NNetCommand       ::SetModelInterface(&m_nmwi);
@@ -424,9 +422,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	{
 		switch (wmId)
 		{
-		case 0:             // unclear origin
-			return true;
-
 		case IDM_ABOUT:
 			m_aboutBox.Show(m_mainNNetWindow.GetWindowHandle());
 			return true;

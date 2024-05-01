@@ -86,22 +86,25 @@ void NNetWindow::DrawArrowsInRect
 
 SignalId NNetWindow::FindSignalHandle(MicroMeterPnt const& umPos) const
 {
-	fPixelPoint const fPixPos { GetCoordC().Transform2fPixelPos(umPos) };
-	SignalId          sigIdResult;
-	m_pNMRI->GetMonitorDataC().Apply2AllSignalIdsC
-	(
-		[this, &fPixPos, &sigIdResult](SignalId const& sigIdRun)
-		{
-			PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(sigIdRun, tHorzDir::right) };
-			if (pixPosScreenSignal.IsNotNull())
+	SignalId sigIdResult;
+	if (m_pMonitorWindow)
+	{
+		fPixelPoint const fPixPos { GetCoordC().Transform2fPixelPos(umPos) };
+		m_pNMRI->GetMonitorDataC().Apply2AllSignalIdsC
+		(
+			[this, &fPixPos, &sigIdResult](SignalId const& sigIdRun)
 			{
-				PixelPoint  const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
-				fPixelPoint const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
-				if (Distance(fPixPosSignal, fPixPos) <= HRADIUS)
-					sigIdResult = sigIdRun;
+				PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(sigIdRun, tHorzDir::right) };
+				if (pixPosScreenSignal.IsNotNull())
+				{
+					PixelPoint  const pixPosSignal  { Screen2Client(pixPosScreenSignal) };
+					fPixelPoint const fPixPosSignal { Convert2fPixelPoint(pixPosSignal) };
+					if (Distance(fPixPosSignal, fPixPos) <= HRADIUS)
+						sigIdResult = sigIdRun;
+				}
 			}
-		}
-	);
+		);
+	}
 	return sigIdResult;
 }
 
@@ -140,6 +143,9 @@ void NNetWindow::drawSignalCable
 	ID2D1SolidColorBrush& brush
 ) const
 {
+	if (!m_pMonitorWindow)
+		return;
+
 	PixelPoint const pixPosScreenSignal { m_pMonitorWindow->GetTrackPosScreen(signalId, tHorzDir::right) };
 	if (pixPosScreenSignal.IsNull())
 		return;

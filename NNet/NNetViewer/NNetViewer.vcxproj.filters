@@ -23,25 +23,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NNetViewer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetViewerAppWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScanPanel.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScanViewer.ixx">
+    <ClCompile Include="ScanViewerWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetViewerAppWindow.cpp">
+    <ClCompile Include="ScanViewerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetViewerAppMenu.cpp">
+    <ClCompile Include="ScanViewerMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetViewerAppMenu.ixx">
+    <ClCompile Include="ScanViewerMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

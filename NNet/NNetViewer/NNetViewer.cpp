@@ -23,7 +23,7 @@ import MessagePump;
 import Script;
 import Scanner;
 import NNetWin32;
-import NNetViewerAppWindow;
+import ScanViewerWindow;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -33,7 +33,7 @@ using std::endl;
 using std::setw;
 using std::left;
 
-unique_ptr<NNetViewerAppWindow> upApp;
+unique_ptr<ScanViewerWindow> upApp;
 
 int APIENTRY wWinMain
 (
@@ -66,7 +66,7 @@ int APIENTRY wWinMain
 	SwitchWcoutTo(L"viewer.out");
 	PrintAppStartProtocol(PRODUCT_NAME);
 
-	upApp = make_unique<NNetViewerAppWindow>(PRODUCT_NAME);
+	upApp = make_unique<ScanViewerWindow>(PRODUCT_NAME);
 
 	MessagePump  pump;
 	upApp->Start(pump);

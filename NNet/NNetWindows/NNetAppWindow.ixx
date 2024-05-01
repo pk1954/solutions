@@ -59,14 +59,13 @@ export class NNetAppWindow : public BaseWindow
 {
 public:
 	NNetAppWindow(wstring const &);
-	~NNetAppWindow() override;
 
 	virtual void Start(MessagePump&);
 	virtual void Stop();
 
 	void DoGameStuff() { m_compute.DoGameStuff(); }
 
-	NNetAppWindow(NNetAppWindow const&) = delete;  // noncopyable class 
+	NNetAppWindow            (NNetAppWindow const&) = delete;  // noncopyable class 
 	NNetAppWindow& operator= (NNetAppWindow const&) = delete;  // noncopyable class 
 
 private:
