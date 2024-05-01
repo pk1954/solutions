@@ -238,7 +238,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			return;
 		if (m_pNMRI->ModelLocked())    // no edit operations allowed
 			return;
-		if (m_pScanMatrix->SetScanAreaHandle(GetDrawContextC(), umCrsrPos))
+		if (GetScanMatrix().SetScanAreaHandle(GetDrawContextC(), umCrsrPos))
 			return;
 		if (setHighlightedNob(umCrsrPos))
 			return;
@@ -282,9 +282,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		MoveSelectionCommand::Push(m_umDelta);
 	}
-	else if (m_pScanMatrix->GetHandleSelected().has_value())    // manipulate selection area
+	else if (GetScanMatrixC().GetHandleSelected().has_value())    // manipulate selection area
 	{
-		SetScanAreaCmd::Push(*m_pScanMatrix->GetHandleSelected(), m_umDelta);
+		SetScanAreaCmd::Push(GetScanMatrixC().GetHandleSelected().value(), m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
@@ -499,13 +499,13 @@ void MainWindow::PaintGraphics()
 	{
 		if (NNetPreferences::ModelFront())
 		{
-			m_pScanMatrix->DrawScanArea(m_context);
+			GetScanMatrix().DrawScanArea(m_context);
 			drawModel(m_context );
 		}
 		else
 		{
 			drawModel(m_context);
-			m_pScanMatrix->DrawScanArea(m_context);
+			GetScanMatrix().DrawScanArea(m_context);
 		}
 	}
 	else

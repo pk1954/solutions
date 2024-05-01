@@ -48,6 +48,7 @@ public:
     RasterPoint Size  ()                        const { return m_scanPixels.Size(); }
     RasterIndex Width ()                        const { return m_scanPixels.Width(); }
     RasterIndex Height()                        const { return m_scanPixels.Height(); }
+    float       AspectRatio()                   const { return m_scanPixels.AspectRatio(); }
     bool        IsValid(RasterPoint const& pnt) const { return m_scanPixels.IsValid(pnt); }
 
     ScanPixel const &GetScanPixel(RasterPoint const&) const;
@@ -71,7 +72,7 @@ public:
         m_scanPixels.Apply2AllPixelsC(func);
     }
 
-    optional<CardPoint> GetHandleSelected() { return m_scanAreaHandleSelected; }
+    optional<CardPoint> GetHandleSelected() const { return m_scanAreaHandleSelected; }
 
 private:
     void       add2list(Pipe const&);

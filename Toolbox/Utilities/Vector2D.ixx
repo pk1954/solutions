@@ -52,10 +52,11 @@ public:
         init(rpSize, initVal);
     }
 
-    RasterPoint Size()       const { return m_size; }
-    RasterIndex Width ()     const { return m_size.m_x; }
-    RasterIndex Height()     const { return m_size.m_y; }
-    size_t      NrOfPoints() const { return Width() * Height(); }
+    RasterPoint Size()        const { return m_size; }
+    RasterIndex Width ()      const { return m_size.m_x; }
+    RasterIndex Height()      const { return m_size.m_y; }
+    size_t      NrOfPoints()  const { return Width() * Height(); }
+    float       AspectRatio() const { return static_cast<float>(Height()) / static_cast<float>(Width()); }
 
     void Resize(RasterPoint const& rpSize)
     {

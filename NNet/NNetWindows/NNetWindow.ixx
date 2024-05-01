@@ -48,6 +48,8 @@ public:
 
 	MicroMeterRect GetViewRect() const;
 
+	ScanMatrix            const & GetScanMatrixC()  const { return *m_pScanMatrix; }
+	ScanMatrix                  & GetScanMatrix()         { return *m_pScanMatrix; }
 	DrawContext           const & GetDrawContextC() const { return m_context; }
 	DrawContext                 & GetDrawContext()        { return m_context; }
 	Uniform2D<MicroMeter> const & GetCoordC()       const { return m_context.GetCoordC(); }
@@ -110,7 +112,6 @@ protected:
 
 	NNetModelReaderInterface const* m_pNMRI          { nullptr };
 	MonitorWindow            const* m_pMonitorWindow { nullptr };
-	ScanMatrix                    * m_pScanMatrix    { nullptr };
 
 	PixelPoint GetPtLast() const { return m_ptLast; }
 
@@ -124,8 +125,9 @@ private:
 	inline static fPixel const HRADIUS { 20._fPixel };
 	inline static fPixel const VRADIUS { 10._fPixel };
 
-	NNetController * m_pController     { nullptr };
-	PixelPoint       m_ptLast          { PP_NULL };	// Last cursor position during selection 
+	ScanMatrix     * m_pScanMatrix { nullptr };
+	NNetController * m_pController { nullptr };
+	PixelPoint       m_ptLast      { PP_NULL };	// Last cursor position during selection 
 
 	void drawSignalCable(SignalId const&, MicroMeterPnt  const&, ID2D1SolidColorBrush&) const;
 };

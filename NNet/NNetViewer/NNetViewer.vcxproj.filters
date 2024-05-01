@@ -38,6 +38,9 @@
     <ClCompile Include="ScanViewerMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScanPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NNetViewer.rc">

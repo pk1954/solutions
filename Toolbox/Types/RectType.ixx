@@ -121,6 +121,8 @@ public:
 
 	SIZE_TYPE GetSize() const { return SIZE_TYPE(GetWidth(), GetHeight()); }
 
+	float     AspectRatio  () const { return GetHeight() / GetWidth(); }
+
 	POS_TYPE  GetStartPoint() const { return POS_TYPE(GetLeft (), GetTop   ()); }
 	POS_TYPE  GetEndPoint  () const { return POS_TYPE(GetRight(), GetBottom()); }
 	POS_TYPE  GetCenter    () const { return (GetStartPoint() + GetEndPoint()) / 2; }

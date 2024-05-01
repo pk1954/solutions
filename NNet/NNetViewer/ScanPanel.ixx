@@ -19,6 +19,8 @@ export class ScanPanel : public BaseWindow
 {
 public:
 private:
-    unique_ptr<EventViewer> upEventViewer;
-    unique_ptr<NNetWindow>  upScanWindow;
+	bool OnSize(PIXEL const, PIXEL const) final;
+
+    unique_ptr<EventViewer> m_upEventViewer;
+    unique_ptr<NNetWindow>  m_upScanWindow;
 };

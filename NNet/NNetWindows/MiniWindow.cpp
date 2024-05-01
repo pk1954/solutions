@@ -108,6 +108,6 @@ void MiniWindow::PaintGraphics()
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		context.DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		if (NNetPreferences::ScanAreaVisible())
-			m_pScanMatrix->DrawScanAreaBackground(context);
+			GetScanMatrixC().DrawScanAreaBackground(context);
 	}
 }
