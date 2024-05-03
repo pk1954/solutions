@@ -1,4 +1,4 @@
-// ScanViewerWindow.ixx
+// NNetViewerWindow.ixx
 //
 // NNetViewer
 
@@ -7,16 +7,16 @@ module;
 #include <string>
 #include <Windows.h>
 
-module ScanViewerWindow;
+module NNetViewerWindow;
 
 import Win32_Util_Resource;
 import IoUtil;
 
 using std::wstring;
 
-ScanViewerWindow::~ScanViewerWindow() = default;
+NNetViewerWindow::~NNetViewerWindow() = default;
 
-void ScanViewerWindow::Start()
+void NNetViewerWindow::Start()
 {
 	HWND hwnd = StartBaseWindow
 	(
@@ -32,12 +32,12 @@ void ScanViewerWindow::Start()
 	Show(true);
 }
 
-bool ScanViewerWindow::OnSize(PIXEL const width, PIXEL const height)
+bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	return true;
 }
 
-bool ScanViewerWindow::UserProc
+bool NNetViewerWindow::UserProc
 (
 	UINT   const message, 
 	WPARAM const wParam, 
@@ -54,20 +54,20 @@ bool ScanViewerWindow::UserProc
 	return BaseWindow::UserProc(message, wParam, lParam);
 }
 
-void ScanViewerWindow::OnClose()
+void NNetViewerWindow::OnClose()
 {
 	Stop();
 }
 
-void ScanViewerWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)
+void NNetViewerWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)
 {
 }
 
-void ScanViewerWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
+void NNetViewerWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
 }
 
-bool ScanViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
+bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);
 	

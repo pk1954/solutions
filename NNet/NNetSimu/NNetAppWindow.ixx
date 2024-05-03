@@ -9,7 +9,7 @@ module;
 #include <iostream>
 #include <Windows.h>
 
-export module NNetWin32:NNetAppWindow;
+export module NNetAppWindow;
 
 import AboutBox;
 import Observable;
@@ -37,19 +37,7 @@ import SlowMotionControl;
 import SlowMotionDisplay;
 import StatusBarDisplayFunctor;
 import TimeDisplay;
-import :AppTitle;
-import :NNetController;
-import :DescriptionWindow;
-import :CrsrWindow;
-import :UndoRedoMenu;
-import :Compute;
-import :SimulationControl;
-import :PerformanceWindow;
-import :ParameterDialog;
-import :MiniWindow;
-import :NNetAppMenu;
-import :MainWindow;
-import :NNetSimuRunning;
+import NNetWin32;
 
 using std::wstring;
 using std::wofstream;

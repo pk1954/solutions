@@ -1,6 +1,6 @@
-// ScanViewerMenu.cpp
+// NNetViewerMenu.cpp
 //
-// NNetWindows
+// NNetViewer
 
 module;
 
@@ -9,18 +9,18 @@ module;
 #include <Windows.h>
 #include "Resource.h"
 
-module ScanViewerMenu;
+module NNetViewerMenu;
 
 import Win32_Util;
 
 using std::make_unique;
 
-ScanViewerMenu::ScanViewerMenu()
+NNetViewerMenu::NNetViewerMenu()
 { }
 
-ScanViewerMenu::~ScanViewerMenu() = default;
+NNetViewerMenu::~NNetViewerMenu() = default;
 
-void ScanViewerMenu::Start(HWND const hwndScanViewerWindow) 
+void NNetViewerMenu::Start(HWND const hwndScanViewerWindow) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
 
@@ -52,6 +52,6 @@ void ScanViewerMenu::Start(HWND const hwndScanViewerWindow)
     assert(bRes);
 }
 
-void ScanViewerMenu::Notify(bool const bImmediately)
+void NNetViewerMenu::Notify(bool const bImmediately)
 {
 }

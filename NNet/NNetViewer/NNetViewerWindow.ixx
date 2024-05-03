@@ -1,4 +1,4 @@
-// ScanViewerWindow.ixx
+// NNetViewerWindow.ixx
 //
 // NNetViewer
 
@@ -11,12 +11,12 @@ module;
 #include <memory>
 #include <vector>
 
-export module ScanViewerWindow;
+export module NNetViewerWindow;
 
 import BaseWindow;
 import NNetModel;
 import NNetModelIO;
-import ScanViewerMenu;
+import NNetViewerMenu;
 import StatusBar;
 import StatusBarDisplayFunctor;
 import ScanPanel;
@@ -26,11 +26,11 @@ using std::wofstream;
 using std::unique_ptr;
 using std::vector;
 
-export class ScanViewerWindow : public BaseWindow
+export class NNetViewerWindow : public BaseWindow
 {
 public:
-	ScanViewerWindow(wstring const &);
-	~ScanViewerWindow() override;
+	NNetViewerWindow(wstring const &);
+	~NNetViewerWindow() override;
 
 	void Start();
 
@@ -39,8 +39,8 @@ public:
 
     }
 
-	ScanViewerWindow            (ScanViewerWindow const&) = delete;  // noncopyable class 
-	ScanViewerWindow& operator= (ScanViewerWindow const&) = delete;  // noncopyable class 
+	NNetViewerWindow            (NNetViewerWindow const&) = delete;  // noncopyable class 
+	NNetViewerWindow& operator= (NNetViewerWindow const&) = delete;  // noncopyable class 
 
 private:
 
@@ -60,7 +60,7 @@ private:
 	NNetModelReaderInterface    * m_pNMRI       { nullptr };
 	HWND                          m_hwndApp     { nullptr };
 	NNetModelIO                   m_modelIO;
-	ScanViewerMenu                m_scanViewerMenu;
+	NNetViewerMenu                m_scanViewerMenu;
 	StatusBar                     m_statusBar;
 	StatusBarDisplayFunctor       m_statusBarDispFunctor;
     vector<unique_ptr<ScanPanel>> m_panelList;

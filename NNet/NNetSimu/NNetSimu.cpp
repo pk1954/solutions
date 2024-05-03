@@ -23,7 +23,8 @@ import MessagePump;
 import Script;
 import Scanner;
 import Accelerators;
-import NNetWin32;
+import NNetAppWindow;
+import ScanViewer;
 
 using std::make_unique;
 using std::unique_ptr;

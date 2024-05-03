@@ -1,6 +1,6 @@
-// ScanViewerMenu.ixx
+// NNetViewerMenu.ixx
 //
-// NNetWindows
+// NNetViewer
 
 module;
 
@@ -8,18 +8,18 @@ module;
 #include <memory>
 #include <Windows.h>
 
-export module ScanViewerMenu;
+export module NNetViewerMenu;
 
 import ObserverInterface;
 
 using std::wstring;
 using std::unique_ptr;
 
-export class ScanViewerMenu : public ObserverInterface
+export class NNetViewerMenu : public ObserverInterface
 {
 public:
-	ScanViewerMenu();
-	~ScanViewerMenu() final;
+	NNetViewerMenu();
+	~NNetViewerMenu() final;
 
 	void Start(HWND const);
 	void Notify(bool const) final;

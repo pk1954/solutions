@@ -14,7 +14,7 @@ module;
 #include <source_location>
 #include "Resource.h"
 
-module NNetWin32:NNetAppWindow;
+module NNetAppWindow;
 
 import Win32_Util_Resource;
 import Types;
@@ -41,11 +41,7 @@ import NNetCommands;
 import NNetSignals;
 import NNetPreferences;
 import StatusBar;
-import :PerformanceWindow;
-import :UndoRedoMenu;
-import :NNetInputOutputUI;
-import :NNetWindow;
-import :NNetSimuRunning;
+import NNetWin32;
 
 using std::endl;
 using std::wcout;
