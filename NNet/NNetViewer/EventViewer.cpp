@@ -1,13 +1,13 @@
 // EventViewer.cpp
 //
-// NNetSignals
+// NNetViewer
 
 module;
 
 #include <cassert>
 #include <Windows.h>
 
-module NNetSignals:EventViewer;
+module EventViewer;
 
 import Types;
 import PixFpDimension;

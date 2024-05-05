@@ -33,7 +33,7 @@ import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
 import NNetPreferences;
-import :NNetController;
+import :NNetCommandHandler;
 import :MainScales;
 
 using std::bit_cast;
@@ -52,7 +52,7 @@ void MainWindow::Start
 (
 	HWND          const   hwndApp,
 	bool          const   bShowRefreshRateDialog,
-	NNetController      & controller,
+	NNetCommandHandler  & controller,
 	Observable          & cursorObservable,
 	Observable          & coordObservable,
 	Observable          & pStaticModelObservable,
@@ -465,20 +465,10 @@ void MainWindow::centerAndZoomRect
 	float              const fRatioFactor 
 )
 {
-	MicroMeterRect        umRect { m_pNMRI->GetUPNobsC().CalcEnclosingRect(mode) };
 	Uniform2D<MicroMeter> coordTarget;
-	coordTarget.SetPixelSize  // do not change order!
-	(
-		GetCoord().ComputeZoom(umRect.ScaleRect(NEURON_RADIUS), GetClRectSize(), fRatioFactor),
-		false // do not notify
-	);
-	coordTarget.SetPixelOffset // do not change order! 
-	(
-		coordTarget.Transform2fPixelSize(umRect.GetCenter()) -  // SetPixelSize result is used here  
-		Convert2fPixelPoint(GetClRectCenter()), 
-		false // do not notify
-	);
-	coordTarget.NotifyAll(true);
+	MicroMeterRect        umRect { m_pNMRI->GetUPNobsC().CalcEnclosingRect(mode) };
+	umRect.ScaleRect(NEURON_RADIUS);
+	CenterAndZoomRect(coordTarget, umRect, fRatioFactor);
 	CoordAnimationCmd::Push(GetCoord(), coordTarget);
 }
 

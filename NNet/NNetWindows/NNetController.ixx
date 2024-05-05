@@ -20,13 +20,14 @@ import CommandStack;
 import NNetModel;
 import NNetSignals;
 import NNetPreferences;
+import :NNetCommandHandler;
 import :Compute;
 
 using std::wostream;
 using std::wstring;
 using std::wcout;
 
-export class NNetController
+export class NNetController: public NNetCommandHandler
 {
 public:
 	NNetController() = default;
@@ -36,7 +37,7 @@ public:
 	virtual ~NNetController();
 
 	void SetModelInterface(NNetModelReaderInterface * const);
-	bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL);
+	bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL) final;
 
 	static wstring AskModelFile(enum class tFileMode const);
 

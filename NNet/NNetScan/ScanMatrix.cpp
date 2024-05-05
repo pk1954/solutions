@@ -181,7 +181,7 @@ void ScanMatrix::drawScanRaster(DrawContext const& context)
 	}
 }
 
-void ScanMatrix::drawScanImage(DrawContext const& context) const
+void ScanMatrix::DrawScanImage(DrawContext const& context) const
 {
 	unique_ptr<ScanImageByte> upFiltered;
 	ScanImageByte     const * pImage { m_pNMRI->GetScanImageC() };
@@ -306,7 +306,7 @@ void ScanMatrix::DrawScanArea(DrawContext const& context)
 {
 	if (m_pNMRI->ModelLocked())
 	{
-		drawScanImage(context);
+		DrawScanImage(context);
 	}
 	else
 	{

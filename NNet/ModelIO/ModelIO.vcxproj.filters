@@ -58,12 +58,6 @@
     <ClCompile Include="NNetModelIO.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetPreferences.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetPreferences.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapSetScales.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +74,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WrapTimestamp.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetPreferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NNetPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

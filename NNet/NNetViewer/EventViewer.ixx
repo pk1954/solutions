@@ -1,17 +1,18 @@
 // EventViewer.ixx
 //
-// NNetSignals
+// NNetViewer
 
 module;
 
 #include <Windows.h>
 #include <string>
 
-export module NNetSignals:EventViewer;
+export module EventViewer;
 
 import Types;
 import PixFpDimension;
-import :NNetTimeGraph;
+import NNetModel;
+import NNetSignals;
 
 using std::wstring;
 

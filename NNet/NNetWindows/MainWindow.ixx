@@ -20,6 +20,7 @@ import NNetModel;
 import NNetSignals;
 import NNetCommands;
 import NNetPreferences;
+import :NNetCommandHandler;
 import :SelectionMenu;
 import :NNetWindow;
 import :MainScales;
@@ -36,7 +37,7 @@ public:
 	(
 		HWND const,
 		bool const,
-		NNetController&,
+		NNetCommandHandler&,
 		Observable&,
 		Observable&,
 		Observable&,
@@ -108,7 +109,6 @@ private:
 	bool       connectionAllowed();
 	void       select(NobId const);
 	void       drawScanRaster();
-	void       drawScanImage(Vector2D<mV> const&) const;
 	void       drawScanAreaHandles();
 	void       drawModel(DrawContext const&);
 	SigGenId   getSigGenId(LPARAM const);

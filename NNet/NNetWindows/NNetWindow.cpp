@@ -27,7 +27,7 @@ void NNetWindow::Start
 	HWND            const hwndParent, 
 	DWORD           const dwStyle,
 	bool            const bShowRefreshRateDialog,
-	NNetController      & controller,
+	NNetCommandHandler  & controller,
 	MonitorWindow const * pMonitorWindow,
 	ScanMatrix    * const pScanMatrix
 )
@@ -40,7 +40,7 @@ void NNetWindow::Start
 	);
 	m_context.Start(m_upGraphics.get());
 	SetDefaultBackgroundColor();
-	m_pController          = & controller;
+	m_pCmdHandler          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
 	m_pScanMatrix          = pScanMatrix;
 	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
@@ -51,7 +51,7 @@ void NNetWindow::Start
 NNetWindow::~NNetWindow()
 {
 	m_pNMRI       = nullptr;
-	m_pController = nullptr;
+	m_pCmdHandler = nullptr;
 }
 
 void NNetWindow::SetDefaultBackgroundColor()
@@ -185,7 +185,7 @@ bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)
 bool NNetWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
-	if (m_pController->HandleCommand(LOWORD(wParam), lParam, umPoint))
+	if (m_pCmdHandler->HandleCommand(LOWORD(wParam), lParam, umPoint))
 		return true;
 
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);

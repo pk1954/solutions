@@ -4,18 +4,51 @@
 
 module;
 
+#include <memory>
 #include <cassert>
 #include <algorithm>
+#include <Windows.h>
 
 module ScanPanel;
 
 import Types;
 import Raster;
+import EventViewer;
 
 using std::min;
+using std::make_unique;
 
 static float const EVENT_VIEWER_HEIGHT { 0.1f };
 static float const SCAN_WINDOW_HEIGHT  { 1.0f - EVENT_VIEWER_HEIGHT };
+
+ScanPanel::ScanPanel
+(
+	HWND                      const hwndParent,
+	NNetModelWriterInterface* const pNMWI
+)
+{
+	HWND hwnd = StartBaseWindow
+	(
+		hwndParent,
+		CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
+		L"ClassScanPanel",
+		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE,
+		nullptr,
+		nullptr
+	);
+	m_upEventViewer = make_unique<EventViewer>(hwnd);
+    m_upEventViewer->SetModelInterface(pNMWI);
+    //m_upScanWindow = make_unique<NNetWindow>();
+ //   m_upScanWindow->Start   
+	//(
+	//	hwnd,
+	//	WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
+	//	false, // no refreshRateDialog,
+	//	nullptr,
+	//	nullptr,
+	//	pScanMatrix
+	//);
+}
 
 bool ScanPanel::OnSize(PIXEL const width, PIXEL const height)
 {

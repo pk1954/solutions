@@ -127,7 +127,5 @@ private:
 	UndoRedoMenu             m_undoRedoMenu;
 	WinSound                 m_sound;
 
-	unique_ptr<EventViewer>  m_upEventViewer;
-
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

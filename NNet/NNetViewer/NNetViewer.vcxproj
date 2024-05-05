@@ -144,6 +144,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EventViewer.cpp" />
+    <ClCompile Include="EventViewer.ixx" />
     <ClCompile Include="ScanPanel.cpp" />
     <ClCompile Include="NNetViewerMenu.cpp" />
     <ClCompile Include="NNetViewerMenu.ixx" />

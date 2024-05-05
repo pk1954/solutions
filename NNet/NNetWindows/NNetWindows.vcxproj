@@ -578,6 +578,7 @@
     <ClCompile Include="Compute.cpp" />
     <ClCompile Include="Compute.ixx" />
     <ClCompile Include="MainScales.ixx" />
+    <ClCompile Include="NNetCommandHandler.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetSimuRunning.ixx" />
     <ClCompile Include="NNetWin32.ixx" />

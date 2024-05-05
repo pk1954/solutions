@@ -66,12 +66,6 @@
     <ClCompile Include="NNetSignals.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EventViewer.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EventViewer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NNetTimeGraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -12,12 +12,15 @@ import BaseWindow;
 import NNetSignals;
 import NNetModel;
 import NNetWin32;
+import EventViewer;
 
 using std::unique_ptr;
 
 export class ScanPanel : public BaseWindow
 {
 public:
+    ScanPanel(HWND const, NNetModelWriterInterface* const);
+
 private:
 	bool OnSize(PIXEL const, PIXEL const) final;
 

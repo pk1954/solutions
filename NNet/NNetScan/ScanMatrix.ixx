@@ -80,7 +80,7 @@ private:
     ColorLUT   sensorDensityLUT() const;
     MicroMeter getScanAreaHandleSize(Uniform2D<MicroMeter> const &);
     void       drawSensorDensityMap(DrawContext const&);
-    void       drawScanImage(DrawContext const&) const;
+    void       DrawScanImage(DrawContext const&) const;
     void       drawScanAreaHandles(DrawContext const&);
     void       drawScanRaster(DrawContext const&);
 

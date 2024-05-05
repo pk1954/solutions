@@ -18,9 +18,11 @@ import DrawContext;
 import Uniform2D;
 import D2D_DrawContext;
 import GraphicsWindow;
+import ScanMatrix;
 import NNetModel;
+import NNetSignals;
 import Signals;
-import :NNetController;
+import :NNetCommandHandler;
 
 using std::unique_ptr;
 using std::optional;
@@ -37,7 +39,7 @@ public:
 		HWND   const,
 		DWORD  const,
 		bool   const,
-		NNetController &,
+		NNetCommandHandler  &,
 		MonitorWindow const *,
 		ScanMatrix *
 	);
@@ -55,6 +57,29 @@ public:
 	Uniform2D<MicroMeter> const & GetCoordC()       const { return m_context.GetCoordC(); }
 	Uniform2D<MicroMeter>       & GetCoord()              { return m_context.GetCoord(); }
 	MicroMeter                    PixelSize()       const { return m_context.GetPixelSize(); }
+
+	void CenterAndZoomRect
+	(
+		Uniform2D<MicroMeter> &coordTarget,
+		MicroMeterRect   const umRect,
+		float            const fRatioFactor 
+	)
+	{
+		MicroMeter const umZoomFactor 
+		{ 
+			coordTarget.ComputeZoom(umRect, GetClRectSize(), fRatioFactor) 
+		};
+		coordTarget.SetPixelSize(umZoomFactor, false);    // do not change order!
+		
+		fPixelPoint const fPixOffset   
+		{ 
+			coordTarget.Transform2fPixelSize(umRect.GetCenter())   // SetPixelSize result is used here
+			- Convert2fPixelPoint(GetClRectCenter()) 
+		}; 
+		coordTarget.SetPixelOffset(fPixOffset, false);  // do not change order! 
+
+		coordTarget.NotifyAll(true);
+	}
 
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
 
@@ -125,9 +150,9 @@ private:
 	inline static fPixel const HRADIUS { 20._fPixel };
 	inline static fPixel const VRADIUS { 10._fPixel };
 
-	ScanMatrix     * m_pScanMatrix { nullptr };
-	NNetController * m_pController { nullptr };
-	PixelPoint       m_ptLast      { PP_NULL };	// Last cursor position during selection 
+	ScanMatrix         * m_pScanMatrix { nullptr };
+	NNetCommandHandler * m_pCmdHandler { nullptr };
+	PixelPoint           m_ptLast      { PP_NULL };	// Last cursor position during selection 
 
 	void drawSignalCable(SignalId const&, MicroMeterPnt  const&, ID2D1SolidColorBrush&) const;
 };

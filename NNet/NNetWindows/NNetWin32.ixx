@@ -16,6 +16,7 @@ export import :MainWindow;
 export import :MainScales;
 export import :MiniWindow;
 export import :NNetAppMenu;
+export import :NNetCommandHandler;
 export import :NNetController;
 export import :NNetInputOutputUI;
 export import :NNetSimuRunning;
