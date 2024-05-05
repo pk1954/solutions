@@ -17,8 +17,9 @@ import HiResTimer;
 import Types;
 import DrawContext;
 import NNetModel;
+import NNetPreferences;
 import :MainWindow;
-import :NNetController;
+import :NNetCommandHandler;
 import :MainWindow;
 import :NNetWindow;
 
@@ -27,10 +28,10 @@ using std::endl;
 
 void MiniWindow::Start
 (
-	HWND         const hwndParent, 
-	bool         const bShowRefreshRateDialog,
-	NNetController   & controller,
-	ScanMatrix * const pScanMatrix
+	HWND         const  hwndParent, 
+	bool         const  bShowRefreshRateDialog,
+	NNetCommandHandler &controller,
+	ScanMatrix * const  pScanMatrix
 )
 {
 	NNetWindow::Start

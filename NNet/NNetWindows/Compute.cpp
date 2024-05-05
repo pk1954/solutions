@@ -21,7 +21,6 @@ import FatalError;
 import PerfCounter;
 import SimulationTime;
 import NNetModel;
-import NNetPreferences;
 import SaveCast;
 
 using namespace std::chrono;

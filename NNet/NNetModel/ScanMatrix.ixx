@@ -9,18 +9,17 @@ module;
 #include <optional>
 #include <Windows.h>
 
-export module ScanMatrix;
+export module NNetModel:ScanMatrix;
 
 import Types;
 import ObserverInterface;
 import SaveCast;
-import ScanPixel;
-import NNetModel;
 import Vector2D;
 import Uniform2D;
 import ColorLUT;
 import DrawContext;
-import NNetPreferences;
+import :ScanPixel;
+import :NNetModelReaderInterface;
 
 export import Raster;
 
@@ -41,7 +40,7 @@ public:
     mV   Scan(RasterPoint const&);
     bool SetScanAreaHandle(DrawContext const&, MicroMeterPnt const&);
     void DrawScanAreaBackground(DrawContext const&) const;
-    void DrawScanArea(DrawContext const&);
+    void DrawScanArea(DrawContext const&, ColorLUT const&, bool const);
 
     void Notify(bool const) final { m_bDirty = true; }
 
@@ -80,7 +79,7 @@ private:
     ColorLUT   sensorDensityLUT() const;
     MicroMeter getScanAreaHandleSize(Uniform2D<MicroMeter> const &);
     void       drawSensorDensityMap(DrawContext const&);
-    void       DrawScanImage(DrawContext const&) const;
+    void       drawScanImage(DrawContext const&, ColorLUT const&, bool const) const;
     void       drawScanAreaHandles(DrawContext const&);
     void       drawScanRaster(DrawContext const&);
 

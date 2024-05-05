@@ -79,6 +79,9 @@
     <ClCompile Include="PipeList.ixx" />
     <ClCompile Include="PosNob.ixx" />
     <ClCompile Include="ScanDataPoint.ixx" />
+    <ClCompile Include="ScanMatrix.cpp" />
+    <ClCompile Include="ScanMatrix.ixx" />
+    <ClCompile Include="ScanPixel.ixx" />
     <ClCompile Include="Sensor.cpp" />
     <ClCompile Include="Sensor.ixx" />
     <ClCompile Include="SensorId.ixx" />

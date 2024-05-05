@@ -16,7 +16,6 @@ import Types;
 import TextBuffer;
 import TextWindow;
 import NNetModel;
-import ScanMatrix;
 import :MainWindow;
 
 using std::wostringstream;

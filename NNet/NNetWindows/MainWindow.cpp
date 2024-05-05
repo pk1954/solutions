@@ -489,13 +489,13 @@ void MainWindow::PaintGraphics()
 	{
 		if (NNetPreferences::ModelFront())
 		{
-			GetScanMatrix().DrawScanArea(m_context);
+			GetScanMatrix().DrawScanArea(m_context, NNetPreferences::m_colorLutScan, NNetPreferences::ApplyFilter());
 			drawModel(m_context );
 		}
 		else
 		{
 			drawModel(m_context);
-			GetScanMatrix().DrawScanArea(m_context);
+			GetScanMatrix().DrawScanArea(m_context, NNetPreferences::m_colorLutScan, NNetPreferences::ApplyFilter());
 		}
 	}
 	else

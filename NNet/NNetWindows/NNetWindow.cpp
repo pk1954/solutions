@@ -16,7 +16,7 @@ import Types;
 import Direct2D;
 import Win32_Sound;
 import NNetModel;
-import :NNetController;
+import :NNetCommandHandler;
 
 using std::function;
 

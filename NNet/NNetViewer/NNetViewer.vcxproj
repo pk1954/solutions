@@ -173,9 +173,6 @@
     <ProjectReference Include="..\NNetModel\NNetModel.vcxproj">
       <Project>{93dedccb-8be5-48af-8e14-da2a19870565}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\NNetScan\NNetScan.vcxproj">
-      <Project>{c96207f8-3237-4301-9183-641fcba2c83d}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\NNetSignals\NNetSignals.vcxproj">
       <Project>{552a4922-9660-4144-9220-7f0d4e95a97d}</Project>
     </ProjectReference>

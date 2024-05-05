@@ -6,11 +6,11 @@ module;
 
 #include <vector>
 
-export module ScanPixel;
+export module NNetModel:ScanPixel;
 
 import Types;
 import Raster;
-import NNetModel;
+import :ScanDataPoint;
 
 using std::vector;
 

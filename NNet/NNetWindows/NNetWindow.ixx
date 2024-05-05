@@ -18,7 +18,6 @@ import DrawContext;
 import Uniform2D;
 import D2D_DrawContext;
 import GraphicsWindow;
-import ScanMatrix;
 import NNetModel;
 import NNetSignals;
 import Signals;

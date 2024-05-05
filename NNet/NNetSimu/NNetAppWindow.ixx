@@ -31,7 +31,6 @@ import NNetModel;
 import NNetSignals;
 import NNetCommands;
 import NNetPreferences;
-import ScanMatrix;
 import ScriptHook;
 import SlowMotionControl;
 import SlowMotionDisplay;

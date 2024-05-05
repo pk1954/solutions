@@ -11,14 +11,15 @@ module;
 #include <optional>
 #include <Windows.h>
 
-module ScanMatrix;
+module NNetModel:ScanMatrix;
 
 import Types;
 import Raster;
 import SaveCast;
 import ColorLUT;
-import ScanPixel;
-import NNetModel;
+import :ScanPixel;
+import :NNetColors;
+import :NNetModelReaderInterface;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -181,13 +182,18 @@ void ScanMatrix::drawScanRaster(DrawContext const& context)
 	}
 }
 
-void ScanMatrix::DrawScanImage(DrawContext const& context) const
+void ScanMatrix::drawScanImage
+(
+	DrawContext const& context,
+	ColorLUT    const& lut,
+	bool        const  bFilter
+) const
 {
 	unique_ptr<ScanImageByte> upFiltered;
 	ScanImageByte     const * pImage { m_pNMRI->GetScanImageC() };
 	assert(pImage);
 
-	if (NNetPreferences::ApplyFilter())
+	if (bFilter)
 	{
 		upFiltered = pImage->MeanFilter();
 		upFiltered->Normalize(255.0f);
@@ -197,9 +203,9 @@ void ScanMatrix::DrawScanImage(DrawContext const& context) const
 	m_pNMRI->GetScanRaster().DrawRasterPoints
 	(
 		context, 
-		[this, pImage](auto const &rp) -> Color
+		[this, pImage, &lut](auto const &rp) -> Color
 		{
-			return NNetPreferences::m_colorLutScan.GetColor(pImage->Get(rp));
+			return lut.GetColor(pImage->Get(rp));
 		}
 	);
 }
@@ -302,11 +308,16 @@ void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const
 	context.FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
 }
 
-void ScanMatrix::DrawScanArea(DrawContext const& context)
+void ScanMatrix::DrawScanArea
+(
+	DrawContext const& context,
+	ColorLUT    const& lut,
+	bool        const  bFilter
+)
 {
 	if (m_pNMRI->ModelLocked())
 	{
-		DrawScanImage(context);
+		drawScanImage(context, lut, bFilter);
 	}
 	else
 	{

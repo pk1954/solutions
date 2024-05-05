@@ -245,5 +245,14 @@
     <ClCompile Include="NNetEvent.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScanPixel.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScanMatrix.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScanMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

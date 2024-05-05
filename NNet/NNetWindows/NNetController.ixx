@@ -19,7 +19,6 @@ import WinManager;
 import CommandStack;
 import NNetModel;
 import NNetSignals;
-import NNetPreferences;
 import :NNetCommandHandler;
 import :Compute;
 

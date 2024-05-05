@@ -18,7 +18,6 @@ import Observable;
 import PerfCounter;
 import SlowMotionRatio;
 import NNetModel;
-import ScanMatrix;
 
 using namespace std::chrono;
 using std::unique_ptr;

@@ -12,7 +12,7 @@ export module NNetWin32:MiniWindow;
 import Types;
 import ObserverInterface;
 import :MainWindow;
-import :NNetController;
+import :NNetCommandHandler;
 import :NNetWindow;
 
 using std::wstring;
@@ -20,7 +20,7 @@ using std::wstring;
 export class MiniWindow : public NNetWindow
 {
 public:
-	void Start(HWND const, bool const, NNetController &, ScanMatrix * const);
+	void Start(HWND const, bool const, NNetCommandHandler &, ScanMatrix * const);
 
 	bool   OnMouseWheel     (WPARAM const, LPARAM const) final { return true;  }  // mini window cannot be zoomed 
 	bool   OnRButtonUp      (WPARAM const, LPARAM const) final { return false; }
