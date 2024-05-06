@@ -29,12 +29,7 @@ public:
 	CrsrWindow();
 	~CrsrWindow() final;
 
-	void Start
-	(
-		HWND               const, 
-		MainWindow const * const,
-		ScanMatrix       * const
-	);
+	void Start(HWND const, MainWindow const * const);
 	void Stop();
 	void SetModelInterface(NNetModelReaderInterface * const);
 
@@ -43,7 +38,6 @@ public:
 private:
 	MainWindow               const * m_pMainWindow { nullptr };
 	NNetModelReaderInterface const * m_pNMRI       { nullptr };
-	ScanMatrix                     * m_pScanMatrix { nullptr };
 
 	wstring GetCaption() const final { return L"CrsrWindow"; }
 

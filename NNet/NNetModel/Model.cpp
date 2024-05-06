@@ -45,6 +45,7 @@ using std::wstring;
 using std::setw;
 using std::right;
 using std::left;
+using std::optional;
 
 void Model::Initialize(Observable * const pLockModelObservable)
 {
@@ -300,11 +301,12 @@ void Model::DumpModel
 void Model::SetScanArea(MicroMeterRect const& rect)
 {
 	m_upRaster->SetRasterRect(rect);
+	PrepareScanMatrix();
 }
 
 void Model::CreateScanImage()
 { 
-	m_upImage = make_unique<ScanImageByte>(GetScanAreaSize());
+	m_upImage = make_unique<ScanImageByte>(m_upRaster->Size());
 	if (m_pLockModelObservable)
 		m_pLockModelObservable->NotifyAll();
 }
@@ -335,4 +337,32 @@ void Model::AddEvent(EventType const& type)
 		m_events.push_back(make_unique<StopScanEvent>());
 		break;
 	}
+}
+
+void Model::DrawScanArea
+(
+	DrawContext         const& context,
+	ColorLUT            const& lut,
+	bool                const  bFilter,
+	optional<CardPoint> const  cardPntSelected
+) const
+{
+	m_scanMatrix.DrawScanArea(context, *m_upRaster.get(), m_upImage.get(), lut, bFilter, cardPntSelected, *m_upNobs.get());
+}
+
+void Model::DrawScanAreaBackground(DrawContext const& context) const
+{
+	m_scanMatrix.DrawScanAreaBackground(context, *m_upRaster.get());
+}
+
+optional<CardPoint> Model::SelectScanAreaHandle
+(
+	DrawContext   const& context,
+	MicroMeterPnt const& umCrsrPos
+) const
+{
+	return m_scanMatrix.SelectScanAreaHandle
+	(
+		context, *m_upRaster.get(), umCrsrPos
+	);
 }

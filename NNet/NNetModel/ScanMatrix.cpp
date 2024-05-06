@@ -1,6 +1,6 @@
 // ScanMatrix.cpp
 //
-// NNetScan
+// NNetModel
 
 module;
 
@@ -19,7 +19,7 @@ import SaveCast;
 import ColorLUT;
 import :ScanPixel;
 import :NNetColors;
-import :NNetModelReaderInterface;
+import :UPNobList;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -27,68 +27,50 @@ using std::vector;
 using std::optional;
 using std::nullopt;
 
-void ScanMatrix::Initialize()
+ScanMatrix::ScanMatrix()
 {
     InitializeCriticalSection(&m_cs);
 }
 
-void ScanMatrix::SetModelInterface(NNetModelReaderInterface* const p)
-{
-    m_pNMRI = p;
-    Notify(false);
-}
-
-void ScanMatrix::PrepareScanMatrix()
+void ScanMatrix::Prepare
+(
+	Raster    const& raster,
+	UPNobList const& nobList
+)
 {
     EnterCriticalSection(&m_cs);
     if (m_bDirty)
     {
-        if (m_pNMRI->GetScanAreaSize() != Size())
-            m_scanPixels.Resize(m_pNMRI->GetScanAreaSize());
+        if (raster.Size() != Size())
+            m_scanPixels.Resize(raster.Size());
         Clear();
-        m_pNMRI->Apply2AllC<Pipe>([this](Pipe const& p){ add2list(p); });
+        nobList.Apply2AllC<Pipe>
+		(
+			[this, &raster](Pipe const& p)
+			{ 
+				add2list(p, raster); 
+			}
+		);
         findMaxNrOfDataPoints();
         m_bDirty = false;
     }
     LeaveCriticalSection(&m_cs);
 }
 
-mV ScanMatrix::Scan(RasterPoint const& rp)
-{
-    return m_scanPixels.GetPtr(rp)->Scan();
-}
-
-size_t ScanMatrix::NrOfDataPntsInPixel(RasterPoint const& rp) const
-{
-    return GetScanPixel(rp).NrOfDataPnts();
-}
-
-ScanPixel const& ScanMatrix::GetScanPixel(RasterPoint const& rp) const
-{
-    ScanPixel const * pPixel{ m_scanPixels.GetConstPtr(rp) };
-    assert(pPixel);
-    return *pPixel;
-}
-
-void ScanMatrix::add2list(Pipe const& pipe)
+void ScanMatrix::add2list(Pipe const& pipe, Raster const& raster) 
 {
     pipe.Apply2AllSensorPoints
     (
-        m_pNMRI->GetScanResolution(),
-        [this](Pipe const& pipe, MicroMeterPnt const& umPnt, Pipe::SegNr const segNr)
+        raster.Resolution(),
+        [this, &raster](Pipe const& pipe, MicroMeterPnt const& umPnt, Pipe::SegNr const segNr)
         {
-            if (optional<RasterPoint> const rPntOpt = m_pNMRI->FindRasterPos(umPnt))
+            if (optional<RasterPoint> const rPntOpt = raster.FindRasterPos(umPnt))
             {
                 ScanPixel* pScanPoint{ m_scanPixels.GetPtr(rPntOpt.value()) };
                 pScanPoint->Add(ScanDataPoint(pipe, segNr));
             }
         }
     );
-}
-
-void ScanMatrix::Clear()
-{
-    Apply2AllScanPixels([](auto &p) { p.Clear(); });
 }
 
 void ScanMatrix::DensityCorrection(ScanImageRaw &image) const
@@ -102,11 +84,6 @@ size_t ScanMatrix::NrOfDataPntsInMatrix() const
     size_t nr { 0 };
     Apply2AllScanPixelsC([&nr](ScanPixel const& p) { nr += p.NrOfDataPnts(); });
     return nr;
-}
-
-float ScanMatrix::AverageDataPointsPerPixel() const
-{
-    return DivideByArea(NrOfDataPntsInMatrix());
 }
 
 float ScanMatrix::DivideByArea(size_t const nrOfPoints) const
@@ -146,15 +123,15 @@ float ScanMatrix::DataPointVariance()
     return fVariance;
 }
 
-void ScanMatrix::drawScanRaster(DrawContext const& context)
+void ScanMatrix::DrawScanRaster(DrawContext const& context, Raster const& raster) const
 {
-	MicroMeter const umRes { m_pNMRI->GetScanResolution() };
+	MicroMeter const umRes { raster.Resolution() };
 
 	if (context.GetCoordC().Transform2fPixel(umRes) >= 8.0_fPixel)
 	{
 		Color          const colLine { NNetColors::SCAN_AREA_HANDLE };
-		MicroMeterRect const umRect  { m_pNMRI->GetScanAreaRect() };
-		RasterPoint    const rSize   { m_pNMRI->GetScanAreaSize() };
+		MicroMeterRect const umRect  { raster.GetRasterRect() };
+		RasterPoint    const rSize   { raster.Size() };
 		MicroMeter     const umYend  { umRect.GetTop()  + umRes * Cast2Float(rSize.m_y) };
 		MicroMeter     const umXend  { umRect.GetLeft() + umRes * Cast2Float(rSize.m_x) };
 		for (int x = 0; x <= rSize.m_x; ++x)
@@ -182,15 +159,17 @@ void ScanMatrix::drawScanRaster(DrawContext const& context)
 	}
 }
 
-void ScanMatrix::drawScanImage
+void ScanMatrix::DrawScanImage
 (
-	DrawContext const& context,
-	ColorLUT    const& lut,
-	bool        const  bFilter
+	DrawContext   const& context,
+	Raster        const& raster, 
+	ScanImageByte const& image, 
+	ColorLUT      const& lut,
+	bool          const  bFilter
 ) const
 {
 	unique_ptr<ScanImageByte> upFiltered;
-	ScanImageByte     const * pImage { m_pNMRI->GetScanImageC() };
+	ScanImageByte const * pImage { &image };
 	assert(pImage);
 
 	if (bFilter)
@@ -200,7 +179,7 @@ void ScanMatrix::drawScanImage
 		pImage = upFiltered.get();
 	}
 
-	m_pNMRI->GetScanRaster().DrawRasterPoints
+	raster.DrawRasterPoints
 	(
 		context, 
 		[this, pImage, &lut](auto const &rp) -> Color
@@ -210,63 +189,107 @@ void ScanMatrix::drawScanImage
 	);
 }
 
-MicroMeter ScanMatrix::getScanAreaHandleSize(Uniform2D<MicroMeter> const &coord)
+void ScanMatrix::DrawScanArea
+(
+	DrawContext           const& context,
+	Raster                const& raster,
+	ScanImageByte const * const  pImage,
+	ColorLUT              const& lut,
+	bool                  const  bFilter,
+	optional<CardPoint>   const  cardPntSelected,
+	UPNobList             const& nobList  
+) const
+{
+	if (pImage)
+	{
+		DrawScanImage(context, raster, *pImage, lut, bFilter);
+	}
+	else
+	{
+		DrawSensorDensityMap(context, raster, nobList);
+		DrawScanAreaHandles (context, raster, cardPntSelected);
+	}
+	DrawScanRaster(context, raster);
+}
+
+
+MicroMeter ScanMatrix::getScanAreaHandleSize(Uniform2D<MicroMeter> const &coord) const
 {
 	fPixel const HANDLE_SIZE { 8.0_fPixel };
 	return coord.Transform2logUnit(HANDLE_SIZE);
 }
 
-bool ScanMatrix::SetScanAreaHandle
+MicroMeterRect ScanMatrix::getRectHandle
 (
-	DrawContext   const& context,
-	MicroMeterPnt const& umCrsrPos
-)
+	MicroMeter     const umHandleSize,
+	MicroMeterRect const umRect,
+	CardPoint      const cardPnt
+) const
 {
-	MicroMeter    const umSize            { getScanAreaHandleSize(context.GetCoordC()) };
-	optional<CardPoint> scanAreaHandleNew { nullopt };
-	Apply2CardPoints
-	(
-		[this, umSize, &umCrsrPos, &scanAreaHandleNew](CardPoint const cardPnt)
-		{ 
-			MicroMeterPnt  const pos          { m_pNMRI->GetScanAreaRect().CardPntPos(cardPnt) };
-			MicroMeterRect const umRectHandle { RectFromCenterAndExtension<MicroMeter>(pos, umSize) };
-			if (umRectHandle.Includes(umCrsrPos))
-				scanAreaHandleNew = cardPnt;
-		}
-	);
-	if (scanAreaHandleNew != m_scanAreaHandleSelected)
-	{
-		m_scanAreaHandleSelected = scanAreaHandleNew;
-		Notify(false);
-	}
-	return m_scanAreaHandleSelected.has_value();
+	MicroMeterPnt  const pos          { umRect.CardPntPos(cardPnt) };
+	MicroMeterRect const umRectHandle { RectFromCenterAndExtension<MicroMeter>(pos, umHandleSize) };
+	return umRectHandle;
 }
 
-void ScanMatrix::drawScanAreaHandles(DrawContext const& context)
+Color ScanMatrix::handleColor
+(
+	CardPoint           const cardPnt,
+	optional<CardPoint> const cardPntSelected
+) const
+{ 
+	return (cardPntSelected.has_value() && (cardPnt == cardPntSelected.value()))
+		? NNetColors::INT_SELECTED
+		: NNetColors::SCAN_AREA_HANDLE;
+}
+
+optional<CardPoint> ScanMatrix::SelectScanAreaHandle
+(
+	DrawContext   const& context,
+	Raster        const& raster,
+	MicroMeterPnt const& umCrsrPos
+) const
 {
-	MicroMeter const umHandleSize { getScanAreaHandleSize(context.GetCoordC()) };
+	MicroMeter     const umHandleSize { getScanAreaHandleSize(context.GetCoordC()) };
+	MicroMeterRect const umRect       { raster.GetRasterRect() };
+	optional<CardPoint>  cardPnt      { nullopt };
 	Apply2CardPoints
 	(
-		[this, umHandleSize, &context](CardPoint const cp)
+		[this, umHandleSize, &umRect, &umCrsrPos, &cardPnt](CardPoint const cp)
+		{ 
+			if (getRectHandle(umHandleSize, umRect, cp).Includes(umCrsrPos))
+				cardPnt = cp;
+		}
+	);
+	return cardPnt;
+}
+
+void ScanMatrix::DrawScanAreaHandles
+(
+	DrawContext         const& context,
+	Raster              const& raster,
+	optional<CardPoint> const  cardPntSelected
+) const
+{
+	MicroMeter     const umHandleSize { getScanAreaHandleSize(context.GetCoordC()) };
+	MicroMeterRect const umRect       { raster.GetRasterRect() };
+	Apply2CardPoints
+	(
+		[this, umHandleSize, &umRect, &context, cardPntSelected](CardPoint const cardPnt)
 		{
-			MicroMeterPnt  const pos    { m_pNMRI->GetScanAreaRect().CardPntPos(cp) };
-			MicroMeterRect const umRect { RectFromCenterAndExtension<MicroMeter>(pos, umHandleSize) };
-			Color          const col 
-			{ 
-				(m_scanAreaHandleSelected.has_value() && (cp == m_scanAreaHandleSelected.value()))
-				? NNetColors::INT_SELECTED 
-				: NNetColors::SCAN_AREA_HANDLE
-			};
-			context.DrawTranspRect(umRect, col);
+			context.DrawTranspRect
+			(
+				getRectHandle(umHandleSize, umRect, cardPnt), 
+				handleColor(cardPnt, cardPntSelected)
+			);
 		}
 	);
 }
 
 ColorLUT ScanMatrix::sensorDensityLUT() const
 {
-	size_t const maxNrOfDataPnts { MaxNrOfDataPoints() };
-	float const fAverageDataPnts { DivideByArea(maxNrOfDataPnts) };
-	float       fLutIndexAverage { 255.0f * fAverageDataPnts / Cast2Float(maxNrOfDataPnts) };
+	size_t const maxNrOfDataPnts  { MaxNrOfDataPoints() };
+	float  const fAverageDataPnts { DivideByArea(maxNrOfDataPnts) };
+	float        fLutIndexAverage { 255.0f * fAverageDataPnts / Cast2Float(maxNrOfDataPnts) };
 	if (fLutIndexAverage < 1.0f)
 		fLutIndexAverage = 1.0f;
 	else if (fLutIndexAverage > 254.0f)
@@ -280,13 +303,17 @@ ColorLUT ScanMatrix::sensorDensityLUT() const
 	return lut;
 }
 
-void ScanMatrix::drawSensorDensityMap(DrawContext const& context)
+void ScanMatrix::DrawSensorDensityMap
+(
+	DrawContext const& context,
+	Raster      const& raster,
+	UPNobList   const& nobList
+) const
 {
-	PrepareScanMatrix();
 	if (MaxNrOfDataPoints() > 0.0f)
 	{
 		ColorLUT const lut { sensorDensityLUT() };
-		m_pNMRI->GetScanRaster().DrawRasterPoints
+		raster.DrawRasterPoints
 		(
 			context, 
 			[this, &lut](auto const &rpRun) -> Color
@@ -299,30 +326,15 @@ void ScanMatrix::drawSensorDensityMap(DrawContext const& context)
 	}
 	else
 	{
-		DrawScanAreaBackground(context);
+		DrawScanAreaBackground(context, raster);
 	}
 }
 
-void ScanMatrix::DrawScanAreaBackground(DrawContext const& context) const
-{
-	context.FillRectangle(m_pNMRI->GetScanAreaRect(), NNetColors::SCAN_AREA_RECT);
-}
-
-void ScanMatrix::DrawScanArea
+void ScanMatrix::DrawScanAreaBackground
 (
 	DrawContext const& context,
-	ColorLUT    const& lut,
-	bool        const  bFilter
-)
+	Raster      const& raster
+) const
 {
-	if (m_pNMRI->ModelLocked())
-	{
-		drawScanImage(context, lut, bFilter);
-	}
-	else
-	{
-		drawSensorDensityMap(context);
-		drawScanAreaHandles(context);
-	}
-	drawScanRaster(context);
+	context.FillRectangle(raster.GetRasterRect(), NNetColors::SCAN_AREA_RECT);
 }

@@ -41,15 +41,13 @@ void Compute::Initialize   // runs in main thread
 	SlowMotionRatio * const pSlowMotionRatio,
 	Observable      * const pRunObservable,
 	Observable      * const pPerformanceObservable,
-	Observable      * const pDynamicModelObservable,
-	ScanMatrix      * const pScanMatrix
+	Observable      * const pDynamicModelObservable
 )
 {
 	m_pRunObservable          = pRunObservable;
 	m_pPerformanceObservable  = pPerformanceObservable;
 	m_pDynamicModelObservable = pDynamicModelObservable;
 	m_pSlowMotionRatio        = pSlowMotionRatio;
-	m_pScanMatrix             = pScanMatrix;
 }
 
 void Compute::SetModelInterface(NNetModelWriterInterface * const pNMWI)
@@ -87,11 +85,11 @@ void Compute::startScanPass()
 void Compute::StartScan()
 {
 	Reset();
-	m_pScanMatrix->PrepareScanMatrix();
+	m_pNMWI->PrepareScanMatrix();
 	m_pNMWI->CreateScanImage();
 	m_pNMWI->AddEvent(EventType::startScan);
-	m_upSingleImage = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
-	m_upSumImage    = make_unique<ScanImageRaw>(m_pScanMatrix->Size(), 0.0_mV);
+	m_upSingleImage = make_unique<ScanImageRaw>(m_pNMWI->GetScanAreaSize(), 0.0_mV);
+	m_upSumImage    = make_unique<ScanImageRaw>(m_pNMWI->GetScanAreaSize(), 0.0_mV);
 	m_iScanNr = 0;
 	startScanPass();
 	m_usSimuNextPixelScan = SimulationTime::Get();
@@ -101,15 +99,15 @@ void Compute::scanNextPixel()
 {
 	m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
 
-	m_upSingleImage->Set(m_rpScanRun, m_pScanMatrix->Scan(m_rpScanRun));
+	m_upSingleImage->Set(m_rpScanRun, m_pNMWI->Scan(m_rpScanRun));
 	m_pNMWI->GetScanImage()->Set(m_rpScanRun, 255);      // visualize scan progress
 
-	if (++m_rpScanRun.m_x < m_pScanMatrix->Width())      // next scan Pixel
+	if (++m_rpScanRun.m_x < m_pNMWI->GetScanAreaWidth())      // next scan Pixel
 		return;
 	                                                     // scan line finished
 	m_rpScanRun.m_x = 0;
 	m_pDynamicModelObservable->NotifyAll(); 
-	if (++m_rpScanRun.m_y < m_pScanMatrix->Height())
+	if (++m_rpScanRun.m_y < m_pNMWI->GetScanAreaHeight())
 		return;
 	                                                     // scan pass finished
 	*m_upSumImage.get() += *m_upSingleImage.get();
@@ -121,7 +119,7 @@ void Compute::scanNextPixel()
 void Compute::finishScan()
 {
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN);
-	m_pScanMatrix->DensityCorrection(*m_upSumImage.get());
+	m_pNMWI->DensityCorrection(*m_upSumImage.get());
 	m_upSumImage->Normalize(1.0f);
 	unique_ptr<ScanImageByte> upScanImageByte { make_unique<ScanImageByte>(m_upSumImage->Size())};
 	m_upSumImage->Size().VisitAllRasterPointsC

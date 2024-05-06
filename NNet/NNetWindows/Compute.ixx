@@ -34,8 +34,7 @@ public:
 		SlowMotionRatio * const,
 		Observable      * const,
 		Observable      * const,
-		Observable      * const,
-		ScanMatrix      * const
+		Observable      * const
 	);
 
 	void SetModelInterface(NNetModelWriterInterface * const);
@@ -73,7 +72,6 @@ private:
 
 	unique_ptr<ScanImageRaw> m_upSingleImage;
 	unique_ptr<ScanImageRaw> m_upSumImage;
-	ScanMatrix             * m_pScanMatrix { nullptr };
 	int                      m_iScanNr     { 0 };
 	RasterPoint              m_rpScanRun;
 	fMicroSecs               m_usSimuNextPixelScan;

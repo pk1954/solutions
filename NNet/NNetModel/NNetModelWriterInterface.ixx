@@ -26,6 +26,7 @@ import :NobId;
 import :Nob;
 import :PosNob;
 import :MicroSensor;
+import :ScanMatrix;
 import :UPSensorList;
 import :UPNobList;
 
@@ -91,13 +92,14 @@ public:
     void DescriptionComplete()                                        { m_pModel->DescriptionComplete(); }
     void DeselectAllNobs    ()                                        { m_pModel->DeselectAllNobs(); }
     void CreateScanImage    ()                                        { m_pModel->CreateScanImage(); }
-	void ReplaceScanImage(unique_ptr<ScanImageByte> up)               { m_pModel->ReplaceScanImage(move(up)); }
+	void ReplaceScanImage   (unique_ptr<ScanImageByte> up)            { m_pModel->ReplaceScanImage(move(up)); }
     void RejectScanImage    ()                                        { m_pModel->RejectScanImage(); }
     void ClearScanImage     ()                                        { GetScanImage()->Set(0); }
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }
     void SetScanTime        (time_t const t)                          { m_pModel->SetScanTime(t); }
     void SetScanTimeNow     ()                                        { m_pModel->SetScanTimeNow(); }
+    void PrepareScanMatrix  ()                                        { m_pModel->PrepareScanMatrix(); }
     void AddOutgoing        (NobId const id, Pipe* p)                 { GetPosNob(id).AddOutgoing(p); }
     void AddIncoming        (NobId const id, Pipe* p)                 { GetPosNob(id).AddIncoming(p); }
 

@@ -40,8 +40,7 @@ public:
 		Observable&,
 		Observable&,
 		HiResTimer * const,
-		MonitorWindow const *,
-		ScanMatrix * const
+		MonitorWindow const *
 	);
 
 	void Stop() final;
@@ -86,37 +85,36 @@ public:
 
 private:
 
-	MicroMeterPnt m_umDelta                { NP_ZERO };
-	MicroMeter    m_umArrowSize            { 0._MicroMeter };
-	HiResTimer   *m_pDisplayTimer          { nullptr };
-	Observable   *m_pCoordObservable       { nullptr };
-	Observable   *m_pCursorPosObservable   { nullptr };
-	Observable   *m_pStaticModelObservable { nullptr };
-	NobId         m_nobIdHighlighted       { NO_NOB };
-	NobId         m_nobIdTarget            { NO_NOB };
-	SigGenId      m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId      m_sensorIdSelected       { SensorId::NULL_VAL() };
-	SelectionMenu m_selectionMenu;
-	MainScales    m_mainScales;
+	MicroMeterPnt       m_umDelta                { NP_ZERO };
+	MicroMeter          m_umArrowSize            { 0._MicroMeter };
+	HiResTimer         *m_pDisplayTimer          { nullptr };
+	Observable         *m_pCoordObservable       { nullptr };
+	Observable         *m_pCursorPosObservable   { nullptr };
+	Observable         *m_pStaticModelObservable { nullptr };
+	NobId               m_nobIdHighlighted       { NO_NOB };
+	NobId               m_nobIdTarget            { NO_NOB };
+	SigGenId            m_idSigGenUnderCrsr      { NO_SIGGEN };
+	SensorId            m_sensorIdSelected       { SensorId::NULL_VAL() };
+	optional<CardPoint> m_scanAreaHandleSelected { nullopt };
+	SelectionMenu       m_selectionMenu;
+	MainScales          m_mainScales;
 
-	bool       setScanAreaHandle   (MicroMeterPnt const&);
-	bool       setHighlightedNob   (MicroMeterPnt const&);
-	bool       setHighlightedSensor(MicroMeterPnt const&);
-	bool       selectSignalHandle  (MicroMeterPnt const&);
-	void       centerAndZoomRect(UPNobList::SelMode const, float const);
-	bool       connectionAllowed();
-	void       select(NobId const);
-	void       drawScanRaster();
-	void       drawScanAreaHandles();
-	void       drawModel(DrawContext const&);
-	SigGenId   getSigGenId(LPARAM const);
-	SigGenId   getSigGenId(fPixelPoint const &);
-	MicroMeter getScanAreaHandleSize();
-	bool       selectSigGen(SigGenId const);
-	void       PaintGraphics() final;
-	void       drawInputCable(InputLine const &) const;
-	void       connect(NobId const, NobId const);
-	bool       selectionCommand(WPARAM const);
+	bool     setHighlightedNob   (MicroMeterPnt const&);
+	bool     setHighlightedSensor(MicroMeterPnt const&);
+	bool     selectSignalHandle  (MicroMeterPnt const&);
+	bool     setScanAreaHandle   (MicroMeterPnt const&);
+	void     centerAndZoomRect(UPNobList::SelMode const, float const);
+	bool     connectionAllowed();
+	void     select(NobId const);
+	void     drawModel(DrawContext const&);
+	SigGenId getSigGenId(LPARAM const);
+	SigGenId getSigGenId(fPixelPoint const &);
+	bool     selectSigGen(SigGenId const);
+	void	 drawScanArea();
+	void     drawInputCable(InputLine const &) const;
+	void     connect(NobId const, NobId const);
+	bool     selectionCommand(WPARAM const);
 
-	bool  UserProc(UINT const, WPARAM const, LPARAM const) final;
+	void     PaintGraphics() final;
+	bool     UserProc(UINT const, WPARAM const, LPARAM const) final;
 };

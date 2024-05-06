@@ -10,10 +10,12 @@ module;
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <optional>
 
 export module NNetModel:Model;
 
 import Observable;
+import Types;
 import Util;
 import Raster;
 import Signals;
@@ -29,6 +31,7 @@ import :UPSigGenList;
 import :UPSensorList;
 import :UPMicroSensorList;
 import :NNetEvent;
+import :ScanMatrix;
 import :PosNob;
 
 using std::unique_ptr;
@@ -36,10 +39,9 @@ using std::make_unique;
 using std::wstring;
 using std::vector;
 using std::move;
+using std::optional;
 
-export using ScanImageRaw  = Vector2D<mV>;
-export using ScanImageByte = Vector2D<ColIndex>;
-export using EventList     = vector<unique_ptr<NNetEvent>>;
+export using EventList = vector<unique_ptr<NNetEvent>>;
 
 export class Model
 {
@@ -137,10 +139,16 @@ public:
 	MicroMeterRect            GetScanAreaRect   () const { return m_upRaster->GetRasterRect(); }
 	MicroMeter                GetScanResolution () const { return m_upRaster->Resolution(); }
 	RasterPoint               GetScanAreaSize   () const { return m_upRaster->Size(); }
+	RasterIndex               GetScanAreaWidth  () const { return m_upRaster->RasterWidth(); }
+	RasterIndex               GetScanAreaHeight () const { return m_upRaster->RasterHeight(); }
 	Raster            const & GetScanRaster     () const { return *m_upRaster.get(); }
 	ScanImageByte     const * GetScanImageC     () const { return m_upImage.get(); }
 	EventList         const & GetEventList      () const { return m_events; }
 	time_t                    GetScanTime       () const { return m_timestamps.GetTimestamp(SCANTIME); }
+
+	mV   Scan(RasterPoint const& rp)            const { return m_scanMatrix.Scan(rp); }
+	void DensityCorrection(ScanImageRaw& image) const { m_scanMatrix.DensityCorrection(image); }
+	void DeselectAllNobs  ()                    const { m_upNobs->DeselectAllNobs(); }
 
 	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
 
@@ -167,8 +175,18 @@ public:
 	void ReplaceScanImage(unique_ptr<ScanImageByte>);
 	void RejectScanImage();
 	void AddEvent(EventType const &);
+    void DrawScanAreaBackground(DrawContext const&) const;
+    void DrawScanArea
+	(
+		DrawContext const&, 
+		ColorLUT const&, 
+		bool const,
+	    optional<CardPoint> const
+	) const;
 
-	void DeselectAllNobs          ()               const { m_upNobs->DeselectAllNobs(); }
+	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
+
+    void PrepareScanMatrix        ()                     { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
 	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
@@ -199,6 +217,7 @@ private:
 	ModelDescription           m_description;
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
+	ScanMatrix                 m_scanMatrix;
 	EventList                  m_events;
 	TimestampList              m_timestamps;
 };

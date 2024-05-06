@@ -111,7 +111,6 @@ private:
 	Observable               m_coordObservable;
 	Observable               m_activeSigGenObservable;
 	Observable               m_lockModelObservable;
-	ScanMatrix               m_scanMatrix;
 	ParameterDialog          m_parameterDlg;
 	PerformanceWindow        m_performanceWindow;
 	ScriptFile               m_scriptFile;

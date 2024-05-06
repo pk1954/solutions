@@ -1,6 +1,6 @@
 // ScanPixel.ixx
 //
-// NNetScan
+// NNetModel
 
 module;
 
@@ -28,10 +28,10 @@ public:
         m_dataPoints.push_back(dataPoint);
     }
 
-    mV Scan()
+    mV Scan() const
     {
         mV mVsum = 0.0_mV;
-        Apply2AllScanPoints([&mVsum](ScanDataPoint const& p) { mVsum += p.GetSignalValue(); });
+        Apply2AllScanPointsC([&mVsum](ScanDataPoint const& p) { mVsum += p.GetSignalValue(); });
         return mVsum;
     }
 

@@ -77,7 +77,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	BaseCommand      ::Initialize(&m_sound);
 	NNetModelIO      ::Initialize(&m_lockModelObservable);
 
-	m_scanMatrix    .Initialize();
 	m_simuRunning   .Initialize(&m_compute);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio);
@@ -96,7 +95,6 @@ void NNetAppWindow::setModelInterface()
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
 	m_appTitle         .SetModelInterface(m_pNMRI);
 	m_NNetController   .SetModelInterface(m_pNMRI);
-	m_scanMatrix       .SetModelInterface(m_pNMRI);
 	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
 	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
 	m_crsrWindow       .SetModelInterface(m_pNMRI);
@@ -134,8 +132,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		&m_slowMotionRatio,
 		&m_runObservable,
 		&m_performanceObservable,
-		&m_dynamicModelObservable,
-		&m_scanMatrix
+		&m_dynamicModelObservable
 	);
 
 	m_upModel = m_nmwi.CreateNewModel();
@@ -153,7 +150,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_appMenu          .Start(m_hwndApp, m_compute, m_cmdStack, m_sound);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
-	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow, &m_scanMatrix);
+	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow);
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, &m_compute, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
@@ -174,11 +171,10 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_coordObservable,
 		m_staticModelObservable,
 		& m_atDisplay,
-		& m_monitorWindow,
-		& m_scanMatrix
+		& m_monitorWindow
 	);
 
-	m_miniNNetWindow.Start(m_hwndApp, true,	m_NNetController, &m_scanMatrix);
+	m_miniNNetWindow.Start(m_hwndApp, true,	m_NNetController);
 
 	m_miniNNetWindow.ObservedNNetWindow(& m_mainNNetWindow);  // mini window observes main window
 
@@ -222,7 +218,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_dynamicModelObservable       .RegisterObserver(m_monitorWindow);
 	m_dynamicModelObservable       .RegisterObserver(m_timeDisplay);
 	m_dynamicModelObservable       .RegisterObserver(m_crsrWindow);
-	m_staticModelObservable        .RegisterObserver(m_scanMatrix);
 	m_staticModelObservable        .RegisterObserver(m_mainNNetWindow);
 	m_staticModelObservable        .RegisterObserver(m_miniNNetWindow);
 	m_staticModelObservable        .RegisterObserver(m_monitorWindow);

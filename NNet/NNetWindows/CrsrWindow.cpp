@@ -39,12 +39,10 @@ CrsrWindow::~CrsrWindow()
 void CrsrWindow::Start
 (
 	HWND               const hwndParent,
-	MainWindow const * const pMainWindow,
-	ScanMatrix       * const pScanMatrix
+	MainWindow const * const pMainWindow
 ) 
 {
 	m_pMainWindow = pMainWindow;
-	m_pScanMatrix = pScanMatrix;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -155,30 +153,30 @@ void CrsrWindow::printScanAreaInfo
 	RasterPoint const & rPnt
 )
 {
-	m_pScanMatrix->PrepareScanMatrix();
-	textBuf.AlignRight();
-	textBuf.printString(L"ScanArea: ");
-	textBuf.printRasterPoint(m_pNMRI->GetScanRaster().Size());
-	textBuf.nextLine();
-	textBuf.printString(L"Pnts per pixel: ");
-	textBuf.nextLine();
-	textBuf.printString(L"Maximum: ");
-	textBuf.printNumber(m_pScanMatrix->MaxNrOfDataPoints());
-	textBuf.nextLine();
-	textBuf.printString(L"Average: ");
-	textBuf.printFloat(m_pScanMatrix->AverageDataPointsPerPixel());
-	textBuf.nextLine();
-	textBuf.printString(L"Variance: ");
-	textBuf.printFloat(m_pScanMatrix->DataPointVariance());
-	textBuf.nextLine();
-	textBuf.nextLine();
-	textBuf.printString(L"Pixel: ");
-	textBuf.printRasterPoint(rPnt);
-	textBuf.nextLine();
-	textBuf.printString(L"# Pnts: ");
-	textBuf.AlignLeft();  
-	textBuf.printNumber( m_pScanMatrix->NrOfDataPntsInPixel(rPnt));
-	textBuf.nextLine();
+	//m_pNMRI->PrepareScanMatrix();
+	//textBuf.AlignRight();
+	//textBuf.printString(L"ScanArea: ");
+	//textBuf.printRasterPoint(m_pNMRI->GetScanRaster().Size());
+	//textBuf.nextLine();
+	//textBuf.printString(L"Pnts per pixel: ");
+	//textBuf.nextLine();
+	//textBuf.printString(L"Maximum: ");
+	//textBuf.printNumber(m_pScanMatrix->MaxNrOfDataPoints());
+	//textBuf.nextLine();
+	//textBuf.printString(L"Average: ");
+	//textBuf.printFloat(m_pScanMatrix->AverageDataPointsPerPixel());
+	//textBuf.nextLine();
+	//textBuf.printString(L"Variance: ");
+	//textBuf.printFloat(m_pScanMatrix->DataPointVariance());
+	//textBuf.nextLine();
+	//textBuf.nextLine();
+	//textBuf.printString(L"Pixel: ");
+	//textBuf.printRasterPoint(rPnt);
+	//textBuf.nextLine();
+	//textBuf.printString(L"# Pnts: ");
+	//textBuf.AlignLeft();  
+	//textBuf.printNumber( m_pScanMatrix->NrOfDataPntsInPixel(rPnt));
+	//textBuf.nextLine();
 }
 
 void CrsrWindow::printNobInfo

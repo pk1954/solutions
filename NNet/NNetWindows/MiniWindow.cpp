@@ -30,8 +30,7 @@ void MiniWindow::Start
 (
 	HWND         const  hwndParent, 
 	bool         const  bShowRefreshRateDialog,
-	NNetCommandHandler &controller,
-	ScanMatrix * const  pScanMatrix
+	NNetCommandHandler &controller
 )
 {
 	NNetWindow::Start
@@ -40,8 +39,7 @@ void MiniWindow::Start
 		WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 		bShowRefreshRateDialog,
 		controller,
-		nullptr,
-		pScanMatrix
+		nullptr
 	);
 }
 
@@ -83,16 +81,12 @@ void MiniWindow::Trigger(bool const bImmediately)
 		MicroMeterRect       umRectShow  { Union(umRectMain, umRectModel) };            // all this should be visible  
 
 		if (NNetPreferences::ScanAreaVisible())
-			umRectShow = Union(umRectShow, m_pNMRI->GetScanAreaRect());            // all this should be visible  
+			umRectShow = Union(umRectShow, m_pNMRI->GetScanAreaRect());                 // all this should be visible  
 
-		MicroMeter const umPixelSizeTarget
-		{
-			GetCoord().ComputeZoom
-			(
-				umRectShow.ScaleRect(NEURON_RADIUS), 
-				GetClRectSize(),
-				EXTRA_SPACE_FACTOR
-			)
+		umRectShow.ScaleRect(NEURON_RADIUS);
+		MicroMeter const umPixelSizeTarget 
+		{ 
+			GetCoord().ComputeZoom(umRectShow, GetClRectSize(), EXTRA_SPACE_FACTOR)   //TODO:  use CenterANdZoomRect?
 		};
 		GetCoord().Zoom(umPixelSizeTarget);
 		GetCoord().Center(umRectShow.GetCenter(), Convert2fPixelPoint(GetClRectCenter()));
@@ -109,6 +103,6 @@ void MiniWindow::PaintGraphics()
 		DrawExteriorInRect(GetClPixelRect(), [](Nob const &) { return true; }); 
 		context.DrawTranspRect(m_pObservedNNetWindow->GetViewRect(), NNetColors::POSITION_RECT);
 		if (NNetPreferences::ScanAreaVisible())
-			GetScanMatrixC().DrawScanAreaBackground(context);
+			m_pNMRI->DrawScanAreaBackground(context);
 	}
 }

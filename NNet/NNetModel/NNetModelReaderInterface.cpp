@@ -8,6 +8,7 @@ module;
 #include <cassert> 
 #include <string> 
 #include <compare> 
+#include <optional>
 
 module NNetModel:NNetModelReaderInterface;
 
@@ -26,6 +27,7 @@ import :PosNob;
 import :Pipe;
 
 using std::wstring;
+using std::optional;
 
 bool NNetModelReaderInterface::IsSelected(NobId const id) const
 {
@@ -219,6 +221,32 @@ void NNetModelReaderInterface::DrawLine
 ) const
 {
 	context.DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), 10.0_MicroMeter, D2D1::ColorF::Brown);
+}
+
+void NNetModelReaderInterface::DrawScanArea
+(
+	DrawContext         const& context,
+	ColorLUT            const& lut,
+	bool                const  bFilter,
+    optional<CardPoint> const  cardPntSelected
+) const
+{
+	m_pModel->DrawScanArea
+	(
+		context, 
+		lut, 
+		bFilter,
+		cardPntSelected
+	);
+}
+
+optional<CardPoint> NNetModelReaderInterface::SelectScanAreaHandle
+(
+	DrawContext   const& context, 
+	MicroMeterPnt const& umCrsrPos
+) const
+{
+	return m_pModel->SelectScanAreaHandle(context, umCrsrPos);
 }
 
 MicroMeterPnt NNetModelReaderInterface::OrthoVector(NobId const idPipe) const

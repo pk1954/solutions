@@ -39,8 +39,7 @@ public:
 		DWORD  const,
 		bool   const,
 		NNetCommandHandler  &,
-		MonitorWindow const *,
-		ScanMatrix *
+		MonitorWindow const *
 	);
 
 	void SetDefaultBackgroundColor() final;
@@ -49,38 +48,15 @@ public:
 
 	MicroMeterRect GetViewRect() const;
 
-	ScanMatrix            const & GetScanMatrixC()  const { return *m_pScanMatrix; }
-	ScanMatrix                  & GetScanMatrix()         { return *m_pScanMatrix; }
 	DrawContext           const & GetDrawContextC() const { return m_context; }
 	DrawContext                 & GetDrawContext()        { return m_context; }
 	Uniform2D<MicroMeter> const & GetCoordC()       const { return m_context.GetCoordC(); }
 	Uniform2D<MicroMeter>       & GetCoord()              { return m_context.GetCoord(); }
 	MicroMeter                    PixelSize()       const { return m_context.GetPixelSize(); }
 
-	void CenterAndZoomRect
-	(
-		Uniform2D<MicroMeter> &coordTarget,
-		MicroMeterRect   const umRect,
-		float            const fRatioFactor 
-	)
-	{
-		MicroMeter const umZoomFactor 
-		{ 
-			coordTarget.ComputeZoom(umRect, GetClRectSize(), fRatioFactor) 
-		};
-		coordTarget.SetPixelSize(umZoomFactor, false);    // do not change order!
-		
-		fPixelPoint const fPixOffset   
-		{ 
-			coordTarget.Transform2fPixelSize(umRect.GetCenter())   // SetPixelSize result is used here
-			- Convert2fPixelPoint(GetClRectCenter()) 
-		}; 
-		coordTarget.SetPixelOffset(fPixOffset, false);  // do not change order! 
-
-		coordTarget.NotifyAll(true);
-	}
-
+	void CenterAndZoomRect(Uniform2D<MicroMeter>&, MicroMeterRect const, float const);
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
+	void DrawScanArea(optional<CardPoint> const) const;
 
 	SignalId FindSignalHandle(MicroMeterPnt const&) const;
 

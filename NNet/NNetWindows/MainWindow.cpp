@@ -12,6 +12,7 @@ module;
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <optional>
 #include <Windows.h>
 #include "Resource.h"
 
@@ -47,6 +48,7 @@ using std::setprecision;
 using std::wcout;
 using std::endl;
 using std::vector;
+using std::optional;
 
 void MainWindow::Start
 (
@@ -57,8 +59,7 @@ void MainWindow::Start
 	Observable          & coordObservable,
 	Observable          & pStaticModelObservable,
 	HiResTimer  * const   pActionTimer,
-	MonitorWindow const * pMonitorWindow,
-	ScanMatrix          * pScanMatrix
+	MonitorWindow const * pMonitorWindow
 )
 {
 	m_pStaticModelObservable = &pStaticModelObservable;
@@ -68,8 +69,7 @@ void MainWindow::Start
 		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
 		bShowRefreshRateDialog,
 		controller,
-		pMonitorWindow,
-		pScanMatrix
+		pMonitorWindow
 	);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 	m_pCursorPosObservable = & cursorObservable;
@@ -218,8 +218,13 @@ bool MainWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 
 bool MainWindow::connectionAllowed()
 {
-	return ConnectionType::ct_none != 
-		   m_pNMRI->ConnectionResult(m_nobIdHighlighted, m_nobIdTarget);
+	return ConnectionType::ct_none !=  m_pNMRI->ConnectionResult(m_nobIdHighlighted, m_nobIdTarget);
+}
+
+bool MainWindow::setScanAreaHandle(MicroMeterPnt const& umCrsrPos)
+{
+	m_scanAreaHandleSelected = m_pNMRI->SelectScanAreaHandle(GetDrawContextC(), umCrsrPos);
+	return m_scanAreaHandleSelected.has_value();
 }
 
 void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
@@ -238,7 +243,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			return;
 		if (m_pNMRI->ModelLocked())    // no edit operations allowed
 			return;
-		if (GetScanMatrix().SetScanAreaHandle(GetDrawContextC(), umCrsrPos))
+		if (setScanAreaHandle(umCrsrPos))
 			return;
 		if (setHighlightedNob(umCrsrPos))
 			return;
@@ -282,9 +287,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		MoveSelectionCommand::Push(m_umDelta);
 	}
-	else if (GetScanMatrixC().GetHandleSelected().has_value())    // manipulate selection area
+	else if (m_scanAreaHandleSelected.has_value())    // manipulate selection area
 	{
-		SetScanAreaCmd::Push(GetScanMatrixC().GetHandleSelected().value(), m_umDelta);
+		SetScanAreaCmd::Push(m_scanAreaHandleSelected.value(), m_umDelta);
 	}
 	else if (IsDefined(m_nobIdHighlighted))    // move single nob
 	{
@@ -489,13 +494,13 @@ void MainWindow::PaintGraphics()
 	{
 		if (NNetPreferences::ModelFront())
 		{
-			GetScanMatrix().DrawScanArea(m_context, NNetPreferences::m_colorLutScan, NNetPreferences::ApplyFilter());
+			DrawScanArea(m_scanAreaHandleSelected);
 			drawModel(m_context );
 		}
 		else
 		{
 			drawModel(m_context);
-			GetScanMatrix().DrawScanArea(m_context, NNetPreferences::m_colorLutScan, NNetPreferences::ApplyFilter());
+			DrawScanArea(m_scanAreaHandleSelected);
 		}
 	}
 	else

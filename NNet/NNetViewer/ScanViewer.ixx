@@ -4,6 +4,7 @@
 
 module;
 
+#include <optional>
 #include <Windows.h>
 
 export module ScanViewer;
@@ -12,6 +13,8 @@ import Types;
 import NNetPreferences;
 import NNetWin32;
 
+using std::nullopt;
+
 export class ScanViewer : public NNetWindow
 {
 public:
@@ -19,8 +22,7 @@ public:
 	(
 		HWND           const hwndParent, 
 		bool           const bShowRefreshRateDialog,
-		NNetCommandHandler & controller,
-		ScanMatrix   * const pScanMatrix
+		NNetCommandHandler & controller
 	)
 	{
 		NNetWindow::Start
@@ -29,15 +31,14 @@ public:
 			WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
 			bShowRefreshRateDialog,
 			controller,
-			nullptr,
-			pScanMatrix
+			nullptr
 		);
 	}
 
 private:
 	void PaintGraphics() final
 	{
-		GetScanMatrix().DrawScanArea(m_context, NNetPreferences::m_colorLutScan, NNetPreferences::ApplyFilter());
+		DrawScanArea(nullopt);
 	}
 
 	void centerAndZoomRect()

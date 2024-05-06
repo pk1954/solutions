@@ -1,6 +1,6 @@
 // ScanMatrix.ixx
 //
-// NNetScan
+// NNetModel
 
 module;
 
@@ -19,7 +19,7 @@ import Uniform2D;
 import ColorLUT;
 import DrawContext;
 import :ScanPixel;
-import :NNetModelReaderInterface;
+import :UPNobList;
 
 export import Raster;
 
@@ -28,35 +28,42 @@ using std::vector;
 using std::optional;
 using std::nullopt;
 
+export using ScanImageRaw  = Vector2D<mV>;
+export using ScanImageByte = Vector2D<ColIndex>;
+
 export class ScanMatrix: public ObserverInterface
 {
 public:
 
-    void Initialize();
+    ScanMatrix();
 
-    void SetModelInterface(NNetModelReaderInterface* const);
-    void PrepareScanMatrix();
-    void Clear();
-    mV   Scan(RasterPoint const&);
-    bool SetScanAreaHandle(DrawContext const&, MicroMeterPnt const&);
-    void DrawScanAreaBackground(DrawContext const&) const;
-    void DrawScanArea(DrawContext const&, ColorLUT const&, bool const);
+    void Prepare(Raster const&, UPNobList const&);
+    void DrawScanAreaBackground(DrawContext const&, Raster const&) const;
+    void DrawScanArea          (DrawContext const&, Raster const&, ScanImageByte const* const, ColorLUT const&, bool const, optional<CardPoint> const, UPNobList const&) const;
+    void DrawScanImage         (DrawContext const&, Raster const&, ScanImageByte const&, ColorLUT const&, bool const) const;
+    void DrawSensorDensityMap  (DrawContext const&, Raster const&, UPNobList const&) const;
+    void DrawScanAreaHandles   (DrawContext const&, Raster const&, optional<CardPoint> const) const;
+    void DrawScanRaster        (DrawContext const&, Raster const&) const;
+
+    optional<CardPoint> SelectScanAreaHandle(DrawContext const&, Raster const&, MicroMeterPnt const&) const;
+
+    void Clear() { Apply2AllScanPixels([](auto &p) { p.Clear(); }); }
 
     void Notify(bool const) final { m_bDirty = true; }
 
-    RasterPoint Size  ()                        const { return m_scanPixels.Size(); }
-    RasterIndex Width ()                        const { return m_scanPixels.Width(); }
-    RasterIndex Height()                        const { return m_scanPixels.Height(); }
-    float       AspectRatio()                   const { return m_scanPixels.AspectRatio(); }
-    bool        IsValid(RasterPoint const& pnt) const { return m_scanPixels.IsValid(pnt); }
+    RasterPoint      Size  ()                                   const { return m_scanPixels.Size(); }
+    RasterIndex      Width ()                                   const { return m_scanPixels.Width(); }
+    RasterIndex      Height()                                   const { return m_scanPixels.Height(); }
+    float            AspectRatio()                              const { return m_scanPixels.AspectRatio(); }
+    bool             IsValid            (RasterPoint const& rp) const { return m_scanPixels.IsValid(rp); }
+    ScanPixel const& GetScanPixel       (RasterPoint const& rp) const { return *m_scanPixels.GetConstPtr(rp); }
+    mV               Scan               (RasterPoint const& rp) const { return GetScanPixel(rp).Scan(); }
+    size_t           NrOfDataPntsInPixel(RasterPoint const& rp) const { return GetScanPixel(rp).NrOfDataPnts(); }
 
-    ScanPixel const &GetScanPixel(RasterPoint const&) const;
-
-    size_t NrOfDataPntsInPixel(RasterPoint const&) const;
-    size_t NrOfDataPntsInMatrix()                  const;
-    size_t MaxNrOfDataPoints()                     const { return m_maxNrOfDataPnts; }
-    float  AverageDataPointsPerPixel()             const;
-    float  DivideByArea(size_t const)              const;
+    size_t NrOfDataPntsInMatrix()      const;
+    size_t MaxNrOfDataPoints()         const { return m_maxNrOfDataPnts; }
+    float  AverageDataPointsPerPixel() const { return DivideByArea(NrOfDataPntsInMatrix()); }
+    float  DivideByArea(size_t const)  const;
     float  DataPointVariance();
 
     void DensityCorrection(ScanImageRaw &) const;
@@ -71,22 +78,16 @@ public:
         m_scanPixels.Apply2AllPixelsC(func);
     }
 
-    optional<CardPoint> GetHandleSelected() const { return m_scanAreaHandleSelected; }
-
 private:
-    void       add2list(Pipe const&);
-    void       findMaxNrOfDataPoints();
-    ColorLUT   sensorDensityLUT() const;
-    MicroMeter getScanAreaHandleSize(Uniform2D<MicroMeter> const &);
-    void       drawSensorDensityMap(DrawContext const&);
-    void       drawScanImage(DrawContext const&, ColorLUT const&, bool const) const;
-    void       drawScanAreaHandles(DrawContext const&);
-    void       drawScanRaster(DrawContext const&);
+    void           add2list(Pipe const&, Raster const&);
+    void           findMaxNrOfDataPoints();
+    ColorLUT       sensorDensityLUT() const;
+    Color          handleColor          (CardPoint const, optional<CardPoint> const) const;
+    MicroMeter     getScanAreaHandleSize(Uniform2D<MicroMeter> const &) const;
+    MicroMeterRect getRectHandle        (MicroMeter const, MicroMeterRect const, CardPoint const) const;
 
-	NNetModelReaderInterface const* m_pNMRI  { nullptr };
-    bool                            m_bDirty { true };
-    size_t                          m_maxNrOfDataPnts;
-    Vector2D<ScanPixel>             m_scanPixels;
-    CRITICAL_SECTION                m_cs;
-	optional<CardPoint>             m_scanAreaHandleSelected { nullopt };
+    bool                m_bDirty { true };
+    size_t              m_maxNrOfDataPnts;
+    Vector2D<ScanPixel> m_scanPixels;
+    CRITICAL_SECTION    m_cs;
 };

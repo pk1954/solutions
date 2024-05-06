@@ -8,6 +8,7 @@ module;
 #include <sstream> 
 #include "Resource.h"
 #include "Windows.h"
+#include <optional>
 
 module NNetWin32:NNetWindow;
 
@@ -16,9 +17,11 @@ import Types;
 import Direct2D;
 import Win32_Sound;
 import NNetModel;
+import NNetPreferences;
 import :NNetCommandHandler;
 
 using std::function;
+using std::optional;
 
 static Color const EEG_SIGNAL_HIGH { 1.0f, 0.5f, 0.0f, 1.0f };
 
@@ -28,8 +31,7 @@ void NNetWindow::Start
 	DWORD           const dwStyle,
 	bool            const bShowRefreshRateDialog,
 	NNetCommandHandler  & controller,
-	MonitorWindow const * pMonitorWindow,
-	ScanMatrix    * const pScanMatrix
+	MonitorWindow const * pMonitorWindow
 )
 {
 	GraphicsWindow::Initialize
@@ -42,7 +44,6 @@ void NNetWindow::Start
 	SetDefaultBackgroundColor();
 	m_pCmdHandler          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
-	m_pScanMatrix          = pScanMatrix;
 	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
 	m_pBrushSensorSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
@@ -134,6 +135,40 @@ void NNetWindow::DrawSensors() const
 			}
 		}
 	);
+}
+
+void NNetWindow::DrawScanArea(optional<CardPoint> const cardPntSelected) const
+{
+	m_pNMRI->DrawScanArea
+	(
+		m_context, 
+		NNetPreferences::m_colorLutScan, 
+		NNetPreferences::ApplyFilter(),
+		cardPntSelected
+	);
+}
+
+void NNetWindow::CenterAndZoomRect
+(
+	Uniform2D<MicroMeter> &coordTarget,
+	MicroMeterRect   const umRect,
+	float            const fRatioFactor 
+)
+{
+	MicroMeter const umZoomFactor 
+	{ 
+		coordTarget.ComputeZoom(umRect, GetClRectSize(), fRatioFactor) 
+	};
+	coordTarget.SetPixelSize(umZoomFactor, false);    // do not change order!
+		
+	fPixelPoint const fPixOffset   
+	{ 
+		coordTarget.Transform2fPixelSize(umRect.GetCenter())   // SetPixelSize result is used here
+		- Convert2fPixelPoint(GetClRectCenter()) 
+	}; 
+	coordTarget.SetPixelOffset(fPixOffset, false);  // do not change order! 
+
+	coordTarget.NotifyAll(true);
 }
 
 void NNetWindow::drawSignalCable

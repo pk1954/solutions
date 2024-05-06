@@ -100,6 +100,8 @@ public:
 	Sensor          const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
 	MicroMeter             GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
 	RasterPoint            GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
+	RasterIndex            GetScanAreaWidth()                     const { return m_pModel->GetScanAreaWidth(); }
+	RasterIndex            GetScanAreaHeight()                    const { return m_pModel->GetScanAreaHeight(); }
 	Raster          const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	ScanImageByte   const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	bool                   ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
@@ -111,7 +113,9 @@ public:
 	optional<RasterPoint>  FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect         GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
 	time_t                 GetScanTime()                          const { return m_pModel->GetScanTime(); }
+	mV                     Scan(RasterPoint const& rp)            const { return m_pModel->Scan(rp); }
 	void                   Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
+	void                   DensityCorrection(ScanImageRaw& image) const { m_pModel->DensityCorrection(image); }
 	fMicroSecs             TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const
@@ -179,9 +183,14 @@ public:
 
 	bool GetDescriptionLine(int const, wstring&) const;
 
-	void DrawExterior(NobId      const,   DrawContext const &, tHighlight const) const;
-	void DrawInterior(NobId      const,   DrawContext const &, tHighlight const) const;
-	void DrawLine(MicroMeterLine const &, DrawContext const &)                   const;
+	void DrawExterior(NobId      const,  DrawContext const&, tHighlight const) const;
+	void DrawInterior(NobId      const,  DrawContext const&, tHighlight const) const;
+	void DrawLine(MicroMeterLine const&, DrawContext const&)                   const;
+
+	void DrawScanArea(DrawContext const&, ColorLUT const&, bool const, optional<CardPoint> const) const;
+	void DrawScanAreaBackground(DrawContext const& context) const { m_pModel->DrawScanAreaBackground(context); }
+
+	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 
 	MicroMeterPnt OrthoVector(NobId const) const;
 
