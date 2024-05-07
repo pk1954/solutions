@@ -76,6 +76,8 @@ public:
 	bool IsZero   () const { return * this == ZERO_VAL(); };
 	bool IsNotZero() const { return * this != ZERO_VAL(); };
 
+	float AspectRatio() const { return m_y / m_x; }
+
 	friend BASE_TYPE Distance(PointType const & npA, PointType const & npB)
 	{
 		PointType diff { npA - npB };

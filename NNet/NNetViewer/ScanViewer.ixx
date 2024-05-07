@@ -18,22 +18,19 @@ using std::nullopt;
 export class ScanViewer : public NNetWindow
 {
 public:
-	void Start
-	(
-		HWND           const hwndParent, 
-		bool           const bShowRefreshRateDialog,
-		NNetCommandHandler & controller
-	)
+	void Start(HWND const hwndParent)
 	{
 		NNetWindow::Start
 		(
 			hwndParent, 
 			WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
-			bShowRefreshRateDialog,
-			controller,
+			false,
+			m_controller,
 			nullptr
 		);
 	}
+
+	float AspectRatio() const { return m_pNMRI->GetScanAreaRect().AspectRatio(); }
 
 private:
 	void PaintGraphics() final
@@ -45,4 +42,21 @@ private:
 	{
 		CenterAndZoomRect(GetCoord(), m_pNMRI->GetScanAreaRect(), 1.0f);
 	}
+
+	class controller: public NNetCommandHandler
+	{
+	public:
+		void SetModelInterface(NNetModelReaderInterface * const);
+
+		bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL) final
+		{
+			return false;
+		};
+
+	private:
+
+	};				          
+
+	controller m_controller;
+
 };

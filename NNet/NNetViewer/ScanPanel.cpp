@@ -38,24 +38,17 @@ ScanPanel::ScanPanel
 	);
 	m_upEventViewer = make_unique<EventViewer>(hwnd);
     m_upEventViewer->SetModelInterface(pNMWI);
-    //m_upScanWindow = make_unique<NNetWindow>();
- //   m_upScanWindow->Start   
-	//(
-	//	hwnd,
-	//	WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
-	//	false, // no refreshRateDialog,
-	//	nullptr,
-	//	nullptr,
-	//	pScanMatrix
-	//);
+    m_upScanViewer = make_unique<ScanViewer>();
+    m_upScanViewer->SetModelInterface(pNMWI);
+	m_upScanViewer->Start(hwnd);
 }
 
 bool ScanPanel::OnSize(PIXEL const width, PIXEL const height)
 {
-	assert(m_upScanWindow);
+	assert(m_upScanViewer);
 	fPixel const fPixPanelHeight       { Convert2fPixel(height) };
 	fPixel const fPixPanelWidth        { Convert2fPixel(width) };
-	float  const fRatio                { m_upScanWindow->GetScanMatrixC().AspectRatio() };
+	float  const fRatio                { m_upScanViewer->AspectRatio() };
 	fPixel const fPixMaxHeight1        { fPixPanelWidth / fRatio };
 	fPixel const fPixMaxHeight2        { fPixPanelHeight * SCAN_WINDOW_HEIGHT };
 	fPixel const fPixScanWindowHeight  { min(fPixMaxHeight1, fPixMaxHeight2) };
@@ -66,8 +59,13 @@ bool ScanPanel::OnSize(PIXEL const width, PIXEL const height)
 	PIXEL  const pixWidth              { Convert2PIXEL(fPixWidth) };
 
 	m_upEventViewer->Move(0_PIXEL, 0_PIXEL,                pixWidth, pixEventViewerHeight, true);
-	m_upScanWindow ->Move(0_PIXEL, pixEventViewerHeight+1, pixWidth, pixScanWindowHeight,  true);
+	m_upScanViewer ->Move(0_PIXEL, pixEventViewerHeight+1, pixWidth, pixScanWindowHeight,  true);
 
 	BaseWindow::OnSize(width, height);
 	return true;
+}
+
+float ScanPanel::AspectRatio() const
+{
+	return m_upScanViewer->AspectRatio() / SCAN_WINDOW_HEIGHT;
 }

@@ -100,8 +100,8 @@ public:
 	void     CheckRadioButton(int iFirst, int iLast, int iCheck)                  const { ::CheckRadioButton(m_hwnd, iFirst, iLast, iCheck); }
 	UINT     IsDlgButtonChecked(int iIdButton)                                    const { return ::IsDlgButtonChecked(m_hwnd, iIdButton); }
 	bool     Move(PIXEL const xPos, PIXEL const yPos)                             const { return ::MoveWindow(m_hwnd, xPos, yPos); }
-	bool     Move(PixelPoint const pos)                                           const { return ::MoveWindow(m_hwnd, pos); }
-	void     Move(PixelRect const rect, bool const bRedraw)                       const { Move(rect.GetStartPoint(), rect.GetSize(), bRedraw); }
+	bool     Move(PixelPoint const &pos)                                          const { return ::MoveWindow(m_hwnd, pos); }
+	void     Move(PixelRect const &rect, bool const bRedraw)                      const { Move(rect.GetStartPoint(), rect.GetSize(), bRedraw); }
 	HWND     CreateBalloonToolTip(int const id, LPWSTR const& t)                  const { return ::CreateBalloonToolTip(m_hwnd, id, t); }
 	HWND     CreateStdToolTip(int const id, LPWSTR const& t)                      const { return ::CreateStdToolTip(m_hwnd, id, t); }
 	HWND     CreateWindowToolTip(LPWSTR const& t)                                 const { return ::CreateWindowToolTip(m_hwnd, t); }

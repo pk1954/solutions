@@ -75,7 +75,7 @@ export inline bool MoveWindow(HWND const hwnd, PIXEL const xPos, PIXEL const yPo
     return ::MoveWindow(hwnd, xPos.GetValue(), yPos.GetValue(), width.GetValue(), height.GetValue(), bRedraw);
 }
 
-export inline bool MoveWindow(HWND const hwnd, PixelRect const rect, bool const bRedraw)
+export inline bool MoveWindow(HWND const hwnd, PixelRect const &rect, bool const bRedraw)
 {
     return MoveWindow(hwnd, rect.GetLeft(), rect.GetTop(), rect.GetWidth(), rect.GetHeight(), bRedraw);
 }
@@ -85,7 +85,7 @@ export inline bool MoveWindow(HWND const hwnd, PIXEL const xPos, PIXEL const yPo
     return ::SetWindowPos(hwnd, HWND_TOP, xPos.GetValue(), yPos.GetValue(), 0, 0, SWP_NOSIZE);
 }
 
-export inline bool MoveWindow(HWND const hwnd, PixelPoint const pos)
+export inline bool MoveWindow(HWND const hwnd, PixelPoint const &pos)
 {
     return MoveWindow(hwnd, pos.GetX(), pos.GetY());
 }

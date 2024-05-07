@@ -116,7 +116,7 @@ protected:
 	PixelPoint GetPtLast() const { return m_ptLast; }
 
 	void SetPtLast(PixelPoint const& pt) { m_ptLast = pt; }
-	void ClearPtLast() { m_ptLast.Set2Null(); }
+	void ClearPtLast()                   { m_ptLast.Set2Null(); }
 
 private:
 	NNetWindow(NNetWindow const&);                       // noncopyable class 
@@ -125,7 +125,6 @@ private:
 	inline static fPixel const HRADIUS { 20._fPixel };
 	inline static fPixel const VRADIUS { 10._fPixel };
 
-	ScanMatrix         * m_pScanMatrix { nullptr };
 	NNetCommandHandler * m_pCmdHandler { nullptr };
 	PixelPoint           m_ptLast      { PP_NULL };	// Last cursor position during selection 
 

@@ -34,9 +34,10 @@ public:
 
 	void Start();
 
-    void AddScan()
+    void AddScan(unique_ptr<ScanPanel> panel)
     {
-
+		m_panelList.push_back(move(panel));
+		arrangePanels(GetClRectSize());
     }
 
 	NNetViewerWindow            (NNetViewerWindow const&) = delete;  // noncopyable class 
@@ -50,14 +51,13 @@ private:
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 	void OnClose  ()                                             final;
 
+	void    arrangePanels(PixelRectSize const&);
 	void    configureStatusBar();
 	wstring AskModelFile(enum class tFileMode const) const;
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 
 	int                           m_statusMessagePart{ };
-	unique_ptr<Model>             m_upModel;
-	NNetModelReaderInterface    * m_pNMRI       { nullptr };
 	HWND                          m_hwndApp     { nullptr };
 	NNetModelIO                   m_modelIO;
 	NNetViewerMenu                m_scanViewerMenu;
