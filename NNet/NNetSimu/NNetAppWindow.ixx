@@ -63,17 +63,16 @@ private:
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 	void OnClose  ()                                             final;
 
-	void    configureStatusBar();
-	void    adjustChildWindows();
-	void    processScript() const;
-	void    setModelInterface();
-	void    replaceModel();
-	void    newModel();
-	bool    SaveModelAs();
-	bool    SaveModel();
-	bool    AskAndSave();
-	bool    AskNotUndoable();
-	void    WriteModel();
+	void configureStatusBar();
+	void processScript() const;
+	void setModelInterface();
+	void replaceModel();
+	void newModel();
+	bool SaveModelAs();
+	bool SaveModel();
+	bool AskAndSave();
+	bool AskNotUndoable();
+	void WriteModel();
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 

@@ -5,23 +5,21 @@
 module;
 
 #include <string>
-#include <memory>
-#include <algorithm>
+#include <vector>
 #include <Windows.h>
 
 module NNetViewerWindow;
 
 import Win32_Util_Resource;
-import SaveCast;
+import Win32_Util;
 import IoUtil;
+import PanelPlatform;
 
 using std::unique_ptr;
 using std::wstring;
-using std::min;
+using std::vector;
 
-NNetViewerWindow::~NNetViewerWindow() = default;
-
-void NNetViewerWindow::Start()
+NNetViewerWindow::NNetViewerWindow()
 {
 	HWND hwnd = StartBaseWindow
 	(
@@ -33,8 +31,23 @@ void NNetViewerWindow::Start()
 		nullptr
 	);
 
+	::SetApplicationTitle(hwnd, L"Scan viewer");
+
 	m_statusBar.Start(hwnd);
+	configureStatusBar();
+	m_statusBar.Arrange(*this, m_panelPlatform);
+
 	Show(true);
+}
+
+NNetViewerWindow::~NNetViewerWindow() = default;
+
+void NNetViewerWindow::configureStatusBar()
+{
+	int iPart = 0;
+	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
+	m_statusMessagePart = iPart;
+	m_statusBar.LastPart();
 }
 
 bool NNetViewerWindow::UserProc
@@ -54,50 +67,9 @@ bool NNetViewerWindow::UserProc
 	return BaseWindow::UserProc(message, wParam, lParam);
 }
 
-void NNetViewerWindow::arrangePanels(PixelRectSize const& pixWinSize)
-{
-	long const nrOfPanels { Cast2Long(m_panelList.size()) };
-	if (nrOfPanels == 0)
-		return;
-	float const fRatioPanel   { m_panelList.front()->AspectRatio() };
-	PIXEL       pixPanelWidth { 0_PIXEL };
-
-	long nrOfRows { 1 };
-	while (nrOfRows <= nrOfPanels)
-	{
-		long   const nrOfCols         { nrOfPanels / nrOfRows };
-		PIXEL  const pixPanelWidth1   { pixWinSize.GetX() / nrOfCols };
-		PIXEL  const pixPanelHeight   { pixWinSize.GetY() / nrOfRows };
-		fPixel const fPixPanelWidth2  { Convert2fPixel(pixPanelHeight) / fRatioPanel };
-		PIXEL  const pixPanelWidth2   { Convert2PIXEL(fPixPanelWidth2) };
-		PIXEL  const pixPanelWidthMin { min(pixPanelWidth1, pixPanelWidth2) };
-		if (pixPanelWidthMin > pixPanelWidth)
-			pixPanelWidth = pixPanelWidthMin;
-		else
-			break;
-		++nrOfRows;
-	}
-	fPixel        const fPixPanelHeight { Cast2Float(pixPanelWidth.GetValue()) * fRatioPanel };
-	PIXEL         const pixPanelHeight  { Convert2PIXEL(fPixPanelHeight) };
-	PixelRectSize const pixPanelSize(pixPanelWidth, pixPanelHeight);
-	PIXEL               pixPanelPosX(0_PIXEL);
-	PIXEL               pixPanelPosY(0_PIXEL);
-	for (unique_ptr<ScanPanel>const &upPanel : m_panelList)
-	{
-		PixelPoint const pixPanelPos(pixPanelPosX, pixPanelPosY);
-		PixelRect  const rect(pixPanelPos, pixPanelSize);
-		upPanel->Move(rect, false);
-		if (pixPanelPosX += pixPanelWidth > pixWinSize.GetX())
-		{
-			pixPanelPosX = 0_PIXEL;
-			pixPanelPosY += pixPanelHeight; 
-		}
-	}
-}
-
 bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	arrangePanels(PixelRectSize(width, height));
+	m_statusBar.Arrange(*this, m_panelPlatform);
 	return true;
 }
 

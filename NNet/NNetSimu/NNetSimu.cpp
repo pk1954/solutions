@@ -24,6 +24,7 @@ import Script;
 import Scanner;
 import Accelerators;
 import NNetAppWindow;
+import NNetViewerWindow;
 import ScanViewer;
 
 using std::make_unique;
@@ -34,7 +35,8 @@ using std::endl;
 using std::setw;
 using std::left;
 
-unique_ptr<NNetAppWindow> upApp;
+unique_ptr<NNetAppWindow>    upApp;
+unique_ptr<NNetViewerWindow> upViewer;
 
 int APIENTRY wWinMain
 (
@@ -70,7 +72,8 @@ int APIENTRY wWinMain
 
 	PrintAppStartProtocol(PRODUCT_NAME);
 
-	upApp = make_unique<NNetAppWindow>(PRODUCT_NAME);
+	upApp    = make_unique<NNetAppWindow>(PRODUCT_NAME);
+	upViewer = make_unique<NNetViewerWindow>();
 
 	Accelerators acc;
 	MessagePump  pump;

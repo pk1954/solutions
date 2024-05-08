@@ -196,6 +196,20 @@ void RootWindow::Move(PixelPoint const pos, PixelRectSize const size, bool const
 	Move(pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw);
 }
 
+void RootWindow::ArrangeVertical
+(
+	RootWindow const& winTop,
+	RootWindow const& winBottom,
+	PIXEL      const  pixTopHeight,
+	bool       const  bRedraw
+) const
+{
+	PixelRectSize size(GetClRectSize());
+	assert(size.GetY() > pixTopHeight);
+	winTop   .Move(0_PIXEL, 0_PIXEL,      size.GetX(), pixTopHeight,               bRedraw);
+	winBottom.Move(0_PIXEL, pixTopHeight, size.GetX(), size.GetY() - pixTopHeight, bRedraw);
+}
+
 void RootWindow::UpdateImmediately() const
 {
 	Invalidate(false);

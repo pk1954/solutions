@@ -191,7 +191,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	WinManager::AddWindow(L"IDM_LUT_DESIGNER",   RootWinId(IDM_LUT_DESIGNER  ), m_colLutWindow,                 true,  true );
 
 	configureStatusBar();
-	adjustChildWindows();
+	m_statusBar.Arrange(*this, m_mainNNetWindow);
 
 	m_monitorWindow .Move(PixelRect{ 200_PIXEL,   0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
 	m_miniNNetWindow.Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
@@ -301,7 +301,7 @@ void NNetAppWindow::Stop()
 
 bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	adjustChildWindows();
+	m_statusBar.Arrange(*this, m_mainNNetWindow);
 	return true;
 }
 
@@ -354,27 +354,6 @@ void NNetAppWindow::configureStatusBar()
 	m_statusBar.LastPart();
 	m_timeDisplay.Notify(true);
 	m_slowMotionDisplay.Notify(true);
-}
-
-void NNetAppWindow::adjustChildWindows()
-{
-	PixelRectSize pntAppClientSize(::GetClRectSize(m_hwndApp));
-	if (pntAppClientSize.IsNotZero())
-	{
-		PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
-		PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
-		m_statusBar.Resize();
-		pixAppClientWinHeight -= m_statusBar.GetHeight();
-
-		m_mainNNetWindow.Move  // use all available space for model window
-		(
-			0_PIXEL, 
-			0_PIXEL, 
-			pixAppClientWinWidth, 
-			pixAppClientWinHeight, 
-			true 
-		);
-	}
 }
 
 void NNetAppWindow::OnClose()

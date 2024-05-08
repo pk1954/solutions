@@ -50,6 +50,12 @@
     <ClCompile Include="EventViewer.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PanelPlatform.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NNetViewer.rc">

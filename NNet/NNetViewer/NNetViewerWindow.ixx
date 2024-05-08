@@ -9,7 +9,6 @@ module;
 #include <iostream>
 #include <Windows.h>
 #include <memory>
-#include <vector>
 
 export module NNetViewerWindow;
 
@@ -18,27 +17,17 @@ import NNetModel;
 import NNetModelIO;
 import NNetViewerMenu;
 import StatusBar;
+import PanelPlatform;
 import StatusBarDisplayFunctor;
-import ScanPanel;
 
 using std::wstring;
 using std::wofstream;
-using std::unique_ptr;
-using std::vector;
 
 export class NNetViewerWindow : public BaseWindow
 {
 public:
-	NNetViewerWindow(wstring const &);
+	NNetViewerWindow();
 	~NNetViewerWindow() override;
-
-	void Start();
-
-    void AddScan(unique_ptr<ScanPanel> panel)
-    {
-		m_panelList.push_back(move(panel));
-		arrangePanels(GetClRectSize());
-    }
 
 	NNetViewerWindow            (NNetViewerWindow const&) = delete;  // noncopyable class 
 	NNetViewerWindow& operator= (NNetViewerWindow const&) = delete;  // noncopyable class 
@@ -51,19 +40,15 @@ private:
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 	void OnClose  ()                                             final;
 
-	void    arrangePanels(PixelRectSize const&);
 	void    configureStatusBar();
 	wstring AskModelFile(enum class tFileMode const) const;
 
-	bool m_bStarted { false }; // if true, model is visible, all functions available
-
-	int                           m_statusMessagePart{ };
-	HWND                          m_hwndApp     { nullptr };
-	NNetModelIO                   m_modelIO;
-	NNetViewerMenu                m_scanViewerMenu;
-	StatusBar                     m_statusBar;
-	StatusBarDisplayFunctor       m_statusBarDispFunctor;
-    vector<unique_ptr<ScanPanel>> m_panelList;
+	int                     m_statusMessagePart;
+	NNetModelIO             m_modelIO;
+	NNetViewerMenu          m_scanViewerMenu;
+	StatusBar               m_statusBar;
+	PanelPlatform           m_panelPlatform;
+	StatusBarDisplayFunctor m_statusBarDispFunctor;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

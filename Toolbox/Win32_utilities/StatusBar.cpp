@@ -50,7 +50,7 @@ void StatusBar::Start(HWND const hwndParent)
 		STATUSCLASSNAME, 
 		nullptr, 
 		WS_CHILD,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, STATUS_BAR_HEIGHT.GetValue(),
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, HEIGHT.GetValue(),
 		hwndParent,
 		nullptr, 
 		GetModuleHandle(nullptr), 
@@ -63,7 +63,7 @@ void StatusBar::Start(HWND const hwndParent)
 
 	m_pixBorderX      = static_cast<PIXEL>(GetSystemMetrics(SM_CXSIZEFRAME)) + 10_PIXEL;
 	m_pixBorderY      = static_cast<PIXEL>(GetSystemMetrics(SM_CYSIZEFRAME));
-	m_pixClientHeight = GetHeight() - m_pixBorderY;
+	m_pixClientHeight = HEIGHT - m_pixBorderY;
 }
 
 void StatusBar::AddCustomControl
@@ -162,16 +162,6 @@ HWND WINAPI StatusBar::AddTrackBar(int const iMenu)
 	return hwnd;
 };
 
-PIXEL StatusBar::GetHeight() const
-{
-    return STATUS_BAR_HEIGHT;
-}
-    
-void StatusBar::Resize() const 
-{
-    SendMessage(WM_SIZE, 0, 0);
-}
-
 void StatusBar::DisplayInPart(int const iPart, wstring const & wstrLine) const
 {
 	SendMessage(SB_SETTEXT, iPart, (LPARAM)(wstrLine.c_str()));
@@ -200,3 +190,19 @@ void StatusBar::WriteProgressReport(int const iPart, wstring const & msg) const
 {
 	DisplayInPart(iPart, L"Writing " + msg);
 }
+
+void StatusBar::Arrange
+(
+	RootWindow const& winParent,
+	RootWindow const& winMain
+)
+{
+	winParent.ArrangeVertical
+	(
+		winMain, 
+		*this, 
+		winParent.GetWindowHeight() - StatusBar::HEIGHT, 
+		true
+	);
+}
+

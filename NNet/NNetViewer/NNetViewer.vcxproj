@@ -146,6 +146,8 @@
   <ItemGroup>
     <ClCompile Include="EventViewer.cpp" />
     <ClCompile Include="EventViewer.ixx" />
+    <ClCompile Include="PanelPlatform.cpp" />
+    <ClCompile Include="PanelPlatform.ixx" />
     <ClCompile Include="ScanPanel.cpp" />
     <ClCompile Include="NNetViewerMenu.cpp" />
     <ClCompile Include="NNetViewerMenu.ixx" />

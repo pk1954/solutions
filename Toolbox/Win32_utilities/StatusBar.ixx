@@ -25,9 +25,6 @@ public:
 	void Start(HWND const);
 	void Stop();
 
-	PIXEL GetHeight() const;
-	void  Resize() const;
-
 	HWND WINAPI AddStaticControl(int const);
 	HWND WINAPI AddStaticControl(LPCTSTR const);
 	HWND WINAPI AddButton       (LPCTSTR const, int const, DWORD const);
@@ -44,9 +41,11 @@ public:
 	void ReadProgressReport (int const, Script *) const;
 	void WriteProgressReport(int const, wstring const &) const;
 
+	void Arrange(RootWindow const&, RootWindow const&);
+
 private:
 
-	inline static PIXEL const STATUS_BAR_HEIGHT { 22_PIXEL };
+	inline static PIXEL const HEIGHT { 22_PIXEL };
 
 	HWND WINAPI addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, int const);
 
