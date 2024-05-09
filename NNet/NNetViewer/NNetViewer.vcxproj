@@ -149,8 +149,6 @@
     <ClCompile Include="PanelPlatform.cpp" />
     <ClCompile Include="PanelPlatform.ixx" />
     <ClCompile Include="ScanPanel.cpp" />
-    <ClCompile Include="NNetViewerMenu.cpp" />
-    <ClCompile Include="NNetViewerMenu.ixx" />
     <ClCompile Include="NNetViewerWindow.cpp" />
     <ClCompile Include="ScanPanel.ixx" />
     <ClCompile Include="NNetViewerWindow.ixx" />

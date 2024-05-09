@@ -31,14 +31,14 @@ public:
 
 	/// import ///
 
-	static bool Import(wstring const&, unique_ptr<InputOutputUI>);
+	static bool Import(wstring const, unique_ptr<InputOutputUI>);
 
 	static void CheckImportedNobId(Script&, UPNobList const&, NobId const);
 
 	static NNetModelWriterInterface& GetImportNMWI   () { return *m_upImportedNMWI; }
 	static unique_ptr<Model>         GetImportedModel() { return move(m_upImportedModel); }
 	static wstring const&            GetModelFileName() { return m_wstrFile2Read; }
-	static void SetModelFileName(wstring const& name) { m_wstrFile2Read = name; }
+	static void SetModelFileName(wstring const& name)   { m_wstrFile2Read = name; }
 
 	/// export ///
 
@@ -83,7 +83,7 @@ private:
 
 	inline static size_t                           m_nrOfcompactIds { 0 };
 	inline static NobIdList                        m_CompactIds;
-	inline static NNetModelReaderInterface const * m_pExportNMRI{ nullptr };  // valid only during export
+	inline static NNetModelReaderInterface const * m_pExportNMRI { nullptr };  // valid only during export
 
 	static void compress(NNetModelReaderInterface const&);
 	static void writeHeader(wostream&);

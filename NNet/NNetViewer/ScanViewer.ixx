@@ -38,6 +38,13 @@ private:
 		DrawScanArea(nullopt);
 	}
 
+	bool OnSize(PIXEL const width, PIXEL const height)
+	{
+		NNetWindow::OnSize(width, height);
+		centerAndZoomRect();
+		return true;
+	}
+
 	void centerAndZoomRect()
 	{
 		CenterAndZoomRect(GetCoord(), m_pNMRI->GetScanAreaRect(), 1.0f);
@@ -46,10 +53,11 @@ private:
 	class controller: public NNetCommandHandler
 	{
 	public:
-		void SetModelInterface(NNetModelReaderInterface * const);
+		void SetModelInterface(NNetModelReaderInterface const * const);
 
 		bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL) final
 		{
+			
 			return false;
 		};
 
@@ -58,5 +66,4 @@ private:
 	};				          
 
 	controller m_controller;
-
 };

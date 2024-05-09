@@ -35,7 +35,7 @@ public:
 
 	virtual ~NNetController();
 
-	void SetModelInterface(NNetModelReaderInterface * const);
+	void SetModelInterface(NNetModelReaderInterface const * const);
 	bool HandleCommand(int const, LPARAM const, MicroMeterPnt const = NP_NULL) final;
 
 	static wstring AskModelFile(enum class tFileMode const);
@@ -47,11 +47,10 @@ private:
 
 	bool processUIcommand   (int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
 	bool processModelCommand(int const, LPARAM const = 0, MicroMeterPnt const = NP_NULL);
-	void deleteSignal       ();
 
-	bool                       m_bTrace           { true };
-	HCURSOR                    m_hCrsrWait        { nullptr };
-	Compute                  * m_pCompute         { nullptr };
-	NNetModelReaderInterface * m_pNMRI            { nullptr };
-	SlowMotionRatio          * m_pSlowMotionRatio { nullptr };
+	bool                            m_bTrace           { true };
+	HCURSOR                         m_hCrsrWait        { nullptr };
+	Compute                       * m_pCompute         { nullptr };
+	NNetModelReaderInterface const* m_pNMRI            { nullptr };
+	SlowMotionRatio               * m_pSlowMotionRatio { nullptr };
 };				          

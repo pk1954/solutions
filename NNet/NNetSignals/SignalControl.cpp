@@ -40,8 +40,6 @@ SignalControl::SignalControl
 
 SignalControl::~SignalControl()
 {
-	if (m_pNMWI && m_pNMWI->IsDefined())
-		GetParams()->UnregisterObserver(*this);
 	m_runObservable         .UnregisterObserver(*this);
 	m_dynamicModelObservable.UnregisterObserver(*this);
 	SetVertScaleFreq(nullptr);
@@ -165,14 +163,14 @@ void SignalControl::drawDiam
 	if (fPixPnt.IsNotNull())
 	{
 		fPixel const size { (colType == tColor::HIGH) ? HIGH_DIAMOND : STD_DIAMOND };
-		Color  const col  { m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : GetColor(colType) };
+		Color  const col  { m_pNMRI->ModelLocked() ? D2D1::ColorF::LightGray : GetColor(colType) };
 		m_upGraphics->FillDiamond(fPixPnt, size, col);
 	}
 }
 
 void SignalControl::paintRunControls(fMicroSecs const time) const
 {
-	SignalGenerator  const* pSigGen{ m_pNMWI->GetSigGenSelected() };
+	SignalGenerator  const* pSigGen{ m_pNMRI->GetSigGenSelectedC() };
 	if (m_pVertScaleFreq)
 	{
 		fPixelPoint const pntFreq       { fPPStimFreq(pSigGen, time) };
@@ -423,7 +421,7 @@ void SignalControl::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			Notify(true);
 		}
 		else  // left button not pressed: select
-		if (!m_pNMWI->ModelLocked())
+		if (!m_pNMRI->ModelLocked())
 		{ 
 			setPos(fPixCrsrPos);
 			Trigger();   // cause repaint

@@ -31,7 +31,7 @@ void NNetWindow::Start
 	DWORD           const dwStyle,
 	bool            const bShowRefreshRateDialog,
 	NNetCommandHandler  & controller,
-	MonitorWindow const * pMonitorWindow
+	MonitorWindow       * pMonitorWindow
 )
 {
 	GraphicsWindow::Initialize
@@ -60,7 +60,7 @@ void NNetWindow::SetDefaultBackgroundColor()
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
 }
 
-void NNetWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+void NNetWindow::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {
 	m_pNMRI = pNMRI;
 }
@@ -126,7 +126,7 @@ void NNetWindow::DrawSensors() const
 				{
 					ID2D1SolidColorBrush* const pBrush
 					{
-						(monData.IsSelected(signalId) && (monData.GetNrOfSignals() > 1))
+						(m_pMonitorWindow->IsSignalHighlighted(signalId) && (monData.GetNrOfSignals() > 1))
 						? m_pBrushSensorSelected
 						: m_pBrushSensorNormal
 					};

@@ -82,8 +82,8 @@ private:
 	fHertz getFreq(fPixelPoint const& p) const { return getFreq(p.GetY()); }
 	mV     getVolt(fPixelPoint const& p) const { return getVolt(p.GetY()); }
 
-	SignalGenerator  const * sigGenSelected  () const { return m_pNMWI->GetSigGenSelected(); }
-	SigGenId                 sigGenIdSelected() const { return m_pNMWI->GetSigGenIdSelected(); }
+	SignalGenerator  const * sigGenSelected  () const { return m_pNMRI->GetSigGenSelectedC(); }
+	SigGenId                 sigGenIdSelected() const { return m_pNMRI->GetSigGenIdSelected(); }
 	SigGenStaticData const * sigGenStaticData() const { return &sigGenSelected()->GetStaticData(); }
 
 	fPixel xPeak      () const { return xTime(sigGenStaticData()->GetPeakTime()); }

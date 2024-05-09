@@ -13,7 +13,6 @@ module StatusBar;
 import Tooltip;
 import Types;
 import Script;
-import WinManager;
 
 using std::to_wstring;
 using std::wstring;
@@ -33,7 +32,7 @@ static LRESULT CALLBACK OwnerDrawStatusBar
 	{
 
 	case WM_COMMAND:
-		WinManager::PostCommand2App(LOWORD(wParam));
+		pStatusBar->PostCommand2Parent(LOWORD(wParam));
 		return true;
 
 	default: 
@@ -201,7 +200,7 @@ void StatusBar::Arrange
 	(
 		winMain, 
 		*this, 
-		winParent.GetWindowHeight() - StatusBar::HEIGHT, 
+		winParent.GetClientWindowHeight() - StatusBar::HEIGHT, 
 		true
 	);
 }

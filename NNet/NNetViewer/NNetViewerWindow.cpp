@@ -12,12 +12,18 @@ module NNetViewerWindow;
 
 import Win32_Util_Resource;
 import Win32_Util;
+import ScriptFile;
+import ScriptHook;
 import IoUtil;
+import NNetWin32;
 import PanelPlatform;
 
 using std::unique_ptr;
 using std::wstring;
 using std::vector;
+
+static int const IDM_ADD_SCAN          { 1024 };
+static int const IDM_ADD_IMPORTED_SCAN { 1025 };
 
 NNetViewerWindow::NNetViewerWindow()
 {
@@ -45,26 +51,16 @@ NNetViewerWindow::~NNetViewerWindow() = default;
 void NNetViewerWindow::configureStatusBar()
 {
 	int iPart = 0;
+	HWND hwndAddButton = m_statusBar.AddButton(L" Add scan ", IDM_ADD_SCAN, BS_PUSHBUTTON);
+
+	iPart = m_statusBar.NewPart();
+	m_ScriptHook.Initialize(& m_statusBar, iPart);
+	m_statusBar.ClearPart(iPart);
 	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
 	m_statusMessagePart = iPart;
+
 	m_statusBar.LastPart();
-}
-
-bool NNetViewerWindow::UserProc
-(
-	UINT   const message, 
-	WPARAM const wParam, 
-	LPARAM const lParam 
-)
-{
-	//switch (message)
-	//{
-
-	//default:
-	//	break;
-	//}
-
-	return BaseWindow::UserProc(message, wParam, lParam);
+	m_statusBar.Show(true);
 }
 
 bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -78,20 +74,27 @@ void NNetViewerWindow::OnClose()
 	Stop();
 }
 
-void NNetViewerWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)
-{
-}
-
-void NNetViewerWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
-{
-}
-
 bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);
 	
 	switch (wmId)
 	{
+	case IDM_ADD_SCAN:
+		NNetModelIO::Import
+		(
+			ScriptFile::AskForFileName(L"scan", L"Scan files", tFileMode::read), 
+			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, this)
+		);
+		return true;
+
+	case IDM_ADD_IMPORTED_SCAN:
+	{
+  //      unique_ptr<Model> upModel {	NNetModelIO::GetImportedModel() };
+		//UpPanel           upPanel { make_unique<ScanPanel(m_panelPlatform, pNMRI) };
+	}
+		return true;
+
 	case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
 		MessageBox(nullptr, L"Could not find scan file", L"Error", MB_OK);
 		return true;

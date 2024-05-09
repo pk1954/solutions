@@ -32,12 +32,6 @@
     <ClCompile Include="NNetViewerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetViewerMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NNetViewerMenu.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScanPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

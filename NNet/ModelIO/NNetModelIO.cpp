@@ -247,7 +247,7 @@ static unsigned int __stdcall importModelThreadProc(void * data)
 
 bool NNetModelIO::Import
 (
-    wstring           const & wstrPath,
+    wstring             const wstrPath,
     unique_ptr<InputOutputUI> upInputUI
 )
 {

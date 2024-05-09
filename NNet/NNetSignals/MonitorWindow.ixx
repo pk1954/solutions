@@ -33,8 +33,9 @@ public:
 
 	void Start(HWND const, SimuRunning const&, Sound&, Observable&);
 	void SetModelInterface(NNetModelWriterInterface* const) const;
-	void StimulusTriggered() const;
 	void ResetHorzCoord();
+
+	void SetHighSigObservable(Observable &obs) { m_upMonitorControl->SetHighSigObservable(obs); }
 
 	PixelPoint GetTrackPosScreen(SignalId const id, tHorzDir const dir)  const 
 	{ 
@@ -51,8 +52,13 @@ public:
 		m_upMonitorControl->SetBackgroundColor(Color(c)); 
 	}
 
-	void MoveHighlightedSignal(PIXEL const pix) const  { m_upMonitorControl->MoveHighlightedSignal(pix); }
-	void DropSignal           ()                const  { m_upMonitorControl->DropSignal(); }
+	void     MoveHighlightedSignal(PIXEL const pix)  const { m_upMonitorControl->MoveHighlightedSignal(pix); }
+	void     DropSignal           ()                 const { m_upMonitorControl->DropSignal(); }
+	bool     IsAnySignalHighlighted()                const { return m_upMonitorControl->IsAnySignalHighlighted(); }
+	bool	 IsSignalHighlighted(SignalId const& id) const { return m_upMonitorControl->IsSignalHighlighted(id); }
+	SignalId SetHighlightedSignal(SignalId const id)       { return m_upMonitorControl->SetHighlightedSignal(id); }
+	SignalId SetHighlightedSignal(Signal   const &s)       { return m_upMonitorControl->SetHighlightedSignal(s); }
+	SignalId GetHighlightedSignalId()                const { return m_upMonitorControl->GetHighlightedSignalId(); }
 
 	PixFpDimension<fMicroSecs> & HorzCoord() { return m_horzCoord; }
 	PixFpDimension<mV>         & VertCoord() { return m_vertCoord; }

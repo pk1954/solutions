@@ -36,8 +36,8 @@ SignalPreview::~SignalPreview()
 
 void SignalPreview::PaintGraphics()
 {
-	if (SignalGenerator      * const pSigGen { m_pNMWI->GetSigGenSelected() })
-	if (NNetParameters const * const pParams { GetParams() })
+	if (SignalGenerator const * const pSigGen { m_pNMRI->GetSigGenSelectedC() })
+	if (NNetParameters  const * const pParams { GetParams() })
 	{
 		SigGenStaticData const & statData     { pSigGen->GetStaticData() };
 		SigGenDynamicData        dynData      { };

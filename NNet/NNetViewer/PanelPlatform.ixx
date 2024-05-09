@@ -21,6 +21,8 @@ export using UpPanel = unique_ptr<ScanPanel>;
 export class PanelPlatform :public BaseWindow
 {
 public:
+    PanelPlatform();
+
     void AddScan(UpPanel);
 
 private:

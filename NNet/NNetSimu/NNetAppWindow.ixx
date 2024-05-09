@@ -73,15 +73,17 @@ private:
 	bool AskAndSave();
 	bool AskNotUndoable();
 	void WriteModel();
+	void importModel();
+	void openModel();
 
 	bool m_bStarted { false }; // if true, model is visible, all functions available
 
-	int                        m_statusMessagePart{ };
-	unique_ptr<Model>          m_upModel;
-	NNetModelReaderInterface * m_pNMRI            { nullptr };
-	HWND                       m_hwndConsole      { nullptr };
-	HWND                       m_hwndApp          { nullptr };
-	wstring            const * m_pwstrProductName { nullptr };
+	int                             m_statusMessagePart{ };
+	unique_ptr<Model>               m_upModel;
+	NNetModelReaderInterface const* m_pNMRI            { nullptr };
+	HWND                            m_hwndConsole      { nullptr };
+	HWND                            m_hwndApp          { nullptr };
+	wstring                 const * m_pwstrProductName { nullptr };
 
 	AboutBox                 m_aboutBox;
 	Compute                  m_compute;

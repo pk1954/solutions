@@ -15,7 +15,7 @@ export module NNetViewerWindow;
 import BaseWindow;
 import NNetModel;
 import NNetModelIO;
-import NNetViewerMenu;
+import ScriptHook;
 import StatusBar;
 import PanelPlatform;
 import StatusBarDisplayFunctor;
@@ -35,8 +35,6 @@ public:
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
-	void OnNotify (WPARAM const, LPARAM const)                   final;
-	void OnChar   (WPARAM const, LPARAM const)                   final;
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 	void OnClose  ()                                             final;
 
@@ -45,10 +43,8 @@ private:
 
 	int                     m_statusMessagePart;
 	NNetModelIO             m_modelIO;
-	NNetViewerMenu          m_scanViewerMenu;
 	StatusBar               m_statusBar;
+	ScriptHook              m_ScriptHook;
 	PanelPlatform           m_panelPlatform;
 	StatusBarDisplayFunctor m_statusBarDispFunctor;
-
-	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

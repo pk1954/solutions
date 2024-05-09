@@ -39,8 +39,8 @@ public:
 		Observable&,
 		Observable&,
 		Observable&,
-		HiResTimer * const,
-		MonitorWindow const *
+		HiResTimer    * const,
+		MonitorWindow * const
 	);
 
 	void Stop() final;

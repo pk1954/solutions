@@ -37,20 +37,27 @@ public:
 
 	void SetDefaultBackgroundColor() override;
 
-	void   SetModelInterface(NNetModelWriterInterface * const) final;
+	void   SetModelInterface(NNetModelReaderInterface const * const) final;
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
 	void   Stop () final;
-	void   Reset();
 	bool   SignalTooHigh() const;
 	float  ScaleFactor() const;
 	void   ScaleSignals();
-	void   StimulusTriggered();
 	fPixel GetMaxSignal() const { return m_fPixMaxSignal; }
 
-	PixelPoint GetTrackPosScreen(SignalId const, tHorzDir const) const;
-	void       MoveHighlightedSignal(PIXEL const);
-	void       DropSignal();
+	void SetHighSigObservable(Observable &obs) { m_pHighSigObservable = &obs; }
+
+	PixelPoint     GetTrackPosScreen(SignalId const, tHorzDir const) const;
+	void           MoveHighlightedSignal(PIXEL const);
+	void           DropSignal();
+	SignalId       SetHighlightedSignal(SignalId const);
+	SignalId       SetHighlightedSignal(Signal const &);
+	void           ResetHighlightedSignal();
+	Signal const * GetHighlightedSignal  ()                const { return m_pMonitorData->GetConstSignalPtr(m_idSigHighlighted); }
+	SignalId	   GetHighlightedSignalId()                const { return m_idSigHighlighted; }
+	bool		   IsAnySignalHighlighted()                const { return m_idSigHighlighted.IsValid(); }
+	bool		   IsSignalHighlighted(SignalId const& id) const { return m_idSigHighlighted == id; }
 
 private:
 
@@ -63,6 +70,7 @@ private:
 	void OnChar           (WPARAM const, LPARAM const) final { /* */ };
 	bool OnSize           (PIXEL  const, PIXEL  const) final;
 
+	void        deleteSignal   ();
 	void        moveOperation  (PixelPoint const &);
 	void        selectSignal   (PixelPoint const &);
 	void        selectTrack    (PixelPoint const &);
@@ -95,14 +103,16 @@ private:
 
 	PixFpDimension<mV>& m_vertCoord;
 	Sound             & m_sound;        
-	MonitorData       * m_pMonitorData { nullptr };
-	IDWriteTextFormat * m_pTextFormat  { nullptr };
-	Observable        * m_pObservable  { nullptr };
+	MonitorData const * m_pMonitorData       { nullptr };
+	IDWriteTextFormat * m_pTextFormat        { nullptr };
+	Observable        * m_pObservable        { nullptr };
+	Observable        * m_pHighSigObservable { nullptr };
 	Measurement         m_measurement;
 
 	ID2D1SolidColorBrush* m_pBrushNormal;
 	ID2D1SolidColorBrush* m_pBrushSelected;
 
+	SignalId   m_idSigHighlighted   { SignalId::NULL_VAL() };
 	TrackNr    m_trackNrHighlighted { TrackNr::NULL_VAL() };
 	PixelPoint m_pixLast            { PP_NULL };     // last cursor position during selection 
 	PIXEL      m_pixMoveOffsetY     { 0_PIXEL };     // vertical offset when moving signal

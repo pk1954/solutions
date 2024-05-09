@@ -73,7 +73,7 @@ export class NNetPreferences
 public:
 	static void Initialize();
 
-	static void SetModelInterface(NNetModelReaderInterface const *);
+	static void SetModelInterface(NNetModelReaderInterface const * const);
 
 	static NNetModelReaderInterface const *GetModelInterface() { return m_pNMRI; };
 

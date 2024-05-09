@@ -276,7 +276,7 @@ bool Model::Compute()
 
 void Model::ResetModel()
 {
-	m_monitorData.Reset();  //caution: order of Reset/Clear commands matters!
+	m_monitorData.ResetMonitorData();  //caution: order of Reset/Clear commands matters!
 	m_upNobs->Clear();
 	m_upSigGenList->Clear();
 	m_sensorList.Clear();

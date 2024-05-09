@@ -27,23 +27,14 @@ using std::wcout;
 //}
 // TODO
 
-void MonitorData::Reset()
+void MonitorData::ResetMonitorData()
 {
 	m_tracks.clear();
-	m_idSigHighlighted.Set2Null();
-	if (m_pHighSigObservable)
-		m_pHighSigObservable->NotifyAll();
 }
 
 void MonitorData::ClearDynamicData() 
 { 
-	m_usStimulusList.clear();
 	Apply2AllSignals([](Signal & s) { s.Reset(); });
-}
-
-void MonitorData::AddStimulus(fMicroSecs const usSimuTime) 
-{ 
-	m_usStimulusList.push_back(usSimuTime); 
 }
 
 int MonitorData::GetNrOfTracks() const
@@ -66,25 +57,6 @@ unique_ptr<Signal> MonitorData::removeSignal(SignalId const & id)
 { 
 	return getTrack(id.GetTrackNr())->RemoveSignal(id.GetSignalNr());
 };
-
-SignalId MonitorData::SetHighlightedSignal(SignalId const id)
-{
-	SignalId const signalIdOld { m_idSigHighlighted };
-	m_idSigHighlighted = id;
-	if (m_pHighSigObservable)
-		m_pHighSigObservable->NotifyAll();
-	return signalIdOld;
-}
-
-SignalId MonitorData::SetHighlightedSignal(Signal const & sigNew)
-{
-	return SetHighlightedSignal(FindSignalId([&sigNew](Signal const &s){ return &s == &sigNew; }));
-}
-
-void MonitorData::ResetHighlightedSignal()
-{
-	SetHighlightedSignal(SignalId::NULL_VAL());
-}
 
 SignalNr MonitorData::AddSignal
 (
@@ -112,8 +84,6 @@ unique_ptr<Signal> MonitorData::RemoveSignal(SignalId const & id)
 {
 	assert(IsValid(id));
 	--m_iNrOfSignals;
-	if (id == m_idSigHighlighted)
-		ResetHighlightedSignal();
 	return removeSignal(id);
 }
 
@@ -121,8 +91,6 @@ SignalNr MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
 	assert(IsValid(id) && IsValid(trackNrDst));
 	SignalNr sigNr { AddSignal(removeSignal(id), trackNrDst) };
-	if ((sigNr.IsNotNull()) && (IsSelected(id)))
-		SetHighlightedSignal(SignalId(trackNrDst, sigNr));
 	return sigNr;
 }
 

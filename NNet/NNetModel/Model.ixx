@@ -191,7 +191,6 @@ public:
 	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
-	void SetHighSigObservable     (Observable    &o)     { m_monitorData.SetHighSigObservable(o); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
 	void SetScanTime              (time_t const t)       { m_timestamps.SetTimestamp(SCANTIME, t); }
 	void SetScanTimeNow           ()                     { m_timestamps.SetTimestampNow(SCANTIME); }

@@ -83,11 +83,6 @@ void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI) co
 	m_upMonitorControl->SetModelInterface(pNMWI);
 }
 
-void MonitorWindow::StimulusTriggered() const
-{
-	m_upMonitorControl->StimulusTriggered();
-}
-
 wstring MonitorWindow::GetCaption() const 
 { 
 	return (m_upMonitorControl && m_upMonitorControl->SignalTooHigh())
@@ -152,3 +147,4 @@ bool MonitorWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		MessageBeep(MB_ICONWARNING);
 	return true;
 }
+

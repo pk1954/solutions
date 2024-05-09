@@ -20,13 +20,13 @@ NNetTimeGraph::NNetTimeGraph
 	:TimeGraph(hwndParent, szClass)
 {}
 
-void NNetTimeGraph::SetModelInterface(NNetModelWriterInterface* const p)
+void NNetTimeGraph::SetModelInterface(NNetModelReaderInterface const * const p)
 {
 	assert(p);
-	if (m_pNMWI)
-		GetParams()->UnregisterObserver(*this);
-	m_pNMWI = p;
-	GetParams()->RegisterObserver(*this);
+	if (m_pNMRI)
+		const_cast<NNetParameters *>(GetParams())->UnregisterObserver(*this);
+	m_pNMRI = p;
+	const_cast<NNetParameters *>(GetParams())->RegisterObserver(*this);
 }
 
 void NNetTimeGraph::SetDefaultBackgroundColor()

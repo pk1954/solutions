@@ -57,66 +57,64 @@ public:
 
 	size_t Size() const { return m_pModel->Size(); }
 
-	SignalId               FindSignalId         (NNetSignalSource const * const) const;
-	ConnectionType         ConnectionResult     (NobId const, NobId const) const;
-	mV                     GetVoltageAt         (NobId const, MicroMeterPnt const&) const;
-	mV                     GetVoltage           (NobId const)     const;
-	bool                   IsSelected           (NobId const)     const;
-	size_t                 GetNrOfSegments      (NobId const)     const;
-	size_t                 GetNrOfOutConns      (NobId const)     const;
-	size_t                 GetNrOfInConns       (NobId const)     const;
-	Degrees                GetDirection         (NobId const)     const;
-	SignalGenerator const* GetSigGenC           (NobId const)     const;
-	wstring                GetTypeName          (NobId const id)  const { return NobType::GetName(GetNobType(id).GetValue()); };
-	NobType                GetNobType           (NobId const id)  const { return m_pModel->GetNobType(id); }
-	MicroMeterPnt          GetNobPos            (NobId const id)  const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
-	PosNob          const* GetConstPosNobPtr    (NobId const id)  const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
-	Nob             const* GetConstNob          (NobId const id)  const { return m_pModel->GetConstNob(id); }
-	MonitorData     const& GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
-	void                   PrintModelSize()                       const { return m_pModel->PrintModelSize(); }
-	NNetParameters  const& GetParamsC()                           const { return m_pModel->GetParams(); };
-	EventList       const& GetEventList()                         const { return m_pModel->GetEventList(); }
-	fMicroSecs             TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
-	fMicroSecs             PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };
-	wstring                GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
-	float                  GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
-	bool                   IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
-	UPNobList       const& GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
-	MicroMeterRect         GetScanAreaRect()                      const { return m_pModel->GetScanAreaRect(); }
-	unsigned int           GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
-	unsigned int           GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
-	bool                   AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
-	bool                   IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
-	size_t                 GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
-	SignalId               FindSignalId(auto const & crit)        const { return GetMonitorDataC().FindSignalId(crit); }
-	SignalId               GetHighlightedSignalId()               const { return GetMonitorDataC().GetHighlightedSignalId(); }
-	UPSigGenList    const& GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
-	SignalGenerator const* GetSigGenSelectedC()                   const { return GetSigGenList().GetSigGenSelected(); }
-	SignalGenerator const* GetSigGenC(SigGenId const id)          const { return GetSigGenList().GetSigGen(id); }
-	SigGenId               GetSigGenIdSelected()                  const { return GetSigGenList().GetSigGenIdSelected(); }
-	bool                   IsInList(wstring const & name)         const { return GetSigGenList().IsInList(name); }
-	wstring         const& GetSigGenName(SigGenId const id)       const { return GetSigGenList().GetSigGen(id)->GetName(); }
-	UPSensorList    const& GetSensorList()                        const { return m_pModel->GetSensorList(); }
-	Sensor          const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
-	MicroMeter             GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
-	RasterPoint            GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
-	RasterIndex            GetScanAreaWidth()                     const { return m_pModel->GetScanAreaWidth(); }
-	RasterIndex            GetScanAreaHeight()                    const { return m_pModel->GetScanAreaHeight(); }
-	Raster          const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
-	ScanImageByte   const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
-	bool                   ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
-	int                    GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
-	bool                   HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
-	MicroSensor     const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
-	SignalId               SelectSignal(SignalId const id)        const { return m_pModel->GetMonitorData().SetHighlightedSignal(id); }
-	bool                   IsAnySignalSelected()                  const { return m_pModel->GetMonitorData().IsAnySignalSelected(); }
-	optional<RasterPoint>  FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
-	MicroMeterRect         GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
-	time_t                 GetScanTime()                          const { return m_pModel->GetScanTime(); }
-	mV                     Scan(RasterPoint const& rp)            const { return m_pModel->Scan(rp); }
-	void                   Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
-	void                   DensityCorrection(ScanImageRaw& image) const { m_pModel->DensityCorrection(image); }
-	fMicroSecs             TotalScanTime()                        const;
+	SignalId                FindSignalId         (NNetSignalSource const * const) const;
+	ConnectionType          ConnectionResult     (NobId const, NobId const) const;
+	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const&) const;
+	mV                      GetVoltage           (NobId const)     const;
+	bool                    IsSelected           (NobId const)     const;
+	size_t                  GetNrOfSegments      (NobId const)     const;
+	size_t                  GetNrOfOutConns      (NobId const)     const;
+	size_t                  GetNrOfInConns       (NobId const)     const;
+	Degrees                 GetDirection         (NobId const)     const;
+	SignalGenerator  const* GetSigGenC           (NobId const)     const;    
+	wstring                 GetTypeName          (NobId const id)  const { return NobType::GetName(GetNobType(id).GetValue()); };
+	NobType                 GetNobType           (NobId const id)  const { return m_pModel->GetNobType(id); }
+	MicroMeterPnt           GetNobPos            (NobId const id)  const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
+	PosNob           const* GetConstPosNobPtr    (NobId const id)  const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
+	Nob              const* GetConstNob          (NobId const id)  const { return m_pModel->GetConstNob(id); }
+	SignalParameters const& GetSignalParamsC()                     const { return m_pModel->GetSignalParams(); }
+	MonitorData      const& GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
+	void                    PrintModelSize()                       const { return m_pModel->PrintModelSize(); }
+	NNetParameters   const& GetParamsC()                           const { return m_pModel->GetParams(); };
+	EventList        const& GetEventList()                         const { return m_pModel->GetEventList(); }
+	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
+	fMicroSecs              PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };
+	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
+	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
+	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
+	UPNobList        const& GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
+	MicroMeterRect          GetScanAreaRect()                      const { return m_pModel->GetScanAreaRect(); }
+	unsigned int            GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
+	unsigned int            GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
+	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
+	bool                    IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
+	size_t                  GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
+	SignalId                FindSignalId(auto const & crit)        const { return GetMonitorDataC().FindSignalId(crit); }
+	UPSigGenList     const& GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
+	SignalGenerator  const* GetSigGenSelectedC()                   const { return GetSigGenList().GetSigGenSelected(); }
+	SignalGenerator  const* GetSigGenC(SigGenId const id)          const { return GetSigGenList().GetSigGen(id); }
+	SigGenId                GetSigGenIdSelected()                  const { return GetSigGenList().GetSigGenIdSelected(); }
+	bool                    IsInList(wstring const & name)         const { return GetSigGenList().IsInList(name); }
+	wstring          const& GetSigGenName(SigGenId const id)       const { return GetSigGenList().GetSigGen(id)->GetName(); }
+	UPSensorList     const& GetSensorList()                        const { return m_pModel->GetSensorList(); }
+	Sensor           const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
+	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
+	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
+	RasterIndex             GetScanAreaWidth()                     const { return m_pModel->GetScanAreaWidth(); }
+	RasterIndex             GetScanAreaHeight()                    const { return m_pModel->GetScanAreaHeight(); }
+	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
+	ScanImageByte    const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
+	bool                    ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
+	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
+	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
+	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
+	optional<RasterPoint>   FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
+	MicroMeterRect          GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
+	time_t                  GetScanTime()                          const { return m_pModel->GetScanTime(); }
+	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->Scan(rp); }
+	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
+	void                    DensityCorrection(ScanImageRaw& image) const { m_pModel->DensityCorrection(image); }
+	fMicroSecs              TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const
 	{

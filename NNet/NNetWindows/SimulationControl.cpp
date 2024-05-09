@@ -23,11 +23,10 @@ void SimulationControl::Initialize
 	Compute   * const pCompute
 ) 
 {
-    m_pStatusBar = pStatusBar;
-	m_pCompute   = pCompute;
+	m_pCompute = pCompute;
 
-	m_hwndRunStop = m_pStatusBar->AddButton(L"   Run    ", IDM_RUN,  BS_PUSHBUTTON);
-	m_hwndScan    = m_pStatusBar->AddButton(L"   Scan   ", IDM_SCAN, BS_PUSHBUTTON);
+	m_hwndRunStop = pStatusBar->AddButton(L"   Run    ", IDM_RUN,  BS_PUSHBUTTON);
+	m_hwndScan    = pStatusBar->AddButton(L"   Scan   ", IDM_SCAN, BS_PUSHBUTTON);
 
 	Notify(true);
 }

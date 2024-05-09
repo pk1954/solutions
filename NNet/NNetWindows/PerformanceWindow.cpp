@@ -46,7 +46,7 @@ void PerformanceWindow::Stop()
 	Show(false);
 }
 
-void PerformanceWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+void PerformanceWindow::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {
 	m_pNMRI = pNMRI;
 }

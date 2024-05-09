@@ -19,6 +19,7 @@ import TextBuffer;
 import Win32_Util;
 import NNetModel;
 import NNetPreferences;
+import NNetSignals;
 import :MainWindow;
 
 using std::optional;
@@ -38,11 +39,13 @@ CrsrWindow::~CrsrWindow()
 
 void CrsrWindow::Start
 (
-	HWND               const hwndParent,
-	MainWindow const * const pMainWindow
+	HWND                  const hwndParent,
+	MainWindow    const * const pMainWindow,
+	MonitorWindow const * const pMonitorWindow
 ) 
 {
-	m_pMainWindow = pMainWindow;
+	m_pMainWindow    = pMainWindow;
+	m_pMonitorWindow = pMonitorWindow;
 	StartTextWindow
 	(
 		hwndParent, 
@@ -59,7 +62,7 @@ void CrsrWindow::Stop()
 	Show(false);
 }
 
-void CrsrWindow::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+void CrsrWindow::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {
 	m_pNMRI = pNMRI;
 }
@@ -107,8 +110,8 @@ void CrsrWindow::PaintText(TextBuffer & textBuf)
 
 	if (m_pNMRI)
 	{
-		SignalId const sigId { m_pNMRI->GetHighlightedSignalId() };
-		NobId    const nobId { m_pMainWindow->GetHighlightedNobId() };
+		SignalId const sigId { m_pMonitorWindow->GetHighlightedSignalId() };
+		NobId    const nobId { m_pMainWindow   ->GetHighlightedNobId() };
 
 		if (NNetPreferences::ScanAreaVisible())
 		{

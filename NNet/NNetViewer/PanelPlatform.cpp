@@ -6,6 +6,7 @@ module;
 
 #include <vector>
 #include <algorithm>
+#include <Windows.h>
 
 module PanelPlatform;
 
@@ -14,6 +15,19 @@ import Win32_Util;
 
 using std::min;
 using std::vector;
+
+PanelPlatform::PanelPlatform()
+{
+	HWND hwnd = StartBaseWindow
+	(
+		nullptr,
+		CS_HREDRAW | CS_VREDRAW,
+		L"ClassPanelPlatform",
+		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		nullptr,
+		nullptr
+	);
+}
 
 void PanelPlatform::arrangePanels(PixelRectSize const& pixWinSize)
 {

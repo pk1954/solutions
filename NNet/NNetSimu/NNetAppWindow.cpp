@@ -136,10 +136,9 @@ void NNetAppWindow::Start(MessagePump & pump)
 	);
 
 	m_upModel = m_nmwi.CreateNewModel();
-	m_pNMRI   = static_cast<NNetModelReaderInterface *>(&m_nmwi);
+	m_pNMRI   = static_cast<NNetModelReaderInterface const *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
-	m_upModel->SetHighSigObservable     (m_highlightSigObservable);
 	m_mainNNetWindow   .SetRefreshRate(300ms);
 	m_miniNNetWindow   .SetRefreshRate(500ms);
 	m_monitorWindow    .SetRefreshRate( 20ms);
@@ -150,13 +149,14 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_appMenu          .Start(m_hwndApp, m_compute, m_cmdStack, m_sound);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
-	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow);
+	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow, &m_monitorWindow);
 	m_parameterDlg     .Start(m_hwndApp);
 	m_performanceWindow.Start(m_hwndApp, &m_compute, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
 	m_colLutWindow     .Start(m_hwndApp, &NNetPreferences::m_colorLutScan);
 	m_undoRedoMenu     .Start(& m_appMenu);
 
+	m_monitorWindow    .SetHighSigObservable(m_highlightSigObservable);
 	setModelInterface();
 
 	m_signalDesigner.RegisterAtSigGen(m_nmwi.GetSigGenIdSelected());
@@ -347,7 +347,6 @@ void NNetAppWindow::configureStatusBar()
 	iPart = m_statusBar.NewPart();
 	m_ScriptHook.Initialize(& m_statusBar, iPart);
 	m_statusBar.ClearPart(iPart);
-
 	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
 	m_statusMessagePart = iPart;
 
@@ -446,7 +445,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_TRIGGER_STIMULUS:
-			m_monitorWindow.StimulusTriggered();
 			m_compute.StartStimulus();
 			return true;
 
@@ -471,8 +469,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_IMPORT_MODEL:
 			m_cmdStack.Clear();
-			if (!NNetModelIO::Import(NNetModelIO::GetModelFileName(), NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL)))
-				SendCommand(IDM_NEW_MODEL, 0);
+			importModel();
 			return true;
 
 		case IDM_APP_DATA_CHANGED:
@@ -491,18 +488,14 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_OPEN_MODEL:
 			m_cmdStack.Clear();
-			NNetModelIO::Import
-			(
-				NNetController::AskModelFile(tFileMode::read),
-				NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL)
-			);
+			openModel();
 			return true;
 
 		case IDM_RELOAD_MODEL:
 			if (AskNotUndoable())
 			{
 				m_cmdStack.Clear();
-				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL));
+				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL, this));
 			}
 			return true;
 
@@ -624,6 +617,24 @@ bool NNetAppWindow::AskNotUndoable()
 	return true;
 }
 
+void NNetAppWindow::importModel()
+{
+	wstring             const wstrFileName { NNetModelIO::GetModelFileName() };
+	unique_ptr<InputOutputUI> upInOutUI    { NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL, this) };
+	bool                const bRes         { NNetModelIO::Import(wstrFileName, move(upInOutUI)) };
+	if (!bRes)
+		SendCommand(IDM_NEW_MODEL, 0);
+}
+
+void NNetAppWindow::openModel()
+{
+	NNetModelIO::Import
+	(
+		NNetController::AskModelFile(tFileMode::read),
+		NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL, this)
+	);
+}
+
 void NNetAppWindow::newModel()
 {
 	m_compute.StopComputation();
@@ -643,7 +654,7 @@ void NNetAppWindow::replaceModel()
 	m_mainNNetWindow.Reset();
 	m_upModel = NNetModelIO::GetImportedModel();	
 	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
-	m_upModel->SetHighSigObservable     (m_highlightSigObservable);
+	m_monitorWindow.SetHighSigObservable(m_highlightSigObservable);
 	m_nmwi.SetModel(m_upModel.get());
 
 	setModelInterface();
@@ -671,7 +682,7 @@ void NNetAppWindow::processScript() const
 void NNetAppWindow::WriteModel()
 {
 	SetCursor(m_hCrsrWait);
-	NNetModelIO::Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0));
+	NNetModelIO::Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0, this));
 	Preferences::WritePreferences();
 	m_appTitle.SetUnsavedChanges(false);
 	m_statusBar.ClearPart(m_statusMessagePart);

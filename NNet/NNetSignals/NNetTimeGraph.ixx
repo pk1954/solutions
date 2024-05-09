@@ -29,7 +29,7 @@ export class NNetTimeGraph : public TimeGraph
 public:
 	NNetTimeGraph(HWND const, LPCTSTR const);
 
-	virtual void SetModelInterface(NNetModelWriterInterface* const);
+	virtual void SetModelInterface(NNetModelReaderInterface const * const);
 
 	void SetDefaultBackgroundColor() override;
 	
@@ -39,9 +39,9 @@ public:
 
 protected:
 
-	NNetModelWriterInterface* m_pNMWI { nullptr };
+	NNetModelReaderInterface const * m_pNMRI { nullptr };
 
-	NNetParameters * GetParams() const { return &m_pNMWI->GetParams(); }
+	NNetParameters const * GetParams() const { return &m_pNMRI->GetParamsC(); }
 
 	void SetVertCoordFreq(PixFpDimension<fHertz> const *pCoord) { m_pVertCoordFreq = pCoord; }
 	void SetVertCoordVolt(PixFpDimension<mV>     const *pCoord) { m_pVertCoordVolt = pCoord; }

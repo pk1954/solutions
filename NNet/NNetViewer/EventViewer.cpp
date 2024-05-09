@@ -40,12 +40,12 @@ void EventViewer::PaintGraphics()
 	m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
 
 	bool bStimulus = false;
-	m_pNMWI->Apply2allEvents
+	m_pNMRI->Apply2allEvents
 	(
 		EventType::stimulus,
 		[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
 		{
-			SignalGenerator const* pSigGen    { m_pNMWI->GetSigGenC(pStimEvent->GetId()) };
+			SignalGenerator const* pSigGen    { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
 			fMicroSecs      const  usStimulus { pStimEvent->GetTimestamp() };
 			fMicroSecs      const  usOffset   { usStimulus - usStartScan };
 			m_horzCoord.SetOffset(usOffset, false);
@@ -59,7 +59,7 @@ void EventViewer::PaintGraphics()
 
 void EventViewer::adjust(PixelRectSize const clientSize)
 {
-	if (m_pNMWI)
+	if (m_pNMRI)
 	{
 		adjustHorz(Convert2fPixel(clientSize.GetX()));
 		adjustVert(Convert2fPixel(clientSize.GetY()));
@@ -68,18 +68,18 @@ void EventViewer::adjust(PixelRectSize const clientSize)
 
 void EventViewer::adjustHorz(fPixel const fPixWidth)
 {
-	 m_horzCoord.Adjust(0._MicroSecs, m_pNMWI->TotalScanTime(), 0._fPixel, fPixWidth);
+	 m_horzCoord.Adjust(0._MicroSecs, m_pNMRI->TotalScanTime(), 0._fPixel, fPixWidth);
 }
 
 void EventViewer::adjustVert(fPixel const fPixHeight)
 {
 	mV mvPeakMax { 0._mV };
-	m_pNMWI->Apply2allEvents
+	m_pNMRI->Apply2allEvents
 	(
 		EventType::stimulus,
 		[this, &mvPeakMax](StimulusEvent const* pStimEvent)
 		{
-			SignalGenerator const* pSigGen { m_pNMWI->GetSigGenC(pStimEvent->GetId()) };
+			SignalGenerator const* pSigGen { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
 			mV              const  mvPeak  { pSigGen->Amplitude().Peak() };
 			if (mvPeak > mvPeakMax)
 				mvPeakMax = mvPeak;
@@ -91,7 +91,7 @@ void EventViewer::adjustVert(fPixel const fPixHeight)
 fMicroSecs EventViewer::scanTime(EventType const t) const
 {
 	fMicroSecs us { fMicroSecs::NULL_VAL() };
-	m_pNMWI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimestamp(); });
+	m_pNMRI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimestamp(); });
 	assert(us.IsNotNull());
 	return us;
 }

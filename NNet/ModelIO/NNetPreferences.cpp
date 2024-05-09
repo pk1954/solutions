@@ -212,7 +212,7 @@ void NNetPreferences::Initialize()
 
 }
 
-void NNetPreferences::SetModelInterface(NNetModelReaderInterface const* pNMRI)
+void NNetPreferences::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {
     m_pNMRI = pNMRI;
 }

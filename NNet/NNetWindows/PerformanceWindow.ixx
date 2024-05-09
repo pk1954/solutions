@@ -30,7 +30,7 @@ public:
     );
 
     void Stop();
-    void SetModelInterface(NNetModelReaderInterface * const);
+    void SetModelInterface(NNetModelReaderInterface const * const);
     void PaintText(TextBuffer &) final;
 
 private:

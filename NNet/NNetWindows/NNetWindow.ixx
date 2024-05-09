@@ -39,12 +39,12 @@ public:
 		DWORD  const,
 		bool   const,
 		NNetCommandHandler  &,
-		MonitorWindow const *
+		MonitorWindow  *
 	);
 
 	void SetDefaultBackgroundColor() final;
 
-	void SetModelInterface(NNetModelReaderInterface* const);
+	void SetModelInterface(NNetModelReaderInterface const * const);
 
 	MicroMeterRect GetViewRect() const;
 
@@ -111,7 +111,7 @@ protected:
 	void DrawSensors() const;
 
 	NNetModelReaderInterface const* m_pNMRI          { nullptr };
-	MonitorWindow            const* m_pMonitorWindow { nullptr };
+	MonitorWindow                 * m_pMonitorWindow { nullptr };
 
 	PixelPoint GetPtLast() const { return m_ptLast; }
 

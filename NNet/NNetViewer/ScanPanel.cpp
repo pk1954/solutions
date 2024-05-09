@@ -16,6 +16,7 @@ import Raster;
 import EventViewer;
 
 using std::min;
+using std::unique_ptr;
 using std::make_unique;
 
 static float const EVENT_VIEWER_HEIGHT { 0.1f };
@@ -23,8 +24,8 @@ static float const SCAN_WINDOW_HEIGHT  { 1.0f - EVENT_VIEWER_HEIGHT };
 
 ScanPanel::ScanPanel
 (
-	HWND                      const hwndParent,
-	NNetModelWriterInterface* const pNMWI
+	HWND const        hwndParent,
+	unique_ptr<Model> upModel
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -36,10 +37,11 @@ ScanPanel::ScanPanel
 		nullptr,
 		nullptr
 	);
+	m_upModel = move(upModel);
 	m_upEventViewer = make_unique<EventViewer>(hwnd);
-    m_upEventViewer->SetModelInterface(pNMWI);
+    m_upEventViewer->SetModelInterface(m_pNMRI);
     m_upScanViewer = make_unique<ScanViewer>();
-    m_upScanViewer->SetModelInterface(pNMWI);
+    m_upScanViewer->SetModelInterface(m_pNMRI);
 	m_upScanViewer->Start(hwnd);
 }
 

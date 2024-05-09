@@ -24,8 +24,7 @@ public:
 	void Notify(bool const) final;
 
 private:
-	Compute   * m_pCompute   { nullptr };
-	StatusBar * m_pStatusBar { nullptr };
-	HWND        m_hwndRunStop;
-	HWND        m_hwndScan;
+	Compute * m_pCompute   { nullptr };
+	HWND      m_hwndRunStop;
+	HWND      m_hwndScan;
 };

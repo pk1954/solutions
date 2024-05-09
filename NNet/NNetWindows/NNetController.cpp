@@ -63,7 +63,7 @@ wstring NNetController::AskModelFile(enum class tFileMode const mode)
 	return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
 }
 
-void NNetController::SetModelInterface(NNetModelReaderInterface * const pNMRI)
+void NNetController::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {
     m_pNMRI = pNMRI;
 }
@@ -205,10 +205,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
         WinManager::SendCommand(RootWinId(IDM_MONITOR_WINDOW), IDM_WINDOW_ON);
         break;
 
-    case IDD_DELETE_SIGNAL:
-        deleteSignal();
-        break;
-
     case IDD_ADD_TRACK:
         InsertTrackCommand::Push(TrackNr(Cast2Int(lParam)));
         break;
@@ -244,7 +240,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
 		NNetModelIO::Import
 		(
 			AskModelFile(tFileMode::read), 
-			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_MODEL)
+			NNetInputOutputUI::CreateNew
+            (
+                IDM_ADD_IMPORTED_MODEL, 
+                WinManager::GetRootWindow(RootWinId(IDM_APPL_WINDOW))
+            )
 		);
         break;
 
@@ -257,28 +257,4 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     }
 
     return true;
-}
-void NNetController::deleteSignal()
-{
-    Signal           const* pSignal     { m_pNMRI->GetMonitorDataC().GetHighlightedSignal() };
-    NNetSignal       const* pNNetSignal { static_cast<NNetSignal const*>(pSignal) };
-    NNetSignalSource const* pSigSrc     { pNNetSignal->GetSignalSource() };
-    switch (pSigSrc->SignalSourceType())
-    {
-        using enum NNetSignalSource::Type;
-        case macroSensor:
-        {
-            Sensor const* pSensor  { static_cast<Sensor const*>(pSigSrc) };
-            SensorId      idSensor { m_pNMRI->GetSensorList().GetSensorId(*pSensor) };
-            DelSensorCmd::Push(idSensor);
-            break;
-        }
-        case microSensor:
-        {
-            MicroSensor const * pMicroSensor { static_cast<MicroSensor const*>(pSigSrc) };
-            NobId       const   idNob        { pMicroSensor->GetNobId() };
-            DelMicroSensorCmd::Push(idNob);
-            break;
-        }
-    }
 }

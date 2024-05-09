@@ -16,6 +16,7 @@ import Types;
 import TextBuffer;
 import TextWindow;
 import NNetModel;
+import NNetSignals;
 import :MainWindow;
 
 using std::wostringstream;
@@ -29,15 +30,21 @@ public:
 	CrsrWindow();
 	~CrsrWindow() final;
 
-	void Start(HWND const, MainWindow const * const);
+	void Start
+	(
+		HWND const, 
+		MainWindow    const * const, 
+		MonitorWindow const * const
+	);
 	void Stop();
-	void SetModelInterface(NNetModelReaderInterface * const);
+	void SetModelInterface(NNetModelReaderInterface const * const);
 
 	void PaintText(TextBuffer &) final;
 
 private:
-	MainWindow               const * m_pMainWindow { nullptr };
-	NNetModelReaderInterface const * m_pNMRI       { nullptr };
+	MainWindow               const * m_pMainWindow    { nullptr };
+	NNetModelReaderInterface const * m_pNMRI          { nullptr };
+	MonitorWindow            const * m_pMonitorWindow { nullptr };
 
 	wstring GetCaption() const final { return L"CrsrWindow"; }
 

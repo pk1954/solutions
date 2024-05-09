@@ -58,8 +58,8 @@ void MainWindow::Start
 	Observable          & cursorObservable,
 	Observable          & coordObservable,
 	Observable          & pStaticModelObservable,
-	HiResTimer  * const   pActionTimer,
-	MonitorWindow const * pMonitorWindow
+	HiResTimer    * const pActionTimer,
+	MonitorWindow * const pMonitorWindow
 )
 {
 	m_pStaticModelObservable = &pStaticModelObservable;
@@ -296,7 +296,7 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		MoveNobCommand::Push(m_nobIdHighlighted, m_umDelta);
 		m_nobIdTarget = m_pNMRI->FindConnectionCandidate(umCrsrPos, m_nobIdHighlighted);
 	}
-	else if (m_pNMRI->IsAnySignalSelected())
+	else if (m_pMonitorWindow->IsAnySignalHighlighted())
 	{
 		m_pMonitorWindow->MoveHighlightedSignal(ptCrsr.GetY() - ptLast.GetY());
 	}
@@ -405,7 +405,7 @@ bool MainWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 		connect(m_nobIdHighlighted, m_nobIdTarget);
 		Reset();
 	}
-	else if (m_pNMRI->IsAnySignalSelected()) 
+	else if (m_pMonitorWindow->IsAnySignalHighlighted()) 
 	{
 		m_pMonitorWindow->DropSignal();
 	}
@@ -621,7 +621,7 @@ bool MainWindow::setHighlightedSensor(MicroMeterPnt const& umCrsrPos)
 bool MainWindow::selectSignalHandle(MicroMeterPnt const& umCrsrPos)
 {
 	SignalId const idSignal { FindSignalHandle(umCrsrPos) };
-	m_pNMRI->SelectSignal(idSignal);
+	m_pMonitorWindow->SetHighlightedSignal(idSignal);
 	return idSignal.IsNotNull();
 }
 
