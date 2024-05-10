@@ -33,15 +33,16 @@ ScanPanel::ScanPanel
 		hwndParent,
 		CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		L"ClassScanPanel",
-		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE,
+		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_BORDER|WS_VISIBLE,
 		nullptr,
 		nullptr
 	);
 	m_upModel = move(upModel);
+	m_nmri.SetModel(m_upModel.get());
 	m_upEventViewer = make_unique<EventViewer>(hwnd);
-    m_upEventViewer->SetModelInterface(m_pNMRI);
+    m_upEventViewer->SetModelInterface(&m_nmri);
     m_upScanViewer = make_unique<ScanViewer>();
-    m_upScanViewer->SetModelInterface(m_pNMRI);
+    m_upScanViewer->SetModelInterface(&m_nmri);
 	m_upScanViewer->Start(hwnd);
 }
 

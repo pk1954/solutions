@@ -33,6 +33,7 @@ import WrapSimulationTime;
 import Wrapper;
 import NobIo;
 import WrapDescription;
+import WrapEvent;
 import WrapNrOfNobs;
 import WrapNrOfTracks;
 import WrapActiveSigGen;
@@ -82,6 +83,7 @@ void NNetModelIO::Initialize(Observable * const pLockModelObservable)
     AddModelWrapper<WrapScanImage      >(L"ScanImage");
     AddModelWrapper<WrapSimulationTime >(L"SimulationTime");
     AddModelWrapper<WrapTimestamp      >(L"Timestamp");
+    AddModelWrapper<WrapEvent          >(L"Event");
 
     NobType::Apply2All
     (

@@ -19,22 +19,18 @@ export class TimestampList
 {
 public:
 
-    void DefineTimestamp(wstring const name)
-    {
-        m_list[name] = 0;
-    }
-
     void SetTimestamp(wstring const name, time_t const t)
     {
-        m_list[name] = t;
-    }
-
-    void SetTimestampNow(wstring const name)
-    {
-        auto   currentTime{ system_clock::now() };
-        time_t currentTime_t { system_clock::to_time_t(currentTime)
-    };
-        SetTimestamp(name, currentTime_t);
+        if (t == 0)
+        {
+            auto   currentTime{ system_clock::now() };
+            time_t currentTime_t { system_clock::to_time_t(currentTime) };
+            m_list[name] = currentTime_t;
+        }
+        else
+        {
+            m_list[name] = t;
+        }
     }
 
     time_t GetTimestamp(wstring const name) const

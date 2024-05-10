@@ -192,11 +192,11 @@ void MonitorControl::highlightSignal(SignalId const & idNew)
 	{
 		if (m_pMonitorData->IsValid(idNew))
 		{
-// XXXX			m_pMonitorData->SetHighlightedSignal(idNew);
+			SetHighlightedSignal(idNew);
 		}
 		else
 		{
-// XXXX			m_pMonitorData->ResetHighlightedSignal();
+			SetHighlightedSignal(SignalId::NULL_VAL());
 			m_pixLast.Set2Null();
 		}
 		m_pixMoveOffsetY = 0_PIXEL;
@@ -707,9 +707,4 @@ SignalId MonitorControl::SetHighlightedSignal(SignalId const id)
 SignalId MonitorControl::SetHighlightedSignal(Signal const & sigNew)
 {
 	return SetHighlightedSignal(m_pMonitorData->FindSignalId([&sigNew](Signal const &s){ return &s == &sigNew; }));
-}
-
-void MonitorControl::ResetHighlightedSignal()
-{
-	SetHighlightedSignal(SignalId::NULL_VAL());
 }

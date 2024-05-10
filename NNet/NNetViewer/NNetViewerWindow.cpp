@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <Windows.h>
@@ -19,6 +20,7 @@ import NNetWin32;
 import PanelPlatform;
 
 using std::unique_ptr;
+using std::make_unique;
 using std::wstring;
 using std::vector;
 
@@ -39,9 +41,11 @@ NNetViewerWindow::NNetViewerWindow()
 
 	::SetApplicationTitle(hwnd, L"Scan viewer");
 
+	m_upPanelPlatform = make_unique<PanelPlatform>(hwnd);
+
 	m_statusBar.Start(hwnd);
 	configureStatusBar();
-	m_statusBar.Arrange(*this, m_panelPlatform);
+	m_statusBar.Arrange(*this, *m_upPanelPlatform.get());
 
 	Show(true);
 }
@@ -65,7 +69,7 @@ void NNetViewerWindow::configureStatusBar()
 
 bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	m_statusBar.Arrange(*this, m_panelPlatform);
+	m_statusBar.Arrange(*this, *m_upPanelPlatform.get());
 	return true;
 }
 
@@ -89,10 +93,18 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 		return true;
 
 	case IDM_ADD_IMPORTED_SCAN:
-	{
-  //      unique_ptr<Model> upModel {	NNetModelIO::GetImportedModel() };
-		//UpPanel           upPanel { make_unique<ScanPanel(m_panelPlatform, pNMRI) };
-	}
+		{
+	        unique_ptr<Model> upModel {	NNetModelIO::GetImportedModel() };
+			UpPanel           upPanel 
+			{ 
+				make_unique<ScanPanel>
+				(
+					m_upPanelPlatform->GetWindowHandle(), 
+					move(upModel)
+				)
+			};
+			m_upPanelPlatform->AddScan(move(upPanel));
+		}
 		return true;
 
 	case IDX_FILE_NOT_FOUND:  //no user command, only internal usage

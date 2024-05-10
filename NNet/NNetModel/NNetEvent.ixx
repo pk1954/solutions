@@ -4,11 +4,15 @@
 
 module;
 
+#include <string>
+
 export module NNetModel:NNetEvent;
 
 import Types;
 import SimulationTime;
 import Signals;
+
+using std::wstring;
 
 export enum class EventType
 {
@@ -18,6 +22,10 @@ export enum class EventType
 export class NNetEvent
 {
 public:
+    NNetEvent(fMicroSecs const usTimeStamp)
+        : m_timestamp(usTimeStamp)
+    {}
+
     NNetEvent()
         : m_timestamp(SimulationTime::Get())
     {}
@@ -26,6 +34,11 @@ public:
 
     virtual EventType Type() const = 0;
 
+    wstring GetEventTypeName() const { return GetName(Type()); }
+
+    static wstring   GetName(EventType const);
+    static EventType GetTypeFromName(wstring const &);
+
 private:
     fMicroSecs m_timestamp;
 };
@@ -33,6 +46,11 @@ private:
 export class StimulusEvent : public NNetEvent
 {
 public:
+    StimulusEvent(fMicroSecs const usTimeStamp, SigGenId const id)
+      : NNetEvent(usTimeStamp),
+        m_sigGenId(id)
+    {}
+
     StimulusEvent(SigGenId const id)
         : m_sigGenId(id)
     {}
@@ -48,11 +66,24 @@ private:
 export class StartScanEvent : public NNetEvent
 {
 public:
+    using NNetEvent::NNetEvent;
+
+    StartScanEvent(fMicroSecs const usTimeStamp)
+      : NNetEvent(usTimeStamp)
+    {}
+
     EventType Type() const final { return EventType::startScan; }
 };
 
 export class StopScanEvent : public NNetEvent
 {
 public:
+
+    using NNetEvent::NNetEvent;
+
+    StopScanEvent(fMicroSecs const usTimeStamp)
+      : NNetEvent(usTimeStamp)
+    {}
+
     EventType Type() const final { return EventType::stopScan; }
 };

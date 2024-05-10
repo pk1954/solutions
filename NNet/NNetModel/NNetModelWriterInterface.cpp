@@ -55,3 +55,47 @@ void NNetModelWriterInterface::ToggleStopOnTrigger(NobId const id)
 	if (Neuron * pNeuron { GetNobPtr<Neuron *>(id) })
 		pNeuron->StopOnTrigger(tBoolOp::opToggle);
 }
+
+void NNetModelWriterInterface::AddEvent(EventType const& type)
+{
+	switch (type)
+	{
+	case EventType::stimulus:
+		m_pModel->m_events.push_back(make_unique<StimulusEvent>(GetSigGenIdSelected()));
+		break;
+	case EventType::startScan:
+		m_pModel->m_events.push_back(make_unique<StartScanEvent>());
+		break;
+	case EventType::stopScan:
+		m_pModel->m_events.push_back(make_unique<StopScanEvent>());
+		break;
+	}
+}
+
+void NNetModelWriterInterface::AddEvent
+(
+	EventType const& type,
+	fMicroSecs const usTimeStamp
+)
+{
+	switch (type)
+	{
+	case EventType::startScan:
+		m_pModel->m_events.push_back(make_unique<StartScanEvent>(usTimeStamp));
+		break;
+	case EventType::stopScan:
+		m_pModel->m_events.push_back(make_unique<StopScanEvent>(usTimeStamp));
+		break;
+	default:
+		assert(false);
+	}
+}
+
+void NNetModelWriterInterface::AddStimulusEvent
+(
+	fMicroSecs const usTimeStamp,
+	SigGenId   const idSigGen
+)
+{
+	m_pModel->m_events.push_back(make_unique<StimulusEvent>(usTimeStamp, idSigGen));
+}

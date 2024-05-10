@@ -30,6 +30,11 @@ void EventViewer::PaintGraphics()
 {
 	fMicroSecs usStartScan { scanTime(EventType::startScan) };
 	fMicroSecs usStopScan  { scanTime(EventType::stopScan) };
+	if (usStartScan.IsNull() || usStopScan.IsNull())
+	{
+		m_upGraphics->DisplayText(L"No scan information available");
+		return;
+	}
 	fPixelRect rect
 	{
 		Scale2pixelTime(usStartScan),  // left
@@ -92,7 +97,6 @@ fMicroSecs EventViewer::scanTime(EventType const t) const
 {
 	fMicroSecs us { fMicroSecs::NULL_VAL() };
 	m_pNMRI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimestamp(); });
-	assert(us.IsNotNull());
 	return us;
 }
 

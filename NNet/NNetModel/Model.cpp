@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <memory>
 #include <string>
 #include <iostream>
@@ -321,22 +322,6 @@ void Model::RejectScanImage()
 	m_upImage.release(); 
 	if (m_pLockModelObservable)
 		m_pLockModelObservable->NotifyAll();
-}
-
-void Model::AddEvent(EventType const& type)
-{
-	switch (type)
-	{
-	case EventType::stimulus:
-		m_events.push_back(make_unique<StimulusEvent>(m_upSigGenList->GetSigGenIdSelected()));
-		break;
-	case EventType::startScan:
-		m_events.push_back(make_unique<StartScanEvent>());
-		break;
-	case EventType::stopScan:
-		m_events.push_back(make_unique<StopScanEvent>());
-		break;
-	}
 }
 
 void Model::DrawScanArea

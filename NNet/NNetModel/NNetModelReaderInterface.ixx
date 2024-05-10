@@ -76,7 +76,6 @@ public:
 	MonitorData      const& GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
 	void                    PrintModelSize()                       const { return m_pModel->PrintModelSize(); }
 	NNetParameters   const& GetParamsC()                           const { return m_pModel->GetParams(); };
-	EventList        const& GetEventList()                         const { return m_pModel->GetEventList(); }
 	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
 	fMicroSecs              PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };
 	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
@@ -215,11 +214,17 @@ public:
 		GetUPNobsC().Apply2AllInRectC<T>(r, func);
 	}
 
-	void Apply2allEvents(EventType const type,	auto const& func) const
+	void Apply2allEvents(EventType const type,auto const& func) const
 	{
-		for (auto const& e : GetEventList())
+		for (auto const& e : m_pModel->GetEventList())
 			if (e->Type() == type)
 				func(static_cast<StimulusEvent const*>(e.get()));
+	}
+
+	void Apply2allEvents(auto const& func) const
+	{
+		for (auto const& e : m_pModel->GetEventList())
+			func(e.get());
 	}
 
 protected:

@@ -174,7 +174,6 @@ public:
 	void CreateScanImage();
 	void ReplaceScanImage(unique_ptr<ScanImageByte>);
 	void RejectScanImage();
-	void AddEvent(EventType const &);
     void DrawScanAreaBackground(DrawContext const&) const;
     void DrawScanArea
 	(
@@ -186,15 +185,19 @@ public:
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 
+	void SetTimestamp(wstring const &name, time_t const t) { m_timestamps.SetTimestamp(name, t); }
+
     void PrepareScanMatrix        ()                     { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
 	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
 	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
 	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
 	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
 	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void SetScanTime              (time_t const t)       { m_timestamps.SetTimestamp(SCANTIME, t); }
-	void SetScanTimeNow           ()                     { m_timestamps.SetTimestampNow(SCANTIME); }
+	void SetScanTime              (time_t const t)       { SetTimestamp(SCANTIME, t); }
+	void SetScanTimeNow           ()                     { SetScanTime(0); }
 	void Apply2AllTimestamps      (auto const& f)  const { m_timestamps.Apply2All(f); }
+
+	EventList m_events;
 
 private:
 	inline static const wstring SCANTIME { L"ScanTime" };
@@ -217,6 +220,5 @@ private:
 	MonitorData                m_monitorData;
 	wstring                    m_wstrModelFilePath;
 	ScanMatrix                 m_scanMatrix;
-	EventList                  m_events;
 	TimestampList              m_timestamps;
 };

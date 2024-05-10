@@ -23,7 +23,7 @@ public:
 		NNetWindow::Start
 		(
 			hwndParent, 
-			WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION | WS_SIZEBOX,
+    		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_BORDER|WS_VISIBLE,
 			false,
 			m_controller,
 			nullptr

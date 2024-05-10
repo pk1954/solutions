@@ -21,16 +21,16 @@ export using UpPanel = unique_ptr<ScanPanel>;
 export class PanelPlatform :public BaseWindow
 {
 public:
-    PanelPlatform();
+    PanelPlatform(HWND const);
 
     void AddScan(UpPanel);
 
 private:
 
-    bool OnSize(PIXEL const, PIXEL const);
+   bool OnSize(PIXEL const, PIXEL const);
 
- 	void                      arrangePanels(PixelRectSize const&);
-	vector<UpPanel>::iterator findPanel(PixelPoint const &);
+   void                      arrangePanels(PixelRectSize const&);
+   vector<UpPanel>::iterator findPanel(PixelPoint const &);
 
    vector<UpPanel> m_panelList;
    long            m_nrOfRows { 0 };

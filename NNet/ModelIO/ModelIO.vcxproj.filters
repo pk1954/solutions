@@ -82,6 +82,9 @@
     <ClCompile Include="NNetPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapEvent.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

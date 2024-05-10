@@ -24,6 +24,7 @@
   <ItemGroup>
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />
+    <ClCompile Include="NNetEvent.cpp" />
     <ClCompile Include="NNetEvent.ixx" />
     <ClCompile Include="Fork.cpp" />
     <ClCompile Include="Fork.ixx" />

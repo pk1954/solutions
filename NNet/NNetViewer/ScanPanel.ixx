@@ -27,8 +27,8 @@ public:
 private:
 	bool OnSize(PIXEL const, PIXEL const) final;
 
-    NNetModelReaderInterface const* m_pNMRI;
-	unique_ptr<Model>               m_upModel;
-    unique_ptr<EventViewer>         m_upEventViewer;
-    unique_ptr<ScanViewer>          m_upScanViewer;
+    NNetModelReaderInterface m_nmri;
+	unique_ptr<Model>        m_upModel;
+    unique_ptr<EventViewer>  m_upEventViewer;
+    unique_ptr<ScanViewer>   m_upScanViewer;
 };

@@ -46,6 +46,9 @@ public:
     void  SelectNob          (NobId const, bool const);
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob             (NobId const);
+	void  AddEvent           (EventType const&);
+	void  AddEvent           (EventType const&, fMicroSecs const);
+	void  AddStimulusEvent   (fMicroSecs const, SigGenId const);
 
     UPNobList              & GetUPNobs      () { return m_pModel->GetUPNobs(); }
     UPSigGenList           & GetSigGenList  () { return m_pModel->GetSigGenList(); }
@@ -69,7 +72,6 @@ public:
     UPSigGen                RemoveSigGen       (SigGenId const id)               { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen                PopSigGen          ()                                { return m_pModel->GetSigGenList().PopSigGen(); }
     ScanImageByte         * GetScanImage       ()                                { return m_pModel->GetScanImage(); }
-    void                    AddEvent           (EventType const &type)           { return m_pModel->AddEvent(type); }
     MicroSensor           * GetMicroSensor     (NobId const id)                  { return m_pModel->GetMicroSensorList().GetMicroSensor(id); }
     unique_ptr<MicroSensor> RemoveMicroSensor  (NobId const id)                  { return m_pModel->GetMicroSensorList().RemoveMicroSensor(id); }
     void                    AddMicroSensor     (unique_ptr<MicroSensor> up)      {        m_pModel->GetMicroSensorList().AddMicroSensor(move(up)); }
@@ -97,11 +99,11 @@ public:
     void ClearScanImage     ()                                        { GetScanImage()->Set(0); }
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }
-    void SetScanTime        (time_t const t)                          { m_pModel->SetScanTime(t); }
     void SetScanTimeNow     ()                                        { m_pModel->SetScanTimeNow(); }
     void PrepareScanMatrix  ()                                        { m_pModel->PrepareScanMatrix(); }
     void AddOutgoing        (NobId const id, Pipe* p)                 { GetPosNob(id).AddOutgoing(p); }
     void AddIncoming        (NobId const id, Pipe* p)                 { GetPosNob(id).AddIncoming(p); }
+	void SetTimestamp       (wstring const &name, time_t const t)     { m_pModel->SetTimestamp(name, t); }
 
     PosNob & GetPosNob(NobId const);
 

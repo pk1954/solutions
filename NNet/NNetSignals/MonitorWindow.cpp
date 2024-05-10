@@ -111,14 +111,11 @@ void MonitorWindow::OnPaint()
 	m_upStimulusButton->Enable(m_pSimuRunning->IsRunning());
 }
 
-bool MonitorWindow::OnSize(PIXEL const pixClientWidth, PIXEL const pixClientHeight)
+bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	PIXEL const monHeight { pixClientHeight - H_SCALE_HEIGHT };
-	PIXEL const monWidth  { pixClientWidth  - RIGHT_BORDER };
-	m_upMonitorControl->Move(0_PIXEL,  0_PIXEL,   pixClientWidth, monHeight,      true);
-	m_upHorzScale     ->Move(0_PIXEL,  monHeight, pixClientWidth, H_SCALE_HEIGHT, true);
+	ArrangeVertical(*m_upMonitorControl.get(), *m_upHorzScale.get(), height-H_SCALE_HEIGHT, true);
 	if (m_upHorzScale->IsScaleLocked())
-		m_horzCoord.SetOffset(Convert2fPixel(-monWidth));
+		m_horzCoord.SetOffset(Convert2fPixel(RIGHT_BORDER - width));
 	m_upStimulusButton->CenterInParentWin();
 	m_pMoveSizeObservable->NotifyAll();
 	return true;

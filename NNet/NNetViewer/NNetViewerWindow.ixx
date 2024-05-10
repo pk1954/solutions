@@ -22,6 +22,7 @@ import StatusBarDisplayFunctor;
 
 using std::wstring;
 using std::wofstream;
+using std::unique_ptr;
 
 export class NNetViewerWindow : public BaseWindow
 {
@@ -38,13 +39,12 @@ private:
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 	void OnClose  ()                                             final;
 
-	void    configureStatusBar();
-	wstring AskModelFile(enum class tFileMode const) const;
+	void configureStatusBar();
 
-	int                     m_statusMessagePart;
-	NNetModelIO             m_modelIO;
-	StatusBar               m_statusBar;
-	ScriptHook              m_ScriptHook;
-	PanelPlatform           m_panelPlatform;
-	StatusBarDisplayFunctor m_statusBarDispFunctor;
+	int                       m_statusMessagePart;
+	NNetModelIO               m_modelIO;
+	StatusBar                 m_statusBar;
+	ScriptHook                m_ScriptHook;
+	unique_ptr<PanelPlatform> m_upPanelPlatform;
+	StatusBarDisplayFunctor   m_statusBarDispFunctor;
 };

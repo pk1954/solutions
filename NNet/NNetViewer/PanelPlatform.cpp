@@ -16,14 +16,14 @@ import Win32_Util;
 using std::min;
 using std::vector;
 
-PanelPlatform::PanelPlatform()
+PanelPlatform::PanelPlatform(HWND const hwndParent)
 {
 	HWND hwnd = StartBaseWindow
 	(
-		nullptr,
-		CS_HREDRAW | CS_VREDRAW,
+		hwndParent,
+		CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		L"ClassPanelPlatform",
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
+		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE,
 		nullptr,
 		nullptr
 	);

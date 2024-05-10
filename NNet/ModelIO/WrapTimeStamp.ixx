@@ -25,7 +25,8 @@ public:
     {
         wstring       const wstrName   { script.ScrReadString() };
         unsigned long const ulScanTime { script.ScrReadUlong() };
-        NNetModelIO::GetImportNMWI().SetScanTime(static_cast<time_t>(ulScanTime));
+        time_t        const time       { static_cast<time_t>(ulScanTime) };
+        NNetModelIO::GetImportNMWI().SetTimestamp(wstrName, time);
     }
 
     void Write(wostream& out) const final
@@ -37,7 +38,7 @@ public:
                 char buffer[26];
                 ctime_s(buffer, sizeof(buffer), &t);
                 WriteCmdName(out);
-                out << name << SPACE << t << SPACE << COMMENT_SYMBOL << SPACE << buffer << endl;
+                out << DOUBLE_QUOTE << name << DOUBLE_QUOTE << SPACE << t << SPACE << COMMENT_SYMBOL << SPACE << buffer << endl;
             }
         );
     };

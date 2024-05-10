@@ -53,7 +53,6 @@ public:
 	void           DropSignal();
 	SignalId       SetHighlightedSignal(SignalId const);
 	SignalId       SetHighlightedSignal(Signal const &);
-	void           ResetHighlightedSignal();
 	Signal const * GetHighlightedSignal  ()                const { return m_pMonitorData->GetConstSignalPtr(m_idSigHighlighted); }
 	SignalId	   GetHighlightedSignalId()                const { return m_idSigHighlighted; }
 	bool		   IsAnySignalHighlighted()                const { return m_idSigHighlighted.IsValid(); }
