@@ -28,6 +28,6 @@ public:
     void Write(wostream& out) const final
     {
         WriteCmdName(out);
-        out << NNetModelIO::GetExportNMRI().GetScanAreaRect() << endl;
+        out << NNetModelIO::GetExportNMRI().GetScanArea() << endl;
     }
 };

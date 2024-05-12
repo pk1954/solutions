@@ -23,7 +23,7 @@ public:
     {
         if (t == 0)
         {
-            auto   currentTime{ system_clock::now() };
+            auto   currentTime   { system_clock::now() };
             time_t currentTime_t { system_clock::to_time_t(currentTime) };
             m_list[name] = currentTime_t;
         }

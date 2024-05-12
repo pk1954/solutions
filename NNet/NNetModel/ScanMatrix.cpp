@@ -130,7 +130,7 @@ void ScanMatrix::DrawScanRaster(DrawContext const& context, Raster const& raster
 	if (context.GetCoordC().Transform2fPixel(umRes) >= 8.0_fPixel)
 	{
 		Color          const colLine { NNetColors::SCAN_AREA_HANDLE };
-		MicroMeterRect const umRect  { raster.GetRasterRect() };
+		MicroMeterRect const umRect  { raster.GetScanArea() };
 		RasterPoint    const rSize   { raster.Size() };
 		MicroMeter     const umYend  { umRect.GetTop()  + umRes * Cast2Float(rSize.m_y) };
 		MicroMeter     const umXend  { umRect.GetLeft() + umRes * Cast2Float(rSize.m_x) };
@@ -250,7 +250,7 @@ optional<CardPoint> ScanMatrix::SelectScanAreaHandle
 ) const
 {
 	MicroMeter     const umHandleSize { getScanAreaHandleSize(context.GetCoordC()) };
-	MicroMeterRect const umRect       { raster.GetRasterRect() };
+	MicroMeterRect const umRect       { raster.GetScanArea() };
 	optional<CardPoint>  cardPnt      { nullopt };
 	Apply2CardPoints
 	(
@@ -271,7 +271,7 @@ void ScanMatrix::DrawScanAreaHandles
 ) const
 {
 	MicroMeter     const umHandleSize { getScanAreaHandleSize(context.GetCoordC()) };
-	MicroMeterRect const umRect       { raster.GetRasterRect() };
+	MicroMeterRect const umRect       { raster.GetScanArea() };
 	Apply2CardPoints
 	(
 		[this, umHandleSize, &umRect, &context, cardPntSelected](CardPoint const cardPnt)
@@ -336,5 +336,5 @@ void ScanMatrix::DrawScanAreaBackground
 	Raster      const& raster
 ) const
 {
-	context.FillRectangle(raster.GetRasterRect(), NNetColors::SCAN_AREA_RECT);
+	context.FillRectangle(raster.GetScanArea(), NNetColors::SCAN_AREA_RECT);
 }

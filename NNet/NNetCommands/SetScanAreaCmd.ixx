@@ -19,7 +19,7 @@ export class SetScanAreaCmd : public NNetCommand
 public:
 	SetScanAreaCmd(MicroMeterRect const& rectNew)
 	  : m_rectNew(rectNew),
-		m_rectOld(m_pNMWI->GetScanAreaRect())
+		m_rectOld(m_pNMWI->GetScanArea())
 	{}
 
 	void Do() final
@@ -55,7 +55,7 @@ public:
 
 	static void Push(CardPoint const cp, MicroMeterPnt const& delta)
 	{
-		MicroMeterRect rect { m_pNMWI->GetScanAreaRect() };
+		MicroMeterRect rect { m_pNMWI->GetScanArea() };
 		rect.Manipulate(cp, delta);
 		Push(rect);
 	}

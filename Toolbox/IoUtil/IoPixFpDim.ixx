@@ -21,11 +21,11 @@ export template <typename LOG_UNIT>
 PixFpDimension<LOG_UNIT> ScrReadPixFpDiemension(Script& script)
 {
 	PixFpDimension<LOG_UNIT> res;
-	script.ScrReadSpecial(LIST_OPEN_BRACKET);
+	script.ScrReadSpecial(CURLY_OPEN_BRACKET);
 	res.SetOffset(ScrReadfPixel(script));
 	script.ScrReadSpecial(SEPARATOR);
 	res.SetPixelSize(ScrRead<LOG_UNIT>(script));
-	script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+	script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
 	return res;
 }
 

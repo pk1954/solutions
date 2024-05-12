@@ -51,7 +51,7 @@ void EventViewer::PaintGraphics()
 		[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
 		{
 			SignalGenerator const* pSigGen    { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
-			fMicroSecs      const  usStimulus { pStimEvent->GetTimestamp() };
+			fMicroSecs      const  usStimulus { pStimEvent->GetTime() };
 			fMicroSecs      const  usOffset   { usStimulus - usStartScan };
 			m_horzCoord.SetOffset(usOffset, false);
 			PaintVoltCurve(pSigGen);
@@ -96,7 +96,7 @@ void EventViewer::adjustVert(fPixel const fPixHeight)
 fMicroSecs EventViewer::scanTime(EventType const t) const
 {
 	fMicroSecs us { fMicroSecs::NULL_VAL() };
-	m_pNMRI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTimestamp(); });
+	m_pNMRI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTime(); });
 	return us;
 }
 

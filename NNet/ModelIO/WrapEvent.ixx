@@ -50,8 +50,8 @@ public:
 			[this, &out](NNetEvent const* pEvent)
 			{
                 WriteCmdName(out);
-                out << pEvent->GetEventTypeName() << SPACE;
-                out << pEvent->GetTimestamp();
+                out << Quoted(pEvent->GetEventTypeName()) << SPACE;
+                out << pEvent->GetTime();
                 if (pEvent->Type() == EventType::stimulus)
                     out << SPACE << static_cast<StimulusEvent const *>(pEvent)->GetId();
                 out << endl;

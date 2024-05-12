@@ -12,7 +12,6 @@ module;
 export module NNetModel:ScanMatrix;
 
 import Types;
-import ObserverInterface;
 import SaveCast;
 import Vector2D;
 import Uniform2D;
@@ -31,7 +30,7 @@ using std::nullopt;
 export using ScanImageRaw  = Vector2D<mV>;
 export using ScanImageByte = Vector2D<ColIndex>;
 
-export class ScanMatrix: public ObserverInterface
+export class ScanMatrix
 {
 public:
 
@@ -41,15 +40,12 @@ public:
     void DrawScanAreaBackground(DrawContext const&, Raster const&) const;
     void DrawScanArea          (DrawContext const&, Raster const&, ScanImageByte const* const, ColorLUT const&, bool const, optional<CardPoint> const, UPNobList const&) const;
     void DrawScanImage         (DrawContext const&, Raster const&, ScanImageByte const&, ColorLUT const&, bool const) const;
-    void DrawSensorDensityMap  (DrawContext const&, Raster const&, UPNobList const&) const;
     void DrawScanAreaHandles   (DrawContext const&, Raster const&, optional<CardPoint> const) const;
     void DrawScanRaster        (DrawContext const&, Raster const&) const;
 
     optional<CardPoint> SelectScanAreaHandle(DrawContext const&, Raster const&, MicroMeterPnt const&) const;
 
     void Clear() { Apply2AllScanPixels([](auto &p) { p.Clear(); }); }
-
-    void Notify(bool const) final { m_bDirty = true; }
 
     RasterPoint      Size  ()                                   const { return m_scanPixels.Size(); }
     RasterIndex      Width ()                                   const { return m_scanPixels.Width(); }
@@ -79,6 +75,8 @@ public:
     }
 
 private:
+    void DrawSensorDensityMap(DrawContext const&, Raster const&, UPNobList const&) const;
+
     void           add2list(Pipe const&, Raster const&);
     void           findMaxNrOfDataPoints();
     ColorLUT       sensorDensityLUT() const;

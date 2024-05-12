@@ -80,7 +80,7 @@ NobType ScrReadNobType(Script& script)
 unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 {
 	unique_ptr<NobIdList> upNobIds  { make_unique<NobIdList>() };
-	script.ScrReadSpecial(LIST_OPEN_BRACKET);
+	script.ScrReadSpecial(CURLY_OPEN_BRACKET);
 	int const iNrOfElements { script.ScrReadInt() };
 	script.ScrReadSpecial(NR_SEPARATOR);
 	for (int i = 0;;)
@@ -90,7 +90,7 @@ unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 			break;
 		script.ScrReadSpecial(ID_SEPARATOR);
 	}
-	script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+	script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
 	return move(upNobIds);
 }
 

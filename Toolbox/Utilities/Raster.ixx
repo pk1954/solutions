@@ -56,19 +56,20 @@ void SetWidth      (RasterIndex    const  w)      { m_rect.SetWidth (m_resolutio
 void SetHeight     (RasterIndex    const  h)      { m_rect.SetHeight(m_resolution * Cast2Float(h)); }
 void SetResolution (MicroMeter     const  res)    { m_resolution = res; }
 void SetCenter     (MicroMeterPnt  const& pnt)    { m_rect.SetCenter(pnt); }
-void MoveRasterRect(MicroMeterPnt  const& delta)  { m_rect.Move(delta); }
-void SetRasterRect (MicroMeterRect const& umRect) { m_rect = umRect; }
-void SetRasterRect (CardPoint const, MicroMeterPnt const&);
+void MoveScanArea  (MicroMeterPnt  const& delta)  { m_rect.Move(delta); }
+void SetScanArea   (MicroMeterRect const& umRect) { m_rect = umRect; }
+void SetScanArea   (CardPoint const, MicroMeterPnt const&);
 
 RasterIndex    RasterWidth ()  const { return round2Raster(m_rect.GetWidth ()); }
 RasterIndex    RasterHeight()  const { return round2Raster(m_rect.GetHeight()); }
 RasterPoint    Size()          const { return RasterPoint(RasterWidth(), RasterHeight()); }
 MicroMeter     Resolution()    const { return m_resolution; }
-MicroMeterRect GetRasterRect() const { return m_rect; }
+MicroMeterRect GetScanArea()   const { return m_rect; }
 size_t         NrOfPoints()    const { return RasterWidth() * RasterHeight(); }
 float          AspectRatio()   const { return m_rect.AspectRatio(); }
 
 MicroMeterRect GetPointRect(RasterPoint const&) const;
+MicroMeterRect GetRasterRect() const;
 
 optional<RasterPoint> FindRasterPos(MicroMeterPnt const) const;
 

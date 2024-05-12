@@ -48,9 +48,14 @@ using std::right;
 using std::left;
 using std::optional;
 
-void Model::Initialize(Observable * const pLockModelObservable)
+void Model::Initialize
+(
+	Observable * const pLockModelObservable,
+	Observable * const pStaticModelObservable
+)
 {
-	m_pLockModelObservable = pLockModelObservable;
+	m_pLockModelObservable   = pLockModelObservable;
+	m_pStaticModelObservable = pStaticModelObservable;
 }
 
 Model::Model()
@@ -59,7 +64,18 @@ Model::Model()
 	m_upSigGenList = make_unique<UPSigGenList>();
 	m_upRaster     = make_unique<Raster>();
 	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
+	m_pStaticModelObservable->RegisterObserver(*this);
 	RejectScanImage(); 
+}
+
+Model::~Model() 
+{ 
+	m_pStaticModelObservable->UnregisterObserver(*this); 
+}
+
+void Model::Notify(bool const) 
+{ 
+	PrepareScanMatrix();
 }
 
 unsigned int Model::printNobType
@@ -301,8 +317,7 @@ void Model::DumpModel
 
 void Model::SetScanArea(MicroMeterRect const& rect)
 {
-	m_upRaster->SetRasterRect(rect);
-	PrepareScanMatrix();
+	m_upRaster->SetScanArea(rect);
 }
 
 void Model::CreateScanImage()

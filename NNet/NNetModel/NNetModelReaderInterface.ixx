@@ -82,7 +82,6 @@ public:
 	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
 	UPNobList        const& GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
-	MicroMeterRect          GetScanAreaRect()                      const { return m_pModel->GetScanAreaRect(); }
 	unsigned int            GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
 	unsigned int            GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
 	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
@@ -102,13 +101,15 @@ public:
 	RasterIndex             GetScanAreaWidth()                     const { return m_pModel->GetScanAreaWidth(); }
 	RasterIndex             GetScanAreaHeight()                    const { return m_pModel->GetScanAreaHeight(); }
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
+	MicroMeterRect          GetScanArea()                          const { return m_pModel->GetScanArea(); }
+	MicroMeterRect          GetRasterRect()                        const { return m_pModel->GetRasterRect(); }
 	ScanImageByte    const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	bool                    ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
 	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
 	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
 	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
 	optional<RasterPoint>   FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
-	MicroMeterRect          GetRasterRect(RasterPoint const& rp)   const { return GetScanRaster().GetPointRect(rp); }
+	MicroMeterRect          GetPointRect(RasterPoint const& rp)    const { return GetScanRaster().GetPointRect(rp); }
 	time_t                  GetScanTime()                          const { return m_pModel->GetScanTime(); }
 	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->Scan(rp); }
 	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }

@@ -39,7 +39,7 @@ public:
 		while (NNetModelIO::GetExportNMRI().GetDescriptionLine(iLineNr++, wstrLine))
 		{
 			WriteCmdName(out);
-			out << DOUBLE_QUOTE << wstrLine << DOUBLE_QUOTE << endl;
+			out << Quoted(wstrLine) << endl;
 		}
 	};
 };

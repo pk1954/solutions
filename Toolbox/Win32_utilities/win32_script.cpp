@@ -104,12 +104,13 @@ bool ScriptFile::setFileTypes
 {
     wstring           filter { L"*." + extension };
     COMDLG_FILTERSPEC rgSpec { description.c_str(), filter.c_str() };
-    HRESULT           hr     { pFileDlg->SetFileTypes(1, & rgSpec) };
+    HRESULT           hr     { pFileDlg->SetFileTypes(1, &rgSpec) };
     if (! SUCCEEDED(hr))
     {
-        wcout << L" +++ AskForFileName: SetFileTypes(1, {" 
-              << DOUBLE_QUOTE << description.c_str() << DOUBLE_QUOTE << " , " 
-              << DOUBLE_QUOTE << filter.c_str() << DOUBLE_QUOTE << " }) failed." << endl;
+        wcout << L" +++ AskForFileName: SetFileTypes" 
+              << OPEN_BRACKET << "1," << SPACE
+                << CurlyBrackets(Quoted(description) + L", " + Quoted(filter))
+              << CLOSE_BRACKET << "failed." << endl;
         wcout << L" +++ error code : " << hr << endl;
         return false;
     }
@@ -125,7 +126,7 @@ bool ScriptFile::setDefaultExtension
     HRESULT hr { pFileDlg->SetDefaultExtension(extension.c_str()) };
     if (! SUCCEEDED(hr))
     {
-        wcout << L" +++ AskForFileName: SetDefaultExtension(" << DOUBLE_QUOTE << extension.c_str() << DOUBLE_QUOTE << ") failed." << endl;
+        wcout << L" +++ AskForFileName: SetDefaultExtension" << Brackets(Quoted(extension)) << " failed." << endl;
         wcout << L" +++ error code : " << hr << endl;
         return false;
     }

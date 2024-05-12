@@ -250,7 +250,7 @@ IoConnector * Cast2IoConnector(Nob * pNob)
 
 wostream & operator<< (wostream & out, IoConnector const & conn)
 {
-    out << LIST_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
+    out << CURLY_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
     for (auto & it: conn.m_list)
     {
         out << it->GetId().GetValue();
@@ -258,7 +258,7 @@ wostream & operator<< (wostream & out, IoConnector const & conn)
             break;
         out << ID_SEPARATOR;
     }
-    out << LIST_CLOSE_BRACKET;
+    out << CURLY_CLOSE_BRACKET;
     return out;
 }
 

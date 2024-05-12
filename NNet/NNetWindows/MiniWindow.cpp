@@ -81,12 +81,12 @@ void MiniWindow::Trigger(bool const bImmediately)
 		MicroMeterRect       umRectShow  { Union(umRectMain, umRectModel) };            // all this should be visible  
 
 		if (NNetPreferences::ScanAreaVisible())
-			umRectShow = Union(umRectShow, m_pNMRI->GetScanAreaRect());                 // all this should be visible  
+			umRectShow = Union(umRectShow, m_pNMRI->GetScanArea());                     // all this should be visible  
 
 		umRectShow.ScaleRect(NEURON_RADIUS);
 		MicroMeter const umPixelSizeTarget 
 		{ 
-			GetCoord().ComputeZoom(umRectShow, GetClRectSize(), EXTRA_SPACE_FACTOR)   //TODO:  use CenterANdZoomRect?
+			GetCoord().ComputeZoom(umRectShow, GetClRectSize(), EXTRA_SPACE_FACTOR)   //TODO:  use CenterAndZoomRect?
 		};
 		GetCoord().Zoom(umPixelSizeTarget);
 		GetCoord().Center(umRectShow.GetCenter(), Convert2fPixelPoint(GetClRectCenter()));

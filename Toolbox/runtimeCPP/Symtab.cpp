@@ -90,7 +90,7 @@ wostream& operator<< (wostream& out, Symbol const& symbol)
         break;
 
     case tSTYPE::StringConst:
-        out << L"StringConst " << DOUBLE_QUOTE << symbol.GetStringConst() << DOUBLE_QUOTE;
+        out << L"StringConst " << Quoted(symbol.GetStringConst());
         break;
 
     default:

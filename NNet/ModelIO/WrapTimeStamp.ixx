@@ -38,7 +38,7 @@ public:
                 char buffer[26];
                 ctime_s(buffer, sizeof(buffer), &t);
                 WriteCmdName(out);
-                out << DOUBLE_QUOTE << name << DOUBLE_QUOTE << SPACE << t << SPACE << COMMENT_SYMBOL << SPACE << buffer << endl;
+                out << Quoted(name) << SPACE << t << SPACE << COMMENT_SYMBOL << SPACE << buffer << endl;
             }
         );
     };

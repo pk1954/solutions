@@ -22,15 +22,15 @@ export enum class EventType
 export class NNetEvent
 {
 public:
-    NNetEvent(fMicroSecs const usTimeStamp)
-        : m_timestamp(usTimeStamp)
+    NNetEvent(fMicroSecs const usTime)
+        : m_time(usTime)
     {}
 
     NNetEvent()
-        : m_timestamp(SimulationTime::Get())
+        : m_time(SimulationTime::Get())
     {}
 
-    fMicroSecs GetTimestamp() const { return m_timestamp; }
+    fMicroSecs GetTime() const { return m_time; }
 
     virtual EventType Type() const = 0;
 
@@ -40,7 +40,7 @@ public:
     static EventType GetTypeFromName(wstring const &);
 
 private:
-    fMicroSecs m_timestamp;
+    fMicroSecs m_time;
 };
 
 export class StimulusEvent : public NNetEvent

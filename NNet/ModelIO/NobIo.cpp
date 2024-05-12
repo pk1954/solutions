@@ -183,7 +183,7 @@ void NobIo::writeIoConnector(wostream& out, IoConnector const& conn) const
 {
     assert(conn.Size() > 0);
     size_t const iLast { conn.Size() - 1 };
-    out << LIST_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
+    out << CURLY_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
     for (size_t i = 0;; ++i)
     {
         out << NNetModelIO::GetCompactIdVal(conn.GetElem(i).GetId());
@@ -191,14 +191,14 @@ void NobIo::writeIoConnector(wostream& out, IoConnector const& conn) const
             break;
         out << ID_SEPARATOR;
     }
-    out << LIST_CLOSE_BRACKET;
+    out << CURLY_CLOSE_BRACKET;
 }
 
 UPNob NobIo::createIoConnector(Script& script, NobType const nobType) const
 {
     bool bOK = true;
     vector<IoLine*> ioLineList;
-    script.ScrReadSpecial(LIST_OPEN_BRACKET);
+    script.ScrReadSpecial(CURLY_OPEN_BRACKET);
     int const iNrOfElements { script.ScrReadInt() };
     script.ScrReadSpecial(NR_SEPARATOR);
     for (int iElem { 0 };;)
@@ -210,7 +210,7 @@ UPNob NobIo::createIoConnector(Script& script, NobType const nobType) const
             break;
         script.ScrReadSpecial(ID_SEPARATOR);
     }
-    script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+    script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
     unique_ptr<IoConnector> upIoConnector;
     if (bOK)
     {
@@ -276,7 +276,7 @@ void NobIo::writeNeuron(wostream& out, Neuron const& neuron) const
 {
     size_t const iLast { neuron.GetNrOfInConns() - 1 };
     out << OPEN_BRACKET;
-    out << LIST_OPEN_BRACKET << neuron.GetNrOfInConns() << NR_SEPARATOR;
+    out << CURLY_OPEN_BRACKET << neuron.GetNrOfInConns() << NR_SEPARATOR;
     for (size_t i = 0;; ++i)
     {
         out << NNetModelIO::GetCompactIdVal(neuron.GetIncoming(i)->GetId());
@@ -284,7 +284,7 @@ void NobIo::writeNeuron(wostream& out, Neuron const& neuron) const
             break;
         out << ID_SEPARATOR;
     }
-    out << LIST_CLOSE_BRACKET
+    out << CURLY_CLOSE_BRACKET
         << PIPE_TO
         << neuron.GetPos()
         << PIPE_TO
@@ -296,7 +296,7 @@ UPNob NobIo::createNeuron(Script& script) const
 {
     PipeList pipeListIn;
     script.ScrReadSpecial(OPEN_BRACKET);
-    script.ScrReadSpecial(LIST_OPEN_BRACKET);
+    script.ScrReadSpecial(CURLY_OPEN_BRACKET);
     int const iNrOfElements { script.ScrReadInt() };
     script.ScrReadSpecial(NR_SEPARATOR);
     for (int iElem { 0 };;)
@@ -307,7 +307,7 @@ UPNob NobIo::createNeuron(Script& script) const
             break;
         script.ScrReadSpecial(ID_SEPARATOR);
     }
-    script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+    script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
     script.ScrReadSpecialString(PIPE_TO);
     MicroMeterPnt const umPos(ScrReadMicroMeterPnt(script));
     script.ScrReadSpecialString(PIPE_TO);

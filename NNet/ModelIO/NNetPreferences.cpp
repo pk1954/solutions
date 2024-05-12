@@ -133,7 +133,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        out << NAME << SPACE << DOUBLE_QUOTE << NNetPreferences::GetModelInterface()->GetModelFilePath() << DOUBLE_QUOTE;
+        out << NAME << SPACE << Quoted(NNetPreferences::GetModelInterface()->GetModelFilePath());
     }
 
     inline static const wstring NAME { L"ReadModel" };

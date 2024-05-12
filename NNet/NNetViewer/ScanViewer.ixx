@@ -30,7 +30,7 @@ public:
 		);
 	}
 
-	float AspectRatio() const { return m_pNMRI->GetScanAreaRect().AspectRatio(); }
+	float AspectRatio() const { return m_pNMRI->GetRasterRect().AspectRatio(); }
 
 private:
 	void PaintGraphics() final
@@ -47,7 +47,7 @@ private:
 
 	void centerAndZoomRect()
 	{
-		CenterAndZoomRect(GetCoord(), m_pNMRI->GetScanAreaRect(), 1.0f);
+		CenterAndZoomRect(GetCoord(), m_pNMRI->GetRasterRect(), 1.0f);
 	}
 
 	class controller: public NNetCommandHandler

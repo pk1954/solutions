@@ -468,7 +468,7 @@ void MonitorControl::paintStimulusMarkers() const
 		EventType::stimulus,
 		[this, fPixBottom, &iStimulusNr](StimulusEvent const* pStimEvent)
 		{
-			fMicroSecs  const usStimulus { pStimEvent->GetTimestamp() };
+			fMicroSecs  const usStimulus { pStimEvent->GetTime() };
 			fPixel      const fPixX      { simu2pixelTime(usStimulus) };
 			fPixelPoint const fPixBegin  { fPixX, 0._fPixel };
 			fPixelPoint const fPixEnd    { fPixX, fPixBottom };

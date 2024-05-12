@@ -35,7 +35,7 @@ public:
         fMicroSecs const umStartTime{ Cast2Float(script.ScrReadFloat()) };
         if (pSignal)
             pSignal->SetStartTime(umStartTime);
-        { script.ScrReadSpecial(LIST_OPEN_BRACKET); }
+        { script.ScrReadSpecial(CURLY_OPEN_BRACKET); }
         int const iNrOfElements{ script.ScrReadInt() };
         if (pSignal)
             pSignal->Reserve(iNrOfElements);
@@ -46,7 +46,7 @@ public:
             if (pSignal)
                 pSignal->Add2Signal(value);
         }
-        script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+        script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
     }
 
     void Write(wostream& out) const final

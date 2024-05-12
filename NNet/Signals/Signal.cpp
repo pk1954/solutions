@@ -58,7 +58,7 @@ void Signal::Reset()
 void Signal::WriteSignalData(wostream & out) const
 {
     size_t const iLast { m_data.size() };
-    out << LIST_OPEN_BRACKET << m_data.size() << NR_SEPARATOR;
+    out << CURLY_OPEN_BRACKET << m_data.size() << NR_SEPARATOR;
     for (size_t i = 0; i < iLast; ++i)
     {
         if (i % 12 == 0)
@@ -66,7 +66,7 @@ void Signal::WriteSignalData(wostream & out) const
         out << m_data[i].GetValue();
         out << SPACE;
     }
-    out << endl << LIST_CLOSE_BRACKET << endl;
+    out << endl << CURLY_CLOSE_BRACKET << endl;
 }
 
 SIG_INDEX Signal::time2index

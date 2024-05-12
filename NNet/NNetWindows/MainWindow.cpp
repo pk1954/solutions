@@ -300,9 +300,9 @@ void MainWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		m_pMonitorWindow->MoveHighlightedSignal(ptCrsr.GetY() - ptLast.GetY());
 	}
-	else if (NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanAreaRect().Includes(umCrsrPos))
+	else if (NNetPreferences::ScanAreaVisible() && m_pNMRI->GetScanArea().Includes(umCrsrPos))
 	{
-		SetScanAreaCmd::Push(m_pNMRI->GetScanAreaRect() + m_umDelta);
+		SetScanAreaCmd::Push(m_pNMRI->GetScanArea() + m_umDelta);
 	}
 	else
 	{

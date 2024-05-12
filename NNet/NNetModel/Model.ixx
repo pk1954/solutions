@@ -15,6 +15,7 @@ module;
 export module NNetModel:Model;
 
 import Observable;
+import ObserverInterface;
 import Types;
 import Util;
 import Raster;
@@ -43,13 +44,24 @@ using std::optional;
 
 export using EventList = vector<unique_ptr<NNetEvent>>;
 
-export class Model
+export class Model : public ObserverInterface
 {
 public:
 
-	static void Initialize(Observable * const);
+	static void Initialize
+	(
+		Observable * const,  // lockModelObservable
+		Observable * const   // staticModelObservable
+	);
 
 	Model();
+	~Model(); 
+	Model(const Model&)            = delete; // copy constructor
+	Model(Model&&)                 = delete; // move constructor
+	Model& operator=(const Model&) = delete; // copy assignment
+	Model& operator=(Model&&)      = delete; // move assignment
+
+    void Notify(bool const) final;
 
 	// const functions
 
@@ -136,7 +148,8 @@ public:
 	MonitorData       const & GetMonitorData    () const { return m_monitorData; }
 	NNetParameters    const & GetParams         () const { return *m_upParam.get(); }
 	SignalParameters  const & GetSignalParams   () const { return m_signalParams; }
-	MicroMeterRect            GetScanAreaRect   () const { return m_upRaster->GetRasterRect(); }
+	MicroMeterRect            GetScanArea       () const { return m_upRaster->GetScanArea(); }
+	MicroMeterRect            GetRasterRect     () const { return m_upRaster->GetRasterRect(); }
 	MicroMeter                GetScanResolution () const { return m_upRaster->Resolution(); }
 	RasterPoint               GetScanAreaSize   () const { return m_upRaster->Size(); }
 	RasterIndex               GetScanAreaWidth  () const { return m_upRaster->RasterWidth(); }
@@ -206,7 +219,8 @@ private:
 	bool isConnectedToPipe(NobId const, NobId const) const;
 	bool isConnectedTo    (NobId const, NobId const) const;
 
-	inline static Observable* m_pLockModelObservable { nullptr };
+	inline static Observable* m_pLockModelObservable   { nullptr };
+	inline static Observable* m_pStaticModelObservable { nullptr };
 
 	unique_ptr<UPNobList>      m_upNobs;
 	unique_ptr<UPSigGenList>   m_upSigGenList;

@@ -40,18 +40,21 @@ MicroMeterRect Raster::GetPointRect(RasterPoint const& rPnt) const
     return rect;
 }
 
-void Raster::SetRasterRect
+MicroMeterRect Raster::GetRasterRect() const 
+{ 
+    MicroMeter const umRight  { m_rect.GetLeft() + m_resolution * Cast2Float(RasterWidth()) };
+    MicroMeter const umBottom { m_rect.GetTop () + m_resolution * Cast2Float(RasterHeight()) };
+    MicroMeterRect const rect(m_rect.GetLeft(), m_rect.GetTop (), umRight, umBottom);
+    return rect;
+}
+
+void Raster::SetScanArea
 (
     CardPoint     const  cardPnt,
     MicroMeterPnt const& pos
 )
 {
     m_rect.Manipulate(cardPnt, pos);
-}
-
-RasterPoint Raster::Size() const
-{
-    return RasterPoint(RasterWidth(), RasterHeight());
 }
 
 RasterIndex Raster::round2Raster(MicroMeter umVal) const

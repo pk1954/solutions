@@ -7,6 +7,7 @@ module;
 #include <vector>
 #include <algorithm>
 #include <Windows.h>
+#include <d2d1helper.h>
 
 module PanelPlatform;
 
@@ -59,7 +60,7 @@ void PanelPlatform::arrangePanels(PixelRectSize const& pixWinSize)
 		PixelPoint const pixPanelPos(pixPanelPosX, pixPanelPosY);
 		PixelRect  const rect(pixPanelPos, pixPanelSize);
 		upPanel->Move(rect, false);
-		if (pixPanelPosX += m_pixPanelWidth > pixWinSize.GetX())
+		if ((pixPanelPosX += m_pixPanelWidth) > pixWinSize.GetX())
 		{
 			pixPanelPosX = 0_PIXEL;
 			pixPanelPosY += m_pixPanelHeight; 
@@ -90,4 +91,12 @@ bool PanelPlatform::OnSize(PIXEL const width, PIXEL const height)
 {
 	arrangePanels(PixelRectSize(width, height));
 	return true;
+}
+
+void PanelPlatform::OnPaint()
+{
+	PAINTSTRUCT   ps;
+	HDC           hDC { BeginPaint(&ps) };
+	FillBackground(hDC, D2D1::ColorF::DarkGray); 
+	(void)EndPaint(&ps);
 }

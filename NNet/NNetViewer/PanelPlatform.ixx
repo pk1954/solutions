@@ -28,6 +28,7 @@ public:
 private:
 
    bool OnSize(PIXEL const, PIXEL const);
+   void OnPaint() final;
 
    void                      arrangePanels(PixelRectSize const&);
    vector<UpPanel>::iterator findPanel(PixelPoint const &);

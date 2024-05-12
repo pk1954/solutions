@@ -70,7 +70,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	DefineUtilityWrapperFunctions();
 
 	WinManager       ::Initialize();
-	Model            ::Initialize(&m_lockModelObservable);
+	Model            ::Initialize(&m_lockModelObservable, &m_staticModelObservable);
 	Signal           ::Initialize(&m_dynamicModelObservable);
 	Command          ::Initialize(&m_cmdStack, &m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);

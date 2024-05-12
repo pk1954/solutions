@@ -31,19 +31,19 @@ public:
     {
         Raster            const & raster  { NNetModelIO::GetImportNMWI().GetScanRaster() };
         unique_ptr<ScanImageByte> upImage { make_unique<ScanImageByte>(raster.Size())};
-        script.ScrReadSpecial(LIST_OPEN_BRACKET);
+        script.ScrReadSpecial(CURLY_OPEN_BRACKET);
         raster.Apply2AllC
         (
             [&script, &upImage](RasterPoint const &rp)
             {
                 if (rp.m_x == 0)
-                    script.ScrReadSpecial(LIST_OPEN_BRACKET);
+                    script.ScrReadSpecial(CURLY_OPEN_BRACKET);
                 upImage->Set(rp, static_cast<ColIndex>(script.ScrReadUchar()));
                 if (rp.m_x == upImage->Width() - 1)
-                    script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+                    script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
             }
         );
-        script.ScrReadSpecial(LIST_CLOSE_BRACKET);
+        script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
         NNetModelIO::GetImportNMWI().ReplaceScanImage(move(upImage));
     }
 
@@ -52,19 +52,19 @@ public:
         if (ScanImageByte const* pImage { NNetModelIO::GetExportNMRI().GetScanImageC() })
         {
             WriteCmdName(out);
-            out << endl << LIST_OPEN_BRACKET << endl;
+            out << endl << CURLY_OPEN_BRACKET << endl;
             pImage->Size().VisitAllRasterPointsC
             (
                 [&out, pImage](RasterPoint const &rp)
                 {
                     if (rp.m_x == 0)
-                        out << L"   " << LIST_OPEN_BRACKET << SPACE;
+                        out << L"   " << CURLY_OPEN_BRACKET << SPACE;
                     out << setw(3) << pImage->Get(rp) << SPACE;
                     if (rp.m_x == pImage->Width() - 1)
-                        out << LIST_CLOSE_BRACKET << endl;
+                        out << CURLY_CLOSE_BRACKET << endl;
                 }
             );
-            out << LIST_CLOSE_BRACKET << endl;
+            out << CURLY_CLOSE_BRACKET << endl;
         }
     }
 };
