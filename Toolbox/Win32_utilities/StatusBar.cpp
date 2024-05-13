@@ -10,7 +10,6 @@ module;
 
 module StatusBar;
 
-import Win32_PIXEL;
 import Tooltip;
 import Types;
 import Script;
@@ -197,5 +196,5 @@ void StatusBar::Arrange
 	RootWindow const& winMain
 )
 {
-	::ArrangeVertical(winMain.GetWindowHandle(), GetWindowHandle(), StatusBar::HEIGHT	);
+	::ArrangeVertical(&winMain, this);
 }

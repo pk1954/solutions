@@ -154,6 +154,9 @@ public:
 	virtual bool HasGrid()   const { return false; }
 	virtual bool HasScales() const { return false; }
 
+	virtual PIXEL GetFixedWidth () const { return PIXEL::NULL_VAL(); }
+	virtual PIXEL GetFixedHeight() const { return PIXEL::NULL_VAL(); }
+
 	void Notify(bool const) override;
 
 	void    Move(PIXEL const, PIXEL const, PIXEL const, PIXEL const, bool const) const;
@@ -203,3 +206,5 @@ private:
 			Show(ApplyAutoCriterion(onOffAuto, m_visibilityCriterion));
 	}
 };
+
+export void ArrangeVertical(RootWindow const * const, RootWindow const * const, PIXEL const = 0_PIXEL);

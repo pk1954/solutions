@@ -78,13 +78,7 @@ bool ScanPanel::OnSize(PIXEL const width, PIXEL const height)
 	fPixel const fPixPanelHeight       { Convert2fPixel(height) };
 	fPixel const fPixEventViewerHeight { fPixPanelHeight * EVENT_VIEWER_HEIGHT };
 	PIXEL  const pixEventViewerHeight  { Convert2PIXEL(fPixEventViewerHeight) };
-	::ArrangeVertical
-	(
-		m_upEventViewer->GetWindowHandle(),
-		pixEventViewerHeight, 
-		m_upScanViewer->GetWindowHandle(),
-		m_pixFrame
-	);
+	::ArrangeVertical(m_upEventViewer.get(), m_upScanViewer.get(), m_pixFrame);
 	Notify(false);
 	return true;
 }

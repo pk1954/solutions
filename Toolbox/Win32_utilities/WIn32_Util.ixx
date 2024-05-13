@@ -64,7 +64,6 @@ export void SetEditField(HWND const hwndEditField, auto const value)
 
 export void Enable(HMENU hMenu, unsigned int const id, bool const bCrit)
 {
-
     EnableMenuItem(hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
 }
 

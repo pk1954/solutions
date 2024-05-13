@@ -21,6 +21,12 @@ export class EventViewer : public NNetTimeGraph
 public:
 	EventViewer(HWND const);
 
+	PIXEL GetFixedHeight() const final 
+	{ 
+		PIXEL const pixClientHeight { GetParentRootWindow()->GetClientWindowHeight() };
+		return pixClientHeight / 10; 
+	}
+
 	wstring GetCaption() const final { return L"Event Viewer"; }
 
 private:

@@ -25,6 +25,8 @@ public:
 	void Start(HWND const);
 	void Stop();
 
+	PIXEL GetFixedHeight() const final { return HEIGHT; }
+
 	HWND WINAPI AddStaticControl(int const);
 	HWND WINAPI AddStaticControl(LPCTSTR const);
 	HWND WINAPI AddButton       (LPCTSTR const, int const, DWORD const);

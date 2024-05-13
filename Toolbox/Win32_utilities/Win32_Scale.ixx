@@ -55,6 +55,9 @@ public:
 	Scale& operator=      (const Scale& ) = delete;
 	Scale const& operator=(const Scale&&) = delete;
 
+	PIXEL GetFixedHeight() const final { return IsVertScale() ? PIXEL::NULL_VAL() : H_SCALE_HEIGHT; }
+	PIXEL GetFixedWidth () const final { return IsVertScale() ? V_SCALE_WIDTH : PIXEL::NULL_VAL(); }
+
 	void Apply2AllTicks(auto const & func) const
 	{
 		float  const fStartTicks { m_logStart / m_logTickDist };

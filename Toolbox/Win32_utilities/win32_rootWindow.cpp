@@ -383,3 +383,55 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 
 	return false;
 }
+
+void ArrangeVertical
+(
+	RootWindow const * const pWinTop,
+	RootWindow const * const pWinBottom,
+	PIXEL      const         pixFrameWidth
+)
+{
+	if (!pWinTop || !pWinBottom)
+		return;
+
+	assert(pWinTop->GetParent() == pWinBottom->GetParent());
+
+	PixelRectSize const size         { ::GetClRectSize(pWinTop->GetParent()) };
+	PIXEL         const pixNetHeight { size.GetY() - pixFrameWidth * 3 };
+	PIXEL         const pixNetWidth  { size.GetX() - pixFrameWidth * 2 };
+	PIXEL               pixTopHeight;
+	PIXEL               pixBottomHeight;
+	if (pWinTop->GetFixedHeight().IsNotNull())
+	{
+		pixTopHeight    = pWinTop->GetFixedHeight();
+		pixBottomHeight = pixNetHeight - pixTopHeight;
+	}
+	else if (pWinBottom->GetFixedHeight().IsNotNull())
+	{
+		pixBottomHeight = pWinBottom->GetFixedHeight();
+		pixTopHeight    = pixNetHeight - pixBottomHeight;
+	}
+	else
+	{
+		pixTopHeight    = pixNetHeight / 2;
+		pixBottomHeight = pixTopHeight;
+	}
+	assert(size.GetY() > pixTopHeight - pixFrameWidth * 3);
+
+	pWinTop->Move
+	(
+		pixFrameWidth + 1_PIXEL, // Unclear why + 1_PIXEL
+		pixFrameWidth + 1_PIXEL, // Unclear why + 1_PIXEL               
+		pixNetWidth   - 3_PIXEL, // Unclear why -3_PIXEL 
+		pixTopHeight  - 1_PIXEL, // Unclear why - 1_PIXEL
+		true
+	);
+	pWinBottom->Move
+	(
+		pixFrameWidth, 
+		pixTopHeight + pixFrameWidth * 2, 
+		pixNetWidth     - 1_PIXEL,    // Unclear why - 1_PIXEL
+		pixBottomHeight - 1_PIXEL,    // Unclear why - 1_PIXEL
+		true
+	);
+}
