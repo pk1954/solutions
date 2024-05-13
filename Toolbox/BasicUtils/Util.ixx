@@ -96,10 +96,17 @@ export bool ApplyAutoCriterion
 		return onOffAuto == tOnOffAuto::on;
 }
 
+export time_t CurrentTime()
+{
+    auto   currentTime   { system_clock::now() };
+    time_t currentTime_t { system_clock::to_time_t(currentTime) };
+    return currentTime_t;
+}
+
 export wstring GetCurrentDateAndTime()
 {
 	auto   now      { system_clock::now() };
-	time_t now_time { system_clock::to_time_t(now) };
+	time_t now_time { CurrentTime() };
 	char buffer[26];
 	ctime_s(buffer, sizeof(buffer), &now_time);
 	wstringstream wss;

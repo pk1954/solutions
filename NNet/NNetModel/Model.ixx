@@ -157,13 +157,15 @@ public:
 	Raster            const & GetScanRaster     () const { return *m_upRaster.get(); }
 	ScanImageByte     const * GetScanImageC     () const { return m_upImage.get(); }
 	EventList         const & GetEventList      () const { return m_events; }
-	time_t                    GetScanTime       () const { return m_timestamps.GetTimestamp(SCANTIME); }
 
 	mV   Scan(RasterPoint const& rp)            const { return m_scanMatrix.Scan(rp); }
 	void DensityCorrection(ScanImageRaw& image) const { m_scanMatrix.DensityCorrection(image); }
 	void DeselectAllNobs  ()                    const { m_upNobs->DeselectAllNobs(); }
 
-	SignalGenerator const * GetSigGen(SigGenId const id) const { return m_upSigGenList->GetSigGen(id); } 
+	SignalGenerator const * GetSigGen   (SigGenId const id)    const { return m_upSigGenList->GetSigGen(id); } 
+	time_t                  GetTimestamp(wstring  const &name) const { return m_timestamps.GetTimestamp(name); }
+
+	void Apply2AllTimestamps (auto const& f)  const { m_timestamps.Apply2All(f); }
 
 	// non const functions
 
@@ -198,23 +200,19 @@ public:
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 
-	void SetTimestamp(wstring const &name, time_t const t) { m_timestamps.SetTimestamp(name, t); }
+	void SetTimestamp       (wstring const &s, time_t const t) { m_timestamps.SetTimestamp(s, t); }
+	void SetTimestamp       (wstring const &s)                 { m_timestamps.SetTimestamp(s, 0); }
+    void PrepareScanMatrix  ()                                 { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
+	void SetModelFilePath   (wstring const &s)                 { m_wstrModelFilePath = s; }
+	void AddDescriptionLine (wstring const &s)                 { m_description.AddDescriptionLine(s); }
+	void DescriptionComplete()                                 { m_description.DescriptionComplete(); }
+	void SetDescriptionUI   (DescriptionUI &i)                 { m_description.SetDescriptionUI(i); }
 
-    void PrepareScanMatrix        ()                     { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
-	void SetModelFilePath         (wstring const & wstr) { m_wstrModelFilePath = wstr; }
-	void AddDescriptionLine       (wstring const & wstr) { m_description.AddDescriptionLine(wstr); }
-	void DescriptionComplete      ()                     { m_description.DescriptionComplete(); }
-	void SetDescriptionUI         (DescriptionUI &i)     { m_description.SetDescriptionUI(i); }
-	void SetActiveSigGenObservable(Observable    &o)     { m_upSigGenList->SetActiveSigGenObservable(o); }
-	void SetScanTime              (time_t const t)       { SetTimestamp(SCANTIME, t); }
-	void SetScanTimeNow           ()                     { SetScanTime(0); }
-	void Apply2AllTimestamps      (auto const& f)  const { m_timestamps.Apply2All(f); }
+	void SetActiveSigGenObservable(Observable &o) { m_upSigGenList->SetActiveSigGenObservable(o); }
 
 	EventList m_events;
 
 private:
-	inline static const wstring SCANTIME { L"ScanTime" };
-
 	unsigned int printNobType(unsigned int, NobType::Value) const;
 	bool isConnectedToPipe(NobId const, NobId const) const;
 	bool isConnectedTo    (NobId const, NobId const) const;

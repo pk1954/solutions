@@ -11,6 +11,8 @@ module;
 
 export module TimestampList;
 
+import Util;
+
 using std::map;
 using std::wstring;
 using std::chrono::system_clock;
@@ -21,16 +23,7 @@ public:
 
     void SetTimestamp(wstring const name, time_t const t)
     {
-        if (t == 0)
-        {
-            auto   currentTime   { system_clock::now() };
-            time_t currentTime_t { system_clock::to_time_t(currentTime) };
-            m_list[name] = currentTime_t;
-        }
-        else
-        {
-            m_list[name] = t;
-        }
+        m_list[name] = t ? t : CurrentTime();
     }
 
     time_t GetTimestamp(wstring const name) const

@@ -110,7 +110,6 @@ public:
 	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
 	optional<RasterPoint>   FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect          GetPointRect(RasterPoint const& rp)    const { return GetScanRaster().GetPointRect(rp); }
-	time_t                  GetScanTime()                          const { return m_pModel->GetScanTime(); }
 	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->Scan(rp); }
 	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
 	void                    DensityCorrection(ScanImageRaw& image) const { m_pModel->DensityCorrection(image); }

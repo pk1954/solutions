@@ -277,3 +277,5 @@ export PixelRect CalcWindowRect(PixelRect const, DWORD const);
 
 export bool MoveWindowAbsolute(HWND const, PixelRect  const &, bool const);
 export bool MoveWindowAbsolute(HWND const, PixelPoint const &, bool const);
+export void ArrangeVertical(HWND const, PIXEL const, HWND const,              PIXEL const = 0_PIXEL);
+export void ArrangeVertical(HWND const,              HWND const, PIXEL const, PIXEL const = 0_PIXEL);

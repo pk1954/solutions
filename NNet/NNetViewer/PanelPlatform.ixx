@@ -12,6 +12,7 @@ export module PanelPlatform;
 import Types;
 import BaseWindow;
 import ScanPanel;
+import NNetModel;
 
 using std::unique_ptr;
 using std::vector;
@@ -23,12 +24,12 @@ export class PanelPlatform :public BaseWindow
 public:
     PanelPlatform(HWND const);
 
-    void AddScan(UpPanel);
+    void AddScan(unique_ptr<Model>);
 
 private:
 
-   bool OnSize(PIXEL const, PIXEL const);
-   void OnPaint() final;
+   bool OnSize(PIXEL const, PIXEL const) final;
+   void OnPaint()                        final;
 
    void                      arrangePanels(PixelRectSize const&);
    vector<UpPanel>::iterator findPanel(PixelPoint const &);

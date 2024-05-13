@@ -130,7 +130,6 @@ void Compute::finishScan()
 			upScanImageByte->Set(rp, index);  
 		}
 	);
-	m_pNMWI->SetScanTimeNow();
 	m_pNMWI->ReplaceScanImage(move(upScanImageByte));
 	m_pDynamicModelObservable->NotifyAll();
 	StopScan();

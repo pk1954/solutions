@@ -23,7 +23,8 @@ EventViewer::EventViewer
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	adjust(GetWindowSize());
-	SetDefaultBackgroundColor();
+//	SetDefaultBackgroundColor();
+	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
 }
 
 void EventViewer::PaintGraphics()

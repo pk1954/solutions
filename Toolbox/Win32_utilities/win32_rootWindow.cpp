@@ -18,6 +18,7 @@ module RootWindow;
 import Types;
 import Preferences;
 import Win32_Util_Resource;
+import Win32_PIXEL;
 import BaseRefreshRate;
 import WinManager;
 import ColorDialog;
@@ -194,20 +195,6 @@ void RootWindow::Move(PIXEL const xPos, PIXEL const yPos, PIXEL const width, PIX
 void RootWindow::Move(PixelPoint const pos, PixelRectSize const size, bool const bRedraw) const
 {
 	Move(pos.GetX(), pos.GetY(), size.GetX(), size.GetY(), bRedraw);
-}
-
-void RootWindow::ArrangeVertical
-(
-	RootWindow const& winTop,
-	RootWindow const& winBottom,
-	PIXEL      const  pixTopHeight,
-	bool       const  bRedraw
-) const
-{
-	PixelRectSize size(GetClRectSize());
-	assert(size.GetY() > pixTopHeight);
-	winTop   .Move(0_PIXEL, 0_PIXEL,      size.GetX(), pixTopHeight,               bRedraw);
-	winBottom.Move(0_PIXEL, pixTopHeight, size.GetX(), size.GetY() - pixTopHeight, bRedraw);
 }
 
 void RootWindow::UpdateImmediately() const

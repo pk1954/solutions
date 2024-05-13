@@ -156,18 +156,17 @@ public:
 
 	void Notify(bool const) override;
 
-	void    ArrangeVertical(RootWindow const&, RootWindow const&, PIXEL const, bool const) const;
-	void    Move(PIXEL const, PIXEL const, PIXEL const, PIXEL const, bool const)           const;
-	void    Move(PixelPoint const, PixelRectSize const, bool const)                        const;
-	void    UpdateImmediately()                                                            const;
-	void    Invalidate(bool const)                                                         const;
-	void    FillBackground(HDC const, COLORREF const)                                      const;
-	void    SetTrackBarRange(INT const, LONG const, LONG const)                            const;
-	void    CenterIn(HWND const, PIXEL const, PIXEL const)                                 const;
-	HBITMAP CreateCompatibleBitmap(HDC const hDC)                                          const;
-	void    SetRefreshRate(milliseconds const)                                             const;
-	bool    IsOutOfClientRect(PixelPoint const&)                                           const;
-	wstring GetWindowText()                                                                const;
+	void    Move(PIXEL const, PIXEL const, PIXEL const, PIXEL const, bool const) const;
+	void    Move(PixelPoint const, PixelRectSize const, bool const)              const;
+	void    UpdateImmediately()                                                  const;
+	void    Invalidate(bool const)                                               const;
+	void    FillBackground(HDC const, COLORREF const)                            const;
+	void    SetTrackBarRange(INT const, LONG const, LONG const)                  const;
+	void    CenterIn(HWND const, PIXEL const, PIXEL const)                       const;
+	HBITMAP CreateCompatibleBitmap(HDC const hDC)                                const;
+	void    SetRefreshRate(milliseconds const)                                   const;
+	bool    IsOutOfClientRect(PixelPoint const&)                                 const;
+	wstring GetWindowText()                                                      const;
 	void    DestroyWindow();
 
 protected:

@@ -99,10 +99,10 @@ public:
     void ClearScanImage     ()                                        { GetScanImage()->Set(0); }
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }
-    void SetScanTimeNow     ()                                        { m_pModel->SetScanTimeNow(); }
     void PrepareScanMatrix  ()                                        { m_pModel->PrepareScanMatrix(); }
     void AddOutgoing        (NobId const id, Pipe* p)                 { GetPosNob(id).AddOutgoing(p); }
     void AddIncoming        (NobId const id, Pipe* p)                 { GetPosNob(id).AddIncoming(p); }
+    void SetTimestamp       (wstring const &name)                     { m_pModel->SetTimestamp(name, 0); }
 	void SetTimestamp       (wstring const &name, time_t const t)     { m_pModel->SetTimestamp(name, t); }
 
     PosNob & GetPosNob(NobId const);

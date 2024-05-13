@@ -6,6 +6,7 @@ module;
 
 #include <optional>
 #include <Windows.h>
+#include "d2d1helper.h"
 
 export module ScanViewer;
 
@@ -28,6 +29,7 @@ public:
 			m_controller,
 			nullptr
 		);
+		m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
 	}
 
 	float AspectRatio() const { return m_pNMRI->GetRasterRect().AspectRatio(); }
@@ -42,6 +44,7 @@ private:
 	{
 		NNetWindow::OnSize(width, height);
 		centerAndZoomRect();
+		Notify(false);
 		return true;
 	}
 

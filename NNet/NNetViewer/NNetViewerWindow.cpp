@@ -95,15 +95,7 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 	case IDM_ADD_IMPORTED_SCAN:
 		{
 	        unique_ptr<Model> upModel {	NNetModelIO::GetImportedModel() };
-			UpPanel           upPanel 
-			{ 
-				make_unique<ScanPanel>
-				(
-					m_upPanelPlatform->GetWindowHandle(), 
-					move(upModel)
-				)
-			};
-			m_upPanelPlatform->AddScan(move(upPanel));
+			m_upPanelPlatform->AddScan(move(upModel));
 		}
 		return true;
 

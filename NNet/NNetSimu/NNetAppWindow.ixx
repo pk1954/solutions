@@ -57,6 +57,9 @@ public:
 
 private:
 
+	wstring const SCANTIME    { L"ScanTime" };
+	wstring const STORAGETIME { L"StorageTime" };
+
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
 	void OnNotify (WPARAM const, LPARAM const)                   final;
 	void OnChar   (WPARAM const, LPARAM const)                   final;

@@ -13,6 +13,7 @@ module;
 module NNetSignals:MonitorWindow;
 
 import Win32_Util_Resource;
+import Win32_PIXEL;
 import Types;
 import Observable;
 import SoundInterface;
@@ -113,7 +114,12 @@ void MonitorWindow::OnPaint()
 
 bool MonitorWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	ArrangeVertical(*m_upMonitorControl.get(), *m_upHorzScale.get(), height-H_SCALE_HEIGHT, true);
+	::ArrangeVertical
+	(
+		m_upMonitorControl->GetWindowHandle(),
+		m_upHorzScale->GetWindowHandle(), 
+		H_SCALE_HEIGHT
+	);
 	if (m_upHorzScale->IsScaleLocked())
 		m_horzCoord.SetOffset(Convert2fPixel(RIGHT_BORDER - width));
 	m_upStimulusButton->CenterInParentWin();

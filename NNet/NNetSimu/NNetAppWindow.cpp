@@ -411,6 +411,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_SCAN:
+			m_nmwi.SetTimestamp(SCANTIME);
 			m_compute.StartScan();
 			return true;
 
@@ -682,6 +683,7 @@ void NNetAppWindow::processScript() const
 void NNetAppWindow::WriteModel()
 {
 	SetCursor(m_hCrsrWait);
+	m_nmwi.SetTimestamp(STORAGETIME);
 	NNetModelIO::Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0, this));
 	Preferences::WritePreferences();
 	m_appTitle.SetUnsavedChanges(false);

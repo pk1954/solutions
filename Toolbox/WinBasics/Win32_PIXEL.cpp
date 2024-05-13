@@ -4,8 +4,9 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
-#include "Windows.h"
+#include <Windows.h>
 
 module Win32_PIXEL;
 
@@ -88,4 +89,67 @@ bool MoveWindowAbsolute  // move window to given screen coordinates
 )
 {
 	return MoveWindowAbsolute(hwnd, PixelRect{ pixPos, GetWindowSize(hwnd) }, bRepaint);
+}
+
+static void arrangeVertical
+(
+	PixelRectSize const &size,
+	PIXEL         const  pixFrameWidth,
+	HWND          const  hwndTop,
+	PIXEL         const  pixTopHeight,
+	HWND          const  hwndBottom,
+	PIXEL         const  pixBottomHeight
+)
+{
+	PIXEL const pixWidthNet { size.GetX() - pixFrameWidth * 2 };
+	assert(size.GetY() > pixTopHeight - pixFrameWidth * 3);
+	assert(GetParent(hwndTop) == GetParent(hwndBottom));
+	::MoveWindow
+	(
+		hwndTop,
+		pixFrameWidth + 1_PIXEL, // Unclear why + 1_PIXEL
+		pixFrameWidth + 1_PIXEL, // Unclear why + 1_PIXEL               
+		pixWidthNet - 3_PIXEL,   // Unclear why -3_PIXEL 
+		pixTopHeight - 1_PIXEL,  // Unclear why - 1_PIXEL
+		true
+	);
+	::MoveWindow
+	(
+		hwndBottom,
+		pixFrameWidth, 
+		pixTopHeight + pixFrameWidth * 2, 
+		pixWidthNet - 1_PIXEL,        // Unclear why - 1_PIXEL
+		pixBottomHeight - 1_PIXEL,    // Unclear why - 1_PIXEL
+		true
+	);
+}
+
+void ArrangeVertical
+(
+	HWND  const hwndTop,
+	PIXEL const pixTopHeight,
+	HWND  const hwndBottom,
+	PIXEL const pixFrameWidth
+)
+{
+	if (!hwndTop || !hwndBottom)
+		return;
+	PixelRectSize const size { ::GetClRectSize(GetParent(hwndTop)) };
+	PIXEL         const pixBottomHeight { size.GetY() - pixTopHeight  - pixFrameWidth * 3 };
+	arrangeVertical(size, pixFrameWidth, hwndTop, pixTopHeight, hwndBottom, pixBottomHeight);
+}
+
+void ArrangeVertical
+(
+	HWND  const hwndTop,
+	HWND  const hwndBottom,
+	PIXEL const pixBottomHeight,
+	PIXEL const pixFrameWidth
+)
+{
+	if (!hwndTop || !hwndBottom)
+		return;
+	PixelRectSize const size         { ::GetClRectSize(GetParent(hwndTop)) };
+	PIXEL         const pixTopHeight { size.GetY() - pixBottomHeight  - pixFrameWidth * 3 };
+	arrangeVertical(size, pixFrameWidth, hwndTop, pixTopHeight, hwndBottom, pixBottomHeight);
 }
