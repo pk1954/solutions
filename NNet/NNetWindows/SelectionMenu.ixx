@@ -15,7 +15,7 @@ export class SelectionMenu : public BaseWindow
 {
 public:
 	void Start(HWND const);
-	void Stop();
+	//void Stop();
 
 	void SetBackgroundColorRef(COLORREF const col) final
 	{

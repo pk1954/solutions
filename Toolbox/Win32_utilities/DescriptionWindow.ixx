@@ -19,7 +19,7 @@ export class DescriptionWindow : public BaseWindow, public DescriptionUI
 {
 public:
 	void Start(HWND const);
-	void Stop();
+	//void Stop();
 
 	bool SetFontSize(int const);
 	int  GetFontSize() const { return m_iFontSize; }

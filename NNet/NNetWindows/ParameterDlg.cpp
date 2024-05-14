@@ -178,11 +178,11 @@ void ParameterDialog::paintHeader
 	m_fPixPosVert += fPixBlockHeight + fPixel(VERT_BLOCK_SPACE);
 }
 
-void ParameterDialog::Stop()
-{
-	BaseDialog::Stop();
-	m_pNMWI = nullptr;
-}
+//void ParameterDialog::Stop()
+//{
+//	BaseDialog::Stop();
+//	m_pNMWI = nullptr;
+//}
 
 void ParameterDialog::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 {

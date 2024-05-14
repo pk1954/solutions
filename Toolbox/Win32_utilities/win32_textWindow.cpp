@@ -68,20 +68,20 @@ void TextWindow::SetDefaultBackgroundColor()
 	m_upTextWindowThread->SetBackgroundColor(RGB(240, 240, 240));  // default background color of static control, can't change
 }
 
-void TextWindow::StopTextWindow()
-{
-	if (m_upTextWindowThread)
-	{
-		m_upTextWindowThread->Terminate();
-		m_upTextWindowThread.release();
-	}
-
-	if (m_hBitmap)
-	{
-		DeleteObject(m_hBitmap);
-		m_hBitmap = nullptr;
-	}
-}
+//void TextWindow::StopTextWindow()
+//{
+//	if (m_upTextWindowThread)
+//	{
+//		m_upTextWindowThread->Terminate();
+//		m_upTextWindowThread.release();
+//	}
+//
+//	if (m_hBitmap)
+//	{
+//		DeleteObject(m_hBitmap);
+//		m_hBitmap = nullptr;
+//	}
+//}
 
 void TextWindow::Trigger(bool const bImmediately)
 {

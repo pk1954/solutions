@@ -45,10 +45,10 @@ void SelectionMenu::Start(HWND const hwndParent)
 	m_colBackground = Convert2COLORREF(NNetColors::INT_SELECTED);
 }
 
-void SelectionMenu::Stop()
-{
-	BaseWindow::Stop();
-}
+//void SelectionMenu::Stop()
+//{
+//	BaseWindow::Stop();
+//}
 
 bool SelectionMenu::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {

@@ -48,7 +48,7 @@ public:
 	NNetAppWindow(wstring const &);
 
 	virtual void Start(MessagePump&);
-	virtual void Stop();
+	//virtual void Stop();
 
 	void DoGameStuff() { m_compute.DoGameStuff(); }
 

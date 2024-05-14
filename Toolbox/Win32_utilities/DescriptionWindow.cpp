@@ -158,11 +158,11 @@ void DescriptionWindow::fontSize()
     ::SendMessage(m_hwndEdit, WM_SETFONT, (WPARAM)m_hFont, true);
 }
 
-void DescriptionWindow::Stop()
-{
-    BaseWindow::Stop();
-    DeleteObject(m_hFont);
-}
+//void DescriptionWindow::Stop()
+//{
+//    BaseWindow::Stop();
+//    DeleteObject(m_hFont);
+//}
 
 void DescriptionWindow::ClearDescription()
 {

@@ -40,11 +40,11 @@ void PerformanceWindow::Start
 	m_pDisplayTimer    = pDisplayTimer;
 }
 
-void PerformanceWindow::Stop()
-{
-	TextWindow::StopTextWindow();
-	Show(false);
-}
+//void PerformanceWindow::Stop()
+//{
+//	TextWindow::StopTextWindow();
+//	Show(false);
+//}
 
 void PerformanceWindow::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {

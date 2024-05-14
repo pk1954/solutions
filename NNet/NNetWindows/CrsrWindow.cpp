@@ -56,11 +56,11 @@ void CrsrWindow::Start
 	);
 }
 
-void CrsrWindow::Stop()
-{
-	TextWindow::StopTextWindow();
-	Show(false);
-}
+//void CrsrWindow::Stop()
+//{
+//	TextWindow::StopTextWindow();
+//	Show(false);
+//}
 
 void CrsrWindow::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {

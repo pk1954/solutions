@@ -24,7 +24,7 @@ public:
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 	
-	void Stop() override;
+	//void Stop() override;
 
 private:
 

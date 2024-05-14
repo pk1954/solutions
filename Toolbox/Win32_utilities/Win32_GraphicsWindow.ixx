@@ -27,7 +27,7 @@ public:
 
 	D2D_driver* GetGraphics() { return m_upGraphics.get(); }
 
-	virtual void Stop();
+	//virtual void Stop();
 
 	void     SetBackgroundColorRef(COLORREF const c) override { SetBackgroundColor(Color(c)); }
 	COLORREF GetBackgroundColorRef() const           override { return Convert2COLORREF(GetBackgroundColor()); }

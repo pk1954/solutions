@@ -29,7 +29,7 @@ public:
 	~TextWindow() override;
 
 	void StartTextWindow(HWND const, PixelRect const&, LPCTSTR const, UINT const, VisCrit const&);
-	void StopTextWindow();
+	//void StopTextWindow();
 
 	virtual void PaintText(TextBuffer&) = 0;
 

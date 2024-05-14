@@ -272,32 +272,32 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_bStarted = true;
 }
 
-void NNetAppWindow::Stop()
-{
-	BaseWindow::Stop();
-	m_bStarted = false;
-
-	m_compute.StopComputation();
-
-	m_mainNNetWindow   .Stop();
-	m_miniNNetWindow   .Stop();
-	m_monitorWindow    .Stop();
-	m_crsrWindow       .Stop();
-	m_performanceWindow.Stop();
-	m_parameterDlg     .Stop();
-	m_statusBar        .Stop();
-
-	m_staticModelObservable .UnregisterAllObservers();
-	m_dynamicModelObservable.UnregisterAllObservers();
-	m_cursorPosObservable   .UnregisterAllObservers();
-	m_performanceObservable .UnregisterAllObservers();
-	m_runObservable         .UnregisterAllObservers();
-	m_slowMotionRatio       .UnregisterAllObservers();
-	m_nmwi.GetParams()      .UnregisterAllObservers();
-
-	WinManager::RemoveAll();
-	m_nmwi.SetModel(nullptr);
-}
+//void NNetAppWindow::Stop()
+//{
+//	BaseWindow::Stop();
+//	m_bStarted = false;
+//
+//	m_compute.StopComputation();
+//
+//	m_mainNNetWindow   .Stop();
+//	m_miniNNetWindow   .Stop();
+//	m_monitorWindow    .Stop();
+//	m_crsrWindow       .Stop();
+//	m_performanceWindow.Stop();
+//	m_parameterDlg     .Stop();
+//	m_statusBar        .Stop();
+//
+//	m_staticModelObservable .UnregisterAllObservers();
+//	m_dynamicModelObservable.UnregisterAllObservers();
+//	m_cursorPosObservable   .UnregisterAllObservers();
+//	m_performanceObservable .UnregisterAllObservers();
+//	m_runObservable         .UnregisterAllObservers();
+//	m_slowMotionRatio       .UnregisterAllObservers();
+//	m_nmwi.GetParams()      .UnregisterAllObservers();
+//
+//	WinManager::RemoveAll();
+//	m_nmwi.SetModel(nullptr);
+//}
 
 bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
 {
@@ -363,7 +363,7 @@ void NNetAppWindow::OnClose()
 		if (! AskAndSave())
 			return;
 		WinManager::StoreWindowConfiguration();
-		Stop();
+		//Stop();
 	}
 }
 

@@ -43,12 +43,12 @@ HWND BaseDialog::StartBaseDialog
 	return hwnd;
 }
 
-void BaseDialog::Stop()
-{
-	RootWindow::Stop();
-	if (m_upGraphics)
-		m_upGraphics->ShutDown();
-}
+//void BaseDialog::Stop()
+//{
+//	RootWindow::Stop();
+//	if (m_upGraphics)
+//		m_upGraphics->ShutDown();
+//}
 
 bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {

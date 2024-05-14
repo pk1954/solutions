@@ -37,7 +37,7 @@ private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
-	void OnClose  ()                                             final;
+	//void OnClose  ()                                             final;
 
 	void configureStatusBar();
 

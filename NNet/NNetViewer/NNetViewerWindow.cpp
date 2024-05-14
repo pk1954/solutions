@@ -73,10 +73,10 @@ bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 	return true;
 }
 
-void NNetViewerWindow::OnClose()
-{
-	Stop();
-}
+//void NNetViewerWindow::OnClose()
+//{
+//	Stop();
+//}
 
 bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
