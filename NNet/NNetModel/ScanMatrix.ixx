@@ -30,6 +30,8 @@ using std::nullopt;
 export using RawImage  = Vector2D<mV>;
 export using ByteImage = Vector2D<ColIndex>;
 
+export unique_ptr<ByteImage> Raw2ByteImage(RawImage const&);
+
 export class ScanMatrix
 {
 public:

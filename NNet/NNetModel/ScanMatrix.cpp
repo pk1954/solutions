@@ -302,3 +302,18 @@ void ScanMatrix::DrawScanAreaBackground
 {
 	context.FillRectangle(raster.GetScanArea(), NNetColors::SCAN_AREA_RECT);
 }
+
+unique_ptr<ByteImage> Raw2ByteImage(RawImage const& rawImage)
+{
+	unique_ptr<ByteImage> upScanImageByte { make_unique<ByteImage>(rawImage.Size())};
+	rawImage.Size().VisitAllRasterPointsC
+	(
+		[&upScanImageByte, &rawImage](RasterPoint const& rp) 
+		{ 
+			ColIndex index { Cast2Byte(rawImage.Get(rp).GetValue() * 255.0f) };
+			upScanImageByte->Set(rp, index);  
+		}
+	);
+	return move(upScanImageByte);
+}
+

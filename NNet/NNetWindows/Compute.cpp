@@ -121,16 +121,7 @@ void Compute::finishScan()
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN);
 	m_pNMWI->DensityCorrection(*m_upSumImage.get());
 	m_upSumImage->Normalize(1.0f);
-	unique_ptr<ByteImage> upScanImageByte { make_unique<ByteImage>(m_upSumImage->Size())};
-	m_upSumImage->Size().VisitAllRasterPointsC
-	(
-		[this, &upScanImageByte](RasterPoint const& rp) 
-		{ 
-			ColIndex index { Cast2Byte(m_upSumImage->Get(rp).GetValue() * 255.0f) };
-			upScanImageByte->Set(rp, index);  
-		}
-	);
-	m_pNMWI->ReplaceByteImage(move(upScanImageByte));
+	m_pNMWI->ReplaceByteImage(move(Raw2ByteImage(*m_upSumImage.get())));
 	m_pDynamicModelObservable->NotifyAll();
 	StopScan();
 	setRunning(false);
