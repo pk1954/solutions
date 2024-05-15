@@ -56,7 +56,7 @@ public:
 
 	void CenterAndZoomRect(Uniform2D<MicroMeter>&, MicroMeterRect const, float const);
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
-	void DrawScanArea(optional<CardPoint> const) const;
+	void DrawScanAreaAll(optional<CardPoint> const) const;
 
 	SignalId FindSignalHandle(MicroMeterPnt const&) const;
 

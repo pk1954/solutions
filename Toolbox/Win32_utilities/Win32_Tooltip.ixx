@@ -4,6 +4,7 @@
 
 module;
 
+#include <string>
 #include <Windows.h>
 #include <windowsx.h>
 
@@ -11,8 +12,10 @@ export module Tooltip;
 
 import Types;
 
-export HWND CreateToolTipEx     (HWND const, int const, bool const, PixelRect const * const, LPCTSTR const);
-export HWND CreateStdToolTip    (HWND const, int const, LPCTSTR const);
-export HWND CreateWindowToolTip (HWND const, LPCTSTR const);
-export HWND CreateBalloonToolTip(HWND const, int const, LPCTSTR const);
-export HWND CreateRectToolTip   (HWND const, int const, PixelRect const * const, LPCTSTR const);
+using std::wstring;
+
+export HWND CreateToolTipEx     (HWND const, int const, bool const, PixelRect const * const, wstring const);
+export HWND CreateStdToolTip    (HWND const, int const, wstring const);
+export HWND CreateWindowToolTip (HWND const,            wstring const);
+export HWND CreateBalloonToolTip(HWND const, int const, wstring const);
+export HWND CreateRectToolTip   (HWND const, int const, PixelRect const * const, wstring const);

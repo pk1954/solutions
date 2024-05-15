@@ -70,11 +70,11 @@ private:
 	HiResClockGen     m_computeClockGen;
 	HiResTimer        m_computeTimer;
 
-	unique_ptr<ScanImageRaw> m_upSingleImage;
-	unique_ptr<ScanImageRaw> m_upSumImage;
-	int                      m_iScanNr     { 0 };
-	RasterPoint              m_rpScanRun;
-	fMicroSecs               m_usSimuNextPixelScan;
+	unique_ptr<RawImage> m_upSingleImage;
+	unique_ptr<RawImage> m_upSumImage;
+	int                  m_iScanNr     { 0 };
+	RasterPoint          m_rpScanRun;
+	fMicroSecs           m_usSimuNextPixelScan;
 
 	void startScanPass();
 	void scanNextPixel();

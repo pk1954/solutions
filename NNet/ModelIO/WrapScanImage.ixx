@@ -29,8 +29,8 @@ public:
 
     void operator() (Script& script) const final
     {
-        Raster            const & raster  { NNetModelIO::GetImportNMWI().GetScanRaster() };
-        unique_ptr<ScanImageByte> upImage { make_unique<ScanImageByte>(raster.Size())};
+        Raster        const & raster  { NNetModelIO::GetImportNMWI().GetScanRaster() };
+        unique_ptr<ByteImage> upImage { make_unique<ByteImage>(raster.Size())};
         script.ScrReadSpecial(CURLY_OPEN_BRACKET);
         raster.Apply2AllC
         (
@@ -44,12 +44,12 @@ public:
             }
         );
         script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
-        NNetModelIO::GetImportNMWI().ReplaceScanImage(move(upImage));
+        NNetModelIO::GetImportNMWI().ReplaceByteImage(move(upImage));
     }
 
     void Write(wostream& out) const final
     {
-        if (ScanImageByte const* pImage { NNetModelIO::GetExportNMRI().GetScanImageC() })
+        if (ByteImage const* pImage { NNetModelIO::GetExportNMRI().GetScanImageC() })
         {
             WriteCmdName(out);
             out << endl << CURLY_OPEN_BRACKET << endl;

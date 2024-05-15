@@ -37,7 +37,7 @@ public:
 private:
 	void PaintGraphics() final
 	{
-		DrawScanArea(nullopt);
+		DrawScanAreaAll(nullopt);
 	}
 
 	bool OnSize(PIXEL const width, PIXEL const height)

@@ -93,7 +93,7 @@ void NNetAppWindow::setModelInterface()
 	m_compute          .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
-	m_appTitle         .SetModelInterface(m_pNMRI);
+	m_appTitle         .SetModelInterface(&m_nmwi);
 	m_NNetController   .SetModelInterface(m_pNMRI);
 	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
 	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
@@ -425,7 +425,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_UNLOCK:
 			m_compute.StopScan();
-			m_nmwi.RejectScanImage();
+			m_nmwi.RejectByteImage();
 			return true;
 
 		case IDM_FORWARD:

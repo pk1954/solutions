@@ -65,7 +65,7 @@ Model::Model()
 	m_upRaster     = make_unique<Raster>();
 	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
 	m_pStaticModelObservable->RegisterObserver(*this);
-	RejectScanImage(); 
+	RejectByteImage(); 
 }
 
 Model::~Model() 
@@ -298,7 +298,7 @@ void Model::ResetModel()
 	m_upSigGenList->Clear();
 	m_sensorList.Clear();
 	m_description.ClearDescription();
-	RejectScanImage();
+	RejectByteImage();
 	SimulationTime::Set();
 	m_wstrModelFilePath = L"";
 }
@@ -320,39 +320,23 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 	m_upRaster->SetScanArea(rect);
 }
 
-void Model::CreateScanImage()
+void Model::CreateByteImage()
 { 
-	m_upImage = make_unique<ScanImageByte>(m_upRaster->Size());
+	m_upByteImage = make_unique<ByteImage>(m_upRaster->Size());
 	if (m_pLockModelObservable)
 		m_pLockModelObservable->NotifyAll();
 }
 
-void Model::ReplaceScanImage(unique_ptr<ScanImageByte> up) 
+void Model::ReplaceByteImage(unique_ptr<ByteImage> up) 
 { 
-	m_upImage = move(up); 
+	m_upByteImage = move(up); 
 }
 
-void Model::RejectScanImage()
+void Model::RejectByteImage()
 { 
-	m_upImage.release(); 
+	m_upByteImage.release(); 
 	if (m_pLockModelObservable)
 		m_pLockModelObservable->NotifyAll();
-}
-
-void Model::DrawScanArea
-(
-	DrawContext         const& context,
-	ColorLUT            const& lut,
-	bool                const  bFilter,
-	optional<CardPoint> const  cardPntSelected
-) const
-{
-	m_scanMatrix.DrawScanArea(context, *m_upRaster.get(), m_upImage.get(), lut, bFilter, cardPntSelected, *m_upNobs.get());
-}
-
-void Model::DrawScanAreaBackground(DrawContext const& context) const
-{
-	m_scanMatrix.DrawScanAreaBackground(context, *m_upRaster.get());
 }
 
 optional<CardPoint> Model::SelectScanAreaHandle

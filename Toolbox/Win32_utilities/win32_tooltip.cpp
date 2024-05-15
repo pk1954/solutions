@@ -40,39 +40,39 @@ HWND CreateRectToolTip
 	HWND              const hwndParent,
 	int               const idTool,
 	PixelRect const * const pRect,
-	LPCTSTR           const szText
+	wstring           const wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, idTool, true, pRect, szText);
+	return CreateToolTipEx(hwndParent, idTool, true, pRect, wstrText);
 }
 
 HWND CreateWindowToolTip
 (
 	HWND    const hwndParent,
-	LPCTSTR const szText
+	wstring const wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, 0, false, nullptr, szText);
+	return CreateToolTipEx(hwndParent, 0, false, nullptr, wstrText);
 }
 
 HWND CreateStdToolTip
 (
 	HWND    const hwndParent,
 	int     const idTool,
-	LPCTSTR const szText
+	wstring const wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, idTool, false, nullptr, szText);
+	return CreateToolTipEx(hwndParent, idTool, false, nullptr, wstrText);
 }
 
 HWND CreateBalloonToolTip
 (
 	HWND    const hwndParent,
 	int     const idTool,
-	LPCTSTR const szText
+	wstring const wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, idTool, true, nullptr, szText);
+	return CreateToolTipEx(hwndParent, idTool, true, nullptr, wstrText);
 }
 
 HWND CreateToolTipEx
@@ -81,7 +81,7 @@ HWND CreateToolTipEx
 	int               const idTool,
 	bool              const bBalloon,
 	PixelRect const * const pRect,
-	LPCTSTR           const szText
+	wstring           const wstrText
 )
 {
 	DWORD dwStyle = WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP; 
@@ -122,7 +122,7 @@ HWND CreateToolTipEx
 	ti.uFlags   = TTF_SUBCLASS;
 	ti.hwnd     = hwndParent;
 	ti.hinst    = GetModuleHandle(nullptr);
-	ti.lpszText = szText;
+	ti.lpszText = wstrText.c_str();
 
 	if (idTool > 0)
 	{

@@ -71,7 +71,7 @@ public:
     SignalGenerator       * GetSigGen          (wstring const& name)    const    { return m_pModel->GetSigGenList().GetSigGen(name); }
     UPSigGen                RemoveSigGen       (SigGenId const id)               { return m_pModel->GetSigGenList().RemoveSigGen(id); }
     UPSigGen                PopSigGen          ()                                { return m_pModel->GetSigGenList().PopSigGen(); }
-    ScanImageByte         * GetScanImage       ()                                { return m_pModel->GetScanImage(); }
+    ByteImage             * GetScanImage       ()                                { return m_pModel->GetScanImage(); }
     MicroSensor           * GetMicroSensor     (NobId const id)                  { return m_pModel->GetMicroSensorList().GetMicroSensor(id); }
     unique_ptr<MicroSensor> RemoveMicroSensor  (NobId const id)                  { return m_pModel->GetMicroSensorList().RemoveMicroSensor(id); }
     void                    AddMicroSensor     (unique_ptr<MicroSensor> up)      {        m_pModel->GetMicroSensorList().AddMicroSensor(move(up)); }
@@ -93,9 +93,9 @@ public:
     void AddDescriptionLine (wstring const & wstr)                    { m_pModel->AddDescriptionLine(wstr); }
     void DescriptionComplete()                                        { m_pModel->DescriptionComplete(); }
     void DeselectAllNobs    ()                                        { m_pModel->DeselectAllNobs(); }
-    void CreateScanImage    ()                                        { m_pModel->CreateScanImage(); }
-	void ReplaceScanImage   (unique_ptr<ScanImageByte> up)            { m_pModel->ReplaceScanImage(move(up)); }
-    void RejectScanImage    ()                                        { m_pModel->RejectScanImage(); }
+    void CreateByteImage    ()                                        { m_pModel->CreateByteImage(); }
+	void ReplaceByteImage   (unique_ptr<ByteImage> up)                { m_pModel->ReplaceByteImage(move(up)); }
+    void RejectByteImage    ()                                        { m_pModel->RejectByteImage(); }
     void ClearScanImage     ()                                        { GetScanImage()->Set(0); }
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }

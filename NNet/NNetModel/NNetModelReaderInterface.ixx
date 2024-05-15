@@ -81,7 +81,7 @@ public:
 	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
 	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
 	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
-	UPNobList        const& GetUPNobsC()                           const { return m_pModel->GetUPNobs(); }
+	UPNobList        const& GetUPNobsC()                           const { return m_pModel->GetUPNobsC(); }
 	unsigned int            GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
 	unsigned int            GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
 	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
@@ -103,16 +103,16 @@ public:
 	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
 	MicroMeterRect          GetScanArea()                          const { return m_pModel->GetScanArea(); }
 	MicroMeterRect          GetRasterRect()                        const { return m_pModel->GetRasterRect(); }
-	ScanImageByte    const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
+	ByteImage        const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
 	bool                    ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
 	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
 	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
 	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
 	optional<RasterPoint>   FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect          GetPointRect(RasterPoint const& rp)    const { return GetScanRaster().GetPointRect(rp); }
-	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->Scan(rp); }
+	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->m_scanMatrix.Scan(rp); }
+	void                    DensityCorrection(RawImage& image)     const { m_pModel->m_scanMatrix.DensityCorrection(image); }
 	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
-	void                    DensityCorrection(ScanImageRaw& image) const { m_pModel->DensityCorrection(image); }
 	fMicroSecs              TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const
@@ -184,8 +184,11 @@ public:
 	void DrawInterior(NobId      const,  DrawContext const&, tHighlight const) const;
 	void DrawLine(MicroMeterLine const&, DrawContext const&)                   const;
 
-	void DrawScanArea(DrawContext const&, ColorLUT const&, bool const, optional<CardPoint> const) const;
-	void DrawScanAreaBackground(DrawContext const& context) const { m_pModel->DrawScanAreaBackground(context); }
+	void DrawScanAreaBackground(DrawContext const&) const; 
+	void DrawScanRaster        (DrawContext const&) const;
+    void DrawScanAreaHandles   (DrawContext const&, optional<CardPoint> const) const;
+    void DrawSensorDensityMap  (DrawContext const&) const;
+    void DrawScanImage         (DrawContext const&, ByteImage const*, ColorLUT const&) const;
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 

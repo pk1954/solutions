@@ -4,6 +4,7 @@
 
 module;
 
+#include <string>
 #include <cassert>
 #include <Windows.h>
 
@@ -12,6 +13,8 @@ module EventViewer;
 import Types;
 import PixFpDimension;
 import NNetModel;
+
+using std::wstring;
 
 EventViewer::EventViewer
 (
@@ -23,7 +26,6 @@ EventViewer::EventViewer
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	adjust(GetWindowSize());
-//	SetDefaultBackgroundColor();
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
 }
 
@@ -61,6 +63,7 @@ void EventViewer::PaintGraphics()
 	);
 	if (!bStimulus)
 		m_upGraphics->DisplayText(L"No stimulus");
+	CreateWindowToolTip(L"Hallo");
 };
 
 void EventViewer::adjust(PixelRectSize const clientSize)

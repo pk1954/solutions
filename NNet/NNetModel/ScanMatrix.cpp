@@ -73,7 +73,7 @@ void ScanMatrix::add2list(Pipe const& pipe, Raster const& raster)
     );
 }
 
-void ScanMatrix::DensityCorrection(ScanImageRaw &image) const
+void ScanMatrix::DensityCorrection(RawImage &image) const
 {
     assert(image.Size() == m_scanPixels.Size());
 	image.Divide([this](RasterPoint const& pnt){ return NrOfDataPntsInPixel(pnt); });
@@ -161,57 +161,21 @@ void ScanMatrix::DrawScanRaster(DrawContext const& context, Raster const& raster
 
 void ScanMatrix::DrawScanImage
 (
-	DrawContext   const& context,
-	Raster        const& raster, 
-	ScanImageByte const& image, 
-	ColorLUT      const& lut,
-	bool          const  bFilter
+	DrawContext const& context,
+	Raster      const& raster, 
+	ByteImage   const* pByteImage, 
+	ColorLUT    const& lut
 ) const
 {
-	unique_ptr<ScanImageByte> upFiltered;
-	ScanImageByte const * pImage { &image };
-	assert(pImage);
-
-	if (bFilter)
-	{
-		upFiltered = pImage->MeanFilter();
-		upFiltered->Normalize(255.0f);
-		pImage = upFiltered.get();
-	}
-
 	raster.DrawRasterPoints
 	(
 		context, 
-		[this, pImage, &lut](auto const &rp) -> Color
+		[this, pByteImage, &lut](auto const &rp) -> Color
 		{
-			return lut.GetColor(pImage->Get(rp));
+			return lut.GetColor(pByteImage->Get(rp));
 		}
 	);
 }
-
-void ScanMatrix::DrawScanArea
-(
-	DrawContext           const& context,
-	Raster                const& raster,
-	ScanImageByte const * const  pImage,
-	ColorLUT              const& lut,
-	bool                  const  bFilter,
-	optional<CardPoint>   const  cardPntSelected,
-	UPNobList             const& nobList  
-) const
-{
-	if (pImage)
-	{
-		DrawScanImage(context, raster, *pImage, lut, bFilter);
-	}
-	else
-	{
-		DrawSensorDensityMap(context, raster, nobList);
-		DrawScanAreaHandles (context, raster, cardPntSelected);
-	}
-	DrawScanRaster(context, raster);
-}
-
 
 MicroMeter ScanMatrix::getScanAreaHandleSize(Uniform2D<MicroMeter> const &coord) const
 {

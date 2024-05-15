@@ -4,6 +4,7 @@
 
 module;
 
+#include <memory>
 #include <cassert>
 #include <sstream> 
 #include "Resource.h"
@@ -22,6 +23,7 @@ import :NNetCommandHandler;
 
 using std::function;
 using std::optional;
+using std::unique_ptr;
 
 static Color const EEG_SIGNAL_HIGH { 1.0f, 0.5f, 0.0f, 1.0f };
 
@@ -137,15 +139,26 @@ void NNetWindow::DrawSensors() const
 	);
 }
 
-void NNetWindow::DrawScanArea(optional<CardPoint> const cardPntSelected) const
+void NNetWindow::DrawScanAreaAll(optional<CardPoint> const cardPntSelected) const
 {
-	m_pNMRI->DrawScanArea
-	(
-		m_context, 
-		NNetPreferences::m_colorLutScan, 
-		NNetPreferences::ApplyFilter(),
-		cardPntSelected
-	);
+	if (m_pNMRI->GetScanImageC())
+	{
+		ByteImage const * pByteImage { m_pNMRI->GetScanImageC() };
+		if (NNetPreferences::ApplyFilter())
+		{
+			unique_ptr<ByteImage> upFiltered { pByteImage->MeanFilter() };
+			if (ColIndex indexMax { upFiltered->GetMax() })
+				*upFiltered *= 255.0f / indexMax;
+			pByteImage = upFiltered.get();
+		}
+		m_pNMRI->DrawScanImage(m_context, pByteImage, NNetPreferences::m_colorLutScan);
+	}
+	else
+	{
+		m_pNMRI->DrawSensorDensityMap(m_context);
+		m_pNMRI->DrawScanAreaHandles (m_context, cardPntSelected);
+	}
+	m_pNMRI->DrawScanRaster(m_context);
 }
 
 void NNetWindow::CenterAndZoomRect

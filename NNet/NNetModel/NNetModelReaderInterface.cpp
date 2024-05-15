@@ -223,21 +223,29 @@ void NNetModelReaderInterface::DrawLine
 	context.DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), 10.0_MicroMeter, D2D1::ColorF::Brown);
 }
 
-void NNetModelReaderInterface::DrawScanArea
-(
-	DrawContext         const& context,
-	ColorLUT            const& lut,
-	bool                const  bFilter,
-    optional<CardPoint> const  cardPntSelected
-) const
+void NNetModelReaderInterface::DrawScanAreaBackground(DrawContext const& context) const 
+{	
+	m_pModel->m_scanMatrix.DrawScanAreaBackground(context, m_pModel->GetScanRaster()); 
+}
+
+void NNetModelReaderInterface::DrawScanRaster(DrawContext const& context) const
 {
-	m_pModel->DrawScanArea
-	(
-		context, 
-		lut, 
-		bFilter,
-		cardPntSelected
-	);
+	m_pModel->m_scanMatrix.DrawScanRaster(context, m_pModel->GetScanRaster());
+}
+
+void NNetModelReaderInterface::DrawScanAreaHandles(DrawContext const& context, optional<CardPoint> const cp) const
+{
+	m_pModel->m_scanMatrix.DrawScanAreaHandles(context, m_pModel->GetScanRaster(), cp);
+}
+
+void NNetModelReaderInterface::DrawSensorDensityMap(DrawContext const& context) const
+{
+	m_pModel->m_scanMatrix.DrawSensorDensityMap(context, m_pModel->GetScanRaster(), m_pModel->GetUPNobsC());
+}
+
+void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, ByteImage const* pByteImage, ColorLUT const& lut) const
+{
+	m_pModel->m_scanMatrix.DrawScanImage(context, m_pModel->GetScanRaster(), pByteImage, lut);
 }
 
 optional<CardPoint> NNetModelReaderInterface::SelectScanAreaHandle

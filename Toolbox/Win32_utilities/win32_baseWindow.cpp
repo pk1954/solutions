@@ -88,7 +88,7 @@ void BaseWindow::trackMouse(bool const bOn) const
     tme.cbSize      = sizeof(TRACKMOUSEEVENT);
     tme.dwFlags     = TME_HOVER | TME_LEAVE;
     tme.hwndTrack   = bOn ? GetWindowHandle() : HWND(0);
-    tme.dwHoverTime = HOVER_DEFAULT;
+    tme.dwHoverTime = 1200;  //HOVER_DEFAULT;
     TrackMouseEvent(&tme);
 };
 

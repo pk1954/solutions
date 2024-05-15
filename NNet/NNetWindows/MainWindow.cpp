@@ -494,13 +494,13 @@ void MainWindow::PaintGraphics()
 	{
 		if (NNetPreferences::ModelFront())
 		{
-			DrawScanArea(m_scanAreaHandleSelected);
+			DrawScanAreaAll(m_scanAreaHandleSelected);
 			drawModel(m_context );
 		}
 		else
 		{
 			drawModel(m_context);
-			DrawScanArea(m_scanAreaHandleSelected);
+			DrawScanAreaAll(m_scanAreaHandleSelected);
 		}
 	}
 	else

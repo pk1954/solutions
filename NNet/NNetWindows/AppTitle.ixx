@@ -19,6 +19,8 @@ using std::wstring;
 export class AppTitle : public ObserverInterface
 {
 public:
+	wstring const LAST_EDIT { L"LastEdit" };
+
 	void Initialize
 	(
 		HWND    const   hwndApp,
@@ -29,9 +31,9 @@ public:
 		m_pwstrProductName = &wstrProductName;
 	}
 
-	void SetModelInterface(NNetModelReaderInterface const * const pNMRI)
+	void SetModelInterface(NNetModelWriterInterface * const pNMWI)
 	{
-		m_pNMRI = pNMRI;
+		m_pNMWI = pNMWI;
 	}
 
 	void Notify(bool const bImmediate) final 
@@ -41,8 +43,13 @@ public:
 
 	void SetUnsavedChanges(bool const bState)
 	{
-		m_bUnsavedChanges = bState;
-		setAppTitle();
+		//if (bState)
+		//	m_pNMWI->SetTimestamp(LAST_EDIT);
+		if (bState != m_bUnsavedChanges)
+		{
+			m_bUnsavedChanges = bState;
+			setAppTitle();
+		}
 	}
 
 	bool AnyUnsavedChanges() const 
@@ -54,18 +61,18 @@ private:
 	void setAppTitle()
 	{
 		wstring wstr { m_bUnsavedChanges ? L" * " : L"" };
-		if (m_pNMRI->ModelLocked())
+		if (m_pNMWI->ModelLocked())
 			wstr += L"  +++ model locked +++";
 		::SetApplicationTitle
 		(
 			m_hwndApp, 
 			*m_pwstrProductName,
-			m_pNMRI->GetModelFilePath() + wstr 
+			m_pNMWI->GetModelFilePath() + wstr 
 		);
 	}
 
-	HWND                             m_hwndApp          { nullptr };
-	wstring                  const * m_pwstrProductName { nullptr };
-	NNetModelReaderInterface const * m_pNMRI            { nullptr };
-	bool                             m_bUnsavedChanges  { false }; 
+	HWND                       m_hwndApp          { nullptr };
+	wstring            const * m_pwstrProductName { nullptr };
+	NNetModelWriterInterface * m_pNMWI            { nullptr };
+	bool                       m_bUnsavedChanges  { false }; 
 };
