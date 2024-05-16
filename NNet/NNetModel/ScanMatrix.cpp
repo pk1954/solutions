@@ -29,7 +29,7 @@ using std::nullopt;
 
 ScanMatrix::ScanMatrix()
 {
-    InitializeCriticalSection(&m_cs);
+    //InitializeCriticalSection(&m_cs);
 }
 
 void ScanMatrix::Prepare
@@ -38,23 +38,19 @@ void ScanMatrix::Prepare
 	UPNobList const& nobList
 )
 {
-    EnterCriticalSection(&m_cs);
-    if (m_bDirty)
-    {
-        if (raster.Size() != Size())
-            m_scanPixels.Resize(raster.Size());
-        Clear();
-        nobList.Apply2AllC<Pipe>
-		(
-			[this, &raster](Pipe const& p)
-			{ 
-				add2list(p, raster); 
-			}
-		);
-        findMaxNrOfDataPoints();
-        m_bDirty = false;
-    }
-    LeaveCriticalSection(&m_cs);
+    //EnterCriticalSection(&m_cs);
+    if (raster.Size() != Size())
+        m_scanPixels.Resize(raster.Size());
+    Clear();
+    nobList.Apply2AllC<Pipe>
+	(
+		[this, &raster](Pipe const& p)
+		{ 
+			add2list(p, raster); 
+		}
+	);
+    findMaxNrOfDataPoints();
+    //LeaveCriticalSection(&m_cs);
 }
 
 void ScanMatrix::add2list(Pipe const& pipe, Raster const& raster) 
@@ -82,7 +78,7 @@ void ScanMatrix::DensityCorrection(RawImage &image) const
 size_t ScanMatrix::NrOfDataPntsInMatrix() const
 {
     size_t nr { 0 };
-    Apply2AllScanPixelsC([&nr](ScanPixel const& p) { nr += p.NrOfDataPnts(); });
+    m_scanPixels.Apply2AllPixelsC([&nr](ScanPixel const& p) { nr += p.NrOfDataPnts(); });
     return nr;
 }
 
@@ -97,7 +93,7 @@ float ScanMatrix::DivideByArea(size_t const nrOfPoints) const
 void ScanMatrix::findMaxNrOfDataPoints()
 {
     m_maxNrOfDataPnts = 0;
-    Apply2AllScanPixelsC
+    m_scanPixels.Apply2AllPixelsC
     (
         [this](ScanPixel const& p)
         {
@@ -111,7 +107,7 @@ float ScanMatrix::DataPointVariance()
 {
     float  fCenter   { AverageDataPointsPerPixel() };
     float  fVariance { 0.0f };
-    Apply2AllScanPixelsC
+    m_scanPixels.Apply2AllPixelsC
     (
         [this, fCenter, &fVariance](ScanPixel const& p)
         {
@@ -163,16 +159,35 @@ void ScanMatrix::DrawScanImage
 (
 	DrawContext const& context,
 	Raster      const& raster, 
-	ByteImage   const* pByteImage, 
+	RawImage    const* pImage, 
+	mV          const  mVmax,
 	ColorLUT    const& lut
+) const
+{
+	float const fFactor { 255.0f / mVmax };
+	raster.DrawRasterPoints
+	(
+		context, 
+		[pImage, fFactor, &lut](auto const &rp) -> Color
+		{
+			return lut.GetColor(Cast2Byte(pImage->Get(rp).GetValue() * fFactor));
+		}
+	);
+}
+
+void ScanMatrix::DrawScanProgress
+(
+	DrawContext const& context,
+	Raster      const& raster, 
+	RasterPoint const& rpProgress
 ) const
 {
 	raster.DrawRasterPoints
 	(
 		context, 
-		[this, pByteImage, &lut](auto const &rp) -> Color
+		[&rpProgress](auto const &rp) -> Color
 		{
-			return lut.GetColor(pByteImage->Get(rp));
+			return (rp < rpProgress) ? D2D1::ColorF::Red : D2D1::ColorF::Black;
 		}
 	);
 }
@@ -303,17 +318,16 @@ void ScanMatrix::DrawScanAreaBackground
 	context.FillRectangle(raster.GetScanArea(), NNetColors::SCAN_AREA_RECT);
 }
 
-unique_ptr<ByteImage> Raw2ByteImage(RawImage const& rawImage)
-{
-	unique_ptr<ByteImage> upScanImageByte { make_unique<ByteImage>(rawImage.Size())};
-	rawImage.Size().VisitAllRasterPointsC
-	(
-		[&upScanImageByte, &rawImage](RasterPoint const& rp) 
-		{ 
-			ColIndex index { Cast2Byte(rawImage.Get(rp).GetValue() * 255.0f) };
-			upScanImageByte->Set(rp, index);  
-		}
-	);
-	return move(upScanImageByte);
-}
-
+//unique_ptr<ByteImage> Raw2ByteImage(RawImage const& rawImage)
+//{
+//	unique_ptr<ByteImage> upScanImageByte { make_unique<ByteImage>(rawImage.Size())};
+//	rawImage.Size().VisitAllRasterPointsC
+//	(
+//		[&upScanImageByte, &rawImage](RasterPoint const& rp) 
+//		{ 
+//			ColIndex index { Cast2Byte(rawImage.Get(rp).GetValue() * 255.0f) };
+//			upScanImageByte->Set(rp, index);  
+//		}
+//	);
+//	return move(upScanImageByte);
+//}

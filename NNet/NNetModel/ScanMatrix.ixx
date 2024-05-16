@@ -27,10 +27,7 @@ using std::vector;
 using std::optional;
 using std::nullopt;
 
-export using RawImage  = Vector2D<mV>;
-export using ByteImage = Vector2D<ColIndex>;
-
-export unique_ptr<ByteImage> Raw2ByteImage(RawImage const&);
+export using RawImage = Vector2D<mV>;
 
 export class ScanMatrix
 {
@@ -40,14 +37,15 @@ public:
 
     void Prepare(Raster const&, UPNobList const&);
     void DrawScanAreaBackground(DrawContext const&, Raster const&) const;
-    void DrawScanImage         (DrawContext const&, Raster const&, ByteImage const*, ColorLUT const&) const;
+    void DrawScanImage         (DrawContext const&, Raster const&, RawImage const*, mV const, ColorLUT const&) const;
     void DrawScanAreaHandles   (DrawContext const&, Raster const&, optional<CardPoint> const) const;
     void DrawScanRaster        (DrawContext const&, Raster const&) const;
     void DrawSensorDensityMap  (DrawContext const&, Raster const&, UPNobList const&) const;
+    void DrawScanProgress      (DrawContext const&,	Raster const&, RasterPoint const&) const;
 
     optional<CardPoint> SelectScanAreaHandle(DrawContext const&, Raster const&, MicroMeterPnt const&) const;
 
-    void Clear() { Apply2AllScanPixels([](auto &p) { p.Clear(); }); }
+    void Clear() { m_scanPixels.Apply2AllPixels([](auto &p) { p.Clear(); }); }
 
     RasterPoint      Size  ()                                   const { return m_scanPixels.Size(); }
     RasterIndex      Width ()                                   const { return m_scanPixels.Width(); }
@@ -66,16 +64,6 @@ public:
 
     void DensityCorrection(RawImage &) const;
 
-    void Apply2AllScanPixels(auto const& func)
-    {
-        m_scanPixels.Apply2AllPixels(func);
-    }
-
-    void Apply2AllScanPixelsC(auto const& func) const
-    {
-        m_scanPixels.Apply2AllPixelsC(func);
-    }
-
 private:
     void           add2list(Pipe const&, Raster const&);
     void           findMaxNrOfDataPoints();
@@ -84,8 +72,7 @@ private:
     MicroMeter     getScanAreaHandleSize(Uniform2D<MicroMeter> const &) const;
     MicroMeterRect getRectHandle        (MicroMeter const, MicroMeterRect const, CardPoint const) const;
 
-    bool                m_bDirty { true };
     size_t              m_maxNrOfDataPnts;
     Vector2D<ScanPixel> m_scanPixels;
-    CRITICAL_SECTION    m_cs;
+    //CRITICAL_SECTION    m_cs;
 };

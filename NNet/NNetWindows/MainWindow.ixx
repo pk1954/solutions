@@ -22,6 +22,7 @@ import :NNetCommandHandler;
 import :SelectionMenu;
 import :NNetWindow;
 import :MainScales;
+import :Compute;
 
 using std::unique_ptr;
 using std::optional;
@@ -39,6 +40,7 @@ public:
 		Observable&,
 		Observable&,
 		Observable&,
+		Compute const&,  
 		HiResTimer    * const,
 		MonitorWindow * const
 	);
@@ -87,6 +89,7 @@ private:
 
 	MicroMeterPnt       m_umDelta                { NP_ZERO };
 	MicroMeter          m_umArrowSize            { 0._MicroMeter };
+	Compute      const *m_pCompute               { nullptr }; 
 	HiResTimer         *m_pDisplayTimer          { nullptr };
 	Observable         *m_pCoordObservable       { nullptr };
 	Observable         *m_pCursorPosObservable   { nullptr };

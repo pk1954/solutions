@@ -84,17 +84,12 @@ public:
 	void CheckId(NobId const) const;
 	void DumpModel(char const* const, int const) const;
 
-	float GetParameter(ParamType::Value const p) const { return m_upParam->GetParameterValue(p); }
-
 	Nob    const * GetConstNob   (NobId const) const;
 	PosNob const * GetStartNobPtr(NobId const) const;
 	PosNob const * GetEndNobPtr  (NobId const) const;
 
 	NobId GetStartKnotId(NobId const) const;
 	NobId GetEndKnotId  (NobId const) const;
-
-	wstring GetModelFilePath() const { return m_wstrModelFilePath; }
-	size_t  Size()             const { return m_upNobs->Size(); }
 
 	bool  GetDescriptionLine(int const, wstring&) const;
 
@@ -139,68 +134,37 @@ public:
 
 	void ClearDynamicData();
 
-	// access functions to members 
-
-	UPSigGenList      const & GetSigGenList     () const { return *m_upSigGenList.get(); }
-	UPSensorList      const & GetSensorList     () const { return m_sensorList; }
-	UPMicroSensorList const & GetMicroSensorList() const { return m_microSensorList; }
-	UPNobList         const & GetUPNobsC        () const { return *m_upNobs.get(); }
-	MonitorData       const & GetMonitorData    () const { return m_monitorData; }
-	NNetParameters    const & GetParams         () const { return *m_upParam.get(); }
-	SignalParameters  const & GetSignalParams   () const { return m_signalParams; }
-	MicroMeterRect            GetScanArea       () const { return m_upRaster->GetScanArea(); }
-	MicroMeterRect            GetRasterRect     () const { return m_upRaster->GetRasterRect(); }
-	MicroMeter                GetScanResolution () const { return m_upRaster->Resolution(); }
-	RasterPoint               GetScanAreaSize   () const { return m_upRaster->Size(); }
-	RasterIndex               GetScanAreaWidth  () const { return m_upRaster->RasterWidth(); }
-	RasterIndex               GetScanAreaHeight () const { return m_upRaster->RasterHeight(); }
-	Raster            const & GetScanRaster     () const { return *m_upRaster.get(); }
-	ByteImage         const * GetScanImageC     () const { return m_upByteImage.get(); }
-	EventList         const & GetEventList      () const { return m_events; }
-	void                      DeselectAllNobs   () const { m_upNobs->DeselectAllNobs(); }
-
-	SignalGenerator const * GetSigGen   (SigGenId const id)    const { return m_upSigGenList->GetSigGen(id); } 
-	time_t                  GetTimestamp(wstring  const &name) const { return m_timestamps.GetTimestamp(name); }
-
-	void Apply2AllTimestamps (auto const& f)  const { m_timestamps.Apply2All(f); }
-
 	// non const functions
 
 	Nob * GetNob(NobId const);
-
-	ByteImage           * GetScanImage      () { return m_upByteImage.get(); }
-	UPSigGenList        & GetSigGenList     () { return *m_upSigGenList.get(); }
-	UPSensorList        & GetSensorList     () { return m_sensorList; }
-	UPMicroSensorList   & GetMicroSensorList() { return m_microSensorList; }
-	UPNobList           & GetUPNobs         () { return *m_upNobs.get(); }
-	MonitorData         & GetMonitorData    () { return m_monitorData; }
-	NNetParameters      & GetParams         () { return *m_upParam.get(); }
-	SignalParameters    & GetSignalParams   () { return m_signalParams; }
-	unique_ptr<UPNobList> MoveUPNobs        () { return move(m_upNobs); }
 
 	bool Compute();
 	void ResetModel();
 	void SetParam(ParamType::Value const, float const);
 	void Reconnect(NobId const);
 	void SetScanArea(MicroMeterRect const&);
-	void CreateByteImage();
-	void ReplaceByteImage(unique_ptr<ByteImage>);
-	void RejectByteImage();
+	void CreateImage();
+	void ReplaceImage(unique_ptr<RawImage>);
+	void RejectImage();
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 
-	void SetTimestamp       (wstring const &s, time_t const t) { m_timestamps.SetTimestamp(s, t); }
-	void SetTimestamp       (wstring const &s)                 { m_timestamps.SetTimestamp(s, 0); }
-    void PrepareScanMatrix  ()                                 { m_scanMatrix.Prepare(GetScanRaster(), GetUPNobsC()); }
-	void SetModelFilePath   (wstring const &s)                 { m_wstrModelFilePath = s; }
-	void AddDescriptionLine (wstring const &s)                 { m_description.AddDescriptionLine(s); }
-	void DescriptionComplete()                                 { m_description.DescriptionComplete(); }
-	void SetDescriptionUI   (DescriptionUI &i)                 { m_description.SetDescriptionUI(i); }
+    void PrepareScanMatrix() { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
 
-	void SetActiveSigGenObservable(Observable &o) { m_upSigGenList->SetActiveSigGenObservable(o); }
-
-	EventList  m_events;
-	ScanMatrix m_scanMatrix;
+	EventList                  m_events;
+	ScanMatrix                 m_scanMatrix;
+	unique_ptr<Raster>         m_upRaster;
+	unique_ptr<NNetParameters> m_upParam;
+	unique_ptr<UPSigGenList>   m_upSigGenList;
+	unique_ptr<UPNobList>      m_upNobs;
+	unique_ptr<RawImage>       m_upRawImage;
+	UPMicroSensorList          m_microSensorList;
+	ModelDescription           m_description;
+	TimestampList              m_timestamps;
+	wstring                    m_wstrModelFilePath;
+	UPSensorList               m_sensorList;
+	MonitorData                m_monitorData;
+	SignalParameters           m_signalParams;
 
 private:
 	unsigned int printNobType(unsigned int, NobType::Value) const;
@@ -209,17 +173,4 @@ private:
 
 	inline static Observable* m_pLockModelObservable   { nullptr };
 	inline static Observable* m_pStaticModelObservable { nullptr };
-
-	unique_ptr<UPNobList>      m_upNobs;
-	unique_ptr<UPSigGenList>   m_upSigGenList;
-	unique_ptr<NNetParameters> m_upParam;
-	unique_ptr<Raster>         m_upRaster;
-	unique_ptr<ByteImage>      m_upByteImage;
-	SignalParameters           m_signalParams;
-	UPSensorList               m_sensorList;
-	UPMicroSensorList          m_microSensorList;
-	ModelDescription           m_description;
-	MonitorData                m_monitorData;
-	wstring                    m_wstrModelFilePath;
-	TimestampList              m_timestamps;
 };

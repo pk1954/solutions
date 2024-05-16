@@ -31,20 +31,23 @@ export struct RasterPoint
         return (m_x != rhs.m_x) || (m_y != rhs.m_y); 
     }
 
+	bool operator< (RasterPoint const &rhs) const 
+    { 
+        return (m_y < rhs.m_y) || ((m_y == rhs.m_y) && (m_x < rhs.m_x)); 
+    }
+
     void VisitAllRasterPoints(auto const& func)
     {
-        RasterPoint rp;
-        for (rp.m_y = 0; rp.m_y < m_y; ++rp.m_y)
-        for (rp.m_x = 0; rp.m_x < m_x; ++rp.m_x)
-            func(rp);
+        for (int y = 0; y < m_y; ++y)
+        for (int x = 0; x < m_x; ++x)
+            func(RasterPoint(x,y));
     }
 
     void VisitAllRasterPointsC(auto const& func) const
     {
-        RasterPoint rp;
-        for (rp.m_y = 0; rp.m_y < m_y; ++rp.m_y)
-        for (rp.m_x = 0; rp.m_x < m_x; ++rp.m_x)
-            func(rp);
+        for (int y = 0; y < m_y; ++y)
+        for (int x = 0; x < m_x; ++x)
+            func(RasterPoint(x,y));
     }
 };
 

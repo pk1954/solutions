@@ -53,6 +53,8 @@ public:
 	bool IsScanRunning() const { return m_upSumImage.get(); }
 	bool ModelLocked  () const { return m_pNMWI->ModelLocked(); }
 
+	RasterPoint const & ScanProgress() const { return m_rpScanRun; }
+
 	fMicroSecs GetSimuTimeResolution() const { return m_pNMWI ? m_pNMWI->TimeResolution() : 0._MicroSecs; }
 	fMicroSecs GetTimeSpentPerCycle () const { return PerfCounter::TicksToMicroSecs(m_computeTimer.GetAverageActionTicks()); }
 	fMicroSecs GetTimeAvailPerCycle () const { return GetSimuTimeResolution() * m_pSlowMotionRatio->GetNominalSlowMo(); }
@@ -62,6 +64,7 @@ private:
 
 	NNetModelWriterInterface * m_pNMWI          { nullptr };
 
+	Compute   const * m_compute                 { nullptr };
 	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };
@@ -72,8 +75,8 @@ private:
 
 	unique_ptr<RawImage> m_upSingleImage;
 	unique_ptr<RawImage> m_upSumImage;
-	int                  m_iScanNr     { 0 };
-	RasterPoint          m_rpScanRun;
+	int                  m_iScanNr   { 0 };
+	RasterPoint          m_rpScanRun { RasterPoint(0, 0) };
 	fMicroSecs           m_usSimuNextPixelScan;
 
 	void startScanPass();

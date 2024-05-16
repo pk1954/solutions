@@ -55,8 +55,6 @@ public:
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };
 
-	size_t Size() const { return m_pModel->Size(); }
-
 	SignalId                FindSignalId         (NNetSignalSource const * const) const;
 	ConnectionType          ConnectionResult     (NobId const, NobId const) const;
 	mV                      GetVoltageAt         (NobId const, MicroMeterPnt const&) const;
@@ -67,52 +65,54 @@ public:
 	size_t                  GetNrOfInConns       (NobId const)     const;
 	Degrees                 GetDirection         (NobId const)     const;
 	SignalGenerator  const* GetSigGenC           (NobId const)     const;    
+	Raster           const& GetScanRaster()                        const { return *m_pModel->m_upRaster.get(); }
+	NNetParameters   const& GetParamsC()                           const { return *m_pModel->m_upParam.get(); };
+	UPNobList        const& GetUPNobsC()                           const { return *m_pModel->m_upNobs.get(); }
+	UPSigGenList     const& GetSigGenList()                        const { return *m_pModel->m_upSigGenList.get(); }
 	wstring                 GetTypeName          (NobId const id)  const { return NobType::GetName(GetNobType(id).GetValue()); };
 	NobType                 GetNobType           (NobId const id)  const { return m_pModel->GetNobType(id); }
 	MicroMeterPnt           GetNobPos            (NobId const id)  const { return m_pModel->GetNobConstPtr<Nob const*>(id)->GetPos(); }
 	PosNob           const* GetConstPosNobPtr    (NobId const id)  const { return m_pModel->GetNobConstPtr<PosNob const*>(id); }
 	Nob              const* GetConstNob          (NobId const id)  const { return m_pModel->GetConstNob(id); }
-	SignalParameters const& GetSignalParamsC()                     const { return m_pModel->GetSignalParams(); }
-	MonitorData      const& GetMonitorDataC()                      const { return m_pModel->GetMonitorData(); }
+	SignalParameters const& GetSignalParamsC()                     const { return m_pModel->m_signalParams; }
+	MonitorData      const& GetMonitorDataC()                      const { return m_pModel->m_monitorData; }
 	void                    PrintModelSize()                       const { return m_pModel->PrintModelSize(); }
-	NNetParameters   const& GetParamsC()                           const { return m_pModel->GetParams(); };
-	fMicroSecs              TimeResolution()                       const { return m_pModel->GetParams().TimeResolution(); };
-	fMicroSecs              PixelScanTime()                        const { return m_pModel->GetParams().PixelScanTime(); };
-	wstring                 GetModelFilePath()                     const { return m_pModel->GetModelFilePath(); }
-	float                   GetParameter(ParamType::Value const p) const { return m_pModel->GetParameter(p); }
+	fMicroSecs              TimeResolution()                       const { return GetParamsC().TimeResolution(); };
+	fMicroSecs              PixelScanTime()                        const { return GetParamsC().PixelScanTime(); };
+	float                   GetParameter(ParamType::Value const p) const { return GetParamsC().GetParameterValue(p); }
+	wstring                 GetModelFilePath()                     const { return m_pModel->m_wstrModelFilePath; }
 	bool                    IsNobInModel(Nob const & nob)          const { return m_pModel->GetConstNob(nob.GetId()); }
-	UPNobList        const& GetUPNobsC()                           const { return m_pModel->GetUPNobsC(); }
 	unsigned int            GetNrOf(NobType const type)            const { return GetUPNobsC().GetCounter(type); }
 	unsigned int            GetNrOfNobs()                          const { return GetUPNobsC().GetCounter(); }
 	bool                    AnyNobsSelected()                      const { return GetUPNobsC().AnyNobsSelected(); }
 	bool                    IsValidNobId(NobId const id)           const { return GetUPNobsC().IsValidNobId(id); }
 	size_t                  GetSizeOfNobList()                     const { return GetUPNobsC().Size(); }
 	SignalId                FindSignalId(auto const & crit)        const { return GetMonitorDataC().FindSignalId(crit); }
-	UPSigGenList     const& GetSigGenList()                        const { return m_pModel->GetSigGenList(); }
 	SignalGenerator  const* GetSigGenSelectedC()                   const { return GetSigGenList().GetSigGenSelected(); }
 	SignalGenerator  const* GetSigGenC(SigGenId const id)          const { return GetSigGenList().GetSigGen(id); }
 	SigGenId                GetSigGenIdSelected()                  const { return GetSigGenList().GetSigGenIdSelected(); }
 	bool                    IsInList(wstring const & name)         const { return GetSigGenList().IsInList(name); }
 	wstring          const& GetSigGenName(SigGenId const id)       const { return GetSigGenList().GetSigGen(id)->GetName(); }
-	UPSensorList     const& GetSensorList()                        const { return m_pModel->GetSensorList(); }
+	UPSensorList     const& GetSensorList()                        const { return m_pModel->m_sensorList; }
 	Sensor           const* GetSensor(SensorId const id)           const { return GetSensorList().GetSensor(id); }
-	MicroMeter              GetScanResolution()                    const { return m_pModel->GetScanResolution(); }
-	RasterPoint             GetScanAreaSize()                      const { return m_pModel->GetScanAreaSize(); }
-	RasterIndex             GetScanAreaWidth()                     const { return m_pModel->GetScanAreaWidth(); }
-	RasterIndex             GetScanAreaHeight()                    const { return m_pModel->GetScanAreaHeight(); }
-	Raster           const& GetScanRaster()                        const { return m_pModel->GetScanRaster(); }
-	MicroMeterRect          GetScanArea()                          const { return m_pModel->GetScanArea(); }
-	MicroMeterRect          GetRasterRect()                        const { return m_pModel->GetRasterRect(); }
-	ByteImage        const* GetScanImageC()                        const { return m_pModel->GetScanImageC(); }
-	bool                    ModelLocked()                          const { return m_pModel->GetScanImageC() != nullptr; }
-	int                     GetNrOfScans()                         const { return Cast2Int(m_pModel->GetParameter(ParamType::Value::nrOfScans)); }
-	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->GetMicroSensorList().HasMicroSensor(id); }
-	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->GetMicroSensorList().GetMicroSensorC(id); }
+	MicroMeter              GetScanResolution()                    const { return GetScanRaster().Resolution(); }
+	RasterPoint             GetScanAreaSize()                      const { return GetScanRaster().Size(); }
+	RasterIndex             GetScanAreaWidth()                     const { return GetScanRaster().RasterWidth(); }
+	RasterIndex             GetScanAreaHeight()                    const { return GetScanRaster().RasterHeight(); }
+	MicroMeterRect          GetScanArea()                          const { return GetScanRaster().GetScanArea(); }
+	MicroMeterRect          GetRasterRect()                        const { return GetScanRaster().GetRasterRect(); }
+	RawImage         const* GetScanImageC()                        const { return m_pModel->m_upRawImage.get(); }
+	bool                    ModelLocked()                          const { return m_pModel->m_upRawImage.get() != nullptr; }
+	int                     GetNrOfScans()                         const { return Cast2Int(GetParameter(ParamType::Value::nrOfScans)); }
+	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->m_microSensorList.HasMicroSensor(id); }
+	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->m_microSensorList.GetMicroSensorC(id); }
 	optional<RasterPoint>   FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect          GetPointRect(RasterPoint const& rp)    const { return GetScanRaster().GetPointRect(rp); }
 	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->m_scanMatrix.Scan(rp); }
+    SigGenId                FindSigGen(wstring  const& n)          const { return GetSigGenList().FindSigGen(n); }
+    bool                    IsValid   (SigGenId const id)          const { return GetSigGenList().IsValid(id); }
 	void                    DensityCorrection(RawImage& image)     const { m_pModel->m_scanMatrix.DensityCorrection(image); }
-	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->Apply2AllTimestamps(func); }
+	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->m_timestamps.Apply2All(func); }
 	fMicroSecs              TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const
@@ -188,7 +188,8 @@ public:
 	void DrawScanRaster        (DrawContext const&) const;
     void DrawScanAreaHandles   (DrawContext const&, optional<CardPoint> const) const;
     void DrawSensorDensityMap  (DrawContext const&) const;
-    void DrawScanImage         (DrawContext const&, ByteImage const*, ColorLUT const&) const;
+    void DrawScanImage         (DrawContext const&, RawImage const*, mV const, ColorLUT const&) const;
+	void DrawScanProgress      (DrawContext const&, RasterPoint const& rpProgress) const;
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 
@@ -217,16 +218,16 @@ public:
 		GetUPNobsC().Apply2AllInRectC<T>(r, func);
 	}
 
-	void Apply2allEvents(EventType const type,auto const& func) const
+	void Apply2allEvents(EventType const type, auto const& func) const
 	{
-		for (auto const& e : m_pModel->GetEventList())
+		for (auto const& e : m_pModel->m_events)
 			if (e->Type() == type)
 				func(static_cast<StimulusEvent const*>(e.get()));
 	}
 
 	void Apply2allEvents(auto const& func) const
 	{
-		for (auto const& e : m_pModel->GetEventList())
+		for (auto const& e : m_pModel->m_events)
 			func(e.get());
 	}
 

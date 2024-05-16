@@ -197,6 +197,9 @@ public:
 		return res; 
 	};
 
+	void IncX()	{ ++m_x; }
+	void IncY()	{ ++m_y; }
+
 	void Move2Horz(BASE_TYPE const offset)
 	{
 		m_x += offset;

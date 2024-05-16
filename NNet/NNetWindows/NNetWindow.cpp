@@ -143,15 +143,15 @@ void NNetWindow::DrawScanAreaAll(optional<CardPoint> const cardPntSelected) cons
 {
 	if (m_pNMRI->GetScanImageC())
 	{
-		ByteImage const * pByteImage { m_pNMRI->GetScanImageC() };
+		RawImage     const * pRawImage { m_pNMRI->GetScanImageC() };
+		unique_ptr<RawImage> upFiltered;
 		if (NNetPreferences::ApplyFilter())
 		{
-			unique_ptr<ByteImage> upFiltered { pByteImage->MeanFilter() };
-			if (ColIndex indexMax { upFiltered->GetMax() })
-				*upFiltered *= 255.0f / indexMax;
-			pByteImage = upFiltered.get();
+			upFiltered = pRawImage->MeanFilter();
+			pRawImage = upFiltered.get();
 		}
-		m_pNMRI->DrawScanImage(m_context, pByteImage, NNetPreferences::m_colorLutScan);
+		mV const mVmax { pRawImage->GetMax() };
+		m_pNMRI->DrawScanImage(m_context, pRawImage, mVmax, NNetPreferences::m_colorLutScan);
 	}
 	else
 	{

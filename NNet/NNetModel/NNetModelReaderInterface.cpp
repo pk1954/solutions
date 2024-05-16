@@ -225,34 +225,35 @@ void NNetModelReaderInterface::DrawLine
 
 void NNetModelReaderInterface::DrawScanAreaBackground(DrawContext const& context) const 
 {	
-	m_pModel->m_scanMatrix.DrawScanAreaBackground(context, m_pModel->GetScanRaster()); 
+	m_pModel->m_scanMatrix.DrawScanAreaBackground(context, GetScanRaster()); 
 }
 
 void NNetModelReaderInterface::DrawScanRaster(DrawContext const& context) const
 {
-	m_pModel->m_scanMatrix.DrawScanRaster(context, m_pModel->GetScanRaster());
+	m_pModel->m_scanMatrix.DrawScanRaster(context, GetScanRaster());
 }
 
 void NNetModelReaderInterface::DrawScanAreaHandles(DrawContext const& context, optional<CardPoint> const cp) const
 {
-	m_pModel->m_scanMatrix.DrawScanAreaHandles(context, m_pModel->GetScanRaster(), cp);
+	m_pModel->m_scanMatrix.DrawScanAreaHandles(context, GetScanRaster(), cp);
 }
 
 void NNetModelReaderInterface::DrawSensorDensityMap(DrawContext const& context) const
 {
-	m_pModel->m_scanMatrix.DrawSensorDensityMap(context, m_pModel->GetScanRaster(), m_pModel->GetUPNobsC());
+	m_pModel->m_scanMatrix.DrawSensorDensityMap(context, GetScanRaster(), GetUPNobsC());
 }
 
-void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, ByteImage const* pByteImage, ColorLUT const& lut) const
+void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, RawImage const* pRawImage, mV const mVmax, ColorLUT const& lut) const
 {
-	m_pModel->m_scanMatrix.DrawScanImage(context, m_pModel->GetScanRaster(), pByteImage, lut);
+	m_pModel->m_scanMatrix.DrawScanImage(context, GetScanRaster(), pRawImage, mVmax, lut);
 }
 
-optional<CardPoint> NNetModelReaderInterface::SelectScanAreaHandle
-(
-	DrawContext   const& context, 
-	MicroMeterPnt const& umCrsrPos
-) const
+void NNetModelReaderInterface::DrawScanProgress(DrawContext const& context, RasterPoint const& rpProgress) const
+{
+	m_pModel->m_scanMatrix.DrawScanProgress(context, GetScanRaster(), rpProgress);
+}
+
+optional<CardPoint> NNetModelReaderInterface::SelectScanAreaHandle(DrawContext const& context, MicroMeterPnt const& umCrsrPos) const
 {
 	return m_pModel->SelectScanAreaHandle(context, umCrsrPos);
 }

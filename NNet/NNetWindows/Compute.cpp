@@ -86,7 +86,7 @@ void Compute::StartScan()
 {
 	Reset();
 	m_pNMWI->PrepareScanMatrix();
-	m_pNMWI->CreateByteImage();
+	m_pNMWI->CreateImage();
 	m_pNMWI->AddEvent(EventType::startScan);
 	m_upSingleImage = make_unique<RawImage>(m_pNMWI->GetScanAreaSize(), 0.0_mV);
 	m_upSumImage    = make_unique<RawImage>(m_pNMWI->GetScanAreaSize(), 0.0_mV);
@@ -100,7 +100,6 @@ void Compute::scanNextPixel()
 	m_usSimuNextPixelScan = SimulationTime::Get() + m_pNMWI->PixelScanTime();
 
 	m_upSingleImage->Set(m_rpScanRun, m_pNMWI->Scan(m_rpScanRun));
-	m_pNMWI->GetScanImage()->Set(m_rpScanRun, 255);      // visualize scan progress
 
 	if (++m_rpScanRun.m_x < m_pNMWI->GetScanAreaWidth())      // next scan Pixel
 		return;
@@ -114,6 +113,7 @@ void Compute::scanNextPixel()
 	startScanPass();
 	if (m_iScanNr > m_pNMWI->GetNrOfScans())
 		finishScan();                                    // scan series finished 
+
 }
 
 void Compute::finishScan()
@@ -121,7 +121,7 @@ void Compute::finishScan()
 	WinManager::PostCommand2App(IDM_FINISHING_SCAN);
 	m_pNMWI->DensityCorrection(*m_upSumImage.get());
 	m_upSumImage->Normalize(1.0f);
-	m_pNMWI->ReplaceByteImage(move(Raw2ByteImage(*m_upSumImage.get())));
+	m_pNMWI->ReplaceImage(move(m_upSumImage));
 	m_pDynamicModelObservable->NotifyAll();
 	StopScan();
 	setRunning(false);
@@ -183,6 +183,7 @@ void Compute::StopComputation()
 void Compute::StopScan()
 {
 	ClearImages();
+	m_rpScanRun= RasterPoint(0, 0);
 	m_pNMWI->AddEvent(EventType::stopScan);
 }
 

@@ -65,7 +65,7 @@ Model::Model()
 	m_upRaster     = make_unique<Raster>();
 	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
 	m_pStaticModelObservable->RegisterObserver(*this);
-	RejectByteImage(); 
+	RejectImage(); 
 }
 
 Model::~Model() 
@@ -242,7 +242,7 @@ void Model::Reconnect(NobId const id)
 void Model::ClearDynamicData()
 { 
 	SimulationTime::Set();
-	GetMonitorData().ClearDynamicData();
+	m_monitorData.ClearDynamicData();
 	m_upNobs->Apply2AllC([](Nob & nob) { nob.ClearDynamicData(); });
 	m_upSigGenList->Apply2All([](auto * p){ p->ClearDynamicData(); });
 }
@@ -298,7 +298,7 @@ void Model::ResetModel()
 	m_upSigGenList->Clear();
 	m_sensorList.Clear();
 	m_description.ClearDescription();
-	RejectByteImage();
+	RejectImage();
 	SimulationTime::Set();
 	m_wstrModelFilePath = L"";
 }
@@ -320,21 +320,21 @@ void Model::SetScanArea(MicroMeterRect const& rect)
 	m_upRaster->SetScanArea(rect);
 }
 
-void Model::CreateByteImage()
+void Model::CreateImage()
 { 
-	m_upByteImage = make_unique<ByteImage>(m_upRaster->Size());
+	m_upRawImage = make_unique<RawImage>(m_upRaster->Size());
 	if (m_pLockModelObservable)
 		m_pLockModelObservable->NotifyAll();
 }
 
-void Model::ReplaceByteImage(unique_ptr<ByteImage> up) 
+void Model::ReplaceImage(unique_ptr<RawImage> up) 
 { 
-	m_upByteImage = move(up); 
+	m_upRawImage = move(up); 
 }
 
-void Model::RejectByteImage()
+void Model::RejectImage()
 { 
-	m_upByteImage.release(); 
+	m_upRawImage.release(); 
 	if (m_pLockModelObservable)
 		m_pLockModelObservable->NotifyAll();
 }

@@ -11,6 +11,7 @@ module;
 
 export module WrapScanImage;
 
+import SaveCast;
 import IoUtil;
 import Raster;
 import NNetModelIO;
@@ -20,7 +21,8 @@ import Wrapper;
 using std::unique_ptr;
 using std::make_unique;
 using std::endl;
-using std::setw;
+//using std::setprecision;
+//using std::setw;
 
 export class WrapScanImage : public Wrapper
 {
@@ -29,8 +31,8 @@ public:
 
     void operator() (Script& script) const final
     {
-        Raster        const & raster  { NNetModelIO::GetImportNMWI().GetScanRaster() };
-        unique_ptr<ByteImage> upImage { make_unique<ByteImage>(raster.Size())};
+        Raster       const & raster  { NNetModelIO::GetImportNMWI().GetScanRaster() };
+        unique_ptr<RawImage> upImage { make_unique<RawImage>(raster.Size())};
         script.ScrReadSpecial(CURLY_OPEN_BRACKET);
         raster.Apply2AllC
         (
@@ -38,18 +40,18 @@ public:
             {
                 if (rp.m_x == 0)
                     script.ScrReadSpecial(CURLY_OPEN_BRACKET);
-                upImage->Set(rp, static_cast<ColIndex>(script.ScrReadUchar()));
+                upImage->Set(rp, static_cast<mV>(Cast2Float(script.ScrReadFloat())));
                 if (rp.m_x == upImage->Width() - 1)
                     script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
             }
         );
         script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
-        NNetModelIO::GetImportNMWI().ReplaceByteImage(move(upImage));
+        NNetModelIO::GetImportNMWI().ReplaceImage(move(upImage));
     }
 
     void Write(wostream& out) const final
     {
-        if (ByteImage const* pImage { NNetModelIO::GetExportNMRI().GetScanImageC() })
+        if (RawImage const* pImage { NNetModelIO::GetExportNMRI().GetScanImageC() })
         {
             WriteCmdName(out);
             out << endl << CURLY_OPEN_BRACKET << endl;
@@ -59,7 +61,7 @@ public:
                 {
                     if (rp.m_x == 0)
                         out << L"   " << CURLY_OPEN_BRACKET << SPACE;
-                    out << setw(3) << pImage->Get(rp) << SPACE;
+                    out << pImage->Get(rp) << SPACE;
                     if (rp.m_x == pImage->Width() - 1)
                         out << CURLY_CLOSE_BRACKET << endl;
                 }

@@ -205,7 +205,7 @@ private:
     UNIT getMeanFiltered(RasterPoint const& rp) const
     {
         float fCount { 0.0f };
-        float fMean  { 0.0f };
+        UNIT  fMean  { UNIT::ZERO_VAL() };
         visitNeighbours
         (
             rp,
@@ -215,7 +215,7 @@ private:
                 ++fCount;
             }
         );
-        return static_cast<UNIT>(fMean/fCount);
+        return fMean/fCount;
     }
 
     UNIT getMedianFiltered(RasterPoint const& rp) const

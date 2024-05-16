@@ -36,6 +36,7 @@ import Win32_Controls;
 import NNetPreferences;
 import :NNetCommandHandler;
 import :MainScales;
+import :Compute;
 
 using std::bit_cast;
 using std::unordered_map;
@@ -52,12 +53,13 @@ using std::optional;
 
 void MainWindow::Start
 (
-	HWND          const   hwndApp,
-	bool          const   bShowRefreshRateDialog,
-	NNetCommandHandler  & controller,
-	Observable          & cursorObservable,
-	Observable          & coordObservable,
-	Observable          & pStaticModelObservable,
+	HWND            const   hwndApp,
+	bool            const   bShowRefreshRateDialog,
+	NNetCommandHandler    & controller,
+	Observable            & cursorObservable,
+	Observable            & coordObservable,
+	Observable            & pStaticModelObservable,
+	Compute         const & compute,      
 	HiResTimer    * const pActionTimer,
 	MonitorWindow * const pMonitorWindow
 )
@@ -74,6 +76,7 @@ void MainWindow::Start
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
+	m_pCompute             = & compute;
 	m_pDisplayTimer        = pActionTimer;
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
@@ -494,19 +497,27 @@ void MainWindow::PaintGraphics()
 	{
 		if (NNetPreferences::ModelFront())
 		{
-			DrawScanAreaAll(m_scanAreaHandleSelected);
+			drawScanArea();
 			drawModel(m_context );
 		}
 		else
 		{
 			drawModel(m_context);
-			DrawScanAreaAll(m_scanAreaHandleSelected);
+			drawScanArea();
 		}
 	}
 	else
 	{
-		drawModel(m_context );
+		drawModel(m_context);
 	}
+}
+
+void MainWindow::drawScanArea()
+{
+	if (m_pCompute->IsScanRunning())
+		m_pNMRI->DrawScanProgress(m_context, m_pCompute->ScanProgress());
+	else
+		DrawScanAreaAll(m_scanAreaHandleSelected);
 }
 
 void MainWindow::drawModel(DrawContext const& context)

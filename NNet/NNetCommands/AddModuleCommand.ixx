@@ -25,7 +25,7 @@ public:
 	{
 		if (IsTraceOn())
 			TraceStream() << NAME << SPACE << Quoted(NNetModelIO::GetModelFileName()) << SPACE << endl;
-		PushCommand(make_unique<AddNobsCommand>(move(NNetModelIO::GetImportedModel()->MoveUPNobs())));
+		PushCommand(make_unique<AddNobsCommand>(move(NNetModelIO::GetImportedModel()->m_upNobs)));
 	}
 
 private:

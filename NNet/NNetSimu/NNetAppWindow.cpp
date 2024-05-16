@@ -138,7 +138,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_upModel = m_nmwi.CreateNewModel();
 	m_pNMRI   = static_cast<NNetModelReaderInterface const *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
-	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
+	m_upModel->m_upSigGenList->SetActiveSigGenObservable(m_activeSigGenObservable);
 	m_mainNNetWindow   .SetRefreshRate(300ms);
 	m_miniNNetWindow   .SetRefreshRate(500ms);
 	m_monitorWindow    .SetRefreshRate( 20ms);
@@ -170,6 +170,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_cursorPosObservable,
 		m_coordObservable,
 		m_staticModelObservable,
+		m_compute,
 		& m_atDisplay,
 		& m_monitorWindow
 	);
@@ -425,7 +426,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_UNLOCK:
 			m_compute.StopScan();
-			m_nmwi.RejectByteImage();
+			m_nmwi.RejectImage();
 			return true;
 
 		case IDM_FORWARD:
@@ -654,7 +655,7 @@ void NNetAppWindow::replaceModel()
 	m_compute.StopComputation();
 	m_mainNNetWindow.Reset();
 	m_upModel = NNetModelIO::GetImportedModel();	
-	m_upModel->SetActiveSigGenObservable(m_activeSigGenObservable);
+	m_upModel->m_upSigGenList->SetActiveSigGenObservable(m_activeSigGenObservable);
 	m_monitorWindow.SetHighSigObservable(m_highlightSigObservable);
 	m_nmwi.SetModel(m_upModel.get());
 
