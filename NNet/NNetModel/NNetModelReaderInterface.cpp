@@ -172,7 +172,7 @@ ConnectionType NNetModelReaderInterface::ConnectionResult(NobId const idSrc, Nob
 
 NobId NNetModelReaderInterface::FindAnyNobAt(MicroMeterPnt const& umPnt) const
 {
-	return m_pModel->ModelFindNobAt(umPnt, [](auto&) { return true; });
+	return GetUPNobsC().ModelFindNobAt(umPnt, [](auto&) { return true; });
 }
 
 NobId NNetModelReaderInterface::FindConnectionCandidate
@@ -181,7 +181,7 @@ NobId NNetModelReaderInterface::FindConnectionCandidate
 	NobId         const id
 ) const
 {
-	return m_pModel->ModelFindNobAt
+	return GetUPNobsC().ModelFindNobAt
 	(
 		umPnt, 
 		[this, id](auto& s) 

@@ -61,10 +61,8 @@ public:
 	Model& operator=(const Model&) = delete; // copy assignment
 	Model& operator=(Model&&)      = delete; // move assignment
 
-    void Notify(bool const) final;
-
-	// const functions
-
+    void Notify(bool const) final {	PrepareScanMatrix(); }
+	
 	template <Nob_t T>
 	T GetNobConstPtr(NobId const id) const
 	{
@@ -72,84 +70,32 @@ public:
 		return (pNob && HasType<T>(*pNob)) ? static_cast<T>(pNob) : nullptr;
 	}
 
-	NobType GetNobType(NobId const id) const
-	{
-		auto p { GetNobConstPtr<Nob const *>(id) };
-		return p ? p->GetNobType() : NobType::Value::undefined; 
-	}
+	Nob    const* GetConstNob   (NobId const) const;
+	PosNob const* GetStartNobPtr(NobId const) const;
+	PosNob const* GetEndNobPtr  (NobId const) const;
 
-	bool IsConnectionCandidate(NobId const, NobId const) const;
-
-	void CheckModel() const;
-	void CheckId(NobId const) const;
-	void DumpModel(char const* const, int const) const;
-
-	Nob    const * GetConstNob   (NobId const) const;
-	PosNob const * GetStartNobPtr(NobId const) const;
-	PosNob const * GetEndNobPtr  (NobId const) const;
-
-	NobId GetStartKnotId(NobId const) const;
-	NobId GetEndKnotId  (NobId const) const;
-
-	bool  GetDescriptionLine(int const, wstring&) const;
-
-	void PrintModelSize() const;
-
-	NobId ModelFindNobAt(MicroMeterPnt const& umPoint, auto const& crit) const // TODO: Template!
-	{
-		NobId idRes{ NO_NOB };
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoConnector() && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsNeuron() && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoLine() && (!s.HasParentNob()) && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsKnot() && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsSynapse() && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsFork() && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		idRes = m_upNobs->FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsPipe() && crit(s); });
-		if (IsDefined(idRes))
-			return idRes;
-
-		return NO_NOB;
-	}
-
-	// functions affecting Nob data, not model data
-
-	void ClearDynamicData();
-
-	// non const functions
-
-	Nob * GetNob(NobId const);
-
-	bool Compute();
-	void ResetModel();
-	void SetParam(ParamType::Value const, float const);
-	void Reconnect(NobId const);
-	void SetScanArea(MicroMeterRect const&);
-	void CreateImage();
-	void ReplaceImage(unique_ptr<RawImage>);
-	void RejectImage();
+	Nob   * GetNob(NobId const);
+	NobType GetNobType(NobId const) const;
+	bool    IsConnectionCandidate(NobId const, NobId const) const;
+	void    CheckModel() const;
+	void    CheckId(NobId const) const;
+	void    DumpModel(char const* const, int const) const;
+	NobId   GetStartKnotId(NobId const) const;
+	NobId   GetEndKnotId  (NobId const) const;
+	bool    GetDescriptionLine(int const, wstring&) const;
+	void    PrintModelSize() const;
+	void    ClearDynamicData();
+	bool    Compute();
+	void    ResetModel();
+	void    SetParam(ParamType::Value const, float const);
+	void    Reconnect(NobId const);
+	void    SetScanArea(MicroMeterRect const&);
+	void    CreateImage();
+	void    ReplaceImage(unique_ptr<RawImage>);
+    void    PrepareScanMatrix();
+	void    RejectImage();
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
-
-    void PrepareScanMatrix() { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
 
 	EventList                  m_events;
 	ScanMatrix                 m_scanMatrix;

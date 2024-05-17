@@ -73,11 +73,6 @@ Model::~Model()
 	m_pStaticModelObservable->UnregisterObserver(*this); 
 }
 
-void Model::Notify(bool const) 
-{ 
-	PrepareScanMatrix();
-}
-
 unsigned int Model::printNobType
 (
 	unsigned int   siz,
@@ -167,6 +162,12 @@ void Model::CheckId(NobId const id) const
 {	
 	if (! m_upNobs->IsValidNobId(id))
 		throw NobException(id, L"");
+}
+
+NobType Model::GetNobType(NobId const id) const
+{
+	auto p { GetNobConstPtr<Nob const *>(id) };
+	return p ? p->GetNobType() : NobType::Value::undefined; 
 }
 
 Nob const * Model::GetConstNob(NobId const id) const 
@@ -350,3 +351,5 @@ optional<CardPoint> Model::SelectScanAreaHandle
 		context, *m_upRaster.get(), umCrsrPos
 	);
 }
+
+void Model::PrepareScanMatrix() { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }

@@ -183,6 +183,45 @@ public:
 		Apply2All<T>([&r, &func](T& s) { if (s.IsIncludedIn(r)) func(s); });
 	}
 
+NobId ModelFindNobAt
+(
+	MicroMeterPnt const& umPoint, 
+	auto          const& crit
+) const // TODO: Template!
+{
+	NobId idRes{ NO_NOB };
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoConnector() && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsNeuron() && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsIoLine() && (!s.HasParentNob()) && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsKnot() && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsSynapse() && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsFork() && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	idRes = FindNobAt(umPoint, [&crit](Nob const& s) { return s.IsPipe() && crit(s); });
+	if (IsDefined(idRes))
+		return idRes;
+
+	return NO_NOB;
+}
+
 private:
 
 	unsigned int& counter(Nob const& nob)
