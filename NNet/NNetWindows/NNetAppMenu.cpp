@@ -98,6 +98,7 @@ void NNetAppMenu::Start
             ::AddMenu(hMenuWindows, MF_STRING, IDM_CRSR_WINDOW,    L"Show &cursor window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_PARAM_WINDOW,   L"Show &parameter window");
             ::AddMenu(hMenuWindows, MF_STRING, IDM_PERF_WINDOW,    L"Show &performance window");
+            ::AddMenu(hMenuWindows, MF_STRING, IDM_VIEWER_WINDOW,  L"Show &scan viewer window");
         }
         HMENU hMenuInputCables = ::PopupMenu(hMenuView, L"&Input cables");
         {
@@ -140,6 +141,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
     ::Enable(m_hMenu, IDM_PERF_WINDOW,    ! WinManager::IsVisible(RootWinId(IDM_PERF_WINDOW   )));
     ::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
     ::Enable(m_hMenu, IDM_LUT_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_LUT_DESIGNER  )));
+    ::Enable(m_hMenu, IDM_VIEWER_WINDOW,  ! WinManager::IsVisible(RootWinId(IDM_VIEWER_WINDOW )));
 
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
     m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());
@@ -147,7 +149,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
     m_upOnOffSound       ->EnableOnOff(m_hMenu, Preferences::m_bSound.Get());
     m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, Preferences::m_bAutoOpen.Get());
     m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, Preferences::m_bColorMenu.Get());
-    m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow::m_bPerfMonMode.Get());
+    m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow ::m_bPerfMonMode.Get());
 
     DrawMenuBar(m_hwndApp);
 }

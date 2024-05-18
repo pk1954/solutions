@@ -103,7 +103,7 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 		return true;
 
 	default:
-		return true;
+		break;
 	}
 
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);

@@ -60,7 +60,7 @@ using std::wcout;
 static HCURSOR m_hCrsrWait  { nullptr };
 static HCURSOR m_hCrsrArrow { nullptr };
 
-NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
+NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 {
 	m_pwstrProductName = &wstrProductName;
 	m_aboutBox.SetProductName(wstrProductName);
@@ -81,10 +81,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 
 	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");
 	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
-};
 
-void NNetAppWindow::Start(MessagePump & pump)
-{
 	m_hwndApp = StartBaseWindow
 	(
 		nullptr, 
@@ -117,6 +114,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	m_pNMRI   = static_cast<NNetModelReaderInterface const *>(&m_nmwi);
 	m_nmwi.SetDescriptionUI(m_descWindow);
 	m_upModel->m_upSigGenList->SetActiveSigGenObservable(m_activeSigGenObservable);
+
 	m_mainNNetWindow   .SetRefreshRate(300ms);
 	m_miniNNetWindow   .SetRefreshRate(500ms);
 	m_monitorWindow    .SetRefreshRate( 20ms);
@@ -168,6 +166,7 @@ void NNetAppWindow::Start(MessagePump & pump)
 	WinManager::AddWindow(L"IDM_PERF_WINDOW",    RootWinId(IDM_PERF_WINDOW   ), m_performanceWindow,            true,  false);
 	WinManager::AddWindow(L"IDM_SIG_DESIGNER",   RootWinId(IDM_SIG_DESIGNER  ), m_signalDesigner,               true,  true );
 	WinManager::AddWindow(L"IDM_LUT_DESIGNER",   RootWinId(IDM_LUT_DESIGNER  ), m_colLutWindow,                 true,  true );
+	WinManager::AddWindow(L"IDM_VIEWER_WINDOW",  RootWinId(IDM_VIEWER_WINDOW ), m_viewerWindow,                 true,  true );
 
 	configureStatusBar();
 	m_statusBar.Arrange(*this, m_mainNNetWindow);

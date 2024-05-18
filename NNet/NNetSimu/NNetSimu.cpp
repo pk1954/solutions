@@ -37,9 +37,6 @@ using std::endl;
 using std::setw;
 using std::left;
 
-unique_ptr<NNetAppWindow>    upApp;
-unique_ptr<NNetViewerWindow> upViewer;
-
 int APIENTRY wWinMain
 (
 	_In_     HINSTANCE hInstance,
@@ -80,26 +77,13 @@ int APIENTRY wWinMain
 	MessagePump  pump;
 	pump.SetAccelTable(acc.Get());
 
-	bool bViewerMode { false };
+	bool bViewerMode { true };
 
-	if (bViewerMode)
-	{
-		upViewer = make_unique<NNetViewerWindow>();
-	}
-	else
-	{
-		upApp = make_unique<NNetAppWindow>(PRODUCT_NAME);
-		upApp->Start(pump);
-		pump.RegisterWindow(upApp->GetWindowHandle(), false);
-	}
+	unique_ptr<NNetAppWindow> upApp { make_unique<NNetAppWindow>(PRODUCT_NAME, pump) };
+
+	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 
 	wcout << setw(30) << left << COMMENT_START + L"App.Start " << PerfCounter::Ticks2wstring(hrtimer.AfterAction()) << endl;
 
-	int iRetVal 
-	{
-		bViewerMode
-		? pump.Run()
-		: pump.Run([]() { upApp->DoGameStuff(); })
-	};
-	return iRetVal;
+	return pump.Run([&upApp]() { upApp->DoGameStuff(); });
 }

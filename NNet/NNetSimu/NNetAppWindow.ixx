@@ -37,6 +37,7 @@ import SlowMotionDisplay;
 import StatusBarDisplayFunctor;
 import TimeDisplay;
 import NNetWin32;
+import NNetViewerWindow;
 
 using std::wstring;
 using std::wofstream;
@@ -45,9 +46,7 @@ using std::unique_ptr;
 export class NNetAppWindow : public BaseWindow
 {
 public:
-	NNetAppWindow(wstring const &);
-
-	virtual void Start(MessagePump&);
+	NNetAppWindow(wstring const&, MessagePump&);
 
 	void DoGameStuff() { m_compute.DoGameStuff(); }
 
@@ -102,6 +101,7 @@ private:
 	NNetModelIO              m_modelIO;
 	NNetModelWriterInterface m_nmwi;
 	NNetSimuRunning          m_simuRunning;
+	NNetViewerWindow         m_viewerWindow;
 	Observable               m_highlightSigObservable;
 	Observable               m_cursorPosObservable;
 	Observable               m_staticModelObservable;

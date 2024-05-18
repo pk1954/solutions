@@ -97,6 +97,7 @@
 #define       IDM_DESC_WINDOW                593
 #define       IDM_SIG_DESIGNER               594
 #define       IDM_LUT_DESIGNER               595
+#define       IDM_VIEWER_WINDOW              596
 									        
 #define       IDM_CENTER_MODEL               611
 							       		     

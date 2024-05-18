@@ -117,6 +117,7 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
         RedoCommand::Push();
         break;
 
+    case IDM_VIEWER_WINDOW:
     case IDM_LUT_DESIGNER:
     case IDM_SIG_DESIGNER:
     case IDM_PERF_WINDOW:
