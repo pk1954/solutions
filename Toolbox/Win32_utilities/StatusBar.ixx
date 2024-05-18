@@ -23,7 +23,6 @@ export class StatusBar : public RootWindow
 public:
 
 	void Start(HWND const);
-	//void Stop();
 
 	PIXEL GetFixedHeight() const final { return HEIGHT; }
 

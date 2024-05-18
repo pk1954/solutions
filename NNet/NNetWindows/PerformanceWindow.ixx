@@ -29,7 +29,6 @@ public:
         HiResTimer            * const 
     );
 
-    //void Stop();
     void SetModelInterface(NNetModelReaderInterface const * const);
     void PaintText(TextBuffer &) final;
 

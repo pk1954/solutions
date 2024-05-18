@@ -83,7 +83,6 @@ void NNetAppMenu::Start
         ::AddMenu(hMenuAction, MF_STRING, IDM_RESET_DYNAMIC_DATA, L"Reset dynamic data");
         ::AddMenu(hMenuAction, MF_STRING, IDM_UNLOCK,             L"&Unlock model");
         ::AddMenu(hMenuAction, MF_STRING, IDM_FORWARD,            L"&Proceed single step");
- //       ::AddMenu(hMenuAction, MF_STRING, IDM_RUN_STOP,           L"&Run/Stop");
         ::AddMenu(hMenuAction, MF_STRING, IDM_CENTER_MODEL,       L"&Center model");
     }
 

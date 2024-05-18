@@ -40,7 +40,6 @@ public:
 	void   SetModelInterface(NNetModelReaderInterface const * const) final;
 	LPARAM AddContextMenuEntries(HMENU const) final;
 
-	//void   Stop () final;
 	bool   SignalTooHigh() const;
 	float  ScaleFactor() const;
 	void   ScaleSignals();

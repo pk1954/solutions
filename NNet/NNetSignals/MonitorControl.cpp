@@ -77,11 +77,6 @@ void MonitorControl::SetModelInterface(NNetModelReaderInterface const * const pN
 	m_pMonitorData = &m_pNMRI->GetMonitorDataC();
 }
 
-//void MonitorControl::Stop()
-//{
-//	GraphicsWindow::Stop();
-//}
-
 LPARAM MonitorControl::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_measurement.IsActive())

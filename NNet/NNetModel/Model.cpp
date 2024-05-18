@@ -54,7 +54,6 @@ void Model::Initialize
 	Observable * const pStaticModelObservable
 )
 {
-	m_pLockModelObservable   = pLockModelObservable;
 	m_pStaticModelObservable = pStaticModelObservable;
 }
 
@@ -64,13 +63,15 @@ Model::Model()
 	m_upSigGenList = make_unique<UPSigGenList>();
 	m_upRaster     = make_unique<Raster>();
 	m_upParam      = make_unique<NNetParameters>(&m_signalParams, m_upRaster.get());
-	m_pStaticModelObservable->RegisterObserver(*this);
+	if (m_pStaticModelObservable)
+		m_pStaticModelObservable->RegisterObserver(*this);
 	RejectImage(); 
 }
 
 Model::~Model() 
-{ 
-	m_pStaticModelObservable->UnregisterObserver(*this); 
+{
+	if (m_pStaticModelObservable)
+		m_pStaticModelObservable->UnregisterObserver(*this); 
 }
 
 unsigned int Model::printNobType

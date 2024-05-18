@@ -25,7 +25,6 @@ import Vector2D;
 import ObserverInterface;
 import Command;
 import AboutBox;
-import IoUtil;
 import FatalError;
 import MessagePump;
 import ScriptFile;
@@ -67,7 +66,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	m_aboutBox.SetProductName(wstrProductName);
 	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
 	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
-	DefineUtilityWrapperFunctions();
 
 	WinManager       ::Initialize();
 	Model            ::Initialize(&m_lockModelObservable, &m_staticModelObservable);
@@ -75,7 +73,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	Command          ::Initialize(&m_cmdStack, &m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 	BaseCommand      ::Initialize(&m_sound);
-	NNetModelIO      ::Initialize(&m_lockModelObservable);
+	NNetPreferences  ::Initialize();
 
 	m_simuRunning   .Initialize(&m_compute);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
@@ -84,24 +82,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName)
 	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");
 	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
 };
-
-void NNetAppWindow::setModelInterface()
-{
-	NNetCommand       ::SetModelInterface(&m_nmwi);
-	m_parameterDlg     .SetModelInterface(&m_nmwi);
-	m_cmdStack         .SetModelInterface(&m_nmwi);
-	m_compute          .SetModelInterface(&m_nmwi);
-	m_monitorWindow    .SetModelInterface(&m_nmwi);
-	m_signalDesigner   .SetModelInterface(&m_nmwi);
-	m_appTitle         .SetModelInterface(&m_nmwi);
-	m_NNetController   .SetModelInterface(m_pNMRI);
-	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
-	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
-	m_crsrWindow       .SetModelInterface(m_pNMRI);
-	m_performanceWindow.SetModelInterface(m_pNMRI);
-	NNetPreferences   ::SetModelInterface(m_pNMRI);
-	Nob::SetParams(&m_pNMRI->GetParamsC());
-}
 
 void NNetAppWindow::Start(MessagePump & pump)
 {
@@ -116,8 +96,6 @@ void NNetAppWindow::Start(MessagePump & pump)
 	);
 
 	m_appTitle.Initialize(m_hwndApp, *m_pwstrProductName);
-
-	NNetPreferences::Initialize();
 
 	m_signalDesigner.Initialize
 	(
@@ -269,36 +247,25 @@ void NNetAppWindow::Start(MessagePump & pump)
 		m_dynamicModelObservable.NotifyAll();
 		m_staticModelObservable.NotifyAll();
 	}
-
-	m_bStarted = true;
 }
 
-//void NNetAppWindow::Stop()
-//{
-//	BaseWindow::Stop();
-//	m_bStarted = false;
-//
-//	m_compute.StopComputation();
-//
-//	m_mainNNetWindow   .Stop();
-//	m_miniNNetWindow   .Stop();
-//	m_monitorWindow    .Stop();
-//	m_crsrWindow       .Stop();
-//	m_performanceWindow.Stop();
-//	m_parameterDlg     .Stop();
-//	m_statusBar        .Stop();
-//
-//	m_staticModelObservable .UnregisterAllObservers();
-//	m_dynamicModelObservable.UnregisterAllObservers();
-//	m_cursorPosObservable   .UnregisterAllObservers();
-//	m_performanceObservable .UnregisterAllObservers();
-//	m_runObservable         .UnregisterAllObservers();
-//	m_slowMotionRatio       .UnregisterAllObservers();
-//	m_nmwi.GetParams()      .UnregisterAllObservers();
-//
-//	WinManager::RemoveAll();
-//	m_nmwi.SetModel(nullptr);
-//}
+void NNetAppWindow::setModelInterface()
+{
+	NNetCommand       ::SetModelInterface(&m_nmwi);
+	m_parameterDlg     .SetModelInterface(&m_nmwi);
+	m_cmdStack         .SetModelInterface(&m_nmwi);
+	m_compute          .SetModelInterface(&m_nmwi);
+	m_monitorWindow    .SetModelInterface(&m_nmwi);
+	m_signalDesigner   .SetModelInterface(&m_nmwi);
+	m_appTitle         .SetModelInterface(&m_nmwi);
+	m_NNetController   .SetModelInterface(m_pNMRI);
+	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
+	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
+	m_crsrWindow       .SetModelInterface(m_pNMRI);
+	m_performanceWindow.SetModelInterface(m_pNMRI);
+	NNetPreferences   ::SetModelInterface(m_pNMRI);
+	Nob::SetParams(&m_pNMRI->GetParamsC());
+}
 
 bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
 {
@@ -358,14 +325,10 @@ void NNetAppWindow::configureStatusBar()
 
 void NNetAppWindow::OnClose()
 {
-	if (m_bStarted)
-	{
-		m_compute.StopComputation();
-		if (! AskAndSave())
-			return;
+	m_compute.StopComputation();
+	if (AskAndSave())
 		WinManager::StoreWindowConfiguration();
-		//Stop();
-	}
+	DestroyWindow();
 }
 
 void NNetAppWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)

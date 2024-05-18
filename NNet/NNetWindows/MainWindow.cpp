@@ -82,13 +82,6 @@ void MainWindow::Start
 	m_mainScales.Start(this, GetCoord(), coordObservable);
 }
 
-//void MainWindow::Stop()
-//{
-//	Reset();
-//	m_selectionMenu.Stop();
-//	NNetWindow::Stop();
-//}
-
 void MainWindow::Reset()
 { 
 	m_nobIdHighlighted = NO_NOB;

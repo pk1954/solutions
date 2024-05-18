@@ -45,7 +45,6 @@ public:
 		MonitorWindow * const
 	);
 
-	//void Stop() final;
 	void Reset();
 
 	LPARAM AddContextMenuEntries(HMENU const) final;

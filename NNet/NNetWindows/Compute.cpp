@@ -127,13 +127,10 @@ void Compute::finishScan()
 	setRunning(false);
 }
 
-//HiResTimer tX;
-
 void Compute::DoGameStuff()
 {
 	if (IsRunning() && m_computeClockGen.Time4NextAction())
 	{
-		//tX.BeforeAction();
 		m_computeClockGen.Action();
 		if (m_pNMWI->Compute()) // returns true, if StopOnTrigger fires
 			setRunning(false);
@@ -141,9 +138,6 @@ void Compute::DoGameStuff()
 		m_pDynamicModelObservable->NotifyAll();
 		m_pSlowMotionRatio->SetMeasuredSlowMo(GetTimeSpentPerCycle() / m_pNMWI->TimeResolution());
 		m_pPerformanceObservable->NotifyAll();
-		//tX.AfterAction();
-	    //wcout << L"tX = " << tX.Average2wstring() << endl;
-	    //wcout << L"xxxxxxxxxxxxxxxxxxxxxx" << endl;
 	}
 
 	if (IsScanRunning() && (SimulationTime::Get() >= m_usSimuNextPixelScan))

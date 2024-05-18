@@ -15,6 +15,7 @@ import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
 import SaveCast;
+import IoUtil;
 import Util;
 import IoConstants;
 import Trace;
@@ -23,6 +24,7 @@ import MessagePump;
 import Script;
 import Scanner;
 import Accelerators;
+import NNetModelIO;
 import NNetAppWindow;
 import NNetViewerWindow;
 import ScanViewer;
@@ -55,7 +57,7 @@ int APIENTRY wWinMain
 	HiResTimer hrtimer;
 	hrtimer.BeforeAction();
 
-	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
+	//SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
 	INITCOMMONCONTROLSEX icex // load common control's DLL 
 	{
@@ -66,23 +68,38 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	static wstring const PRODUCT_NAME { L"NNetSimu 5.5 " + BUILD_MODE };
+	static wstring const PRODUCT_NAME { L"NNetSimu 6.0 " + BUILD_MODE };
 
 	SwitchWcoutTo(L"main_trace.out");
 
 	PrintAppStartProtocol(PRODUCT_NAME);
-
-	upApp    = make_unique<NNetAppWindow>(PRODUCT_NAME);
-	upViewer = make_unique<NNetViewerWindow>();
+	DefineUtilityWrapperFunctions();
+	NNetModelIO::Initialize();
 
 	Accelerators acc;
 	MessagePump  pump;
 	pump.SetAccelTable(acc.Get());
-	upApp->Start(pump);
-	pump.RegisterWindow(upApp->GetWindowHandle(), false);
+
+	bool bViewerMode { false };
+
+	if (bViewerMode)
+	{
+		upViewer = make_unique<NNetViewerWindow>();
+	}
+	else
+	{
+		upApp = make_unique<NNetAppWindow>(PRODUCT_NAME);
+		upApp->Start(pump);
+		pump.RegisterWindow(upApp->GetWindowHandle(), false);
+	}
 
 	wcout << setw(30) << left << COMMENT_START + L"App.Start " << PerfCounter::Ticks2wstring(hrtimer.AfterAction()) << endl;
 
-	int iRetVal = pump.Run([]() { upApp->DoGameStuff(); });
+	int iRetVal 
+	{
+		bViewerMode
+		? pump.Run()
+		: pump.Run([]() { upApp->DoGameStuff(); })
+	};
 	return iRetVal;
 }

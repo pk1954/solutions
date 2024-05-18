@@ -23,8 +23,6 @@ public:
 	HWND StartBaseDialog(HWND const, VisCrit const &);
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
-	
-	//void Stop() override;
 
 private:
 

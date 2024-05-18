@@ -63,9 +63,8 @@ using std::bit_cast;
 using std::endl;
 using std::setprecision;
 
-void NNetModelIO::Initialize(Observable * const pLockModelObservable)
+void NNetModelIO::Initialize()
 {
-    m_pLockModelObservable = pLockModelObservable;
     AddModelWrapper<WrapProtocol       >(L"Protocol");
     AddModelWrapper<WrapDescription    >(L"Description");
     AddModelWrapper<WrapGlobalParameter>(L"GlobalParameter");

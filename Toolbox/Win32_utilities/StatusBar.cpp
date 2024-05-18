@@ -89,12 +89,6 @@ void StatusBar::LastPart()
 	(void)SendMessage(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
 }
 
-//void StatusBar::Stop()
-//{
-//	Show(false);
-//	DestroyWindow();
-//}
-
 LRESULT StatusBar::UserProc
 (
 	UINT   const uMsg, 

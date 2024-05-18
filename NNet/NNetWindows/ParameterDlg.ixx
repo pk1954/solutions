@@ -28,7 +28,6 @@ public:
 	~ParameterDialog() final;
 
 	void Start(HWND const);
-	//void Stop();
 	void SetModelInterface(NNetModelWriterInterface* const);
 	void Notify(bool const) final;
 	void PaintGraphics() final;

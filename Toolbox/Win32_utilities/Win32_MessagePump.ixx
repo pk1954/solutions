@@ -33,13 +33,22 @@ int Run(auto const gameFunc)
 					break;
 			}
 		}
-		else
-		{
-			gameFunc();
-		}
+		gameFunc();
 	}
 
-	return (int) msg.wParam;
+	return (int)msg.wParam;
+}
+
+int Run()
+{
+	MSG msg;
+
+	while (GetMessage(&msg, NULL, 0, 0) != 0) 
+	{
+        TranslateMessage(&msg); // Translate virtual-key messages
+        DispatchMessage(&msg);  // Dispatch the message to the appropriate window procedure
+    }
+	return (int)msg.wParam;
 }
 
 private:

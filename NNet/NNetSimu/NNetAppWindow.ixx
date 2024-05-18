@@ -48,7 +48,6 @@ public:
 	NNetAppWindow(wstring const &);
 
 	virtual void Start(MessagePump&);
-	//virtual void Stop();
 
 	void DoGameStuff() { m_compute.DoGameStuff(); }
 
@@ -78,8 +77,6 @@ private:
 	void WriteModel();
 	void importModel();
 	void openModel();
-
-	bool m_bStarted { false }; // if true, model is visible, all functions available
 
 	int                             m_statusMessagePart{ };
 	unique_ptr<Model>               m_upModel;

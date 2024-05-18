@@ -135,11 +135,6 @@ public:
 
 	virtual void Trigger(bool const = false);
 
-	//virtual void Stop() 
-	//{ 
-	//	DestroyWindow(); 
-	//}
-
 	void ShowRefreshRateDlg(bool const bShow) { m_bShowRefreshRateDlg = bShow; }
 	void SetWindowVisibility(tOnOffAuto const);
 
@@ -173,7 +168,7 @@ public:
 	void    SetRefreshRate(milliseconds const)                                   const;
 	bool    IsOutOfClientRect(PixelPoint const&)                                 const;
 	wstring GetWindowText()                                                      const;
-	//void    DestroyWindow();
+	void    DestroyWindow();
 
 protected:
 

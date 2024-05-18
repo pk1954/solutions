@@ -37,13 +37,6 @@ HWND GraphicsWindow::Initialize
 	return hwnd;
 }
 
-//void GraphicsWindow::Stop()
-//{
-//	BaseWindow::Stop();
-//	if (m_upGraphics)
-//		m_upGraphics->ShutDown();
-//}
-
 void GraphicsWindow::OnPaint()
 {
 	if (IsWindowVisible())

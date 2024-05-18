@@ -133,11 +133,11 @@ void RootWindow::Notify(bool const bImmediately)
 	m_upRefreshRate->Notify(bImmediately);
 }
 
-//void RootWindow::DestroyWindow()
-//{
-//	::DestroyWindow(m_hwnd);
-//	m_hwnd = nullptr;
-//}
+void RootWindow::DestroyWindow()
+{
+	::DestroyWindow(m_hwnd);
+	m_hwnd = nullptr;
+}
 
 HBITMAP RootWindow::CreateCompatibleBitmap(HDC const hDC) const
 {
@@ -365,7 +365,7 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 
 	case WM_CLOSE:
 		OnClose();
-		return false;
+		return true;
 
 	case WM_SIZE:
 		if (OnSize(static_cast<PIXEL>(LOWORD(lParam)), static_cast<PIXEL>(HIWORD(lParam))))

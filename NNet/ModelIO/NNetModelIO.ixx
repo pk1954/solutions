@@ -27,7 +27,7 @@ export class NNetModelIO
 {
 public:
 
-	static void Initialize(Observable * const);
+	static void Initialize();
 
 	/// import ///
 
@@ -59,8 +59,6 @@ public:
 	}
 
 private:
-
-	inline static Observable * m_pLockModelObservable { nullptr };
 
 	inline static unique_ptr<InputOutputUI>   m_upImportUI;
 	inline static vector<unique_ptr<Wrapper>> m_wrapVector;
