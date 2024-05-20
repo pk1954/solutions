@@ -210,6 +210,10 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
         NNetPreferences::m_bModelFront.Toggle();
         break;
 
+    case IDD_ASK_NOT_UNDOABLE:
+        NNetPreferences::m_bAskNotUndoable.Toggle();
+        break;
+
     case IDD_FILTER:
         NNetPreferences::m_bFilter.Toggle();
         break;

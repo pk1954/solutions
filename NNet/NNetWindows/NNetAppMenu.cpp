@@ -26,13 +26,14 @@ import :Compute;
 using std::make_unique;
 
 NNetAppMenu::NNetAppMenu()
-  : m_upOnOffArrows      (make_unique<OnOffPair>(IDD_ARROWS       )),
-    m_upOnOffSound       (make_unique<OnOffPair>(IDD_SOUND        )),
-    m_upOnOffAutoOpen    (make_unique<OnOffPair>(IDD_AUTO_OPEN    )),
-    m_upOnOffSensorPoints(make_unique<OnOffPair>(IDD_SENSOR_PNTS  )),
-    m_upOnOffPerfMonMode (make_unique<OnOffPair>(IDD_PERF_MON_MODE)),
-    m_upOnOffColorMenu   (make_unique<OnOffPair>(IDD_COLOR_MENU   )),
-    m_upOnOffScanArea    (make_unique<OnOffPair>(IDD_SCAN_AREA    ))
+  : m_upOnOffArrows        (make_unique<OnOffPair>(IDD_ARROWS          )),
+    m_upOnOffSound         (make_unique<OnOffPair>(IDD_SOUND           )),
+    m_upOnOffAutoOpen      (make_unique<OnOffPair>(IDD_AUTO_OPEN       )),
+    m_upOnOffSensorPoints  (make_unique<OnOffPair>(IDD_SENSOR_PNTS     )),
+    m_upOnOffPerfMonMode   (make_unique<OnOffPair>(IDD_PERF_MON_MODE   )),
+    m_upOnOffColorMenu     (make_unique<OnOffPair>(IDD_COLOR_MENU      )),
+    m_upOnOffScanArea      (make_unique<OnOffPair>(IDD_SCAN_AREA       )),
+    m_upOnOffAskNotUndoable(make_unique<OnOffPair>(IDD_ASK_NOT_UNDOABLE))
 { }
 
 NNetAppMenu::~NNetAppMenu() = default;
@@ -113,9 +114,10 @@ void NNetAppMenu::Start
     }
     HMENU hMenuOptions = ::PopupMenu(m_hMenu, L"&Options");
     {
-        m_upOnOffSound      ->AppendOnOffMenu(hMenuOptions, L"&Sound");
-        m_upOnOffAutoOpen   ->AppendOnOffMenu(hMenuOptions, L"Auto&Open");
-        m_upOnOffPerfMonMode->AppendOnOffMenu(hMenuOptions, L"&PerformanceMonitor");
+        m_upOnOffSound         ->AppendOnOffMenu(hMenuOptions, L"&Sound");
+        m_upOnOffAutoOpen      ->AppendOnOffMenu(hMenuOptions, L"Auto&Open");
+        m_upOnOffAskNotUndoable->AppendOnOffMenu(hMenuOptions, L"Ask not undoable");
+        m_upOnOffPerfMonMode   ->AppendOnOffMenu(hMenuOptions, L"&PerformanceMonitor");
     }
     HMENU hMenuHelp = ::PopupMenu(m_hMenu, L"&Help");
     {
@@ -148,13 +150,14 @@ void NNetAppMenu::Notify(bool const bImmediately)
     ::Enable(m_hMenu, IDM_VIEWER_WINDOW,  ! WinManager::IsVisible(RootWinId(IDM_VIEWER_WINDOW )));
     ::Enable(m_hMenu, IDM_SAVE_SCAN, m_pNMRI->ModelLocked());
 
-    m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
-    m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());
-    m_upOnOffScanArea    ->EnableOnOff(m_hMenu, NNetPreferences::m_bScanArea.Get());
-    m_upOnOffSound       ->EnableOnOff(m_hMenu, Preferences::m_bSound.Get());
-    m_upOnOffAutoOpen    ->EnableOnOff(m_hMenu, Preferences::m_bAutoOpen.Get());
-    m_upOnOffColorMenu   ->EnableOnOff(m_hMenu, Preferences::m_bColorMenu.Get());
-    m_upOnOffPerfMonMode ->EnableOnOff(m_hMenu, BaseWindow ::m_bPerfMonMode.Get());
+    m_upOnOffArrows        ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
+    m_upOnOffSensorPoints  ->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());
+    m_upOnOffScanArea      ->EnableOnOff(m_hMenu, NNetPreferences::m_bScanArea.Get());
+    m_upOnOffAskNotUndoable->EnableOnOff(m_hMenu, NNetPreferences::m_bAskNotUndoable.Get());
+    m_upOnOffSound         ->EnableOnOff(m_hMenu, Preferences::m_bSound.Get());
+    m_upOnOffAutoOpen      ->EnableOnOff(m_hMenu, Preferences::m_bAutoOpen.Get());
+    m_upOnOffColorMenu     ->EnableOnOff(m_hMenu, Preferences::m_bColorMenu.Get());
+    m_upOnOffPerfMonMode   ->EnableOnOff(m_hMenu, BaseWindow ::m_bPerfMonMode.Get());
 
     DrawMenuBar(m_hwndApp);
 }

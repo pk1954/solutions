@@ -85,10 +85,11 @@ public:
 	inline static ColorLUT        m_colorLutVoltage;
 	inline static ShowInputCables m_bInputCables;
 	inline static ShowArrows      m_bArrows;
-	inline static BoolType        m_bSensorPoints { false };
-	inline static BoolType        m_bScanArea     { false };
-	inline static BoolType        m_bModelFront   { true  };
-	inline static BoolType        m_bFilter       { false };
+	inline static BoolType        m_bSensorPoints   { false };
+	inline static BoolType        m_bScanArea       { false };
+	inline static BoolType        m_bModelFront     { true  };
+	inline static BoolType        m_bFilter         { false };
+	inline static BoolType        m_bAskNotUndoable { true };
 
 private:
 

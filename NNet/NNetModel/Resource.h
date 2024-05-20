@@ -65,6 +65,7 @@
 #define       IDD_PERF_MON_MODE              314
 #define       IDD_SCAN_AREA                  315
 #define       IDD_MODEL_FRONT                316
+#define       IDD_ASK_NOT_UNDOABLE           317
 
 #define       IDM_INPUT_CABLES_ALL           340
 #define       IDM_INPUT_CABLES_NONSTD        341

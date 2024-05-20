@@ -510,7 +510,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 bool NNetAppWindow::AskNotUndoable()
 {
-	if (m_appTitle.AnyUnsavedChanges())
+	if (m_appTitle.AnyUnsavedChanges() && NNetPreferences::m_bAskNotUndoable.Get())
 	{
 		int iRes = MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\n\nContinue?", L"Warning", MB_YESNO);
 		return iRes == IDYES;

@@ -35,66 +35,6 @@ using std::filesystem::exists;
 using std::filesystem::path;
 using std::make_unique;
 
-class WrapFilter : public Wrapper
-{
-public:
-    WrapFilter()
-        : Wrapper(NAME)
-    {}
-
-    void operator() (Script& script) const final
-    {
-        NNetPreferences::m_bFilter.Set(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bFilter.Get());
-    }
-
-    inline static const wstring NAME { L"ApplyFilter" };
-};
-
-class WrapScanAreaVisibility : public Wrapper
-{
-public:
-    WrapScanAreaVisibility()
-        : Wrapper(NAME)
-    {}
-
-    void operator() (Script& script) const final
-    {
-        NNetPreferences::m_bScanArea.Set(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bScanArea.Get());
-    }
-
-    inline static const wstring NAME { L"ScanAreaVisibility" };
-};
-
-class WrapModelFront : public Wrapper
-{
-public:
-    WrapModelFront()
-        : Wrapper(NAME)
-    {}
-
-    void operator() (Script& script) const final
-    {
-        NNetPreferences::m_bModelFront.Set(script.ScrReadBool());
-    }
-
-    void Write(wostream& out) const final
-    {
-        out << NAME << SPACE << PrefOnOff(NNetPreferences::m_bModelFront.Get());
-    }
-
-    inline static const wstring NAME { L"ModelFront" };
-};
-
 class WrapInputCablesVisibility : public Wrapper
 {
 public:
@@ -189,17 +129,18 @@ void NNetPreferences::Initialize()
 
     Preferences::AddWrapper(make_unique<WrapReadModel>());
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
-    Preferences::AddWrapper(make_unique<WrapScanAreaVisibility>());
-    Preferences::AddWrapper(make_unique<WrapModelFront>());
-    Preferences::AddWrapper(make_unique<WrapFilter>());
    // Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());
     Preferences::AddWrapper(make_unique<WrapSetGrid>());
     Preferences::AddWrapper(make_unique<WrapColorLUT>(NNetPreferences::m_colorLutScan));
 
-    Preferences::AddBoolWrapper(L"ShowArrows",       m_bArrows);
-    Preferences::AddBoolWrapper(L"ShowSensorPoints", m_bSensorPoints);
-    Preferences::AddBoolWrapper(L"SetPerfMonMode",   BaseWindow::m_bPerfMonMode);
+    Preferences::AddBoolWrapper(L"ShowArrows",         m_bArrows);
+    Preferences::AddBoolWrapper(L"ShowSensorPoints",   m_bSensorPoints);
+    Preferences::AddBoolWrapper(L"SetPerfMonMode",     BaseWindow::m_bPerfMonMode);
+    Preferences::AddBoolWrapper(L"ApplyFilter",        NNetPreferences::m_bFilter);
+    Preferences::AddBoolWrapper(L"ScanAreaVisibility", NNetPreferences::m_bScanArea);
+    Preferences::AddBoolWrapper(L"ModelFront",         NNetPreferences::m_bModelFront);
+    Preferences::AddBoolWrapper(L"AskNotUndoable",     NNetPreferences::m_bAskNotUndoable);
 
     m_colorLutScan.AddBasePoint(  0, Color(D2D1::ColorF::Black));
     m_colorLutScan.AddBasePoint( 10, Color(D2D1::ColorF::Blue));
@@ -209,7 +150,6 @@ void NNetPreferences::Initialize()
     m_colorLutVoltage.AddBasePoint(  0, Color(D2D1::ColorF::Black));
     m_colorLutVoltage.AddBasePoint(255, Color(D2D1::ColorF::Red));
     m_colorLutVoltage.Construct();
-
 }
 
 void NNetPreferences::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
