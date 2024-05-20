@@ -30,13 +30,13 @@ public:
 	~ScriptFile();
 
 	static wstring GetPathOfExecutable();
-	static wstring AskForFileName(wstring const &, wstring const &, tFileMode const);
+	static wstring AskForFileName(wstring const&, wstring const&, wstring const&, tFileMode const);
 
 private:
 	static bool m_bInitialized;
 
 	static IFileDialog * createOpenDialog();
-	static IFileDialog * createSaveDialog();
+	static IFileDialog * createSaveDialog(wstring const &);
 
 	static bool    setFileTypes       (IFileDialog *, wstring const &, wstring const &);
 	static bool    setDefaultExtension(IFileDialog *, wstring const &);

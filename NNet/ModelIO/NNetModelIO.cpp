@@ -209,7 +209,7 @@ void NNetModelIO::fixProblems()
 
 void NNetModelIO::dislocate(PosNob& posNob)
 {
-    MicroMeterPnt umPnt { posNob.GetPos() };
+    MicroMeterPnt umPnt       { posNob.GetPos() };
     MicroMeterPnt umPntDisloc { umPnt * 0.001f };
     m_radDislocate += 0.1_Radian;
     Normalize(m_radDislocate);
@@ -303,18 +303,18 @@ size_t NNetModelIO::NrOfCompactIds()
 
 void NNetModelIO::Export
 (
+    wstring                  const & wstrPath,
     NNetModelReaderInterface const & nmri,
     unique_ptr<InputOutputUI>        upOutputUI
 )
 {
     HiResTimer timer;
     timer.BeforeAction();
+	nmri.SetTimestamp(STORAGETIME);
     m_pExportNMRI = & nmri;
     compress(nmri);
     wofstream modelFile;
-    path modelPath { nmri.GetModelFilePath() };
-    if (nmri.ModelLocked())
-        modelPath.replace_extension(L"scan");
+    path modelPath { wstrPath };
     modelFile.open(modelPath);
     writeHeader(modelFile);
     for (auto const & it : m_wrapVector)
@@ -323,6 +323,7 @@ void NNetModelIO::Export
         it->Write(modelFile);
     }
     modelFile.close();
+    upOutputUI->JobFinished(InputOutputUI::Result::ok, modelPath);
     m_pExportNMRI = nullptr;
     timer.AfterAction();
     fMicroSecs const usTilStart { PerfCounter::TicksToMicroSecs(timer.GetSingleActionTicks()) }; //for tests only

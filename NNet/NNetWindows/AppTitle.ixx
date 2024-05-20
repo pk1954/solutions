@@ -43,13 +43,8 @@ public:
 
 	void SetUnsavedChanges(bool const bState)
 	{
-		//if (bState)
-		//	m_pNMWI->SetTimestamp(LAST_EDIT);
-		if (bState != m_bUnsavedChanges)
-		{
-			m_bUnsavedChanges = bState;
-			setAppTitle();
-		}
+		m_bUnsavedChanges = bState;
+		setAppTitle();
 	}
 
 	bool AnyUnsavedChanges() const 

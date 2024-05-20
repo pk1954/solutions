@@ -45,6 +45,9 @@ export enum class ConnectionType
 	ct_plugConnectors
 };
 
+export wstring const SCANTIME    { L"ScanTime" };
+export wstring const STORAGETIME { L"StorageTime" };
+
 export class NNetModelReaderInterface
 {
 public:
@@ -54,6 +57,10 @@ public:
 
 	void DumpModel(char const * const file, int const line) const { m_pModel->DumpModel(file, line); }
 	void CheckModel() const { m_pModel->CheckModel(); };
+
+	void SetModelFilePath(wstring const & wstr)                const { m_pModel->m_wstrModelFilePath = wstr; }         // exception!
+    void SetTimestamp    (wstring const &name)                 const { m_pModel->m_timestamps.SetTimestamp(name, 0); } // exception!
+	void SetTimestamp    (wstring const &name, time_t const t) const { m_pModel->m_timestamps.SetTimestamp(name, t); } // exception!
 
 	SignalId                FindSignalId         (NNetSignalSource const * const) const;
 	ConnectionType          ConnectionResult     (NobId const, NobId const) const;

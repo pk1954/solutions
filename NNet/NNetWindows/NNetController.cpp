@@ -4,6 +4,7 @@
 
 module;
 
+#include <filesystem>
 #include <string>
 #include <iostream>
 #include <exception>
@@ -12,6 +13,7 @@ module;
 
 module NNetWin32:NNetController;
 
+import Win32_Util;
 import Win32_Util_Resource;
 import SlowMotionRatio;
 import Scanner;
@@ -21,20 +23,21 @@ import Observable;
 import StdDialogBox;
 import WinManager;
 import FatalError;
-import ScriptFile;
-import Win32_Util;
-import NNetCommands;
 import UndoCommand;
 import RedoCommand;
 import CommandStack;
+import NNetCommands;
 import NNetModel;
 import NNetModelIO;
-import Preferences;
 import NNetPreferences;
+import Preferences;
+import :AppTitle;
 import :Compute;
 import :MainWindow;
+import :NNetUtilities;
 import :NNetInputOutputUI;
 
+using std::filesystem::path;
 using std::to_wstring;
 using std::wcout;
 using std::endl;
@@ -42,25 +45,23 @@ using std::endl;
 void NNetController::Initialize
 (
     Compute         * const pCompute,
-    SlowMotionRatio * const pSlowMotionRatio
+    SlowMotionRatio * const pSlowMotionRatio,
+    AppTitle        * const pAppTitle
 ) 
 {
     m_pSlowMotionRatio = pSlowMotionRatio;
     m_pCompute         = pCompute;
-    m_hCrsrWait        = LoadCursor(NULL, IDC_WAIT);
+    m_pAppTitle        = pAppTitle;
+    m_hCrsrWait        = LoadCursor(NULL,    IDC_WAIT);
+	m_hCrsrArrow       = LoadCursor(nullptr, IDC_ARROW);
 }
 
 NNetController::~NNetController()
 {
     m_pNMRI            = nullptr;
     m_pSlowMotionRatio = nullptr;
-    m_pCompute   = nullptr;
+    m_pCompute         = nullptr;
     m_hCrsrWait        = nullptr;
-}
-
-wstring NNetController::AskModelFile(enum class tFileMode const mode)
-{
-	return ScriptFile::AskForFileName(L"mod", L"Model files", mode);
 }
 
 void NNetController::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
@@ -115,6 +116,23 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
 
     case IDM_REDO:
         RedoCommand::Push();
+        break;
+
+    case IDM_SAVE_SCAN:
+		m_pCompute->StopComputation();
+		SaveScanAs();
+		break;
+
+	case IDM_SAVE_MODEL_AS:
+		m_pCompute->StopComputation();
+		if (SaveModelAs())
+			Preferences::WritePreferences();
+        break;
+
+	case IDM_SAVE_MODEL:
+		m_pCompute->StopComputation();
+		if (SaveModel())
+			Preferences::WritePreferences();
         break;
 
     case IDM_VIEWER_WINDOW:
@@ -240,11 +258,11 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
    	case IDM_ADD_MODULE:
 		NNetModelIO::Import
 		(
-			AskModelFile(tFileMode::read), 
+			AskModelFileName(tFileMode::read), 
 			NNetInputOutputUI::CreateNew
             (
                 IDM_ADD_IMPORTED_MODEL, 
-                WinManager::GetRootWindow(RootWinId(IDM_APPL_WINDOW))
+                WinManager::GetHWND(RootWinId(IDM_APPL_WINDOW))
             )
 		);
         break;
@@ -258,4 +276,69 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     }
 
     return true;
+}
+
+bool NNetController::SaveModelAs()
+{
+	wstring wstrModelPath = AskModelFileName(tFileMode::write);
+	if (wstrModelPath == L"")
+		return false;
+	m_pNMRI->SetModelFilePath(wstrModelPath);
+	WriteModel(wstrModelPath);
+	return true;
+}
+
+bool NNetController::SaveScanAs()
+{
+    path fullPath { m_pNMRI->GetModelFilePath() };
+    path fileName { fullPath.stem() };
+	wstring const wstrModelPath = AskScanFileName(fileName, tFileMode::write);
+	if (wstrModelPath == L"")
+		return false;
+	WriteModel(wstrModelPath);
+	return true;
+}
+
+bool NNetController::SaveModel()
+{
+	wstring wstrModelPath { m_pNMRI->GetModelFilePath() };
+	if (wstrModelPath == L"")
+	{
+		return SaveModelAs();
+	}
+	else
+	{
+		WriteModel(wstrModelPath);
+		return true;
+	}
+}
+
+void NNetController::WriteModel(wstring const& wstrPath)
+{
+	SetCursor(m_hCrsrWait);
+	HWND const hwndApp { WinManager::GetHWND(RootWinId(IDM_APPL_WINDOW)) };
+	NNetModelIO::Export
+	(
+		wstrPath,
+		*m_pNMRI, 
+		NNetInputOutputUI::CreateNew(IDX_EXPORT_FINISHED, hwndApp)
+	);
+	Preferences::WritePreferences();
+	m_pAppTitle->SetUnsavedChanges(false);
+	SetCursor(m_hCrsrArrow);
+}
+
+bool NNetController::AskAndSave()
+{
+	if (m_pAppTitle->AnyUnsavedChanges())
+	{
+		int iRes = MessageBox(nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL);
+		if (iRes == IDYES)
+			SaveModel();
+		else if (iRes == IDNO)
+			return true;
+		else if (iRes == IDCANCEL)
+			return false;
+	}
+	return true;
 }

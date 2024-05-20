@@ -2,7 +2,7 @@
 SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  ON
-ReadModel "D:\SW-projects\Delivery\V5_1\BC23xy.mod"
+ReadModel "D:\SW-projects\Delivery\V5_1\aaaab.mod"
 InputCablesVisibility 1
 ScanAreaVisibility  ON
 ModelFront  OFF

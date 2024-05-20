@@ -55,6 +55,11 @@ export inline LONG_PTR SetWindowId(HWND hwnd, LONG_PTR ptr)
     return ::SetWindowLongPtr(hwnd, GWLP_ID, ptr);
 }
 
+export LRESULT SendCommand(HWND const hwnd, WPARAM const wParam, LPARAM const lParam = 0) 
+{ 
+    return SendMessage(hwnd, WM_COMMAND, wParam, lParam); 
+}
+
 export void SetEditField(HWND const hwndEditField, auto const value)
 {
     wostringstream m_wstrBuffer; 

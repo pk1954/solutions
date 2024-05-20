@@ -73,7 +73,7 @@ IFileDialog * ScriptFile::createOpenDialog()
     return pFileDlg;
 }
 
-IFileDialog * ScriptFile::createSaveDialog()
+IFileDialog * ScriptFile::createSaveDialog(wstring const &wstrFileName)
 {
     IFileDialog * pFileDlg { nullptr }; 
     HRESULT hr = CoCreateInstance
@@ -91,6 +91,9 @@ IFileDialog * ScriptFile::createSaveDialog()
     }
 
     hr = pFileDlg->SetTitle(L"Save file");
+    assert(SUCCEEDED(hr));
+    if (wstrFileName != L"")
+        hr = pFileDlg->SetFileName(wstrFileName.c_str());
     assert(SUCCEEDED(hr));
     return pFileDlg;
 }
@@ -164,6 +167,7 @@ wstring ScriptFile::getResult(IFileDialog * const pFileDlg)
 wstring ScriptFile::AskForFileName
 (
 	wstring   const & extension, 
+    wstring   const & wstrFileName,
 	wstring   const & description,
 	tFileMode const   mode
 )
@@ -174,7 +178,7 @@ wstring ScriptFile::AskForFileName
     if (mode == tFileMode::read)
         pFileDlg = createOpenDialog();
     else
-        pFileDlg = createSaveDialog();
+        pFileDlg = createSaveDialog(wstrFileName);
 
     if (! pFileDlg)
         return wstrRes;

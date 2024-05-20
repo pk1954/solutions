@@ -42,7 +42,7 @@ public:
 
 	/// export ///
 
-	static void Export(NNetModelReaderInterface const&, unique_ptr<InputOutputUI>);
+	static void Export(wstring const&, NNetModelReaderInterface const&, unique_ptr<InputOutputUI>);
 
 	static short  GetCompactIdVal(NobId const);
 	static size_t NrOfCompactIds();

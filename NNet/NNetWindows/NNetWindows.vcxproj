@@ -581,6 +581,7 @@
     <ClCompile Include="NNetCommandHandler.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />
     <ClCompile Include="NNetSimuRunning.ixx" />
+    <ClCompile Include="NNetUtilities.ixx" />
     <ClCompile Include="NNetWin32.ixx" />
     <ClCompile Include="NNetWindow.cpp" />
     <ClCompile Include="NNetWindow.ixx" />

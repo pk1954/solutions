@@ -29,11 +29,6 @@ public:
 
 	wstring GetCaption() const final { return L"Event Viewer"; }
 
-	//void OnMouseHover(WPARAM const wParam, LPARAM const lParam)
-	//{
-	//	int x = 42;
-	//}
-
 private:
 	PixFpDimension<fMicroSecs> m_horzCoord;
 	PixFpDimension<mV>         m_vertCoordVolt;

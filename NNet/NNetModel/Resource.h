@@ -25,6 +25,7 @@
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141
 								   	         
+#define       IDX_EXPORT_FINISHED            161
 #define       IDX_REPLACE_MODEL              162
 #define       IDX_ASK_REPLACE_MODEL          163
 
@@ -37,6 +38,8 @@
 #define       IDM_IMPORT_MODEL               176
 #define       IDM_ADD_IMPORTED_MODEL         177
 #define       IDM_RELOAD_MODEL               178
+
+#define       IDM_SAVE_SCAN                  180
 
 #define       IDM_SCAN                       190
 #define       IDM_SCAN_STEP                  191

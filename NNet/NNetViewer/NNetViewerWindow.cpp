@@ -82,8 +82,8 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 	case IDM_ADD_SCAN:
 		NNetModelIO::Import
 		(
-			ScriptFile::AskForFileName(L"scan", L"Scan files", tFileMode::read), 
-			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, this)
+			ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read),
+			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, GetWindowHandle())
 		);
 		return true;
 

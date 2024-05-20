@@ -20,6 +20,7 @@ export import :NNetCommandHandler;
 export import :NNetController;
 export import :NNetInputOutputUI;
 export import :NNetSimuRunning;
+export import :NNetUtilities;
 export import :NNetWindow;
 export import :ParameterDialog;
 export import :PerformanceWindow;

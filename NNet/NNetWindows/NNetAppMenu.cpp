@@ -41,8 +41,7 @@ void NNetAppMenu::Start
 (
 	HWND         const   hwndApp,
 	Compute      const & compute,
-	CommandStack const & commandStack,
-	Sound        const & sound
+	CommandStack const & commandStack
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
@@ -50,7 +49,6 @@ void NNetAppMenu::Start
 	m_hwndApp       = hwndApp;
 	m_pCompute      = & compute;
 	m_pCommandStack = & commandStack;
-	m_pSound        = & sound;
 
     SendMessage(m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NNETSIMU)));
     SendMessage(m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL   )));
@@ -69,6 +67,7 @@ void NNetAppMenu::Start
         ::AddMenu(hMenuFile, MF_STRING, IDM_ADD_MODULE,    L"&Add module");
         ::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL,    L"&Save model");
         ::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_MODEL_AS, L"Save model &as");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_SAVE_SCAN,     L"Save scan");
         ::AddMenu(hMenuFile, MF_STRING, IDM_RELOAD_MODEL,  L"&Reload model");
         ::AddMenu(hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
         ::AddMenu(hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump");
@@ -128,6 +127,11 @@ void NNetAppMenu::Start
     assert(bRes);
 }
 
+void NNetAppMenu::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
+{
+	m_pNMRI = pNMRI;
+}
+
 void NNetAppMenu::Notify(bool const bImmediately)
 {
     ::Enable(m_hMenu, IDM_FORWARD,            ! m_pCompute->IsRunning());
@@ -142,6 +146,7 @@ void NNetAppMenu::Notify(bool const bImmediately)
     ::Enable(m_hMenu, IDM_SIG_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_SIG_DESIGNER  )));
     ::Enable(m_hMenu, IDM_LUT_DESIGNER,   ! WinManager::IsVisible(RootWinId(IDM_LUT_DESIGNER  )));
     ::Enable(m_hMenu, IDM_VIEWER_WINDOW,  ! WinManager::IsVisible(RootWinId(IDM_VIEWER_WINDOW )));
+    ::Enable(m_hMenu, IDM_SAVE_SCAN, m_pNMRI->ModelLocked());
 
     m_upOnOffArrows      ->EnableOnOff(m_hMenu, NNetPreferences::m_bArrows.Get());
     m_upOnOffSensorPoints->EnableOnOff(m_hMenu, NNetPreferences::m_bSensorPoints.Get());

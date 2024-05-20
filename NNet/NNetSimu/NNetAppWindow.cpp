@@ -57,15 +57,10 @@ using std::to_wstring;
 using std::bit_cast;
 using std::wcout;
 
-static HCURSOR m_hCrsrWait  { nullptr };
-static HCURSOR m_hCrsrArrow { nullptr };
-
 NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 {
 	m_pwstrProductName = &wstrProductName;
 	m_aboutBox.SetProductName(wstrProductName);
-	m_hCrsrWait  = LoadCursor(nullptr, IDC_WAIT);
-	m_hCrsrArrow = LoadCursor(nullptr, IDC_ARROW);
 
 	WinManager       ::Initialize();
 	Model            ::Initialize(&m_lockModelObservable, &m_staticModelObservable);
@@ -77,7 +72,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 
 	m_simuRunning   .Initialize(&m_compute);
 	m_cmdStack      .Initialize(&m_staticModelObservable);
-	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio);
+	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio, &m_appTitle);
 
 	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");
 	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
@@ -122,7 +117,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_performanceWindow.SetRefreshRate(500ms);
 	m_statusBar        .SetRefreshRate(300ms);
 
-	m_appMenu          .Start(m_hwndApp, m_compute, m_cmdStack, m_sound);
+	m_appMenu          .Start(m_hwndApp, m_compute, m_cmdStack);
 	m_statusBar        .Start(m_hwndApp);
 	m_descWindow       .Start(m_hwndApp);
 	m_crsrWindow       .Start(m_hwndApp, &m_mainNNetWindow, &m_monitorWindow);
@@ -204,6 +199,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_staticModelObservable        .RegisterObserver(m_undoRedoMenu);
 	m_staticModelObservable        .RegisterObserver(m_appMenu);
 	m_staticModelObservable        .RegisterObserver(m_parameterDlg);
+	m_lockModelObservable          .RegisterObserver(m_appMenu);
 	m_lockModelObservable          .RegisterObserver(m_parameterDlg);
 	m_lockModelObservable          .RegisterObserver(m_mainNNetWindow);
 	m_lockModelObservable          .RegisterObserver(m_appTitle);
@@ -257,6 +253,7 @@ void NNetAppWindow::setModelInterface()
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
 	m_appTitle         .SetModelInterface(&m_nmwi);
+	m_appMenu          .SetModelInterface(m_pNMRI);
 	m_NNetController   .SetModelInterface(m_pNMRI);
 	m_mainNNetWindow   .SetModelInterface(m_pNMRI);
 	m_miniNNetWindow   .SetModelInterface(m_pNMRI);
@@ -325,7 +322,7 @@ void NNetAppWindow::configureStatusBar()
 void NNetAppWindow::OnClose()
 {
 	m_compute.StopComputation();
-	if (AskAndSave())
+	if (m_NNetController.AskAndSave())
 		WinManager::StoreWindowConfiguration();
 	DestroyWindow();
 }
@@ -422,13 +419,8 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_NEW_MODEL:
-			if (AskNotUndoable() && AskAndSave())
+			if (AskNotUndoable() && m_NNetController.AskAndSave())
 				newModel();
-			return true;
-
-		case IDM_SAVE_MODEL:
-			if (SaveModel())
-				Preferences::WritePreferences();
 			return true;
 
 		case IDM_IMPORT_MODEL:
@@ -444,12 +436,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			m_signalDesigner.Trigger(false);
 			return true;
 
-		case IDM_SAVE_MODEL_AS:
-			m_compute.StopComputation();
-			if (SaveModelAs())
-				Preferences::WritePreferences();
-			return true;
-
 		case IDM_OPEN_MODEL:
 			m_cmdStack.Clear();
 			openModel();
@@ -459,12 +445,16 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			if (AskNotUndoable())
 			{
 				m_cmdStack.Clear();
-				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL, this));
+				NNetModelIO::Import(L"", NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL, GetWindowHandle()));
 			}
 			return true;
 
 		case IDM_CENTER_MODEL:
 			m_mainNNetWindow.CenterModel();
+			return true;
+
+		case IDX_EXPORT_FINISHED:
+			m_statusBar.ClearPart(m_statusMessagePart);
 			return true;
 
 		case IDX_READ_PROGRESS_REPORT:  //no user command, only internal usage
@@ -476,7 +466,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDX_ASK_REPLACE_MODEL:  //no user command, only internal usage
-			if (AskAndSave())
+			if (m_NNetController.AskAndSave())
 				replaceModel();
 			m_statusBar.ClearPart(m_statusMessagePart);
 			return true;
@@ -518,59 +508,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }
 
-bool NNetAppWindow::SaveModelAs()
-{
-	wstring wstrModelPath { m_pNMRI->GetModelFilePath() };
-	if (wstrModelPath == L"")
-	{
-		wstrModelPath = path(ScriptFile::GetPathOfExecutable()).parent_path();
-		wstrModelPath += L"\\std.mod";
-		m_nmwi.SetModelFilePath(wstrModelPath);
-		WriteModel();
-		return true;
-	}
-	else
-	{
-		wstrModelPath = NNetController::AskModelFile(tFileMode::write);
-		bool const bRes = wstrModelPath != L"";
-		if (bRes)
-		{
-			m_nmwi.SetModelFilePath(wstrModelPath);
-			WriteModel();
-		}
-		return bRes;
-	}
-}
-
-bool NNetAppWindow::SaveModel()
-{
-	wstring wstrModelPath { m_pNMRI->GetModelFilePath() };
-	if (wstrModelPath == L"")
-	{
-		return SaveModelAs();
-	}
-	else
-	{
-		WriteModel();
-		return true;
-	}
-}
-
-bool NNetAppWindow::AskAndSave()
-{
-	if (m_appTitle.AnyUnsavedChanges())
-	{
-		int iRes = MessageBox(nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL);
-		if (iRes == IDYES)
-			SaveModel();
-		else if (iRes == IDNO)
-			return true;
-		else if (iRes == IDCANCEL)
-			return false;
-	}
-	return true;
-}
-
 bool NNetAppWindow::AskNotUndoable()
 {
 	if (m_appTitle.AnyUnsavedChanges())
@@ -583,9 +520,15 @@ bool NNetAppWindow::AskNotUndoable()
 
 void NNetAppWindow::importModel()
 {
-	wstring             const wstrFileName { NNetModelIO::GetModelFileName() };
-	unique_ptr<InputOutputUI> upInOutUI    { NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL, this) };
-	bool                const bRes         { NNetModelIO::Import(wstrFileName, move(upInOutUI)) };
+	wstring const wstrFileName { NNetModelIO::GetModelFileName() };
+	bool    const bRes         
+	{ 
+		NNetModelIO::Import
+		(
+			wstrFileName, 
+			NNetInputOutputUI::CreateNew(IDX_REPLACE_MODEL, GetWindowHandle())
+		) 
+	};
 	if (!bRes)
 		SendCommand(IDM_NEW_MODEL, 0);
 }
@@ -594,8 +537,8 @@ void NNetAppWindow::openModel()
 {
 	NNetModelIO::Import
 	(
-		NNetController::AskModelFile(tFileMode::read),
-		NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL, this)
+		AskModelFileName(tFileMode::read),
+		NNetInputOutputUI::CreateNew(IDX_ASK_REPLACE_MODEL, GetWindowHandle())
 	);
 }
 
@@ -608,7 +551,6 @@ void NNetAppWindow::newModel()
 	m_upModel->ClearDynamicData();
 	m_staticModelObservable.NotifyAll();
 	m_dynamicModelObservable.NotifyAll();
-	m_appTitle.SetUnsavedChanges(true);
 	m_mainNNetWindow.CenterModel();
 }
 
@@ -636,20 +578,9 @@ void NNetAppWindow::replaceModel()
 
 void NNetAppWindow::processScript() const
 {
-	wstring wstrFile { ScriptFile::AskForFileName(L"in", L"Script files", tFileMode::read) };
+	wstring wstrFile { ScriptFile::AskForFileName(L"in", L"", L"Script files", tFileMode::read)};
 	if (!wstrFile.empty())
 		StartScript(wstrFile, m_ScriptHook);
 	if (!ScriptStack::GetScript()->ReadNextToken())
 		ScriptStack::CloseScript();
-}
-
-void NNetAppWindow::WriteModel()
-{
-	SetCursor(m_hCrsrWait);
-	m_nmwi.SetTimestamp(STORAGETIME);
-	NNetModelIO::Export(*m_pNMRI, NNetInputOutputUI::CreateNew(0, this));
-	Preferences::WritePreferences();
-	m_appTitle.SetUnsavedChanges(false);
-	m_statusBar.ClearPart(m_statusMessagePart);
-	SetCursor(m_hCrsrArrow);
 }

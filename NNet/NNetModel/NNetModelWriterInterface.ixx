@@ -83,7 +83,6 @@ public:
     void Reconnect          (NobId const id) const                    { m_pModel->Reconnect(id); }
     void SetParam           (ParamType::Value const p, float const f) { m_pModel->SetParam(p, f); }
     void SetScanArea        (MicroMeterRect const& rect)              { m_pModel->SetScanArea(rect); }
-    void SetModelFilePath   (wstring const & wstr)                    { m_pModel->m_wstrModelFilePath = wstr; }
     void SetDescriptionUI   (DescriptionUI & ui)                      { m_pModel->m_description.SetDescriptionUI(ui); }
     void AddDescriptionLine (wstring const & wstr)                    { m_pModel->m_description.AddDescriptionLine(wstr); }
     void DescriptionComplete()                                        { m_pModel->m_description.DescriptionComplete(); }
@@ -93,8 +92,6 @@ public:
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }
     void PrepareScanMatrix  ()                                        { m_pModel->PrepareScanMatrix(); }
-    void SetTimestamp       (wstring const &name)                     { m_pModel->m_timestamps.SetTimestamp(name, 0); }
-	void SetTimestamp       (wstring const &name, time_t const t)     { m_pModel->m_timestamps.SetTimestamp(name, t); }
     void AddOutgoing        (NobId const id, Pipe* p)                 { GetPosNob(id).AddOutgoing(p); }
     void AddIncoming        (NobId const id, Pipe* p)                 { GetPosNob(id).AddIncoming(p); }
     void DeselectAllNobs    ()                                        { GetUPNobs().DeselectAllNobs(); }

@@ -63,7 +63,7 @@ void EventViewer::PaintGraphics()
 	);
 	if (!bStimulus)
 		m_upGraphics->DisplayText(L"No stimulus");
-	CreateWindowToolTip(L"Hallo");
+	CreateWindowToolTip(m_pNMRI->GetModelFilePath());
 };
 
 void EventViewer::adjust(PixelRectSize const clientSize)
