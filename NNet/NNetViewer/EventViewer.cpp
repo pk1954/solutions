@@ -18,10 +18,12 @@ using std::wstring;
 
 EventViewer::EventViewer
 (
-	HWND const hwndParent
+	HWND const hwndParent,
+	NNetModelReaderInterface const * const pNMRI
 )
   : NNetTimeGraph(hwndParent, L"ClassEventViewer")
 {
+    SetModelInterface(pNMRI);
 	SetHorzCoord    (&m_horzCoord);
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);

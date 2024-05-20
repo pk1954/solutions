@@ -42,11 +42,8 @@ ScanPanel::ScanPanel
 	m_pixFrame = pixFrame;
 	m_upModel = move(upModel);
 	m_nmri.SetModel(m_upModel.get());
-	m_upEventViewer = make_unique<EventViewer>(hwnd);
-    m_upEventViewer->SetModelInterface(&m_nmri);
-    m_upScanViewer = make_unique<ScanViewer>();
-    m_upScanViewer->SetModelInterface(&m_nmri);
-	m_upScanViewer->Start(hwnd);
+	m_upEventViewer = make_unique<EventViewer>(hwnd, &m_nmri);
+    m_upScanViewer  = make_unique<ScanViewer> (hwnd, &m_nmri);
 }
 
 PIXEL ScanPanel::PanelWidthFromHeight(PIXEL const pixPanelHeight) const

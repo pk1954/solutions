@@ -19,7 +19,7 @@ using std::wstring;
 export class EventViewer : public NNetTimeGraph
 {
 public:
-	EventViewer(HWND const);
+	EventViewer(HWND const, NNetModelReaderInterface const * const);
 
 	PIXEL GetFixedHeight() const final 
 	{ 

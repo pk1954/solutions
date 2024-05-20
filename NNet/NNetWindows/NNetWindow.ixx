@@ -38,8 +38,8 @@ public:
 		HWND   const,
 		DWORD  const,
 		bool   const,
-		NNetCommandHandler  &,
-		MonitorWindow  *
+		NNetCommandHandler&,
+		MonitorWindow*
 	);
 
 	void SetDefaultBackgroundColor() final;

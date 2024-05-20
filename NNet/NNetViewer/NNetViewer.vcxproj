@@ -152,6 +152,7 @@
     <ClCompile Include="NNetViewerWindow.cpp" />
     <ClCompile Include="ScanPanel.ixx" />
     <ClCompile Include="NNetViewerWindow.ixx" />
+    <ClCompile Include="ScanViewer.cpp" />
     <ClCompile Include="ScanViewer.ixx" />
   </ItemGroup>
   <ItemGroup>

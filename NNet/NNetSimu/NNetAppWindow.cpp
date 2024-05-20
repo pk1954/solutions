@@ -468,12 +468,10 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDX_ASK_REPLACE_MODEL:  //no user command, only internal usage
 			if (m_NNetController.AskAndSave())
 				replaceModel();
-			m_statusBar.ClearPart(m_statusMessagePart);
 			return true;
 
 		case IDX_REPLACE_MODEL:  //no user command, only internal usage
 			replaceModel();
-			m_statusBar.ClearPart(m_statusMessagePart);
 			return true;
 
 		case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
@@ -574,6 +572,7 @@ void NNetAppWindow::replaceModel()
 	m_nmwi.GetParams().RegisterObserver(m_parameterDlg);
 	m_nmwi.GetParams().RegisterObserver(m_compute);
 	m_nmwi.GetParams().NotifyAll();
+	m_statusBar.ClearPart(m_statusMessagePart);
 }
 
 void NNetAppWindow::processScript() const
