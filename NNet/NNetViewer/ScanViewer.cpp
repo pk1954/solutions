@@ -5,6 +5,7 @@
 module;
 
 #include <optional>
+#include <memory>
 #include <Windows.h>
 
 module ScanViewer;
@@ -13,12 +14,15 @@ import NNetPreferences;
 import NNetWin32;
 
 using std::nullopt;
+using std::unique_ptr;
 
 ScanViewer::ScanViewer
 (
 	HWND                             const hwndParent,
-	NNetModelReaderInterface const * const pNMRI
+	NNetModelReaderInterface const * const pNMRI,
+	mV                       const &       mVmax     
 )
+  :	m_mVmaxPixel(mVmax)
 {
 	SetModelInterface(pNMRI);
 	NNetWindow::Start
@@ -29,7 +33,14 @@ ScanViewer::ScanViewer
 		m_controller,
 		nullptr
 	);
-	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
+    m_upFiltered = m_pNMRI->GetScanImageC()->MeanFilter();
+}
+
+RawImage const& ScanViewer::GetImage() const
+{
+	return NNetPreferences::ApplyFilter()
+		   ? *m_pNMRI->GetScanImageC() 
+		   : *m_upFiltered.get();
 }
 
 float ScanViewer::AspectRatio() const 
@@ -39,7 +50,7 @@ float ScanViewer::AspectRatio() const
 
 void ScanViewer::PaintGraphics()
 {
-	DrawScanAreaAll(nullopt);
+	m_pNMRI->DrawScanImage(m_context, GetImage(), m_mVmaxPixel, NNetPreferences::m_colorLutScan);
 }
 
 bool ScanViewer::OnSize(PIXEL const width, PIXEL const height)

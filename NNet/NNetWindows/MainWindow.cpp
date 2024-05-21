@@ -68,7 +68,7 @@ void MainWindow::Start
 	NNetWindow::Start
 	(
 		hwndApp, 
-		WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE,
+		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE,
 		bShowRefreshRateDialog,
 		controller,
 		pMonitorWindow
@@ -159,7 +159,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 			appendMenu(hPopupMenu, IDD_NEW_IO_LINE_PAIR);
 		appendMenu(hPopupMenu, IDD_ADD_EEG_SENSOR);
 	}
-	if (m_pNMRI->GetScanImageC())
+	if (m_pNMRI->GetRawImageC())
 	{
 		AppendMenu
 		(
@@ -510,7 +510,25 @@ void MainWindow::drawScanArea()
 	if (m_pCompute->IsScanRunning())
 		m_pNMRI->DrawScanProgress(m_context, m_pCompute->ScanProgress());
 	else
-		DrawScanAreaAll(m_scanAreaHandleSelected);
+	{
+		if (RawImage const * pRawImage { m_pNMRI->GetScanImageC() })
+		{
+			unique_ptr<RawImage> upFiltered;
+			if (NNetPreferences::ApplyFilter())
+			{
+				upFiltered = pRawImage->MeanFilter();
+				pRawImage = upFiltered.get();
+			}
+			mV const mVmax { pRawImage->CalcMaxValue() };
+			m_pNMRI->DrawScanImage(m_context, *pRawImage, mVmax, NNetPreferences::m_colorLutScan);
+		}
+		else
+		{
+			m_pNMRI->DrawSensorDensityMap(m_context);
+			m_pNMRI->DrawScanAreaHandles (m_context, m_scanAreaHandleSelected);
+		}
+		m_pNMRI->DrawScanRaster(m_context);
+	}
 }
 
 void MainWindow::drawModel(DrawContext const& context)

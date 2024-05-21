@@ -20,11 +20,13 @@ using std::unique_ptr;
 export class ScanPanel : public BaseWindow
 {
 public:
-    ScanPanel(HWND const, unique_ptr<Model> model, PIXEL const);
+    ScanPanel(HWND const, unique_ptr<Model> model, PIXEL const, mV const&, mV const&);
 
-    float AspectRatioScan() const {	return m_upScanViewer->AspectRatio(); }
     PIXEL PanelWidthFromHeight(PIXEL const) const;
     PIXEL PanelHeightFromWidth(PIXEL const) const;
+
+    unique_ptr<EventViewer>  m_upEventViewer;
+    unique_ptr<ScanViewer>   m_upScanViewer;
 
 private:
 	bool OnSize(PIXEL const, PIXEL const) final;
@@ -32,7 +34,5 @@ private:
 
     NNetModelReaderInterface m_nmri;
 	unique_ptr<Model>        m_upModel;
-    unique_ptr<EventViewer>  m_upEventViewer;
-    unique_ptr<ScanViewer>   m_upScanViewer;
     PIXEL                    m_pixFrame;
 };

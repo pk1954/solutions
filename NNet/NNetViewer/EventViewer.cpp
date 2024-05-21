@@ -19,16 +19,22 @@ using std::wstring;
 EventViewer::EventViewer
 (
 	HWND const hwndParent,
-	NNetModelReaderInterface const * const pNMRI
+	NNetModelReaderInterface const * const pNMRI,
+	mV const& mVmaxAmplitude     
 )
-  : NNetTimeGraph(hwndParent, L"ClassEventViewer")
+  : NNetTimeGraph(hwndParent, L"ClassEventViewer"),
+	m_mVmaxAmplitude(mVmaxAmplitude)    
 {
-    SetModelInterface(pNMRI);
+	SetModelInterface(pNMRI);
 	SetHorzCoord    (&m_horzCoord);
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
-	adjust(GetWindowSize());
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
+}
+
+PIXEL EventViewer::GetFixedHeight() const 
+{ 
+	return GetParentRootWindow()->GetClientWindowHeight() / 10; 
 }
 
 void EventViewer::PaintGraphics()
@@ -40,6 +46,7 @@ void EventViewer::PaintGraphics()
 		m_upGraphics->DisplayText(L"No scan information available");
 		return;
 	}
+	
 	fPixelRect rect
 	{
 		Scale2pixelTime(usStartScan),  // left
@@ -48,6 +55,11 @@ void EventViewer::PaintGraphics()
 		GetClientHeight()              // bottom
 	};
 	m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
+
+	if (m_mVmaxAmplitude.IsZero())  // No scaling information available
+		return;
+
+	adjust(GetWindowSize());
 
 	bool bStimulus = false;
 	m_pNMRI->Apply2allEvents
@@ -65,12 +77,29 @@ void EventViewer::PaintGraphics()
 	);
 	if (!bStimulus)
 		m_upGraphics->DisplayText(L"No stimulus");
+
 	CreateWindowToolTip(m_pNMRI->GetModelFilePath());
 };
 
+mV EventViewer::CalcMaxAmplitude() const
+{
+	mV mVpeakMax { 0.0_mV };
+	m_pNMRI->Apply2allEvents
+	(
+		EventType::stimulus,
+		[this, &mVpeakMax](StimulusEvent const* pStimEvent)
+		{
+			SignalGenerator const* pSigGen { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
+			mV              const  mVpeak  { pSigGen->Amplitude().Peak() };
+			mVpeakMax = max(mVpeak, mVpeakMax);
+		}
+	);
+	return mVpeakMax;
+}
+
 void EventViewer::adjust(PixelRectSize const clientSize)
 {
-	if (m_pNMRI)
+	if (m_pNMRI && m_mVmaxAmplitude.IsNotNull())
 	{
 		adjustHorz(Convert2fPixel(clientSize.GetX()));
 		adjustVert(Convert2fPixel(clientSize.GetY()));
@@ -84,19 +113,13 @@ void EventViewer::adjustHorz(fPixel const fPixWidth)
 
 void EventViewer::adjustVert(fPixel const fPixHeight)
 {
-	mV mvPeakMax { 0._mV };
-	m_pNMRI->Apply2allEvents
+	m_vertCoordVolt.Adjust
 	(
-		EventType::stimulus,
-		[this, &mvPeakMax](StimulusEvent const* pStimEvent)
-		{
-			SignalGenerator const* pSigGen { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
-			mV              const  mvPeak  { pSigGen->Amplitude().Peak() };
-			if (mvPeak > mvPeakMax)
-				mvPeakMax = mvPeak;
-		}
+	   -m_mVmaxAmplitude * 0.1f, // - 10% of max peak 
+	    m_mVmaxAmplitude * 1.1f, // 110% of max peak
+		0._fPixel, 
+		fPixHeight
 	);
-	m_vertCoordVolt.Adjust(-mvPeakMax * 0.1f, mvPeakMax * 1.1f, 0._fPixel, fPixHeight);
 }
 
 fMicroSecs EventViewer::scanTime(EventType const t) const
@@ -104,11 +127,4 @@ fMicroSecs EventViewer::scanTime(EventType const t) const
 	fMicroSecs us { fMicroSecs::NULL_VAL() };
 	m_pNMRI->Apply2allEvents(t, [&us](NNetEvent const* e){ us = e->GetTime(); });
 	return us;
-}
-
-bool EventViewer::OnSize(PIXEL const width, PIXEL const height)
-{
-	NNetTimeGraph::OnSize(width, height);
-	adjust(PixelRectSize(width, height));
-	return true;
 }

@@ -51,7 +51,7 @@ public:
 
     void Write(wostream& out) const final
     {
-        if (RawImage const* pImage { NNetModelIO::GetExportNMRI().GetScanImageC() })
+        if (RawImage const* pImage { NNetModelIO::GetExportNMRI().GetRawImageC() })
         {
             WriteCmdName(out);
             out << endl << CURLY_OPEN_BRACKET << endl;

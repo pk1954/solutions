@@ -19,19 +19,16 @@ using std::wstring;
 export class EventViewer : public NNetTimeGraph
 {
 public:
-	EventViewer(HWND const, NNetModelReaderInterface const * const);
+	EventViewer(HWND const, NNetModelReaderInterface const * const, mV const&);
 
-	PIXEL GetFixedHeight() const final 
-	{ 
-		PIXEL const pixClientHeight { GetParentRootWindow()->GetClientWindowHeight() };
-		return pixClientHeight / 10; 
-	}
-
-	wstring GetCaption() const final { return L"Event Viewer"; }
+	PIXEL   GetFixedHeight  () const final; 
+	wstring GetCaption      () const final { return L"Event Viewer"; }
+	mV      CalcMaxAmplitude() const;
 
 private:
 	PixFpDimension<fMicroSecs> m_horzCoord;
 	PixFpDimension<mV>         m_vertCoordVolt;
+	mV                  const& m_mVmaxAmplitude;
 
 	fMicroSecs scanTime(EventType const) const;
 
@@ -39,5 +36,4 @@ private:
 	void adjustHorz(fPixel const);
 	void adjustVert(fPixel const);
 	void PaintGraphics() final;
-	bool OnSize(PIXEL const, PIXEL const) final;
 };

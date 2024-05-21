@@ -25,9 +25,11 @@ static float const SCAN_WINDOW_HEIGHT  { 1.0f - EVENT_VIEWER_HEIGHT };
 
 ScanPanel::ScanPanel
 (
-	HWND const        hwndParent,
+	HWND  const       hwndParent,
 	unique_ptr<Model> upModel,
-	PIXEL const       pixFrame       
+	PIXEL const       pixFrame,
+	mV    const&      m_mVmaxPixel,     
+	mV    const&      m_mVmaxAmplitude     
 )
 {
 	HWND hwnd = StartBaseWindow
@@ -42,8 +44,8 @@ ScanPanel::ScanPanel
 	m_pixFrame = pixFrame;
 	m_upModel = move(upModel);
 	m_nmri.SetModel(m_upModel.get());
-	m_upEventViewer = make_unique<EventViewer>(hwnd, &m_nmri);
-    m_upScanViewer  = make_unique<ScanViewer> (hwnd, &m_nmri);
+	m_upEventViewer = make_unique<EventViewer>(hwnd, &m_nmri, m_mVmaxAmplitude);
+    m_upScanViewer  = make_unique<ScanViewer> (hwnd, &m_nmri, m_mVmaxPixel);
 }
 
 PIXEL ScanPanel::PanelWidthFromHeight(PIXEL const pixPanelHeight) const
@@ -51,7 +53,7 @@ PIXEL ScanPanel::PanelWidthFromHeight(PIXEL const pixPanelHeight) const
 	PIXEL  const pixPanelHeightNet  { pixPanelHeight - m_pixFrame * 3 };
 	fPixel const fPixPanelHeightNet { Convert2fPixel(pixPanelHeightNet) };
 	fPixel const fPixScanHeight     { fPixPanelHeightNet * SCAN_WINDOW_HEIGHT };
-	fPixel const fPixScanWidth      { fPixScanHeight / AspectRatioScan() };
+	fPixel const fPixScanWidth      { fPixScanHeight / m_upScanViewer->AspectRatio() };
 	PIXEL  const pixScanWidth       { Convert2PIXEL(fPixScanWidth) };
 	PIXEL  const pixPanelWidth      { pixScanWidth + m_pixFrame * 2 };
 	return pixPanelWidth;
@@ -61,7 +63,7 @@ PIXEL ScanPanel::PanelHeightFromWidth(PIXEL const pixPanelWidth) const
 {
 	PIXEL  const pixPanelWidthNet   { pixPanelWidth - m_pixFrame * 2 };
 	fPixel const fPixScanWidth      { Convert2fPixel(pixPanelWidthNet) };
-	fPixel const fPixScanHeight     { fPixScanWidth * AspectRatioScan() };
+	fPixel const fPixScanHeight     { fPixScanWidth * m_upScanViewer->AspectRatio() };
 	fPixel const fPixPanelHeightNet { fPixScanHeight / SCAN_WINDOW_HEIGHT };
 	PIXEL  const pixPanelHeightNet  { Convert2PIXEL(fPixPanelHeightNet) };
 	PIXEL  const pixPanelHeight     { pixPanelHeightNet + m_pixFrame * 3 };

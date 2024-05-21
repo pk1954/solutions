@@ -73,11 +73,40 @@ void PanelPlatform::arrangePanels(PixelRectSize const& pixWinSize)
 	}
 }
 
+void PanelPlatform::recalc()
+{
+	m_mVmaxPixel     = 0.0_mV;
+	m_mVmaxAmplitude = 0.0_mV;
+	for (UpPanel const &upPanel : m_panelList)
+	{
+		mV const mVmaxPixel { upPanel->m_upScanViewer->GetImage().CalcMaxValue() };
+		mV const mVmaxAmpl  { upPanel->m_upEventViewer->CalcMaxAmplitude() };
+		m_mVmaxPixel     = max(mVmaxPixel, m_mVmaxPixel);
+		m_mVmaxAmplitude = max(mVmaxAmpl,  m_mVmaxAmplitude);
+	}
+	for (UpPanel const &upPanel : m_panelList)
+	{
+		upPanel->m_upEventViewer->Notify(true);
+		upPanel->m_upScanViewer ->Notify(true);
+	}
+}
+
 void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 {
-	UpPanel upPanel { make_unique<ScanPanel>(GetWindowHandle(), move(upModel), FRAME_WIDTH) };
+	UpPanel upPanel 
+	{ 
+		make_unique<ScanPanel>
+		(
+			GetWindowHandle(), 
+			move(upModel), 
+			FRAME_WIDTH,
+			m_mVmaxPixel,
+			m_mVmaxAmplitude
+		) 
+	};
 	m_panelList.push_back(move(upPanel));
 	arrangePanels(GetClRectSize());
+	recalc();
 }
 
 vector<UpPanel>::iterator PanelPlatform::findPanel(PixelPoint const& pixPos)

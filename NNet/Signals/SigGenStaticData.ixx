@@ -4,6 +4,7 @@
 
 module;
 
+#include <cassert>
 #include <iostream>
 #include <iomanip>
 
@@ -159,6 +160,7 @@ private:
 			T     const stimulus  { boost * fStimulus };
 			result += stimulus;
 		}
+		assert(result >= T(0.0f));
 		return result;
 	}
 };

@@ -4,20 +4,25 @@
 
 module;
 
+#include <memory>
 #include <Windows.h>
 
 export module ScanViewer;
 
 import Types;
 import NNetPreferences;
+import NNetModel;
 import NNetWin32;
+
+using std::unique_ptr;
 
 export class ScanViewer : public NNetWindow
 {
 public:
-	ScanViewer(HWND const, NNetModelReaderInterface const * const);
+	ScanViewer(HWND const, NNetModelReaderInterface const * const, mV const&);
 
-	float AspectRatio() const;
+	RawImage const& GetImage   () const;
+	float           AspectRatio() const;
 
 private:
 	void PaintGraphics() final;
@@ -31,5 +36,7 @@ private:
 	private:
 	};				          
 
-	Controller m_controller;
+	Controller           m_controller;
+	unique_ptr<RawImage> m_upFiltered;
+	mV            const& m_mVmaxPixel;
 };

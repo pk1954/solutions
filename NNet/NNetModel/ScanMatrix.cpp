@@ -159,18 +159,19 @@ void ScanMatrix::DrawScanImage
 (
 	DrawContext const& context,
 	Raster      const& raster, 
-	RawImage    const* pImage, 
+	RawImage    const& image, 
 	mV          const  mVmax,
 	ColorLUT    const& lut
 ) const
 {
 	float const fFactor { 255.0f / mVmax };
+	context.FillRectangle(raster.GetScanArea(), D2D1::ColorF::Black);
 	raster.DrawRasterPoints
 	(
 		context, 
-		[pImage, fFactor, &lut](auto const &rp) -> Color
+		[&image, fFactor, &lut](auto const &rp) -> Color
 		{
-			return lut.GetColor(Cast2Byte(pImage->Get(rp).GetValue() * fFactor));
+			return lut.GetColor(Cast2Byte(image.Get(rp).GetValue() * fFactor));
 		}
 	);
 }

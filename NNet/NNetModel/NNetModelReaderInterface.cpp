@@ -243,9 +243,9 @@ void NNetModelReaderInterface::DrawSensorDensityMap(DrawContext const& context) 
 	m_pModel->m_scanMatrix.DrawSensorDensityMap(context, GetScanRaster(), GetUPNobsC());
 }
 
-void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, RawImage const* pRawImage, mV const mVmax, ColorLUT const& lut) const
+void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, RawImage const& image, mV const mVmax, ColorLUT const& lut) const
 {
-	m_pModel->m_scanMatrix.DrawScanImage(context, GetScanRaster(), pRawImage, mVmax, lut);
+	m_pModel->m_scanMatrix.DrawScanImage(context, GetScanRaster(), image, mVmax, lut);
 }
 
 void NNetModelReaderInterface::DrawScanProgress(DrawContext const& context, RasterPoint const& rpProgress) const

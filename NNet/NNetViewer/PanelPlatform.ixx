@@ -33,10 +33,13 @@ private:
 
    void                      arrangePanels(PixelRectSize const&);
    vector<UpPanel>::iterator findPanel(PixelPoint const &);
+   void                      recalc();
 
    vector<UpPanel> m_panelList;
-   long            m_nrOfRows { 0 };
-   long            m_nrOfCols { 0 };
+   mV              m_mVmaxPixel     { 0.0_mV };
+   mV              m_mVmaxAmplitude { 0.0_mV };
+   long            m_nrOfRows       { 0 };
+   long            m_nrOfCols       { 0 };
    PIXEL           m_pixPanelWidth;
    PIXEL           m_pixPanelHeight;
 };

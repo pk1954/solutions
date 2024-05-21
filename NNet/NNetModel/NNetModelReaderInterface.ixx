@@ -109,6 +109,7 @@ public:
 	MicroMeterRect          GetScanArea()                          const { return GetScanRaster().GetScanArea(); }
 	MicroMeterRect          GetRasterRect()                        const { return GetScanRaster().GetRasterRect(); }
 	RawImage         const* GetScanImageC()                        const { return m_pModel->m_upRawImage.get(); }
+	RawImage         const* GetRawImageC()                         const { return m_pModel->m_upRawImage.get(); }
 	bool                    ModelLocked()                          const { return m_pModel->m_upRawImage.get() != nullptr; }
 	int                     GetNrOfScans()                         const { return Cast2Int(GetParameter(ParamType::Value::nrOfScans)); }
 	bool                    HasMicroSensor(NobId const id)         const { return m_pModel->m_microSensorList.HasMicroSensor(id); }
@@ -195,7 +196,7 @@ public:
 	void DrawScanRaster        (DrawContext const&) const;
     void DrawScanAreaHandles   (DrawContext const&, optional<CardPoint> const) const;
     void DrawSensorDensityMap  (DrawContext const&) const;
-    void DrawScanImage         (DrawContext const&, RawImage const*, mV const, ColorLUT const&) const;
+    void DrawScanImage         (DrawContext const&, RawImage const&, mV const, ColorLUT const&) const;
 	void DrawScanProgress      (DrawContext const&, RasterPoint const& rpProgress) const;
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;

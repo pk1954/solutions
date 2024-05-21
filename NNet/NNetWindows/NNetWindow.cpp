@@ -139,28 +139,6 @@ void NNetWindow::DrawSensors() const
 	);
 }
 
-void NNetWindow::DrawScanAreaAll(optional<CardPoint> const cardPntSelected) const
-{
-	if (m_pNMRI->GetScanImageC())
-	{
-		RawImage     const * pRawImage { m_pNMRI->GetScanImageC() };
-		unique_ptr<RawImage> upFiltered;
-		if (NNetPreferences::ApplyFilter())
-		{
-			upFiltered = pRawImage->MeanFilter();
-			pRawImage = upFiltered.get();
-		}
-		mV const mVmax { pRawImage->GetMax() };
-		m_pNMRI->DrawScanImage(m_context, pRawImage, mVmax, NNetPreferences::m_colorLutScan);
-	}
-	else
-	{
-		m_pNMRI->DrawSensorDensityMap(m_context);
-		m_pNMRI->DrawScanAreaHandles (m_context, cardPntSelected);
-	}
-	m_pNMRI->DrawScanRaster(m_context);
-}
-
 void NNetWindow::CenterAndZoomRect
 (
 	Uniform2D<MicroMeter> &coordTarget,

@@ -154,7 +154,7 @@ public:
             func(it);
     }
 
-    UNIT GetMax() const
+    UNIT CalcMaxValue() const
     {
         UNIT valMax { 0 };
         for (auto const& it: m_data)  
@@ -164,7 +164,7 @@ public:
 
     void Normalize(float const fMax)
     {
-		if (UNIT unitMax { GetMax() })
+		if (UNIT unitMax { CalcMaxValue() })
 			*this *= fMax / unitMax;
     }
 

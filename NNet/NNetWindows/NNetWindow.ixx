@@ -39,7 +39,7 @@ public:
 		DWORD  const,
 		bool   const,
 		NNetCommandHandler&,
-		MonitorWindow*
+		MonitorWindow *
 	);
 
 	void SetDefaultBackgroundColor() final;
@@ -56,7 +56,6 @@ public:
 
 	void CenterAndZoomRect(Uniform2D<MicroMeter>&, MicroMeterRect const, float const);
 	void DrawArrowsInRect(PixelRect const&, MicroMeter const) const;
-	void DrawScanAreaAll(optional<CardPoint> const) const;
 
 	SignalId FindSignalHandle(MicroMeterPnt const&) const;
 
