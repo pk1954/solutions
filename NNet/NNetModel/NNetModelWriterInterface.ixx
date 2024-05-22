@@ -128,7 +128,7 @@ public:
     {
         UPNob upNob { GetUPNobs().ExtractNob(id) };
         auto  pNob  { upNob.release() };
-        return move(unique_ptr<OLD>(static_cast<OLD*>(pNob)));
+        return unique_ptr<OLD>(static_cast<OLD*>(pNob));
     }
 
     void Restore2Model(UPNob up)
@@ -143,7 +143,7 @@ public:
         NobId id      { upNew.get()->GetId() };
         Nob * pNobOld { GetUPNobs().ReplaceNob(move(upNew)) };
         Reconnect(id);
-        return move(unique_ptr<OLD>(static_cast<OLD*>(pNobOld)));
+        return unique_ptr<OLD>(static_cast<OLD*>(pNobOld));
     }
 
     NobId Push2Model(UPNob upNob)
@@ -156,7 +156,7 @@ public:
     template <Nob_t T>
     unique_ptr<T> PopFromModel()
     {
-        return move(GetUPNobs().Pop<T>());
+        return GetUPNobs().Pop<T>();
     }
 
     ///////////////////////////////////////////////////////////

@@ -60,7 +60,7 @@ UPSigGen UPSigGenList::removeSigGen(vector<UPSigGen>::iterator it)
             SetActive(STD_SIGGEN);
         UPSigGen upSigGen = move(*it);
         m_list.erase(it);
-        return move(upSigGen);
+        return upSigGen;
     }
 }
 
@@ -157,23 +157,23 @@ UPSigGen UPSigGenList::PopSigGen()
 {
     unique_ptr upSigGen { move(m_list.back()) };
     m_list.pop_back();
-    return move(upSigGen);
+    return upSigGen;
 }
 
 UPSigGen UPSigGenList::RemoveSigGen(SigGenId const id)
 {
     assert(id != STD_SIGGEN);
-    return move(removeSigGen(getSigGen(id)));
+    return removeSigGen(getSigGen(id));
 }
 
 UPSigGen UPSigGenList::RemoveSigGen(wstring const & name)
 {
-    return move(removeSigGen(getSigGen(name)));  
+    return removeSigGen(getSigGen(name));
 }
 
 UPSigGen UPSigGenList::RemoveSigGen()
 {
-    return move(RemoveSigGen(m_sigGenIdActive));  
+    return RemoveSigGen(m_sigGenIdActive);
 }
 
 wstring UPSigGenList::GenerateUniqueName() const

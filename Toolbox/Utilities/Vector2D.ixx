@@ -173,7 +173,7 @@ public:
         assert(Height() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(Size()) };
         m_size.VisitAllRasterPointsC([this, &dst](RasterPoint const& rp){ dst->Set(rp, getMeanFiltered(rp)); });
-        return move(dst);
+        return dst;
     }
 
     unique_ptr<Vector2D> MedianFilter() const
@@ -181,7 +181,7 @@ public:
         assert(Height() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(Size()) };
         m_size.VisitAllRasterPointsC([this, &dst](RasterPoint const& rp) { dst->Set(rp, getMedianFiltered(rp)); });
-        return move(dst);
+        return dst;
     }
 
 private:

@@ -10,6 +10,7 @@ module;
 export module EventViewer;
 
 import Types;
+import Tooltip;
 import PixFpDimension;
 import NNetModel;
 import NNetSignals;
@@ -26,11 +27,15 @@ public:
 	mV      CalcMaxAmplitude() const;
 
 private:
+
 	PixFpDimension<fMicroSecs> m_horzCoord;
 	PixFpDimension<mV>         m_vertCoordVolt;
 	mV                  const& m_mVmaxAmplitude;
+	UP_TTIP                    m_upToolTip;
 
-	fMicroSecs scanTime(EventType const) const;
+    bool OnSize(PIXEL const, PIXEL const) final;
+
+    fMicroSecs scanTime(EventType const) const;
 
 	void adjust(PixelRectSize const);
 	void adjustHorz(fPixel const);

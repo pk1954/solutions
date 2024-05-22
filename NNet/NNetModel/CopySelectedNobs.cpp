@@ -56,7 +56,7 @@ unique_ptr<UPNobList> CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 
 	m_upNobs2Add->Move(MicroMeterPnt(PIPE_WIDTH, PIPE_WIDTH));  // dislocate copy
 
-	return move(m_upNobs2Add);
+	return m_upNobs2Add;
 }
 
 //////  local functions /////////////////////////////////

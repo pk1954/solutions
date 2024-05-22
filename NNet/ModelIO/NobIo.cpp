@@ -109,7 +109,7 @@ UPNob NobIo::createKnot(Script& script) const
     unique_ptr<Knot> upKnot { make_unique<Knot>(umPos) };
     upKnot->AddIncoming(pPipeIn);
     upKnot->AddOutgoing(pPipeOut);
-    return move(upKnot);
+    return upKnot;
 }
 
 ///////////// Fork ////////////////////////////////////////
@@ -142,7 +142,7 @@ UPNob NobIo::createFork(Script& script) const
     upFork->AddIncoming(pPipeIn);
     upFork->AddOutgoing(pPipeOut1);
     upFork->AddOutgoing(pPipeOut2);
-    return move(upFork);
+    return upFork;
 }
 
 ///////////// Synapse //////////////////////////////////////
@@ -174,7 +174,7 @@ UPNob NobIo::createSynapse(Script& script) const
     upSynapse->SetAddPipe(pPipeAdd);
     upSynapse->AddIncoming(pPipeIn);
     upSynapse->AddOutgoing(pPipeOut);
-    return move(upSynapse);
+    return upSynapse;
 }
 
 ///////////// IoConnector //////////////////////////////////
@@ -219,7 +219,7 @@ UPNob NobIo::createIoConnector(Script& script, NobType const nobType) const
         else
             upIoConnector = make_unique<OutputConnector>(move(ioLineList));
     }
-    return move(upIoConnector);
+    return upIoConnector;
 }
 
 ///////////// InputLine ////////////////////////////////////////
@@ -243,7 +243,7 @@ UPNob NobIo::createInputLine(Script& script) const
     script.ScrReadSpecial(CLOSE_BRACKET);
     upInputLine = make_unique<InputLine>(umPos);
     upInputLine->SetPipe(pPipe);
-    return move(upInputLine);
+    return upInputLine;
 }
 
 ///////////// OutputLine ////////////////////////////////////////
@@ -267,7 +267,7 @@ UPNob NobIo::createOutputLine(Script& script) const
     script.ScrReadSpecial(CLOSE_BRACKET);
     upOutputLine = make_unique<OutputLine>(umPos);
     upOutputLine->SetPipe(pPipe);
-    return move(upOutputLine);
+    return upOutputLine;
 }
 
 ///////////// Neuron ////////////////////////////////////////
@@ -316,7 +316,7 @@ UPNob NobIo::createNeuron(Script& script) const
     unique_ptr<Neuron> upNeuron { make_unique<Neuron>(umPos) };
     pipeListIn.Apply2All([&upNeuron](Pipe& pipe) { upNeuron->AddIncoming(&pipe); });
     upNeuron->SetAxon(pPipeAxon);
-    return move(upNeuron);
+    return upNeuron;
 }
 
 ///////////// Nob ///////////////////////////////////////////

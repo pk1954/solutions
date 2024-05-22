@@ -6,6 +6,7 @@ module;
 
 #include <cassert>
 #include <string>
+#include <memory>
 #include <Windows.h>
 #include <CommCtrl.h>
 
@@ -14,81 +15,66 @@ module Tooltip;
 import Win32_PIXEL;
 
 using std::wstring;
+using std::unique_ptr;
+using std::make_unique;
 
-// Die Struktur TOOLINFO ist in CommCtrl.h definiert
-// Das Element lpReserved ist ab WIN_NTK Version 5.1 hinzugekommen,
-// sollte also zu Win10-Zeiten längst in der DLL vorhanden sein
-// Aus irgendeinem Grund funktioniert es aber nur mit der alten Version
-// Deshalb habe ich die Struktur kopiert und lpReserved auskommentiert
-// Vielleicht geht es mit einer neueren SDK-Version auch ohne diesen Trick
-
-struct TOOLINFO_REDEF
-{
-	UINT      cbSize;
-	UINT      uFlags;
-	HWND      hwnd;
-	UINT_PTR  uId;
-	RECT      rect;
-	HINSTANCE hinst;
-	LPCTSTR   lpszText;
-	LPARAM    lParam;
-//	void *lpReserved;
-};
-
-HWND CreateRectToolTip
+UP_TTIP ToolTip::CreateRectToolTip
 (
-	HWND              const hwndParent,
-	int               const idTool,
-	PixelRect const * const pRect,
-	wstring           const wstrText
+	HWND      const  hwndParent,
+	int       const  idTool,
+	wstring   const& wstrText,
+	PixelRect const& rect
 )
 {
-	return CreateToolTipEx(hwndParent, idTool, true, pRect, wstrText);
+	UP_TTIP upToolTip { createToolTip(hwndParent, idTool, true, wstrText) };
+	upToolTip->Resize(rect);
+	return upToolTip;
 }
 
-HWND CreateWindowToolTip
+UP_TTIP ToolTip::CreateWindowToolTip
 (
-	HWND    const hwndParent,
-	wstring const wstrText
+	HWND    const  hwndParent,
+	wstring const& wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, 0, false, nullptr, wstrText);
+	return createToolTip(hwndParent, 0, false, wstrText);
 }
 
-HWND CreateStdToolTip
+UP_TTIP ToolTip::CreateStdToolTip
 (
-	HWND    const hwndParent,
-	int     const idTool,
-	wstring const wstrText
+	HWND    const  hwndParent,
+	int     const  idTool,
+	wstring const& wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, idTool, false, nullptr, wstrText);
+	return createToolTip(hwndParent, idTool, false, wstrText);
 }
 
-HWND CreateBalloonToolTip
+UP_TTIP ToolTip::CreateBalloonToolTip
 (
-	HWND    const hwndParent,
-	int     const idTool,
-	wstring const wstrText
+	HWND    const  hwndParent,
+	int     const  idTool,
+	wstring const& wstrText
 )
 {
-	return CreateToolTipEx(hwndParent, idTool, true, nullptr, wstrText);
+	return createToolTip(hwndParent, idTool, true, wstrText);
 }
 
-HWND CreateToolTipEx
+UP_TTIP ToolTip::createToolTip
 (
-	HWND              const hwndParent,
-	int               const idTool,
-	bool              const bBalloon,
-	PixelRect const * const pRect,
-	wstring           const wstrText
+	HWND    const  hwndParent,
+	int     const  idTool,
+	bool    const  bBalloon,
+	wstring const& wstrText
 )
 {
+	UP_TTIP upToolTip { make_unique<ToolTip>() };
+
 	DWORD dwStyle = WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP; 
 	if (bBalloon)
 		dwStyle |= TTS_BALLOON;
 
-	HWND hwndTip = CreateWindowEx
+	upToolTip->m_hwndToolTip = CreateWindowEx
 	(
 		WS_EX_TOPMOST,                   // ex style
 		TOOLTIPS_CLASS,                  // class name - defined in commctrl.h
@@ -102,44 +88,46 @@ HWND CreateToolTipEx
 		NULL                             // no extra data
 	);
 
-	if (!hwndTip)
+	if (!upToolTip->m_hwndToolTip)
 		return NULL;
 
 	SetWindowPos
 	(
-		hwndTip, HWND_TOPMOST, 0, 0, 0, 0,
+		upToolTip->m_hwndToolTip, HWND_TOPMOST, 0, 0, 0, 0,
 		SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
 	);
 
-	TOOLINFO_REDEF ti = { 0 };
-
-	if (pRect)
-		ti.rect = ::PixelRect2RECT(* pRect);
-	else
-		GetClientRect(hwndParent, &ti.rect);
-
-	ti.cbSize   = sizeof(ti);
-	ti.uFlags   = TTF_SUBCLASS;
-	ti.hwnd     = hwndParent;
-	ti.hinst    = GetModuleHandle(nullptr);
-	ti.lpszText = wstrText.c_str();
-
+	upToolTip->m_ti.cbSize   = sizeof(TOOLINFO_REDEF);
+	upToolTip->m_ti.uFlags   = TTF_SUBCLASS;
+	upToolTip->m_ti.hwnd     = hwndParent;
+	upToolTip->m_ti.hinst    = GetModuleHandle(nullptr);
+	upToolTip->m_ti.lpszText = wstrText.c_str();
 	if (idTool > 0)
 	{
-		ti.uId = (UINT_PTR)GetDlgItem(hwndParent, idTool);
-		ti.uFlags |= TTF_IDISHWND;
+		upToolTip->m_ti.uId = (UINT_PTR)GetDlgItem(hwndParent, idTool);
+		upToolTip->m_ti.uFlags |= TTF_IDISHWND;
 	}
+	GetClientRect(upToolTip->m_ti.hwnd, static_cast<LPRECT>(&upToolTip->m_ti.rect));
 
-	LRESULT res = SendMessage(hwndTip, TTM_ADDTOOL, 0, (LPARAM)&ti);
-	assert(res > 0);
+	upToolTip->sendTTipMessage(TTM_ADDTOOL);
+//	sendTTipMessage(TTM_SETMAXTIPWIDTH, 0, 100);
 
-	SendMessage(hwndTip, TTM_SETMAXTIPWIDTH, 0, 100);
+	return upToolTip;
+}
 
-	return hwndTip;
+void ToolTip::setRect(PixelRect const& rect)
+{
+    sendTTipMessage(TTM_GETTOOLINFO);
+	m_ti.rect = PixelRect2RECT(rect);
+	sendTTipMessage(TTM_NEWTOOLRECT);
+}
+
+LRESULT ToolTip::sendTTipMessage(UINT const msg, WPARAM const wParam)
+{
+	return SendMessage(m_hwndToolTip, msg, wParam, (LPARAM)&m_ti);
 }
 
 //void SetToolTipText(HWND const hwndToolTip, wstring const text)
 //{
-//	TOOLINFO_REDEF ti = { 0 };
 //	SendMessage(hwndToolTip, TTM_SETTOOLINFO, 0, (LPARAM)&text.get);
 //}

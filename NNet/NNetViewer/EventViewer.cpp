@@ -30,6 +30,14 @@ EventViewer::EventViewer
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
+	m_upToolTip = CreateWindowToolTip(m_pNMRI->GetModelFilePath());
+}
+
+bool EventViewer::OnSize(PIXEL const width, PIXEL const height)
+{
+	NNetTimeGraph::OnSize(width, height);
+	m_upToolTip->Resize();
+	return true;
 }
 
 PIXEL EventViewer::GetFixedHeight() const 
@@ -47,38 +55,27 @@ void EventViewer::PaintGraphics()
 		return;
 	}
 	
-	fPixelRect rect
-	{
-		Scale2pixelTime(usStartScan),  // left
-		0._fPixel,	                   // top
-		Scale2pixelTime(usStopScan),   // right
-		GetClientHeight()              // bottom
-	};
-	m_upGraphics->FillRectangle(rect, D2D1::ColorF::DarkGray);
-
-	if (m_mVmaxAmplitude.IsZero())  // No scaling information available
-		return;
-
-	adjust(GetWindowSize());
-
 	bool bStimulus = false;
-	m_pNMRI->Apply2allEvents
-	(
-		EventType::stimulus,
-		[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
-		{
-			SignalGenerator const* pSigGen    { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
-			fMicroSecs      const  usStimulus { pStimEvent->GetTime() };
-			fMicroSecs      const  usOffset   { usStimulus - usStartScan };
-			m_horzCoord.SetOffset(usOffset, false);
-			PaintVoltCurve(pSigGen);
-			bStimulus = true;
-		}
-	);
+	if (m_mVmaxAmplitude.IsNotZero())
+	{
+		adjust(GetWindowSize());
+		m_pNMRI->Apply2allEvents
+		(
+			EventType::stimulus,
+			[this, &bStimulus, usStartScan](StimulusEvent const* pStimEvent)
+			{
+				SignalGenerator const* pSigGen    { m_pNMRI->GetSigGenC(pStimEvent->GetId()) };
+				fMicroSecs      const  usStimulus { pStimEvent->GetTime() };
+				fMicroSecs      const  usOffset   { usStimulus - usStartScan };
+				m_horzCoord.SetOffset(usOffset, false);
+				PaintVoltCurve(pSigGen);
+				bStimulus = true;
+			}
+		);
+	}
+
 	if (!bStimulus)
 		m_upGraphics->DisplayText(L"No stimulus");
-
-	CreateWindowToolTip(m_pNMRI->GetModelFilePath());
 };
 
 mV EventViewer::CalcMaxAmplitude() const

@@ -100,7 +100,7 @@ public:
 		unique_ptr<T> upT{ unique_ptr<T>(static_cast<T*>(m_list.back().release())) };
 		decCounter(upT.get());
 		m_list.pop_back();
-		return move(upT);
+		return upT;
 	}
 
 	MicroMeterPnt CenterOfGravity(auto const& crit) const

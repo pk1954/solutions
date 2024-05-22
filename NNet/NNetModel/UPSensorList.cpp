@@ -91,7 +91,7 @@ UPSensor UPSensorList::NewSensor
     UPNobList        const & list
 )
 {
-    return move(make_unique<Sensor>(circle, list));
+    return make_unique<Sensor>(circle, list);
 }
 
 UPSensor UPSensorList::RemoveSensor(SensorId const id)

@@ -86,7 +86,7 @@ UPNob UPNobList::ExtractNob(NobId const id)
 
 	UPNob upNob { move(m_list[id.GetValue()]) };
 	decCounter(upNob.get());
-	return move(upNob);
+	return upNob;
 }
 
 void UPNobList::SetNob2Slot(UPNob upNob)
@@ -216,7 +216,7 @@ unique_ptr<vector<Nob *>> UPNobList::GetAllSelected()
 		if (it && it->IsSelected()) 
 			upNobs->push_back(it.get());
 	}
-	return move(upNobs);
+	return upNobs;
 }
 
 void UPNobList::DeselectAllNobs() const

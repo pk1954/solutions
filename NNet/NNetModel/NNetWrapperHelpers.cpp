@@ -91,7 +91,7 @@ unique_ptr<NobIdList> ScrReadNobIdList(Script& script)
 		script.ScrReadSpecial(ID_SEPARATOR);
 	}
 	script.ScrReadSpecial(CURLY_CLOSE_BRACKET);
-	return move(upNobIds);
+	return upNobIds;
 }
 
 ParamType::Value ScrReadParamType(Script& script)

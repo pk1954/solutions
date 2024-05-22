@@ -117,7 +117,7 @@ unique_ptr<D2D_driver> D2D_driver::Create(HWND const hwnd)
 	unique_ptr<D2D_driver> upGraphics { make_unique<D2D_driver>() };
 	upGraphics->m_hwnd = hwnd;
 	upGraphics->createResources();
-	return move(upGraphics);
+	return upGraphics;
 }
 
 void D2D_driver::Resize()

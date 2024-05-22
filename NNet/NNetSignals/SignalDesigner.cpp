@@ -134,7 +134,7 @@ unique_ptr<Scale<fMicroSecs>> SignalDesigner::makeHorzScale()
 	upScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
 	upScale->SetParentContextMenueMode(true);
 	upScale->Show(true);
-	return move(upScale);
+	return upScale;
 }
 
 void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
@@ -204,7 +204,7 @@ unique_ptr<SignalControl> SignalDesigner::makeSignalControl
 	upSignalControl->SetColor(SignalControl::tColor::FREQ, COLOR_FREQ);
 	upSignalControl->SetColor(SignalControl::tColor::VOLT, COLOR_VOLT[0]);
 	upSignalControl->SetParentContextMenueMode(true);
-	return move(upSignalControl);
+	return upSignalControl;
 }
 
 wstring SignalDesigner::GetCaption() const

@@ -62,7 +62,7 @@ public:
 			return nullptr;
 		unique_ptr<MicroSensor> upMicroSensor { move(*it) };
 		m_list.erase(it);
-		return move(upMicroSensor);
+		return upMicroSensor;
 	}
 
 	bool HasMicroSensor(NobId const id) const

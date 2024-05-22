@@ -29,7 +29,7 @@ unique_ptr<Model> NNetModelWriterInterface::CreateNewModel()
 {
 	unique_ptr<Model> upModel { make_unique<Model>() };
 	m_pModel = upModel.get();
-	return move(upModel);
+	return upModel;
 }
 
 void NNetModelWriterInterface::CreateInitialNobs()

@@ -50,7 +50,7 @@ unique_ptr<Signal> Track::RemoveSignal(SignalNr const signalNr)
 		vector<unique_ptr<Signal>>::iterator itSignal { m_signals.begin() + signalNr.GetValue() };
 		unique_ptr<Signal> pSignal { move(*itSignal) };
 		m_signals.erase(itSignal);
-		return move(pSignal);
+		return pSignal;
 	}
 	return nullptr;
 }

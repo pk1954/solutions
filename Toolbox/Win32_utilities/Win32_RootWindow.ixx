@@ -102,22 +102,22 @@ public:
 	bool     Move(PIXEL const xPos, PIXEL const yPos)                             const { return ::MoveWindow(m_hwnd, xPos, yPos); }
 	bool     Move(PixelPoint const &pos)                                          const { return ::MoveWindow(m_hwnd, pos); }
 	void     Move(PixelRect const &rect, bool const bRedraw)                      const { Move(rect.GetStartPoint(), rect.GetSize(), bRedraw); }
-	HWND     CreateBalloonToolTip(int const id, wstring const& t)                 const { return ::CreateBalloonToolTip(m_hwnd, id, t); }
-	HWND     CreateStdToolTip(int const id, wstring const& t)                     const { return ::CreateStdToolTip(m_hwnd, id, t); }
-	HWND     CreateWindowToolTip(wstring const& t)                                const { return ::CreateWindowToolTip(m_hwnd, t); }
-	HWND     CreateRectToolTip(int const i, PixelRect const& r, wstring const& t) const { return ::CreateRectToolTip(m_hwnd, i, &r, t); }
+	UP_TTIP  CreateBalloonToolTip(int const id, wstring const& t)                 const { return ToolTip::CreateBalloonToolTip(m_hwnd, id, t); }
+	UP_TTIP  CreateStdToolTip(int const id, wstring const& t)                     const { return ToolTip::CreateStdToolTip(m_hwnd, id, t); }
+	UP_TTIP  CreateWindowToolTip(wstring const& t)                                const { return ToolTip::CreateWindowToolTip(m_hwnd, t); }
+	UP_TTIP  CreateRectToolTip(int const i, wstring const& t, PixelRect const& r) const { return ToolTip::CreateRectToolTip(m_hwnd, i, t, r); }
 	void     BringWindowToTop()                                                   const { ::BringWindowToTop(m_hwnd); }
 
-	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage(     WM_COMMAND, wParam, lParam); }
-	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage(           WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage(           WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage2Parent(    WM_COMMAND, wParam, lParam); }
-	LRESULT PostCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage2Parent(    WM_COMMAND, wParam, lParam); }
-	LRESULT PostMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwnd,       msg,     wParam, lParam); }
-	LRESULT PostMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg,     wParam, lParam); }
-	LRESULT SendMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwnd,       msg,     wParam, lParam); }
-	LRESULT SendMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg,     wParam, lParam); }
-	LRESULT SendNotifyMessage (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessage(m_hwnd, msg,     wParam, lParam); }
+	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage (WM_COMMAND, wParam, lParam); }
+	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage       (WM_COMMAND, wParam, lParam); }
+	LRESULT SendCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage       (WM_COMMAND, wParam, lParam); }
+	LRESULT SendCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage2Parent(WM_COMMAND, wParam, lParam); }
+	LRESULT PostCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage2Parent(WM_COMMAND, wParam, lParam); }
+	LRESULT PostMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwnd,       msg, wParam, lParam); }
+	LRESULT PostMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg, wParam, lParam); }
+	LRESULT SendMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwnd,       msg, wParam, lParam); }
+	LRESULT SendMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg, wParam, lParam); }
+	LRESULT SendNotifyMessage (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessage(m_hwnd, msg, wParam, lParam); }
 
 	LRESULT const DefWindowProc(UINT const msg, WPARAM const wParam, LPARAM const lParam) const { return ::DefWindowProc(m_hwnd, msg, wParam, lParam); }
 

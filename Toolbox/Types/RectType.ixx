@@ -86,6 +86,19 @@ public:
 
 	RectType
 	(
+		BASE_TYPE const width,
+		BASE_TYPE const height
+	) :
+		m_Left(0_PIXEL),
+		m_Top (0_PIXEL),
+		m_Right(width),
+		m_Bottom(height)
+	{
+		assert(m_Bottom >= m_Top);
+	}
+
+	RectType
+	(
 		POS_TYPE  const& pos,
 		BASE_TYPE const& size
 	) :

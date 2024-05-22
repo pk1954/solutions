@@ -200,5 +200,5 @@ unique_ptr<NNetCommand> DeleteNobCommand::MakeCommand(NobId const id)
 		default:              assert(false);
 		}
 	}
-	return move(upCmd);
+	return upCmd;
 }
