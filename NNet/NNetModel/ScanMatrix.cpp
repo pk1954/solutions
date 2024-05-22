@@ -27,18 +27,12 @@ using std::vector;
 using std::optional;
 using std::nullopt;
 
-ScanMatrix::ScanMatrix()
-{
-    //InitializeCriticalSection(&m_cs);
-}
-
 void ScanMatrix::Prepare
 (
 	Raster    const& raster,
 	UPNobList const& nobList
 )
 {
-    //EnterCriticalSection(&m_cs);
     if (raster.Size() != Size())
         m_scanPixels.Resize(raster.Size());
     Clear();
@@ -50,7 +44,6 @@ void ScanMatrix::Prepare
 		}
 	);
     findMaxNrOfDataPoints();
-    //LeaveCriticalSection(&m_cs);
 }
 
 void ScanMatrix::add2list(Pipe const& pipe, Raster const& raster) 
@@ -318,17 +311,3 @@ void ScanMatrix::DrawScanAreaBackground
 {
 	context.FillRectangle(raster.GetScanArea(), NNetColors::SCAN_AREA_RECT);
 }
-
-//unique_ptr<ByteImage> Raw2ByteImage(RawImage const& rawImage)
-//{
-//	unique_ptr<ByteImage> upScanImageByte { make_unique<ByteImage>(rawImage.Size())};
-//	rawImage.Size().VisitAllRasterPointsC
-//	(
-//		[&upScanImageByte, &rawImage](RasterPoint const& rp) 
-//		{ 
-//			ColIndex index { Cast2Byte(rawImage.Get(rp).GetValue() * 255.0f) };
-//			upScanImageByte->Set(rp, index);  
-//		}
-//	);
-//	return move(upScanImageByte);
-//}

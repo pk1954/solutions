@@ -33,8 +33,6 @@ export class ScanMatrix
 {
 public:
 
-    ScanMatrix();
-
     void Prepare(Raster const&, UPNobList const&);
     void DrawScanAreaBackground(DrawContext const&, Raster const&) const;
     void DrawScanImage         (DrawContext const&, Raster const&, RawImage const&, mV const, ColorLUT const&) const;
@@ -74,5 +72,4 @@ private:
 
     size_t              m_maxNrOfDataPnts;
     Vector2D<ScanPixel> m_scanPixels;
-    //CRITICAL_SECTION    m_cs;
 };

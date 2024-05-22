@@ -320,6 +320,7 @@ void Model::DumpModel
 void Model::SetScanArea(MicroMeterRect const& rect)
 {
 	m_upRaster->SetScanArea(rect);
+	PrepareScanMatrix();
 }
 
 void Model::CreateImage()
