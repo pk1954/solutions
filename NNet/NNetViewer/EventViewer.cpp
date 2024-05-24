@@ -5,6 +5,8 @@
 module;
 
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include <cassert>
 #include <Windows.h>
 
@@ -12,9 +14,15 @@ module EventViewer;
 
 import Types;
 import PixFpDimension;
+import IoConstants;
 import NNetModel;
 
 using std::wstring;
+using std::wostringstream;
+using std::streamsize;
+using std::setprecision;
+using std::fixed;
+using std::endl;
 
 EventViewer::EventViewer
 (
@@ -30,7 +38,20 @@ EventViewer::EventViewer
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
-	m_upToolTip = CreateWindowToolTip(m_pNMRI->GetModelFilePath());
+	assert(pNMRI->AnyScanEvents());
+	wostringstream wstrBuffer;
+	wstrBuffer << L"Scan Protocol:";
+	pNMRI->Apply2allEvents
+	(
+		[&wstrBuffer, pNMRI](NNetEvent const* pEvent)
+		{
+			wstrBuffer << endl
+				       << pEvent->GetEventTypeName() + SPACE
+			           << Format2wstring<fMicroSecs>(pNMRI->RelativeScanTime(*pEvent));
+ 		}
+	);   
+	m_upToolTip = CreateWindowToolTip(wstrBuffer.str());
+	m_upToolTip->SetDuration(30000_MilliSecs);
 }
 
 bool EventViewer::OnSize(PIXEL const width, PIXEL const height)

@@ -37,6 +37,9 @@ PanelPlatform::PanelPlatform(HWND const hwndParent)
 
 void PanelPlatform::arrangePanels(PixelRectSize const& pixWinSize)
 {
+	if ((pixWinSize.GetX() == 0_PIXEL) || (pixWinSize.GetY() == 0_PIXEL))
+		return;
+
 	long const nrOfPanels { Cast2Long(m_panelList.size()) };
 	if (nrOfPanels == 0)
 		return;

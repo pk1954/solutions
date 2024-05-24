@@ -110,7 +110,7 @@ UP_TTIP ToolTip::createToolTip
 	GetClientRect(upToolTip->m_ti.hwnd, static_cast<LPRECT>(&upToolTip->m_ti.rect));
 
 	upToolTip->sendTTipMessage(TTM_ADDTOOL);
-//	sendTTipMessage(TTM_SETMAXTIPWIDTH, 0, 100);
+	SendMessage(upToolTip->m_hwndToolTip, TTM_SETMAXTIPWIDTH, 0, 100);
 
 	return upToolTip;
 }
@@ -125,6 +125,11 @@ void ToolTip::setRect(PixelRect const& rect)
 LRESULT ToolTip::sendTTipMessage(UINT const msg, WPARAM const wParam)
 {
 	return SendMessage(m_hwndToolTip, msg, wParam, (LPARAM)&m_ti);
+}
+
+void ToolTip::SetDuration(MilliSecs const ms)
+{
+	SendMessage(m_hwndToolTip, TTM_SETDELAYTIME, TTDT_AUTOPOP, ms.GetValue());
 }
 
 //void SetToolTipText(HWND const hwndToolTip, wstring const text)

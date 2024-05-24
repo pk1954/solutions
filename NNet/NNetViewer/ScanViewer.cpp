@@ -10,6 +10,7 @@ module;
 
 module ScanViewer;
 
+import Tooltip;
 import NNetPreferences;
 import NNetWin32;
 
@@ -33,7 +34,9 @@ ScanViewer::ScanViewer
 		m_controller,
 		nullptr
 	);
-    m_upFiltered = m_pNMRI->GetScanImageC()->MeanFilter();
+    m_upFiltered    = m_pNMRI->GetScanImageC()->MeanFilter();
+	wstring wstrTip = m_pNMRI->GetModelFilePath();
+	m_upToolTip     = CreateWindowToolTip(wstrTip);
 }
 
 RawImage const& ScanViewer::GetImage() const
@@ -57,7 +60,7 @@ bool ScanViewer::OnSize(PIXEL const width, PIXEL const height)
 {
 	NNetWindow::OnSize(width, height);
 	centerAndZoomRect();
-	Notify(false);
+	m_upToolTip->Resize();
 	return true;
 }
 

@@ -10,6 +10,7 @@ module;
 export module ScanViewer;
 
 import Types;
+import Tooltip;
 import NNetPreferences;
 import NNetModel;
 import NNetWin32;
@@ -39,4 +40,5 @@ private:
 	Controller           m_controller;
 	unique_ptr<RawImage> m_upFiltered;
 	mV            const& m_mVmaxPixel;
+	UP_TTIP              m_upToolTip;
 };

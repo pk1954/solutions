@@ -72,7 +72,7 @@ void NNetModelWriterInterface::AddEvent(EventType const& type)
 	}
 }
 
-void NNetModelWriterInterface::AddEvent
+void NNetModelWriterInterface::AddEvent // for model import
 (
 	EventType const& type,
 	fMicroSecs const usTimeStamp
@@ -91,7 +91,7 @@ void NNetModelWriterInterface::AddEvent
 	}
 }
 
-void NNetModelWriterInterface::AddStimulusEvent
+void NNetModelWriterInterface::AddStimulusEvent  // for model import
 (
 	fMicroSecs const usTimeStamp,
 	SigGenId   const idSigGen

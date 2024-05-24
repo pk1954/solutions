@@ -386,6 +386,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		case IDM_UNLOCK:
 			m_compute.StopScan();
 			m_nmwi.RejectImage();
+			m_nmwi.ClearEventList();
 			return true;
 
 		case IDM_FORWARD:

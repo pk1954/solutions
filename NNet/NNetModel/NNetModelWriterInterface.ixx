@@ -47,8 +47,8 @@ public:
     void  ToggleStopOnTrigger(NobId const);
     Nob * GetNob             (NobId const);
 	void  AddEvent           (EventType const&);
-	void  AddEvent           (EventType const&, fMicroSecs const);
-	void  AddStimulusEvent   (fMicroSecs const, SigGenId const);
+	void  AddEvent           (EventType const&, fMicroSecs const); // For model import
+	void  AddStimulusEvent   (fMicroSecs const, SigGenId const);   // For model import
 
     UPNobList              & GetUPNobs      () { return *m_pModel->m_upNobs.get(); }
     UPSigGenList           & GetSigGenList  () { return *m_pModel->m_upSigGenList.get(); }
@@ -90,6 +90,7 @@ public:
 	void ReplaceImage       (unique_ptr<RawImage> up)                 { m_pModel->ReplaceImage(move(up)); }
     void RejectImage        ()                                        { m_pModel->RejectImage(); }
     void ResetModel         ()                                        { m_pModel->ResetModel(); }
+    void ClearEventList     ()                                        { m_pModel->m_events.clear(); }
     void ClearDynamicData   ()                                        { m_pModel->ClearDynamicData(); }
     void PrepareScanMatrix  ()                                        { m_pModel->PrepareScanMatrix(); }
     void AddOutgoing        (NobId const id, Pipe* p)                 { GetPosNob(id).AddOutgoing(p); }

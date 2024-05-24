@@ -54,6 +54,8 @@ static UP_TTIP CreateRectToolTip   (HWND const, int const, wstring const&, Pixel
 void Resize(PixelRect const& rect) { setRect(rect); }
 void Resize()                      { setRect(GetClPixelRect(m_ti.hwnd)); }
 
+void SetDuration(MilliSecs const);
+
 private:
 	HWND           m_hwndToolTip { 0 };
 	TOOLINFO_REDEF m_ti          { 0 };

@@ -121,6 +121,9 @@ public:
     bool                    IsValid   (SigGenId const id)          const { return GetSigGenList().IsValid(id); }
 	void                    DensityCorrection(RawImage& image)     const { m_pModel->m_scanMatrix.DensityCorrection(image); }
 	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->m_timestamps.Apply2All(func); }
+	bool                    AnyScanEvents()                        const { return !m_pModel->m_events.empty(); }
+	fMicroSecs              TimeOfFirstEvent()                     const { return m_pModel->m_events.front()->GetTime(); }
+	fMicroSecs              RelativeScanTime(NNetEvent const& e)   const { return e.GetTime() - TimeOfFirstEvent(); }
 	fMicroSecs              TotalScanTime()                        const;
 
 	bool IsInputLine(NobId const id) const

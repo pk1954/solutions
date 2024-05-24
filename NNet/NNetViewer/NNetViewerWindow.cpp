@@ -90,7 +90,15 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 	case IDM_ADD_IMPORTED_SCAN:
 		{
 	        unique_ptr<Model> upModel {	NNetModelIO::GetImportedModel() };
-			m_upPanelPlatform->AddScan(move(upModel));
+			if (upModel->m_upRawImage)
+			{
+				m_upPanelPlatform->AddScan(move(upModel));
+			}
+			else
+			{
+				MessageBox(nullptr, L"No scan data in file", L"Error", MB_OK);
+				upModel.release();
+			}
 		}
 		return true;
 
