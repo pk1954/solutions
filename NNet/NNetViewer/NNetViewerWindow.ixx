@@ -41,6 +41,7 @@ private:
 	void configureStatusBar();
 
 	int                       m_statusMessagePart;
+	HWND                      m_hwndAddButton;
 	NNetModelIO               m_modelIO;
 	StatusBar                 m_statusBar;
 	ScriptHook                m_ScriptHook;

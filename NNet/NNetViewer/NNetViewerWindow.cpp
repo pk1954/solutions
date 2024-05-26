@@ -55,14 +55,12 @@ NNetViewerWindow::~NNetViewerWindow() = default;
 void NNetViewerWindow::configureStatusBar()
 {
 	int iPart = 0;
-	HWND hwndAddButton = m_statusBar.AddButton(L" Add scan ", IDM_ADD_SCAN, BS_PUSHBUTTON);
-
+	m_hwndAddButton = m_statusBar.AddButton(L" Add scan ", IDM_ADD_SCAN, BS_PUSHBUTTON);
 	iPart = m_statusBar.NewPart();
 	m_ScriptHook.Initialize(& m_statusBar, iPart);
 	m_statusBar.ClearPart(iPart);
 	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
 	m_statusMessagePart = iPart;
-
 	m_statusBar.LastPart();
 	m_statusBar.Show(true);
 }
@@ -80,6 +78,7 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 	switch (wmId)
 	{
 	case IDM_ADD_SCAN:
+		::EnableWindow(m_hwndAddButton, false);
 		NNetModelIO::Import
 		(
 			ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read),
@@ -99,6 +98,7 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 				MessageBox(nullptr, L"No scan data in file", L"Error", MB_OK);
 				upModel.release();
 			}
+			::EnableWindow(m_hwndAddButton, true);
 		}
 		return true;
 
