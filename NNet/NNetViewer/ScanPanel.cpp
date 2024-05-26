@@ -8,6 +8,7 @@ module;
 #include <cassert>
 #include <algorithm>
 #include <Windows.h>
+#include "Resource.h"
 
 module ScanPanel;
 
@@ -46,6 +47,13 @@ ScanPanel::ScanPanel
 	m_nmri.SetModel(m_upModel.get());
 	m_upEventViewer = make_unique<EventViewer>(hwnd, &m_nmri, m_mVmaxAmplitude);
     m_upScanViewer  = make_unique<ScanViewer> (hwnd, &m_nmri, m_mVmaxPixel);
+	m_upEventViewer->SetParentContextMenueMode(true);
+	m_upScanViewer ->SetParentContextMenueMode(true);
+}
+
+void ScanPanel::Hide()
+{
+	ShowWindow(SW_HIDE);
 }
 
 PIXEL ScanPanel::PanelWidthFromHeight(PIXEL const pixPanelHeight) const
@@ -88,4 +96,24 @@ void ScanPanel::OnPaint()
 	HDC           hDC { BeginPaint(&ps) };
 	FillBackground(hDC, D2D1::ColorF::Green); 
 	(void)EndPaint(&ps);
+}
+
+bool ScanPanel::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
+{
+	switch (auto const wId = LOWORD(wParam))
+	{
+	case IDD_REMOVE_SCAN_PANEL:
+		PostCommand2Parent(wParam, LPARAM(this));
+		return true;
+
+	default:
+		break;
+	}
+	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
+}
+
+LPARAM ScanPanel::AddContextMenuEntries(HMENU const hPopupMenu)
+{
+	AppendMenu(hPopupMenu, MF_STRING, IDD_REMOVE_SCAN_PANEL, L"Remove scan");
+	return 0L;
 }

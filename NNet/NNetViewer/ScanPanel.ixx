@@ -5,6 +5,7 @@
 module;
 
 #include <memory>
+#include <Windows.h>
 
 export module ScanPanel;
 
@@ -21,16 +22,25 @@ export class ScanPanel : public BaseWindow
 {
 public:
     ScanPanel(HWND const, unique_ptr<Model> model, PIXEL const, mV const&, mV const&);
+    ~ScanPanel()
+    {
+        int x = 42;
+    }
+
+	LPARAM AddContextMenuEntries(HMENU const) final;
 
     PIXEL PanelWidthFromHeight(PIXEL const) const;
     PIXEL PanelHeightFromWidth(PIXEL const) const;
 
-    unique_ptr<EventViewer>  m_upEventViewer;
-    unique_ptr<ScanViewer>   m_upScanViewer;
+    void Hide();
+
+    unique_ptr<EventViewer> m_upEventViewer;
+    unique_ptr<ScanViewer>  m_upScanViewer;
 
 private:
-	bool OnSize(PIXEL const, PIXEL const) final;
-    void OnPaint() final;
+	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
+	bool OnSize   (PIXEL const, PIXEL const)                     final;
+    void OnPaint  ()                                             final;
 
     NNetModelReaderInterface m_nmri;
 	unique_ptr<Model>        m_upModel;

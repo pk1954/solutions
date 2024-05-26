@@ -26,11 +26,6 @@ export class Sensor : public NNetSignalSource
 public:
     Sensor(MicroMeterCircle const &, UPNobList const &);
 
-    ~Sensor()
-    {
-        int x = 42;
-    }
-
     NNetSignalSource::Type SignalSourceType() const final { return NNetSignalSource::Type::macroSensor; };
 
     void Dump()           const final;

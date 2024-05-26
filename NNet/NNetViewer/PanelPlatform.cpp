@@ -4,11 +4,13 @@
 
 module;
 
+#include <bit>
 #include <vector>
 #include <memory>
 #include <algorithm>
 #include <Windows.h>
 #include <d2d1helper.h>
+#include "Resource.h"
 
 module PanelPlatform;
 
@@ -19,6 +21,8 @@ using std::min;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
+using std::bit_cast;
+using std::ranges::find_if;
 
 static PIXEL const FRAME_WIDTH { 2_PIXEL };
 
@@ -35,8 +39,9 @@ PanelPlatform::PanelPlatform(HWND const hwndParent)
 	);
 }
 
-void PanelPlatform::arrangePanels(PixelRectSize const& pixWinSize)
+void PanelPlatform::arrangePanels()
 {
+	PixelRectSize const& pixWinSize { GetClRectSize() };
 	if ((pixWinSize.GetX() == 0_PIXEL) || (pixWinSize.GetY() == 0_PIXEL))
 		return;
 
@@ -108,8 +113,21 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 		) 
 	};
 	m_panelList.push_back(move(upPanel));
-	arrangePanels(GetClRectSize());
+	arrangePanels();
 	recalc();
+	Notify(false);
+}
+
+void PanelPlatform::removeScan(ScanPanel *p)
+{
+	p->SendMessage(WM_CLOSE, 0, 0);
+	auto it = find_if(m_panelList, [p](UpPanel const &up){ return up.get() == p; });
+	m_upPanel = move(*it);
+	m_panelList.erase(it);
+	m_upPanel.release();
+//	m_upPanel->Hide();
+	arrangePanels();
+	Notify(false);
 }
 
 vector<UpPanel>::iterator PanelPlatform::findPanel(PixelPoint const& pixPos)
@@ -128,7 +146,7 @@ vector<UpPanel>::iterator PanelPlatform::findPanel(PixelPoint const& pixPos)
 bool PanelPlatform::OnSize(PIXEL const width, PIXEL const height)
 {
 	BaseWindow::OnSize(width, height);
-	arrangePanels(PixelRectSize(width, height));
+	arrangePanels();
 	Notify(false);
 	return true;
 }
@@ -139,4 +157,18 @@ void PanelPlatform::OnPaint()
 	HDC           hDC { BeginPaint(&ps) };
 	FillBackground(hDC, D2D1::ColorF::DarkGray); 
 	(void)EndPaint(&ps);
+}
+
+bool PanelPlatform::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
+{
+	switch (auto const wId = LOWORD(wParam))
+	{
+	case IDD_REMOVE_SCAN_PANEL:
+		removeScan(bit_cast<ScanPanel*>(lParam));
+		return true;
+
+	default:
+		break;
+	}
+	return BaseWindow::OnCommand(wParam, lParam, pixPoint);
 }

@@ -79,7 +79,7 @@ RootWindow::RootWindow()
 
 RootWindow::~RootWindow() 
 { 
-	//DestroyWindow();
+	int x = 42;
 }
 
 void RootWindow::StartRootWindow(VisCrit const &visibilityCriterion)
@@ -329,7 +329,7 @@ bool RootWindow::OnMenuCommand(UINT const uiIndex, HMENU const hMenu)
 
 void RootWindow::OnClose()
 {
-	SendMessage(WM_COMMAND, IDM_WINDOW_OFF, 0);
+	DestroyWindow();
 }
 
 bool RootWindow::OnSize(PIXEL const, PIXEL const)
@@ -394,6 +394,9 @@ void ArrangeVertical
 	if (!pWinTop || !pWinBottom)
 		return;
 
+	HWND hwnd1 = pWinTop->GetParent();
+	HWND hwnd2 = pWinBottom->GetParent();
+	assert(pWinTop->GetParent() == pWinBottom->GetParent());
 	assert(pWinTop->GetParent() == pWinBottom->GetParent());
 
 	PixelRectSize const size         { ::GetClRectSize(pWinTop->GetParent()) };

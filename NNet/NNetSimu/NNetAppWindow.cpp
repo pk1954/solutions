@@ -324,7 +324,7 @@ void NNetAppWindow::OnClose()
 	m_compute.StopComputation();
 	if (m_NNetController.AskAndSave())
 		WinManager::StoreWindowConfiguration();
-	DestroyWindow();
+	BaseWindow::OnClose();
 }
 
 void NNetAppWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)

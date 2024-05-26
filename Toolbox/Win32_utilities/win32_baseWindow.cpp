@@ -94,12 +94,12 @@ void BaseWindow::trackMouse(bool const bOn) const
 
 void BaseWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-    trackMouse(true);
+  //  trackMouse(true);
 };
 
 void BaseWindow::OnMouseLeave()
 {
-    trackMouse(false);
+  //  trackMouse(false);
 };
 
 wstring BaseWindow::GetCaption() const 

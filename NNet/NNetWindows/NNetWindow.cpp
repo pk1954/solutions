@@ -7,9 +7,9 @@ module;
 #include <memory>
 #include <cassert>
 #include <sstream> 
-#include "Resource.h"
-#include "Windows.h"
 #include <optional>
+#include <Windows.h>
+#include "Resource.h"
 
 module NNetWin32:NNetWindow;
 

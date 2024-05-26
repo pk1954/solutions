@@ -18,11 +18,6 @@ using std::wostream;
 export class NNetSignalSource : public SignalSource
 {
 public:
-    NNetSignalSource()
-    {
-        int x = 42;
-    }
-
     enum class Type
     {
         generator,

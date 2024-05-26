@@ -28,14 +28,17 @@ public:
 
 private:
 
-   bool OnSize(PIXEL const, PIXEL const) final;
-   void OnPaint()                        final;
+   bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;
+   bool OnSize   (PIXEL const, PIXEL const)                     final;
+   void OnPaint  ()                                             final;
 
-   void                      arrangePanels(PixelRectSize const&);
+   void                      arrangePanels();
    vector<UpPanel>::iterator findPanel(PixelPoint const &);
+   void                      removeScan(ScanPanel *);
    void                      recalc();
 
    vector<UpPanel> m_panelList;
+   UpPanel m_upPanel;
    mV              m_mVmaxPixel     { 0.0_mV };
    mV              m_mVmaxAmplitude { 0.0_mV };
    long            m_nrOfRows       { 0 };

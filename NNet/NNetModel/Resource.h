@@ -1,5 +1,5 @@
 // Resource.h
-// NNetSimu
+// NNetModel
 // Used by NNetSimu.rc
 
 #pragma once
@@ -128,3 +128,5 @@
 #define       IDD_ADD_SIG_GEN_TO_MONITOR     711
 
 #define       IDD_FILTER                     800
+
+#define       IDD_REMOVE_SCAN_PANEL          900

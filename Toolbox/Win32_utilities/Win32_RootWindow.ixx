@@ -107,6 +107,7 @@ public:
 	UP_TTIP  CreateWindowToolTip(wstring const& t)                                const { return ToolTip::CreateWindowToolTip(m_hwnd, t); }
 	UP_TTIP  CreateRectToolTip(int const i, wstring const& t, PixelRect const& r) const { return ToolTip::CreateRectToolTip(m_hwnd, i, t, r); }
 	void     BringWindowToTop()                                                   const { ::BringWindowToTop(m_hwnd); }
+	void     ShowWindow(int const cmd)                                            const { ::ShowWindow(m_hwnd, cmd); }
 
 	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage (WM_COMMAND, wParam, lParam); }
 	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage       (WM_COMMAND, wParam, lParam); }

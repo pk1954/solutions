@@ -143,12 +143,6 @@ void SignalControl::drawLine
 		fPixel width { (colType == tColor::HIGH) ? HIGH_WIDTH : STD_WIDTH };
 		Color  col   { GetColor(colType) };
 		col.a = 0.2f;
-
-		if ((fPixPntStart.GetX() != fPixPntEnd.GetX()) && (fPixPntStart.GetY() != fPixPntEnd.GetY()))
-		{
-			int x = 42;
-		}
-
 		m_upGraphics->DrawLine(fPixPntStart, fPixPntEnd, width, col);
 	}
 }
