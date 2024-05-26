@@ -87,6 +87,8 @@ bool ScanPanel::OnSize(PIXEL const width, PIXEL const height)
 	PIXEL  const pixEventViewerHeight  { Convert2PIXEL(fPixEventViewerHeight) };
 	::ArrangeVertical(m_upEventViewer.get(), m_upScanViewer.get(), m_pixFrame);
 	Notify(false);
+	m_upEventViewer->Notify(false);
+	m_upScanViewer->Notify(false);
 	return true;
 }
 

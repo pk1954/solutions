@@ -39,7 +39,9 @@ private:
 	bool OnSize   (PIXEL  const, PIXEL  const)                   final;
 
 	void configureStatusBar();
+	void addScanAllowed(bool const);
 
+	bool                      m_bAddScanRunning { false };
 	int                       m_statusMessagePart;
 	HWND                      m_hwndAddButton;
 	NNetModelIO               m_modelIO;

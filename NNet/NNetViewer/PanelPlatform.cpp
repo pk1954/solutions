@@ -121,12 +121,13 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 void PanelPlatform::removeScan(ScanPanel *p)
 {
 	p->SendMessage(WM_CLOSE, 0, 0);
-	auto it = find_if(m_panelList, [p](UpPanel const &up){ return up.get() == p; });
-	m_upPanel = move(*it);
-	m_panelList.erase(it);
-	m_upPanel.release();
-//	m_upPanel->Hide();
+	m_panelList.erase(find_if(m_panelList, [p](UpPanel const &up){ return up.get() == p; }));
+	//auto it = find_if(m_panelList, [p](UpPanel const &up){ return up.get() == p; });
+	//UpPanel upPanel = move(*it);
+	//m_panelList.erase(it);
+	//upPanel.release();
 	arrangePanels();
+	recalc();
 	Notify(false);
 }
 
@@ -147,7 +148,7 @@ bool PanelPlatform::OnSize(PIXEL const width, PIXEL const height)
 {
 	BaseWindow::OnSize(width, height);
 	arrangePanels();
-	Notify(false);
+	Notify(true);
 	return true;
 }
 

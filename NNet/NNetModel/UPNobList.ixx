@@ -39,18 +39,18 @@ public:
 	UPNobList & operator=  (UPNobList const&);
 	bool        operator== (UPNobList const&) const;
 
-	bool   IsEmpty     ()               const { return   m_list.empty(); }
-	bool   IsNotEmpty  ()               const { return ! m_list.empty(); }
-	int    Size        ()               const { return Cast2Int(m_list.size()); }
-	bool   IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
-	bool   IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
-	bool   IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
-	Nob *  Front       ()               const { return   m_list[0].get(); }
-	Nob *  GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
-	Nob &  GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
-	void   IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
-	void   ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
-	void   Reserve     (long  const nr)       { m_list.reserve(nr); }
+	bool  IsEmpty     ()               const { return   m_list.empty(); }
+	bool  IsNotEmpty  ()               const { return ! m_list.empty(); }
+	int   Size        ()               const { return Cast2Int(m_list.size()); }
+	bool  IsEmptySlot (NobId const id) const { return GetAt(id) == nullptr; }
+	bool  IsNobDefined(NobId const id) const { return GetAt(id) != nullptr; }
+	bool  IsValidNobId(NobId const id) const { return (0 <= id.GetValue()) && (id.GetValue() < Size()); }
+	Nob * Front       ()               const { return   m_list[0].get(); }
+	Nob * GetAt       (NobId const id) const { return   m_list[id.GetValue()].get(); }
+	Nob & GetRef      (NobId const id)       { return * m_list[id.GetValue()].get(); }
+	void  IncreaseSize(long  const nr)       { m_list.resize(m_list.size() + nr); }
+	void  ReduceSize  (long  const nr)       { m_list.resize(m_list.size() - nr); }
+	void  Reserve     (long  const nr)       { m_list.reserve(nr); }
 
 	void         Clear();
 	UPNob        ExtractNob(NobId const);

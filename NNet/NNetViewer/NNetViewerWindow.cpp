@@ -71,6 +71,12 @@ bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 	return true;
 }
 
+void NNetViewerWindow::addScanAllowed(bool const bAllowed)
+{
+	m_bAddScanRunning = !bAllowed;
+	::EnableWindow(m_hwndAddButton, bAllowed);
+}
+
 bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	int const wmId = LOWORD(wParam);
@@ -78,12 +84,15 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 	switch (wmId)
 	{
 	case IDM_ADD_SCAN:
-		::EnableWindow(m_hwndAddButton, false);
-		NNetModelIO::Import
-		(
-			ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read),
-			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, GetWindowHandle())
-		);
+		if (!m_bAddScanRunning)
+		{
+			addScanAllowed(false);
+			NNetModelIO::Import
+			(
+				ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read),
+				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, GetWindowHandle())
+			);
+		}
 		return true;
 
 	case IDM_ADD_IMPORTED_SCAN:
@@ -98,16 +107,18 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 				MessageBox(nullptr, L"No scan data in file", L"Error", MB_OK);
 				upModel.release();
 			}
-			::EnableWindow(m_hwndAddButton, true);
+			addScanAllowed(true);
 		}
 		return true;
 
 	case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
 		MessageBox(nullptr, L"Could not find scan file", L"Error", MB_OK);
+		addScanAllowed(true);
 		return true;
 
 	case IDX_ERROR_IN_FILE:  //no user command, only internal usage
 		MessageBox(nullptr, L"Error reading scan file\r\nSee main_trace.out for details", L"Error", MB_OK);
+		addScanAllowed(true);
 		return true;
 
 	default:

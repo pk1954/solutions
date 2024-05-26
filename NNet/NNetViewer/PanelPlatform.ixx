@@ -38,7 +38,6 @@ private:
    void                      recalc();
 
    vector<UpPanel> m_panelList;
-   UpPanel m_upPanel;
    mV              m_mVmaxPixel     { 0.0_mV };
    mV              m_mVmaxAmplitude { 0.0_mV };
    long            m_nrOfRows       { 0 };
