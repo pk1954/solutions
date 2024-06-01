@@ -359,7 +359,7 @@ void SignalDesigner::adjustLayout
 	PIXEL const pixControlHeight { pixTileHeight  - H_SCALE_HEIGHT };
 	PIXEL       pixControlWidth  { pixClientWidth - V_SCALE_WIDTH  };
 
-	SetWindowText(m_hwndPreviewButton, m_bPreview ? L"- P" : L"+ P");
+	::SetWindowText(m_hwndPreviewButton, m_bPreview ? L"- P" : L"+ P");
 	for (int i = 0; i <= 1; ++i)
 		m_upArrowButton[i]->SetDirection(!m_bIntegrated);
 

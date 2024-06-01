@@ -73,7 +73,6 @@ bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void NNetViewerWindow::addScanAllowed(bool const bAllowed)
 {
-	m_bAddScanRunning = !bAllowed;
 	::EnableWindow(m_hwndAddButton, bAllowed);
 }
 
@@ -81,15 +80,19 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 {
 	int const wmId = LOWORD(wParam);
 	
+	static int     iCount = 0;
+	static wstring wstrFileName;
+
 	switch (wmId)
 	{
 	case IDM_ADD_SCAN:
-		if (!m_bAddScanRunning)
 		{
+			if (wstrFileName == L"")
+				wstrFileName = ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read);
 			addScanAllowed(false);
 			NNetModelIO::Import
 			(
-				ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read),
+				wstrFileName,
 				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, GetWindowHandle())
 			);
 		}
@@ -108,6 +111,15 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 				upModel.release();
 			}
 			addScanAllowed(true);
+			if (++iCount == 10)
+			{
+				iCount = 0;
+				wstrFileName = L"";
+			}
+			else
+			{
+				PostCommand(IDM_ADD_SCAN, 0);
+			}
 		}
 		return true;
 

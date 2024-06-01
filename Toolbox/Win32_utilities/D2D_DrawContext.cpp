@@ -245,6 +245,11 @@ void D2D_DrawContext::FillArrow
 	);
 }
 
+void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, ID2D1Brush * const pBrush) const
+{
+	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), pBrush);
+}
+
 void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, Color col) const
 {
 	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), col);

@@ -41,7 +41,7 @@ void ParameterDialog::Notify(bool const bImmediate)
 
 void ParameterDialog::resetParameter(ParamField& field) const
 {
-	::SetEditField(field.m_hwnd, m_pNMWI->GetParams().GetParameterValue(field.m_type));
+	::SetWindowText(field.m_hwnd, Float2wstring(m_pNMWI->GetParams().GetParameterValue(field.m_type)));
 }
 
 void ParameterDialog::applyParameter(ParamField &field)   // read out edit field and write data to model
@@ -151,7 +151,7 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(2, L"General");
 	paintHeader(7, L"Scan");
 	refreshParameters();
-	::SetEditField(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
+	::SetWindowText(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
 }
 
 void ParameterDialog::paintHeader

@@ -95,8 +95,6 @@ public:
 	bool     SetWindowText(LPCWSTR        const   s)                              const { return ::SetWindowText(m_hwnd, s); }
 	bool     SetWindowText(wstring        const & s)                              const { return   SetWindowText(s.c_str()); }
 	bool     SetWindowText(wostringstream const & s)                              const { return   SetWindowText(s.str()); }
-	bool     SetWindowText(HWND hwnd, wstring        const & s)                   const { return ::SetWindowText(hwnd, s.c_str()); }
-	bool     SetWindowText(HWND hwnd, wostringstream const & s)                   const { return   SetWindowText(hwnd, s.str()); }
 	void     CheckRadioButton(int iFirst, int iLast, int iCheck)                  const { ::CheckRadioButton(m_hwnd, iFirst, iLast, iCheck); }
 	UINT     IsDlgButtonChecked(int iIdButton)                                    const { return ::IsDlgButtonChecked(m_hwnd, iIdButton); }
 	bool     Move(PIXEL const xPos, PIXEL const yPos)                             const { return ::MoveWindow(m_hwnd, xPos, yPos); }

@@ -70,7 +70,8 @@ public:
 	virtual void FillEllipse  (MicroMeterEllipse const &)                                                                                                            const = 0;
 	virtual void FillEllipse  (MicroMeterEllipse const &, Color const)                                                                                               const = 0;
 	virtual void FillEllipse  (MicroMeterEllipse const &, ID2D1SolidColorBrush* const)                                                                               const = 0;
-	virtual void FillRectangle(MicroMeterRect    const &, Color const)                                                                                               const = 0;
+	virtual void FillRectangle(MicroMeterRect const&, ID2D1Brush * const)                                                                                            const = 0;
+	virtual void FillRectangle(MicroMeterRect const&, Color        const)                                                                                            const = 0;
 	virtual void FillGradientCircle  (MicroMeterCircle  const &, Color const, Color const)                                                                           const = 0;
 	virtual void FillRoundedRectangle(MicroMeterRect    const &, Color, MicroMeter const)                                                                            const = 0;
 	virtual void DrawTranspRect      (MicroMeterRect    const &, Color const)                                                                                        const = 0;

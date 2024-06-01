@@ -12,6 +12,7 @@ module;
 #include <cassert>
 #include "d2d1.h"
 #include "dwrite.h"
+#include <Windows.h>
 
 module Direct2D;
 
@@ -71,8 +72,7 @@ void D2D_driver::createResources()
 
 bool D2D_driver::startFrame()
 {
-	if (!m_pRenderTarget)
-		createResources();
+	assert(m_pRenderTarget != nullptr);
 	m_pRenderTarget->BeginDraw();
 	return true;
 }
@@ -86,6 +86,7 @@ void D2D_driver::endFrame()
 	{
 		m_hr = S_OK;
 		discardResources();
+		createResources();
 	}
 }
 
@@ -120,12 +121,12 @@ unique_ptr<D2D_driver> D2D_driver::Create(HWND const hwnd)
 	return upGraphics;
 }
 
-void D2D_driver::Resize()
+void D2D_driver::Resize(PIXEL const width, PIXEL const height)
 {
 	if (m_pRenderTarget)
 	{
-		PixelRectSize const size { ::GetClRectSize(m_hwnd) };
-		m_pRenderTarget->Resize(D2D1::SizeU(size.GetXvalue(), size.GetYvalue()));
+		HRESULT hres = m_pRenderTarget->Resize(D2D1::SizeU(width.GetValue(), height.GetValue()));
+		assert(hres == S_OK);
 	}
 }
 
@@ -248,8 +249,13 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, Color const colF, fPixel 
 void D2D_driver::FillRectangle(fPixelRect const& rect, Color const colF) const
 {
 	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
-	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
+	FillRectangle(rect, pBrush);
 	SafeRelease(&pBrush);
+}
+
+void D2D_driver::FillRectangle(fPixelRect const& rect, ID2D1Brush * const pBrush) const
+{
+	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
 }
 
 void D2D_driver::ClearRectangle(fPixelRect const& rect) const

@@ -46,8 +46,10 @@ public:
     void Display(function<void()>);
     void ShutDown();
     void SetStdFontSize(float const);
+    void Resize              (PIXEL const, PIXEL const);
     void DrawRectangle       (fPixelRect    const&, Color const, fPixel const)                                         const;
     void FillRectangle       (fPixelRect    const&, Color const)                                                       const;
+    void FillRectangle       (fPixelRect    const&, ID2D1Brush * const)                                                const;
     void ClearRectangle      (fPixelRect    const&)                                                                    const;
     void FillGradientRect    (fPixelRect    const&, Color const, Color const)                                          const;
     void FillGradientEllipse (fPixelEllipse const&, Color const, Color const)                                          const;
@@ -59,9 +61,9 @@ public:
     void FillCircle          (fPixelCircle  const&, ID2D1Brush* const)                                                 const;
     void FillCircle          (fPixelCircle  const&, Color const)                                                       const;
     void FillCircle          (fPixelCircle  const&)                                                                    const;
-    void DrawCircle          (fPixelCircle  const&, ID2D1Brush * const, fPixel const)                                  const;
-    void DrawCircle          (fPixelCircle  const&, Color const,        fPixel const)                                  const;
-    void DrawCircle          (fPixelCircle  const&,                     fPixel const)                                  const;
+    void DrawCircle          (fPixelCircle  const&, ID2D1Brush* const, fPixel const)                                   const;
+    void DrawCircle          (fPixelCircle  const&, Color const,       fPixel const)                                   const;
+    void DrawCircle          (fPixelCircle  const&,                    fPixel const)                                   const;
     void FillEllipse         (fPixelEllipse const&, ID2D1Brush* const)                                                 const;
     void FillEllipse         (fPixelEllipse const&, Color const)                                                       const;
     void FillEllipse         (fPixelEllipse const&)                                                                    const;
@@ -75,15 +77,14 @@ public:
     void UpDownArrow         (bool  const,          fPixelRect  const &, Color const)                                  const;
     void SetRotation         (float const,          fPixelPoint const &)                                               const;
     void Reset               () const;
-    void Resize              ();
 
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&,                        fPixel const) const;
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, Color const,    fPixel const) const;
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, ID2D1SolidColorBrush*, fPixel const) const;
 
-    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush   const&, IDWriteTextFormat* = nullptr) const;
-    void DisplayText(fPixelRect const&, wstring const&, Color const,         IDWriteTextFormat* = nullptr) const;
-    void DisplayText(fPixelRect const&, wstring const&,                      IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush const&, IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, Color const,       IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&,                    IDWriteTextFormat* = nullptr) const;
 
     void DisplayText(wstring const&, ID2D1Brush const&, IDWriteTextFormat* = nullptr) const;
     void DisplayText(wstring const&, Color       const, IDWriteTextFormat* = nullptr) const;

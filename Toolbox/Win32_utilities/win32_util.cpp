@@ -73,7 +73,7 @@ bool Evaluate(HWND const hwndEditField, float & fValue)
     {
         if (Evaluate(wstrEdit, fValue))
         {
-            SetEditField(hwndEditField, fValue);
+            ::SetWindowText(hwndEditField, Float2wstring(fValue));
             return true;
         }
     }
@@ -143,7 +143,7 @@ void SetApplicationTitle
     wstring newTitle { wstrName };
     if (wstrAdd != L"")
         newTitle += L" -" + wstrAdd;
-    SetWindowText(hwndApp, newTitle.c_str());
+    ::SetWindowText(hwndApp, newTitle.c_str());
 }
 
 void StdOutConsole()

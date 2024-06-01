@@ -49,7 +49,7 @@ void EditLineBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const l
 	CreateStaticField(hDlg, m_wstrUnit.c_str(), 195, 40, 200, 20);
 	CreateButton     (hDlg, L"OK",              100, 92,  50, 30, IDOK, WS_GROUP);
 	CreateButton     (hDlg, L"Cancel",          200, 92,  50, 30, IDOK, WS_GROUP);
-	::SetEditField(m_hwndEditCtl, m_wstrValue);
+	::SetWindowText(m_hwndEditCtl, m_wstrValue.c_str());
 	::SetWindowText(hDlg, m_wstrTitle.c_str());
 	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
 	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);

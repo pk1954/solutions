@@ -6,8 +6,8 @@ module;
 
 #include <tchar.h>
 #include <cassert>
-#include <string>
 #include <sstream>
+#include <string>
 #include <iostream>
 #include <Windows.h>
 
@@ -60,13 +60,6 @@ export LRESULT SendCommand(HWND const hwnd, WPARAM const wParam, LPARAM const lP
     return SendMessage(hwnd, WM_COMMAND, wParam, lParam); 
 }
 
-export void SetEditField(HWND const hwndEditField, auto const value)
-{
-    wostringstream m_wstrBuffer; 
-    m_wstrBuffer << value;
-    ::SetWindowText(hwndEditField, m_wstrBuffer.str().c_str());
-}
-
 export void Enable(HMENU hMenu, unsigned int const id, bool const bCrit)
 {
     EnableMenuItem(hMenu, id, bCrit ? MF_ENABLED : MF_GRAYED);
@@ -77,6 +70,9 @@ export bool Evaluate(wstring &, float &);
 export bool Evaluate(HWND const, wstring &);
 export bool Evaluate(HWND const, float &);
 export bool Evaluate(HWND const, unsigned long &);
+
+export bool SetWindowText(HWND hwnd, wstring        const& s) { return ::SetWindowText(hwnd, s.c_str()); }
+export bool SetWindowText(HWND hwnd, wostringstream const& s) { return  ::SetWindowText(hwnd, s.str()); }
 
 export inline void SetText(HWND const hwnd, wchar_t const* const wstrText)
 {

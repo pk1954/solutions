@@ -94,7 +94,13 @@ void DrawRasterPoints
     auto        const& getColor
 ) const
 {
-    Apply2AllC([&](RasterPoint const &rp) { context.FillRectangle(GetPointRect(rp), getColor(rp)); });
+    Apply2AllC
+    (
+        [&](RasterPoint const &rp) 
+        { 
+            context.FillRectangle(GetPointRect(rp), getColor(rp)); 
+        }
+    );
 }
 
 private:

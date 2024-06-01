@@ -79,6 +79,7 @@ public:
 		Color         const  
 	) const override;
 
+	void FillRectangle       (MicroMeterRect const&, ID2D1Brush * const)      const override;
 	void FillRectangle       (MicroMeterRect const&, Color)                   const override;
 	void FillRoundedRectangle(MicroMeterRect const&, Color, MicroMeter const) const override;
 	void DrawTranspRect      (MicroMeterRect const&, Color)                   const override;
