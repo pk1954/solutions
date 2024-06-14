@@ -19,11 +19,17 @@ export import NNetWrapperHelpers;
 
 export using std::make_unique;
 export using std::unique_ptr;
+export using std::wstring;
 
 export class NNetCommand : public WinCommand
 {
 public:
     ~NNetCommand() override = default;
+
+    static void Initialize(Sound* const p) 
+    { 
+        m_pSound = p; 
+    }
 
     static void SetModelInterface(NNetModelWriterInterface* const pNMWI)
     {
@@ -37,5 +43,11 @@ public:
 
 protected:
 
+    static void PlaySound(wstring const& sound) { m_pSound->Play(sound); }
+
     inline static NNetModelWriterInterface * m_pNMWI { nullptr };
+
+private:
+
+    inline static Sound * m_pSound { nullptr };
 };

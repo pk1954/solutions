@@ -27,7 +27,6 @@
     <ClCompile Include="CommandStack.ixx" />
     <ClCompile Include="Preferences.cpp" />
     <ClCompile Include="Preferences.ixx" />
-    <ClCompile Include="StdStackCommand.ixx" />
     <ClCompile Include="WrapInclude.cpp" />
     <ClCompile Include="Wrapper.ixx" />
     <ClCompile Include="WrapSimulationTime.ixx" />

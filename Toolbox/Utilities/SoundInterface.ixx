@@ -29,7 +29,4 @@ public:
 	virtual void Play(wstring    const &) const = 0;
 	virtual void Beep(SoundDescr const &) const = 0;
 	virtual void Warning()                const = 0;
-
-private:
-
 };

@@ -65,9 +65,9 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	WinManager       ::Initialize();
 	Model            ::Initialize(&m_lockModelObservable, &m_staticModelObservable);
 	Signal           ::Initialize(&m_dynamicModelObservable);
-	WinCommand       ::Initialize(&m_cmdStack, &m_sound);
+	WinCommand       ::Initialize(&m_cmdStack);
+	NNetCommand      ::Initialize(&m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
-	BaseCommand      ::Initialize(&m_sound);
 	NNetPreferences  ::Initialize();
 
 	m_simuRunning   .Initialize(&m_compute);

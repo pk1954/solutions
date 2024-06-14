@@ -24,16 +24,7 @@ export using std::endl;
 export class WinCommand: public BaseCommand
 {
 public:
-    static void Initialize
-    (
-        CommandStack* const pStack,
-        Sound       * const pSound
-    )
-    {
-        m_pStack = pStack; 
-        BaseCommand::Initialize(pSound);
-    }
-
+    static void Initialize (CommandStack* const pStack)  { m_pStack = pStack; }
     static void PushCommand(unique_ptr<BaseCommand> cmd) { m_pStack->PushStackCommand(move(cmd)); }
     static void ClearStack ()                            { m_pStack->Clear(); }
 
