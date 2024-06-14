@@ -15,7 +15,6 @@ import :NNetCommand;
 export template <typename ANIM_TYPE>
 class AnimationCmd : public NNetCommand
 {
-    using ANIMATION = Animation<ANIM_TYPE>;
 public:
     AnimationCmd
     (
@@ -26,7 +25,7 @@ public:
         m_start(animated),
         m_target(target)
     {
-        m_upAnimation = make_unique<ANIMATION>(this);
+        m_upAnimation = make_unique<Animation<ANIM_TYPE>>(this);
     }
 
     virtual void UpdateUI()
@@ -51,8 +50,9 @@ public:
 
 private:
 
-    ANIM_TYPE           & m_animated;
-    ANIM_TYPE       const m_start;
-    ANIM_TYPE       const m_target;
-    unique_ptr<ANIMATION> m_upAnimation;
+    ANIM_TYPE     & m_animated;
+    ANIM_TYPE const m_start;
+    ANIM_TYPE const m_target;
+
+    unique_ptr<Animation<ANIM_TYPE>> m_upAnimation;
 };

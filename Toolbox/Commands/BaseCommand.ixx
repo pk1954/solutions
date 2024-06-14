@@ -28,7 +28,6 @@ public:
     virtual ~BaseCommand() = default;
 
     virtual void UpdateUI() = 0;
-    virtual void CallUI() = 0; // called by Animation
 
     virtual bool CombineCommands(BaseCommand const& src) { return false; };
     virtual bool IsAsyncCommand()                        { return false; };

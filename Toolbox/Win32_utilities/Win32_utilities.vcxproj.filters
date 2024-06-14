@@ -180,7 +180,7 @@
     <ClCompile Include="WinCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Animation.ixx">
+    <ClCompile Include="Animation.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="StatusBar.cpp">
