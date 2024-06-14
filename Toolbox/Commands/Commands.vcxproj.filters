@@ -39,9 +39,6 @@
     <ClCompile Include="BaseCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BaseCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapSimulationTime.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

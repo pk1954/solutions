@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseCommand.cpp" />
     <ClCompile Include="BaseCommand.ixx" />
     <ClCompile Include="BoolWrapper.ixx" />
     <ClCompile Include="Commands.ixx" />

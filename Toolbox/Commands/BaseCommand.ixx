@@ -28,17 +28,15 @@ public:
     virtual ~BaseCommand() = default;
 
     virtual void UpdateUI() = 0;
-    virtual void CallUI(bool const) = 0; // called by Animation
+    virtual void CallUI() = 0; // called by Animation
 
     virtual bool CombineCommands(BaseCommand const& src) { return false; };
     virtual bool IsAsyncCommand()                        { return false; };
 
     virtual void NextScriptCommand() const = 0;
 
-    void TargetReached();
-
-    virtual void Do();
-    virtual void Undo();
+    virtual void Do  () { UpdateUI(); }
+    virtual void Undo() { UpdateUI(); }
 
 protected:
 
@@ -46,8 +44,6 @@ protected:
     static wostream& TraceStream() { return wcout; }
 
 private:
-
-    function<void(BaseCommand*)> m_targetReachedFunc { nullptr };
 
     inline static bool m_bTrace { true };
 };

@@ -105,17 +105,17 @@ private:
                 if (m_dwFlags & ANIMATION_RECURRING)
                 {
                     setActual(m_start);
-                    m_pCmd->CallUI(true);
+                    m_pCmd->CallUI();
                 }
                 else
                 {
-                    m_pCmd->CallUI(true);
+                    m_pCmd->CallUI();
                     m_timer.StopTimer();
                 }
             }
             else
             { 
-                m_pCmd->CallUI(false);
+                m_pCmd->CallUI();
             }
         }
     }

@@ -39,23 +39,15 @@ public:
             WinManager::PostCommand2App(IDM_NEXT_SCRIPT_CMD, 0);
     }
 
-    void CallUI(bool const bTargetReached) final // runs in Animation thread
+    void CallUI() final // runs in Animation thread
     {
-        WinManager::PostMessage2MainWin
-        (
-            WM_APP_UI_CALL,            // calls DoCall from UI thread
-            static_cast<WPARAM>(bTargetReached),
-            bit_cast<LPARAM>(this)
-        );
+        WinManager::PostMessage2MainWin(WM_APP_UI_CALL, 0, bit_cast<LPARAM>(this)); // calls DoCall from UI thread
     }
 
     static void DoCall(WPARAM const wParam, LPARAM const lParam)  // called by m_pWin
     {
-        WinCommand* const pAnimCmd       { bit_cast<WinCommand* const>(lParam) };
-        bool        const bTargetReached { static_cast<bool const>(wParam) };
+        WinCommand* const pAnimCmd { bit_cast<WinCommand* const>(lParam) };
         pAnimCmd->UpdateUI();
-        if (bTargetReached)
-            pAnimCmd->TargetReached();
     };
 
 private:
