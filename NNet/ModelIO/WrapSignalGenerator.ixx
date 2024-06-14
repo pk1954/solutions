@@ -9,7 +9,7 @@ module;
 
 export module WrapSignalGenerator;
 
-import Wrapper;
+import Commands;
 import NNetModelIO;
 import NNetWrapperHelpers;
 import NNetModel;

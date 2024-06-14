@@ -9,7 +9,7 @@ module;
 
 export module WrapTimestamp;
 
-import Wrapper;
+import Commands;
 import Script;
 import NNetModelIO;
 

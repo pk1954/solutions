@@ -16,7 +16,7 @@ import IoUtil;
 import Raster;
 import NNetModelIO;
 import NNetModel;
-import Wrapper;
+import Commands;
 
 using std::unique_ptr;
 using std::make_unique;

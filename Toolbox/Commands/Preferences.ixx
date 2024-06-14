@@ -10,11 +10,11 @@ module;
 #include <vector>
 #include <memory>
 
-export module Preferences;
-
-export import BoolWrapper;
+export module Commands:Preferences;
 
 import SoundInterface;
+import :Wrapper;
+import :BoolWrapper;
 
 using std::wostream;
 using std::wstring;

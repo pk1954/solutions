@@ -16,7 +16,7 @@ import Script;
 import Symtab;
 import SaveCast;
 import WinManager;
-import Wrapper;
+import Commands;
 import NNetWrapperHelpers;
 import :MonitorWindow;
 

@@ -15,7 +15,7 @@ export module WinManager;
 import Types;
 import BoolOp;
 import ErrHndl;
-import Wrapper;
+import Commands;
 import BaseDialog;
 import BaseWindow;
 import Win32_Util;

@@ -9,7 +9,7 @@ module;
 
 export module NobIo;
 
-import Wrapper;
+import Commands;
 import Types;
 import Script;
 import NNetModel;

@@ -16,7 +16,7 @@ import Observable;
 import SlowMotionRatio;
 import Types;
 import WinManager;
-import CommandStack;
+import Commands;
 import NNetModel;
 import NNetSignals;
 import :NNetCommandHandler;

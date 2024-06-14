@@ -11,7 +11,7 @@ export module WrapSetScanArea;
 
 import IoUtil;
 import NNetModelIO;
-import Wrapper;
+import Commands;
 
 using std::endl;
 

@@ -12,8 +12,7 @@ export module IncludeCommand;
 import Script;
 import Symtab;
 import ScriptFile;
-import Command;
-import Wrapper;
+import Commands;
 
 export class IncludeCommand
 {

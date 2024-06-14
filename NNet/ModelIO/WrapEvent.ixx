@@ -9,7 +9,7 @@ module;
 
 export module WrapEvent;
 
-import Wrapper;
+import Commands;
 import Types;
 import Script;
 import IoUtil;

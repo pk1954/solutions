@@ -10,7 +10,7 @@ module;
 
 export module WrapSignalInfo;
 
-import Wrapper;
+import Commands;
 import Script;
 import Symtab;
 import ErrHndl;

@@ -13,7 +13,7 @@ export module NNetModelIO;
 
 import Observable;
 import Types;
-import Wrapper;
+import Commands;
 import Script;
 import InputOutputUI;
 import NNetModel;

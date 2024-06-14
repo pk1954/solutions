@@ -8,13 +8,12 @@ module;
 #include <string>
 #include <iostream>
 
-export module StdStackCommand;
+export module Commands:StdStackCommand;
 
-import BaseCommand;
-import CommandStack;
+import :BaseCommand;
+import :CommandStack;
 import SoundInterface;
 
-export import Wrapper;
 export import Symtab;
 export import Script;
 

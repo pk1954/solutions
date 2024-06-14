@@ -10,7 +10,7 @@ module;
 #include <string>
 #include <iostream>
 
-export module BaseCommand;
+export module Commands:BaseCommand;
 
 import SaveCast;
 import SoundInterface;

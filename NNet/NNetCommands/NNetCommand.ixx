@@ -13,14 +13,14 @@ export module NNetCommands:NNetCommand;
 export import IoUtil;
 export import SoundInterface;
 export import Types;
-export import Command;
+export import WinCommand;
 export import NNetModel;
 export import NNetWrapperHelpers;
 
 export using std::make_unique;
 export using std::unique_ptr;
 
-export class NNetCommand : public Command
+export class NNetCommand : public WinCommand
 {
 public:
     ~NNetCommand() override = default;

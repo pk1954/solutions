@@ -8,7 +8,7 @@ module;
 
 export module WrapSignalData;
 
-import Wrapper;
+import Commands;
 import IoUtil;
 import IoConstants;
 import SaveCast;

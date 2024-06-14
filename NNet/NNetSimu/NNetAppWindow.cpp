@@ -23,7 +23,7 @@ import Trace;
 import Direct2D;
 import Vector2D;
 import ObserverInterface;
-import Command;
+import WinCommand;
 import AboutBox;
 import FatalError;
 import MessagePump;
@@ -65,7 +65,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	WinManager       ::Initialize();
 	Model            ::Initialize(&m_lockModelObservable, &m_staticModelObservable);
 	Signal           ::Initialize(&m_dynamicModelObservable);
-	Command          ::Initialize(&m_cmdStack, &m_sound);
+	WinCommand       ::Initialize(&m_cmdStack, &m_sound);
 	CoordAnimationCmd::Initialize(&m_coordObservable);
 	BaseCommand      ::Initialize(&m_sound);
 	NNetPreferences  ::Initialize();

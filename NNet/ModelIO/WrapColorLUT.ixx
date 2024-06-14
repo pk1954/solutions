@@ -11,7 +11,7 @@ module;
 
 export module WrapColorLUT;
 
-import Wrapper;
+import Commands;
 import ColorLUT;
 import Color;
 import IoUtil;

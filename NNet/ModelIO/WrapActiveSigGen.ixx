@@ -8,7 +8,7 @@ module;
 
 export module WrapActiveSigGen;
 
-import Wrapper;
+import Commands;
 import Script;
 import Signals;
 import NNetModelIO;

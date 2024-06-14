@@ -6,12 +6,12 @@ module;
 
 #include <iostream>
 
-export module WrapSimulationTime;
+export module Commands:WrapSimulationTime;
 
 import SaveCast;
 import Types;
 import SimulationTime;
-import Wrapper;
+import :Wrapper;
 import Script;
 
 using std::endl;

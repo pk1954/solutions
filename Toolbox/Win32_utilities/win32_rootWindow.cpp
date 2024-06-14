@@ -16,7 +16,7 @@ module;
 module RootWindow;
 
 import Types;
-import Preferences;
+import Commands;
 import Win32_Util_Resource;
 import Win32_PIXEL;
 import BaseRefreshRate;

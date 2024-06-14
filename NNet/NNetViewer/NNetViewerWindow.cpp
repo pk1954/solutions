@@ -86,16 +86,12 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 	switch (wmId)
 	{
 	case IDM_ADD_SCAN:
-		{
-			if (wstrFileName == L"")
-				wstrFileName = ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read);
-			addScanAllowed(false);
-			NNetModelIO::Import
-			(
-				wstrFileName,
-				NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, GetWindowHandle())
-			);
-		}
+		addScanAllowed(false);
+		NNetModelIO::Import
+		(
+			ScriptFile::AskForFileName(L"scan", L"", L"Scan files", tFileMode::read),
+			NNetInputOutputUI::CreateNew(IDM_ADD_IMPORTED_SCAN, GetWindowHandle())
+		);
 		return true;
 
 	case IDM_ADD_IMPORTED_SCAN:
@@ -111,15 +107,6 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 				upModel.release();
 			}
 			addScanAllowed(true);
-			if (++iCount == 10)
-			{
-				iCount = 0;
-				wstrFileName = L"";
-			}
-			else
-			{
-				PostCommand(IDM_ADD_SCAN, 0);
-			}
 		}
 		return true;
 

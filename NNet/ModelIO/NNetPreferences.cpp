@@ -15,10 +15,9 @@ module;
 module NNetPreferences;
 
 import BoolType;
-import BoolWrapper;
+import Commands;
 import IoUtil;
 import IoConstants;
-import Wrapper;
 import Win32_Util;
 import Win32_Util_Resource;
 import Script;

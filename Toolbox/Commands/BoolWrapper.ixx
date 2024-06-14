@@ -7,10 +7,10 @@ module;
 #include <string>
 #include <iostream>
 
-export module BoolWrapper;
+export module Commands:BoolWrapper;
 
 export import BoolType;
-export import Wrapper;
+export import :Wrapper;
 
 import IoConstants;
 import Symtab;

@@ -21,7 +21,7 @@ public:
     virtual void UpdateUI()
     {
         MicroMeterAnimationCmd::UpdateUI();
-        Command::UpdateUI();
+        WinCommand::UpdateUI();
     }
 
     static void Register()

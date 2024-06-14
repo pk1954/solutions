@@ -9,7 +9,7 @@ module;
 
 export module WrapNrOfNobs;
 
-import Wrapper;
+import Commands;
 import Script;
 import NNetModelIO;
 import NNetModel;

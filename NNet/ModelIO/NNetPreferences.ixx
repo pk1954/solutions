@@ -18,11 +18,10 @@ import Win32_Util_Resource;
 import BoolType;
 import SoundInterface;
 import ColorLUT;
-import Wrapper;
+import Commands;
 import WinManager;
 import NNetModelIO;
 import NNetModel;
-import Preferences;
 
 using std::wostream;
 using std::wstring;

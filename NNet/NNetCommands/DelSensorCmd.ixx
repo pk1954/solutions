@@ -8,7 +8,7 @@ module;
 
 export module NNetCommands:DelSensorCmd;
 
-import Wrapper;
+import Commands;
 import Types;
 import IoUtil;
 import NNetModel;

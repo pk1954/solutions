@@ -10,7 +10,7 @@ module;
 
 export module WrapProtocol;
 
-import Wrapper;
+import Commands;
 import NNetModelStorage;
 import IoUtil;
 import IoConstants;

@@ -9,8 +9,7 @@ module;
 
 export module WrapSetGrid;
 
-import Wrapper;
-import BoolWrapper;
+import Commands;
 import RootWindow;
 import WinManager;
 

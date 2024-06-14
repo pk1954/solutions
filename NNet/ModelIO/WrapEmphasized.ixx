@@ -8,7 +8,7 @@ module;
 
 export module WrapEmphasized;
 
-import Wrapper;
+import Commands;
 import NNetWrapperHelpers;
 import Script;
 import NNetModel;

@@ -11,7 +11,7 @@ export module BreakCommand;
 
 import Script;
 import Symtab;
-import Wrapper;
+import Commands;
 
 export class BreakCommand
 {

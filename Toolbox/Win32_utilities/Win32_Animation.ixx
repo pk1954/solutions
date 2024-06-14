@@ -10,7 +10,7 @@ module;
 
 export module Animation;
 
-import BaseCommand;
+import Commands;
 import SmoothMoveFp;
 import ThreadPoolTimer;
 
@@ -26,7 +26,7 @@ public:
 
     Animation
     (
-        BaseCommand   * pCmd, 
+        StdStackCommand   * pCmd, 
         DWORD const dwFlags = 0
     )
       : m_pCmd(pCmd),
@@ -78,7 +78,7 @@ private:
     ANIM_PAR m_distance {};
 
     SmoothMoveFp   m_smoothMove;
-    BaseCommand  * m_pCmd           { nullptr };
+    StdStackCommand  * m_pCmd           { nullptr };
     DWORD    const m_dwFlags        { 0 };
     SRWLOCK        m_srwlData       { SRWLOCK_INIT };
     unsigned int   m_uiMsPeriod     { 50 };

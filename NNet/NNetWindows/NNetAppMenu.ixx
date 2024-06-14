@@ -15,7 +15,7 @@ import SoundInterface;
 import WinManager;
 import Win32_Util;
 import OnOffPair;
-import CommandStack;
+import Commands;
 import NNetModel;
 import :Compute;
 

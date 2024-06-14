@@ -13,7 +13,7 @@ import IoConstants;
 import Win32_Util_Resource;
 import RootWindow;
 import WinManager;
-import BoolWrapper;
+import Commands;
 import WrapSetScales;
 import Scale;
 import :AnimationCmd;

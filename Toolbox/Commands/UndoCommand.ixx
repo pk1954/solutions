@@ -8,9 +8,10 @@ module;
 #include <string>
 #include <iostream>
 
-export module UndoCommand;
+export module Commands:UndoCommand;
 
-import StdStackCommand;
+import :StdStackCommand;
+import :Wrapper;
 
 export class UndoCommand : public StdStackCommand
 {

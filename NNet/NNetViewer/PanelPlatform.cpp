@@ -5,6 +5,7 @@
 module;
 
 #include <bit>
+#include <cassert>
 #include <vector>
 #include <memory>
 #include <algorithm>
@@ -22,6 +23,7 @@ using std::vector;
 using std::unique_ptr;
 using std::make_unique;
 using std::bit_cast;
+using std::distance;
 using std::ranges::find_if;
 
 static PIXEL const FRAME_WIDTH { 2_PIXEL };
@@ -39,16 +41,16 @@ PanelPlatform::PanelPlatform(HWND const hwndParent)
 	);
 }
 
-void PanelPlatform::arrangePanels()
+void PanelPlatform::calcTargetPanelList()
 {
 	PixelRectSize const& pixWinSize { GetClRectSize() };
 	if ((pixWinSize.GetX() == 0_PIXEL) || (pixWinSize.GetY() == 0_PIXEL))
 		return;
 
-	long const nrOfPanels { Cast2Long(m_panelList.size()) };
+	long const nrOfPanels { Cast2Long(m_upPanels.size()) };
 	if (nrOfPanels == 0)
 		return;
-	ScanPanel const * const pPanel { m_panelList.front().get() };
+	ScanPanel const * const pPanel { m_upPanels.front().get() };
 	m_pixPanelWidth = 0_PIXEL;
 	for (m_nrOfRows = 1; m_nrOfRows <= nrOfPanels; ++m_nrOfRows)
 	{
@@ -64,14 +66,15 @@ void PanelPlatform::arrangePanels()
 	}
 	m_pixPanelHeight = pPanel->PanelHeightFromWidth(m_pixPanelWidth);
 
-	PixelRectSize const pixPanelSize(m_pixPanelWidth, m_pixPanelHeight);
-	PIXEL               pixPanelPosX(0_PIXEL);
-	PIXEL               pixPanelPosY(0_PIXEL);
-	for (UpPanel const &upPanel : m_panelList)
+	PIXEL pixPanelPosX(0_PIXEL);
+	PIXEL pixPanelPosY(0_PIXEL);
+	for (PANEL_RECT &panelRect : m_panelRects.m_list)
 	{
-		PixelPoint const pixPanelPos(pixPanelPosX, pixPanelPosY);
-		PixelRect  const rect(pixPanelPos, pixPanelSize);
-		upPanel->Move(rect, false);
+		panelRect.m_rect = PixelRect
+		(
+			PixelPoint   (pixPanelPosX,    pixPanelPosY), 
+			PixelRectSize(m_pixPanelWidth, m_pixPanelHeight)
+		);
 		pixPanelPosX += m_pixPanelWidth;
 		if ((pixPanelPosX + m_pixPanelWidth) > pixWinSize.GetX())
 		{
@@ -81,18 +84,27 @@ void PanelPlatform::arrangePanels()
 	}
 }
 
+void PanelPlatform::arrangePanels()
+{
+	calcTargetPanelList();
+    for (int i = 0; i < m_upPanels.size(); ++i)
+	{
+		m_upPanels[i]->Move(m_panelRects.m_list[i].m_rect, false);
+	}
+}
+
 void PanelPlatform::recalc()
 {
 	m_mVmaxPixel     = 0.0_mV;
 	m_mVmaxAmplitude = 0.0_mV;
-	for (UpPanel const &upPanel : m_panelList)
+	for (UpPanel &upPanel : m_upPanels)
 	{
 		mV const mVmaxPixel { upPanel->m_upScanViewer->GetImage().CalcMaxValue() };
 		mV const mVmaxAmpl  { upPanel->m_upEventViewer->CalcMaxAmplitude() };
 		m_mVmaxPixel     = max(mVmaxPixel, m_mVmaxPixel);
 		m_mVmaxAmplitude = max(mVmaxAmpl,  m_mVmaxAmplitude);
 	}
-	for (UpPanel const &upPanel : m_panelList)
+	for (UpPanel &upPanel : m_upPanels)
 	{
 		upPanel->m_upEventViewer->Notify(true);
 		upPanel->m_upScanViewer ->Notify(true);
@@ -112,7 +124,8 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 			m_mVmaxAmplitude
 		) 
 	};
-	m_panelList.push_back(move(upPanel));
+	m_panelRects.m_list.push_back(PANEL_RECT(PixelRect()));
+	m_upPanels.push_back(move(upPanel));
 	arrangePanels();
 	recalc();
 	Notify(false);
@@ -121,27 +134,14 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 void PanelPlatform::removeScan(ScanPanel *p)
 {
 	p->SendMessage(WM_CLOSE, 0, 0);
-	m_panelList.erase(find_if(m_panelList, [p](UpPanel const &up){ return up.get() == p; }));
-	//auto it = find_if(m_panelList, [p](UpPanel const &up){ return up.get() == p; });
-	//UpPanel upPanel = move(*it);
-	//m_panelList.erase(it);
-	//upPanel.release();
+	auto iterUpPanels { find_if(m_upPanels, [p](UpPanel const &upPanel){ return upPanel.get() == p; }) };
+	assert(iterUpPanels != m_upPanels.end());
+	auto index { distance(m_upPanels.begin(), iterUpPanels) };
+	m_upPanels         .erase(m_upPanels         .begin() + index);
+	m_panelRects.m_list.erase(m_panelRects.m_list.begin() + index);
 	arrangePanels();
 	recalc();
 	Notify(false);
-}
-
-vector<UpPanel>::iterator PanelPlatform::findPanel(PixelPoint const& pixPos)
-{
-	long const nrOfPanels { Cast2Long(m_panelList.size()) };
-	if (nrOfPanels == 0)
-		return m_panelList.end();
-	long const col { pixPos.GetX() / m_pixPanelWidth };
-	long const row { pixPos.GetY() / m_pixPanelWidth };
-	if ((col >= m_nrOfCols)||(row >= m_nrOfRows))
-		return m_panelList.end();
-	long const index { row * m_nrOfCols + col };
-	return m_panelList.begin() + index;
 }
 
 bool PanelPlatform::OnSize(PIXEL const width, PIXEL const height)

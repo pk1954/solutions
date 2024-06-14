@@ -10,7 +10,7 @@ module;
 #include <ranges>
 #include <functional>
 
-module CommandStack;
+module Commands:CommandStack;
 
 import Observable;
 import Scanner;

@@ -27,7 +27,7 @@ public:
     void UpdateUI() final
     {
         U2DAnimationCmd::UpdateUI();
-        Command::UpdateUI();
+        WinCommand::UpdateUI();
         if (m_pCoordObservable)
             m_pCoordObservable->NotifyAll();
     }

@@ -177,10 +177,10 @@
     <ClCompile Include="OnOffPair.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Command.ixx">
+    <ClCompile Include="WinCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WIn32_Animation.ixx">
+    <ClCompile Include="Win32_Animation.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="StatusBar.cpp">

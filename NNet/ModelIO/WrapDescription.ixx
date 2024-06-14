@@ -11,7 +11,7 @@ export module WrapDescription;
 
 import IoUtil;
 import IoConstants;
-import Wrapper;
+import Commands;
 import Script;
 import NNetModelIO;
 import NNetModel;

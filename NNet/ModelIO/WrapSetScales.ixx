@@ -9,8 +9,7 @@ module;
 
 export module WrapSetScales;
 
-import Wrapper;
-import BoolWrapper;
+import Commands;
 import RootWindow;
 import WinManager;
 

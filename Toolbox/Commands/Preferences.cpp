@@ -9,11 +9,11 @@ module;
 #include <fstream>
 #include <string>
 
-module Preferences;
+module Commands:Preferences;
 
 import IoConstants;
 import Scanner;
-import Wrapper;
+import :Wrapper;
 import SoundInterface;
 
 using std::wofstream;

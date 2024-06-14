@@ -9,7 +9,7 @@ module;
 
 export module WrapSetSigGen;
 
-import Wrapper;
+import Commands;
 import Script;
 import NNetModelIO;
 import NNetWrapperHelpers;

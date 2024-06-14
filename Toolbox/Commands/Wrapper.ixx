@@ -8,7 +8,7 @@ module;
 #include <iostream>
 #include <type_traits>
 
-export module Wrapper;
+export module Commands:Wrapper;
 
 export import IoConstants;
 export import BoolType;

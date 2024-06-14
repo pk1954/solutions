@@ -8,9 +8,10 @@ module;
 #include <string>
 #include <iostream>
 
-export module RedoCommand;
+export module Commands:RedoCommand;
 
-import StdStackCommand;
+import :StdStackCommand;
+import :Wrapper;
 
 export class RedoCommand : public StdStackCommand
 {

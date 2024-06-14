@@ -10,11 +10,11 @@ module;
 #include <iostream>
 #include <functional>
 
-export module CommandStack;
+export module Commands:CommandStack;
 
 import Script;
 import Scanner;
-import BaseCommand;
+import :BaseCommand;
 import Observable;
 import ScriptStack;
 

@@ -19,7 +19,7 @@ module ScriptFile;
 import Script;
 import Scanner;
 import ScriptStack;
-import Command;
+import Commands;
 import IoConstants;
 
 using std::wcout;
@@ -209,6 +209,6 @@ void StartScript
     if (pScript && pScript->ScrOpen(wstrFile))
     {
         pScript->ScrSetNewLineHook(&scriptHook);  // TODO: check if NextScriptCommand needed
-  //      Command::NextScriptCommand();  // start reading script file
+  //      WinCommand::NextScriptCommand();  // start reading script file
     }
 }

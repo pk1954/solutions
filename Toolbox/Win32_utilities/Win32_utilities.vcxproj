@@ -162,7 +162,7 @@
     <ClCompile Include="ColLutDesigner.cpp" />
     <ClCompile Include="ColLutDesigner.ixx" />
     <ClCompile Include="ColorDialog.ixx" />
-    <ClCompile Include="Command.ixx" />
+    <ClCompile Include="WinCommand.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
     <ClCompile Include="DescriptionWindow.cpp" />
@@ -185,7 +185,7 @@
     <ClCompile Include="TimerQueueTimer.ixx" />
     <ClCompile Include="Win32_AboutBox.cpp" />
     <ClCompile Include="Win32_AboutBox.ixx" />
-    <ClCompile Include="WIn32_Animation.ixx" />
+    <ClCompile Include="Win32_Animation.ixx" />
     <ClCompile Include="Win32_ArrowButton.ixx" />
     <ClCompile Include="Win32_BaseDialog.ixx" />
     <ClCompile Include="Win32_BaseRefreshRate.ixx" />

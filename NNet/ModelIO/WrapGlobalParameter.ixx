@@ -12,7 +12,7 @@ export module WrapGlobalParameter;
 import IoUtil;
 import IoConstants;
 import SaveCast;
-import Wrapper;
+import Commands;
 import Script;
 import ErrHndl;
 import NNetModelIO;

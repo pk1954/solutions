@@ -13,7 +13,7 @@
 
 import IoConstants;
 import Script;
-import Wrapper;
+import Commands;
 import IoUtil;
 import IoConstants;
 import WinManager;
