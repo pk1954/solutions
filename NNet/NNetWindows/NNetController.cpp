@@ -107,14 +107,6 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
 {
     switch (wmId)
     {
-    case IDM_UNDO:
-        UndoCommand::Push();
-        break;
-
-    case IDM_REDO:
-        RedoCommand::Push();
-        break;
-
     case IDM_SAVE_SCAN:
 		m_pCompute->StopComputation();
 		SaveScanAs();

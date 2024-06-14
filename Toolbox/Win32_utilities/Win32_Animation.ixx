@@ -10,7 +10,7 @@ module;
 
 export module Animation;
 
-import Commands;
+import WinCommand;
 import SmoothMoveFp;
 import ThreadPoolTimer;
 
@@ -26,7 +26,7 @@ public:
 
     Animation
     (
-        StdStackCommand   * pCmd, 
+        WinCommand * pCmd, 
         DWORD const dwFlags = 0
     )
       : m_pCmd(pCmd),
@@ -77,13 +77,13 @@ private:
     ANIM_PAR m_target   {};
     ANIM_PAR m_distance {};
 
-    SmoothMoveFp   m_smoothMove;
-    StdStackCommand  * m_pCmd           { nullptr };
-    DWORD    const m_dwFlags        { 0 };
-    SRWLOCK        m_srwlData       { SRWLOCK_INIT };
-    unsigned int   m_uiMsPeriod     { 50 };
-    unsigned int   m_uiNrOfSteps    { 20 };
-    bool           m_bTargetReached { false };
+    SmoothMoveFp m_smoothMove;
+    WinCommand * m_pCmd           { nullptr };
+    DWORD  const m_dwFlags        { 0 };
+    SRWLOCK      m_srwlData       { SRWLOCK_INIT };
+    unsigned int m_uiMsPeriod     { 50 };
+    unsigned int m_uiNrOfSteps    { 20 };
+    bool         m_bTargetReached { false };
 
     ThreadPoolTimer m_timer;
 

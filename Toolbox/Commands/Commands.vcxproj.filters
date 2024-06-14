@@ -21,13 +21,7 @@
     <ClCompile Include="CommandStack.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RedoCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdStackCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UndoCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BoolWrapper.ixx">

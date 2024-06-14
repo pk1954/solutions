@@ -4,6 +4,7 @@
 
 module;
 
+#include <iostream>
 #include <memory>
 #include <bit>
 #include <Windows.h>
@@ -18,9 +19,24 @@ import Commands;
 using std::bit_cast;
 using std::unique_ptr;
 
-export class WinCommand: public StdStackCommand
+export using std::endl;
+
+export class WinCommand: public BaseCommand
 {
 public:
+    static void Initialize
+    (
+        CommandStack* const pStack,
+        Sound       * const pSound
+    )
+    {
+        m_pStack = pStack; 
+        BaseCommand::Initialize(pSound);
+    }
+
+    static void PushCommand(unique_ptr<BaseCommand> cmd) { m_pStack->PushStackCommand(move(cmd)); }
+    static void ClearStack ()                            { m_pStack->Clear(); }
+
     void UpdateUI() override
     {
         WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
@@ -50,4 +66,8 @@ public:
         if (bTargetReached)
             pAnimCmd->TargetReached();
     };
+
+private:
+
+    inline static CommandStack* m_pStack { nullptr };
 };
