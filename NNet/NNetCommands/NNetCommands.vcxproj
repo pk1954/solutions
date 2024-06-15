@@ -93,7 +93,6 @@
     <ClCompile Include="AddMicroSensorCmd.ixx" />
     <ClCompile Include="AddModuleCommand.ixx" />
     <ClCompile Include="AddNobsCommand.ixx" />
-    <ClCompile Include="AnimationCmd.ixx" />
     <ClCompile Include="CreateInitialNobsCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />
@@ -105,7 +104,6 @@
     <ClCompile Include="AddPipe2NeuronCmd.ixx" />
     <ClCompile Include="AddSensorCmd.ixx" />
     <ClCompile Include="AddSigGen2MonitorCmd.ixx" />
-    <ClCompile Include="ArrowAnimationCmd.ixx" />
     <ClCompile Include="AttachSigGen2ConCmd.ixx" />
     <ClCompile Include="AttachSigGen2LineCmd.ixx" />
     <ClCompile Include="Add2ConnectorCmd.cpp" />
@@ -113,7 +111,6 @@
     <ClCompile Include="Connect2NeuronCommand.ixx" />
     <ClCompile Include="ConnectCreateForkCmd.ixx" />
     <ClCompile Include="ConnectCreateSynapseCmd.ixx" />
-    <ClCompile Include="CoordAnimationCmd.ixx" />
     <ClCompile Include="CreateForkCommand.ixx" />
     <ClCompile Include="CreateSynapseCommand.ixx" />
     <ClCompile Include="DeletePipeCommand.ixx" />
@@ -123,7 +120,6 @@
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />
     <ClCompile Include="SetScanAreaCmd.ixx" />
-    <ClCompile Include="SetGridCmd.ixx" />
     <ClCompile Include="InsertKnotCommand.ixx" />
     <ClCompile Include="InsertNeuronCommand.ixx" />
     <ClCompile Include="InsertTrackCommand.ixx" />
@@ -135,7 +131,6 @@
     <ClCompile Include="NewSigGenCmd.ixx" />
     <ClCompile Include="NNetCommand.ixx" />
     <ClCompile Include="NNetCommands.ixx" />
-    <ClCompile Include="NNetCommandStack.ixx" />
     <ClCompile Include="PlugIoConnectorsCmd.ixx" />
     <ClCompile Include="PlugIoLinesCmd.ixx" />
     <ClCompile Include="RenameSigGenCmd.ixx" />
@@ -145,7 +140,6 @@
     <ClCompile Include="RotateSelectionCommand.ixx" />
     <ClCompile Include="RotationCommand.ixx" />
     <ClCompile Include="DeselectModuleCmd.ixx" />
-    <ClCompile Include="SetScalesCmd.ixx" />
     <ClCompile Include="SelectAllConnectedCmd.ixx" />
     <ClCompile Include="SelectionCommand.ixx" />
     <ClCompile Include="SetActiveSigGenCmd.ixx" />

@@ -11,6 +11,7 @@ export import :CircleType;
 export import :EllipseType;
 export import :PointType;
 export import :RectType;
+export import :LinCombVector;
 export import :LineType;
 export import :Percent;
 export import :PixelTypes;

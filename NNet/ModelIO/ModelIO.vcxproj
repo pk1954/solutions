@@ -180,10 +180,8 @@
     <ClCompile Include="WrapProtocol.ixx" />
     <ClCompile Include="WrapScanImage.ixx" />
     <ClCompile Include="WrapTimestamp.ixx" />
-    <ClCompile Include="WrapSetGrid.ixx" />
     <ClCompile Include="WrapSetScanArea.ixx" />
     <ClCompile Include="WrapSetSigGen.ixx" />
-    <ClCompile Include="WrapSetScales.ixx" />
     <ClCompile Include="WrapSignalData.ixx" />
     <ClCompile Include="WrapSignalGenerator.ixx" />
     <ClCompile Include="WrapSignalInfo.ixx" />

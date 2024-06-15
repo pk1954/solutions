@@ -9,6 +9,9 @@ module;
 
 export module MessagePump;
 
+import Win32_Util_Resource;
+import WinCommand;
+
 using std::vector;
 
 export class MessagePump
@@ -29,7 +32,9 @@ int Run(auto const gameFunc)
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
-				if (msg.message == WM_QUIT)
+				if (msg.message == WM_APP_UI_CALL)
+					WinCommand::DoCall(msg.wParam, msg.lParam);
+				else if (msg.message == WM_QUIT)
 					break;
 			}
 		}

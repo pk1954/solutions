@@ -27,9 +27,6 @@
     <ClCompile Include="AddSigGen2MonitorCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ArrowAnimationCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AttachSigGen2ConCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,9 +37,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Connect2NeuronCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CoordAnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeletePipeCommand.ixx">
@@ -171,9 +165,6 @@
     <ClCompile Include="SelectAllConnectedCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NNetCommandStack.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CreateInitialNobsCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -205,15 +196,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AddModuleCommand.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetScalesCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SetGridCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SetScanAreaCmd.ixx">

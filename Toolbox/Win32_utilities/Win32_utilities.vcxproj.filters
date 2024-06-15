@@ -237,5 +237,23 @@
     <ClCompile Include="AnimationCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ArrowAnimationCmd.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CoordAnimationCmd.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SetGridCmd.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SetScalesCmd.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapSetGrid.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WrapSetScales.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

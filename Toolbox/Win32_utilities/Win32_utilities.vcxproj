@@ -159,9 +159,13 @@
   <ItemGroup>
     <ClCompile Include="AnimationCommand.ixx" />
     <ClCompile Include="AppStartProtocol.ixx" />
+    <ClCompile Include="ArrowAnimationCmd.ixx" />
     <ClCompile Include="ColLutDesigner.cpp" />
     <ClCompile Include="ColLutDesigner.ixx" />
     <ClCompile Include="ColorDialog.ixx" />
+    <ClCompile Include="CoordAnimationCmd.ixx" />
+    <ClCompile Include="SetGridCmd.ixx" />
+    <ClCompile Include="SetScalesCmd.ixx" />
     <ClCompile Include="WinCommand.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
@@ -231,6 +235,8 @@
     <ClCompile Include="Win32_Util_Resource.ixx" />
     <ClCompile Include="Win32_WinManager.cpp" />
     <ClCompile Include="Win32_WinManager.ixx" />
+    <ClCompile Include="WrapSetGrid.ixx" />
+    <ClCompile Include="WrapSetScales.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Commands\Commands.vcxproj">

@@ -1,26 +1,23 @@
 // SetScalesCmd.ixx
 //
-// NNetCommands
+// Toolbox\Win32_utilities
 
 module;
 
 #include <iostream>
-#include "Resource.h"
 
 export module NNetCommands:SetScalesCmd;
 
+import Types;
 import IoConstants;
 import Win32_Util_Resource;
 import RootWindow;
 import WinManager;
-import Commands;
+import AnimationCommand;
 import WrapSetScales;
 import Scale;
-import :AnimationCmd;
 
-using std::wstring;
-
-using fPixelPointAnimationCmd = AnimationCmd<fPixelPoint>;
+using fPixelPointAnimationCmd = AnimationCommand<fPixelPoint>;
 
 export class SetScalesCmd : public fPixelPointAnimationCmd
 {

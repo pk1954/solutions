@@ -47,9 +47,6 @@
 #define       IDM_FINISHING_SCAN             193
 #define       IDM_UNLOCK                     194
 
-#define       IDD_SCALES_UPDATE              263
-#define       IDD_GRID_UPDATE                264
-
 #define       IDD_ARROW_ANIMATION            270
 
 #define       IDD_MEASUREMENT_ON             285

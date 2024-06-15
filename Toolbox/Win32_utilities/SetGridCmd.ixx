@@ -1,11 +1,10 @@
 // SetGridCmd.ixx
 //
-// NNetCommands
+// Toolbox\Win32_utilities
 
 module;
 
 #include <iostream>
-#include "Resource.h"
 
 export module NNetCommands:SetGridCmd;
 
@@ -13,15 +12,12 @@ import IoConstants;
 import Win32_Util_Resource;
 import RootWindow;
 import WinManager;
-import Commands;
 import WrapSetGrid;
-import :AnimationCmd;
+import AnimationCommand;
 
-using std::wstring;
 using std::wostream;
-using std::make_unique;
 
-using FloatAnimationCmd = AnimationCmd<float>;
+using FloatAnimationCmd = AnimationCommand<float>;
 
 export class SetGridCmd : public FloatAnimationCmd
 {

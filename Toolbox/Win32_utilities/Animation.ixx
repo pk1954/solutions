@@ -4,6 +4,7 @@
 
 module;
 
+#include <concepts>
 #include <iostream>
 #include "bit"
 #include "Windows.h"
@@ -18,13 +19,23 @@ import ThreadPoolTimer;
 
 using std::bit_cast;
 using std::move;
+using std::same_as;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
+
+//template <typename T>
+//concept IsLinearCombinable = requires(T a, T b, float f) {
+//    { a += b } -> same_as<T&>;
+//    { a -= b } -> same_as<T&>;
+//    { a *= f } -> same_as<T&>;
+//};
 
 export template <typename ANIM_TYPE>
 class Animation
 {
 public:
+
+    //static_assert(IsLinearCombinable<ANIM_TYPE>, "ANIM_TYPE must be linear combinable");
 
     Animation
     (
@@ -96,7 +107,7 @@ private:
         ReleaseSRWLockExclusive(& m_srwlData);
     }
 
-    void callUI() // runs in Animation thread
+    void callUI() // runs in animation thread
     {
         WinManager::PostMessage2MainWin(WM_APP_UI_CALL, 0, bit_cast<LPARAM>(m_pCmd)); // calls DoCall from UI thread
     }

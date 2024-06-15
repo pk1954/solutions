@@ -64,8 +64,10 @@ export inline int const IDM_NEXT_SCRIPT_CMD       { 50 };
 export inline int const IDM_SLOWER                { 51 };
 export inline int const IDM_FASTER                { 52 };
                                                   
-export inline int const IDM_TRACKBAR              { 62 };
-                                                  
+export inline int const IDM_TRACKBAR              { 60 };
+
+export inline int const IDD_SCALES_UPDATE         { 61 };
+export inline int const IDD_GRID_UPDATE           { 62 };
 export inline int const IDM_ZOOM_MODE             { 64 };
 export inline int const IDM_FIT_ZOOM              { 65 };
 export inline int const IDM_SET_ZOOM              { 66 };

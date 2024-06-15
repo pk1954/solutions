@@ -248,7 +248,6 @@ void NNetAppWindow::setModelInterface()
 {
 	NNetCommand       ::SetModelInterface(&m_nmwi);
 	m_parameterDlg     .SetModelInterface(&m_nmwi);
-	m_cmdStack         .SetModelInterface(&m_nmwi);
 	m_compute          .SetModelInterface(&m_nmwi);
 	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);

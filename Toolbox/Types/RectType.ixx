@@ -304,6 +304,47 @@ public:
 		return POS_TYPE::ZERO_VAL();
 	}
 
+    RectType& operator+=(RectType const &rhs)
+    {
+	    m_Left   += rhs.m_Left;
+	    m_Top	 += rhs.m_Top;
+	    m_Right	 += rhs.m_Right;
+	    m_Bottom += rhs.m_Bottom;
+        return *this; 
+    }
+
+    RectType& operator-=(RectType const &rhs)
+    {
+	    m_Left   -= rhs.m_Left;
+	    m_Top	 -= rhs.m_Top;
+	    m_Right	 -= rhs.m_Right;
+	    m_Bottom -= rhs.m_Bottom;
+        return *this; 
+    }
+
+    RectType& operator*=(float const factor)
+    {
+	    m_Left   = static_cast<BASE_TYPE>(Cast2Float(m_Left  .GetValue()) * factor);
+	    m_Top	 = static_cast<BASE_TYPE>(Cast2Float(m_Top   .GetValue()) * factor);
+	    m_Right	 = static_cast<BASE_TYPE>(Cast2Float(m_Right .GetValue()) * factor);
+	    m_Bottom = static_cast<BASE_TYPE>(Cast2Float(m_Bottom.GetValue()) * factor);
+        return *this; 
+    }
+
+	friend RectType operator+ (RectType const a, RectType const b)
+	{ 
+		RectType res { a }; 
+		res += b; 
+		return res; 
+	}
+
+	friend RectType operator- (RectType const a, RectType const b) 
+	{ 
+		RectType res { a }; 
+		res -= b;
+		return res; 
+	}
+
 	friend RectType operator+ (RectType const a, POS_TYPE const b)
 	{ 
 		RectType res { a }; 

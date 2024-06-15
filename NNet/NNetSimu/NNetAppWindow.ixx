@@ -13,6 +13,7 @@ export module NNetAppWindow;
 
 import AboutBox;
 import Observable;
+import Commands;
 import SlowMotionRatio;
 import ColLutDesigner;
 import DisplayFunctor;
@@ -81,7 +82,7 @@ private:
 	HiResTimer               m_atComputation;
 	HiResTimer               m_atDisplay;
 	AppTitle                 m_appTitle;
-	NNetCommandStack         m_cmdStack;
+	CommandStack             m_cmdStack;
 	ColLutDesigner           m_colLutWindow;
 	CrsrWindow               m_crsrWindow;
 	DescriptionWindow        m_descWindow;

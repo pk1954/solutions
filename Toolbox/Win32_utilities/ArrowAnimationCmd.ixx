@@ -1,6 +1,6 @@
 // ArrowAnimationCmd.ixx
 //
-// NNetCommands
+// Toolbox\Win32_utilities
 
 module;
 
@@ -8,10 +8,12 @@ module;
 
 export module NNetCommands:ArrowAnimationCmd;
 
+import Types;
+import IoUtil;
 import IoConstants;
-import :AnimationCmd;
+import AnimationCommand;
 
-using MicroMeterAnimationCmd = AnimationCmd<MicroMeter>;
+using MicroMeterAnimationCmd = AnimationCommand<MicroMeter>;
 
 export class ArrowAnimationCmd : public MicroMeterAnimationCmd
 {

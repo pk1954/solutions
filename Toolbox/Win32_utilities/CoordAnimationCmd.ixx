@@ -1,6 +1,6 @@
 // CoordAnimationCmd.ixx
 //
-// NNetCommands
+// Toolbox\Win32_utilities
 
 module;
 
@@ -8,10 +8,11 @@ module;
 
 export module NNetCommands:CoordAnimationCmd;
 
+import Types;
 import Uniform2D;
-import :AnimationCmd;
+import AnimationCommand;
 
-using U2DAnimationCmd = AnimationCmd<Uniform2D<MicroMeter>>;
+using U2DAnimationCmd = AnimationCommand<Uniform2D<MicroMeter>>;
 
 export class CoordAnimationCmd : public U2DAnimationCmd
 {

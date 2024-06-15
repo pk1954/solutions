@@ -10,7 +10,7 @@ module;
 export module NNetCommands:DeleteSelectionCommand;
 
 import :DeleteNobCommand;
-import :NNetCommandStack;
+import Commands;
 import :NNetCommand;
 
 using std::unique_ptr;
@@ -68,5 +68,5 @@ private:
 		}
 	} m_wrapper { NAME };
 
-	NNetCommandStack m_cmdStack {};
+	CommandStack m_cmdStack {};
 };

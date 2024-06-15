@@ -654,11 +654,6 @@ bool MainWindow::UserProc
 	LPARAM const lParam 
 )
 {
-	if (uMsg == WM_APP_UI_CALL)
-	{ 
-		WinCommand::DoCall(wParam, lParam);
-		return false;
-	}
 	bool bRes;
 	try
 	{

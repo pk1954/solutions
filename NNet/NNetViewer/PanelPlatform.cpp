@@ -68,9 +68,9 @@ void PanelPlatform::calcTargetPanelList()
 
 	PIXEL pixPanelPosX(0_PIXEL);
 	PIXEL pixPanelPosY(0_PIXEL);
-	for (PANEL_RECT &panelRect : m_panelRects.m_list)
+	for (PixelRect &panelRect : m_panelRects)
 	{
-		panelRect.m_rect = PixelRect
+		panelRect = PixelRect
 		(
 			PixelPoint   (pixPanelPosX,    pixPanelPosY), 
 			PixelRectSize(m_pixPanelWidth, m_pixPanelHeight)
@@ -89,7 +89,7 @@ void PanelPlatform::arrangePanels()
 	calcTargetPanelList();
     for (int i = 0; i < m_upPanels.size(); ++i)
 	{
-		m_upPanels[i]->Move(m_panelRects.m_list[i].m_rect, false);
+		m_upPanels[i]->Move(m_panelRects[i], false);
 	}
 }
 
@@ -124,7 +124,7 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 			m_mVmaxAmplitude
 		) 
 	};
-	m_panelRects.m_list.push_back(PANEL_RECT(PixelRect()));
+	m_panelRects.push_back(PixelRect());
 	m_upPanels.push_back(move(upPanel));
 	arrangePanels();
 	recalc();
@@ -137,8 +137,8 @@ void PanelPlatform::removeScan(ScanPanel *p)
 	auto iterUpPanels { find_if(m_upPanels, [p](UpPanel const &upPanel){ return upPanel.get() == p; }) };
 	assert(iterUpPanels != m_upPanels.end());
 	auto index { distance(m_upPanels.begin(), iterUpPanels) };
-	m_upPanels         .erase(m_upPanels         .begin() + index);
-	m_panelRects.m_list.erase(m_panelRects.m_list.begin() + index);
+	m_upPanels  .erase(m_upPanels  .begin() + index);
+	m_panelRects.erase(m_panelRects.begin() + index);
 	arrangePanels();
 	recalc();
 	Notify(false);

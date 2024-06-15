@@ -57,5 +57,8 @@
     <ClCompile Include="Percent.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LinCombVector.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
