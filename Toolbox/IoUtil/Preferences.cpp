@@ -1,6 +1,6 @@
 // Preferences.cpp
 //
-// Toolbox\Commands
+// Toolbox\IoUtil
 
 module;
 
@@ -9,11 +9,11 @@ module;
 #include <fstream>
 #include <string>
 
-module Commands:Preferences;
+module IoUtil:Preferences;
 
 import IoConstants;
 import Scanner;
-import :Wrapper;
+import Commands;
 import SoundInterface;
 
 using std::wofstream;

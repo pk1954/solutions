@@ -24,12 +24,6 @@
     <ClCompile Include="BoolWrapper.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Preferences.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Preferences.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WrapInclude.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +37,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakCommand.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

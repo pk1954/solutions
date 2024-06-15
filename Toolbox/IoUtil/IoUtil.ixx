@@ -14,6 +14,7 @@ export import Color;
 export import :IoBasePeak;
 export import :IoPixFpDim;
 export import :IoPixelTypes;
+export import :Preferences;
 
 import IoConstants;
 import BoolOp;

@@ -1,17 +1,19 @@
 // BreakCommand.ixx
 //
-// Win32_utilities
+// Toolbox\Commands
 
 module;
 
 #include <iostream>
 #include <string>
 
-export module BreakCommand;
+export module Commands:BreakCommand;
 
 import Script;
 import Symtab;
-import Commands;
+import :Wrapper;
+
+using std::wstring;
 
 export class BreakCommand
 {

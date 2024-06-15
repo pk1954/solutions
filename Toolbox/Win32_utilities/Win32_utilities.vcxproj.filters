@@ -159,9 +159,6 @@
     <ClCompile Include="Win32_Util_Resource.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="BreakCommand.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="IncludeCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -235,6 +232,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="AppStartProtocol.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

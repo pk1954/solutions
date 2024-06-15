@@ -21,11 +21,10 @@
   <ItemGroup>
     <ClCompile Include="BaseCommand.ixx" />
     <ClCompile Include="BoolWrapper.ixx" />
+    <ClCompile Include="BreakCommand.ixx" />
     <ClCompile Include="Commands.ixx" />
     <ClCompile Include="CommandStack.cpp" />
     <ClCompile Include="CommandStack.ixx" />
-    <ClCompile Include="Preferences.cpp" />
-    <ClCompile Include="Preferences.ixx" />
     <ClCompile Include="WrapInclude.cpp" />
     <ClCompile Include="Wrapper.ixx" />
     <ClCompile Include="WrapSimulationTime.ixx" />

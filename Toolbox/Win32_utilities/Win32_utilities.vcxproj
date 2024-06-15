@@ -157,8 +157,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationCommand.ixx" />
     <ClCompile Include="AppStartProtocol.ixx" />
-    <ClCompile Include="BreakCommand.ixx" />
     <ClCompile Include="ColLutDesigner.cpp" />
     <ClCompile Include="ColLutDesigner.ixx" />
     <ClCompile Include="ColorDialog.ixx" />

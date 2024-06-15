@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build"  ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Commands\Commands.vcxproj">
+      <Project>{7f40ede9-bae2-4924-87d3-5cd19477b54a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\runtimeCPP\runtimeCPP.vcxproj">
       <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
     </ProjectReference>
@@ -34,6 +37,8 @@
     <ClCompile Include="IoUniform2D.ixx" />
     <ClCompile Include="IoUtil.cpp" />
     <ClCompile Include="IoUtil.ixx" />
+    <ClCompile Include="Preferences.cpp" />
+    <ClCompile Include="Preferences.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

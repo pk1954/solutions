@@ -30,7 +30,7 @@ export class CommandStack
 {
 public:
 
-    virtual void Check() = 0;
+    virtual void Check() {};
 
     void Initialize(Observable* const);
     bool UndoStackEmpty() const;

@@ -11,7 +11,7 @@ module;
 export module Win32_Sound;
 
 import Types;
-import Commands;
+import IoUtil;
 import SoundInterface;
 
 using std::wstring;

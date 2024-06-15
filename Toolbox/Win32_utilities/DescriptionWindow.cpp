@@ -16,6 +16,7 @@ module NNetWin32:DescriptionWindow;
 
 import Win32_Util_Resource;
 import Commands;
+import IoUtil;
 
 using std::array;
 using std::bit_cast;

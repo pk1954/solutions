@@ -1,6 +1,6 @@
 // Preferences.ixx
 //
-// Toolbox\Commands
+// Toolbox\IoUtil
 
 module;
 
@@ -10,11 +10,10 @@ module;
 #include <vector>
 #include <memory>
 
-export module Commands:Preferences;
+export module IoUtil:Preferences;
 
 import SoundInterface;
-import :Wrapper;
-import :BoolWrapper;
+import Commands;
 
 using std::wostream;
 using std::wstring;
