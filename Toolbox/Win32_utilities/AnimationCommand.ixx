@@ -57,9 +57,9 @@ public:
 
 private:
 
-    ANIM_TYPE     & m_animated;
-    ANIM_TYPE const m_start;
-    ANIM_TYPE const m_target;
+    ANIM_TYPE       & m_animated;
+    ANIM_TYPE const   m_start;
+    ANIM_TYPE const & m_target;
 
     unique_ptr<Animation<ANIM_TYPE>> m_upAnimation;
 };
