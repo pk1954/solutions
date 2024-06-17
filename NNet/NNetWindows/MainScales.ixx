@@ -18,6 +18,8 @@ import Direct2D;
 import Uniform2D;
 import RootWindow;
 import NNetCommands;
+import SetGridCmd;
+import SetScalesCmd;
 import Win32_Util;
 import Win32_Util_Resource;
 

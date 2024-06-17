@@ -39,6 +39,7 @@ import NNetModel;
 import NNetCommands;
 import NNetSignals;
 import NNetPreferences;
+import CoordAnimationCmd;
 import StatusBar;
 import NNetWin32;
 

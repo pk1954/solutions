@@ -28,11 +28,6 @@ public:
     static void PushCommand(unique_ptr<BaseCommand> cmd) { m_pStack->PushStackCommand(move(cmd)); }
     static void ClearStack ()                            { m_pStack->Clear(); }
 
-    void UpdateUI() override
-    {
-        WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
-    };
-
     void NextScriptCommand() const final
     {
         if (ScriptStack::IsScriptActive() && !ScriptStack::SingleStepMode())

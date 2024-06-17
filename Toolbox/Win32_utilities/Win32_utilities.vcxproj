@@ -159,7 +159,6 @@
   <ItemGroup>
     <ClCompile Include="AnimationCommand.ixx" />
     <ClCompile Include="AppStartProtocol.ixx" />
-    <ClCompile Include="ArrowAnimationCmd.ixx" />
     <ClCompile Include="ColLutDesigner.cpp" />
     <ClCompile Include="ColLutDesigner.ixx" />
     <ClCompile Include="ColorDialog.ixx" />

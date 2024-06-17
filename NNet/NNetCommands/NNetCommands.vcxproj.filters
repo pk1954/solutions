@@ -201,5 +201,8 @@
     <ClCompile Include="SetScanAreaCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ArrowAnimationCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

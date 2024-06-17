@@ -39,6 +39,7 @@ PanelPlatform::PanelPlatform(HWND const hwndParent)
 		nullptr,
 		nullptr
 	);
+  //  m_upAnimation = make_unique<Animation<PANEL_RECTS>>(this);
 }
 
 void PanelPlatform::calcTargetPanelList()
@@ -139,7 +140,19 @@ void PanelPlatform::removeScan(ScanPanel *p)
 	auto index { distance(m_upPanels.begin(), iterUpPanels) };
 	m_upPanels  .erase(m_upPanels  .begin() + index);
 	m_panelRects.erase(m_panelRects.begin() + index);
-	arrangePanels();
+//	arrangePanels();
+
+	PANEL_RECTS panelRectsStart  { m_panelRects };
+	calcTargetPanelList();
+	PANEL_RECTS panelRectsTarget { m_panelRects };
+	m_panelRects = panelRectsStart;
+	m_upAnimation->Start(m_panelRects, panelRectsTarget);
+
+ //   for (int i = 0; i < m_upPanels.size(); ++i)
+	//{
+	//	m_upPanels[i]->Move(m_panelRects[i], false);
+	//}
+
 	recalc();
 	Notify(false);
 }

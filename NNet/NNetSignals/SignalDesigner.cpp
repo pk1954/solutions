@@ -23,6 +23,7 @@ import Win32_PixelTypes;
 import Direct2D;
 import Scale;
 import Signals;
+import SetGridCmd;
 import NNetCommands;
 import NNetModel;
 import :SimuRunning;

@@ -237,9 +237,6 @@
     <ClCompile Include="AnimationCommand.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ArrowAnimationCmd.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="CoordAnimationCmd.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

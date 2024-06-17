@@ -6,7 +6,7 @@ module;
 
 #include <iostream>
 
-export module NNetCommands:CoordAnimationCmd;
+export module CoordAnimationCmd;
 
 import Types;
 import Uniform2D;
@@ -28,7 +28,6 @@ public:
     void UpdateUI() final
     {
         U2DAnimationCmd::UpdateUI();
-        WinCommand::UpdateUI();
         if (m_pCoordObservable)
             m_pCoordObservable->NotifyAll();
     }

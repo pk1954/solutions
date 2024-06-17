@@ -93,6 +93,7 @@
     <ClCompile Include="AddMicroSensorCmd.ixx" />
     <ClCompile Include="AddModuleCommand.ixx" />
     <ClCompile Include="AddNobsCommand.ixx" />
+    <ClCompile Include="ArrowAnimationCmd.ixx" />
     <ClCompile Include="CreateInitialNobsCmd.ixx" />
     <ClCompile Include="DeleteForkOutputCmd.ixx" />
     <ClCompile Include="DeleteNeuronInputCmd.ixx" />

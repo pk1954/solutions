@@ -23,7 +23,7 @@ public:
 
     virtual void Toggle()
     {
-        Set(!m_bValue);
+        BoolType::Set(!m_bValue);
     }
 
     virtual bool Get() const

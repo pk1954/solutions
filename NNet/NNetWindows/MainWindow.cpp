@@ -34,6 +34,8 @@ import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
 import NNetPreferences;
+import CoordAnimationCmd;
+import ArrowAnimationCmd;
 import :NNetCommandHandler;
 import :MainScales;
 import :Compute;

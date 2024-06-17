@@ -324,11 +324,13 @@ public:
 
     RectType& operator*=(float const factor)
     {
-	    m_Left   = static_cast<BASE_TYPE>(Cast2Float(m_Left  .GetValue()) * factor);
+#pragma warning(disable : 4244)
+		m_Left   = static_cast<BASE_TYPE>(Cast2Float(m_Left  .GetValue()) * factor);
 	    m_Top	 = static_cast<BASE_TYPE>(Cast2Float(m_Top   .GetValue()) * factor);
 	    m_Right	 = static_cast<BASE_TYPE>(Cast2Float(m_Right .GetValue()) * factor);
 	    m_Bottom = static_cast<BASE_TYPE>(Cast2Float(m_Bottom.GetValue()) * factor);
-        return *this; 
+#pragma warning(default : 4244)
+		return *this; 
     }
 
 	friend RectType operator+ (RectType const a, RectType const b)
@@ -356,6 +358,13 @@ public:
 	{ 
 		RectType res { a }; 
 		res -= b;
+		return res; 
+	}
+
+	friend RectType operator* (RectType const a, float const factor) 
+	{ 
+		RectType res { a }; 
+		res *= factor;
 		return res; 
 	}
 

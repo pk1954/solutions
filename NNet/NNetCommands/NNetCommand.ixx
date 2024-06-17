@@ -17,6 +17,9 @@ export import WinCommand;
 export import NNetModel;
 export import NNetWrapperHelpers;
 
+import Win32_Util_Resource;
+import WinManager;
+
 export using std::make_unique;
 export using std::unique_ptr;
 export using std::wstring;
@@ -35,6 +38,11 @@ public:
     {
         m_pNMWI = pNMWI;
     }
+
+    void UpdateUI() override
+    {
+        WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
+    };
 
     virtual NobId GetAffectedNob() const
     {

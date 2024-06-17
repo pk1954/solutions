@@ -6,7 +6,7 @@ module;
 
 #include <iostream>
 
-export module NNetCommands:SetGridCmd;
+export module SetGridCmd;
 
 import IoConstants;
 import Win32_Util_Resource;

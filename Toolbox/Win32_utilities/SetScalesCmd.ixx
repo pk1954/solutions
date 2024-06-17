@@ -6,7 +6,7 @@ module;
 
 #include <iostream>
 
-export module NNetCommands:SetScalesCmd;
+export module SetScalesCmd;
 
 import Types;
 import IoConstants;

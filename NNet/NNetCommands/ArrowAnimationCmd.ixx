@@ -1,16 +1,18 @@
 // ArrowAnimationCmd.ixx
 //
-// Toolbox\Win32_utilities
+// NNetCommands
 
 module;
 
 #include <iostream>
 
-export module NNetCommands:ArrowAnimationCmd;
+export module ArrowAnimationCmd;
 
 import Types;
 import IoUtil;
 import IoConstants;
+import WinManager;
+import Win32_Util_Resource;
 import AnimationCommand;
 
 using MicroMeterAnimationCmd = AnimationCommand<MicroMeter>;
@@ -20,11 +22,11 @@ export class ArrowAnimationCmd : public MicroMeterAnimationCmd
 public:
     using MicroMeterAnimationCmd::MicroMeterAnimationCmd;
 
-    virtual void UpdateUI()
-    {
+    void UpdateUI() override
+    {        
         MicroMeterAnimationCmd::UpdateUI();
-        WinCommand::UpdateUI();
-    }
+        WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(true);
+    };
 
     static void Register()
     {
