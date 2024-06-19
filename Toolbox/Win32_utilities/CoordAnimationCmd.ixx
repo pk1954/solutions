@@ -26,7 +26,7 @@ public:
     using U2DAnimationCmd::U2DAnimationCmd;
 
     void UpdateUI() final
-    {
+    {        
         U2DAnimationCmd::UpdateUI();
         if (m_pCoordObservable)
             m_pCoordObservable->NotifyAll();

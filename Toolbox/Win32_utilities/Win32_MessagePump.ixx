@@ -4,8 +4,8 @@
 
 module;
 
-#include "Windows.h"
 #include <vector>
+#include <Windows.h>
 
 export module MessagePump;
 
@@ -33,7 +33,7 @@ int Run(auto const gameFunc)
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 				if (msg.message == WM_APP_UI_CALL)
-					WinCommand::DoCall(msg.wParam, msg.lParam);
+					WinCommand::AnimationUpdate(msg.wParam, msg.lParam);
 				else if (msg.message == WM_QUIT)
 					break;
 			}

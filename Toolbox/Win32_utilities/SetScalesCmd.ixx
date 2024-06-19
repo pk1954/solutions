@@ -32,7 +32,7 @@ public:
         m_pWin(pWin)
     {}
 
-    virtual void UpdateUI()
+    void UpdateUI() final
     {
         fPixelPointAnimationCmd::UpdateUI();
         m_pWin->SendCommand(IDD_SCALES_UPDATE);

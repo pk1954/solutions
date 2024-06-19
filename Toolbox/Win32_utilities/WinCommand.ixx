@@ -34,7 +34,7 @@ public:
             WinManager::PostCommand2App(IDM_NEXT_SCRIPT_CMD, 0);
     }
 
-    static void DoCall(WPARAM const wParam, LPARAM const lParam)  // called by m_pWin
+    static void AnimationUpdate(WPARAM const wParam, LPARAM const lParam)  // called by m_pWin
     {
         WinCommand* const pAnimCmd { bit_cast<WinCommand* const>(lParam) };
         pAnimCmd->UpdateUI();

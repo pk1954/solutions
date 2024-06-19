@@ -33,8 +33,8 @@ public:
         m_pWin(pWin)
     {}
 
-    virtual void UpdateUI()
-    {
+    void UpdateUI() final
+    {        
         FloatAnimationCmd::UpdateUI();
         m_pWin->SendCommand(IDD_GRID_UPDATE);
     }

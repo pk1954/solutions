@@ -22,8 +22,8 @@ export class ArrowAnimationCmd : public MicroMeterAnimationCmd
 public:
     using MicroMeterAnimationCmd::MicroMeterAnimationCmd;
 
-    void UpdateUI() override
-    {        
+    void UpdateUI() final
+    {
         MicroMeterAnimationCmd::UpdateUI();
         WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(true);
     };

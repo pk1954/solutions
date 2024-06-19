@@ -39,7 +39,7 @@ public:
         m_pNMWI = pNMWI;
     }
 
-    void UpdateUI() override
+    void UpdateUI() final
     {
         WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
     };

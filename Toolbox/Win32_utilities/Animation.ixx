@@ -109,7 +109,12 @@ private:
 
     void callUI() // runs in animation thread
     {
-        WinManager::PostMessage2MainWin(WM_APP_UI_CALL, 0, bit_cast<LPARAM>(m_pCmd)); // calls DoCall from UI thread
+        WinManager::PostMessage2MainWin  // calls AnimationUpdate from UI thread
+        (
+            WM_APP_UI_CALL, 
+            0, 
+            bit_cast<LPARAM>(m_pCmd)
+        );
     }
 
     void next() // runs in animation thread
