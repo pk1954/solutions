@@ -127,3 +127,4 @@
 #define       IDD_FILTER                     800
 
 #define       IDD_REMOVE_SCAN_PANEL          900
+#define       IDD_ANIMATE_PANELS             901

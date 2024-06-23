@@ -29,7 +29,7 @@ public:
         float            & fAnimated,
         float      const & fTarget
     )
-      : FloatAnimationCmd(fAnimated, fTarget),
+      : FloatAnimationCmd(fAnimated, fAnimated, fTarget),
         m_pWin(pWin)
     {}
 

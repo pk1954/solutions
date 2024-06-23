@@ -20,7 +20,7 @@ using std::vector;
 
 export using UpPanel = unique_ptr<ScanPanel>;
 
-using PANEL_RECTS = LinCombVector<PixelRect>;
+export using PANEL_RECTS = LinCombVector<PixelRect>;
 
 export class PanelPlatform :public BaseWindow
 {
@@ -35,20 +35,21 @@ private:
    bool OnSize   (PIXEL const, PIXEL const)                     final;
    void OnPaint  ()                                             final;
 
-   void calcTargetPanelList();
-   void arrangePanels();
+   void calcTargetPanelList(auto const&);
+   PANEL_RECTS getRectsFromPanelList();
+
+   void rearrangePanels();
+   void animatePanels();
    void removeScan(ScanPanel *);
    void recalc();
 
    vector<UpPanel> m_upPanels;
-   PANEL_RECTS     m_panelRects;
+   PANEL_RECTS     m_panelRects;  //animation variable
 
    unique_ptr<Animation<PANEL_RECTS>> m_upAnimation;
 
-   mV    m_mVmaxPixel     { 0.0_mV };
-   mV    m_mVmaxAmplitude { 0.0_mV };
-   long  m_nrOfRows       { 0 };
-   long  m_nrOfCols       { 0 };
-   PIXEL m_pixPanelWidth;
-   PIXEL m_pixPanelHeight;
+   mV   m_mVmaxPixel     { 0.0_mV };
+   mV   m_mVmaxAmplitude { 0.0_mV };
+   long m_nrOfRows       { 0 };
+   long m_nrOfCols       { 0 };
 };

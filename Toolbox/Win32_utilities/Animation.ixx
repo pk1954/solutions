@@ -46,11 +46,16 @@ public:
         m_dwFlags(dwFlags)
     {}
 
-    void Start(ANIM_TYPE const origin, ANIM_TYPE const target)  // runs in UI thread
+    void Start     // runs in UI thread
+    (
+        ANIM_TYPE      * pAnimated, 
+        ANIM_TYPE const& start,
+        ANIM_TYPE const& target
+    )
     {
-        m_start          = origin;
-        m_target         = target;
-        m_distance       = target - origin;
+        m_pAnimated      = pAnimated;
+        m_start          = start;
+        m_distance       = target - m_start;
         m_bTargetReached = false;
         setActual(m_start);
         m_smoothMove.Start(m_uiNrOfSteps);
@@ -65,13 +70,11 @@ public:
         );
     }
 
-    ANIM_TYPE GetActual()
+    void Update()
     {
-        ANIM_TYPE result;
         AcquireSRWLockExclusive(& m_srwlData);
-        result = m_actual;
+        *m_pAnimated = m_actual;
         ReleaseSRWLockExclusive(& m_srwlData);
-        return result;
     }
 
     void SetNrOfSteps(unsigned int const uiNrOfSteps)
@@ -85,10 +88,10 @@ public:
     }
 
 private:
-    ANIM_TYPE m_actual   {};
-    ANIM_TYPE m_start    {};
-    ANIM_TYPE m_target   {};
-    ANIM_TYPE m_distance {};
+    ANIM_TYPE * m_pAnimated {};
+    ANIM_TYPE   m_actual    {};
+    ANIM_TYPE   m_start     {};
+    ANIM_TYPE   m_distance  {};
 
     SmoothMoveFp m_smoothMove;
     WinCommand * m_pCmd           { nullptr };

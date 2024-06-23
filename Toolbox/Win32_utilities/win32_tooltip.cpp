@@ -110,7 +110,7 @@ UP_TTIP ToolTip::createToolTip
 	GetClientRect(upToolTip->m_ti.hwnd, static_cast<LPRECT>(&upToolTip->m_ti.rect));
 
 	upToolTip->sendTTipMessage(TTM_ADDTOOL);
-	SendMessage(upToolTip->m_hwndToolTip, TTM_SETMAXTIPWIDTH, 0, 100);
+	SendMessage(upToolTip->m_hwndToolTip, TTM_SETMAXTIPWIDTH, 0, 200);
 
 	return upToolTip;
 }

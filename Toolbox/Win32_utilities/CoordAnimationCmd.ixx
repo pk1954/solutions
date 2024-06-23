@@ -45,7 +45,7 @@ public:
     {
         if (IsTraceOn())
             TraceStream() << NAME << endl;
-        PushCommand(make_unique<CoordAnimationCmd>(animated, target));
+        PushCommand(make_unique<CoordAnimationCmd>(animated, animated, target));
     }
 
 private:

@@ -45,9 +45,17 @@ EventViewer::EventViewer
 	(
 		[&wstrBuffer, pNMRI](NNetEvent const* pEvent)
 		{
-			wstrBuffer << endl
-				       << pEvent->GetEventTypeName() + SPACE
-			           << Format2wstring<fMicroSecs>(pNMRI->RelativeScanTime(*pEvent));
+			fMicroSecs umScanTime { pNMRI->RelativeScanTime(*pEvent) };
+			float      fSeconds   { umScanTime.GetValue() / 1000000.0f };
+			wstrBuffer << endl << fixed << setprecision(2) << fSeconds << L's';
+			wstrBuffer << SPACE << pEvent->GetEventTypeName();
+			if (pEvent->Type() == EventType::stimulus)
+			{
+				StimulusEvent   const *pStimulusEvent { static_cast<StimulusEvent const *>(pEvent) };
+			    SigGenId        const  idSigGen       { pStimulusEvent->GetId() };
+				SignalGenerator const *pSigGen        { pNMRI->GetSigGenC(idSigGen) };
+				wstrBuffer << SPACE << pSigGen->GetName();
+			}
  		}
 	);   
 	m_upToolTip = CreateWindowToolTip(wstrBuffer.str());

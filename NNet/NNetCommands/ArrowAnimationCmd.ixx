@@ -49,7 +49,7 @@ public:
             TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
 
         if (bAnimation)
-            PushCommand(make_unique<ArrowAnimationCmd>(umAnimated, umTarget));
+            PushCommand(make_unique<ArrowAnimationCmd>(umAnimated, umAnimated, umTarget));
         else
             umAnimated = umTarget;
     }

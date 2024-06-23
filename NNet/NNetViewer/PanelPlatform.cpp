@@ -17,6 +17,7 @@ module PanelPlatform;
 
 import SaveCast;
 import Win32_Util;
+import DeletePanelCmd;
 
 using std::min;
 using std::vector;
@@ -39,10 +40,9 @@ PanelPlatform::PanelPlatform(HWND const hwndParent)
 		nullptr,
 		nullptr
 	);
-  //  m_upAnimation = make_unique<Animation<PANEL_RECTS>>(this);
 }
 
-void PanelPlatform::calcTargetPanelList()
+void PanelPlatform::calcTargetPanelList(auto const& func)
 {
 	PixelRectSize const& pixWinSize { GetClRectSize() };
 	if ((pixWinSize.GetX() == 0_PIXEL) || (pixWinSize.GetY() == 0_PIXEL))
@@ -51,47 +51,57 @@ void PanelPlatform::calcTargetPanelList()
 	long const nrOfPanels { Cast2Long(m_upPanels.size()) };
 	if (nrOfPanels == 0)
 		return;
-	ScanPanel const * const pPanel { m_upPanels.front().get() };
-	m_pixPanelWidth = 0_PIXEL;
+
+	ScanPanel const& panel         { *m_upPanels.front().get() };
+	PIXEL            pixPanelWidth { 0_PIXEL };
 	for (m_nrOfRows = 1; m_nrOfRows <= nrOfPanels; ++m_nrOfRows)
 	{
 		m_nrOfCols = nrOfPanels / m_nrOfRows;
 		PIXEL  const pixPanelHeight   { pixWinSize.GetY() / m_nrOfRows };
 		PIXEL  const pixPanelWidth1   { pixWinSize.GetX() / m_nrOfCols };
-		PIXEL  const pixPanelWidth2   { pPanel->PanelWidthFromHeight(pixPanelHeight) };
+		PIXEL  const pixPanelWidth2   { panel.PanelWidthFromHeight(pixPanelHeight) };
 		PIXEL  const pixPanelWidthMin { min(pixPanelWidth1, pixPanelWidth2) };
-		if (pixPanelWidthMin > m_pixPanelWidth)
-			m_pixPanelWidth = pixPanelWidthMin;
+		if (pixPanelWidthMin > pixPanelWidth)
+			pixPanelWidth = pixPanelWidthMin;
 		else
 			break;
 	}
-	m_pixPanelHeight = pPanel->PanelHeightFromWidth(m_pixPanelWidth);
-
-	PIXEL pixPanelPosX(0_PIXEL);
-	PIXEL pixPanelPosY(0_PIXEL);
-	for (PixelRect &panelRect : m_panelRects)
+	PIXEL pixPanelHeight { panel.PanelHeightFromWidth(pixPanelWidth) };
+	PIXEL pixPanelPosX   { 0_PIXEL };
+	PIXEL pixPanelPosY   { 0_PIXEL };
+	for (int nr = 0; nr < nrOfPanels; ++nr)
 	{
-		panelRect = PixelRect
-		(
-			PixelPoint   (pixPanelPosX,    pixPanelPosY), 
-			PixelRectSize(m_pixPanelWidth, m_pixPanelHeight)
-		);
-		pixPanelPosX += m_pixPanelWidth;
-		if ((pixPanelPosX + m_pixPanelWidth) > pixWinSize.GetX())
+		func(PixelRect(PixelPoint(pixPanelPosX, pixPanelPosY), PixelRectSize(pixPanelWidth, pixPanelHeight)), nr);
+		pixPanelPosX += pixPanelWidth;
+		if ((pixPanelPosX + pixPanelWidth) > pixWinSize.GetX())
 		{
 			pixPanelPosX = 0_PIXEL;
-			pixPanelPosY += m_pixPanelHeight; 
+			pixPanelPosY += pixPanelHeight; 
 		}
 	}
 }
 
-void PanelPlatform::arrangePanels()
+void PanelPlatform::rearrangePanels()
 {
-	calcTargetPanelList();
+	calcTargetPanelList([this](PixelRect const& rect, int const i){ m_upPanels[i]->Move(rect, true); });
+}
+
+void PanelPlatform::animatePanels()
+{
     for (int i = 0; i < m_upPanels.size(); ++i)
+		m_upPanels[i]->Move(m_panelRects[i], true);
+}
+
+PANEL_RECTS PanelPlatform::getRectsFromPanelList()
+{
+	PANEL_RECTS panelRects;
+	for (UpPanel const& upPanel : m_upPanels)
 	{
-		m_upPanels[i]->Move(m_panelRects[i], false);
+		PixelRect rect { upPanel->GetWindowRect() };
+	    MapWindowPoints(HWND_DESKTOP, GetWindowHandle(), (LPPOINT)&rect, 2);
+		panelRects.push_back(rect);
 	}
+	return panelRects;
 }
 
 void PanelPlatform::recalc()
@@ -125,9 +135,8 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 			m_mVmaxAmplitude
 		) 
 	};
-	m_panelRects.push_back(PixelRect());
 	m_upPanels.push_back(move(upPanel));
-	arrangePanels();
+	rearrangePanels();
 	recalc();
 	Notify(false);
 }
@@ -138,29 +147,27 @@ void PanelPlatform::removeScan(ScanPanel *p)
 	auto iterUpPanels { find_if(m_upPanels, [p](UpPanel const &upPanel){ return upPanel.get() == p; }) };
 	assert(iterUpPanels != m_upPanels.end());
 	auto index { distance(m_upPanels.begin(), iterUpPanels) };
-	m_upPanels  .erase(m_upPanels  .begin() + index);
-	m_panelRects.erase(m_panelRects.begin() + index);
-//	arrangePanels();
-
-	PANEL_RECTS panelRectsStart  { m_panelRects };
-	calcTargetPanelList();
-	PANEL_RECTS panelRectsTarget { m_panelRects };
-	m_panelRects = panelRectsStart;
-	m_upAnimation->Start(m_panelRects, panelRectsTarget);
-
- //   for (int i = 0; i < m_upPanels.size(); ++i)
-	//{
-	//	m_upPanels[i]->Move(m_panelRects[i], false);
-	//}
-
+	m_upPanels.erase(m_upPanels.begin() + index);
 	recalc();
-	Notify(false);
+	Notify(true);
+	bool bAnimation { true };
+	if (bAnimation)
+	{
+		PANEL_RECTS rectsTarget; 
+		calcTargetPanelList([&rectsTarget](PixelRect const& rect, int const){ rectsTarget.push_back(rect);});
+		DeletePanelCmd::Push(*this, m_panelRects, move(getRectsFromPanelList()), rectsTarget);
+	}
+	else
+	{
+		rearrangePanels();
+		Notify(true);
+	}
 }
 
 bool PanelPlatform::OnSize(PIXEL const width, PIXEL const height)
 {
 	BaseWindow::OnSize(width, height);
-	arrangePanels();
+	rearrangePanels();
 	Notify(true);
 	return true;
 }
@@ -179,6 +186,11 @@ bool PanelPlatform::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 	{
 	case IDD_REMOVE_SCAN_PANEL:
 		removeScan(bit_cast<ScanPanel*>(lParam));
+		return true;
+
+	case IDD_ANIMATE_PANELS:
+	    animatePanels();
+		Notify(true);
 		return true;
 
 	default:

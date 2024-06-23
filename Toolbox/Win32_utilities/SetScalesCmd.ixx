@@ -28,7 +28,7 @@ public:
         fPixelPoint      & fAnimated,
         fPixelPoint const& fTarget
     )
-      : fPixelPointAnimationCmd(fAnimated, fTarget),
+      : fPixelPointAnimationCmd(fAnimated, fAnimated, fTarget),
         m_pWin(pWin)
     {}
 
