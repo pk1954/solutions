@@ -64,7 +64,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_aboutBox.SetProductName(wstrProductName);
 
 	WinManager       ::Initialize();
-	Model            ::Initialize(&m_lockModelObservable, &m_staticModelObservable);
+	Model            ::Initialize(&m_staticModelObservable);
 	Signal           ::Initialize(&m_dynamicModelObservable);
 	WinCommand       ::Initialize(&m_cmdStack);
 	NNetCommand      ::Initialize(&m_sound);
@@ -200,12 +200,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_staticModelObservable        .RegisterObserver(m_undoRedoMenu);
 	m_staticModelObservable        .RegisterObserver(m_appMenu);
 	m_staticModelObservable        .RegisterObserver(m_parameterDlg);
-	m_lockModelObservable          .RegisterObserver(m_appMenu);
-	m_lockModelObservable          .RegisterObserver(m_parameterDlg);
-	m_lockModelObservable          .RegisterObserver(m_mainNNetWindow);
-	m_lockModelObservable          .RegisterObserver(m_appTitle);
-	m_lockModelObservable          .RegisterObserver(m_simulationControl);
-	m_lockModelObservable          .RegisterObserver(m_signalDesigner);
 	m_highlightSigObservable       .RegisterObserver(m_mainNNetWindow);
 	m_highlightSigObservable       .RegisterObserver(m_monitorWindow);
 	m_highlightSigObservable       .RegisterObserver(m_mainNNetWindow);

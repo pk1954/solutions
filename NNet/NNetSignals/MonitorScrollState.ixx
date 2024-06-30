@@ -29,16 +29,19 @@ public:
 
 	void operator() (Script& script) const final
 	{
-		MonitorWindow             * pMonWin   { static_cast<MonitorWindow*>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW))) };
-		PixFpDimension<fMicroSecs>& horzCoord { pMonWin->HorzCoord() };
-		PixFpDimension<mV>        & vertCoord { pMonWin->VertCoord() };
-		vertCoord.SetPixelSize(ScrReadVoltage   (script), false);
-		horzCoord.SetPixelSize(ScrReadfMicroSecs(script), false);
-//		horzCoord.SetOffset   (ScrReadfPixel(script), false);
-		ScrReadfPixel(script);
-//		m_pMonitorWindow->SetHorzScaleLocked(script.ScrReadBool());
-		script.ScrReadBool();
-		pMonWin->Notify(true);
+		mV         const voltage          { ScrReadVoltage(script) };
+		fMicroSecs const fMsecs           { ScrReadfMicroSecs(script) };
+		fPixel     const fPixelOffset     { ScrReadfPixel(script) };
+		bool       const bHorzScaleLocked { script.ScrReadBool() };
+		MonitorWindow   *pMonWin          { static_cast<MonitorWindow*>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW))) };
+		if (pMonWin)
+		{
+			PixFpDimension<fMicroSecs>& horzCoord { pMonWin->HorzCoord() };
+			PixFpDimension<mV>        & vertCoord { pMonWin->VertCoord() };
+			vertCoord.SetPixelSize(voltage, false);
+			horzCoord.SetPixelSize(fMsecs, false);
+			pMonWin->Notify(true);
+		}
 	}
 
 	void Write(wostream& out) const final

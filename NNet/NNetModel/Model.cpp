@@ -48,11 +48,7 @@ using std::right;
 using std::left;
 using std::optional;
 
-void Model::Initialize
-(
-	Observable * const pLockModelObservable,
-	Observable * const pStaticModelObservable
-)
+void Model::Initialize(Observable * const pStaticModelObservable)
 {
 	m_pStaticModelObservable = pStaticModelObservable;
 }

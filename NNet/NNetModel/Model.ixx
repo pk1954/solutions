@@ -48,11 +48,7 @@ export class Model : public ObserverInterface
 {
 public:
 
-	static void Initialize
-	(
-		Observable * const,  // lockModelObservable
-		Observable * const   // staticModelObservable
-	);
+	static void Initialize(Observable * const);   // staticModelObservable
 
 	Model();
 	~Model(); 

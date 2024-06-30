@@ -70,7 +70,7 @@ private:
 export class NNetPreferences
 {
 public:
-	static void Initialize();
+	static void Initialize(bool const = false);  // viewer mode
 
 	static void SetModelInterface(NNetModelReaderInterface const * const);
 

@@ -57,13 +57,14 @@ public:
 class WrapReadModel : public Wrapper
 {
 public:
-    WrapReadModel()
-        : Wrapper(NAME)
+    WrapReadModel(bool const bViewerMode)
+        : Wrapper(NAME),
+          m_bViewerMode(bViewerMode)
     {}
 
     void operator() (Script& script) const final
     {
-        if (Preferences::m_bAutoOpen.Get())
+        if (Preferences::m_bAutoOpen.Get() && !m_bViewerMode)
         {
             NNetModelIO::SetModelFileName(script.ScrReadString());
             WinManager::PostCommand(RootWinId(IDM_APPL_WINDOW), IDM_IMPORT_MODEL);
@@ -76,6 +77,8 @@ public:
     }
 
     inline static const wstring NAME { L"ReadModel" };
+
+    bool m_bViewerMode;
 };
 
 //class WrapColor : public Wrapper
@@ -122,11 +125,11 @@ public:
 //    }
 //};
 
-void NNetPreferences::Initialize()
+void NNetPreferences::Initialize(bool const bViewerMode)
 {
     Preferences::Initialize(L"NNetSimu_UserPreferences.txt");
 
-    Preferences::AddWrapper(make_unique<WrapReadModel>());
+    Preferences::AddWrapper(make_unique<WrapReadModel>(bViewerMode));
     Preferences::AddWrapper(make_unique<WrapInputCablesVisibility>());
    // Preferences::AddWrapper(make_unique<WrapColor>());
     Preferences::AddWrapper(make_unique<WrapSetScales>());

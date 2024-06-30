@@ -25,12 +25,14 @@ class NNetModelIO;
 
 Signal::Signal() 
 {
-    m_pDynModelObservable->RegisterObserver(*this);
+    if (m_pDynModelObservable)
+        m_pDynModelObservable->RegisterObserver(*this);
 }
 
 Signal::~Signal()
 {
-    m_pDynModelObservable->UnregisterObserver(*this);
+    if (m_pDynModelObservable)
+        m_pDynModelObservable->UnregisterObserver(*this);
 }
 
 //bool Signal::operator==(Signal const & rhs) const

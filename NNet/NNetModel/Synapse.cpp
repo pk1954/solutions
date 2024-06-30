@@ -31,10 +31,14 @@ Synapse::Synapse(MicroMeterPnt const& center)
 
 void Synapse::RecalcDelayBuffer()
 {
-	fMicroSecs umDelay { GetParam()->SynapseDelay() };
-	fMicroSecs umRes   { GetParam()->TimeResolution() };
-	size_t     bufSize { static_cast<size_t>(umDelay / umRes) };
-	m_pulseBuffer.Resize(bufSize, 0.0_mV);
+	NNetParameters const * pParams { GetParam() };
+	if (pParams)
+	{
+		fMicroSecs umDelay { pParams->SynapseDelay() };
+		fMicroSecs umRes   { pParams->TimeResolution() };
+		size_t     bufSize { static_cast<size_t>(umDelay / umRes) };
+		m_pulseBuffer.Resize(bufSize, 0.0_mV);
+	}
 }
 
 void Synapse::ClearDynamicData()

@@ -248,11 +248,15 @@ void Pipe::SetNrOfSegments(size_t const n)
 
 void Pipe::RecalcSegments()
 {
-	meterPerSec  const pulseSpeed    { meterPerSec(GetParam()->GetParameterValue(ParamType::Value::pulseSpeed)) };
-	MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, GetParam()->TimeResolution()) };
-	MicroMeter   const pipeLength    { GetLength() };
-	unsigned int const iNrOfSegments { Cast2UnsignedInt(round(pipeLength / segmentLength)) };
-	SetNrOfSegments(max(1U, iNrOfSegments));
+	NNetParameters const * pParams { GetParam() };
+	if (pParams)
+	{
+		meterPerSec  const pulseSpeed    { meterPerSec(pParams->GetParameterValue(ParamType::Value::pulseSpeed)) };
+		MicroMeter   const segmentLength { CoveredDistance(pulseSpeed, pParams->TimeResolution()) };
+		MicroMeter   const pipeLength    { GetLength() };
+		unsigned int const iNrOfSegments { Cast2UnsignedInt(round(pipeLength / segmentLength)) };
+		SetNrOfSegments(max(1U, iNrOfSegments));
+	}
 }
 
 FixedPipeline<mV>& Pipe::getSegments()
