@@ -245,7 +245,7 @@ bool NNetController::processModelCommand(int const wmId, LPARAM const lParam, Mi
     case IDM_COPY_SELECTION:
     case IDM_DELETE:   // keyboard delete key
     case IDM_ESCAPE:
-        WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), wmId);
+        WinManager::SendCommand2MainWin(wmId);
         Script::StopProcessing();
         break;
 

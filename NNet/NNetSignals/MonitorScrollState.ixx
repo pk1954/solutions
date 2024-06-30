@@ -15,7 +15,6 @@ import IoConstants;
 import Script;
 import Symtab;
 import SaveCast;
-import WinManager;
 import Commands;
 import NNetWrapperHelpers;
 import :MonitorWindow;
@@ -25,7 +24,15 @@ using std::endl;
 export class MonitorScrollState : public Wrapper
 {
 public:
-	using Wrapper::Wrapper;
+
+	MonitorScrollState
+	(
+		wstring const & wstrName,
+		MonitorWindow * pMonitorWindow = nullptr
+	)
+      : Wrapper(wstrName),
+ 		m_pMonitorWindow(pMonitorWindow)
+	{}
 
 	void operator() (Script& script) const final
 	{
@@ -33,28 +40,33 @@ public:
 		fMicroSecs const fMsecs           { ScrReadfMicroSecs(script) };
 		fPixel     const fPixelOffset     { ScrReadfPixel(script) };
 		bool       const bHorzScaleLocked { script.ScrReadBool() };
-		MonitorWindow   *pMonWin          { static_cast<MonitorWindow*>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW))) };
-		if (pMonWin)
+		if (m_pMonitorWindow)
 		{
-			PixFpDimension<fMicroSecs>& horzCoord { pMonWin->HorzCoord() };
-			PixFpDimension<mV>        & vertCoord { pMonWin->VertCoord() };
+			PixFpDimension<fMicroSecs>& horzCoord { m_pMonitorWindow->HorzCoord() };
+			PixFpDimension<mV>        & vertCoord { m_pMonitorWindow->VertCoord() };
 			vertCoord.SetPixelSize(voltage, false);
 			horzCoord.SetPixelSize(fMsecs, false);
-			pMonWin->Notify(true);
+			m_pMonitorWindow->Notify(true);
 		}
 	}
 
 	void Write(wostream& out) const final
 	{
-		MonitorWindow             * pMonWin   { static_cast<MonitorWindow*>(WinManager::GetRootWindow(RootWinId(IDM_MONITOR_WINDOW))) };
-		PixFpDimension<fMicroSecs>& horzCoord { pMonWin->HorzCoord() };
-		PixFpDimension<mV>        & vertCoord { pMonWin->VertCoord() };
+		if (m_pMonitorWindow)
+		{
+			PixFpDimension<fMicroSecs>& horzCoord { m_pMonitorWindow->HorzCoord() };
+			PixFpDimension<mV>        & vertCoord { m_pMonitorWindow->VertCoord() };
 
-		WriteCmdName(out);
-		out << vertCoord.GetPixelSize() 
-			<< horzCoord.GetPixelSize() 
-			<< horzCoord.GetPixelOffset() 
-			<< SPACE << pMonWin->IsHorzScaleLocked()
-			<< endl;
+			WriteCmdName(out);
+			out << vertCoord.GetPixelSize() 
+				<< horzCoord.GetPixelSize() 
+				<< horzCoord.GetPixelOffset() 
+				<< SPACE << m_pMonitorWindow->IsHorzScaleLocked()
+				<< endl;
+		}
 	}
+
+private:
+
+	MonitorWindow * m_pMonitorWindow { nullptr };
 };

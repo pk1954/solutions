@@ -13,7 +13,6 @@
 import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
-import WinManager;
 import WinCommand;
 import Commands;
 import SaveCast;
@@ -30,13 +29,8 @@ import NNetPreferences;
 import NNetViewerWindow;
 import ScanViewer;
 
-using std::make_unique;
-using std::unique_ptr;
 using std::wstring;
 using std::wcout;
-using std::endl;
-using std::setw;
-using std::left;
 
 int APIENTRY wWinMain
 (
@@ -63,27 +57,21 @@ int APIENTRY wWinMain
 
 	static wstring const PRODUCT_NAME { L"ViewerApp 1.0 " + BUILD_MODE };
 
-	bool bViewerMode { true };
+	CommandStack     cmdStack;
+	MessagePump      pump;
+	NNetViewerWindow viewerWindow;
+	bool             bViewerMode { true };
 
 	SwitchWcoutTo(L"main_trace.out");
 
 	PrintAppStartProtocol(PRODUCT_NAME);
 	DefineUtilityWrapperFunctions();
-	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");
+	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");  // Every model contains MonitorScrollState
 	NNetModelIO::Initialize();
-	WinManager ::Initialize();
-
-	CommandStack     cmdStack;
-	MessagePump      pump;
-	NNetViewerWindow viewerWindow;
-
-	WinManager::AddWindow(L"IDM_MAIN_WINDOW", RootWinId(IDM_MAIN_WINDOW), viewerWindow, true, false);
-
-	NNetPreferences::Initialize(bViewerMode);    // colorLut
+	NNetPreferences::Initialize(bViewerMode);    
 	WinCommand::Initialize(&cmdStack);
-	cmdStack.Initialize(nullptr);
-
-	Preferences::ReadPreferences();
+	cmdStack.Initialize(nullptr);                // DeleteScan is a command
+	Preferences::ReadPreferences();              // colorLut
 
 	pump.RegisterWindow(viewerWindow.GetWindowHandle(), false);
 

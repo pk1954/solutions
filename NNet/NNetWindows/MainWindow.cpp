@@ -472,7 +472,7 @@ void MainWindow::centerAndZoomRect
 	MicroMeterRect        umRect { m_pNMRI->GetUPNobsC().CalcEnclosingRect(mode) };
 	umRect.ScaleRect(NEURON_RADIUS);
 	CenterAndZoomRect(coordTarget, umRect, fRatioFactor);
-	CoordAnimationCmd::Push(GetCoord(), coordTarget);
+	CoordAnimationCmd::Push(*this, GetCoord(), coordTarget);
 }
 
 void MainWindow::OnPaint()

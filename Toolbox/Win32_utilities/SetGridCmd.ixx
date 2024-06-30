@@ -25,18 +25,17 @@ public:
 
     SetGridCmd
     (
-        RootWindow * const pWin,
-        float            & fAnimated,
-        float      const & fTarget
+        RootWindow  & rootWin,
+        float       & fAnimated,
+        float const & fTarget
     )
-      : FloatAnimationCmd(fAnimated, fAnimated, fTarget),
-        m_pWin(pWin)
+      : FloatAnimationCmd(rootWin, fAnimated, fAnimated, fTarget)
     {}
 
     void UpdateUI() final
     {        
         FloatAnimationCmd::UpdateUI();
-        m_pWin->SendCommand(IDD_GRID_UPDATE);
+        m_rootWinAnim.SendCommand(IDD_GRID_UPDATE);
     }
 
     static void Push
@@ -56,7 +55,7 @@ public:
 
         if (bAnimation)
         {
-            PushCommand(make_unique<SetGridCmd>(&rootWin, fAnimated, fTarget));
+            PushCommand(make_unique<SetGridCmd>(rootWin, fAnimated, fTarget));
         }
         else
         {
@@ -64,8 +63,4 @@ public:
             rootWin.SendCommand(IDD_GRID_UPDATE);
         }
     }
-
-private:
-
-    RootWindow * m_pWin { nullptr };
 };

@@ -39,13 +39,13 @@ public:
 	void Toggle() final // comes from menu
 	{
 		BoolType::Toggle();
-		WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, true);
+		WinManager::SendCommand2MainWin(IDD_ARROW_ANIMATION, true);
 	}
 
 	bool Set(bool const bActive) final  // comes from preferences script
 	{
 		bool const bOld = BoolType::Set(bActive);
-		WinManager::SendCommand(RootWinId(IDM_MAIN_WINDOW), IDD_ARROW_ANIMATION, false);
+		WinManager::SendCommand2MainWin(IDD_ARROW_ANIMATION, false);
 		return bOld;
 	}
 };

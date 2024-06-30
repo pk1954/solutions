@@ -39,13 +39,14 @@ public:
 
     static void Push
     (
+        RootWindow                 & rootWin,
         Uniform2D<MicroMeter>      & animated,
         Uniform2D<MicroMeter> const& target
     )
     {
         if (IsTraceOn())
             TraceStream() << NAME << endl;
-        PushCommand(make_unique<CoordAnimationCmd>(animated, animated, target));
+        PushCommand(make_unique<CoordAnimationCmd>(rootWin, animated, animated, target));
     }
 
 private:

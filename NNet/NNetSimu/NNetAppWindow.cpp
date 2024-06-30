@@ -75,7 +75,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_cmdStack      .Initialize(&m_staticModelObservable);
 	m_NNetController.Initialize(&m_compute, &m_slowMotionRatio, &m_appTitle);
 
-	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");
+	NNetModelIO::AddModelWrapperUp(make_unique<MonitorScrollState>(L"MonitorScrollState", &m_monitorWindow));
 	Nob::SetColorLut(NNetPreferences::m_colorLutVoltage);
 
 	m_hwndApp = StartBaseWindow

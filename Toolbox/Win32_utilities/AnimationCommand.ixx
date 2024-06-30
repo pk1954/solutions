@@ -9,6 +9,7 @@ module;
 
 export module AnimationCommand;
 
+import RootWindow;
 import Animation;
 import WinCommand;
 
@@ -25,15 +26,17 @@ class AnimationCommand : public WinCommand
 public:
     AnimationCommand
     (
-        ANIM_TYPE         & animated,
-        ANIM_TYPE    const& start,
-        ANIM_TYPE    const& target
+        RootWindow     & rootWinAnim,
+        ANIM_TYPE      & animated,
+        ANIM_TYPE const& start,
+        ANIM_TYPE const& target
     )
-      : m_animated(animated),
+      : m_rootWinAnim(rootWinAnim),
+        m_animated(animated),
         m_start (start),
         m_target(target)
     {
-        m_upAnimation = make_unique<Animation<ANIM_TYPE>>(this);
+        m_upAnimation = make_unique<Animation<ANIM_TYPE>>(m_rootWinAnim, this);
     }
 
     void SetNrOfSteps(unsigned int const  uiNrOfSteps)
@@ -60,6 +63,10 @@ public:
     {
         return true;
     };
+
+protected:
+
+    RootWindow & m_rootWinAnim;
 
 private:
 

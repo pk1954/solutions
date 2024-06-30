@@ -12,7 +12,7 @@ module;
 export module Animation;
 
 import Win32_Util_Resource;
-import WinManager;
+import RootWindow;
 import WinCommand;
 import SmoothMoveFp;
 import ThreadPoolTimer;
@@ -39,10 +39,12 @@ public:
 
     Animation
     (
+        RootWindow & rootWindow,
         WinCommand * pCmd, 
-        DWORD const dwFlags = 0
+        DWORD  const dwFlags = 0
     )
-      : m_pCmd(pCmd),
+      : m_rootWindow(rootWindow),
+        m_pCmd(pCmd),
         m_dwFlags(dwFlags)
     {}
 
@@ -93,6 +95,7 @@ private:
     ANIM_TYPE   m_start     {};
     ANIM_TYPE   m_distance  {};
 
+    RootWindow & m_rootWindow;
     SmoothMoveFp m_smoothMove;
     WinCommand * m_pCmd           { nullptr };
     DWORD  const m_dwFlags        { 0 };
@@ -112,7 +115,7 @@ private:
 
     void callUI() // runs in animation thread
     {
-        WinManager::PostMessage2MainWin  // calls AnimationUpdate from UI thread
+        m_rootWindow.PostMessage  // calls AnimationUpdate from UI thread
         (
             WM_APP_UI_CALL, 
             0, 

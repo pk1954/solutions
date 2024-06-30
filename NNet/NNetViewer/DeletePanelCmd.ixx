@@ -19,13 +19,12 @@ export class DeletePanelCmd : public PanelRectsAnimationCmd
 public:
     DeletePanelCmd
     (
-        RootWindow * const pWin,
+        RootWindow       & rootWin,
         PANEL_RECTS      & animated,
         PANEL_RECTS const& start,
         PANEL_RECTS const& target
     )
-      : PanelRectsAnimationCmd(animated, start, target),
-        m_pWin(pWin)
+      : PanelRectsAnimationCmd(rootWin, animated, start, target)
     {
       SetNrOfSteps(35);
     }
@@ -33,7 +32,7 @@ public:
     void UpdateUI() final
     {
         PanelRectsAnimationCmd::UpdateUI();
-        m_pWin->SendCommand(IDD_ANIMATE_PANELS);
+        m_rootWinAnim.SendCommand(IDD_ANIMATE_PANELS);
     }
 
     static void Push
@@ -44,10 +43,6 @@ public:
         PANEL_RECTS const& target
     )
     {
-        PushCommand(make_unique<DeletePanelCmd>(&rootWin, animated, start, target));
+        PushCommand(make_unique<DeletePanelCmd>(rootWin, animated, start, target));
     }
-
-private:
-
-    RootWindow * m_pWin { nullptr };
 };

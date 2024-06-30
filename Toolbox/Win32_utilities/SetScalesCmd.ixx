@@ -24,18 +24,17 @@ export class SetScalesCmd : public fPixelPointAnimationCmd
 public:
     SetScalesCmd
     (
-        RootWindow * const pWin,
+        RootWindow       & rootWin,
         fPixelPoint      & fAnimated,
         fPixelPoint const& fTarget
     )
-      : fPixelPointAnimationCmd(fAnimated, fAnimated, fTarget),
-        m_pWin(pWin)
+      : fPixelPointAnimationCmd(rootWin, fAnimated, fAnimated, fTarget)
     {}
 
     void UpdateUI() final
     {
         fPixelPointAnimationCmd::UpdateUI();
-        m_pWin->SendCommand(IDD_SCALES_UPDATE);
+        m_rootWinAnim.SendCommand(IDD_SCALES_UPDATE);
     }
 
     static void Push
@@ -60,15 +59,11 @@ public:
             WrapSetScales::WriteSetScales(TraceStream(), rootWin, bActive);
 
         if (bAnimation)
-            PushCommand(make_unique<SetScalesCmd>(&rootWin, umAnimated, umTarget));
+            PushCommand(make_unique<SetScalesCmd>(rootWin, umAnimated, umTarget));
         else
         {
             umAnimated = umTarget;
             rootWin.SendCommand(IDD_SCALES_UPDATE);
         }
     }
-
-private:
-
-    RootWindow * m_pWin { nullptr };
 };

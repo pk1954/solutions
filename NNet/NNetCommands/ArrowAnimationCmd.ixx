@@ -25,7 +25,7 @@ public:
     void UpdateUI() final
     {
         MicroMeterAnimationCmd::UpdateUI();
-        WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(true);
+        m_rootWinAnim.Notify(true);
     };
 
     static void Register()
@@ -49,7 +49,16 @@ public:
             TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
 
         if (bAnimation)
-            PushCommand(make_unique<ArrowAnimationCmd>(umAnimated, umAnimated, umTarget));
+            PushCommand
+            (
+                make_unique<ArrowAnimationCmd>
+                (
+                    *WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW)),
+                    umAnimated, 
+                    umAnimated, 
+                    umTarget
+                )
+            );
         else
             umAnimated = umTarget;
     }

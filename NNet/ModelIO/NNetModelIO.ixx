@@ -49,12 +49,17 @@ public:
 
 	static NNetModelReaderInterface const& GetExportNMRI() { return *m_pExportNMRI; }
 
+	static void AddModelWrapperUp(unique_ptr<Wrapper> upWrapper)
+	{
+		m_wrapVector.push_back(move(upWrapper));
+	}
+
 	template <Wrap_t WRAPPER>
 	static WRAPPER * AddModelWrapper(wstring const& name)
 	{
 		unique_ptr upWrapper { make_unique<WRAPPER>(name) };
 		WRAPPER  * pWrapper  { upWrapper.get() };
-		m_wrapVector.push_back(move(upWrapper));
+		AddModelWrapperUp(move(upWrapper));
 		return pWrapper;
 	}
 
