@@ -91,14 +91,14 @@ void Apply2AllC(auto const& func) const
 void DrawRasterPoints
 (
     DrawContext const& context,
-    auto        const& getColor
+    auto        const& get
 ) const
 {
     Apply2AllC
     (
         [&](RasterPoint const &rp) 
         { 
-            context.FillRectangle(GetPointRect(rp), getColor(rp)); 
+            context.FillRectangle(GetPointRect(rp), get(rp)); 
         }
     );
 }

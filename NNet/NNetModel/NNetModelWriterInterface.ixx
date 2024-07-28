@@ -15,6 +15,7 @@ export module NNetModel:NNetModelWriterInterface;
 import BoolOp;
 import Types;
 import Signals;
+import D2D_ColorLUT;
 import DescriptionUI;
 import :NNetModelReaderInterface;
 import :NNetParameters;

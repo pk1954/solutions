@@ -11,7 +11,8 @@ module;
 
 export module ColorLUT;
 
-import Color;
+export import Color;
+
 import Observable;
 
 using std::array;
@@ -30,6 +31,8 @@ export bool IsBasePointUndefined(BasePointNr const nr) { return nr == NoBasePoin
 export class ColorLUT : public Observable
 {
 public:
+
+    ~ColorLUT() = default;
 
     inline static int MAX_INDEX { 255 };
 

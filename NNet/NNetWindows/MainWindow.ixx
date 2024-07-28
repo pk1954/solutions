@@ -15,6 +15,7 @@ import Types;
 import HiResTimer;
 import Vector2D;
 import ColorLUT;
+import D2D_ColorLUT;
 import NNetModel;
 import NNetSignals;
 import NNetCommands;
@@ -86,20 +87,21 @@ public:
 
 private:
 
-	MicroMeterPnt       m_umDelta                { NP_ZERO };
-	MicroMeter          m_umArrowSize            { 0._MicroMeter };
-	Compute      const *m_pCompute               { nullptr }; 
-	HiResTimer         *m_pDisplayTimer          { nullptr };
-	Observable         *m_pCoordObservable       { nullptr };
-	Observable         *m_pCursorPosObservable   { nullptr };
-	Observable         *m_pStaticModelObservable { nullptr };
-	NobId               m_nobIdHighlighted       { NO_NOB };
-	NobId               m_nobIdTarget            { NO_NOB };
-	SigGenId            m_idSigGenUnderCrsr      { NO_SIGGEN };
-	SensorId            m_sensorIdSelected       { SensorId::NULL_VAL() };
-	optional<CardPoint> m_scanAreaHandleSelected { nullopt };
-	SelectionMenu       m_selectionMenu;
-	MainScales          m_mainScales;
+	MicroMeterPnt            m_umDelta                { NP_ZERO };
+	MicroMeter               m_umArrowSize            { 0._MicroMeter };
+	Compute           const *m_pCompute               { nullptr }; 
+	HiResTimer              *m_pDisplayTimer          { nullptr };
+	Observable              *m_pCoordObservable       { nullptr };
+	Observable              *m_pCursorPosObservable   { nullptr };
+	Observable              *m_pStaticModelObservable { nullptr };
+	NobId                    m_nobIdHighlighted       { NO_NOB };
+	NobId                    m_nobIdTarget            { NO_NOB };
+	SigGenId                 m_idSigGenUnderCrsr      { NO_SIGGEN };
+	SensorId                 m_sensorIdSelected       { SensorId::NULL_VAL() };
+	optional<CardPoint>      m_scanAreaHandleSelected { nullopt };	
+	unique_ptr<D2D_ColorLUT> m_upScanLut;
+	SelectionMenu            m_selectionMenu;
+	MainScales               m_mainScales;
 
 	bool     setHighlightedNob   (MicroMeterPnt const&);
 	bool     setHighlightedSensor(MicroMeterPnt const&);

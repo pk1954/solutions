@@ -192,6 +192,9 @@
     <ProjectReference Include="..\..\Toolbox\Commands\Commands.vcxproj">
       <Project>{7f40ede9-bae2-4924-87d3-5cd19477b54a}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
+      <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
       <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
     </ProjectReference>

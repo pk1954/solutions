@@ -16,6 +16,7 @@ import NNetWin32;
 
 using std::nullopt;
 using std::unique_ptr;
+using std::make_unique;
 
 ScanViewer::ScanViewer
 (
@@ -37,6 +38,7 @@ ScanViewer::ScanViewer
     m_upFiltered    = m_pNMRI->GetScanImageC()->MeanFilter();
 	wstring wstrTip = m_pNMRI->GetModelFilePath();
 	m_upToolTip     = CreateWindowToolTip(wstrTip);
+	m_upScanLut     = make_unique<D2D_ColorLUT>(&NNetPreferences::m_colorLutScan, GetGraphics());
 }
 
 RawImage const& ScanViewer::GetImage() const
@@ -53,7 +55,7 @@ float ScanViewer::AspectRatio() const
 
 void ScanViewer::PaintGraphics()
 {
-	m_pNMRI->DrawScanImage(m_context, GetImage(), m_mVmaxPixel, NNetPreferences::m_colorLutScan);
+	m_pNMRI->DrawScanImage(m_context, GetImage(), m_mVmaxPixel, m_upScanLut.get());
 }
 
 bool ScanViewer::OnSize(PIXEL const width, PIXEL const height)

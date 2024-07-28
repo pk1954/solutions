@@ -116,10 +116,10 @@ public:
 	MicroSensor      const* GetMicroSensorC(NobId const id)        const { return m_pModel->m_microSensorList.GetMicroSensorC(id); }
 	optional<RasterPoint>   FindRasterPos(MicroMeterPnt const pnt) const { return GetScanRaster().FindRasterPos(pnt); }
 	MicroMeterRect          GetPointRect(RasterPoint const& rp)    const { return GetScanRaster().GetPointRect(rp); }
-	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->m_scanMatrix.Scan(rp); }
+	mV                      Scan(RasterPoint const& rp)            const { return m_pModel->m_upScanMatrix->Scan(rp); }
     SigGenId                FindSigGen(wstring  const& n)          const { return GetSigGenList().FindSigGen(n); }
     bool                    IsValid   (SigGenId const id)          const { return GetSigGenList().IsValid(id); }
-	void                    DensityCorrection(RawImage& image)     const { m_pModel->m_scanMatrix.DensityCorrection(image); }
+	void                    DensityCorrection(RawImage& image)     const { m_pModel->m_upScanMatrix->DensityCorrection(image); }
 	void                    Apply2AllTimestamps(auto const& func)  const { m_pModel->m_timestamps.Apply2All(func); }
 	bool                    AnyScanEvents()                        const { return !m_pModel->m_events.empty(); }
 	fMicroSecs              TimeOfFirstEvent()                     const { return m_pModel->m_events.front()->GetTime(); }
@@ -199,7 +199,7 @@ public:
 	void DrawScanRaster        (DrawContext const&) const;
     void DrawScanAreaHandles   (DrawContext const&, optional<CardPoint> const) const;
     void DrawSensorDensityMap  (DrawContext const&) const;
-    void DrawScanImage         (DrawContext const&, RawImage const&, mV const, ColorLUT const&) const;
+    void DrawScanImage         (DrawContext const&, RawImage const&, mV const, D2D_ColorLUT const *) const;
 	void DrawScanProgress      (DrawContext const&, RasterPoint const& rpProgress) const;
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;

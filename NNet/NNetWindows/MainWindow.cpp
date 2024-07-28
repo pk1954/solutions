@@ -80,6 +80,7 @@ void MainWindow::Start
 	m_pCoordObservable     = & coordObservable;
 	m_pCompute             = & compute;
 	m_pDisplayTimer        = pActionTimer;
+	m_upScanLut            = make_unique<D2D_ColorLUT>(&NNetPreferences::m_colorLutScan, GetGraphics());
 	m_selectionMenu.Start(GetWindowHandle());
 	m_mainScales.Start(this, GetCoord(), coordObservable);
 }
@@ -522,7 +523,7 @@ void MainWindow::drawScanArea()
 				pRawImage = upFiltered.get();
 			}
 			mV const mVmax { pRawImage->CalcMaxValue() };
-			m_pNMRI->DrawScanImage(m_context, *pRawImage, mVmax, NNetPreferences::m_colorLutScan);
+			m_pNMRI->DrawScanImage(m_context, *pRawImage, mVmax, m_upScanLut.get());
 		}
 		else
 		{

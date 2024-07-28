@@ -18,6 +18,7 @@ import Win32_Util_Resource;
 import BoolType;
 import SoundInterface;
 import ColorLUT;
+import D2D_ColorLUT;
 import Commands;
 import WinManager;
 import NNetModelIO;

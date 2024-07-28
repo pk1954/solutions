@@ -16,6 +16,7 @@ import SaveCast;
 import Vector2D;
 import Uniform2D;
 import ColorLUT;
+import D2D_ColorLUT;
 import DrawContext;
 import :ScanPixel;
 import :UPNobList;
@@ -32,10 +33,9 @@ export using RawImage = Vector2D<mV>;
 export class ScanMatrix
 {
 public:
-
     void Prepare(Raster const&, UPNobList const&);
     void DrawScanAreaBackground(DrawContext const&, Raster const&) const;
-    void DrawScanImage         (DrawContext const&, Raster const&, RawImage const&, mV const, ColorLUT const&) const;
+    void DrawScanImage         (DrawContext const&, Raster const&, RawImage const&, mV const, D2D_ColorLUT const *) const;
     void DrawScanAreaHandles   (DrawContext const&, Raster const&, optional<CardPoint> const) const;
     void DrawScanRaster        (DrawContext const&, Raster const&) const;
     void DrawSensorDensityMap  (DrawContext const&, Raster const&, UPNobList const&) const;

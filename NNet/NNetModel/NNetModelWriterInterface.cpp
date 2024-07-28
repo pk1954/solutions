@@ -13,6 +13,7 @@ module NNetModel:NNetModelWriterInterface;
 
 import Observable;
 import Types;
+import D2D_ColorLUT;
 import :IoLinePair;
 import :NobType;
 import :NobId;

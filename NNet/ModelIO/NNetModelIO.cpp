@@ -47,6 +47,7 @@ import WrapSetSigGen;
 import InputOutputUI;
 import NNetWrapperHelpers;
 import NNetModel;
+import NNetPreferences;
 import ThreadPoolTimer;
 
 using std::filesystem::exists;

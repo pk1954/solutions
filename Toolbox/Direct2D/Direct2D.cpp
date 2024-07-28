@@ -61,13 +61,8 @@ void D2D_driver::createResources()
 
 	m_pTextFormat = NewTextFormat(12.0f);
 
-	static Color const COL_FOREGROUND { D2D1::ColorF::Black };
-	m_hr = m_pRenderTarget->CreateSolidColorBrush(COL_FOREGROUND, &m_pBrushForeground);
-	assert(SUCCEEDED(m_hr));
-
-	static Color const COL_BACKGROUND { D2D1::ColorF::White };
-	m_hr = m_pRenderTarget->CreateSolidColorBrush(COL_BACKGROUND, &m_pBrushBackground);
-	assert(SUCCEEDED(m_hr));
+	m_pBrushForeground = CreateBrush(D2D1::ColorF::Black);
+	m_pBrushBackground = CreateBrush(D2D1::ColorF::White);
 }
 
 bool D2D_driver::startFrame()
@@ -88,6 +83,7 @@ void D2D_driver::endFrame()
 		discardResources();
 		createResources();
 	}
+	assert(m_hr == S_OK);
 }
 
 void D2D_driver::Display(function<void()> func)

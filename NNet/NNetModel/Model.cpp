@@ -55,6 +55,7 @@ void Model::Initialize(Observable * const pStaticModelObservable)
 
 Model::Model()
 {
+	m_upScanMatrix = make_unique<ScanMatrix>();
 	m_upNobs       = make_unique<UPNobList>();
 	m_upSigGenList = make_unique<UPSigGenList>();
 	m_upRaster     = make_unique<Raster>();
@@ -344,10 +345,10 @@ optional<CardPoint> Model::SelectScanAreaHandle
 	MicroMeterPnt const& umCrsrPos
 ) const
 {
-	return m_scanMatrix.SelectScanAreaHandle
+	return m_upScanMatrix->SelectScanAreaHandle
 	(
 		context, *m_upRaster.get(), umCrsrPos
 	);
 }
 
-void Model::PrepareScanMatrix() { m_scanMatrix.Prepare(*m_upRaster.get(), *m_upNobs.get()); }
+void Model::PrepareScanMatrix() { m_upScanMatrix->Prepare(*m_upRaster.get(), *m_upNobs.get()); }

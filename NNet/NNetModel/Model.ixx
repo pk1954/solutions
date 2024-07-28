@@ -94,7 +94,7 @@ public:
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;
 
 	EventList                  m_events;
-	ScanMatrix                 m_scanMatrix;
+	unique_ptr<ScanMatrix>     m_upScanMatrix;
 	unique_ptr<Raster>         m_upRaster;
 	unique_ptr<NNetParameters> m_upParam;
 	unique_ptr<UPSigGenList>   m_upSigGenList;

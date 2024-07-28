@@ -17,6 +17,7 @@ import Types;
 import Raster;
 import SaveCast;
 import ColorLUT;
+import D2D_ColorLUT;
 import :ScanPixel;
 import :NNetColors;
 import :UPNobList;
@@ -150,11 +151,11 @@ void ScanMatrix::DrawScanRaster(DrawContext const& context, Raster const& raster
 
 void ScanMatrix::DrawScanImage
 (
-	DrawContext const& context,
-	Raster      const& raster, 
-	RawImage    const& image, 
-	mV          const  mVmax,
-	ColorLUT    const& lut
+	DrawContext  const& context,
+	Raster       const& raster, 
+	RawImage     const& image, 
+	mV           const  mVmax,
+	D2D_ColorLUT const* pLut
 ) const
 {
 	float const fFactor { 255.0f / mVmax };
@@ -162,9 +163,10 @@ void ScanMatrix::DrawScanImage
 	raster.DrawRasterPoints
 	(
 		context, 
-		[&image, fFactor, &lut](auto const &rp) -> Color
+		[&image, fFactor, pLut](auto const &rp) -> ID2D1Brush*
 		{
-			return lut.GetColor(Cast2Byte(image.Get(rp).GetValue() * fFactor));
+			ColIndex const index { Cast2Byte(image.Get(rp).GetValue() * fFactor) };
+			return pLut->GetBrush(index);
 		}
 	);
 }

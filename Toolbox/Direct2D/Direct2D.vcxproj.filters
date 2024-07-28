@@ -21,5 +21,8 @@
     <ClCompile Include="Direct2D.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D2D_ColorLUT.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

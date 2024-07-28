@@ -11,6 +11,7 @@ export module ScanViewer;
 
 import Types;
 import Tooltip;
+import D2D_ColorLUT;
 import NNetPreferences;
 import NNetModel;
 import NNetWin32;
@@ -37,8 +38,9 @@ private:
 	private:
 	};				          
 
-	Controller           m_controller;
-	unique_ptr<RawImage> m_upFiltered;
-	mV            const& m_mVmaxPixel;
-	UP_TTIP              m_upToolTip;
+	Controller               m_controller;
+	unique_ptr<RawImage>     m_upFiltered;
+	unique_ptr<D2D_ColorLUT> m_upScanLut;
+	mV                const& m_mVmaxPixel;
+	UP_TTIP                  m_upToolTip;
 };
