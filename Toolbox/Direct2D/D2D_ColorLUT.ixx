@@ -6,7 +6,7 @@ module;
 
 #include <cassert>
 #include <array>
-#include <memory>
+#include <algorithm>
 #include "d2d1.h"
 
 export module D2D_ColorLUT;
@@ -15,8 +15,6 @@ import Direct2D;
 import ColorLUT;
 
 using std::array;
-using std::unique_ptr;
-using std::make_unique;
 
 export class D2D_ColorLUT
 {
@@ -31,6 +29,17 @@ public:
         m_pDriver(pDriver)
     {}
  
+    ~D2D_ColorLUT()
+    {
+        clear();
+    }
+
+    void Reset(ColorLUT const* pLut)
+    {
+        m_pColorLut = pLut;
+        clear();
+    }
+
     ID2D1Brush* GetBrush(ColIndex const index) const
     {
         ID2D1Brush * pBrush { m_brushTable[index] };
@@ -46,6 +55,13 @@ public:
     }
 
 private:
+
+    void clear()
+    {
+        for (auto &pBrush : m_brushTable)
+            if (pBrush)
+                SafeRelease(&pBrush);
+    }
 
     D2D_driver const * m_pDriver   { nullptr };
     ColorLUT   const * m_pColorLut { nullptr };

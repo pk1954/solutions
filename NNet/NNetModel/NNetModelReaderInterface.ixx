@@ -199,7 +199,7 @@ public:
 	void DrawScanRaster        (DrawContext const&) const;
     void DrawScanAreaHandles   (DrawContext const&, optional<CardPoint> const) const;
     void DrawSensorDensityMap  (DrawContext const&) const;
-    void DrawScanImage         (DrawContext const&, RawImage const&, mV const, D2D_ColorLUT const *) const;
+    void DrawScanImage         (DrawContext const&, RawImage const&, mV const, D2D_ColorLUT const&) const;
 	void DrawScanProgress      (DrawContext const&, RasterPoint const& rpProgress) const;
 
 	optional<CardPoint> SelectScanAreaHandle(DrawContext const&, MicroMeterPnt const&) const;

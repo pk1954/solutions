@@ -65,7 +65,7 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	static wstring const PRODUCT_NAME { L"NNetSimu 6.0 " + BUILD_MODE };
+	static wstring const PRODUCT_NAME { L"NNetSimu 6.1 " + BUILD_MODE };
 
 	SwitchWcoutTo(L"main_trace.out");
 

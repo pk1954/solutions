@@ -55,7 +55,7 @@ float ScanViewer::AspectRatio() const
 
 void ScanViewer::PaintGraphics()
 {
-	m_pNMRI->DrawScanImage(m_context, GetImage(), m_mVmaxPixel, m_upScanLut.get());
+	m_pNMRI->DrawScanImage(m_context, GetImage(), m_mVmaxPixel, *m_upScanLut.get());
 }
 
 bool ScanViewer::OnSize(PIXEL const width, PIXEL const height)

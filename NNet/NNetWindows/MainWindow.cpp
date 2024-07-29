@@ -523,7 +523,7 @@ void MainWindow::drawScanArea()
 				pRawImage = upFiltered.get();
 			}
 			mV const mVmax { pRawImage->CalcMaxValue() };
-			m_pNMRI->DrawScanImage(m_context, *pRawImage, mVmax, m_upScanLut.get());
+			m_pNMRI->DrawScanImage(m_context, *pRawImage, mVmax, *m_upScanLut.get());
 		}
 		else
 		{

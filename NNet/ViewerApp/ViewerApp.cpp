@@ -55,7 +55,7 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	static wstring const PRODUCT_NAME { L"ViewerApp 1.0 " + BUILD_MODE };
+	static wstring const PRODUCT_NAME { L"ViewerApp 1.1 " + BUILD_MODE };
 
 	CommandStack     cmdStack;
 	MessagePump      pump;

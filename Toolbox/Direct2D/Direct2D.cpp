@@ -239,7 +239,7 @@ void D2D_driver::DrawRectangle(fPixelRect const& rect, Color const colF, fPixel 
 		fPixWidth.GetValue(),
 		nullptr  // solid stroke
 	);
-	SafeRelease(& pBrush);
+	SafeRelease(&pBrush);
 }
 
 void D2D_driver::FillRectangle(fPixelRect const& rect, Color const colF) const

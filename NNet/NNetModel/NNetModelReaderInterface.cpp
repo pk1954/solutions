@@ -243,9 +243,9 @@ void NNetModelReaderInterface::DrawSensorDensityMap(DrawContext const& context) 
 	m_pModel->m_upScanMatrix->DrawSensorDensityMap(context, GetScanRaster(), GetUPNobsC());
 }
 
-void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, RawImage const& image, mV const mVmax, D2D_ColorLUT const* pLut) const
+void NNetModelReaderInterface::DrawScanImage(DrawContext const& context, RawImage const& image, mV const mVmax, D2D_ColorLUT const& lut) const
 {
-	m_pModel->m_upScanMatrix->DrawScanImage(context, GetScanRaster(), image, mVmax, pLut);
+	m_pModel->m_upScanMatrix->DrawScanImage(context, GetScanRaster(), image, mVmax, lut);
 }
 
 void NNetModelReaderInterface::DrawScanProgress(DrawContext const& context, RasterPoint const& rpProgress) const
@@ -266,7 +266,7 @@ MicroMeterPnt NNetModelReaderInterface::OrthoVector(NobId const idPipe) const
 
 fMicroSecs NNetModelReaderInterface::TotalScanTime() const 
 { 
-	return GetParamsC().ScanTime() * Cast2Float(GetParamsC().NrOfScans() * GetScanRaster().NrOfPoints());
+	return GetParamsC().ScanTime() * Cast2Float(GetParamsC().NrOfScans() * GetScanRaster().NrOfRasterPoints());
 }
 
 SignalId NNetModelReaderInterface::FindSignalId(NNetSignalSource const * const pSigSrc) const

@@ -37,13 +37,7 @@ void ScanMatrix::Prepare
     if (raster.Size() != Size())
         m_scanPixels.Resize(raster.Size());
     Clear();
-    nobList.Apply2AllC<Pipe>
-	(
-		[this, &raster](Pipe const& p)
-		{ 
-			add2list(p, raster); 
-		}
-	);
+    nobList.Apply2AllC<Pipe>([this, &raster](Pipe const& p){ add2list(p, raster); });
     findMaxNrOfDataPoints();
 }
 
@@ -78,7 +72,7 @@ size_t ScanMatrix::NrOfDataPntsInMatrix() const
 
 float ScanMatrix::DivideByArea(size_t const nrOfPoints) const
 {
-    size_t const nrOfPixels { m_scanPixels.NrOfPoints() };
+    size_t const nrOfPixels { m_scanPixels.NrOfRasterPoints() };
     return (nrOfPixels > 0)
         ? Cast2Float(nrOfPoints) / Cast2Float(nrOfPixels)
         : 0.0f;
@@ -109,7 +103,7 @@ float ScanMatrix::DataPointVariance()
             fVariance += fDiff * fDiff;
         }
     );
-    fVariance /= Cast2Float(m_scanPixels.NrOfPoints());
+    fVariance /= Cast2Float(m_scanPixels.NrOfRasterPoints());
     return fVariance;
 }
 
@@ -155,7 +149,7 @@ void ScanMatrix::DrawScanImage
 	Raster       const& raster, 
 	RawImage     const& image, 
 	mV           const  mVmax,
-	D2D_ColorLUT const* pLut
+	D2D_ColorLUT const& lut
 ) const
 {
 	float const fFactor { 255.0f / mVmax };
@@ -163,10 +157,11 @@ void ScanMatrix::DrawScanImage
 	raster.DrawRasterPoints
 	(
 		context, 
-		[&image, fFactor, pLut](auto const &rp) -> ID2D1Brush*
+		[&image, &lut, fFactor](auto const &rp) -> ID2D1Brush*
 		{
-			ColIndex const index { Cast2Byte(image.Get(rp).GetValue() * fFactor) };
-			return pLut->GetBrush(index);
+			mV       const voltage { image.Get(rp) };
+			ColIndex const index   { Cast2Byte(voltage.GetValue() * fFactor) };
+			return lut.GetBrush(index);
 		}
 	);
 }
@@ -287,15 +282,17 @@ void ScanMatrix::DrawSensorDensityMap
 {
 	if (MaxNrOfDataPoints() > 0.0f)
 	{
-		ColorLUT const lut { sensorDensityLUT() };
+		ColorLUT const lut     { sensorDensityLUT() };	
+		float    const fFactor { 255.0f / MaxNrOfDataPoints() };
+
 		raster.DrawRasterPoints
 		(
 			context, 
-			[this, &lut](auto const &rpRun) -> Color
+			[this, &lut, fFactor](auto const &rpRun) -> Color
 			{
 				size_t   const nrOfPnts { NrOfDataPntsInPixel(rpRun) };
-				ColIndex const colIndex { Cast2Byte((255 * nrOfPnts) / MaxNrOfDataPoints()) };
-				return lut.GetColor(colIndex);
+				ColIndex const index    { Cast2Byte(NrOfDataPntsInPixel(rpRun) * fFactor) };
+				return lut.GetColor(index);
 			}
 		);
 	}
