@@ -17,7 +17,6 @@ import Commands;
 import SlowMotionRatio;
 import ColLutDesigner;
 import DisplayFunctor;
-import Win32_Event;
 import Win32_Sound;
 import HiResTimer;
 import WinManager;

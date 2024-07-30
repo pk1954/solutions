@@ -72,9 +72,6 @@
     <ClCompile Include="Win32_BaseScale.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Event.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Win32_Sound.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

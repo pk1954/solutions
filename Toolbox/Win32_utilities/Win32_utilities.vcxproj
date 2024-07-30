@@ -204,7 +204,6 @@
     <ClCompile Include="Win32_EditLineBox.cpp" />
     <ClCompile Include="Win32_EditLineBox.ixx" />
     <ClCompile Include="Win32_Escape.cpp" />
-    <ClCompile Include="Win32_Event.ixx" />
     <ClCompile Include="Win32_FatalError.ixx" />
     <ClCompile Include="Win32_GraphicsWindow.cpp" />
     <ClCompile Include="Win32_GraphicsWindow.ixx" />

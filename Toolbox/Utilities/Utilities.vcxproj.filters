@@ -33,9 +33,6 @@
     <ClCompile Include="SmoothMoveFp.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EventInterface.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Trace.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
