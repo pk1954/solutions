@@ -36,9 +36,6 @@
     <ClCompile Include="Win32_RootWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Thread.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Win32_TextBuffer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -100,9 +97,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_ArrowButton.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Win32_Thread.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Win32_FatalError.ixx">

@@ -4,6 +4,7 @@
 
 module;
 
+#include <thread>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -23,7 +24,6 @@ import IoConstants;
 import Symtab;
 import Util;
 import Types;
-//import Thread;
 import ScriptFile;
 import Win32_Util;
 import HiResTimer;
@@ -62,6 +62,7 @@ using std::wstring;
 using std::bit_cast;
 using std::endl;
 using std::setprecision;
+using std::thread;
 
 void NNetModelIO::Initialize()
 {
@@ -239,13 +240,6 @@ void NNetModelIO::CheckImportedNobId
     }
 };
 
-static unsigned int __stdcall importModelThreadProc(void * data) 
-{
-    SetThreadDescription(GetCurrentThread(), L"ImportModel");
-    NNetModelIO::importModel();
-    return 0;
-}
-
 bool NNetModelIO::Import
 (
     wstring             const wstrPath,
@@ -267,7 +261,8 @@ bool NNetModelIO::Import
     m_upImportUI      = move(upInputUI);
     m_upImportedNMWI  = make_unique<NNetModelWriterInterface>();
     m_upImportedModel = m_upImportedNMWI->CreateNewModel();
-    ::RunAsAsyncThread(importModelThreadProc, nullptr);
+    thread importThread(NNetModelIO::importModel);
+    importThread.detach();
     return true;
 }
 

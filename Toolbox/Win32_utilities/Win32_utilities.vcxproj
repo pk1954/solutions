@@ -225,8 +225,6 @@
     <ClCompile Include="Win32_TextBuffer.ixx" />
     <ClCompile Include="Win32_TextWindow.cpp" />
     <ClCompile Include="Win32_TextWindow.ixx" />
-    <ClCompile Include="Win32_Thread.cpp" />
-    <ClCompile Include="Win32_Thread.ixx" />
     <ClCompile Include="Win32_Tooltip.cpp" />
     <ClCompile Include="Win32_Tooltip.ixx" />
     <ClCompile Include="Win32_Util.cpp" />
