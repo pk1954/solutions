@@ -23,7 +23,7 @@ import IoConstants;
 import Symtab;
 import Util;
 import Types;
-import Thread;
+//import Thread;
 import ScriptFile;
 import Win32_Util;
 import HiResTimer;
