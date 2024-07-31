@@ -165,6 +165,8 @@
     <ClCompile Include="CoordAnimationCmd.ixx" />
     <ClCompile Include="SetGridCmd.ixx" />
     <ClCompile Include="SetScalesCmd.ixx" />
+    <ClCompile Include="win32_thread.cpp" />
+    <ClCompile Include="Win32_Thread.ixx" />
     <ClCompile Include="WinCommand.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />

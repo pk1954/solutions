@@ -7,6 +7,7 @@ module;
 export module EvoStatistics;
 
 import EnumArray;
+import TextBuffer;
 import EvolutionTypes;
 import Strategy;
 import GridPoint;

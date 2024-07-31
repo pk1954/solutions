@@ -243,5 +243,11 @@
     <ClCompile Include="WrapSetScales.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="win32_thread.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Thread.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

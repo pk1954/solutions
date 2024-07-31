@@ -177,13 +177,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvolutionCoreImpl.h" />
-    <ClInclude Include="EvolutionCoreWrapperHelpers.h" />
-    <ClInclude Include="EvolutionCoreWrappers.h" />
-    <ClInclude Include="geneTypeLimits.h" />
-    <ClInclude Include="MortalityTable.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Action.ixx" />
     <ClCompile Include="ActionOptions.cpp" />
@@ -195,6 +188,9 @@
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCore.ixx" />
     <ClCompile Include="EvolutionCoreImpl.cpp" />
+    <ClCompile Include="EvolutionCoreImpl.ixx" />
+    <ClCompile Include="EvolutionCoreWrapperHelpers.ixx" />
+    <ClCompile Include="EvolutionCoreWrappers.ixx" />
     <ClCompile Include="EvolutionTypes.cpp" />
     <ClCompile Include="EvolutionTypes.ixx" />
     <ClCompile Include="EvoPixelCoords.cpp" />
@@ -234,6 +230,7 @@
     <ClCompile Include="GridModel.cpp" />
     <ClCompile Include="Individual.cpp" />
     <ClCompile Include="Interaction.cpp" />
+    <ClCompile Include="MortalityTable.ixx" />
     <ClCompile Include="PixelCore.ixx" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp" />

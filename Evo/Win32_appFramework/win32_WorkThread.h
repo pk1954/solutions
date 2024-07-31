@@ -4,21 +4,20 @@
 
 module;
 
-#include "util.h"
-#include "GenerationCmd.h"
-#include "ModelInterface.h"
-#include "HistorySystem.h"
+//#include "util.h"
+import GenerationCmd;
+import ModelInterface;
+import HistorySystem.h;
+import Thread;
 import HistGeneration;
-#include "win32_thread.h"
-
-class ActionTimer;
-class EvoEditorWindow;
-class RootWindow;
-class WinManager;
-class HistorySystem;
-class EventInterface;
-class ObserverInterface;
-class WorkThreadInterface;
+import ActionTimer;
+import EvoEditorWindow;
+import RootWindow;
+import WinManager;
+import HistorySystem;
+import EventInterface;
+import ObserverInterface;
+import WorkThreadInterface;
 
 class WorkThreadMessage
 {
