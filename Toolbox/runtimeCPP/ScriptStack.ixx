@@ -2,13 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <memory>
-#include <stack>
-
 export module ScriptStack;
 
+import std;
 import Script;
 
 using std::unique_ptr;

@@ -2,15 +2,9 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <filesystem>
-#include <iostream>
-#include <fstream>
-#include <string>
-
 module IoUtil:Preferences;
 
+import std;
 import IoConstants;
 import Scanner;
 import Commands;

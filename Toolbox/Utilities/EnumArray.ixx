@@ -2,12 +2,9 @@
 //
 // Toolbox/Utilities
 
-module;
-
-#include <functional>
-#include <array>
-
 export module EnumArray;
+
+import std;
 
 using std::array;
 using std::function;

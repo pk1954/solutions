@@ -5,12 +5,11 @@
 module;
 
 #include <cassert>
-#include <array>
-#include <algorithm>
 #include "d2d1.h"
 
 export module D2D_ColorLUT;
 
+import std;
 import Direct2D;
 import ColorLUT;
 

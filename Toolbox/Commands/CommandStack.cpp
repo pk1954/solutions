@@ -2,16 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <cassert>
-#include <iostream>
-#include <memory>
-#include <ranges>
-#include <functional>
-
 module Commands:CommandStack;
 
+import std;
 import Observable;
 import Scanner;
 
@@ -46,13 +39,13 @@ void CommandStack::Clear()
 void CommandStack::clearRedoStack()
 {
     m_CommandStack.erase(m_CommandStack.begin() + m_iIndex, m_CommandStack.end());
-    assert(RedoStackEmpty());
+    //assert(RedoStackEmpty());
 }
 
 BaseCommand* CommandStack::getCmdPtr(size_t const index) const
 {
     BaseCommand* pCmd { m_CommandStack.at(index).get() };
-    assert(pCmd != nullptr);
+    //assert(pCmd != nullptr);
     return pCmd;
 }
 
@@ -68,13 +61,13 @@ BaseCommand& CommandStack::previousCmd() const
 
 void CommandStack::set2OlderCmd()
 {
-    assert(!UndoStackEmpty());
+    //assert(!UndoStackEmpty());
     --m_iIndex;
 }
 
 void CommandStack::set2YoungerCmd()
 {
-    assert(m_iIndex < m_CommandStack.size());
+    //assert(m_iIndex < m_CommandStack.size());
     ++m_iIndex;
 }
 

@@ -2,14 +2,10 @@
 //
 // ToolBox\Utilities
 
-module;
-
-#include <cmath>
-#include <cassert>
-#include <optional>
-
 module Raster;
 
+import std;
+import std.compat;
 import SaveCast;
 import Types;
 

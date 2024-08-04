@@ -4,11 +4,12 @@
 
 module;
 
-#include <iostream>
 #include <Windows.h>
 #include "d2d1helper.h"
 
 export module Color;
+
+import std;
 
 using std::wstring;
 using std::wostream;

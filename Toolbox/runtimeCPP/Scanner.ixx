@@ -2,15 +2,9 @@
 //                                                                         
 // Toolbox\runtimeCPP
 
-module;
-
-#include <functional>
-#include <string>
-#include <iostream>
-#include <string_view>
-
 export module Scanner;
 
+import std;
 import Input;
 
 using std::function;

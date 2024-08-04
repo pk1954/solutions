@@ -2,14 +2,9 @@
 //                                                                        
 // Toolbox\runtimeCPP
 
-module;
-
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <functional>
-
 export module Input;
+
+import std;
 
 using std::wstring;
 using std::wifstream;

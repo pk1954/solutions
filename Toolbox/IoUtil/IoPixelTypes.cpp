@@ -2,10 +2,6 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <compare>
-
 module IoUtil:IoPixelTypes;
 
 import Types;

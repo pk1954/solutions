@@ -2,12 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <fstream>
-#include <iostream>
-
 export module Trace;
+
+import std;
 
 using std::wofstream;
 using std::wstring;

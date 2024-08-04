@@ -2,16 +2,12 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <string>
-#include <iostream>
-
 export module Commands:BoolWrapper;
 
 export import BoolType;
 export import :Wrapper;
 
+import std;
 import IoConstants;
 import Symtab;
 import Script;

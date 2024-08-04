@@ -2,13 +2,10 @@
 //
 // Utilities
 
-module;
-
-#include <Cassert>
-#include <math.h>       // pow
-
 export module LogarithmicTrackbar;
 
+import std;
+import std.compat;
 import Util;
 import SaveCast;
 

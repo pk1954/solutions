@@ -2,16 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <string>
-#include <vector>
-#include <memory>
-#include <iostream>
-#include <functional>
-
 export module Commands:CommandStack;
 
+import std;
 import Script;
 import Scanner;
 import :BaseCommand;

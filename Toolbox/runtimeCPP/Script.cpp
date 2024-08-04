@@ -4,14 +4,12 @@
 
 module;
 
-#include <filesystem>
-#include <iostream>
-#include <limits>  
-#include <string>
-#include <cassert>
+#include <limits.h>
 
 module Script;
 
+import std;
+import std.compat;
 import SaveCast;
 import ErrHndl;
 import Symtab;
@@ -278,7 +276,7 @@ unsigned long Script::ScrReadUlong(void)
 { 
     bool                fNeg    { false };
     unsigned long const ulValue { numeric(L"unsigned long", ULONG_MAX, &fNeg) };
-   return ulValue; 
+    return ulValue; 
 }
 
 //  ScrReadLong: Try to read a long from open test script

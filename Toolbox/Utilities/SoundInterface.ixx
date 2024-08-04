@@ -2,12 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <string>
-
 export module SoundInterface;
 
+import std;
 import Observable;
 import BoolType;
 import Types;

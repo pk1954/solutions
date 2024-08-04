@@ -2,13 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <iostream>
-#include <string>
-
 export module Commands:BreakCommand;
 
+import std;
 import Script;
 import Symtab;
 import :Wrapper;

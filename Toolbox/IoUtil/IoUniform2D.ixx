@@ -2,13 +2,9 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <compare>
-#include <iostream>
-
 export module IoUtil:IoUniform2D;
 
+import std;
 import Uniform2D;
 import IoConstants;
 

@@ -2,26 +2,20 @@
 //
 // Toolbox\BasicUtils
 
-module;
-
-#include <functional>
-#include <sstream>
-#include <string>
-#include <limits>
-#include <vector>
-#include <streambuf>
-#include <chrono>
-#include <ctime>
-
 export module Util;
+
+import std;
+import std.compat;
 
 using std::vector;
 using std::function;
 using std::wstring;
 using std::abs;
-using std::wstringstream;
+using std::wostringstream;
 using std::chrono::system_clock;
+using std::put_time;
 using std::time_t;
+using std::tm;
 
 export using VisCrit = function <bool()>;
 
@@ -105,13 +99,12 @@ export time_t CurrentTime()
 
 export wstring GetCurrentDateAndTime()
 {
-	auto   now      { system_clock::now() };
+    wostringstream woss;
 	time_t now_time { CurrentTime() };
-	char buffer[26];
-	ctime_s(buffer, sizeof(buffer), &now_time);
-	wstringstream wss;
-	wss << buffer;
-	return wss.str();
+ //	tm     ltm;
+ // localtime_r(&now_time, ltm);               // TODO
+ // woss << put_time(ltm, L"%Y-%m-%d %X");
+	return woss.str();
 }
 
 export extern void UpperCase(wstring& str)

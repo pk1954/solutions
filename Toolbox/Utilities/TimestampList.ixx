@@ -2,17 +2,12 @@
 //                                                                          *
 // Toolbox\Utilities
 
-module;
-
-#include <string>
-#include <chrono>
-#include <ctime>
-#include <map>
-
 export module TimestampList;
 
 import Util;
 
+import std;
+import std.compat;
 using std::map;
 using std::wstring;
 using std::chrono::system_clock;

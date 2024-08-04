@@ -4,11 +4,6 @@
 
 module;
 
-#include <bit>
-#include <functional>
-#include <memory>
-#include <array>
-#include <string>
 #include <cassert>
 #include "d2d1.h"
 #include "dwrite.h"
@@ -16,6 +11,8 @@ module;
 
 module Direct2D;
 
+import std;
+import std.compat;
 import Color;
 import Util;
 import Win32_PIXEL;
@@ -146,7 +143,7 @@ IDWriteTextFormat * D2D_driver::NewTextFormat(float const fSize) const
 		L"", //locale
 		& pTextFormat
 	);
-	assert(SUCCEEDED(m_hr));
+	//(SUCCEEDED(m_hr));
 
 	m_hr = pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 

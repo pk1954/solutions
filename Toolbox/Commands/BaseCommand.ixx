@@ -2,16 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <memory>
-#include <functional>
-#include <vector>
-#include <string>
-#include <iostream>
-
 export module Commands:BaseCommand;
 
+import std;
 import SaveCast;
 
 using std::wcout;

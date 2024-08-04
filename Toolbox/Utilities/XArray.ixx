@@ -2,14 +2,9 @@
 //
 // ToolBox\Utilities
 
-module;
-
-#include <cassert>
-#include <array>
-#include <limits>
-#include <functional>
-
 export module XArray;
+
+import std;
 
 using std::function;
 

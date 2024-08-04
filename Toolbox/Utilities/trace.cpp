@@ -4,14 +4,14 @@
 
 module;
 
-#include <string>
-#include <fstream>
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>
 #include <windows.h>
 
 module Trace;
+
+using std::cout;
 
 using std::wofstream;
 using std::wstring;

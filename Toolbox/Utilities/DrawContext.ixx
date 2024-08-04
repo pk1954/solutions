@@ -4,11 +4,11 @@
 
 module;
 
-#include <string>
 #include "d2d1.h"
 
 export module DrawContext;
 
+import std;
 import Uniform2D;
 import Color;
 import Types;

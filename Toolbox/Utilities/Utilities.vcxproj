@@ -156,6 +156,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ConformanceMode>Default</ConformanceMode>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -198,6 +199,7 @@
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <ConformanceMode>true</ConformanceMode>
+      <EnableModules>true</EnableModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

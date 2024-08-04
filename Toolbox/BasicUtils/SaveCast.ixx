@@ -2,12 +2,9 @@
 //
 // Toolbox\BasicUtils
 
-module;
-
-#include <cstdint>
-
 export module SaveCast;
 
+import std.compat;
 import Debug;
 
 using std::uint8_t;

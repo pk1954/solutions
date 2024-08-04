@@ -4,15 +4,13 @@
 
 module;
 
-#include <functional>
-#include <memory>
-#include <string>
 #include "dwrite.h"
 #include "d2d1helper.h"
 #include <Windows.h>
 
 export module Direct2D;
 
+import std;
 import Color;
 import Types;
 import Win32_PIXEL;

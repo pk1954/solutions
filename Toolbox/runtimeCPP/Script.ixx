@@ -2,13 +2,10 @@
 //
 // Toolbox\runtimeCPP
 
-module;
-
-#include <string>
-#include <stdint.h>
-
 export module Script;
 
+import std;
+import std.compat;
 import Scanner;
 import ErrHndl;
 

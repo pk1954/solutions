@@ -4,14 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <compare>
-#include <iostream>
-#include <iomanip>
 #include <Windows.h>
 
 module IoUtil;
 
+import std;
 import SaveCast;
 import BoolOp;
 import Trace;

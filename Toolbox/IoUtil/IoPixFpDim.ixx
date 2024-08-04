@@ -2,13 +2,9 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <compare>
-#include <iostream>
-
 export module IoUtil:IoPixFpDim;
 
+import std;
 import Types;
 import Script;
 import PixFpDimension;

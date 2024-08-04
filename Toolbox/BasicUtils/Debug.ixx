@@ -5,10 +5,13 @@
 module;
 
 #include <cassert>
-#include <limits>
-#include <cstdint>
+//#include <limits>
+//#include <cstdint>
 
 export module Debug;
+
+import std;
+import std.compat;
 
 using std::uint8_t;
 

@@ -2,15 +2,9 @@
 //
 // Utilities
 
-module;
-
-#include <iostream>
-#include <sstream> 
-#include <string> 
-#include <chrono>
-
 export module TextBuffer;
 
+import std;
 import SaveCast;
 import Raster;
 import Types;

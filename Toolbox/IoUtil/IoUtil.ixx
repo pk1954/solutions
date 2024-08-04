@@ -4,8 +4,6 @@
 
 module;
 
-#include <compare>
-#include <iostream>
 #include <Windows.h>
 
 export module IoUtil;
@@ -16,6 +14,7 @@ export import :IoPixFpDim;
 export import :IoPixelTypes;
 export import :Preferences;
 
+import std;
 import IoConstants;
 import BoolOp;
 import SaveCast;

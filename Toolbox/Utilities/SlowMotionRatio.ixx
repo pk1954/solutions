@@ -2,12 +2,9 @@
 //
 // Utilities
 
-module;
-
-#include <array>
-
 export module SlowMotionRatio;
 
+import std;
 import BoolOp;
 import Observable;
 import Types;

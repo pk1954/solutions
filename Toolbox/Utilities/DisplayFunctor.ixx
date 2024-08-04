@@ -2,11 +2,9 @@
 //
 // Utilities
 
-module;
-
-#include <string>
-
 export module DisplayFunctor;
+
+import std;
 
 using std::wstring;
 

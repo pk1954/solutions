@@ -2,16 +2,9 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <compare>
-#include <string>
-#include <iostream>
-#include <vector>
-#include <memory>
-
 export module IoUtil:Preferences;
 
+import std;
 import SoundInterface;
 import Commands;
 

@@ -2,12 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <iostream>
-
 export module Commands:WrapSimulationTime;
 
+import std;
 import SaveCast;
 import Types;
 import SimulationTime;

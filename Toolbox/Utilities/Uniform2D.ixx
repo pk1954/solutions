@@ -2,12 +2,9 @@
 //
 // ToolBox\Utilities
 
-module;
-
-#include <algorithm>
-
 export module Uniform2D;
 
+import std;
 import Util;
 import Observable;
 import PixFpDimension;

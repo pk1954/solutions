@@ -2,11 +2,9 @@
 //
 // ToolBox/Utilities
 
-module;
-
-#include <string>
-
 export module IoConstants;
+
+import std;
 
 using std::wstring;
 

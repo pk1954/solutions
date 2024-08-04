@@ -2,14 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <cassert>
-#include <algorithm>
-#include <vector>
-
 export module Observable;
 
+import std;
 import ObserverInterface;
 
 using std::vector;

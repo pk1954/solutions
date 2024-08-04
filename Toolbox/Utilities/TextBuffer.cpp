@@ -2,14 +2,9 @@
 //
 // Utilities
 
-module;
-
-#include <locale>
-#include <iomanip>
-#include <chrono>
-
 module TextBuffer;
 
+import std;
 import Util;
 import Types;
 

@@ -2,15 +2,9 @@
 //
 // Toolbox\runtimeCPP
 
-module;
-
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <string>
-
 module ErrHndl;
 
+import std;
 import Scanner;
 
 using std::wstring;

@@ -2,14 +2,9 @@
 //
 // Toolbox\Commands
 
-module;
-
-#include <string>
-#include <iostream>
-#include <type_traits>
-
 export module Commands:Wrapper;
 
+import std;
 export import IoConstants;
 export import BoolType;
 export import Script;

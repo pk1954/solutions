@@ -2,11 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <algorithm>
-
 export module BasePeak;
+
+import std;
 
 using std::min;
 using std::max;

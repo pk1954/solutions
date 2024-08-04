@@ -2,11 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <string>
-
 export module DescriptionUI;
+
+import std;
 
 using std::wstring;
 
