@@ -40,8 +40,8 @@ public:
 
 	static void Push(TrackNr const trackNr)
 	{
-		//if (IsTraceOn())  // TODO: fix
-		//	TraceStream() << NAME << trackNr.GetValue() << endl;
+		if (IsTraceOn())
+			TraceStream() << NAME << trackNr.GetValue() << endl;
 		PushCommand(make_unique<AddSigGen2MonitorCmd>(trackNr));
 	}
 
