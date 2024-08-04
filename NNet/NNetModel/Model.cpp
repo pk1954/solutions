@@ -268,7 +268,7 @@ HiResTimer t1, t2, tC;
 
 bool Model::Compute()
 {
-	//tC.BeforeAction();
+	tC.BeforeAction();
 	bool bStop { false };
 	SimulationTime::Tick(m_upParam->TimeResolution());
 	m_upSigGenList->Apply2All([this](SignalGenerator * p) { p->PrepareSigGen(*m_upParam.get()); });
@@ -281,11 +281,11 @@ bool Model::Compute()
 	m_upNobs->Apply2AllC([&bStop](Nob &s) { if (s.CompStep()) bStop = true; });
 	//t2.AfterAction();
 
-	//tC.AfterAction();
+	tC.AfterAction();
 
 	//wcout << L"t1 = " << t1.Average2wstring() << endl;
 	//wcout << L"t2 = " << t2.Average2wstring() << endl;
-	//wcout << L"tC = " << tC.Average2wstring() << endl;
+	wcout << L"tC = " << tC.Average2wstring() << endl;
 
 	return bStop;
 }

@@ -1,0 +1,34 @@
+Initial:
+Release:
+t1 = 30.50 μs
+t2 = 30.70 μs
+tC = 61.30 μs
+
+Debug:
+t1 = 320.50 μs
+t2 = 287.10 μs
+tC = 610.10 μs
+
+sizeof(bool) 1 bytes
+sizeof(Nob) 16 bytes
+sizeof(mV) 4 bytes
+sizeof(NobType) 1 bytes
+sizeof(NobId) 2 bytes
+sizeof(unique_ptr<MicroSensor>) 8 bytes
+sizeof(FixedPipeline<mV>) 40 bytes
+fork             size    64 count   612 sum   39168 bytes
+inputLine        size    48 count   120 sum    5760 bytes
+outputLine       size    40 count   117 sum    4680 bytes
+knot             size    64 count   372 sum   23808 bytes
+inputConnector   size    56 count    18 sum    1008 bytes
+   input conn lists                           16128 bytes
+outputConnector  size    56 count     0 sum       0 bytes
+   output conn lists                              0 bytes
+neuron           size    72 count   162 sum   11664 bytes
+   pipe lists                                  1296 bytes
+synapse          size   176 count   615 sum  108240 bytes
+   blocklists                                     0 bytes
+pipe             size    72 count  2493 sum  179496 bytes
+   segments                                   10008 bytes
+Model                                           440 bytes
+ModelSize                                    401696 bytes

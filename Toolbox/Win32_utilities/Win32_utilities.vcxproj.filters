@@ -39,9 +39,6 @@
     <ClCompile Include="Win32_TextBuffer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Win32_Tooltip.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Win32_AboutBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -243,10 +240,7 @@
     <ClCompile Include="WrapSetScales.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_thread.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Win32_Thread.ixx">
+    <ClCompile Include="win32_tooltip.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

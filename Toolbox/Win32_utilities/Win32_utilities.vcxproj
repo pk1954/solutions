@@ -165,8 +165,7 @@
     <ClCompile Include="CoordAnimationCmd.ixx" />
     <ClCompile Include="SetGridCmd.ixx" />
     <ClCompile Include="SetScalesCmd.ixx" />
-    <ClCompile Include="win32_thread.cpp" />
-    <ClCompile Include="Win32_Thread.ixx" />
+    <ClCompile Include="win32_tooltip.cpp" />
     <ClCompile Include="WinCommand.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />
@@ -226,7 +225,6 @@
     <ClCompile Include="Win32_TextBuffer.ixx" />
     <ClCompile Include="Win32_TextWindow.cpp" />
     <ClCompile Include="Win32_TextWindow.ixx" />
-    <ClCompile Include="Win32_Tooltip.cpp" />
     <ClCompile Include="Win32_Tooltip.ixx" />
     <ClCompile Include="Win32_Util.cpp" />
     <ClCompile Include="Win32_Util.ixx" />
