@@ -57,7 +57,7 @@ public:
 	virtual ~Nob() = default;
 
 	virtual void Check() const;
-	virtual void Dump() const;
+	virtual void Dump () const;
 
 	bool operator==(Nob const &) const;
 	bool operator!=(Nob const & nob) const { return !(this->Nob::operator==(nob)); };

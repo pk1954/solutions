@@ -34,7 +34,7 @@ public:
 	void AppendMenuItems(AddMenuFunc const&) const override;
 
 	void Check() const override;
-	void Dump() const override;
+	void Dump () const override;
 
 	MicroMeterPnt GetPos() const override;
 

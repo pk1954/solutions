@@ -16,6 +16,7 @@ import IoUtil;
 import IoConstants;
 import NNetWrapperHelpers;
 import ErrHndl;
+import NNetModel;
 
 using std::vector;
 using std::wostream;
@@ -29,7 +30,7 @@ using enum NobType::Value;
 
 Pipe* NobIo::getPipePtr(NobId const idNob) const
 {
-    Pipe* pPipe { NNetModelIO::GetImportNMWI().GetNobPtr<Pipe*>(idNob) };
+    Pipe * pPipe { NNetModelIO::GetImportNMWI().GetNobPtr<Pipe*>(idNob) };
     if (pPipe == nullptr)
     {
         unique_ptr<Pipe> upPipe { make_unique<Pipe>() };
@@ -73,11 +74,11 @@ Pipe* NobIo::createPipe
         throw ScriptErrorHandler::ScriptException(999, wstring(L"Error reading Pipe"));
         return nullptr;
     }
-    Nob* const pNobStart { list.GetAt(idStart) };
-    Nob* const pNobEnd   { list.GetAt(idEnd) };
+    PosNob * const pNobStart { static_cast<PosNob *>(list.GetAt(idStart)) };
+    PosNob * const pNobEnd   { static_cast<PosNob *>(list.GetAt(idEnd)) };
     assert(pNobStart);
     assert(pNobEnd);
-    Pipe* pPipe { getPipePtr(idFromScript) };
+    Pipe * pPipe { getPipePtr(idFromScript) };
     assert(pPipe);
     pPipe->SetStartPnt(pNobStart);
     pPipe->SetEndPnt(pNobEnd);

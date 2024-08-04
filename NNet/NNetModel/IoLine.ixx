@@ -13,6 +13,7 @@ import Types;
 import :NNetParameters;
 import :NobType;
 import :PosNob;
+import :Pipe;
 import :Nob;
 
 using std::is_base_of;
@@ -27,8 +28,8 @@ public:
 	  : m_pos(upCenter)
 	{}
 
-	void Dump() const;
-	void Check() const;
+	void Dump () const override;
+	void Check() const override;
 
 	bool CompStep() final { return false; }
 

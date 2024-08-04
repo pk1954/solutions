@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include <new>
 
 export module NNetModel:Fork;
 
@@ -16,7 +15,7 @@ import :NobType;
 import :Pipe;
 import :tHighlight;
 
-export class alignas(std::hardware_constructive_interference_size) Fork : public PosNob
+export class Fork : public PosNob
 {
 public:
 
@@ -56,8 +55,6 @@ public:
     void SelectAllConnected(bool const) final;
 
     void Check() const final;
-
-    //void Dump()  const final;
 
     void SetAllIncoming(PosNob&) final;
     void SetAllOutgoing(PosNob&) final;

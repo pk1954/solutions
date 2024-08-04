@@ -6,7 +6,6 @@ module;
 
 #include <memory>
 #include <cassert>
-#include <new>
 
 export module NNetModel:Knot;
 
@@ -14,6 +13,7 @@ import DrawContext;
 import Geometry;
 import Types;
 import :Nob;
+import :Pipe;
 import :PosNob;
 import :tHighlight;
 import :NobType;
@@ -21,7 +21,7 @@ import :NobType;
 using std::unique_ptr;
 using std::make_unique;
  
-export class alignas(std::hardware_constructive_interference_size) Knot : public PosNob
+export class Knot : public PosNob
 {
 public:
 	explicit Knot(MicroMeterPnt const&);

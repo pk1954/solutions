@@ -13,6 +13,7 @@ import DrawContext;
 import :tHighlight;
 import :IoLine;
 import :PosNob;
+import :Pipe;
 import :Nob;
 
 export class OutputLine : public IoLine

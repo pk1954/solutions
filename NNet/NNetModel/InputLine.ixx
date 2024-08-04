@@ -18,6 +18,7 @@ import :NobType;
 import :Neuron;
 import :IoLine;
 import :PosNob;
+import :Pipe;
 import :SignalGenerator;
 import :StdSigGen;
 

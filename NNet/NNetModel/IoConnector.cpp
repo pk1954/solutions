@@ -19,6 +19,7 @@ import DrawContext;
 import :tHighlight;
 import :NobType;
 import :IoLine;
+import :Pipe;
 import :Nob;
 
 using std::vector;
