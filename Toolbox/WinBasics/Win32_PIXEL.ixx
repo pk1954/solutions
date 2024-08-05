@@ -5,11 +5,11 @@
 module;
 
 #include <cassert>
-#include <iostream>
 #include "Windows.h"
 
 export module Win32_PIXEL;
 
+import std;
 import Types;
 import Script;
 

@@ -4,13 +4,11 @@
 
 module;
 
-#include <concepts>
-#include <iostream>
-#include "bit"
 #include "Windows.h"
 
 export module Animation;
 
+import std;
 import Win32_Util_Resource;
 import RootWindow;
 import WinCommand;

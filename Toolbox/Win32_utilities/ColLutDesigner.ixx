@@ -4,11 +4,11 @@
 
 module;
 
-#include <string>
 #include <Windows.h> 
 
 export module ColLutDesigner;
 
+import std;
 import SaveCast;
 import ColorLUT;
 import Direct2D;

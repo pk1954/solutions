@@ -2,13 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module AnimationCommand;
 
+import std;
 import RootWindow;
 import Animation;
 import WinCommand;

@@ -4,12 +4,11 @@
 
 module;
 
-#include <string>
-#include <iostream>
 #include <Windows.h>
 
 export module AppStartProtocol;
 
+import std;
 import Util;
 import IoConstants;
 import Win32_Util;

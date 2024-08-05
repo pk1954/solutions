@@ -2,20 +2,14 @@
 //
 // Win32_utilities
 
-module;
-
-#include <d2d1helper.h>
-#include <string>
-#include <algorithm>
-
 module D2D_DrawContext;
 
+import std;
 import Direct2D;
 import Color;
 import Types;
 
 using std::wstring;
-using D2D1::ColorF;
 using std::max;
 
 void D2D_DrawContext::Start(D2D_driver * const pGraphics)
@@ -57,7 +51,7 @@ void D2D_DrawContext::DrawLine
 			m_coord.Transform2fPixelPos(umStartPoint),
 			m_coord.Transform2fPixelPos(umEndPoint),
 			fPixWidth,
-			m_bNoColors ? ColorF::Black : col
+			m_bNoColors ? COL_BLACK : col
 		);
 	}
 }
@@ -81,7 +75,7 @@ void D2D_DrawContext::FillCircle
 {
 	fPixel       const fPixRadius { max(m_coord.Transform2fPixel   (umC.GetRadius()), fPixMin) };
 	fPixelCircle const fPixCircle (     m_coord.Transform2fPixelPos(umC.GetPos   ()), fPixRadius);
-	m_pGraphics->FillCircle(fPixCircle, m_bNoColors ? ColorF::Black : col);
+	m_pGraphics->FillCircle(fPixCircle, m_bNoColors ? COL_BLACK : col);
 }
 
 void D2D_DrawContext::FillGradientCircle
@@ -141,7 +135,7 @@ void D2D_DrawContext::FillEllipse
 	m_pGraphics->FillEllipse
 	(
 		m_coord.Transform2fPixelEllipse(umEllipse),
-		m_bNoColors ? ColorF::Black : col
+		m_bNoColors ? COL_BLACK : col
 	);
 }
 
@@ -160,7 +154,7 @@ void D2D_DrawContext::DrawEllipse
 	m_pGraphics->DrawEllipse
 	(
 		m_coord.Transform2fPixelEllipse(umEllipse), 
-		m_bNoColors ? ColorF::Black : col,
+		m_bNoColors ? COL_BLACK : col,
 		m_coord.Transform2fPixel(umWidth)
 	);
 }
@@ -171,7 +165,7 @@ void D2D_DrawContext::DrawBezier
 	MicroMeterPnt const& umPnt1,
 	MicroMeterPnt const& umPnt2,
 	MicroMeterPnt const& umPnt3,
-	BrushHandle           hBrush,
+	BrushHandle          hBrush,
 	fPixel        const  fPixWidth
 ) const
 {
@@ -241,7 +235,7 @@ void D2D_DrawContext::FillArrow
 		m_coord.Transform2fPixelSize(umVector), 
 		m_coord.Transform2fPixel    (umSize),
 		m_coord.Transform2fPixel    (umWidth),
-		m_bNoColors ? ColorF::Black : col 
+		m_bNoColors ? COL_BLACK : col 
 	);
 }
 

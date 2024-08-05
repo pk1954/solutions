@@ -2,12 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <iostream>
-
 export module CoordAnimationCmd;
 
+import std;
 import Types;
 import Uniform2D;
 import AnimationCommand;

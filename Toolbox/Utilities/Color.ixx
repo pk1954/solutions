@@ -162,3 +162,5 @@ public:
 		return res;
 	}
 };
+
+export inline const Color COL_BLACK { 1.0f, 1.0f, 1.0f, 1.0f };
