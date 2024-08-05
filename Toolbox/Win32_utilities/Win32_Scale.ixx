@@ -4,14 +4,12 @@
 
 module;
 
-#include <bit> 
-#include <string> 
-#include <sstream> 
-#include <iomanip> 
-#include "dwrite.h"
+#include <Windows.h>
 
 export module Scale;
 
+import std;
+import std.compat;
 import Win32_Util_Resource;
 import Util;
 import ObserverInterface;

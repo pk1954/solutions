@@ -4,13 +4,11 @@
 
 module;
 
-#include <bit> 
-#include <string> 
 #include <Windows.h> 
-#include "dwrite.h"
 
 export module BaseScale;
 
+import std;
 import Win32_Util_Resource;
 import BoolOp;
 import Types;

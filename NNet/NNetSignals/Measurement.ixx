@@ -2,10 +2,6 @@
 //
 // NNetSignals
 
-module;
-
-#include <dwrite.h>
-
 export module NNetSignals:Measurement;
 
 import Types;

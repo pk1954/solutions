@@ -4,15 +4,13 @@
 
 module;
 
-#include <sstream>
-#include <string>
 #include "Resource.h"
 #include <Windows.h>
 #include <windowsx.h>
-#include "dwrite.h"
 
 module NNetWin32:ParameterDialog;
 
+import std;
 import SaveCast;
 import Win32_Util_Resource;
 import WinManager;

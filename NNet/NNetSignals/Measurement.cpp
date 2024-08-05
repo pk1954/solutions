@@ -2,16 +2,9 @@
 //
 // NNetSignals
 
-module;
-
-#include <sstream> 
-#include <iomanip>
-#include <dwrite.h>
-
-#include <iostream>
-
 module NNetSignals:Measurement;
 
+import std;
 import Types;
 import Util;
 import Color;

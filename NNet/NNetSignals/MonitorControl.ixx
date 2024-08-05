@@ -4,8 +4,6 @@
 
 module;
 
-#include <dwrite.h>
-#include <compare>
 #include <Windows.h>
 
 export module NNetSignals:MonitorControl;

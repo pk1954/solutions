@@ -4,15 +4,12 @@
 
 module;
 
-#include <string>
-#include <cassert>
-#include <vector>
 #include <Windows.h>
-#include "dwrite.h"
 #include "Resource.h"
 
 module NNetSignals:MonitorControl;
 
+import std;
 import Win32_Util_Resource;
 import Types;
 import Signals;

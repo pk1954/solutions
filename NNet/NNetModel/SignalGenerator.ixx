@@ -2,15 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <dwrite.h>
-#include <memory>
-#include <string>
-#include <iostream>
-
 export module NNetModel:SignalGenerator;
 
+import std;
 import IoUtil;
 import IoConstants;
 import ObserverInterface;
