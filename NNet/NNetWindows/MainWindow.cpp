@@ -599,11 +599,11 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		case active: if (!bActive)                     return; break;
 		case none:                                	   return;
 	}
-	ID2D1SolidColorBrush* const pBrush
+	BrushHandle const hBrush
 	{
 		(IsHighlighted(inputLine) || bActive)
-		? m_pBrushSensorSelected
-		: m_pBrushSensorNormal
+		? m_hBrushSensorSelected
+		: m_hBrushSensorNormal
 	};
 	list.DrawInputCable
 	(
@@ -612,7 +612,7 @@ void MainWindow::drawInputCable(InputLine const& inputLine) const
 		m_mainScales.VerticalOffset(), 
 		idSigGen, 
 		inputLine, 
-		pBrush
+		hBrush
 	);
 }
 

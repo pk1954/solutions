@@ -96,12 +96,12 @@ void D2D_DrawContext::FillGradientCircle
 
 void D2D_DrawContext::DrawCircle
 (
-	MicroMeterCircle      const& umCircle,
-	ID2D1SolidColorBrush* const  pBrush,
-	fPixel                const  fPixWidth
+	MicroMeterCircle const& umCircle,
+	BrushHandle      const  hBrush,
+	fPixel           const  fPixWidth
 ) const
 {
-	m_pGraphics->DrawCircle(m_coord.Transform2fPixelCircle(umCircle), pBrush, fPixWidth);
+	m_pGraphics->DrawCircle(m_coord.Transform2fPixelCircle(umCircle), hBrush, fPixWidth);
 }
 
 void D2D_DrawContext::DrawCircle
@@ -126,10 +126,10 @@ void D2D_DrawContext::DrawCircle
 void D2D_DrawContext::FillEllipse
 (
 	MicroMeterEllipse const& umEllipse,
-	ID2D1SolidColorBrush * const pBrush
+	BrushHandle       const  hBrush
 ) const
 {
-	m_pGraphics->FillEllipse(m_coord.Transform2fPixelEllipse(umEllipse), pBrush);
+	m_pGraphics->FillEllipse(m_coord.Transform2fPixelEllipse(umEllipse), hBrush);
 }
 
 void D2D_DrawContext::FillEllipse
@@ -171,7 +171,7 @@ void D2D_DrawContext::DrawBezier
 	MicroMeterPnt const& umPnt1,
 	MicroMeterPnt const& umPnt2,
 	MicroMeterPnt const& umPnt3,
-	ID2D1SolidColorBrush* pBrush,
+	BrushHandle           hBrush,
 	fPixel        const  fPixWidth
 ) const
 {
@@ -181,7 +181,7 @@ void D2D_DrawContext::DrawBezier
 		m_coord.Transform2fPixelPos(umPnt1),
 		m_coord.Transform2fPixelPos(umPnt2),
 		m_coord.Transform2fPixelPos(umPnt3),
-		pBrush,
+		hBrush,
 		fPixWidth
 	);
 }
@@ -245,9 +245,9 @@ void D2D_DrawContext::FillArrow
 	);
 }
 
-void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, ID2D1Brush * const pBrush) const
+void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, BrushHandle const hBrush) const
 {
-	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), pBrush);
+	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), hBrush);
 }
 
 void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, Color col) const
@@ -291,10 +291,10 @@ void D2D_DrawContext::DrawTranspRect(MicroMeterRect const & umRect, Color col) c
 
 void D2D_DrawContext::DisplayText
 (
-	MicroMeterRect      const & umRect,
-	wstring             const & wstr,
-	IDWriteTextFormat * const   pTextFormat
+	MicroMeterRect   const & umRect,
+	wstring          const & wstr,
+	TextFormatHandle const   hTextFormat
 ) const
 {
-	m_pGraphics->DisplayText(m_coord.Transform2fPixelRect(umRect), wstr, pTextFormat);
+	m_pGraphics->DisplayText(m_coord.Transform2fPixelRect(umRect), wstr, hTextFormat);
 }

@@ -9,6 +9,7 @@ module;
 export module NNetSignals:Measurement;
 
 import Types;
+import Color;
 import Direct2D;
 
 export class Measurement
@@ -31,8 +32,8 @@ public:
 	bool IsClose2RightLimit(fPixel const) const;
 
 private:
-	D2D_driver        * m_pGraphics   { nullptr }; 
-	IDWriteTextFormat * m_pTextFormat { nullptr };
+	D2D_driver     * m_pGraphics   { nullptr }; 
+	TextFormatHandle m_hTextFormat { nullptr };
 
 	fPixel m_fPixClientWidth { fPixel::NULL_VAL() };
 	fPixel m_fPixClientHeight{ fPixel::NULL_VAL() };

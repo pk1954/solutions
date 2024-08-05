@@ -54,7 +54,7 @@ void SignalPreview::PaintGraphics()
 			0.0_MicroSecs,
 			GetTime(xRight()),
 			GetParams()->TimeResolution(),
-			m_upGraphics->CreateBrush(D2D1::ColorF::Black),
+			m_upGraphics->CreateBrushHandle(D2D1::ColorF::Black),
 			STD_WIDTH
 		);
 	}

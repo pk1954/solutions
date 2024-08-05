@@ -45,8 +45,8 @@ MonitorControl::MonitorControl
 {
 	SetHorzCoord(&horzCoord);
 	m_measurement.Initialize(m_upGraphics.get());
-	m_pTextFormat = m_upGraphics->NewTextFormat(16.f);
-	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+	m_hTextFormat = m_upGraphics->NewTextFormat(16.f);
+	m_hTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
 	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
 	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);
@@ -58,8 +58,8 @@ MonitorControl::MonitorControl
 	horzCoord  .RegisterObserver(*this);
 	m_vertCoord.RegisterObserver(*this);
 
-	m_pBrushNormal   = m_upGraphics->CreateBrush(ColorF::Black);
-	m_pBrushSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
+	m_hBrushNormal   = m_upGraphics->CreateBrushHandle(ColorF::Black);
+	m_hBrushSelected = m_upGraphics->CreateBrushHandle(EEG_SIGNAL_HIGH);
 
 	SetDefaultBackgroundColor();
 
@@ -304,7 +304,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 	fMicroSecs      const usSimuStop    { min(usSimuEnd  , usSimuNow) };
 			       
 	fPixel          const fPixOffsetY   { getSignalOffset(idSignal) };
-	ID2D1SolidColorBrush *pBrush        { m_pBrushNormal };
+	BrushHandle           hBrush        { m_hBrushNormal };
 	fPixel                fPixWidth     { STD_WIDTH };
 
 	if (getSignalValue(*pSig, usSimuStop).IsNull())
@@ -312,7 +312,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 
 	if (IsSignalHighlighted(idSignal) && (m_pMonitorData->GetNrOfSignals() >1)) 
 	{
-		pBrush = m_pBrushSelected;  // emphasize selected signal 
+		hBrush = m_hBrushSelected;  // emphasize selected signal 
 		fPixWidth = HIGH_WIDTH;
 	}
 
@@ -324,7 +324,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		},
 		usSimuStart, usSimuStop, 
 		GetParams()->TimeResolution(),
-		pBrush,
+		hBrush,
 		fPixWidth
 	);
 
@@ -333,7 +333,7 @@ void MonitorControl::paintSignal(SignalId const & idSignal)
 		m_fPixMaxSignal = fPixMaxSignal;
 
 	fPixelPoint fPixPntSignalNow { getSignalPoint(*pSig, usSimuNow, fPixOffsetY) };
-	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), pBrush);
+	m_upGraphics->FillCircle(fPixelCircle(fPixPntSignalNow, 4.0_fPixel), hBrush);
 	
 	// paint block times
 
@@ -425,7 +425,7 @@ void MonitorControl::paintNumber
 		),
 		to_wstring(iNr), 
 		col, 
-		m_pTextFormat
+		m_hTextFormat
 	);
 }
 

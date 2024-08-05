@@ -4,7 +4,6 @@
 
 module;
 
-#include <d2d1.h>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -72,7 +71,7 @@ public:
         fPixel const,
         SigGenId const,
         InputLine const&,
-        ID2D1SolidColorBrush* const
+        BrushHandle const
     ) const;
 
     void Apply2All(auto const& f)

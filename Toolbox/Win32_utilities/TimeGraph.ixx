@@ -4,7 +4,6 @@
 
 module;
 
-#include <d2d1.h>
 #include <cassert>
 #include <compare>
 #include <math.h>
@@ -41,12 +40,12 @@ protected:
 
 	fPixel Paint
 	(
-		auto                  getPoint,
-		fMicroSecs      const timeStart0,
-		fMicroSecs      const timeEnd,
-		fMicroSecs      const usResolution,
-		ID2D1SolidColorBrush* pBrush,
-		fPixel          const fPixWidth
+		auto             getPoint,
+		fMicroSecs const timeStart0,
+		fMicroSecs const timeEnd,
+		fMicroSecs const usResolution,
+		BrushHandle      hBrush,
+		fPixel     const fPixWidth
 	) const
 	{
 		fMicroSecs const timeStart     { usResolution * Cast2Float(floor(timeStart0 / usResolution)) };
@@ -66,8 +65,8 @@ protected:
 					fPixMinSignal = actPoint.GetY();
 
 				fPixelPoint const stepPoint { actPoint.GetX(), prevPoint.GetY() };
-				m_upGraphics->DrawLine(prevPoint, stepPoint, STD_WIDTH, *pBrush);
-				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, *pBrush);
+				m_upGraphics->DrawLine(prevPoint, stepPoint, STD_WIDTH, *hBrush);
+				m_upGraphics->DrawLine(stepPoint, actPoint,  fPixWidth, *hBrush);
 				prevPoint = actPoint;
 			}
 		}
@@ -88,7 +87,7 @@ protected:
 				if (actPoint.GetX() - prevPoint.GetX() > 1.0_fPixel)
 				{
 					actPoint.SetY(fPixYmin);
-					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, *pBrush);
+					m_upGraphics->DrawLine(prevPoint, actPoint, fPixWidth, *hBrush);
 					prevPoint = actPoint;
 					fPixYmin = fPixel::MAX_VAL();
 				}

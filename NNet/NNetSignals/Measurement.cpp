@@ -4,7 +4,6 @@
 
 module;
 
-#include <d2d1.h> 
 #include <sstream> 
 #include <iomanip>
 #include <dwrite.h>
@@ -15,6 +14,7 @@ module NNetSignals:Measurement;
 
 import Types;
 import Util;
+import Color;
 import Direct2D;
 
 using std::wostringstream;
@@ -22,13 +22,13 @@ using std::setprecision;
 using std::fixed;
 using std::endl;
 
-static D2D1::ColorF const COL_STRONG { 0.0f, 0.4f, 0.0f, 1.0f };
-static D2D1::ColorF const COL_WEAK   { 0.0f, 1.0f, 0.0f, 0.2f };
+static Color const COL_STRONG(0.0f, 0.4f, 0.0f, 1.0f);
+static Color const COL_WEAK  (0.0f, 1.0f, 0.0f, 0.2f);
 
 void Measurement::Initialize(D2D_driver * const pGraphics)
 {
 	m_pGraphics   = pGraphics;
-	m_pTextFormat = pGraphics->NewTextFormat(12.f);
+	m_hTextFormat = pGraphics->NewTextFormat(12.f);
 }
 
 void Measurement::ResetLimits()
@@ -144,7 +144,7 @@ void Measurement::textArea(fMicroSecs const fMicroSecsPerPixel) const
 	static D2D1::ColorF const COL_BACKGROUND { D2D1::ColorF::AntiqueWhite };
 
 	m_pGraphics->FillRectangle(fPixRect, COL_BACKGROUND);
-	m_pGraphics->DisplayText  (fPixRect, wBuffer.str(), COLOR_TEXT, m_pTextFormat);
+	m_pGraphics->DisplayText  (fPixRect, wBuffer.str(), COLOR_TEXT, m_hTextFormat);
 }
 
 bool Measurement::IsClose2LeftLimit (fPixel const fPix) const 

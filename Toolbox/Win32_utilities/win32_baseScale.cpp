@@ -33,7 +33,7 @@ BaseScale::BaseScale
 		L"ClassScale", 
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
-	m_pTextFormat = m_upGraphics->NewTextFormat(12.f);
+	m_hTextFormat = m_upGraphics->NewTextFormat(12.f);
 	SetDefaultBackgroundColor();
 }
 
@@ -46,9 +46,9 @@ void BaseScale::SetTicksDir(bool const bMode)
 { 
 	m_bTicksDir = bMode; 
 	if (m_bVertScale) 
-		m_pTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
+		m_hTextFormat->SetTextAlignment(bMode ? DWRITE_TEXT_ALIGNMENT_TRAILING : DWRITE_TEXT_ALIGNMENT_LEADING);
 	else
-		m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+		m_hTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 };
 
 void BaseScale::setTextBox(fPixelRect & textBox) const
@@ -91,7 +91,7 @@ void BaseScale::display
 ) const
 {
 	m_upGraphics->ClearRectangle(textBox);
-	m_upGraphics->DisplayText(textBox, wstr, m_pTextFormat);
+	m_upGraphics->DisplayText(textBox, wstr, m_hTextFormat);
 }
 
 void BaseScale::OnMouseLeave()

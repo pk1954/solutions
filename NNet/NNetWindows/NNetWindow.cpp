@@ -46,8 +46,8 @@ void NNetWindow::Start
 	SetDefaultBackgroundColor();
 	m_pCmdHandler          = & controller;
 	m_pMonitorWindow       = pMonitorWindow;
-	m_pBrushSensorNormal   = m_upGraphics->CreateBrush(NNetColors::MICRO_SENSOR);
-	m_pBrushSensorSelected = m_upGraphics->CreateBrush(EEG_SIGNAL_HIGH);
+	m_hBrushSensorNormal   = m_upGraphics->CreateBrushHandle(NNetColors::MICRO_SENSOR);
+	m_hBrushSensorSelected = m_upGraphics->CreateBrushHandle(EEG_SIGNAL_HIGH);
 	ShowRefreshRateDlg(bShowRefreshRateDialog);
 }
 
@@ -126,13 +126,13 @@ void NNetWindow::DrawSensors() const
 				pSigSrc->Draw(m_context, false);
 				if (m_pMonitorWindow && m_pMonitorWindow->IsWindowVisible())
 				{
-					ID2D1SolidColorBrush* const pBrush
+					BrushHandle const hBrush
 					{
 						(m_pMonitorWindow->IsSignalHighlighted(signalId) && (monData.GetNrOfSignals() > 1))
-						? m_pBrushSensorSelected
-						: m_pBrushSensorNormal
+						? m_hBrushSensorSelected
+						: m_hBrushSensorNormal
 					};
-					drawSignalCable(signalId, pSigSrc->GetPosition(), *pBrush);
+					drawSignalCable(signalId, pSigSrc->GetPosition(), hBrush);
 				}
 			}
 		}
@@ -164,9 +164,9 @@ void NNetWindow::CenterAndZoomRect
 
 void NNetWindow::drawSignalCable
 (
-	SignalId       const& signalId,
-	MicroMeterPnt  const& umPosSensor,
-	ID2D1SolidColorBrush& brush
+	SignalId      const& signalId,
+	MicroMeterPnt const& umPosSensor,
+	BrushHandle          hBrush
 ) const
 {
 	if (!m_pMonitorWindow)
@@ -191,13 +191,13 @@ void NNetWindow::drawSignalCable
 		fPixPosStart + fPixelPoint(fPixOffset, 0.0_fPixel),
 		fPixPosSensor - fPixDelta * 0.3f,
 		fPixPosSensor,
-		&brush,
+		hBrush,
 		2._fPixel
 	);
 	m_upGraphics->FillEllipse
 	(
 		fPixelEllipse(fPixPosSignal, HRADIUS, VRADIUS),
-		&brush
+		hBrush
 	);
 }
 

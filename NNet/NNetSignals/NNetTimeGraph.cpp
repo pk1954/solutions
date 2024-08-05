@@ -44,7 +44,7 @@ void NNetTimeGraph::PaintFreqCurve(SignalGenerator const * pSigGen)
 		max(0.0_MicroSecs, GetTime(0.0_fPixel)),
 		GetTime(xRight()),
 		GetParams()->TimeResolution(),
-		m_upGraphics->CreateBrush(GetColor(tColor::FREQ)),
+		m_upGraphics->CreateBrushHandle(GetColor(tColor::FREQ)),
 		STD_WIDTH
 	);
 }
@@ -59,7 +59,7 @@ void NNetTimeGraph::PaintVoltCurve(SignalGenerator const * pSigGen)
 		max(0.0_MicroSecs, GetTime(0.0_fPixel)),
 		GetTime(xRight()),
 		GetParams()->TimeResolution(),
-		m_upGraphics->CreateBrush(GetColor(tColor::VOLT)),
+		m_upGraphics->CreateBrushHandle(GetColor(tColor::VOLT)),
 		STD_WIDTH
 	);
 }

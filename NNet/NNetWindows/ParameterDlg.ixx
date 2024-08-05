@@ -4,7 +4,6 @@
 
 module;
 
-#include <d2d1.h>
 #include <compare>
 #include <memory>
 #include <string>
@@ -42,10 +41,10 @@ private:
 	static int const VERT_BLOCK_SPACE {  30 };
 	static int const HEIGHT           {  16 };
 
-	IDWriteTextFormat        * m_pTextFormatHeader  { nullptr };
-	NNetModelWriterInterface * m_pNMWI              { nullptr };
-	HWND                       m_hwndScanTime       { nullptr };
-	bool                       m_bEditParamsEnabled { true };
+	TextFormatHandle          m_hTextFormatHeader  { nullptr };
+	NNetModelWriterInterface* m_pNMWI              { nullptr };
+	HWND                      m_hwndScanTime       { nullptr };
+	bool                      m_bEditParamsEnabled { true };
 
 	fPixel m_fPixPosVert;      // helper for paintHeader
 

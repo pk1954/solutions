@@ -99,8 +99,8 @@ public:
 
 protected:
 
-	ID2D1SolidColorBrush* m_pBrushSensorNormal   { nullptr };
-	ID2D1SolidColorBrush* m_pBrushSensorSelected { nullptr };
+	BrushHandle m_hBrushSensorNormal   { nullptr };
+	BrushHandle m_hBrushSensorSelected { nullptr };
 
 	D2D_DrawContext m_context { };
 
@@ -127,5 +127,5 @@ private:
 	NNetCommandHandler * m_pCmdHandler { nullptr };
 	PixelPoint           m_ptLast      { PP_NULL };	// Last cursor position during selection 
 
-	void drawSignalCable(SignalId const&, MicroMeterPnt  const&, ID2D1SolidColorBrush&) const;
+	void drawSignalCable(SignalId const&, MicroMeterPnt  const&, BrushHandle const) const;
 };

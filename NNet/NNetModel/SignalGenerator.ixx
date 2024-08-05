@@ -87,6 +87,6 @@ private:
 	SigGenDynamicData m_dynData;
 	wstring           m_name;
 
-	inline static IDWriteTextFormat* m_pTextFormat     { nullptr }; //lazy definition
-	inline static IDWriteTextFormat* m_pTextFormatPlus { nullptr }; //lazy definition
+	inline static TextFormatHandle m_hTextFormat     { nullptr }; //lazy definition
+	inline static TextFormatHandle m_hTextFormatPlus { nullptr }; //lazy definition
 };

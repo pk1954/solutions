@@ -98,8 +98,8 @@ void ParameterDialog::Start(HWND const hwndParent)
 {
 	HWND const hwndDlg { StartBaseDialog(hwndParent, nullptr) };
 
-	m_pTextFormatHeader = m_upGraphics->NewTextFormat(16.f);
-	m_pTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+	m_hTextFormatHeader = m_upGraphics->NewTextFormat(16.f);
+	m_hTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
 	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);
@@ -173,7 +173,7 @@ void ParameterDialog::paintHeader
 	m_upGraphics->ClearRectangle(rect);
 	
 	rect.Move2Horz(2._fPixel);
-	m_upGraphics->DisplayText(rect, wstrText.c_str(), m_pTextFormatHeader);
+	m_upGraphics->DisplayText(rect, wstrText.c_str(), m_hTextFormatHeader);
 
 	m_fPixPosVert += fPixBlockHeight + fPixel(VERT_BLOCK_SPACE);
 }

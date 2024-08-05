@@ -102,13 +102,13 @@ private:
 	PixFpDimension<mV>& m_vertCoord;
 	Sound             & m_sound;        
 	MonitorData const * m_pMonitorData       { nullptr };
-	IDWriteTextFormat * m_pTextFormat        { nullptr };
+	TextFormatHandle    m_hTextFormat        { nullptr };
 	Observable        * m_pObservable        { nullptr };
 	Observable        * m_pHighSigObservable { nullptr };
 	Measurement         m_measurement;
 
-	ID2D1SolidColorBrush* m_pBrushNormal;
-	ID2D1SolidColorBrush* m_pBrushSelected;
+	BrushHandle m_hBrushNormal;
+	BrushHandle m_hBrushSelected;
 
 	SignalId   m_idSigHighlighted   { SignalId::NULL_VAL() };
 	TrackNr    m_trackNrHighlighted { TrackNr::NULL_VAL() };

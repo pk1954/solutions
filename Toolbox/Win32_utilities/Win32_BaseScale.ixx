@@ -92,19 +92,19 @@ protected:
 
 private:
 
-	IDWriteTextFormat *m_pTextFormat      { nullptr };
-	bool               m_bTicksDir        { true };     // true: ticks on negative side of scale
-	bool               m_bVertScale       { false };    // true: vertical, false: horizontal
-	bool               m_bInverted        { false };    // false: scale values grow from left to right / top to bottom
-	fPixel             m_fPixLeftBorder   { 0._fPixel };
-	fPixel             m_fPixRightBorder  { 0._fPixel };
-	fPixel             m_fPixTopBorder    { 0._fPixel };
-	fPixel             m_fPixBottomBorder { 0._fPixel };
-	fPixel             m_fPixOrthoOffset  { 0._fPixel };
-	PIXEL              m_pixLast          { PIXEL::NULL_VAL() }; // Last cursor position during selection 
-	bool               m_bLock2Zero       { true };
-	bool               m_bUnlockAllowed   { false };
-	bool               m_bZoomAllowed     { true };
+	TextFormatHandle m_hTextFormat      { nullptr };
+	bool             m_bTicksDir        { true };     // true: ticks on negative side of scale
+	bool             m_bVertScale       { false };    // true: vertical, false: horizontal
+	bool             m_bInverted        { false };    // false: scale values grow from left to right / top to bottom
+	fPixel           m_fPixLeftBorder   { 0._fPixel };
+	fPixel           m_fPixRightBorder  { 0._fPixel };
+	fPixel           m_fPixTopBorder    { 0._fPixel };
+	fPixel           m_fPixBottomBorder { 0._fPixel };
+	fPixel           m_fPixOrthoOffset  { 0._fPixel };
+	PIXEL            m_pixLast          { PIXEL::NULL_VAL() }; // Last cursor position during selection 
+	bool             m_bLock2Zero       { true };
+	bool             m_bUnlockAllowed   { false };
+	bool             m_bZoomAllowed     { true };
 
 	LPARAM AddContextMenuEntries(HMENU const) override;
 };

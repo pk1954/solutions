@@ -58,8 +58,8 @@ void D2D_driver::createResources()
 
 	m_pTextFormat = NewTextFormat(12.0f);
 
-	m_pBrushForeground = CreateBrush(D2D1::ColorF::Black);
-	m_pBrushBackground = CreateBrush(D2D1::ColorF::White);
+	m_pBrushForeground = createBrush(D2D1::ColorF::Black);
+	m_pBrushBackground = createBrush(D2D1::ColorF::White);
 }
 
 bool D2D_driver::startFrame()
@@ -128,7 +128,7 @@ void D2D_driver::ShutDown()
 	discardResources();
 }
 
-IDWriteTextFormat * D2D_driver::NewTextFormat(float const fSize) const
+TextFormatHandle D2D_driver::NewTextFormat(float const fSize) const
 {
 	IDWriteTextFormat * pTextFormat;
 
@@ -160,35 +160,35 @@ void D2D_driver::SetStdFontSize(float const fSize)
 
 void D2D_driver::DisplayText
 (
-	fPixelRect         const& rect,
-	wstring            const& wstr,
-	ID2D1Brush         const& brush,
-	IDWriteTextFormat* const  pTextFormat
+	fPixelRect       const& rect,
+	wstring          const& wstr,
+	ID2D1Brush       const& brush,
+	TextFormatHandle const  hTextFormat
 ) const
 {
-	IDWriteTextFormat* pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
+	IDWriteTextFormat* pTF    { hTextFormat ? hTextFormat : m_pTextFormat };
 	D2D1_RECT_F const  d2Rect { convertD2D(rect) };
 	m_pRenderTarget->DrawText(wstr.c_str(), static_cast<UINT32>(wstr.length()), pTF, d2Rect, const_cast<ID2D1Brush*>(&brush));
 }
 
 void D2D_driver::DisplayText
 (
-	fPixelRect         const& rect,
-	wstring            const& wstr,
-	Color              const  colF,
-	IDWriteTextFormat* const  pTextFormat
+	fPixelRect       const& rect,
+	wstring          const& wstr,
+	Color            const  colF,
+	TextFormatHandle const  pTextFormat
 ) const
 {
-	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
-	DisplayText(rect, wstr, *pBrush, pTextFormat);
-	SafeRelease(&pBrush);
+	BrushHandle hBrush { CreateBrushHandle(colF) };
+	DisplayText(rect, wstr, *hBrush, pTextFormat);
+	SafeRelease(&hBrush);
 }
 
 void D2D_driver::DisplayText
 (
-	fPixelRect         const& rect,
-	wstring            const& wstr,
-	IDWriteTextFormat* const  pTextFormat
+	fPixelRect       const& rect,
+	wstring          const& wstr,
+	TextFormatHandle const  pTextFormat
 ) const
 {
 	DisplayText(rect, wstr, *m_pBrushForeground, pTextFormat);
@@ -196,9 +196,9 @@ void D2D_driver::DisplayText
 
 void D2D_driver::DisplayText
 (
-	wstring            const& wstr,
-	ID2D1Brush         const& brush,
-	IDWriteTextFormat* const  pTextFormat
+	wstring          const& wstr,
+	ID2D1Brush       const& brush,
+	TextFormatHandle const  pTextFormat
 ) const
 {
 	IDWriteTextFormat* pTF    { pTextFormat ? pTextFormat : m_pTextFormat };
@@ -209,9 +209,9 @@ void D2D_driver::DisplayText
 
 void D2D_driver::DisplayText
 (
-	wstring            const& wstr,
-	Color              const  colF,
-	IDWriteTextFormat* const  pTextFormat
+	wstring          const& wstr,
+	Color            const  colF,
+	TextFormatHandle const  pTextFormat
 ) const
 {
 	DisplayText(GetClRect(), wstr, colF, pTextFormat);
@@ -219,8 +219,8 @@ void D2D_driver::DisplayText
 
 void D2D_driver::DisplayText
 (
-	wstring            const& wstr,
-	IDWriteTextFormat* const  pTextFormat
+	wstring          const& wstr,
+	TextFormatHandle const  pTextFormat
 ) const
 {
 	DisplayText(wstr, *m_pBrushForeground, pTextFormat);
@@ -228,27 +228,27 @@ void D2D_driver::DisplayText
 
 void D2D_driver::DrawRectangle(fPixelRect const& rect, Color const colF, fPixel const fPixWidth) const
 {
-	ID2D1SolidColorBrush * pBrush { CreateBrush(colF) };
+	BrushHandle hBrush { CreateBrushHandle(colF) };
 	m_pRenderTarget->DrawRectangle
 	(
 		convertD2D(rect),
-		pBrush,
+		hBrush,
 		fPixWidth.GetValue(),
 		nullptr  // solid stroke
 	);
-	SafeRelease(&pBrush);
+	SafeRelease(&hBrush);
 }
 
 void D2D_driver::FillRectangle(fPixelRect const& rect, Color const colF) const
 {
-	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
-	FillRectangle(rect, pBrush);
-	SafeRelease(&pBrush);
+	BrushHandle hBrush { CreateBrushHandle(colF) };
+	FillRectangle(rect, hBrush);
+	SafeRelease(&hBrush);
 }
 
-void D2D_driver::FillRectangle(fPixelRect const& rect, ID2D1Brush * const pBrush) const
+void D2D_driver::FillRectangle(fPixelRect const& rect, BrushHandle const hBrush) const
 {
-	m_pRenderTarget->FillRectangle(convertD2D(rect), pBrush);
+	m_pRenderTarget->FillRectangle(convertD2D(rect), hBrush);
 }
 
 void D2D_driver::ClearRectangle(fPixelRect const& rect) const
@@ -258,16 +258,16 @@ void D2D_driver::ClearRectangle(fPixelRect const& rect) const
 
 void D2D_driver::DrawRoundedRectangle
 (
-	fPixelRect   const& rect, 
-	Color        const  colF, 
-	fPixel       const  fPixRadius,
-	fPixel       const  fPixStrokeWidth
+	fPixelRect const& rect, 
+	Color      const  colF, 
+	fPixel     const  fPixRadius,
+	fPixel     const  fPixStrokeWidth
 ) const
 {
-	ID2D1SolidColorBrush* pBrush    { CreateBrush(colF) };
-	D2D1_ROUNDED_RECT     roundRect { convertD2D(rect), fPixRadius.GetValue(), fPixRadius.GetValue() };
-	m_pRenderTarget->DrawRoundedRectangle(&roundRect, pBrush, fPixStrokeWidth.GetValue(), NULL);
-	SafeRelease(&pBrush);
+	BrushHandle       hBrush    { CreateBrushHandle(colF) };
+	D2D1_ROUNDED_RECT roundRect { convertD2D(rect), fPixRadius.GetValue(), fPixRadius.GetValue() };
+	m_pRenderTarget->DrawRoundedRectangle(&roundRect, hBrush, fPixStrokeWidth.GetValue(), NULL);
+	SafeRelease(&hBrush);
 }
 
 void D2D_driver::FillRoundedRectangle
@@ -277,10 +277,10 @@ void D2D_driver::FillRoundedRectangle
 	fPixel       const  fPixRadius
 ) const
 {
-	ID2D1SolidColorBrush* pBrush    { CreateBrush(colF) };
-	D2D1_ROUNDED_RECT     roundRect { convertD2D(rect), fPixRadius.GetValue(), fPixRadius.GetValue() };
-	m_pRenderTarget->FillRoundedRectangle(&roundRect, pBrush);
-	SafeRelease(&pBrush);
+	BrushHandle       hBrush    { CreateBrushHandle(colF) };
+	D2D1_ROUNDED_RECT roundRect { convertD2D(rect), fPixRadius.GetValue(), fPixRadius.GetValue() };
+	m_pRenderTarget->FillRoundedRectangle(&roundRect, hBrush);
+	SafeRelease(&hBrush);
 }
 
 ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
@@ -402,9 +402,9 @@ void D2D_driver::DrawLine
 	Color const  colF
 ) const
 {
-	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
-	DrawLine(fpp1, fpp2, fpixWidth, *pBrush);
-	SafeRelease(&pBrush);
+	BrushHandle hBrush { CreateBrushHandle(colF) };
+	DrawLine(fpp1, fpp2, fpixWidth, *hBrush);
+	SafeRelease(&hBrush);
 }
 
 void D2D_driver::DrawLine
@@ -420,10 +420,10 @@ void D2D_driver::DrawLine
 void D2D_driver::FillCircle
 (
 	fPixelCircle const& circle,
-	ID2D1Brush * const pBrush
+	BrushHandle  const  hBrush
 ) const
 {
-	FillEllipse(fPixelEllipse { circle }, pBrush);
+	FillEllipse(fPixelEllipse { circle }, hBrush);
 }
 
 void D2D_driver::FillCircle
@@ -446,11 +446,11 @@ void D2D_driver::FillCircle
 void D2D_driver::DrawCircle
 (
 	fPixelCircle const& circle,
-	ID2D1Brush * const  pBrush,
+	BrushHandle  const  hBrush,
 	fPixel       const  fPixWidth
 ) const
 {
-	DrawEllipse(fPixelEllipse { circle }, pBrush, fPixWidth);
+	DrawEllipse(fPixelEllipse { circle }, hBrush, fPixWidth);
 }
 
 void D2D_driver::DrawCircle
@@ -475,10 +475,10 @@ void D2D_driver::DrawCircle
 void D2D_driver::FillEllipse
 (
 	fPixelEllipse const& fPE,
-	ID2D1Brush* const pBrush
+	BrushHandle   const  hBrush
 ) const
 {
-	m_pRenderTarget->FillEllipse(convertD2D(fPE), pBrush);
+	m_pRenderTarget->FillEllipse(convertD2D(fPE), hBrush);
 }
 
 void D2D_driver::FillEllipse
@@ -487,9 +487,9 @@ void D2D_driver::FillEllipse
 	Color  const  colF
 ) const
 {
-	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
-	FillEllipse(fPE, pBrush);
-	SafeRelease(&pBrush);
+	BrushHandle hBrush { CreateBrushHandle(colF) };
+	FillEllipse(fPE, hBrush);
+	SafeRelease(&hBrush);
 }
 
 void D2D_driver::FillEllipse(fPixelEllipse const& fPE) const
@@ -500,23 +500,23 @@ void D2D_driver::FillEllipse(fPixelEllipse const& fPE) const
 void D2D_driver::DrawEllipse
 (
 	fPixelEllipse const& fPE,
-	ID2D1Brush*   const  pBrush,
+	BrushHandle   const  hBrush,
 	fPixel        const  fPixWidth
 ) const
 {
-	m_pRenderTarget->DrawEllipse(convertD2D(fPE), pBrush, fPixWidth.GetValue(), nullptr);
+	m_pRenderTarget->DrawEllipse(convertD2D(fPE), hBrush, fPixWidth.GetValue(), nullptr);
 }
 
 void D2D_driver::DrawEllipse
 (
 	fPixelEllipse const& fPE,
-	Color  const   colF,
-	fPixel        const   fPixWidth
+	Color         const  colF,
+	fPixel        const  fPixWidth
 ) const
 {
-	ID2D1SolidColorBrush* pBrush { CreateBrush(colF) };
-	DrawEllipse(fPE, pBrush, fPixWidth);
-	SafeRelease(&pBrush);
+	BrushHandle hBrush { CreateBrushHandle(colF) };
+	DrawEllipse(fPE, hBrush, fPixWidth);
+	SafeRelease(&hBrush);
 }
 
 void D2D_driver::DrawEllipse
@@ -593,7 +593,12 @@ void D2D_driver::FillDiamond
 	DrawLine(ptStart, ptEnd, fPixSize * sqrtf(8.0f), colF);
 }
 
-ID2D1SolidColorBrush* D2D_driver::CreateBrush(Color const d2dCol) const
+BrushHandle D2D_driver::CreateBrushHandle(Color const d2dCol) const
+{
+	return createBrush(d2dCol);
+}
+
+ID2D1SolidColorBrush* D2D_driver::createBrush(Color const d2dCol) const
 {
 	ID2D1SolidColorBrush* pBrush;
 	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, &pBrush);
@@ -664,12 +669,12 @@ D2D1_ELLIPSE convertD2D(fPixelEllipse const & fPE)
 
 void D2D_driver::DrawBezier
 (
-	fPixelPoint     const& fPixPnt0,
-	fPixelPoint     const& fPixPnt1,
-	fPixelPoint     const& fPixPnt2,
-	fPixelPoint     const& fPixPnt3,
-	ID2D1SolidColorBrush * pBrush,
-	fPixel          const  fPixWidth
+	fPixelPoint const& fPixPnt0,
+	fPixelPoint const& fPixPnt1,
+	fPixelPoint const& fPixPnt2,
+	fPixelPoint const& fPixPnt3,
+	BrushHandle        hBrush,
+	fPixel      const  fPixWidth
 ) const
 {
 	ID2D1PathGeometry* m_pPathGeometry { nullptr };
@@ -682,7 +687,7 @@ void D2D_driver::DrawBezier
 	m_pSink->EndFigure(D2D1_FIGURE_END_OPEN);
 	m_hr = m_pSink->Close();
 	SafeRelease(&m_pSink);
-	m_pRenderTarget->DrawGeometry(m_pPathGeometry, pBrush, fPixWidth.GetValue());
+	m_pRenderTarget->DrawGeometry(m_pPathGeometry, hBrush, fPixWidth.GetValue());
 	SafeRelease(&m_pPathGeometry);
 }
 
@@ -708,8 +713,8 @@ void D2D_driver::DrawBezier
 	fPixel       const  fPixWidth
 ) const
 {
-	ID2D1SolidColorBrush* pBrush { CreateBrush(col) };
-	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, pBrush, fPixWidth);
-	SafeRelease(&pBrush);
+	BrushHandle hBrush { CreateBrushHandle(col) };
+	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, hBrush, fPixWidth);
+	SafeRelease(&hBrush);
 }
 

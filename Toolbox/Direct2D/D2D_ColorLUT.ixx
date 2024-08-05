@@ -41,29 +41,29 @@ public:
 
     ID2D1Brush* GetBrush(ColIndex const index) const
     {
-        ID2D1Brush * pBrush { m_brushTable[index] };
-        if (pBrush == nullptr)
+        BrushHandle hBrush { m_brushTable[index] };
+        if (hBrush == nullptr)
         {
             assert(m_pColorLut);
             Color const color { m_pColorLut->GetColor(index) };
             assert(m_pDriver);
-            pBrush = m_pDriver->CreateBrush(color);
-            m_brushTable[index] = pBrush;
+            hBrush = m_pDriver->CreateBrushHandle(color);
+            m_brushTable[index] = hBrush;
         }
-        return pBrush;
+        return hBrush;
     }
 
 private:
 
     void clear()
     {
-        for (auto &pBrush : m_brushTable)
-            if (pBrush)
-                SafeRelease(&pBrush);
+        for (auto &hBrush : m_brushTable)
+            if (hBrush)
+                SafeRelease(&hBrush);
     }
 
     D2D_driver const * m_pDriver   { nullptr };
     ColorLUT   const * m_pColorLut { nullptr };
 
-    mutable array<ID2D1Brush *, 256> m_brushTable {};
+    mutable array<BrushHandle, 256> m_brushTable {};
 };

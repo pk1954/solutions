@@ -14,6 +14,9 @@ import std;
 using std::wstring;
 using std::wostream;
 
+export using BrushHandle      = ID2D1Brush *;
+export using TextFormatHandle = IDWriteTextFormat *;
+
 export inline COLORREF Convert2COLORREF(D2D1_COLOR_F const col)
 {
 	COLORREF colorRef = RGB

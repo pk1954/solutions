@@ -2,10 +2,6 @@
 //
 // Utilities
 
-module;
-
-#include "d2d1.h"
-
 export module DrawContext;
 
 import std;
@@ -60,26 +56,26 @@ public:
 	virtual void SetRotation(Degrees const, MicroMeterPnt const&) const = 0;
 	virtual void Reset() const = 0;
 
-	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&, ID2D1SolidColorBrush*, fPixel const = 1._fPixel) const = 0;
-	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,                        fPixel const = 1._fPixel) const = 0;
-	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,	Color  const,          fPixel const = 1._fPixel) const = 0;
-	virtual void DrawCircle   (MicroMeterCircle const&, ID2D1SolidColorBrush * const, fPixel const = 1._fPixel)                                                      const = 0;
-	virtual void DrawCircle   (MicroMeterCircle const&, Color const,                  fPixel const = 1._fPixel)                                                      const = 0;
-	virtual void DrawCircle   (MicroMeterCircle const&,                               fPixel const = 1._fPixel)                                                      const = 0;
-	virtual void DrawEllipse  (MicroMeterEllipse const &, Color const, MicroMeter const)                                                                             const = 0;
-	virtual void FillEllipse  (MicroMeterEllipse const &)                                                                                                            const = 0;
-	virtual void FillEllipse  (MicroMeterEllipse const &, Color const)                                                                                               const = 0;
-	virtual void FillEllipse  (MicroMeterEllipse const &, ID2D1SolidColorBrush* const)                                                                               const = 0;
-	virtual void FillRectangle(MicroMeterRect const&, ID2D1Brush * const)                                                                                            const = 0;
-	virtual void FillRectangle(MicroMeterRect const&, Color        const)                                                                                            const = 0;
-	virtual void FillGradientCircle  (MicroMeterCircle  const &, Color const, Color const)                                                                           const = 0;
-	virtual void FillRoundedRectangle(MicroMeterRect    const &, Color, MicroMeter const)                                                                            const = 0;
-	virtual void DrawTranspRect      (MicroMeterRect    const &, Color const)                                                                                        const = 0;
+	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&, BrushHandle, fPixel const = 1._fPixel) const = 0;
+	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,              fPixel const = 1._fPixel) const = 0;
+	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,	Color const, fPixel const = 1._fPixel) const = 0;
+	virtual void DrawCircle   (MicroMeterCircle  const&, BrushHandle const,                                                      fPixel const = 1._fPixel) const = 0;
+	virtual void DrawCircle   (MicroMeterCircle  const&, Color       const,                                                      fPixel const = 1._fPixel) const = 0;
+	virtual void DrawCircle   (MicroMeterCircle  const&,                                                                         fPixel const = 1._fPixel) const = 0;
+	virtual void DrawEllipse  (MicroMeterEllipse const&, Color const, MicroMeter const)                                                                    const = 0;
+	virtual void FillEllipse  (MicroMeterEllipse const&)                                                                                                   const = 0;
+	virtual void FillEllipse  (MicroMeterEllipse const&, Color const)                                                                                      const = 0;
+	virtual void FillEllipse  (MicroMeterEllipse const&, BrushHandle const)                                                                                const = 0;
+	virtual void FillRectangle(MicroMeterRect    const&, BrushHandle const)                                                                                const = 0;
+	virtual void FillRectangle(MicroMeterRect    const&, Color       const)                                                                                const = 0;
+	virtual void FillGradientCircle  (MicroMeterCircle  const &, Color const, Color const)                                                                 const = 0;
+	virtual void FillRoundedRectangle(MicroMeterRect    const &, Color, MicroMeter const)                                                                  const = 0;
+	virtual void DrawTranspRect      (MicroMeterRect    const &, Color const)                                                                              const = 0;
 	virtual void DisplayText
 	(
-		MicroMeterRect      const &,
-		wstring             const &,
-		IDWriteTextFormat * const = nullptr
+		MicroMeterRect   const &,
+		wstring          const &,
+		TextFormatHandle const = nullptr
 	) const = 0;
 
 	Uniform2D<MicroMeter> const & GetCoordC() const { return m_coord; }

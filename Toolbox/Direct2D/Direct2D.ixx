@@ -47,7 +47,7 @@ public:
     void Resize              (PIXEL const, PIXEL const);
     void DrawRectangle       (fPixelRect    const&, Color const, fPixel const)                                         const;
     void FillRectangle       (fPixelRect    const&, Color const)                                                       const;
-    void FillRectangle       (fPixelRect    const&, ID2D1Brush * const)                                                const;
+    void FillRectangle       (fPixelRect    const&, BrushHandle const)                                                 const;
     void ClearRectangle      (fPixelRect    const&)                                                                    const;
     void FillGradientRect    (fPixelRect    const&, Color const, Color const)                                          const;
     void FillGradientEllipse (fPixelEllipse const&, Color const, Color const)                                          const;
@@ -76,25 +76,25 @@ public:
     void SetRotation         (float const,          fPixelPoint const &)                                               const;
     void Reset               () const;
 
-    void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&,                        fPixel const) const;
-    void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, Color const,    fPixel const) const;
-    void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, ID2D1SolidColorBrush*, fPixel const) const;
+    void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&,              fPixel const) const;
+    void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, Color const, fPixel const) const;
+    void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, BrushHandle, fPixel const) const;
 
-    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush const&, IDWriteTextFormat* = nullptr) const;
-    void DisplayText(fPixelRect const&, wstring const&, Color const,       IDWriteTextFormat* = nullptr) const;
-    void DisplayText(fPixelRect const&, wstring const&,                    IDWriteTextFormat* = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, ID2D1Brush const&, TextFormatHandle = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&, Color const,       TextFormatHandle = nullptr) const;
+    void DisplayText(fPixelRect const&, wstring const&,                    TextFormatHandle = nullptr) const;
 
-    void DisplayText(wstring const&, ID2D1Brush const&, IDWriteTextFormat* = nullptr) const;
-    void DisplayText(wstring const&, Color       const, IDWriteTextFormat* = nullptr) const;
-    void DisplayText(wstring const&,                    IDWriteTextFormat* = nullptr) const;
+    void DisplayText(wstring const&, ID2D1Brush const&, TextFormatHandle = nullptr) const;
+    void DisplayText(wstring const&, Color       const, TextFormatHandle = nullptr) const;
+    void DisplayText(wstring const&,                    TextFormatHandle = nullptr) const;
 
     fPixelRect     GetClRect      () const { return Convert2fPixelRect    (::GetClPixelRect      (m_hwnd)); }
     fPixelRectSize GetClRectSize  () const { return Convert2fPixelRectSize(::GetClRectSize       (m_hwnd)); }
     fPixel         GetClRectWidth () const { return Convert2fPixel        (::GetClientWindowWidth(m_hwnd)); }
     fPixel         GetClRectHeight() const { return Convert2fPixel        (::GetClientWindowHeight(m_hwnd));}
 
-    IDWriteTextFormat    * NewTextFormat(float const) const;
-    ID2D1SolidColorBrush * CreateBrush  (Color const) const;
+    TextFormatHandle NewTextFormat(float const) const;
+    BrushHandle      CreateBrushHandle(Color const) const;
         
     void SetForegroundColor(Color const);
     void SetBackgroundColor(Color const);
@@ -116,6 +116,8 @@ private:
     ID2D1SolidColorBrush  * m_pBrushForeground { nullptr };
     ID2D1SolidColorBrush  * m_pBrushBackground { nullptr };
 
+    ID2D1SolidColorBrush* createBrush(Color const) const;
+    
     void createResources();
     void discardResources();
     bool startFrame();

@@ -82,20 +82,20 @@ void SignalGenerator::DrawSigGen
 	bool const  bSelected
 ) const
 {
-	if (!m_pTextFormat)
-		m_pTextFormat = graphics.NewTextFormat(12.0f);
+	if (!m_hTextFormat)
+		m_hTextFormat = graphics.NewTextFormat(12.0f);
 	D2D1::ColorF  const col { bSelected ? SIGGEN_ACTIVE : SIGGEN_NORMAL };
 	graphics.FillRoundedRectangle(fPixRect, col, CORNERS);
 	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
-	graphics.DisplayText(fPixRect, GetName(), m_pTextFormat);
+	graphics.DisplayText(fPixRect, GetName(), m_hTextFormat);
 
 	fPixRect.Move2Vert(15.0_fPixel);
 	fHertz const frequency { GetStimulusFrequency() };
-	graphics.DisplayText(fPixRect, Format2wstring<fHertz>(frequency, 1), m_pTextFormat);
+	graphics.DisplayText(fPixRect, Format2wstring<fHertz>(frequency, 1), m_hTextFormat);
 
 	fPixRect.Move2Vert(15.0_fPixel);
 	mV const voltage { GetStimulusAmplitude() };
-	graphics.DisplayText(fPixRect, Format2wstring<mV>(voltage, 1), m_pTextFormat);
+	graphics.DisplayText(fPixRect, Format2wstring<mV>(voltage, 1), m_hTextFormat);
 }
 
 void SignalGenerator::DrawNewSigGenButton
@@ -106,5 +106,5 @@ void SignalGenerator::DrawNewSigGenButton
 {
 	graphics.FillRoundedRectangle(fPixRect, SIGGEN_NORMAL, CORNERS);
 	graphics.DrawRoundedRectangle(fPixRect, D2D1::ColorF::Black, CORNERS, 2._fPixel);
-	graphics.DisplayText(fPixRect, L"+", m_pTextFormat);
+	graphics.DisplayText(fPixRect, L"+", m_hTextFormat);
 }

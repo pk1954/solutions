@@ -254,7 +254,7 @@ void UPSigGenList::DrawInputCable
     fPixel                const  fPixOffX,
     SigGenId              const  idSigGen,
     InputLine             const& inputLine,
-    ID2D1SolidColorBrush* const  pBrush
+    BrushHandle           const  hBrush
 ) const
 {
     MicroMeterPnt const umDirVector      { inputLine.GetDirVector() };
@@ -271,7 +271,7 @@ void UPSigGenList::DrawInputCable
         fPixPosSigGen + fPixelPoint(0.0_fPixel, 100.0_fPixel),
         fPixPosInputLine - fPixPosDir.ScaledTo(100.0_fPixel),
         fPixPosInputLine,
-        pBrush,
+        hBrush,
         2._fPixel
     );
 }

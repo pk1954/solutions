@@ -55,11 +55,11 @@ public:
 		Color            const  
 	) const override;
 
-	void DrawCircle(MicroMeterCircle const&, ID2D1SolidColorBrush* const, fPixel const) const override;
-	void DrawCircle(MicroMeterCircle const&, Color const,                 fPixel const) const override;
-	void DrawCircle(MicroMeterCircle const&,                              fPixel const) const override;
+	void DrawCircle(MicroMeterCircle const&, ID2D1Brush* const, fPixel const) const override;
+	void DrawCircle(MicroMeterCircle const&, Color const,       fPixel const) const override;
+	void DrawCircle(MicroMeterCircle const&,                    fPixel const) const override;
 
-	void FillEllipse(MicroMeterEllipse const&, ID2D1SolidColorBrush* const) const override;
+	void FillEllipse(MicroMeterEllipse const&, ID2D1Brush* const) const override;
 	void FillEllipse(MicroMeterEllipse const&, Color const) const override;
 	void FillEllipse(MicroMeterEllipse const&) const override;
 
@@ -79,16 +79,16 @@ public:
 		Color         const  
 	) const override;
 
-	void FillRectangle       (MicroMeterRect const&, ID2D1Brush * const)      const override;
+	void FillRectangle       (MicroMeterRect const&, BrushHandle const)       const override;
 	void FillRectangle       (MicroMeterRect const&, Color)                   const override;
 	void FillRoundedRectangle(MicroMeterRect const&, Color, MicroMeter const) const override;
 	void DrawTranspRect      (MicroMeterRect const&, Color)                   const override;
 
 	void DisplayText
 	(
-		MicroMeterRect      const &,
-		wstring             const &,
-		IDWriteTextFormat * const = nullptr
+		MicroMeterRect   const &,
+		wstring          const &,
+		TextFormatHandle const = nullptr
 	) const override;
 
 	void DrawBezier
@@ -97,7 +97,7 @@ public:
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
 		MicroMeterPnt const&,
-		ID2D1SolidColorBrush*,
+		ID2D1Brush*,
 		fPixel        const = 1._fPixel
 	) const override;
 
