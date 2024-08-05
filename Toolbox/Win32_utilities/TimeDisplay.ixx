@@ -2,12 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <memory>
-
 export module TimeDisplay;
 
+import std;
 import ObserverInterface;
 import StatusBar;
 

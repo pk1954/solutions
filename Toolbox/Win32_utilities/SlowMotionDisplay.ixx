@@ -2,14 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <string>
-#include <sstream>
-#include <memory>
-
 export module SlowMotionDisplay;
 
+import std;
 import ObserverInterface;
 import SlowMotionRatio;
 import BaseRefreshRate;

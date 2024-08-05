@@ -4,11 +4,11 @@
 
 module;
 
-#include <string>
 #include <Windows.h>
 
 export module NNetWin32:DescriptionWindow;
 
+import std;
 import Types;
 import BaseWindow;
 import DescriptionUI;

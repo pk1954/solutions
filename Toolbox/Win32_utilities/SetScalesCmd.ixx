@@ -2,12 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <iostream>
-
 export module SetScalesCmd;
 
+import std;
 import Types;
 import IoConstants;
 import Win32_Util_Resource;

@@ -2,13 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <iostream>
-#include <string>
-
 export module IncludeCommand;
 
+import std;
 import Script;
 import Symtab;
 import ScriptFile;

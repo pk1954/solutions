@@ -2,12 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <string>
-
 export module ScriptHook;
 
+import std;
 import StatusBar;
 import ScriptStack;
 import Script;

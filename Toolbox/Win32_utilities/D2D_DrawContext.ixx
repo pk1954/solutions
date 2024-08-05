@@ -2,12 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <string>
-
 export module D2D_DrawContext;
 
+import std;
 import Direct2D;
 import Types;
 import DrawContext;

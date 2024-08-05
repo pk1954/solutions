@@ -4,16 +4,13 @@
 
 module;
 
-#include <memory>
-#include <string>
-#include <array>
-#include <bit>
 #include <Windows.h>
 #include <windowsx.h>
 #include <CommCtrl.h>
 
 module NNetWin32:DescriptionWindow;
 
+import std;
 import Win32_Util_Resource;
 import Commands;
 import IoUtil;

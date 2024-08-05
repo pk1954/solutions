@@ -4,12 +4,12 @@
 
 module;
 
-#include <string>
 #include <Windows.h>
 #include <CommCtrl.h>
 
 module StatusBar;
 
+import std;
 import Tooltip;
 import Types;
 import Script;

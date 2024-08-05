@@ -2,12 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <string>
-
 export module StatusBarDisplayFunctor;
 
+import std;
 import StatusBar;
 import DisplayFunctor;
 

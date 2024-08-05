@@ -4,12 +4,11 @@
 
 module;
 
-#include <string>
-#include <vector>
 #include <Windows.h>
 
 export module StatusBar;
 
+import std;
 import Types;
 import RootWindow;
 import BaseRefreshRate;

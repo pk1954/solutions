@@ -2,12 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <iostream>
-
 export module SetGridCmd;
 
+import std;
 import IoConstants;
 import Win32_Util_Resource;
 import RootWindow;

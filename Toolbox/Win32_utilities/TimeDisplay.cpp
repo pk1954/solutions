@@ -4,15 +4,9 @@
 //
 // Displays time since start of simulation in status bar field
 
-module;
-
-#include <iostream>
-#include <sstream> 
-#include <string> 
-#include <chrono> 
-
 module TimeDisplay;
 
+import std;
 import Types;
 import SimulationTime;
 import StatusBar;

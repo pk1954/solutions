@@ -6,15 +6,11 @@
 
 module;
 
-#include <string>
-#include <sstream>
-#include <iomanip>
-#include <memory>
-#include <chrono> 
 #include <Windows.h>
 
 module SlowMotionDisplay;
 
+import std;
 import Util;
 import Types;
 import SaveCast;
