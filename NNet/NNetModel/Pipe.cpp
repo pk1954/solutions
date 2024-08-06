@@ -5,13 +5,11 @@
 module;
 
 #include <cassert>
-#include <algorithm>
-#include <iostream>
-#include <vector>
 #include "Resource.h"
 
 module NNetModel:Pipe;
 
+import std;
 import Geometry;
 import IoUtil;
 import Types;
