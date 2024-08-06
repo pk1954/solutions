@@ -4,13 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <string>
-#include <chrono>
 #include <Windows.h>
 
 module BaseRefreshRate;
 
+import std;
 import Win32_Util_Resource;
 import Win32_Util;
 import EditLineBox;

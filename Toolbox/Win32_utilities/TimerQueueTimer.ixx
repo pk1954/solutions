@@ -4,12 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <string>
-#include <chrono>
 #include <Windows.h>
 
 export module TimerQueueTimer;
+
+import std;
 
 using std::bit_cast;
 using std::wstring;
@@ -58,7 +57,7 @@ private:
 			dwTime,                         // timer is signaled periodically every dwTime msecs
 			0                               // no flags
 		);
-		assert(m_hTimer != nullptr);
+		//assert(m_hTimer != nullptr);
 	}
 
 	void deleteTimer()

@@ -4,9 +4,9 @@
 
 module;
 
-#include <string>
 #include <Windows.h>
 
+import std;
 export module AboutBox;
 
 import StdDialogBox;

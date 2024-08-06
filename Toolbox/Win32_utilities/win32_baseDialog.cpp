@@ -4,13 +4,11 @@
 
 module;
 
-#include <bit>
-#include <functional>
-#include <memory>
 #include <Windows.h>
 
 module BaseDialog;
 
+import std;
 import Win32_Util;
 import RootWindow;
 import DialogTemplate;

@@ -4,12 +4,11 @@
 
 module;
 
-#include <bit>
-#include <string>
 #include "Windows.h"
 
 module EditLineBox;
 
+import std;
 import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Controls;

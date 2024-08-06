@@ -4,13 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <chrono>
-#include <string>
 #include <Windows.h>
 
 export module PerfCounter;
 
+import std;
 import Types;
 import SaveCast;
 
@@ -62,14 +60,14 @@ public:
 
 	static Ticks MicrosecondsToTicks(microseconds const time)
 	{
-		assert(time.count() < LLONG_MAX / m_frequency.GetValue());
+		//assert(time.count() < LLONG_MAX / m_frequency.GetValue());
 		auto ullTime = static_cast<ULONGLONG>(time.count());
 		return Ticks((ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS); 
 	}
 
 	static microseconds TicksToMicroseconds(Ticks const ticks)
 	{
-		assert(ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS);
+		//assert(ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS);
 		auto ullTicks = static_cast<ULONGLONG>(ticks.GetValue());
 		microseconds result
 		(                                                 

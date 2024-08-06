@@ -4,13 +4,11 @@
 
 module;
 
-#include <string>
-#include <cassert>
-#include <chrono>
 #include "Windows.h"
 
 module BaseWindow;
 
+import std;
 import Win32_Util_Resource;
 import Util;
 import Types;
@@ -35,7 +33,7 @@ HWND BaseWindow::StartBaseWindow
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
     WNDCLASSEX      wcex {};
 
-    assert(szClass != nullptr);
+    //assert(szClass != nullptr);
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -56,7 +54,7 @@ HWND BaseWindow::StartBaseWindow
     if (atom == 0)
     {
         DWORD const dwErr = GetLastError();
-        assert(dwErr == ERROR_CLASS_ALREADY_EXISTS);
+        //assert(dwErr == ERROR_CLASS_ALREADY_EXISTS);
     }
 
     HWND hwnd = CreateWindow
@@ -73,7 +71,7 @@ HWND BaseWindow::StartBaseWindow
         hInstance, 
         this
     );
-    assert(hwnd != nullptr);
+    //assert(hwnd != nullptr);
 
     SetWindowHandle(hwnd);
 	StartRootWindow(visibilityCriterion);

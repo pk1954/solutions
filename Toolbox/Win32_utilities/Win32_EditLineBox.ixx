@@ -4,11 +4,11 @@
 
 module;
 
-#include <string>
 #include "Windows.h"
 
 export module EditLineBox;
 
+import std;
 import StdDialogBox;
 
 using std::wstring;

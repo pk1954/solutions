@@ -2,15 +2,13 @@
 //
 // Win32_utilities
 
-#include <cassert>
-#include <stdexcept>
-#include <Windows.h>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <memory>
-#include <map>
+module;
 
+#include <Windows.h>
+
+module WinManager;
+
+import std;
 import IoConstants;
 import Script;
 import Commands;
@@ -60,13 +58,13 @@ public:
                 if (WinManager::IsSizeable(id))
                 {
                     bool bRes = ::MoveWindowAbsolute(hwnd, pixRect, true);
-                    assert(bRes);
+                    //assert(bRes);
                 }
                 else
                 {
      				bool bRes = ::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
                 	DWORD dwErr = GetLastError();
-                	assert(bRes);
+                	//assert(bRes);
                 }
             }
 		}

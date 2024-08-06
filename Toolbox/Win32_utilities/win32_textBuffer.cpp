@@ -4,12 +4,11 @@
 
 module;
 
-#include <locale>
-#include <iomanip>
 #include "Windows.h"
 
 module Win32_TextBuffer;
 
+import std;
 import Util;
 import Types;
 import Win32_PIXEL;

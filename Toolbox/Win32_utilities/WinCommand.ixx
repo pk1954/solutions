@@ -4,13 +4,11 @@
 
 module;
 
-#include <iostream>
-#include <memory>
-#include <bit>
 #include <Windows.h>
 
 export module WinCommand;
 
+import std;
 import Win32_Util_Resource;
 import WinManager;
 import ScriptStack;

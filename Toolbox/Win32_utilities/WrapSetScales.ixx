@@ -2,13 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <iostream>
-#include <string>
-
 export module WrapSetScales;
 
+import std;
 import Commands;
 import RootWindow;
 import WinManager;

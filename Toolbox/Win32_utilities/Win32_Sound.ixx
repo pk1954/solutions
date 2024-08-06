@@ -4,12 +4,12 @@
 
 module;
 
-#include <string>
 #include "Windows.h"
 #include "mmsystem.h"
 
 export module Win32_Sound;
 
+import std;
 import Types;
 import IoUtil;
 import SoundInterface;

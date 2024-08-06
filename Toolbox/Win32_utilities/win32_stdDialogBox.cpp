@@ -4,11 +4,11 @@
 
 module;
 
-#include <bit>
 #include <Windows.h>
 
 module StdDialogBox;
 
+import std;
 import Win32_Util_Resource;
 import Win32_Util;
 import DialogTemplate;

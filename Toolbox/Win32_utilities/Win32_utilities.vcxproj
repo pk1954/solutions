@@ -169,7 +169,7 @@
     <ClCompile Include="CoordAnimationCmd.ixx" />
     <ClCompile Include="SetGridCmd.ixx" />
     <ClCompile Include="SetScalesCmd.ixx" />
-    <ClCompile Include="win32_tooltip.cpp" />
+    <ClCompile Include="Win32_Tooltip.cpp" />
     <ClCompile Include="WinCommand.ixx" />
     <ClCompile Include="D2D_DrawContext.cpp" />
     <ClCompile Include="D2D_DrawContext.ixx" />

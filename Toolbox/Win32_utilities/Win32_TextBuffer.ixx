@@ -4,11 +4,11 @@
 
 module;
 
-#include <sstream>
 #include "Windows.h"
 
 export module Win32_TextBuffer;
 
+import std;
 import TextBuffer;
 import Types;
 

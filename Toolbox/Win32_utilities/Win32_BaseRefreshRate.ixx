@@ -4,12 +4,11 @@
 
 module;
 
-#include <string>
-#include <chrono>
 #include <Windows.h>
 
 export module BaseRefreshRate;
 
+import std;
 import Win32_Util;
 import TimerQueueTimer;
 

@@ -4,14 +4,11 @@
 
 module;
 
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <string>
 #include <ShObjIdl.h> 
 
 export module ScriptFile;
 
+import std;
 import Symtab;
 import Script;
 

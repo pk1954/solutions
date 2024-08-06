@@ -5,15 +5,13 @@
 module;
 
 #include "Windows.h"
-#include "d2d1helper.h"
 
 export module ArrowButton;
 
+import Color;
 import Direct2D;
 import Win32_Controls;
 import GraphicsWindow;
-
-using D2D1::ColorF;
 
 export class ArrowButton : public GraphicsWindow
 {
@@ -41,8 +39,8 @@ private:
 	{
 		fPixelRect rect { Convert2fPixelRect(GetClPixelRect()) };
 		rect = rect.ScaleRect(-2._fPixel);
-		m_upGraphics->UpDownArrow(m_bArrowDirUp, rect, D2D1::ColorF::Black);
-		m_upGraphics->DrawRectangle(rect, D2D1::ColorF::Black, 1._fPixel);
+		m_upGraphics->UpDownArrow(m_bArrowDirUp, rect, COL_BLACK);
+		m_upGraphics->DrawRectangle(rect, COL_BLACK, 1._fPixel);
 	}
 
 	void OnDrawItem(WPARAM const wParam, DRAWITEMSTRUCT const * const pDiStruct) final

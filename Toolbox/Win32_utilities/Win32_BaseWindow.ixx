@@ -4,11 +4,11 @@
 
 module;
 
-#include <string>
 #include <Windows.h>
 
 export module BaseWindow;
 
+import std;
 import Types;
 import BoolType;
 import HiResTimer;

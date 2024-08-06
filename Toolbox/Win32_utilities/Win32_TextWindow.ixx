@@ -4,12 +4,11 @@
 
 module;
 
-#include <string>
-#include <memory>
 #include <Windows.h>
 
 export module TextWindow;
 
+import std;
 import Util;
 import TextBuffer;
 import Types;

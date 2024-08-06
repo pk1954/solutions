@@ -4,14 +4,11 @@
 
 module;
 
-#include <string>
-#include <fstream>
-#include <map>
-#include <memory>
 #include <Windows.h>
 
 export module WinManager;
 
+import std;
 import Types;
 import BoolOp;
 import ErrHndl;

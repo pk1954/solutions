@@ -5,13 +5,10 @@
 module;
 
 #include "Windows.h"
-#include <string>
-#include <codecvt>
-#include <sstream>
-#include <iostream>
 
 export module FatalError;
 
+import std;
 using std::wstring;
 using std::wostringstream;
 using std::wcout;

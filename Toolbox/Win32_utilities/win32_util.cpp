@@ -4,13 +4,12 @@
 
 module;
 
-#include <cassert>
-#include <iomanip>
-#include <string>
 #include <iostream>
 #include <Windows.h>
 
 module Win32_Util;
+
+import std;
 
 using std::wstring;
 using std::wostream;
@@ -89,7 +88,7 @@ void MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, UINT c
         DeleteWindowExStyle(hwnd, WS_EX_LAYERED);
 
     bool const bRes = SetLayeredWindowAttributes(hwnd, crKey, (255 * uiAlpha) / 100, (crKey == 0) ? LWA_ALPHA : LWA_COLORKEY);
-    assert(bRes);
+    //assert(bRes);
 }
 
 DWORD GetNrOfCPUs(void)
@@ -189,7 +188,7 @@ void SetMenuItemData
     m_mii.fMask = MIIM_DATA;
     m_mii.dwItemData = data;
     bool bRes = SetMenuItemInfo(hMenu, uiIndex, true, &m_mii);
-    assert(bRes);
+    //assert(bRes);
 }
 
 UINT_PTR GetMenuItemData
@@ -202,7 +201,7 @@ UINT_PTR GetMenuItemData
     m_mii.cbSize = sizeof(m_mii);
     m_mii.fMask = MIIM_DATA;
     bool bRes = GetMenuItemInfo(hMenu, uiIndex, true, &m_mii);
-    assert(bRes);
+    //assert(bRes);
     return m_mii.dwItemData;
 }
 

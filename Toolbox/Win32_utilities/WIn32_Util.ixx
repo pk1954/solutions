@@ -5,14 +5,11 @@
 module;
 
 #include <tchar.h>
-#include <cassert>
-#include <sstream>
-#include <string>
-#include <iostream>
 #include <Windows.h>
 
 export module Win32_Util;
 
+import std;
 import BoolOp;
 import Types;
 
@@ -132,7 +129,7 @@ export inline void DeleteWindowExStyle(HWND const hwnd, LONG_PTR const dwStyle)
     LONG_PTR const dwOldStyle = GetWindowExStyle(hwnd);
     LONG_PTR const dwNewStyle = dwOldStyle & ~dwStyle;
     LONG_PTR const dwRes       = SetWindowExStyle(hwnd, dwNewStyle);
-    assert(dwRes == dwNewStyle);
+    //assert(dwRes == dwNewStyle);
 }
 
 export inline MONITORINFO GetMonitorInfo(HMONITOR hMonitor)

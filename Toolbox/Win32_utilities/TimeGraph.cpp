@@ -4,12 +4,11 @@
 
 module;
 
-#include <cmath>
-#include <cassert>
 #include <Windows.h>
 
 module TimeGraph;
 
+import std.compat;
 import Types;
 import Scale;
 import PixFpDimension;
@@ -39,13 +38,13 @@ fMicroSecs TimeGraph::GetTime(fPixelPoint const & p) const
 
 fMicroSecs TimeGraph::GetTime(fPixel const fPixX) const 
 { 
-	assert(m_pHorzCoord);
+	//assert(m_pHorzCoord);
 	return Pixel2scaleTime(fPixX);
 }
 
 fPixel TimeGraph::xTime(fMicroSecs const time) const 
 { 
-	assert(m_pHorzCoord);
+	//assert(m_pHorzCoord);
 	return Scale2pixelTime(time);
 }
 

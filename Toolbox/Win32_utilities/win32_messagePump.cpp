@@ -4,14 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <array>
 #include "Windows.h"
-
-#include <iostream>
 
 module MessagePump;
 
+import std;
 import Win32_Util;
 
 void MessagePump::SetAccelTable(HACCEL const haccel)

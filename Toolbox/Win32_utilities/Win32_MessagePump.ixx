@@ -4,11 +4,11 @@
 
 module;
 
-#include <vector>
 #include <Windows.h>
 
 export module MessagePump;
 
+import std;
 import Win32_Util_Resource;
 import WinCommand;
 

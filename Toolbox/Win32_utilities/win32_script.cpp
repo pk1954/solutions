@@ -6,16 +6,12 @@ module;
 
 #include "Windows.h"
 #include "commdlg.h"
-#include <cassert> 
-#include <iostream>
-#include <sstream> 
-#include <string> 
-#include <vector>
 #include "pathcch.h"
 #include <ShObjIdl.h> 
 
 module ScriptFile;
 
+import std;
 import Script;
 import Scanner;
 import ScriptStack;
@@ -44,7 +40,7 @@ wstring ScriptFile::GetPathOfExecutable()
 ScriptFile::ScriptFile()
 {
     HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED|COINIT_DISABLE_OLE1DDE);
-    assert(SUCCEEDED(hr));
+    //assert(SUCCEEDED(hr));
 }
 
 ScriptFile::~ScriptFile()
@@ -69,7 +65,7 @@ IFileDialog * ScriptFile::createOpenDialog()
         return nullptr;
     }
     hr = pFileDlg->SetTitle(L"Open file");
-    assert(SUCCEEDED(hr));
+    //assert(SUCCEEDED(hr));
     return pFileDlg;
 }
 
@@ -91,10 +87,10 @@ IFileDialog * ScriptFile::createSaveDialog(wstring const &wstrFileName)
     }
 
     hr = pFileDlg->SetTitle(L"Save file");
-    assert(SUCCEEDED(hr));
+    //assert(SUCCEEDED(hr));
     if (wstrFileName != L"")
         hr = pFileDlg->SetFileName(wstrFileName.c_str());
-    assert(SUCCEEDED(hr));
+    //assert(SUCCEEDED(hr));
     return pFileDlg;
 }
 

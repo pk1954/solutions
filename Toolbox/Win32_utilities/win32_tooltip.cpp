@@ -4,14 +4,12 @@
 
 module;
 
-#include <cassert>
-#include <string>
-#include <memory>
 #include <Windows.h>
 #include <CommCtrl.h>
 
 module Tooltip;
 
+import std;
 import Win32_PIXEL;
 
 using std::wstring;

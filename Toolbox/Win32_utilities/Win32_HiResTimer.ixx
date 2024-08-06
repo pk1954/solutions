@@ -13,13 +13,9 @@
 // GetAverageActionTicks
 //
 
-module;
-
-#include <cassert>
-#include <string>
-
 export module HiResTimer;
 
+import std;
 import Types;
 import Observable;
 

@@ -4,17 +4,13 @@
 
 module;
 
-#include <string>
-#include <vector>
-#include <sstream>
-#include <chrono>
-#include <vector>
 #include <Windows.h>
 #include <windowsx.h>
 #include "CommCtrl.h"
 
 export module RootWindow;
 
+import std;
 import SaveCast;
 import BoolOp;
 import Util;

@@ -4,13 +4,12 @@
 
 module;
 
-#include <string>
-#include <memory>
 #include <Windows.h>
 #include <windowsx.h>
 
 export module Tooltip;
 
+import std;
 import Win32_PIXEL;
 
 class ToolTip;

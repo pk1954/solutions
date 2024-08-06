@@ -4,17 +4,12 @@
 
 module;
 
-#include <bit>
-#include <string>
-#include <memory>
-#include <cassert>
-#include <vector>
-#include <chrono>
 #include <Windows.h>
 #include "CommCtrl.h"
 
 module RootWindow;
 
+import std;
 import Types;
 import IoUtil;
 import Win32_Util_Resource;
@@ -119,7 +114,7 @@ void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height
 
 void RootWindow::SetWindowHandle(HWND const hwnd) 
 { 
-	assert(hwnd);
+	//assert(hwnd);
 	m_hwnd = hwnd;  
 };
 
@@ -396,8 +391,8 @@ void ArrangeVertical
 
 	HWND hwnd1 = pWinTop->GetParent();
 	HWND hwnd2 = pWinBottom->GetParent();
-	assert(pWinTop->GetParent() == pWinBottom->GetParent());
-	assert(pWinTop->GetParent() == pWinBottom->GetParent());
+	//assert(pWinTop->GetParent() == pWinBottom->GetParent());
+	//assert(pWinTop->GetParent() == pWinBottom->GetParent());
 
 	PixelRectSize const size         { ::GetClRectSize(pWinTop->GetParent()) };
 	PIXEL         const pixNetHeight { size.GetY() - pixFrameWidth * 3 };
@@ -419,7 +414,7 @@ void ArrangeVertical
 		pixTopHeight    = pixNetHeight / 2;
 		pixBottomHeight = pixTopHeight;
 	}
-	assert(size.GetY() > pixTopHeight - pixFrameWidth * 3);
+	//assert(size.GetY() > pixTopHeight - pixFrameWidth * 3);
 
 	pWinTop->Move
 	(

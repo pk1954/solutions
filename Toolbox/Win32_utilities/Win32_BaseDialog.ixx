@@ -4,15 +4,11 @@
 
 module;
 
-#include <memory>
 #include <Windows.h>
 
 export module BaseDialog;
 
-import Direct2D;
 import GraphicsWindow;
-
-using std::unique_ptr;
 
 static INT_PTR CALLBACK BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 

@@ -7,11 +7,11 @@
 
 module;
 
-#include <memory>
 #include <Windows.h>
 
 export module GraphicsWindow;
 
+import std;
 import Color;
 import Direct2D;
 import Types;

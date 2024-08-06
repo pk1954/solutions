@@ -4,12 +4,11 @@
 
 module;
 
-#include <memory>
-#include <functional>
 #include <Windows.h>
 
 module GraphicsWindow;
 
+import std;
 import Direct2D;
 import Types;
 import BaseWindow;
