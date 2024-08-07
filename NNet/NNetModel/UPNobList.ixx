@@ -5,14 +5,10 @@
 module;
 
 #include <cassert>
-#include <array>
-#include <vector>
-#include <memory>
-#include <algorithm>
-#include <functional>
 
 export module NNetModel:UPNobList;
 
+import std;
 import SaveCast;
 import Types;
 import :NobType;

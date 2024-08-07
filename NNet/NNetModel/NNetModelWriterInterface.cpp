@@ -5,12 +5,11 @@
 module;
 
 #include <ctime>
-#include <chrono>
 #include <cassert>
-#include <memory>
 
 module NNetModel:NNetModelWriterInterface;
 
+import std;
 import Observable;
 import Types;
 import D2D_ColorLUT;

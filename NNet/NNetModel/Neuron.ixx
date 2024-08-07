@@ -2,14 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <string>
-#include <chrono>
-
 export module NNetModel:Neuron;
 
+import std;
 import BoolOp;
 import Types;
 import DrawContext;
@@ -112,14 +107,14 @@ private:
 
 export Neuron const* Cast2Neuron(Nob const* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsNeuron());
+	//assert(pNob);
+	//assert(pNob->IsNeuron());
 	return static_cast<Neuron const*>(pNob);
 }
 
 export Neuron* Cast2Neuron(Nob* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsNeuron());
+	//assert(pNob);
+	//assert(pNob->IsNeuron());
 	return static_cast<Neuron*>(pNob);
 }

@@ -6,12 +6,10 @@ module;
 
 #include <d2d1helper.h>
 #include <cassert> 
-#include <string> 
-#include <compare> 
-#include <optional>
 
 module NNetModel:NNetModelReaderInterface;
 
+import std;
 import Types;
 import DrawContext;
 import :tHighlight;

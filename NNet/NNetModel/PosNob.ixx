@@ -2,14 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <functional>
-#include <type_traits>
-
 export module NNetModel:PosNob;
 
+import std;
 import Types;
 import :NobType;
 import :Pipe;
@@ -62,8 +57,8 @@ public:
 
 	bool Apply2AllConnectedPipesB(PipeCrit const&) const;
 
-	virtual void AddIncoming(Pipe*) { assert(false); }
-	virtual void AddOutgoing(Pipe*) { assert(false); }
+	virtual void AddIncoming(Pipe*) { /*assert(false);*/ }
+	virtual void AddOutgoing(Pipe*) { /*assert(false);*/ }
 
 	virtual void SetAllIncoming(PosNob &) = 0;
 	virtual void SetAllOutgoing(PosNob &) = 0;

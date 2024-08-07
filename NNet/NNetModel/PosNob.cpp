@@ -2,14 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <memory>
-#include <cassert>
-#include <iostream>
-
 module NNetModel:PosNob;
 
+import std;
 import :Knot;
 import :InputLine;
 import :OutputLine;
@@ -146,7 +141,7 @@ void PosNob::FillExternalCircle
 		context.FillCircle(MicroMeterCircle(umPos, PIPE_WIDTH_HIGH), NNetColors::EXT_TARGET_NOFIT);
 		break;
 	default:
-		assert(false);
+		//assert(false);
 		break;
 	}
 }
@@ -183,21 +178,21 @@ void PosNob::FillInternalCircle
 		context.FillCircle(umCircle, NNetColors::EXT_NORMAL, fPixMinWidth);
 		break;
 	default:
-		assert(false);
+		//assert(false);
 		break;
 	}
 }
 
 PosNob const* Cast2PosNob(Nob const* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsPosNob());
+	//assert(pNob);
+	//assert(pNob->IsPosNob());
 	return static_cast<PosNob const*>(pNob);
 }
 
 PosNob* Cast2PosNob(Nob* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsPosNob());
+	//assert(pNob);
+	//assert(pNob->IsPosNob());
 	return static_cast<PosNob*>(pNob);
 }

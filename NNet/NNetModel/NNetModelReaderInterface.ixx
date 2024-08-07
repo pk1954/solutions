@@ -4,13 +4,9 @@
 //
 // Interface for reader threads
 
-module;
-
-#include <string>
-#include <optional>
-
 export module NNetModel:NNetModelReaderInterface;
 
+import std;
 import Types;
 import SaveCast;
 import DrawContext;
