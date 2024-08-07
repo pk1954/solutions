@@ -2,20 +2,11 @@
 //                                                                          *
 // Toolbox\runtimeCPP
 
-module;
+module RunTime:Symtab;
 
-#include <map>
-#include <memory>
-#include <cassert>
-#include <string>
-#include <iostream>
-#include <iomanip>
-
-module Symtab;
-
+import std;
+import :Script;
 import IoConstants;
-import ErrHndl;
-import Script;
 
 using std::endl;
 using std::map;
@@ -60,7 +51,7 @@ bool Symbol::operator< (const Symbol & rhs) const
         return m_wstrValue < rhs.m_wstrValue;
 
     default:
-           assert(false);
+          ;// assert(false);
     }
     return false;
 }
@@ -70,7 +61,7 @@ wostream& operator<< (wostream& out, Symbol const& symbol)
     switch (symbol.GetSymbolType())
     {
     case tSTYPE::UnknownSTYPE:
-        assert(false);
+        //assert(false);
         break;
 
     case tSTYPE::Function:
@@ -94,7 +85,7 @@ wostream& operator<< (wostream& out, Symbol const& symbol)
         break;
 
     default:
-        assert(false);
+        ;  //assert(false);
     }
     return out;
 }
@@ -115,7 +106,7 @@ wstring const & SymbolTable::GetSymbolName(Symbol const & symbol)
 {
     auto const iter { m_upReverseTab->find(symbol) };
 
-    assert(iter != m_upReverseTab->end());
+    //assert(iter != m_upReverseTab->end());
 
     return iter->second;
 }

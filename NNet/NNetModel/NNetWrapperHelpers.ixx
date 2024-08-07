@@ -11,7 +11,7 @@ module;
 export module NNetWrapperHelpers;
 
 import Types;
-import Script;
+import RunTime;
 import NNetModel;
 import Signals;
 

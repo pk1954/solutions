@@ -9,7 +9,7 @@ module;
 export module WrapActiveSigGen;
 
 import Commands;
-import Script;
+import RunTime;
 import Signals;
 import NNetModelIO;
 import NNetModel;

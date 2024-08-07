@@ -10,7 +10,7 @@ module;
 export module WrapTimestamp;
 
 import Commands;
-import Script;
+import RunTime;
 import NNetModelIO;
 
 using std::wostream;

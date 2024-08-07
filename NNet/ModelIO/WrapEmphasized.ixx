@@ -10,7 +10,7 @@ export module WrapEmphasized;
 
 import Commands;
 import NNetWrapperHelpers;
-import Script;
+import RunTime;
 import NNetModel;
 import NNetModelIO;
 

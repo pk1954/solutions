@@ -12,7 +12,7 @@ import std;
 import Types;
 import RootWindow;
 import BaseRefreshRate;
-import Script;
+import RunTime;
 
 using std::wstring;
 using std::vector;

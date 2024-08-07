@@ -2,52 +2,19 @@
 //
 // NNetModel
 
-module;
-
-#include <cmath>
-#include <string>
-#include <memory>
-
 module NNetWrapperHelpers;
 
+import std;
 import SaveCast;
 import Types;
-import ErrHndl;
 import IoUtil;
 import IoConstants;
-import Script;
+import RunTime;
 import NNetModel;
 
 using std::unique_ptr;
 using std::make_unique;
 using std::wstring;
-
-//MicroMeterPosDir ScrReadMicroMeterPosDir(Script & script)
-//{
-//	script.ScrReadSpecial(OPEN_BRACKET);
-//	MicroMeterPnt const umPnt(ScrReadMicroMeterPnt(script));
-//	script.ScrReadSpecial(SEPARATOR);
-//	Radian const rad(Cast2Float(script.ScrReadFloat()));
-//	script.ScrReadSpecial(CLOSE_BRACKET);
-//	return MicroMeterPosDir(umPnt, rad);
-//}
-
-//MicroMeterPntVector ScrReadMicroMeterPntVector(Script& script)
-//{
-//	MicroMeterPntVector umPntVector;
-//	script.ScrReadSpecial(OPEN_BRACKET);
-//	int const iNrOfElements { script.ScrReadInt() };
-//	script.ScrReadSpecial(L':');
-//	for (int i = 0;;)
-//	{
-//		umPntVector.Add(ScrReadMicroMeterPosDir(script));
-//		if (++i == iNrOfElements)
-//			break;
-//		script.ScrReadSpecial(ID_SEPARATOR);
-//	}
-//	script.ScrReadSpecial(CLOSE_BRACKET);
-//	return umPntVector;
-//}
 
 SignalId ScrReadSignalId(Script& script)
 {

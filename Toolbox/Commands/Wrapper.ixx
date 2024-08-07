@@ -7,8 +7,7 @@ export module Commands:Wrapper;
 import std;
 export import IoConstants;
 export import BoolType;
-export import Script;
-export import Symtab;
+export import RunTime;
 
 export using std::wostream;
 export using std::wstring;

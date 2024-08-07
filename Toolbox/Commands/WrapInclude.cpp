@@ -13,7 +13,7 @@
 // Toolbox\Commands
 
 import std;
-import Script;
+import RunTime;
 
 //void WrapInclude::operator() (Script & script) const
 //{

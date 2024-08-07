@@ -16,7 +16,6 @@ module NNetWin32:NNetController;
 import Win32_Util;
 import Win32_Util_Resource;
 import SlowMotionRatio;
-import Scanner;
 import ScriptFile;
 import SaveCast;
 import Observable;

@@ -11,7 +11,7 @@ export module WrapEvent;
 
 import Commands;
 import Types;
-import Script;
+import RunTime;
 import IoUtil;
 import Signals;
 import NNetModel;

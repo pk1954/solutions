@@ -6,8 +6,7 @@ export module ScriptHook;
 
 import std;
 import StatusBar;
-import ScriptStack;
-import Script;
+import RunTime;
 
 using std::to_wstring;
 

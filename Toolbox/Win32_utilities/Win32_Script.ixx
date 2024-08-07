@@ -9,8 +9,7 @@ module;
 export module ScriptFile;
 
 import std;
-import Symtab;
-import Script;
+import RunTime;
 
 using std::wstring;
 

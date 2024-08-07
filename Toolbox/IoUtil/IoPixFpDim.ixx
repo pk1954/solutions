@@ -6,7 +6,7 @@ export module IoUtil:IoPixFpDim;
 
 import std;
 import Types;
-import Script;
+import RunTime;
 import PixFpDimension;
 import IoConstants;
 import :IoPixelTypes;

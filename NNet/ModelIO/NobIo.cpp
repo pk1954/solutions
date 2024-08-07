@@ -15,7 +15,7 @@ module NobIo;
 import IoUtil;
 import IoConstants;
 import NNetWrapperHelpers;
-import ErrHndl;
+import RunTime;
 import NNetModel;
 
 using std::vector;

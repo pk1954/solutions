@@ -6,7 +6,6 @@ module IoUtil:Preferences;
 
 import std;
 import IoConstants;
-import Scanner;
 import Commands;
 import SoundInterface;
 

@@ -8,7 +8,6 @@ module;
 
 export module NNetCommands:SetSigGenStaticDataCmd;
 
-import Symtab;
 import Types;
 import Signals;
 import :NNetCommand;

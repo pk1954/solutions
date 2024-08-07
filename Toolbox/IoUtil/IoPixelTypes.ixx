@@ -6,7 +6,7 @@ export module IoUtil:IoPixelTypes;
 
 import std;
 import Types;
-import Script;
+import RunTime;
 
 using std::wostream;
 

@@ -11,9 +11,7 @@ module;
 export module WrapSignalInfo;
 
 import Commands;
-import Script;
-import Symtab;
-import ErrHndl;
+import RunTime;
 import Types;
 import IoUtil;
 import IoConstants;

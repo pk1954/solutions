@@ -11,7 +11,7 @@ export module WinManager;
 import std;
 import Types;
 import BoolOp;
-import ErrHndl;
+import RunTime;
 import Commands;
 import BaseDialog;
 import BaseWindow;

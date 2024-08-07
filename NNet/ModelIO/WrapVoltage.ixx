@@ -9,7 +9,7 @@ module;
 export module WrapVoltage;
 
 import Commands;
-import Script;
+import RunTime;
 import NNetModelIO;
 import NNetModel;
 

@@ -11,7 +11,7 @@ export module NobIo;
 
 import Commands;
 import Types;
-import Script;
+import RunTime;
 import NNetModel;
 import NNetModelIO;
 

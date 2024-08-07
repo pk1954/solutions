@@ -5,8 +5,7 @@
 export module IncludeCommand;
 
 import std;
-import Script;
-import Symtab;
+import RunTime;
 import ScriptFile;
 import Commands;
 

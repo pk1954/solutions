@@ -5,15 +5,15 @@
 
 module;
 
-#include <limits>   
-#include <string>
 #include <ctype.h>
-#include <string_view>
+#include <cerrno>
 
-module Scanner;
+module RunTime:Scanner;
 
-import ErrHndl;
-import Input;
+import std;
+import std.compat;
+import :ErrHndl;
+import :Input;
 import IoConstants;
 
 using std::wstring;

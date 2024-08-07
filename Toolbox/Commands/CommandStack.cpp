@@ -6,7 +6,7 @@ module Commands:CommandStack;
 
 import std;
 import Observable;
-import Scanner;
+import RunTime;
 
 using std::wcout;
 using std::endl;

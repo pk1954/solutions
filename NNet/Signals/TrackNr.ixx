@@ -9,7 +9,7 @@ module;
 export module Signals:TrackNr;
 
 import Types;
-import Script;
+import RunTime;
 
 using std::wostream;
 

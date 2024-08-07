@@ -5,7 +5,7 @@
 module IoUtil:IoPixelTypes;
 
 import Types;
-import Script;
+import RunTime;
 import SaveCast;
 
 PIXEL ScrReadPixel(Script& script)

@@ -12,9 +12,7 @@ module;
 module ScriptFile;
 
 import std;
-import Script;
-import Scanner;
-import ScriptStack;
+import RunTime;
 import Commands;
 import IoConstants;
 

@@ -2,18 +2,11 @@
 //                                                                          *
 // Toolbox\runtimeCPP
 
-module;
+export module RunTime:Symtab;
 
-#include <map>
-#include <memory>
-#include <cassert>
-#include <string>
-#include <iostream>
+import :Script;
 
-export module Symtab;
-
-import Script;
-
+import std;
 using std::map;
 using std::wstring;
 using std::unique_ptr;
@@ -44,11 +37,11 @@ public:
     bool operator< (const Symbol &) const;
 
     tSTYPE                GetSymbolType () const { return m_type; };
-    double                GetFloatConst () const { assert(m_type == tSTYPE::FloatConst ); return   m_dValue;    };
-    ScriptFunctor const & GetFunction   () const { assert(m_type == tSTYPE::Function   ); return * m_pFunc;     };
-    wstring       const & GetStringConst() const { assert(m_type == tSTYPE::StringConst); return   m_wstrValue; };
-    long                  GetLongConst  () const { assert(m_type == tSTYPE::LongConst  ); return   m_lValue;    };
-    unsigned long         GetUlongConst () const { assert(m_type == tSTYPE::ULongConst ); return   m_ulValue;   };
+    double                GetFloatConst () const { /*assert(m_type == tSTYPE::FloatConst );*/ return   m_dValue;    };
+    ScriptFunctor const & GetFunction   () const { /*assert(m_type == tSTYPE::Function   );*/ return * m_pFunc;     };
+    wstring       const & GetStringConst() const { /*assert(m_type == tSTYPE::StringConst);*/ return   m_wstrValue; };
+    long                  GetLongConst  () const { /*assert(m_type == tSTYPE::LongConst  );*/ return   m_lValue;    };
+    unsigned long         GetUlongConst () const { /*assert(m_type == tSTYPE::ULongConst );*/ return   m_ulValue;   };
 
 private:
     tSTYPE                m_type      { tSTYPE::UnknownSTYPE };

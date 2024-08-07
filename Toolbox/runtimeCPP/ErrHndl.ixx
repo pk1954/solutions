@@ -3,10 +3,10 @@
 //                                                                    
 // interface for runtime lib error handler
 
-export module ErrHndl;
+export module RunTime:ErrHndl;
 
 import std;
-import Scanner;
+import :Scanner;
 
 using std::wcout;
 using std::wstring;

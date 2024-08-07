@@ -11,7 +11,7 @@ export module Win32_PIXEL;
 
 import std;
 import Types;
-import Script;
+import RunTime;
 
 using std::wostream;
 

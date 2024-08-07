@@ -9,8 +9,7 @@ export import :Wrapper;
 
 import std;
 import IoConstants;
-import Symtab;
-import Script;
+import RunTime;
 
 export inline wstring const PREF_ON  { L"ON" };
 export inline wstring const PREF_OFF { L"OFF" };

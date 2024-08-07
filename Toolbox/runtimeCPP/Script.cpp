@@ -6,14 +6,14 @@ module;
 
 #include <limits.h>
 
-module Script;
+module RunTime:Script;
 
 import std;
 import std.compat;
 import SaveCast;
-import ErrHndl;
-import Symtab;
-import Scanner;
+import :ErrHndl;
+import :Symtab;
+import :Scanner;
 import IoConstants;
 
 using std::endl;

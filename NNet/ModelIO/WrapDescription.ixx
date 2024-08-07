@@ -12,7 +12,7 @@ export module WrapDescription;
 import IoUtil;
 import IoConstants;
 import Commands;
-import Script;
+import RunTime;
 import NNetModelIO;
 import NNetModel;
 

@@ -11,7 +11,7 @@ export module WinCommand;
 import std;
 import Win32_Util_Resource;
 import WinManager;
-import ScriptStack;
+import RunTime;
 import Commands;
 
 using std::bit_cast;

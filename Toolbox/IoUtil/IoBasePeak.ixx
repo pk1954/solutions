@@ -6,7 +6,7 @@ export module IoUtil:IoBasePeak;
 
 import std;
 import Types;
-import Script;
+import RunTime;
 import BasePeak;
 import IoConstants;
 

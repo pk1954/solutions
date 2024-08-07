@@ -2,10 +2,10 @@
 //
 // Toolbox\Commands
 
-export module ScriptStack;
+export module RunTime:ScriptStack;
 
 import std;
-import Script;
+import :Script;
 
 using std::unique_ptr;
 using std::make_unique;

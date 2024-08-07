@@ -5,8 +5,7 @@
 export module Commands:BreakCommand;
 
 import std;
-import Script;
-import Symtab;
+import RunTime;
 import :Wrapper;
 
 using std::wstring;

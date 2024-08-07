@@ -12,7 +12,7 @@ module StatusBar;
 import std;
 import Tooltip;
 import Types;
-import Script;
+import RunTime;
 
 using std::to_wstring;
 using std::wstring;

@@ -2,12 +2,14 @@
 //
 // Toolbox\runtimeCPP
 
-export module Script;
+export module RunTime:Script;
 
 import std;
 import std.compat;
-import Scanner;
-import ErrHndl;
+
+import :Scanner;
+import :ErrHndl;
+import :Input;
 
 using std::wstring;
 

@@ -10,7 +10,7 @@ module;
 export module WrapNrOfNobs;
 
 import Commands;
-import Script;
+import RunTime;
 import NNetModelIO;
 import NNetModel;
 import IoUtil;

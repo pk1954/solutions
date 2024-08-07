@@ -8,7 +8,7 @@ module;
 
 export module InputOutputUI;
 
-import Script;
+import RunTime;
 
 using std::wstring;
 

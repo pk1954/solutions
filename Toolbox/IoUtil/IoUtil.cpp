@@ -13,8 +13,7 @@ import SaveCast;
 import BoolOp;
 import Trace;
 import Types;
-import Symtab;
-import Script;
+import RunTime;
 import IoConstants;
 
 using std::wostream;

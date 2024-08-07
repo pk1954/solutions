@@ -5,13 +5,9 @@
 // handles only the input Pipes of a Neuron and the Neuron itself
 // not the axon Pipe
 
-module;
-
-#include <memory>
-#include <vector>
-
 export module NNetCommands:DeleteNeuronInputCmd;
 
+import std;
 import :NNetCommand;
 
 using std::unique_ptr;

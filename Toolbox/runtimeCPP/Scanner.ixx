@@ -2,10 +2,10 @@
 //                                                                         
 // Toolbox\runtimeCPP
 
-export module Scanner;
+export module RunTime:Scanner;
 
 import std;
-import Input;
+import :Input;
 
 using std::function;
 using std::wstring;

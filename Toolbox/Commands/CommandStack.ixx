@@ -5,11 +5,9 @@
 export module Commands:CommandStack;
 
 import std;
-import Script;
-import Scanner;
+import RunTime;
 import :BaseCommand;
 import Observable;
-import ScriptStack;
 
 using std::wstring;
 using std::vector;
