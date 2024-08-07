@@ -2,10 +2,6 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module WinManager;
 
 import std;
@@ -16,7 +12,7 @@ import Commands;
 import BaseDialog;
 import BaseWindow;
 import Win32_Util;
-import Win32_PIXEL;
+import WinBasics;
 import RootWindow;
 
 using std::wstring;
@@ -76,8 +72,8 @@ public:
 	static LRESULT SendCommand(RootWinId const, WPARAM const, LPARAM const = 0);
 	static LRESULT PostCommand(RootWinId const, WPARAM const, LPARAM const = 0);
 
-	static LRESULT SendMessage(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
-	static LRESULT PostMessage(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
+	static LRESULT SendMsg(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
+	static LRESULT PostMsg(RootWinId const, UINT const, WPARAM const, LPARAM const = 0);
 
 	static void Show(RootWinId const id, tBoolOp const op) { ::Show(GetHWND(id), op);	}
 

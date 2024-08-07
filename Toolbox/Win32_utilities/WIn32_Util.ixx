@@ -54,7 +54,7 @@ export inline LONG_PTR SetWindowId(HWND hwnd, LONG_PTR ptr)
 
 export LRESULT SendCommand(HWND const hwnd, WPARAM const wParam, LPARAM const lParam = 0) 
 { 
-    return SendMessage(hwnd, WM_COMMAND, wParam, lParam); 
+    return ::SendMessage(hwnd, WM_COMMAND, wParam, lParam); 
 }
 
 export void Enable(HMENU hMenu, unsigned int const id, bool const bCrit)
@@ -73,7 +73,7 @@ export bool SetWindowText(HWND hwnd, wostringstream const& s) { return  ::SetWin
 
 export inline void SetText(HWND const hwnd, wchar_t const* const wstrText)
 {
-    (void)::SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)(wstrText));
+    ::SendMessage(hwnd, WM_SETTEXT, 0, (LPARAM)(wstrText));
 }
 
 export inline void SetDlgItemState

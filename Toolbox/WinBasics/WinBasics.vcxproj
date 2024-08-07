@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Win32_PIXEL.cpp" />
     <ClCompile Include="Win32_PIXEL.ixx" />
+    <ClCompile Include="WinBasics.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IoUtil\IoUtil.vcxproj">

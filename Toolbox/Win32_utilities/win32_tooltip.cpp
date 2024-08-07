@@ -10,7 +10,7 @@ module;
 module Tooltip;
 
 import std;
-import Win32_PIXEL;
+import WinBasics;
 
 using std::wstring;
 using std::unique_ptr;

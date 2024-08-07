@@ -4,7 +4,6 @@
 
 module;
 
-#include <compare>
 #include <iostream>
 #include <string>
 #include <iostream>

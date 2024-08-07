@@ -12,7 +12,7 @@ import std;
 import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Controls;
-import Win32_PIXEL;
+import WinBasics;
 import Win32_Util;
 
 using std::wstring;
@@ -50,6 +50,6 @@ void EditLineBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const l
 	CreateButton     (hDlg, L"Cancel",          200, 92,  50, 30, IDOK, WS_GROUP);
 	::SetWindowText(m_hwndEditCtl, m_wstrValue.c_str());
 	::SetWindowText(hDlg, m_wstrTitle.c_str());
-	SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
-	SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
+	::SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
+	::SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 }

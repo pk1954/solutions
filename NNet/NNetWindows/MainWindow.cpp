@@ -29,7 +29,7 @@ import WinManager;
 import RootWindow;
 import Types;
 import Uniform2D;
-import Win32_PIXEL;
+import WinBasics;
 import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;

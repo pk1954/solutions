@@ -6,7 +6,6 @@ module;
 
 #include <d2d1helper.h>
 #include <cassert>
-#include <compare>
 #include <math.h>
 #include <Windows.h>
 

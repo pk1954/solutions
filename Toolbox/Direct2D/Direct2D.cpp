@@ -15,7 +15,7 @@ import std;
 import std.compat;
 import Color;
 import Util;
-import Win32_PIXEL;
+import WinBasics;
 
 using std::array;
 using std::wstring;

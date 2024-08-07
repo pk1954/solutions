@@ -10,7 +10,7 @@ module;
 export module NNetSignals:StimulusButton;
 
 import Types;
-import Win32_PIXEL;
+import WinBasics;
 import Win32_Controls;
 
 export class StimulusButton

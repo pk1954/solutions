@@ -2,10 +2,6 @@
 //
 // NNetCommands
 
-module;
-
-#include <compare>
-
 export module NNetCommands;
 
 export import :Add2ConnectorCmd;

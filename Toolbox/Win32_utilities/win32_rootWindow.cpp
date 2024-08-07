@@ -13,7 +13,7 @@ import std;
 import Types;
 import IoUtil;
 import Win32_Util_Resource;
-import Win32_PIXEL;
+import WinBasics;
 import BaseRefreshRate;
 import WinManager;
 import ColorDialog;

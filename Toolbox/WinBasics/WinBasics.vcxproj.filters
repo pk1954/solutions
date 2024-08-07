@@ -21,5 +21,8 @@
     <ClCompile Include="Win32_PIXEL.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WinBasics.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

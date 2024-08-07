@@ -86,7 +86,7 @@ void StatusBar::LastPart()
 {
 	NewPart();
 	m_statWidths.push_back(-1_PIXEL ); // Stop
-	(void)SendMessage(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
+	SendMsg(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
 }
 
 LRESULT StatusBar::UserProc
@@ -157,12 +157,12 @@ HWND WINAPI StatusBar::AddTrackBar(int const iMenu)
 
 void StatusBar::DisplayInPart(int const iPart, wstring const & wstrLine) const
 {
-	SendMessage(SB_SETTEXT, iPart, (LPARAM)(wstrLine.c_str()));
+	SendMsg(SB_SETTEXT, iPart, (LPARAM)(wstrLine.c_str()));
 }
 
 void StatusBar::ClearPart(int const iPart) const
 {
-	SendMessage(SB_SETTEXT, iPart, (LPARAM)L"");
+	SendMsg(SB_SETTEXT, iPart, (LPARAM)L"");
 }
 
 void StatusBar::ReadProgressReport(int const iPart, Script * pScript) const

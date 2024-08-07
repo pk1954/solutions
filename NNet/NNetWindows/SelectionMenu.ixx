@@ -4,7 +4,6 @@
 
 module;
 
-#include <compare>
 #include <Windows.h>
 
 export module NNetWin32:SelectionMenu;

@@ -113,7 +113,7 @@ private:
 
     void callUI() // runs in animation thread
     {
-        m_rootWindow.PostMessage  // calls AnimationUpdate from UI thread
+        m_rootWindow.PostMsg  // calls AnimationUpdate from UI thread
         (
             WM_APP_UI_CALL, 
             0, 

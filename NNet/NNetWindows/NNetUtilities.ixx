@@ -2,12 +2,9 @@
 //
 // NNetWindows
 
-module;
-
-#include <string>
-
 export module NNetWin32:NNetUtilities;
 
+import std;
 import ScriptFile;
 
 using std::wstring;

@@ -4,11 +4,12 @@
 
 module;
 
-#include <Windows.h>
-#include <string>
+//#include <Windows.h>
 
 export module NNetWin32:AppTitle;
 
+import std;
+import WinBasics;
 import Win32_Util_Resource;
 import ObserverInterface;
 import Win32_Util;

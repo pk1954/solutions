@@ -6,7 +6,7 @@ module;
 
 #include <Windows.h>
 
-module Win32_PIXEL;
+module WinBasics:Win32_PIXEL;
 
 import std;
 import Types;

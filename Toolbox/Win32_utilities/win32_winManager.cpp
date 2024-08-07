@@ -17,7 +17,7 @@ import IoConstants;
 import WinManager;
 import Win32_Util_Resource;
 import Win32_Util;
-import Win32_PIXEL;
+import WinBasics;
 import RootWindow;
 import BaseWindow;
 import BaseDialog;
@@ -443,24 +443,24 @@ RootWindow* WinManager::GetRootWindow(RootWinId const id)
     }
 }
 
-LRESULT WinManager::SendMessage(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
+LRESULT WinManager::SendMsg(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
     return ::SendMessage(GetHWND(id), msg, wParam, lParam);
 }
 
-LRESULT WinManager::PostMessage(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
+LRESULT WinManager::PostMsg(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
     return ::PostMessage(GetHWND(id), msg, wParam, lParam);
 }
 
 LRESULT WinManager::SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)
 {
-    return SendMessage(id, WM_COMMAND, wParam, lParam);
+    return SendMsg(id, WM_COMMAND, wParam, lParam);
 }
 
 LRESULT WinManager::PostCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)
 {
-    return PostMessage(id, WM_COMMAND, wParam, lParam);
+    return PostMsg(id, WM_COMMAND, wParam, lParam);
 }
 
 LRESULT WinManager::SendCommand2App(WPARAM const wParam, LPARAM const lParam)
@@ -475,12 +475,12 @@ LRESULT WinManager::PostCommand2App(WPARAM const wParam, LPARAM const lParam)
 
 LRESULT WinManager::PostMessage2App(UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
-    return PostMessage(RootWinId(IDM_APPL_WINDOW), msg, wParam, lParam);
+    return PostMsg(RootWinId(IDM_APPL_WINDOW), msg, wParam, lParam);
 }
 
 LRESULT WinManager::SendMessage2App(UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
-    return SendMessage(RootWinId(IDM_APPL_WINDOW), msg, wParam, lParam);
+    return SendMsg(RootWinId(IDM_APPL_WINDOW), msg, wParam, lParam);
 }
 
 LRESULT WinManager::PostCommand2MainWin(WPARAM const wParam, LPARAM const lParam)
@@ -495,10 +495,10 @@ LRESULT WinManager::SendCommand2MainWin(WPARAM const wParam, LPARAM const lParam
 
 LRESULT WinManager::PostMessage2MainWin(UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
-    return PostMessage(RootWinId(IDM_MAIN_WINDOW), msg, wParam, lParam);
+    return PostMsg(RootWinId(IDM_MAIN_WINDOW), msg, wParam, lParam);
 }
 
 LRESULT WinManager::SendMessage2MainWin(UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
-    return SendMessage(RootWinId(IDM_MAIN_WINDOW), msg, wParam, lParam);
+    return SendMsg(RootWinId(IDM_MAIN_WINDOW), msg, wParam, lParam);
 }

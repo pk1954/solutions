@@ -4,9 +4,6 @@
 
 module;
 
-#include <iostream>
-
-#include <compare>
 #include <Windows.h>
 #include "Resource.h"
 

@@ -6,7 +6,6 @@ module;
 
 #include <cassert>
 #include <algorithm>  // min/max/abs templates
-#include <compare>
 #include <cmath>
 
 export module Types:PointType;

@@ -30,7 +30,7 @@ import MessagePump;
 import ScriptFile;
 import BaseWindow;
 import Win32_Util;
-import Win32_PIXEL;
+import WinBasics;
 import Signals;
 import RunTime;
 import NNetModel;
@@ -348,7 +348,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_EXIT:
-			PostMessage(WM_CLOSE, 0, 0);
+			PostMsg(WM_CLOSE, 0, 0);
 			return true;
 
 		case IDM_DUMP:

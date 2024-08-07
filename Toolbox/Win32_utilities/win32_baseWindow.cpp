@@ -187,7 +187,7 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
 
     case WM_MOUSEWHEEL:
         if (!OnMouseWheel(wParam, lParam))
-            SendMessage2Parent(message, wParam, lParam);
+            SendMsg2Parent(message, wParam, lParam);
         return true;
 
     case WM_MOUSELEAVE:

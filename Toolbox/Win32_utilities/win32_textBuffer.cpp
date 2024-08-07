@@ -11,7 +11,7 @@ module Win32_TextBuffer;
 import std;
 import Util;
 import Types;
-import Win32_PIXEL;
+import WinBasics;
 
 using std::wstring;
 using std::wostringstream;

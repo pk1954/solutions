@@ -2,10 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <compare>
-
 export module NNetModel:SignalFactory;
 
 import Observable;

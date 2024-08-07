@@ -4,13 +4,11 @@
 
 module;
 
-#include <optional>
-#include <memory>
 #include "Resource.h"
-#include <Windows.h>
 
 export module NNetWin32:MainWindow;
 
+import std;
 import Types;
 import HiResTimer;
 import Vector2D;
@@ -19,6 +17,7 @@ import D2D_ColorLUT;
 import NNetModel;
 import NNetSignals;
 import NNetCommands;
+import WinBasics;
 import :NNetCommandHandler;
 import :SelectionMenu;
 import :NNetWindow;

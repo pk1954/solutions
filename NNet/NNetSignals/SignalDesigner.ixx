@@ -7,7 +7,6 @@ module;
 #include <array>
 #include <string>
 #include <memory>
-#include <compare>
 #include <Windows.h>
 
 export module NNetSignals:SignalDesigner;

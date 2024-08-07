@@ -99,7 +99,7 @@ void SlowMotionDisplay::Initialize
         nullptr       //[in] LPCSTR pszFaceName
     );
 
-    pStatusBar->SendMessage(WM_SETFONT, (WPARAM)hFont, true);
+    pStatusBar->SendMsg(WM_SETFONT, (WPARAM)hFont, true);
 }
 
 void SlowMotionDisplay::Notify(bool const bImmediately)

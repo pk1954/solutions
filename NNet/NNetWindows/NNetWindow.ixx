@@ -6,7 +6,6 @@ module;
 
 #include <optional>
 #include <memory>
-#include <compare>
 #include <Windows.h>
 #include <d2d1helper.h>
 

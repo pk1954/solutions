@@ -18,7 +18,7 @@ import Types;
 import ObserverInterface;
 import Tooltip;
 import Win32_Util;
-import Win32_PIXEL;
+import WinBasics;
 
 using std::chrono::milliseconds;
 using std::wostringstream;
@@ -104,14 +104,14 @@ public:
 	void     ShowWindow(int const cmd)                                            const { ::ShowWindow(m_hwnd, cmd); }
 
 	LRESULT SendNotifyCommand (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendNotifyMessage (WM_COMMAND, wParam, lParam); }
-	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage       (WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage       (WM_COMMAND, wParam, lParam); }
-	LRESULT SendCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMessage2Parent(WM_COMMAND, wParam, lParam); }
-	LRESULT PostCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMessage2Parent(WM_COMMAND, wParam, lParam); }
-	LRESULT PostMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwnd,       msg, wParam, lParam); }
-	LRESULT PostMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg, wParam, lParam); }
-	LRESULT SendMessage       (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwnd,       msg, wParam, lParam); }
-	LRESULT SendMessage2Parent(UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg, wParam, lParam); }
+	LRESULT PostCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMsg       (WM_COMMAND, wParam, lParam); }
+	LRESULT SendCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMsg       (WM_COMMAND, wParam, lParam); }
+	LRESULT SendCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMsg2Parent(WM_COMMAND, wParam, lParam); }
+	LRESULT PostCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMsg2Parent(WM_COMMAND, wParam, lParam); }
+	LRESULT PostMsg           (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwnd,       msg, wParam, lParam); }
+	LRESULT PostMsg2Parent    (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg, wParam, lParam); }
+	LRESULT SendMsg           (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwnd,       msg, wParam, lParam); }
+	LRESULT SendMsg2Parent    (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg, wParam, lParam); }
 	LRESULT SendNotifyMessage (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessage(m_hwnd, msg, wParam, lParam); }
 
 	LRESULT const DefWindowProc(UINT const msg, WPARAM const wParam, LPARAM const lParam) const { return ::DefWindowProc(m_hwnd, msg, wParam, lParam); }

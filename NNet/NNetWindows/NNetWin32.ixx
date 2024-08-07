@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include <compare>
-
 export module NNetWin32;
 
 export import :AppTitle; 

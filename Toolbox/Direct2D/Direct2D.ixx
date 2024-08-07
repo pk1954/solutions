@@ -13,7 +13,7 @@ export module Direct2D;
 import std;
 import Color;
 import Types;
-import Win32_PIXEL;
+import WinBasics;
 
 using std::function;
 using std::wstring;

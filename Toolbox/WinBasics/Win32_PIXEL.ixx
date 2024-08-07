@@ -7,7 +7,7 @@ module;
 #include <cassert>
 #include <Windows.h>
 
-export module Win32_PIXEL;
+export module WinBasics:Win32_PIXEL;
 
 import std;
 import Types;

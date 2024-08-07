@@ -10,7 +10,6 @@ module;
 #include <iostream>
 #include <type_traits>   
 #include <functional>   
-#include <compare>
 #include "d2d1helper.h"
 
 export module NNetModel:Nob;

@@ -143,7 +143,7 @@ void PanelPlatform::AddScan(unique_ptr<Model> upModel)
 
 void PanelPlatform::removeScan(ScanPanel *p)
 {
-	p->SendMessage(WM_CLOSE, 0, 0);
+	p->SendMsg(WM_CLOSE, 0, 0);
 	auto iterUpPanels { find_if(m_upPanels, [p](UpPanel const &upPanel){ return upPanel.get() == p; }) };
 	assert(iterUpPanels != m_upPanels.end());
 	auto index { distance(m_upPanels.begin(), iterUpPanels) };

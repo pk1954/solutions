@@ -10,7 +10,7 @@ module;
 export module Tooltip;
 
 import std;
-import Win32_PIXEL;
+import WinBasics;
 
 class ToolTip;
 

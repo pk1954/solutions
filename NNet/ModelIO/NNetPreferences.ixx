@@ -5,7 +5,6 @@
 module;
 
 #include "Resource.h"
-#include <compare>
 #include <iostream>
 #include <string>
 #include <vector>

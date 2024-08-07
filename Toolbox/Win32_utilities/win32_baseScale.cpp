@@ -107,7 +107,7 @@ bool BaseScale::OnSize(PIXEL const width, PIXEL const height)
 
 void BaseScale::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 {
-	PostMessage2Parent(WM_APP_SCALE_COMMAND, SC_LBUTTONDBLCLK, bit_cast<LPARAM>(this));
+	PostMsg2Parent(WM_APP_SCALE_COMMAND, SC_LBUTTONDBLCLK, bit_cast<LPARAM>(this));
 }
 
 void BaseScale::OnMouseMove(WPARAM const wParam, LPARAM const lParam)

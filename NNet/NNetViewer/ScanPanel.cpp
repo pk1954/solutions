@@ -14,7 +14,7 @@ module ScanPanel;
 
 import Types;
 import Raster;
-import Win32_PIXEL;
+import WinBasics;
 import EventViewer;
 
 using std::min;
