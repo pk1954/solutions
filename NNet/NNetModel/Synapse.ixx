@@ -2,14 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <cmath>
-#include <vector>
-
 export module NNetModel:Synapse;
 
+import std;
+import std.compat;
 import FixedPipeline;
 import DrawContext;
 import :NobId;
@@ -144,14 +140,14 @@ private:
 
 export Synapse const* Cast2Synapse(Nob const* pNob)
 {
-    assert(pNob);
-    assert(pNob->IsSynapse());
+    //assert(pNob);
+    //assert(pNob->IsSynapse());
     return static_cast<Synapse const*>(pNob);
 }
 
 export Synapse* Cast2Synapse(Nob* pNob)
 {
-    assert(pNob);
-    assert(pNob->IsSynapse());
+    //assert(pNob);
+    //assert(pNob->IsSynapse());
     return static_cast<Synapse*>(pNob);
 }

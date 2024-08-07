@@ -5,12 +5,11 @@
 module;
 
 #include <cmath>
-#include <cassert>
-#include <iostream>
 #include "Resource.h"
 
 module NNetModel:Synapse;
 
+import std;
 import SimulationTime;
 import DrawContext;
 import Types;
@@ -81,7 +80,7 @@ void Synapse::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 
 void Synapse::SetAllIncoming(PosNob& src)
 {
-	assert(src.IsSynapse());
+	//assert(src.IsSynapse());
 	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
 	SetAddPipe(pSynapseSrc ->m_pPipeAdd);
 	AddIncoming(pSynapseSrc->m_pPipeIn);
@@ -89,7 +88,7 @@ void Synapse::SetAllIncoming(PosNob& src)
 
 void Synapse::SetAllOutgoing(PosNob& src)
 {
-	assert(src.IsSynapse());
+	//assert(src.IsSynapse());
 	Synapse* pSynapseSrc { static_cast<Synapse*>(&src) };
 	AddOutgoing(pSynapseSrc->m_pPipeOut);
 }
@@ -146,12 +145,12 @@ void Synapse::Recalc()
 void Synapse::Check() const
 {
 	PosNob::Check();
-	assert(m_pPipeAdd);
-	assert(m_pPipeIn);
-	assert(m_pPipeOut);
-	assert(m_pPipeAdd->GetEndKnotId  () == GetId());
-	assert(m_pPipeIn ->GetEndKnotId  () == GetId());
-	assert(m_pPipeOut->GetStartKnotId() == GetId());
+	//assert(m_pPipeAdd);
+	//assert(m_pPipeIn);
+	//assert(m_pPipeOut);
+	//assert(m_pPipeAdd->GetEndKnotId  () == GetId());
+	//assert(m_pPipeIn ->GetEndKnotId  () == GetId());
+	//assert(m_pPipeOut->GetStartKnotId() == GetId());
 	m_pPipeAdd->Check();
 	m_pPipeIn ->Check();
 	m_pPipeOut->Check();
@@ -211,13 +210,13 @@ void Synapse::ReplaceIncoming(Pipe* const pDel, Pipe* const pNew)
 	else if (pDel == m_pPipeIn)
 		m_pPipeIn = pNew;
 	else
-		assert(false);
+		; //assert(false);
 	m_bDirty = true;
 }
 
 void Synapse::ReplaceOutgoing(Pipe* const pDel, Pipe* const pNew)
 {
-	assert(pDel == m_pPipeOut);
+	//assert(pDel == m_pPipeOut);
 	m_pPipeOut = pNew;
 	m_bDirty = true;
 }

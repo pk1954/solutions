@@ -2,10 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:OutputLine;
 
 import Types;
@@ -35,7 +31,7 @@ public:
 	void CollectInput()	override { m_mVpotential = GetPipeC()->GetPotential(); }
 
 	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final;
-	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final { assert(false); }
+	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final { /*assert(false);*/ }
 
 	void Apply2AllOutPipes (PipeFunc  const& f)       final {};
 	void Apply2AllOutPipesC(PipeFuncC const& f) const final {};

@@ -2,11 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <iostream>
-
 export module NNetModel:ParamType;
+
+import std;
 
 using std::wostream;
 

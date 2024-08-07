@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <iostream>
-#include <unordered_map>
-
 module NNetModel:ParamType;
 
+import std;
 import IoUtil;
 import IoConstants;
 import Types;
