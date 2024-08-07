@@ -2,15 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <cassert>
-#include <iostream>
-#include <vector>
-#include <memory>
-
 module Signals:Track;
 
+import std;
 import SaveCast;
 import :Signal;
 import :SignalNr;
@@ -75,7 +69,7 @@ void Track::CheckSignals() const
 #ifdef _DEBUG
 	for (const auto & pSignal : m_signals)
 	{
-		assert(pSignal != nullptr);
+		//assert(pSignal != nullptr);
 		pSignal->CheckSignal();
 	}
 #endif

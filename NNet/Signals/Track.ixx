@@ -2,13 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <memory>
-#include <vector>
-
 export module Signals:Track;
 
+import std;
 import Observable;
 import Types;
 import :Signal;

@@ -2,13 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <iostream>
-#include <functional>
-
 export module Signals:SignalId;
 
+import std;
 import Types;
 import IoUtil;
 import IoConstants;

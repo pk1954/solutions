@@ -2,10 +2,6 @@
 //
 // Signals
 
-module;
-
-#include <limits>
-
 export module Signals:SigGenId;
 
 import Types;

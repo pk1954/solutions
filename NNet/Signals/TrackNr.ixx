@@ -2,12 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <iostream>
-
 export module Signals:TrackNr;
 
+import std;
 import Types;
 import RunTime;
 

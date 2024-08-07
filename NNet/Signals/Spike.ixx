@@ -2,12 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <iostream>
-
 export module Signals:Spike;
 
+import std;
 import Types;
 
 export class Spike

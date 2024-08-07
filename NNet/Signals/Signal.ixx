@@ -2,15 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <iostream>
-#include <vector>
-#include <math.h>    
-#include <memory>    
-
 export module Signals:Signal;
 
+import std;
 import Observable;
 import ObserverInterface;
 import Types;

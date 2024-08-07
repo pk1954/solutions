@@ -2,15 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <vector>
-#include <memory>
-#include <functional>
-#include <algorithm>
-
 export module Signals:MonitorData;
 
+import std;
 import Observable;
 import Types;
 import :Signal;

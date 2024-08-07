@@ -2,12 +2,10 @@
 //
 // Signals
 
-module;
-
-#include <iostream>
-
 module Signals:Signal;
 
+import std;
+import std.compat;
 import Observable;
 import Util;
 import Types;

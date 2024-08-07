@@ -2,14 +2,9 @@
 //
 // Signals
 
-module;
-
-#include <cassert>
-#include <iostream>
-#include <iomanip>
-
 export module Signals:SigGenStaticData;
 
+import std;
 import Observable;
 import Types;
 import BasePeak;
@@ -160,7 +155,7 @@ private:
 			T     const stimulus  { boost * fStimulus };
 			result += stimulus;
 		}
-		assert(result >= T(0.0f));
+		//assert(result >= T(0.0f));
 		return result;
 	}
 };

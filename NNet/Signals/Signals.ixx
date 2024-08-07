@@ -2,10 +2,6 @@
 //
 // Signals
 
-module;
-
-#include <compare>
-
 export module Signals;
 
 export import :MonitorData;
