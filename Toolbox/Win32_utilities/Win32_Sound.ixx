@@ -4,7 +4,7 @@
 
 module;
 
-#include "Windows.h"
+#include <Windows.h>
 #include "mmsystem.h"
 
 export module Win32_Sound;

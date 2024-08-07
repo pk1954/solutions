@@ -5,7 +5,7 @@
 module;
 
 #include <cassert>
-#include "Windows.h"
+#include <Windows.h>
 
 export module Win32_PIXEL;
 

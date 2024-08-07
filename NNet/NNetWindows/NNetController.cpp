@@ -8,7 +8,7 @@ module;
 #include <string>
 #include <iostream>
 #include <exception>
-#include "Windows.h"
+#include <Windows.h>
 #include "Resource.h"
 
 module NNetWin32:NNetController;

@@ -4,7 +4,7 @@
 
 module;
 
-#include "Windows.h"
+#include <Windows.h>
 #include "CommCtrl.h"
 
 module Win32_Controls;
