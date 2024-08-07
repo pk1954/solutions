@@ -2,16 +2,11 @@
 //
 // NNetWindows
 
-module;
-
-#include <memory>
-#include <cassert>
-#include <iostream>
-#include <Windows.h>
-
 export module NNetWin32:NNetInputOutputUI;
 
+import std;
 import InputOutputUI;
+import WinBasics;
 import Win32_Util;
 import Win32_Util_Resource;
 
@@ -49,7 +44,7 @@ public:
 		case ok:     	   ::SendCommand(m_hwndInitiator, m_msgJobFinished,   0); break;
 		case fileNotFound: ::SendCommand(m_hwndInitiator, IDX_FILE_NOT_FOUND, 0); break;
 		case errorInFile:  ::SendCommand(m_hwndInitiator, IDX_ERROR_IN_FILE,  0); break;
-		default: assert(false);
+		default: ; //assert(false);
 		}
 	};
 

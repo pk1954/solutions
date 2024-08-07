@@ -2,15 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-#include <memory>
-#include <vector>
-#include <algorithm>
-
 module NNetModel:UPSensorList;
 
+import std;
 import SaveCast;
 import Types;
 import :Sensor;

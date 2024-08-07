@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-#include <iostream>
-#include <unordered_map>
-
 module NNetModel:NNetEvent;
+
+import std;
 
 using std::unordered_map;
 using std::wostream;

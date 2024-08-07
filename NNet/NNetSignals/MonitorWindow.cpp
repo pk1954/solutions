@@ -4,14 +4,12 @@
 
 module;
 
-#include <string>
-#include <memory>
-#include <algorithm>
 #include <Windows.h>
 #include "Resource.h"
 
 module NNetSignals:MonitorWindow;
 
+import std;
 import Win32_Util_Resource;
 import Types;
 import Observable;

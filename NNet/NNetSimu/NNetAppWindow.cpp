@@ -4,18 +4,13 @@
 
 module;
 
-#include <bit>
 #include <Windows.h>
 #include <CommCtrl.h>
-#include <string>
-#include <chrono>
-#include <iostream>
-#include <filesystem>
-#include <source_location>
 #include "Resource.h"
 
 module NNetAppWindow;
 
+import std;
 import Win32_Util_Resource;
 import Types;
 import Util;

@@ -5,12 +5,10 @@
 module;
 
 #include <cassert>
-#include <numeric>
-#include <vector>
-#include <memory>
 
 module NNetModel:UPNobList;
 
+import std;
 import :NobException;
 import :InputConnector;
 import :OutputConnector;

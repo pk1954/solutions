@@ -4,12 +4,12 @@
 
 module;
 
-#include <memory>
 #include <cassert>
 #include "Resource.h"
 
 module NNetModel:Knot;
 
+import std;
 import DrawContext;
 import Types;
 import :NobType;

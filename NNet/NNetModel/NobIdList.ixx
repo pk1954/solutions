@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <vector>
-#include <ostream>
-
 export module NNetModel:NobIdList;
 
+import std;
 import Util;
 import :NobId;
 import :Nob;

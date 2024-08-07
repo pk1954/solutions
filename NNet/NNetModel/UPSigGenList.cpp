@@ -2,16 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <vector>
-#include <string>
-#include <memory>
-#include <algorithm>
-
 module NNetModel:UPSigGenList;
 
+import std;
 import SaveCast;
 import Signals;
 import :StdSigGen;
@@ -34,7 +27,7 @@ void UPSigGenList::Clear()
 
 SigGenId UPSigGenList::SetActive(SigGenId const id)
 {
-    assert(IsValidSigGenId(id));
+    //assert(IsValidSigGenId(id));
     SigGenId sigGenIdOld { m_sigGenIdActive };
     m_sigGenIdActive = id;
     if (m_pActiveSigGenObservable)
@@ -44,7 +37,7 @@ SigGenId UPSigGenList::SetActive(SigGenId const id)
 
 void UPSigGenList::SetName(SigGenId const id, wstring const& name)
 {
-    assert(IsValidSigGenId(id));
+    //assert(IsValidSigGenId(id));
     GetSigGen(id)->SetNewName(name);
     if (m_pActiveSigGenObservable)
         m_pActiveSigGenObservable->NotifyAll();
@@ -76,19 +69,19 @@ vector<UPSigGen>::const_iterator UPSigGenList::getSigGen(wstring const & name) c
 
 vector<UPSigGen>::iterator UPSigGenList::getSigGen(SigGenId const id)
 {
-    assert(id != STD_SIGGEN);
+    //assert(id != STD_SIGGEN);
     return m_list.begin() + id.GetValue();
 }
 
 vector<UPSigGen>::const_iterator UPSigGenList::getSigGen(SigGenId const id) const
 {
-    assert(id != STD_SIGGEN);
+    //assert(id != STD_SIGGEN);
     return m_list.begin() + id.GetValue();
 }
 
 void UPSigGenList::InsertSigGen(UPSigGen upSigGen, SigGenId const id)
 {
-    assert(id != STD_SIGGEN);
+    //assert(id != STD_SIGGEN);
     m_list.insert(getSigGen(id), move(upSigGen));
 }
 
@@ -162,7 +155,7 @@ UPSigGen UPSigGenList::PopSigGen()
 
 UPSigGen UPSigGenList::RemoveSigGen(SigGenId const id)
 {
-    assert(id != STD_SIGGEN);
+    //assert(id != STD_SIGGEN);
     return removeSigGen(getSigGen(id));
 }
 
@@ -202,7 +195,7 @@ SigGenId UPSigGenList::GetSigGenId(SignalGenerator const& sigGen) const
             ++id;
         }
     );
-    assert(IsValid(sigGenFound)); 
+    //assert(IsValid(sigGenFound)); 
     return sigGenFound;
 }
 
@@ -215,7 +208,7 @@ SigGenId UPSigGenList::GetSigGenId(fPixelPoint const &fPixCrsr, fPixel const fPi
     {
         fPixel   const fPixX { fPixCrsr.GetX() - fPixOffX };
         SigGenId const id    { SigGenId(Cast2Int(fPixX / DIST) - 1) };
-        assert(IsValid(id));
+        //assert(IsValid(id));
         return id;
     }
 

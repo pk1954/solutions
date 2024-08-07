@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <memory>
-#include <cassert>
-
 export module NNetModel:Knot;
 
+import std;
 import DrawContext;
 import Geometry;
 import Types;

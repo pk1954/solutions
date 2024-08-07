@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <iostream>
-
 module NNetModel:NobIdList;
 
+import std;
 import IoUtil;
 import :NobId;
 import :Nob;

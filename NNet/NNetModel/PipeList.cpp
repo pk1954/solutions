@@ -2,14 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <iostream>
-#include <algorithm>
-
 module NNetModel:PipeList;
 
+import std;
 import IoUtil;
 import :Pipe;
 
@@ -32,7 +27,7 @@ void PipeList::Check() const
 {
 	for (auto & it : m_list)
 	{
-		assert(it);
+		//assert(it);
 		it->Check();
 	}
 }
@@ -46,16 +41,16 @@ void PipeList::Add(Pipe & pipe)
 void PipeList::Remove(Pipe & pipe) 
 { 
 	auto res { find(m_list, &pipe) };
-	assert(res != end(m_list));
+	//assert(res != end(m_list));
 	m_list.erase(res);
 }
 
 void PipeList::Replace(Nob * const pDel, Nob * const pAdd) 
 { 
-	assert(pAdd);
-	assert(pDel);
-	assert(pAdd->IsPipe());
-	assert(pDel->IsPipe());
+	//assert(pAdd);
+	//assert(pDel);
+	//assert(pAdd->IsPipe());
+	//assert(pDel->IsPipe());
 	replace(m_list, static_cast<Pipe *>(pDel), static_cast<Pipe*>(pAdd));
 }
 

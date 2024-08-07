@@ -4,11 +4,11 @@
 
 module;
 
-#include <iostream>
 #include <ctime>
 
 export module WrapTimestamp;
 
+import std;
 import Commands;
 import RunTime;
 import NNetModelIO;

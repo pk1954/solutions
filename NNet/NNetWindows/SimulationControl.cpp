@@ -12,6 +12,7 @@ module NNetWin32:SimulationControl;
 import NNetPreferences;
 import Win32_Util_Resource;
 import Win32_Util;
+import WinBasics;
 import StatusBar;
 import SlowMotionControl;
 import :Compute;

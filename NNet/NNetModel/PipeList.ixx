@@ -2,15 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <iostream>
-#include <algorithm>
-#include <fstream>
-#include <vector>
-
 export module NNetModel:PipeList;
 
+import std;
 import :Pipe;
 
 using std::vector;

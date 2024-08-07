@@ -14,6 +14,7 @@ import SoundInterface;
 import Direct2D;
 import SimulationTime;
 import NNetModel;
+import WinBasics;
 import :Measurement;
 import :NNetTimeGraph;
 

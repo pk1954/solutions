@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-
 export module NNetModel:NNetEvent;
 
+import std;
 import Types;
 import SimulationTime;
 import Signals;

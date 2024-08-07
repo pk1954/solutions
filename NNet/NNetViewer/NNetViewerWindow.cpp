@@ -4,15 +4,14 @@
 
 module;
 
-#include <memory>
-#include <string>
-#include <vector>
 #include <Windows.h>
 
 module NNetViewerWindow;
 
+import std;
 import Win32_Util_Resource;
 import Win32_Util;
+import WinBasics;
 import ScriptFile;
 import ScriptHook;
 import IoUtil;

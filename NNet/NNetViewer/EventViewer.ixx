@@ -2,16 +2,13 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-#include <string>
-
 export module EventViewer;
 
+import std;
 import Types;
 import Tooltip;
 import PixFpDimension;
+import WinBasics;
 import NNetModel;
 import NNetSignals;
 

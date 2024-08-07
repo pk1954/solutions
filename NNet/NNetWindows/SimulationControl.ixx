@@ -2,14 +2,11 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 export module NNetWin32:SimulationControl;
 
 import ObserverInterface;
 import StatusBar;
+import WinBasics;
 import :Compute;
 
 export class SimulationControl: public ObserverInterface

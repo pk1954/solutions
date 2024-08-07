@@ -2,14 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <memory>
-#include <iostream>
-#include <iomanip>
-
 export module NNetWrapperHelpers;
 
+import std;
 import Types;
 import RunTime;
 import NNetModel;

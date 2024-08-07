@@ -2,13 +2,10 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 export module NNetWin32:NNetCommandHandler;
 
 import Types;
+import WinBasics;
 
 export class NNetCommandHandler
 {

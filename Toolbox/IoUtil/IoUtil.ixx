@@ -2,10 +2,6 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <Windows.h>
-
 export module IoUtil;
 
 export import Color;

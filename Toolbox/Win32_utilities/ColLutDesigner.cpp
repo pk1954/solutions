@@ -8,6 +8,7 @@ module;
 
 module ColLutDesigner;
 
+import WinBasics;
 import Win32_Util_Resource;
 import ColorDialog;
 

@@ -2,16 +2,10 @@
 //
 // NNetViewer
 
-module;
-
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <Windows.h>
-#include <memory>
-
 export module NNetViewerWindow;
 
+import std;
+import WinBasics;
 import BaseWindow;
 import NNetModel;
 import NNetModelIO;

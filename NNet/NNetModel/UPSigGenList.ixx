@@ -2,15 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <memory>
-
 export module NNetModel:UPSigGenList;
 
+import std;
 import SaveCast;
 import Observable;
 import Uniform2D;

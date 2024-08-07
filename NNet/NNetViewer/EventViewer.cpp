@@ -4,14 +4,11 @@
 
 module;
 
-#include <string>
-#include <sstream>
-#include <iomanip>
-#include <cassert>
 #include <Windows.h>
 
 module EventViewer;
 
+import std;
 import Types;
 import PixFpDimension;
 import IoConstants;
@@ -38,7 +35,7 @@ EventViewer::EventViewer
 	SetVertCoordVolt(&m_vertCoordVolt);
 	m_horzCoord.SetPixelSizeLimits(10._MicroSecs, 500000._MicroSecs);
 	m_upGraphics->SetBackgroundColor(D2D1::ColorF::Ivory);
-	assert(pNMRI->AnyScanEvents());
+	//assert(pNMRI->AnyScanEvents());
 	wostringstream wstrBuffer;
 	wstrBuffer << L"Scan Protocol:";
 	pNMRI->Apply2allEvents

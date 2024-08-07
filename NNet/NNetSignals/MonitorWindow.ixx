@@ -4,12 +4,11 @@
 
 module;
 
-#include <string>
-#include <memory>
 #include <Windows.h>
 
 export module NNetSignals:MonitorWindow;
 
+import std;
 import Types;
 import Scale;
 import Observable;

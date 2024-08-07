@@ -4,15 +4,12 @@
 
 module;
 
-#include <filesystem>
-#include <string>
-#include <iostream>
-#include <exception>
 #include <Windows.h>
 #include "Resource.h"
 
 module NNetWin32:NNetController;
 
+import std;
 import Win32_Util;
 import Win32_Util_Resource;
 import SlowMotionRatio;

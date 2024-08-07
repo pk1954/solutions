@@ -10,10 +10,15 @@ export module WinBasics;
 
 export import :Win32_PIXEL;
 
-export using HWND    = HWND;
-export using LRESULT = LRESULT;
-export using WPARAM  = WPARAM;
-export using LPARAM  = LPARAM;
-export using UINT    = UINT;
+export 
+{
+    using HWND    = HWND;
+    using HCURSOR = HCURSOR;
+    using HFONT   = HFONT;
+    using LRESULT = LRESULT;
+    using WPARAM  = WPARAM;
+    using LPARAM  = LPARAM;
+    using UINT    = UINT;
 
-export using ::IsWindowVisible;
+    using ::IsWindowVisible;
+}

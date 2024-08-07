@@ -10,6 +10,7 @@ export module NNetWin32:DescriptionWindow;
 
 import std;
 import Types;
+import WinBasics;
 import BaseWindow;
 import DescriptionUI;
 

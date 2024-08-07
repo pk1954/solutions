@@ -2,15 +2,9 @@
 //
 // NNetWindows
 
-module;
-
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <Windows.h>
-
 export module NNetAppWindow;
 
+import std;
 import AboutBox;
 import Observable;
 import Commands;
@@ -18,6 +12,7 @@ import SlowMotionRatio;
 import ColLutDesigner;
 import DisplayFunctor;
 import Win32_Sound;
+import WinBasics;
 import HiResTimer;
 import WinManager;
 import ScriptFile;

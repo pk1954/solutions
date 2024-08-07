@@ -2,14 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <iostream>
-#include <functional>
-
 export module NNetModel:NobType;
 
+import std;
 import Debug;
 import IoUtil;
 import IoConstants;

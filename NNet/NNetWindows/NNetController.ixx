@@ -2,18 +2,13 @@
 //
 // NNetWindows
 
-module;
-
-#include <iostream>
-#include <string>
-#include <iostream>
-#include <Windows.h>
-
 export module NNetWin32:NNetController;
 
+import std;
 import Observable;
 import SlowMotionRatio;
 import Types;
+import WinBasics;
 import WinManager;
 import Commands;
 import NNetModel;

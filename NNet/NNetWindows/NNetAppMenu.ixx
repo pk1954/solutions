@@ -4,16 +4,16 @@
 
 module;
 
-#include <string>
-#include <memory>
 #include <Windows.h>
 
 export module NNetWin32:NNetAppMenu;
 
+import std;
 import ObserverInterface;
 import SoundInterface;
 import WinManager;
 import Win32_Util;
+import WinBasics;
 import OnOffPair;
 import Commands;
 import NNetModel;

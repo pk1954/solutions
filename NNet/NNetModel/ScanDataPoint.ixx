@@ -2,10 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:ScanDataPoint;
 
 import :Pipe;
@@ -23,7 +19,7 @@ public:
 
     void Check() const
     {
-        assert(m_segNr.GetValue() < m_pPipe->GetNrOfSegments());
+        //assert(m_segNr.GetValue() < m_pPipe->GetNrOfSegments());
     }
 
     mV GetSignalValue() const

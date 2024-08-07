@@ -4,20 +4,13 @@
 
 module;
 
-#include "bit"
-#include <vector>
-#include <unordered_map>
 #include <cassert>
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <iomanip>
-#include <optional>
 #include <Windows.h>
 #include "Resource.h"
 
 module NNetWin32:MainWindow;
 
+import std;
 import HiResTimer;
 import NNetCommands;
 import DrawContext;

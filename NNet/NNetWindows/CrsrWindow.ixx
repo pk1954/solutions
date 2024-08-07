@@ -2,15 +2,9 @@
 //
 // NNetWindows
 
-module;
-
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <Windows.h>
-
 export module NNetWin32:CrsrWindow;
 
+import std;
 import Types;
 import TextBuffer;
 import TextWindow;

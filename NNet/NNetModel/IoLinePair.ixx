@@ -2,14 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <memory>
-
 export module NNetModel:IoLinePair;
 
+import std;
 import Types;
-
 import :NNetModelWriterInterface;
 import :InputLine;
 import :OutputLine;

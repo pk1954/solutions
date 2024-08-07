@@ -5,12 +5,12 @@
 module;
 
 #include <cassert>
-#include <array>
 #include <Windows.h>
 #include "Resource.h"
 
 export module Accelerators;
 
+import std;
 import Win32_Util_Resource;
 import SaveCast;
 

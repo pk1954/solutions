@@ -2,10 +2,6 @@
 //
 // Toolbox\IoUtil
 
-module;
-
-#include <Windows.h>
-
 module IoUtil;
 
 import std;
