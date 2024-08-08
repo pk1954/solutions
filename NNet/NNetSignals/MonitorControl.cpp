@@ -643,7 +643,7 @@ void MonitorControl::OnLButtonDblClick(WPARAM const wParam, LPARAM const lParam)
 			)
 		{
 			m_measurement.MoveSelection(fPixDiamondPos.GetX());
-			m_sound.Play(TEXT("SNAP_IN_SOUND")); 
+			m_sound.Play(SNAP_IN_SOUND); 
 			Trigger();  // cause repaint
 		}
 	}

@@ -14,6 +14,7 @@ import IoUtil;
 import NNetModel;
 import Signals;
 import :NNetCommand;
+import :NNetSound;
 
 export class DelSensorCmd : public NNetCommand
 {
@@ -30,14 +31,14 @@ public:
     {
         m_upSensor = move(m_pNMWI->RemoveSensor(m_sensorId));
         m_upSignal = move(m_pNMWI->RemoveSignal(m_signalId));
-        PlaySound(L"DISAPPEAR_SOUND");
+        PlaySound(DISAPPEAR_SOUND);
     };
 
     void Undo() final
     {
         m_pNMWI->AddSensor(move(m_upSensor), m_sensorId);
         m_pNMWI->AddSignal(move(m_upSignal), m_signalId);
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     };
 
     static void Register()

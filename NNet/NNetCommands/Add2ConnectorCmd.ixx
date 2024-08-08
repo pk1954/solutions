@@ -2,14 +2,11 @@
 //
 // NNetCommands
 
-module;
-
-#include <vector>
-#include <iostream>
-
 export module NNetCommands:Add2ConnectorCmd;
 
+import std;
 import :SelectionCommand;
+import :NNetSound;
 
 using std::vector;
 
@@ -31,7 +28,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId1 << nobId2 << endl;
 		PushCommand(make_unique<Add2ConnectorCmd>(nobId1, nobId2));
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     }
 
 private:

@@ -13,6 +13,7 @@ import IoUtil;
 import NNetModel;
 import Signals;
 import :NNetCommand;
+import :NNetSound;
 
 export class DelMicroSensorCmd : public NNetCommand
 {
@@ -29,14 +30,14 @@ public:
 	{
 		m_upMicroSensor = m_pNMWI->RemoveMicroSensor(m_nobId);
 		m_upSignal      = move(m_pNMWI->RemoveSignal(m_signalId));
-		PlaySound(L"DISAPPEAR_SOUND");
+		PlaySound(DISAPPEAR_SOUND);
 	};
 
 	void Undo() final
 	{
 		m_pNMWI->GetMonitorData().AddSignal(move(m_upSignal), m_signalId);
 		m_pNMWI->AddMicroSensor(move(m_upMicroSensor));
-		PlaySound(L"SNAP_IN_SOUND");
+		PlaySound(SNAP_IN_SOUND);
 	};
 
 	static void Register()

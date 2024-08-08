@@ -12,6 +12,7 @@ export module NNetCommands:PlugIoLinesCmd;
 
 import IoUtil;
 import :NNetCommand;
+import :NNetSound;
 
 export class PlugIoLinesCmd : public NNetCommand
 {
@@ -61,7 +62,7 @@ public:
         if (IsTraceOn())
             TraceStream() << NAME << nobId1 << nobId2 << endl;
         PushCommand(make_unique<PlugIoLinesCmd>(nobId1, nobId2));
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     }
 
 private:

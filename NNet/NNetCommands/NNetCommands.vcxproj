@@ -101,6 +101,7 @@
     <ClCompile Include="DeleteNobCommand.ixx" />
     <ClCompile Include="DelSensorCmd.ixx" />
     <ClCompile Include="DelMicroSensorCmd.ixx" />
+    <ClCompile Include="door_unlocking_wav.ixx" />
     <ClCompile Include="ExtendOutputLineCmd.ixx" />
     <ClCompile Include="AddPipe2NeuronCmd.ixx" />
     <ClCompile Include="AddSensorCmd.ixx" />
@@ -120,6 +121,10 @@
     <ClCompile Include="DeleteTrackCommand.ixx" />
     <ClCompile Include="DiscIoConnectorCmd.ixx" />
     <ClCompile Include="ExtendInputLineCmd.ixx" />
+    <ClCompile Include="locking_a_door_wav.ixx" />
+    <ClCompile Include="NNetSound.ixx" />
+    <ClCompile Include="no_wav.ixx" />
+    <ClCompile Include="pop_wav.ixx" />
     <ClCompile Include="SetScanAreaCmd.ixx" />
     <ClCompile Include="InsertKnotCommand.ixx" />
     <ClCompile Include="InsertNeuronCommand.ixx" />
@@ -151,6 +156,7 @@
     <ClCompile Include="SplitNeuronCmd.ixx" />
     <ClCompile Include="SplitPipeCommand.ixx" />
     <ClCompile Include="StartStimulusCmd.ixx" />
+    <ClCompile Include="tap_wav.ixx" />
     <ClCompile Include="ToggleEmphModeCmd.ixx" />
     <ClCompile Include="ToggleStopOnTriggerCmd.ixx" />
   </ItemGroup>

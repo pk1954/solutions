@@ -13,6 +13,7 @@ export module NNetCommands:PlugIoConnectorsCmd;
 
 import IoUtil;
 import :NNetCommand;
+import :NNetSound;
 
 using std::vector;
 
@@ -81,7 +82,7 @@ public:
         if (IsTraceOn())
             TraceStream() << NAME << nobId1 << nobId2 << endl;
         PushCommand(make_unique<PlugIoConnectorsCmd>(nobId1, nobId2));
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     }
 
 private:

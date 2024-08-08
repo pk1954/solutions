@@ -204,5 +204,23 @@
     <ClCompile Include="ArrowAnimationCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NNetSound.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="door_unlocking_wav.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="locking_a_door_wav.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="no_wav.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pop_wav.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tap_wav.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

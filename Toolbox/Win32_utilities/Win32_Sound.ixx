@@ -15,15 +15,16 @@ import IoUtil;
 import SoundInterface;
 
 using std::wstring;
+using std::vector;
 
 export class WinSound : public Sound
 {
 public:
 
-	void Play(wstring const & sound) const final
+	void Play(vector<unsigned char> const &data) const final
 	{
 		if (Preferences::m_bSound.Get())
-			::PlaySound(sound.c_str(), GetModuleHandle(NULL), SND_RESOURCE|SND_ASYNC|SND_NOSTOP); 
+		::PlaySoundA((LPCSTR)data.data(), NULL, SND_MEMORY | SND_ASYNC | SND_NOSTOP);
 	}
 
 	void Beep(SoundDescr const & desc) const final

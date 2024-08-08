@@ -2,15 +2,11 @@
 //
 // NNetSimu
 
-#include <iomanip>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <memory>
 #include <Windows.h>
 #include "Resource.h"
 #include "CommCtrl.h"
 
+import std;
 import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
@@ -64,7 +60,7 @@ int APIENTRY wWinMain
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
 
-	static wstring const PRODUCT_NAME { L"NNetSimu 6.1 " + BUILD_MODE };
+	static wstring const PRODUCT_NAME { L"NNetSimu 6.2 " + BUILD_MODE };
 
 	SwitchWcoutTo(L"main_trace.out");
 

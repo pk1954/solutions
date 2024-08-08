@@ -10,6 +10,7 @@ export module NNetCommands:AddSensorCmd;
 
 import Signals;
 import :NNetCommand;
+import :NNetSound;
 
 export class AddSensorCmd : public NNetCommand
 {
@@ -32,7 +33,7 @@ public:
         m_pNMWI->InsertTrack(m_trackNr);
         m_signalNr = m_pNMWI->AddSignal(move(m_upSignal), m_trackNr);
         m_sensorId = m_pNMWI->AddSensor(move(m_upSensor));                                         
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     };
 
     void Undo() final
@@ -40,7 +41,7 @@ public:
 	   m_upSignal = m_pNMWI->RemoveSignal(SignalId(m_trackNr, m_signalNr));
        m_upSensor = m_pNMWI->RemoveSensor(m_sensorId);                                         
        m_pNMWI->DeleteTrack(m_trackNr);
-       PlaySound(L"DISAPPEAR_SOUND");
+       PlaySound(DISAPPEAR_SOUND);
     };
 
 	static void Register()

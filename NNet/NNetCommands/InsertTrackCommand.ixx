@@ -13,6 +13,7 @@ import Types;
 import IoUtil;
 import Signals;
 import :NNetCommand;
+import :NNetSound;
 import NNetModel;
 
 using std::unique_ptr;
@@ -29,13 +30,13 @@ public:
     void Do() final 
     {
         m_pNMWI->InsertTrack(m_trackNr);
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     };
 
     void Undo() final
     { 
         m_pNMWI->DeleteTrack(m_trackNr);
-        PlaySound(L"DISAPPEAR_SOUND");
+        PlaySound(DISAPPEAR_SOUND);
     };
 
 	static void Register()

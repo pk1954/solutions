@@ -42,6 +42,8 @@ export import :MoveSensorCmd;
 export import :MoveSignalCmd;
 export import :NewIoLinePairCmd;
 export import :NewSigGenCmd;
+export import :NNetCommand;
+export import :NNetSound;
 export import :PlugIoConnectorsCmd;
 export import :PlugIoLinesCmd;
 export import :RenameSigGenCmd;

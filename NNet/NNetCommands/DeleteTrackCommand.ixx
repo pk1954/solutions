@@ -11,6 +11,7 @@ export module NNetCommands:DeleteTrackCommand;
 
 import IoUtil;
 import Signals;
+import :NNetSound;
 import :NNetCommand;
 
 export class DeleteTrackCommand: public NNetCommand
@@ -25,13 +26,13 @@ public:
     {
         assert(m_pNMWI->GetMonitorData().IsEmptyTrack(m_trackNr));
         m_pNMWI->DeleteTrack(m_trackNr);
-        PlaySound(L"DISAPPEAR_SOUND");
+        PlaySound(DISAPPEAR_SOUND);
     };
 
     void Undo() final
     { 
         m_pNMWI->InsertTrack(m_trackNr);
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     };
 
 	static void Register()

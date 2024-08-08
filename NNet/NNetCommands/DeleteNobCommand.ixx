@@ -2,13 +2,11 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:DeleteNobCommand;
 
+import std;
 import :NNetCommand;
+import :NNetSound;
 
 export class DeleteNobCommand : public NNetCommand
 {
@@ -33,7 +31,7 @@ public:
 		{
 			if (IsTraceOn())
 				TraceStream() << NAME << id << endl;
-			PlaySound(L"DISAPPEAR_SOUND");
+			PlaySound(DISAPPEAR_SOUND);
 			PushCommand(move(upCmd));
 		}
 	}

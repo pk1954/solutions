@@ -12,6 +12,7 @@ export module NNetCommands:SplitNeuronCmd;
 
 import Types;
 import :NNetCommand;
+import :NNetSound;
 import NNetModel;
 
 using std::unique_ptr;
@@ -40,7 +41,7 @@ public:
         m_upNeuron = m_pNMWI->RemoveFromModel<Neuron>(m_neuron);
         m_pNMWI->Push2Model(move(m_upInputLine));
         m_pNMWI->Push2Model(move(m_upOutputLine));
-        PlaySound(L"UNLOCK_SOUND");
+        PlaySound(UNLOCK_SOUND);
     }
 
     void Undo() final
@@ -49,7 +50,7 @@ public:
         m_upInputLine  = m_pNMWI->PopFromModel<InputLine >();
         m_upNeuron->Reconnect();
         m_pNMWI->Restore2Model(move(m_upNeuron));
-        PlaySound(L"SNAP_IN_SOUND");
+        PlaySound(SNAP_IN_SOUND);
     }
 
     static void Register()

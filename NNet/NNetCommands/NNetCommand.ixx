@@ -2,12 +2,6 @@
 //
 // NNetCommands
 
-module;
-
-#include <string>
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:NNetCommand;
 
 export import IoUtil;
@@ -17,12 +11,15 @@ export import WinCommand;
 export import NNetModel;
 export import NNetWrapperHelpers;
 
+import std;
 import Win32_Util_Resource;
 import WinManager;
 
 export using std::make_unique;
 export using std::unique_ptr;
 export using std::wstring;
+
+using std::vector;
 
 export class NNetCommand : public WinCommand
 {
@@ -51,7 +48,7 @@ public:
 
 protected:
 
-    static void PlaySound(wstring const& sound) { m_pSound->Play(sound); }
+    static void PlaySound(vector<unsigned char> const & sound) { m_pSound->Play(sound); }
 
     inline static NNetModelWriterInterface * m_pNMWI { nullptr };
 

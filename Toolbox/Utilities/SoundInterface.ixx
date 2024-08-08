@@ -10,6 +10,7 @@ import BoolType;
 import Types;
 
 using std::wstring;
+using std::vector;
 
 export struct SoundDescr
 {
@@ -23,7 +24,7 @@ export class Sound
 public:
 	virtual ~Sound() = default;
 
-	virtual void Play(wstring    const &) const = 0;
-	virtual void Beep(SoundDescr const &) const = 0;
-	virtual void Warning()                const = 0;
+	virtual void Play(vector<unsigned char> const &) const = 0;
+	virtual void Beep(SoundDescr           const &) const = 0;
+	virtual void Warning()                          const = 0;
 };

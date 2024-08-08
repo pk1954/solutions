@@ -11,6 +11,7 @@ export module NNetCommands:DiscIoConnectorCmd;
 
 import IoUtil;
 import :NNetCommand;
+import :NNetSound;
 import NNetModel;
 
 using std::unique_ptr;
@@ -27,14 +28,14 @@ public:
     {
         m_upIoConnector = m_pNMWI->RemoveFromModel<IoConnector>(m_connector);
         m_upIoConnector->DisconnectIoLines();
-		PlaySound(L"UNLOCK_SOUND");
+		PlaySound(UNLOCK_SOUND);
 	}
 
     void Undo() final
     {
         m_upIoConnector->ConnectIoLines();
         m_pNMWI->Restore2Model(move(m_upIoConnector));
-		PlaySound(L"SNAP_IN_SOUND");
+		PlaySound(SNAP_IN_SOUND);
 	}
 
 	static void Register()

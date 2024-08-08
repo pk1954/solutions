@@ -12,6 +12,7 @@ export module NNetCommands:ConnectCreateSynapseCmd;
 import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;
+import :NNetSound;
 
 using std::unique_ptr;
 using std::make_unique;
@@ -64,7 +65,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << idSrc << idDst << endl;
 		PushCommand(make_unique<ConnectCreateSynapseCmd>(idSrc, idDst));
-		PlaySound(L"SNAP_IN_SOUND");
+		PlaySound(SNAP_IN_SOUND);
 	}
 
 private:

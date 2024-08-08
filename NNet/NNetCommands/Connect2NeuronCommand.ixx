@@ -11,6 +11,7 @@ module;
 export module NNetCommands:Connect2NeuronCommand;  
 
 import :NNetCommand;
+import :NNetSound;
 
 export class Connect2NeuronCommand : public NNetCommand
 {
@@ -56,7 +57,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << nobId1 << nobId2 << endl;
 		PushCommand(make_unique<Connect2NeuronCommand>(nobId1, nobId2));
-		PlaySound(L"SNAP_IN_SOUND");
+		PlaySound(SNAP_IN_SOUND);
 	}
 
 private:

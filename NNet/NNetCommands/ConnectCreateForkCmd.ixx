@@ -12,6 +12,7 @@ export module NNetCommands:ConnectCreateForkCmd;
 import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;
+import :NNetSound;
 
 using std::pair;
 
@@ -62,7 +63,7 @@ public:
 		if (IsTraceOn())
 			TraceStream() << NAME << idSrc << idDst << endl;
 		PushCommand(make_unique<ConnectCreateForkCmd>(idSrc, idDst));
-		PlaySound(L"SNAP_IN_SOUND");
+		PlaySound(SNAP_IN_SOUND);
 	}
 
 private:

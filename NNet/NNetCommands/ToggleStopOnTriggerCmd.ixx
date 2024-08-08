@@ -2,13 +2,11 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:ToggleStopOnTriggerCmd;
 
+import std;
 import :NNetCommand;
+import :NNetSound;
 import NNetModel;
 
 export class ToggleStopOnTriggerCmd : public NNetCommand
@@ -21,7 +19,7 @@ public:
 	void Do() final
 	{
 		m_pNMWI->ToggleStopOnTrigger(m_id);
-		PlaySound(L"SNAP_IN_SOUND");
+		PlaySound(SNAP_IN_SOUND);
 	}
 
 	void Undo() final
