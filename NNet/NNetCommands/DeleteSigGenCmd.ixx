@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <vector>
-#include <iostream>
-
 export module NNetCommands:DeleteSigGenCmd;
 
+import std;
 import IoUtil;
 import :SetActiveSigGenCmd;
 import :NNetCommand;

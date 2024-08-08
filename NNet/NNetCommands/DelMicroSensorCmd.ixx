@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:DelMicroSensorCmd;
 
+import std;
 import Types;
 import IoUtil;
 import NNetModel;

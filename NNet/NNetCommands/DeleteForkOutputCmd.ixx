@@ -5,10 +5,6 @@
 // handles only the two output Pipes of a Fork and the Fork itself
 // not the input Pipe
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:DeleteForkOutputCmd;
 
 import std;
@@ -34,7 +30,7 @@ public:
 	void Do() final
 	{
 		m_upFork = m_pNMWI->RemoveFromModel<Fork>(m_nobId);
-		assert(m_upFork);
+		//assert(m_upFork);
 		handleInputLine(m_upInputLine1);
 		handleInputLine(m_upInputLine2);
 	}

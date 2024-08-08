@@ -2,10 +2,6 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:ConnectCreateForkCmd;
 
 import std;

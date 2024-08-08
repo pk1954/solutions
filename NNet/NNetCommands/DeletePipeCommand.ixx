@@ -6,8 +6,8 @@ export module NNetCommands:DeletePipeCommand;
 
 import std;
 import SaveCast;
-import :NNetCommand;
 import Commands;
+import :NNetCommand;
 import :DeleteNeuronInputCmd;
 import :DeleteForkOutputCmd;
 

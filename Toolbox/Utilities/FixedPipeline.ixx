@@ -4,12 +4,11 @@
 
 module;
 
-#include <iterator>
-#include <vector>
 #include <cassert>
-#include <algorithm>
 
 export module FixedPipeline;
+
+import std;
 
 using std::vector;
 using std::ranges::fill;

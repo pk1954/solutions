@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:DeselectModuleCmd;
 
+import std;
 import :SelectionCommand;
 import NNetModel;
 

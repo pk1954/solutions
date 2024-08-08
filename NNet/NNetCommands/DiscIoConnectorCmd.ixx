@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:DiscIoConnectorCmd;
 
+import std;
 import IoUtil;
 import :NNetCommand;
 import :NNetSound;

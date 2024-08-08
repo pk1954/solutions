@@ -2,10 +2,6 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 module NNetCommands:DeleteNobCommand;
 
 import std;
@@ -197,7 +193,7 @@ unique_ptr<NNetCommand> DeleteNobCommand::MakeCommand(NobId const id)
 		case neuron:          upCmd = make_unique<DeleteNeuronCmd>     (nob); break;
 		case outputLine:      break;  // Output line cannot be deleted. Delete Pipe!
 		case inputLine:    	  break;  // Input  line cannot be deleted. Delete Pipe!
-		default:              assert(false);
+		default:  ;            //assert(false);
 		}
 	}
 	return upCmd;

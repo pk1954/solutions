@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:DeleteSelectionCommand;
 
+import std;
 import :DeleteNobCommand;
 import Commands;
 import :NNetCommand;

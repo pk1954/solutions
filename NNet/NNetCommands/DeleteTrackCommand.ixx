@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-#include <iostream>
-
 export module NNetCommands:DeleteTrackCommand;
 
+import std;
 import IoUtil;
 import Signals;
 import :NNetSound;
@@ -24,7 +20,7 @@ public:
 
     void Do() final 
     {
-        assert(m_pNMWI->GetMonitorData().IsEmptyTrack(m_trackNr));
+        //assert(m_pNMWI->GetMonitorData().IsEmptyTrack(m_trackNr));
         m_pNMWI->DeleteTrack(m_trackNr);
         PlaySound(DISAPPEAR_SOUND);
     };

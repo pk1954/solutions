@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:ExtendOutputLineCmd;
 
+import std;
 import IoUtil;
 import :NNetCommand;
 
