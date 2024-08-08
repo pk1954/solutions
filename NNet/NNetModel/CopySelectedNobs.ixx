@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <memory>
-#include <unordered_map>
-
 export module NNetModel:CopySelectedNobs;
 
+import std;
 import :NNetModelWriterInterface;
 import :UPNobList;
 import :PosNob;

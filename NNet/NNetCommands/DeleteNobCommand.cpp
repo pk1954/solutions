@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <memory>
 
 module NNetCommands:DeleteNobCommand;
 
+import std;
 import :DeleteForkOutputCmd;
 import :DeleteNeuronInputCmd;
 import :DeletePipeCommand;

@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 export module NNetCommands:ConnectCreateForkCmd;
 
+import std;
 import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;

@@ -2,14 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:Connect2NeuronCommand;  
 
+import std;
 import :NNetCommand;
 import :NNetSound;
 
@@ -31,12 +26,12 @@ public:
 
 	void Do() final
 	{
-		assert(m_upNeuronNew);
+		//assert(m_upNeuronNew);
 		m_upNeuronNew->Reconnect();
 		m_upNeuronDst     = m_pNMWI->ReplaceInModel <Neuron>(move(m_upNeuronNew));
 		m_upOutputLineSrc = m_pNMWI->RemoveFromModel<OutputLine>(m_outputLineSrc);
-		assert(m_upOutputLineSrc);
-		assert(m_upNeuronDst);
+		//assert(m_upOutputLineSrc);
+		//assert(m_upNeuronDst);
 	}
 
 	void Undo() final

@@ -187,9 +187,8 @@ public:
 
 	bool GetDescriptionLine(int const, wstring&) const;
 
-	void DrawExterior(NobId      const,  DrawContext const&, tHighlight const) const;
-	void DrawInterior(NobId      const,  DrawContext const&, tHighlight const) const;
-	void DrawLine(MicroMeterLine const&, DrawContext const&)                   const;
+	void DrawExterior(NobId const, DrawContext const&, tHighlight const) const;
+	void DrawInterior(NobId const, DrawContext const&, tHighlight const) const;
 
 	void DrawScanAreaBackground(DrawContext const&) const; 
 	void DrawScanRaster        (DrawContext const&) const;

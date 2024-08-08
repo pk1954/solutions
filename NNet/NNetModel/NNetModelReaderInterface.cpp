@@ -2,11 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <d2d1helper.h>
-#include <cassert> 
-
 module NNetModel:NNetModelReaderInterface;
 
 import std;
@@ -210,15 +205,6 @@ const
 {
 	if (auto p { m_pModel->GetNobConstPtr<Nob const *>(id) })
 		p->DrawInterior(context, type);
-}
-
-void NNetModelReaderInterface::DrawLine
-(
-	MicroMeterLine const & umLine, 
-	DrawContext    const & context 
-) const
-{
-	context.DrawLine(umLine.GetStartPoint(), umLine.GetEndPoint(), 10.0_MicroMeter, D2D1::ColorF::Brown);
 }
 
 void NNetModelReaderInterface::DrawScanAreaBackground(DrawContext const& context) const 

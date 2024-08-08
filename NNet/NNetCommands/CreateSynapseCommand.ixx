@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:CreateSynapseCommand;
 
+import std;
 import Types;
 import IoUtil;
 import NNetModel;

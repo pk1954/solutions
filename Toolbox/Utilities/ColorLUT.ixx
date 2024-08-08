@@ -2,17 +2,11 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <cassert>
-#include <array>
-#include <vector>
-#include <limits>
-
 export module ColorLUT;
 
 export import Color;
 
+import std;
 import Observable;
 
 using std::array;
@@ -58,7 +52,7 @@ public:
 
     void Apply2AllRanges(auto const &func)
     {
-        assert(m_basePoints.size() >= 2);
+//        assert(m_basePoints.size() >= 2);
         for (int bpIndex = 0; bpIndex < m_basePoints.size() - 1; ++bpIndex)
             func(bpIndex, bpIndex+1);
     }

@@ -14,6 +14,8 @@ import std;
 using std::wstring;
 using std::wostream;
 
+export using D2D1::ColorF;
+
 export using BrushHandle      = ID2D1Brush *;
 export using TextFormatHandle = IDWriteTextFormat *;
 

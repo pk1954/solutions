@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:CreateInitialNobsCmd;
 
+import std;
 import :NNetCommand;
 
 using std::unique_ptr;

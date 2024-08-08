@@ -4,15 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <memory>
-#include <vector>
 #include "Resource.h"
-#include <chrono>
-#include <iostream>
 
 module NNetWin32:Compute;
 
+import std;
 import BoolOp;
 import SlowMotionRatio;
 import Observable;

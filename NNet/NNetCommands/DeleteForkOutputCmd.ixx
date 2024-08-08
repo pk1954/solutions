@@ -7,11 +7,11 @@
 
 module;
 
-#include <memory>
 #include <cassert>
 
 export module NNetCommands:DeleteForkOutputCmd;
 
+import std;
 import :NNetCommand;
 
 using std::unique_ptr;

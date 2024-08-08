@@ -2,13 +2,7 @@
 //
 // NNetModel
 
-module;
-
-#include "d2d1helper.h"
-
 export module NNetModel:NNetColors;
-
-export using D2D1::ColorF;
 
 import Color;
 

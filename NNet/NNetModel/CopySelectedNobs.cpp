@@ -5,11 +5,10 @@
 module;
 
 #include <cassert>
-#include <memory>
-#include <unordered_map>
 
 module NNetModel:CopySelectedNobs;
 
+import std;
 import Types;
 import :NNetModelWriterInterface;
 import :UPNobList;

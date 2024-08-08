@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:CreateForkCommand;
 
+import std;
 import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;

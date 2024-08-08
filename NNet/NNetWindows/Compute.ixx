@@ -2,14 +2,9 @@
 //
 // NNetWindows
 
-module;
-
-#include <memory>
-#include <chrono>
-#include <vector>
-
 export module NNetWin32:Compute;
 
+import std;
 import Types;
 import HiResTimer;
 import HiResClockGen;

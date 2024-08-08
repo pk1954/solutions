@@ -2,15 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <cassert>
-#include <array>
-#include <vector>
-#include <algorithm>
-
 module ColorLUT;
 
+import std;
 import SaveCast;
 
 using std::min;
@@ -111,8 +105,8 @@ Color ColorLUT::GetColor(ColIndex const colIndex) const
 
 void ColorLUT::RemoveBasePoint(BasePointNr const bpNr)
 {
-    assert(bpNr > 0);
-    assert(bpNr < Size()-1);
+    //assert(bpNr > 0);
+    //assert(bpNr < Size()-1);
     m_basePoints.erase(m_basePoints.begin() + bpNr);
 }
 

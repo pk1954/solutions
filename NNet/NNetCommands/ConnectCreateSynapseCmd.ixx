@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 export module NNetCommands:ConnectCreateSynapseCmd;
 
+import std;
 import IoUtil;
 import NNetModel;
 import :SplitPipeCommand;
