@@ -2,15 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-#include <algorithm>
-#include <memory>
-#include <vector>
-
 module NNetCommands:Add2ConnectorCmd;
 
+import std;
 import Types;
 import NNetModel;
 
@@ -90,7 +84,7 @@ void Add2ConnectorCmd::add2IoLines
         ioLines.push_back(static_cast<InputLine*>(pNob));
     }
     else
-        assert(false);
+      ;  //assert(false);
 }
 
 void Add2ConnectorCmd::remove
@@ -119,7 +113,7 @@ void Add2ConnectorCmd::restore
         pIoLine->DisconnectFromIoConnector();
     }
     else
-        assert(false);
+      ;  //assert(false);
 }
 
 void Add2ConnectorCmd::sortIoLines

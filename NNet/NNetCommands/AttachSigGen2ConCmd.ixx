@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:AttachSigGen2ConCmd;
 
+import std;
 import :NNetCommand;
 
 export class AttachSigGen2ConCmd : public NNetCommand

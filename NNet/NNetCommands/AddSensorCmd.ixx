@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:AddSensorCmd;
 
+import std;
 import Signals;
 import :NNetCommand;
 import :NNetSound;

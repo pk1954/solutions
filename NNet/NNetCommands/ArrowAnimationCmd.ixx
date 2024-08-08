@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module ArrowAnimationCmd;
 
+import std;
 import Types;
 import IoUtil;
 import IoConstants;

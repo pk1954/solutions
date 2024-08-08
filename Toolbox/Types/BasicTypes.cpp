@@ -2,13 +2,10 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <string>
-#include <sstream>
-#include <iomanip>
-
 module Types:BasicTypes;
+
+import std;
+import std.compat;
 
 using std::wstring;
 using std::wostringstream;

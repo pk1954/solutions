@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:AddModuleCommand;
 
+import std;
 import NNetModelIO;
 import :NNetCommand;
 import :AddNobsCommand;

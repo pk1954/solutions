@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:AddSigGen2MonitorCmd;
 
+import std;
 import Signals;
 import :NNetCommand;
 

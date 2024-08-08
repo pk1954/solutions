@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:AddNobsCommand;
 
+import std;
 import :SelectionCommand;
 import NNetModel;
 

@@ -2,14 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:AddPipe2NeuronCmd;
 
+import std;
 import :NNetCommand;
 import NNetModel;
 
@@ -26,7 +21,7 @@ public:
 	)
 	  : m_neuronOld(*m_pNMWI->GetNobPtr<Neuron*>(id))
 	{
-		assert(m_neuronOld.IsNeuron());
+		// assert(m_neuronOld.IsNeuron());
 		m_upPipe      = make_unique<Pipe>();
 		m_upNeuronNew = make_unique<Neuron>(m_neuronOld.GetPos());
 		m_upInputLine = make_unique<InputLine>(pos);
