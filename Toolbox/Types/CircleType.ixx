@@ -2,12 +2,9 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <ostream>
-
 export module Types:CircleType;
 
+import std;
 import :PointType;
 
 using std::wostream;

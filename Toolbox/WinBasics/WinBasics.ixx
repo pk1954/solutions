@@ -15,6 +15,7 @@ export
     using HWND    = HWND;
     using HCURSOR = HCURSOR;
     using HFONT   = HFONT;
+    using HMENU   = HMENU;
     using LRESULT = LRESULT;
     using WPARAM  = WPARAM;
     using LPARAM  = LPARAM;

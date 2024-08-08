@@ -2,16 +2,10 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <string>
-#include <limits>
-#include <chrono>
-#include <math.h>
-#include <numbers>
-
 export module Types:BasicTypes;
 
+import std;
+import std.compat;
 import :NamedType;
 
 import Util;

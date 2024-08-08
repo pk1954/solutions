@@ -2,14 +2,9 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <cassert>
-#include <iostream>
-#include <unordered_map>
-
 export module BoolOp;
 
+import std;
 using std::wostream;
 
 export enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
@@ -36,7 +31,7 @@ export inline tBoolOp Reverse(tBoolOp const op)
         return tBoolOp::opNoChange;
 
     default:
-        assert(false);
+        ;   //assert(false);
         return tBoolOp::opNoChange;
     }
 }
@@ -58,7 +53,7 @@ export inline bool ApplyOp2(bool const b, tBoolOp const op)
         return b;
 
     default:
-        assert(false);
+        ;  //assert(false);
         return false;
     }
 }

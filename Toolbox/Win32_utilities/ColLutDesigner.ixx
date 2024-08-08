@@ -2,16 +2,13 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h> 
-
 export module ColLutDesigner;
 
 import std;
 import SaveCast;
 import ColorLUT;
 import Direct2D;
+import WinBasics;
 import GraphicsWindow;
 
 export class ColLutDesigner : public GraphicsWindow
