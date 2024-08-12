@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 module WrapVoltage;
 
+import std;
 import Types;
 import SaveCast;
 import IoUtil;

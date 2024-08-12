@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 export module NNetCommands:ToggleEmphModeCmd;
 
+import std;
 import :NNetCommand;
 import NNetModel;
 import IoUtil;

@@ -2,13 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <string>
-#include <iostream>
-
 export module WrapSignalGenerator;
 
+import std;
 import Commands;
 import NNetModelIO;
 import NNetWrapperHelpers;

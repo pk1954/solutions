@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 export module WrapNrOfNobs;
 
+import std;
 import Commands;
 import RunTime;
 import NNetModelIO;

@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-#include <iostream>
-
 export module NNetCommands:SetScanAreaCmd;
 
+import std;
 import Types;
 import IoUtil;
 import IoConstants;

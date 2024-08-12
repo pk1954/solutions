@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:SetParameterCommand;
 
+import std;
 import :NNetCommand;
 import NNetModel;
 import SaveCast;

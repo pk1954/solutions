@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <iostream>
-
 export module NNetModel:MicroSensor;
 
+import std;
 import Types;
 import DrawContext;
 import :NNetSignalSource;

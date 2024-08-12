@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:MoveSignalCmd;
 
+import std;
 import IoUtil;
 import Signals;
 import :NNetCommand;

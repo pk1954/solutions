@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:MoveSelectionCommand;
 
+import std;
 import IoUtil;
 import :NNetCommand;
 

@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:SizeSelectionCmd;
 
+import std;
 import :NNetCommand;
 import SaveCast;
 

@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:SelectAllConnectedCmd;
 
+import std;
 import IoUtil;
 import IoConstants;
 import :SelectionCommand;

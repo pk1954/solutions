@@ -2,13 +2,9 @@
 //
 // NNetSignals
 
-module;
-
-#include <string>
-#include <iostream>
-
 export module NNetSignals:MonitorScrollState;
 
+import std;
 import IoUtil;
 import IoConstants;
 import RunTime;

@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:RotateNobCommand;
 
+import std;
 import IoUtil;
 import NNetModel;
 import :RotationCommand;

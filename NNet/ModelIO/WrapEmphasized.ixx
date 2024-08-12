@@ -2,12 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <iostream>
-
 export module WrapEmphasized;
 
+import std;
 import Commands;
 import NNetWrapperHelpers;
 import RunTime;

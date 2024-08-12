@@ -2,13 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <iostream>
-#include <string>
-
 export module WrapSetScanArea;
 
+import std;
 import IoUtil;
 import NNetModelIO;
 import Commands;

@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 export module NNetCommands:MoveNobCommand;
 
+import std;
 import IoUtil;
 import :NNetCommand;
 

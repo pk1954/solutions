@@ -2,15 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <memory>
-#include <iostream>
-#include <iomanip>
-#include <string>
-
 export module WrapScanImage;
 
+import std;
 import SaveCast;
 import IoUtil;
 import Raster;
@@ -21,8 +15,6 @@ import Commands;
 using std::unique_ptr;
 using std::make_unique;
 using std::endl;
-//using std::setprecision;
-//using std::setw;
 
 export class WrapScanImage : public Wrapper
 {

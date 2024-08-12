@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <vector>
-#include <iostream>
-
 export module NNetModel:Sensor;
 
+import std;
 import Types;
 import DrawContext;
 import :NNetParameters;

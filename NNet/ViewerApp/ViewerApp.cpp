@@ -2,14 +2,10 @@
 //
 // ViewerApp
 
-#include <iomanip>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <memory>
 #include <Windows.h>
 #include "CommCtrl.h"
 
+import std;
 import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;

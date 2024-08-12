@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:StartStimulusCmd;
 
+import std;
 import :NNetCommand;
 
 export class StartStimulusCmd : public NNetCommand

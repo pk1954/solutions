@@ -2,15 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-#include <iostream>
-#include <exception>
-#include <source_location>
-
 export module NNetModel:NobException;
 
+import std;
 import IoConstants;
 import :NobId;
 import :NobType;

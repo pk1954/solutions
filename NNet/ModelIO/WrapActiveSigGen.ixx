@@ -2,12 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <iostream>
-
 export module WrapActiveSigGen;
 
+import std;
 import Commands;
 import RunTime;
 import Signals;

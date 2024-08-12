@@ -4,12 +4,11 @@
 
 module;
 
-#include <memory>
 #include <cassert>
-#include <iostream>
 
 export module NNetCommands:SplitNeuronCmd;
 
+import std;
 import Types;
 import :NNetCommand;
 import :NNetSound;

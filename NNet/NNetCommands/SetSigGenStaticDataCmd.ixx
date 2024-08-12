@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:SetSigGenStaticDataCmd;
 
+import std;
 import Types;
 import Signals;
 import :NNetCommand;

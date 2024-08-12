@@ -4,15 +4,12 @@
 
 module;
 
-#include <memory>
 #include <cassert>
-#include <vector>
-#include <iostream>
-#include <optional>
 #include <Windows.h>
 
 module NNetModel:ScanMatrix;
 
+import std;
 import Types;
 import Raster;
 import SaveCast;

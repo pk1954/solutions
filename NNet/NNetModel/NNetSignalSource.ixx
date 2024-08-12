@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <iostream>
-
 export module NNetModel:NNetSignalSource;
 
+import std;
 import Observable;
 import Types;
 import DrawContext;

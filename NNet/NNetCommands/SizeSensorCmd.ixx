@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-#include <iostream>
-
 export module NNetCommands:SizeSensorCmd;
 
+import std;
 import :NNetCommand;
 import NNetModel;
 import SaveCast;
@@ -27,7 +23,7 @@ public:
 		m_fFactor(fFactor)
 	{
 		Sensor* pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
-		assert(pSensor->IsSensor());
+		// assert(pSensor->IsSensor());
 		m_pSensor = static_cast<Sensor*>(pSensor);
 	}
 

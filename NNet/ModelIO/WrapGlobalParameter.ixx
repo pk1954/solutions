@@ -2,13 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <iostream>
-#include <iomanip>
-
 export module WrapGlobalParameter;
 
+import std;
 import IoUtil;
 import IoConstants;
 import SaveCast;

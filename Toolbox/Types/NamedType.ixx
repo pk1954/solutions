@@ -5,16 +5,10 @@
 // Inspired by Jonathan Boccara
 // https://www.fluentcpp.com/
 
-module;
-
-#include <iostream>
-#include <iomanip>
-#include <limits>
-#include <string>
-#include <cmath>
-
 export module Types:NamedType;
 
+import std;
+import std.compat;
 import Util;
 
 using std::roundf;

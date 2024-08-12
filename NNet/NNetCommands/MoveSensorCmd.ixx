@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 export module NNetCommands:MoveSensorCmd;
 
+import std;
 import IoUtil;
 import IoConstants;
 import :NNetCommand;
