@@ -13,6 +13,9 @@ module NNetWin32:NNetAppMenu;
 
 import Win32_Util_Resource;
 import SoundInterface;
+import Bitmap;
+import IconUndo;
+import IconRedo;
 import WinManager;
 import BaseWindow;
 import Win32_Util;
@@ -50,15 +53,12 @@ void NNetAppMenu::Start
 	m_pCompute      = & compute;
 	m_pCommandStack = & commandStack;
 
-    ::SendMessage(m_hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_NNETSIMU)));
-    ::SendMessage(m_hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL   )));
-
     m_hMenu = CreateMenu();
 
     ::SetNotifyByPos(m_hMenu);
 
-	HBITMAP hBitmapUndo { LoadBitmap(hInstance, L"UNDO_BITMAP") };
-	HBITMAP hBitmapRedo { LoadBitmap(hInstance, L"REDO_BITMAP") };
+	HBITMAP hBitmapUndo { CreateBitmapFromIconData(*IconUndo_data.data()) };
+	HBITMAP hBitmapRedo { CreateBitmapFromIconData(*IconRedo_data.data()) };
 
     HMENU hMenuFile = ::PopupMenu(m_hMenu, L"&File");
     {

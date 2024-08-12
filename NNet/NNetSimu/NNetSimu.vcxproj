@@ -179,17 +179,12 @@
     <ClCompile Include="NNetAppWindow.cpp" />
     <ClCompile Include="NNetAppWindow.ixx" />
     <ClCompile Include="NNetSimu.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="NNetSimu.rc" />
+    <ClCompile Include="NNetSimu_icon.ixx" />
+    <ClCompile Include="small_icon.ixx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="NNetSimu.ico" />
     <Image Include="NNetSimuWindows.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="disappear-sound-effect.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NNetSimuWindows.vcxproj" />

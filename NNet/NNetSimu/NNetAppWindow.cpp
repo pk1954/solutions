@@ -119,7 +119,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_performanceWindow.Start(m_hwndApp, &m_compute, &m_slowMotionRatio, &m_atDisplay);
 	m_monitorWindow    .Start(m_hwndApp, m_simuRunning, m_sound, m_staticModelObservable);
 	m_colLutWindow     .Start(m_hwndApp, &NNetPreferences::m_colorLutScan);
-	m_undoRedoMenu     .Start(& m_appMenu);
+	m_undoRedoMenu     .Start(&m_appMenu);
 
 	m_monitorWindow    .SetHighSigObservable(m_highlightSigObservable);
 	setModelInterface();

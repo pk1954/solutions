@@ -18,9 +18,9 @@
 #define       IDM_REDO                       116
 #define       IDM_DUMP                       117
 								   	         
-#define       IDI_NNETSIMU			         120
-#define       IDI_SMALL				         121
-#define       IDC_NNETSIMU			         122
+//#define       IDI_NNETSIMU			         120
+//#define       IDI_SMALL				         121
+//#define       IDC_NNETSIMU			         122
 								   	         
 #define       IDM_ESCAPE                     140
 #define       IDM_RESET_DYNAMIC_DATA         141

@@ -56,9 +56,12 @@ void TextWindow::StartTextWindow
 
 void TextWindow::Trigger(bool const bImmediately)
 {
-	m_pTextBuffer->StartPainting();
-	PaintText(*m_pTextBuffer);
-	Invalidate(false);
+	if (m_pTextBuffer)
+	{
+		m_pTextBuffer->StartPainting();
+		PaintText(*m_pTextBuffer);
+		Invalidate(false);
+	}
 }
 
 void TextWindow::OnPaint()

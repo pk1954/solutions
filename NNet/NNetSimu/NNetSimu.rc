@@ -6,14 +6,14 @@
 #include <commctrl.h>
 #include "Resource.h"
 
+////
+//// Icon resources
+////
+//IDI_NNETSIMU ICON "NNetSimu.ico"
+//IDI_SMALL    ICON "small.ico"
 //
-// Icon resources
-//
-IDI_NNETSIMU ICON "NNetSimu.ico"
-IDI_SMALL    ICON "small.ico"
-
-//
-// Bitmap resources
-//
-UNDO_BITMAP BITMAP "icon-undo.ico"
-REDO_BITMAP BITMAP "icon-redo.ico"
+////
+//// Bitmap resources
+////
+//UNDO_BITMAP BITMAP "icon-undo.ico"
+//REDO_BITMAP BITMAP "icon-redo.ico"

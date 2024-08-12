@@ -155,9 +155,6 @@
     <ClCompile Include="ScanViewer.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="NNetViewer.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="NNetViewer.ico" />
   </ItemGroup>
   <ItemGroup>
