@@ -6,7 +6,6 @@ module;
 
 #include <memory>
 #include <iostream>
-#include "Resource.h"
 
 export module NNetCommands:NewSigGenCmd;
 
@@ -15,6 +14,7 @@ import Signals;
 import WinManager;
 import Win32_Util_Resource;
 import :NNetCommand;
+import Resource;
 
 export class NewSigGenCmd : public NNetCommand
 {

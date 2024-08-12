@@ -5,7 +5,6 @@
 module;
 
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetWin32:SelectionMenu;
 
@@ -14,6 +13,7 @@ import Win32_Controls;
 import NNetModel;
 import Win32_Util;
 import Direct2D;
+import Resource;
 
 void SelectionMenu::Start(HWND const hwndParent)
 {

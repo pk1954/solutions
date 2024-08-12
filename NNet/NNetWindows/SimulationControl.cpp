@@ -4,7 +4,6 @@
 
 module;
 
-#include "Resource.h"
 #include <Windows.h>
 
 module NNetWin32:SimulationControl;
@@ -16,6 +15,7 @@ import WinBasics;
 import StatusBar;
 import SlowMotionControl;
 import :Compute;
+import Resource;
 
 void SimulationControl::Initialize
 (

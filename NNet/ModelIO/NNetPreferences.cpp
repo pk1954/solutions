@@ -10,7 +10,6 @@ module;
 #include <string>
 #include <memory>
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetPreferences;
 
@@ -25,6 +24,7 @@ import NNetModelIO;
 import WrapSetScales;
 import WrapSetGrid;
 import WrapColorLUT;
+import Resource;
 
 using std::wofstream;
 using std::wcout;

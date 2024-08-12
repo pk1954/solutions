@@ -6,7 +6,6 @@ module;
 
 #include <Windows.h>
 #include <CommCtrl.h>
-#include "Resource.h"
 
 module NNetAppWindow;
 
@@ -35,6 +34,7 @@ import NNetPreferences;
 import CoordAnimationCmd;
 import StatusBar;
 import NNetWin32;
+import Resource;
 
 using std::endl;
 using std::wcout;

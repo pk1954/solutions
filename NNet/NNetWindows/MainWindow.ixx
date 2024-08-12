@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include "Resource.h"
-
 export module NNetWin32:MainWindow;
 
 import std;
@@ -23,6 +19,7 @@ import :SelectionMenu;
 import :NNetWindow;
 import :MainScales;
 import :Compute;
+import Resource;
 
 using std::unique_ptr;
 using std::optional;

@@ -11,13 +11,13 @@ module;
 #include <algorithm>
 #include <Windows.h>
 #include <d2d1helper.h>
-#include "Resource.h"
 
 module PanelPlatform;
 
 import SaveCast;
 import Win32_Util;
 import DeletePanelCmd;
+import Resource;
 
 using std::min;
 using std::vector;

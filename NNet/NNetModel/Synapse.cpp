@@ -5,7 +5,6 @@
 module;
 
 #include <cmath>
-#include "Resource.h"
 
 module NNetModel:Synapse;
 
@@ -14,6 +13,7 @@ import SimulationTime;
 import DrawContext;
 import Types;
 import Util;
+import Resource;
 import :NNetColors;
 import :NNetParameters;
 import :PosNob;

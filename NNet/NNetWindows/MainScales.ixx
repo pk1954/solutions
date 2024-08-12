@@ -7,7 +7,6 @@ module;
 #include <cassert>
 #include <memory>
 #include <Windows.h>
-#include "Resource.h"
 
 export module NNetWin32:MainScales;
 
@@ -22,6 +21,7 @@ import SetGridCmd;
 import SetScalesCmd;
 import Win32_Util;
 import Win32_Util_Resource;
+import Resource;
 
 using std::unique_ptr;
 using std::make_unique;

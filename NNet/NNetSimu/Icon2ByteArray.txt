@@ -1,0 +1,14 @@
+from PIL import Image
+import io
+
+def convert_icon_to_byte_array(icon_path):
+    with open(icon_path, 'rb') as icon_file:
+        icon_data = icon_file.read()
+    return icon_data
+
+# Example usage
+icon_path = 'small.ico'
+byte_array = convert_icon_to_byte_array(icon_path)
+
+# Print the byte array
+print(byte_array)

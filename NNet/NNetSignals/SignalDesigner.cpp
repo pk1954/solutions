@@ -9,7 +9,6 @@ module;
 #include <cassert>
 #include <string>
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetSignals:SignalDesigner;
 
@@ -27,6 +26,7 @@ import SetGridCmd;
 import NNetCommands;
 import NNetModel;
 import :SimuRunning;
+import Resource;
 
 using std::wstring;
 using std::unique_ptr;

@@ -5,7 +5,6 @@
 module;
 
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetWin32:MiniWindow;
 
@@ -19,6 +18,7 @@ import :MainWindow;
 import :NNetCommandHandler;
 import :MainWindow;
 import :NNetWindow;
+import Resource;
 
 using std::wcout;
 using std::endl;

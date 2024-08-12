@@ -6,7 +6,6 @@ module;
 
 #include <vector>   
 #include <memory>   
-#include "Resource.h"
 
 module NNetModel:InputConnector;
 
@@ -20,6 +19,7 @@ import :InputConnector;
 import :InputLine;
 import :IoConnector;
 import :IoLine;
+import Resource;
 
 using std::make_unique;
 using std::vector;

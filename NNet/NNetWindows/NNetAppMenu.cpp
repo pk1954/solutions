@@ -7,7 +7,6 @@ module;
 #include <cassert>
 #include <memory>
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetWin32:NNetAppMenu;
 
@@ -24,6 +23,7 @@ import IoUtil;
 import NNetModel;
 import NNetPreferences;
 import :Compute;
+import Resource;
 
 using std::make_unique;
 

@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include "Resource.h"
 
 module NNetModel:Pipe;
 
@@ -24,6 +23,7 @@ import :PosNob;
 import :NobType;
 import :NobId;
 import :Nob;
+import Resource;
 
 using std::max;
 using std::wcout;

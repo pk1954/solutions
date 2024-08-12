@@ -4,7 +4,6 @@
 
 module;
 
-#include "Resource.h"
 #include <Windows.h>
 #include <windowsx.h>
 
@@ -21,6 +20,7 @@ import BaseDialog;
 import NNetPreferences;
 import NNetCommands;
 import NNetModel;
+import Resource;
 
 using std::wstring;
 

@@ -7,7 +7,6 @@ module;
 #include <cassert> 
 #include <sstream> 
 #include <iomanip>
-#include "Resource.h"
 
 module NNetModel:Neuron;
 
@@ -16,6 +15,7 @@ import DrawContext;
 import Signals;
 import :NNetColors;
 import :NNetParameters;
+import Resource;
 
 using std::fixed;
 using std::wstring;

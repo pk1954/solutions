@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include "Resource.h"
-
 module NNetWin32:Compute;
 
 import std;
@@ -18,6 +14,7 @@ import PerfCounter;
 import SimulationTime;
 import NNetModel;
 import SaveCast;
+import Resource;
 
 using namespace std::chrono;
 using std::chrono::milliseconds;

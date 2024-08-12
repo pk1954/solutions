@@ -9,7 +9,6 @@ module;
 #include <sstream> 
 #include <optional>
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetWin32:NNetWindow;
 
@@ -20,6 +19,7 @@ import Win32_Sound;
 import NNetModel;
 import NNetPreferences;
 import :NNetCommandHandler;
+import Resource;
 
 using std::function;
 using std::optional;

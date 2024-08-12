@@ -5,12 +5,12 @@
 module;
 
 #include <cassert>
-#include "Resource.h"
 
 module NNetModel:Fork;
 
 import DrawContext;
 import Types;
+import Resource;
 
 Fork::Fork(MicroMeterPnt const &center)
   : m_pos(center)

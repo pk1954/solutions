@@ -5,13 +5,13 @@
 module;
 
 #include <Windows.h>
-#include "Resource.h"
 
 export module NNetSignals:StimulusButton;
 
 import Types;
 import WinBasics;
 import Win32_Controls;
+import Resource;
 
 export class StimulusButton
 {

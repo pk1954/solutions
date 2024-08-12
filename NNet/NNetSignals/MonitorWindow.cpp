@@ -5,7 +5,6 @@
 module;
 
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetSignals:MonitorWindow;
 
@@ -17,6 +16,7 @@ import SoundInterface;
 import NNetModel;
 import :SimuRunning;
 import :MonitorControl;
+import Resource;
 
 using std::find;
 using std::wstring;

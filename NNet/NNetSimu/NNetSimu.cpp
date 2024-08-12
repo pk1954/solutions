@@ -3,7 +3,6 @@
 // NNetSimu
 
 #include <Windows.h>
-#include "Resource.h"
 #include "CommCtrl.h"
 
 import std;
@@ -23,8 +22,7 @@ import NNetModelIO;
 import NNetAppWindow;
 import NNetViewerWindow;
 import ScanViewer;
-import small_icon;
-import NNetSimu_icon;
+import Resource;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -77,12 +75,6 @@ int APIENTRY wWinMain
 	bool bViewerMode { true };
 
 	unique_ptr<NNetAppWindow> upApp { make_unique<NNetAppWindow>(PRODUCT_NAME, pump) };
-
-	//HICON hIconBig   = CreateIconFromResourceEx((PBYTE)NNetSimu_icon_data.data(), (DWORD)NNetSimu_icon_data.size(), TRUE, 0x00030000, 0, 0, LR_DEFAULTSIZE);
-	//DWORD res = GetLastError ();
-	//HICON hIconSmall = CreateIconFromResourceEx((PBYTE)small_icon_data   .data(), (DWORD)small_icon_data   .size(), TRUE, 0x00030000, 0, 0, LR_DEFAULTSIZE);
- //   ::SendMessage(upApp->GetWindowHandle(), WM_SETICON, ICON_BIG,   (LPARAM)hIconBig);
- //   ::SendMessage(upApp->GetWindowHandle(), WM_SETICON, ICON_SMALL, (LPARAM)hIconSmall);
 
 	pump.RegisterWindow(upApp->GetWindowHandle(), false);
 

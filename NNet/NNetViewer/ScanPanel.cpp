@@ -8,7 +8,6 @@ module;
 #include <cassert>
 #include <algorithm>
 #include <Windows.h>
-#include "Resource.h"
 
 module ScanPanel;
 
@@ -16,6 +15,7 @@ import Types;
 import Raster;
 import WinBasics;
 import EventViewer;
+import Resource;
 
 using std::min;
 using std::unique_ptr;

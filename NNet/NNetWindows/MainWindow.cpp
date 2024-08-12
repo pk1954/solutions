@@ -6,7 +6,6 @@ module;
 
 #include <cassert>
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetWin32:MainWindow;
 
@@ -32,6 +31,7 @@ import ArrowAnimationCmd;
 import :NNetCommandHandler;
 import :MainScales;
 import :Compute;
+import Resource;
 
 using std::bit_cast;
 using std::unordered_map;

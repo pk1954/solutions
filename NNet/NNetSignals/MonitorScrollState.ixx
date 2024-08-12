@@ -6,7 +6,6 @@ module;
 
 #include <string>
 #include <iostream>
-#include <Resource.h>
 
 export module NNetSignals:MonitorScrollState;
 
@@ -17,6 +16,7 @@ import SaveCast;
 import Commands;
 import NNetWrapperHelpers;
 import :MonitorWindow;
+import Resource;
 
 using std::endl;
 

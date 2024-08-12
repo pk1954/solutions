@@ -19,9 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="CopySelectedNobs.cpp" />
     <ClCompile Include="CopySelectedNobs.ixx" />
     <ClCompile Include="NNetEvent.cpp" />
@@ -79,6 +76,7 @@
     <ClCompile Include="PipeList.cpp" />
     <ClCompile Include="PipeList.ixx" />
     <ClCompile Include="PosNob.ixx" />
+    <ClCompile Include="Resource.ixx" />
     <ClCompile Include="ScanDataPoint.ixx" />
     <ClCompile Include="ScanMatrix.cpp" />
     <ClCompile Include="ScanMatrix.ixx" />

@@ -5,7 +5,6 @@
 module;
 
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetWin32:NNetController;
 
@@ -30,6 +29,7 @@ import :Compute;
 import :MainWindow;
 import :NNetUtilities;
 import :NNetInputOutputUI;
+import Resource;
 
 using std::filesystem::path;
 using std::to_wstring;

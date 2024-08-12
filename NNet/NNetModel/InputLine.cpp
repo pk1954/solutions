@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include "Resource.h"
 
 module NNetModel:InputLine;
 
@@ -17,6 +16,7 @@ import :Neuron;
 import :IoLine;
 import :PosNob;
 import :Knot;
+import Resource;
 
 InputLine::InputLine(MicroMeterPnt const& upCenter)
   : IoLine(upCenter)

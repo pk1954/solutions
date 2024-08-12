@@ -9,7 +9,6 @@ module;
 #include <memory>
 #include <vector>
 #include <algorithm>
-#include "Resource.h"
 
 module NNetModel:IoConnector;
 
@@ -21,6 +20,7 @@ import :NobType;
 import :IoLine;
 import :Pipe;
 import :Nob;
+import Resource;
 
 using std::vector;
 using std::ranges::for_each;

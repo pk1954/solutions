@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include "Resource.h"
 
 module NNetModel:Knot;
 
@@ -19,6 +18,7 @@ import :OutputLine;
 import :PosNob;
 import :PipeList;
 import :Pipe;
+import Resource;
 
 using std::unique_ptr;
 using std::make_unique;

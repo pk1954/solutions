@@ -4,7 +4,6 @@
 
 module;
 
-#include "Resource.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -22,6 +21,7 @@ import Commands;
 import WinManager;
 import NNetModelIO;
 import NNetModel;
+import Resource;
 
 using std::wostream;
 using std::wstring;

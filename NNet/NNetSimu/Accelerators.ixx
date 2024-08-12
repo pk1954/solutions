@@ -6,13 +6,13 @@ module;
 
 #include <cassert>
 #include <Windows.h>
-#include "Resource.h"
 
 export module Accelerators;
 
 import std;
 import Win32_Util_Resource;
 import SaveCast;
+import Resource;
 
 using std::array;
 

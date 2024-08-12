@@ -5,7 +5,6 @@
 module;
 
 #include <Windows.h>
-#include "Resource.h"
 
 module NNetSignals:MonitorControl;
 
@@ -15,6 +14,7 @@ import Types;
 import Signals;
 import WinManager;
 import NNetCommands;
+import Resource;
 
 using std::vector;
 using std::to_wstring;

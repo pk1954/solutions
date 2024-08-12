@@ -2,15 +2,12 @@
 //
 // NNetViewer
 
-module;
-
-#include <Resource.h>
-
 export module DeletePanelCmd;
 
 import RootWindow;
 import AnimationCommand;
 import PanelPlatform;
+import Resource;
 
 using PanelRectsAnimationCmd = AnimationCommand<PANEL_RECTS>;
 
