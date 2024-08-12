@@ -4,14 +4,12 @@
 
 module;
 
-#include <memory>
 #include <cassert>
-#include <sstream> 
-#include <optional>
 #include <Windows.h>
 
 module NNetWin32:NNetWindow;
 
+import std;
 import Win32_Util_Resource;
 import Types;
 import Direct2D;

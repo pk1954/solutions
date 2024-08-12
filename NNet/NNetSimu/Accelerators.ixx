@@ -4,7 +4,6 @@
 
 module;
 
-#include <cassert>
 #include <Windows.h>
 
 export module Accelerators;
@@ -22,7 +21,6 @@ public:
     HACCEL Get()
     {
         HACCEL haccel { CreateAcceleratorTable(LPACCEL(m_acc), sizeof(m_acc) / sizeof(ACCEL)) };
-        assert(haccel);
         return haccel;
     }
 
