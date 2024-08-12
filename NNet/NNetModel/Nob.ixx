@@ -2,18 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <type_traits>   
-#include <functional>   
-#include "d2d1helper.h"
-
 export module NNetModel:Nob;
 
+import std;
+import std.compat;
 import BoolOp;
 import Color;
 import Types;
@@ -67,14 +59,14 @@ public:
 
 	void SetPos(MicroMeterPnt const&);
 
-	virtual bool          IsIncludedIn(MicroMeterRect const &) const { assert(false); return false; }
-	virtual bool          Includes    (MicroMeterPnt  const &) const { assert(false); return false; }
-	virtual bool          CompStep    ()                             { assert(false); return false; }
+	virtual bool          IsIncludedIn(MicroMeterRect const &) const = 0; 
+	virtual bool          Includes    (MicroMeterPnt  const &) const = 0; 
+	virtual bool          CompStep    ()                             = 0; 
 
-	virtual Radian        GetDir()    const { assert(false); return 0.0_Radian; }
-	virtual MicroMeterPnt GetPos()    const { assert(false); return NP_NULL; }
+	virtual Radian        GetDir()    const = 0;
+	virtual MicroMeterPnt GetPos()    const = 0;
+	virtual NobIoMode     GetIoMode() const = 0;
 	virtual MicroMeterPnt GetCenter() const { return GetPos(); }
-	virtual NobIoMode     GetIoMode() const { assert(false); return NobIoMode::internal; }
 
 	virtual void DrawExterior  (DrawContext    const &, tHighlight const) const {}
 	virtual void DrawInterior  (DrawContext    const &, tHighlight const) const {}

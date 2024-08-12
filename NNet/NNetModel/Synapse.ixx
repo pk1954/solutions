@@ -31,12 +31,12 @@ public:
     void Check() const final;
 
     MicroMeter    GetExtension() const final { return KNOT_WIDTH; }
+    NobIoMode     GetIoMode()    const final { return NobIoMode::internal; }
+    NobType       GetNobType()   const final { return NobType::Value::synapse; }
+    mV            GetPotential() const final { return m_mVpotential; }
+    Radian        GetDir()       const final { return 0.0_Radian; }
     MicroMeterPnt GetPos()       const final { return m_pos; }
     MicroMeterPnt GetAddPos()    const;
-
-    NobIoMode GetIoMode()    const final { return NobIoMode::internal; }
-    NobType   GetNobType()   const final { return NobType::Value::synapse; }
-    mV        GetPotential() const final { return m_mVpotential; }
 
     void CollectInput() final;
     bool CompStep()     final;
