@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:InsertNeuronCommand;
 
+import std;
 import IoUtil;
 import :SplitPipeCommand;
 

@@ -4,13 +4,11 @@
 
 module;
 
-#include <string>
-#include <memory>
-#include <iostream>
 #include <Windows.h>
 
 export module NNetCommands:RenameSigGenCmd;
 
+import std;
 import EditLineBox;
 import Signals;
 import :NNetCommand;

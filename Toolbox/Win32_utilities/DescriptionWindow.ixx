@@ -2,10 +2,6 @@
 //
 // win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module NNetWin32:DescriptionWindow;
 
 import std;
@@ -48,5 +44,5 @@ private:
 	bool delChar();
 	void fontSize();
 
-	friend static LRESULT CALLBACK OwnerDrawEditBox(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+	friend static LRESULT __stdcall OwnerDrawEditBox(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 };

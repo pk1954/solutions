@@ -5,13 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
-#include <memory>
-#include <vector>
-#include <algorithm>
 
 module NNetModel:IoConnector;
 
+import std;
 import Types;
 import IoUtil;
 import DrawContext;

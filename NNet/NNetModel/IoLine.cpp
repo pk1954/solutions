@@ -5,10 +5,10 @@
 module;
 
 #include <cassert>
-#include <iostream>
 
 module NNetModel:IoLine;
 
+import std;
 import Types;
 import :IoConnector;
 import :PipeList;

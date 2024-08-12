@@ -2,12 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <string>
-
 export module InputOutputUI;
 
+import std;
 import RunTime;
 
 using std::wstring;

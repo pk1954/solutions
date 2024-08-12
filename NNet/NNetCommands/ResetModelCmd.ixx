@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:ResetModelCmd;
 
+import std;
 import Types;
 import :NNetCommand;
 import NNetModel;

@@ -4,7 +4,7 @@
 
 module;
 
-#include <memory>
+#include <ctime>
 #include <Windows.h>
 
 module NNetModelIO;

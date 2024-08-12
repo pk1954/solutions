@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <iostream>
-
 export module NNetCommands:InsertKnotCommand;
 
+import std;
 import IoUtil;
 import :SplitPipeCommand;
 

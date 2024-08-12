@@ -4,14 +4,11 @@
 
 module;
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
 #include <Windows.h>
 
 export module NNetPreferences;
 
+import std;
 import Win32_Util_Resource;
 import BoolType;
 import SoundInterface;

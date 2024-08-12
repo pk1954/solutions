@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <vector>
-#include <type_traits>   
-
 export module NNetModel:IoLine;
 
+import std;
 import Types;
 import :NNetParameters;
 import :NobType;

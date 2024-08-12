@@ -2,10 +2,6 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-
 module EventViewer;
 
 import std;
@@ -13,6 +9,7 @@ import Types;
 import PixFpDimension;
 import IoConstants;
 import NNetModel;
+import WinBasics;
 
 using std::wstring;
 using std::wostringstream;
@@ -20,6 +17,7 @@ using std::streamsize;
 using std::setprecision;
 using std::fixed;
 using std::endl;
+using std::max;
 
 EventViewer::EventViewer
 (

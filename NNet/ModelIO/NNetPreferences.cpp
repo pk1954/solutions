@@ -4,15 +4,11 @@
 
 module;
 
-#include <filesystem>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <memory>
 #include <Windows.h>
 
 module NNetPreferences;
 
+import std;
 import BoolType;
 import Commands;
 import IoUtil;

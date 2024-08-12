@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-#include <iostream>
-
 export module NNetCommands:NewSigGenCmd;
 
+import std;
 import IoUtil;
 import Signals;
 import WinManager;

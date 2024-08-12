@@ -2,13 +2,9 @@
 //
 // NNetViewer
 
-module;
-
-#include <memory>
-#include <vector>
-
 export module PanelPlatform;
 
+import std;
 import Types;
 import Animation;
 import BaseWindow;

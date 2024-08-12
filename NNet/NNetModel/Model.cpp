@@ -5,16 +5,12 @@
 module;
 
 #include <cassert>
-#include <memory>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <optional>
 
 module NNetModel:Model;
 
 import HiResTimer;
 
+import std;
 import Observable;
 import Types;
 import Signals;

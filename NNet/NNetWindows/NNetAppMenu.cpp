@@ -5,11 +5,11 @@
 module;
 
 #include <cassert>
-#include <memory>
 #include <Windows.h>
 
 module NNetWin32:NNetAppMenu;
 
+import std;
 import Win32_Util_Resource;
 import SoundInterface;
 import Bitmap;

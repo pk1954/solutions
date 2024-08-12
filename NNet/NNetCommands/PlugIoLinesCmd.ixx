@@ -5,11 +5,10 @@
 module;
 
 #include <cassert>
-#include <memory>
-#include <iostream>
 
 export module NNetCommands:PlugIoLinesCmd;
 
+import std;
 import IoUtil;
 import :NNetCommand;
 import :NNetSound;

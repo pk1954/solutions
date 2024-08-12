@@ -4,13 +4,11 @@
 
 module;
 
-#include <memory>
-#include <string>
-#include <vector>
 #include <Windows.h>
 
 export module NNetWin32:ParameterDialog;
 
+import std;
 import Direct2D;
 import BaseDialog;
 import NNetModel;

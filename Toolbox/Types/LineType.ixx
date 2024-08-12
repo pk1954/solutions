@@ -4,13 +4,9 @@
 //
 // Line is defined by two PointType values
 
-module;
-
-#include <algorithm>
-#include <math.h> 
-
 export module Types:LineType;
 
+import std;
 import :PointType;
 
 using std::swap;

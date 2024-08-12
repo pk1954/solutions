@@ -20,6 +20,7 @@ export
     using WPARAM           = WPARAM;
     using LPARAM           = LPARAM;
     using UINT             = UINT;
+    using DWORD_PTR        = DWORD_PTR;
     using HBITMAP          = HBITMAP;
     using BITMAPINFO       = BITMAPINFO;
     using BITMAPFILEHEADER = BITMAPFILEHEADER;

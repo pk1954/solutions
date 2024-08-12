@@ -4,16 +4,13 @@
 
 module;
 
-#include <bit>
 #include <cassert>
-#include <vector>
-#include <memory>
-#include <algorithm>
 #include <Windows.h>
 #include <d2d1helper.h>
 
 module PanelPlatform;
 
+import std;
 import SaveCast;
 import Win32_Util;
 import DeletePanelCmd;

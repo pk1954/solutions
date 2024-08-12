@@ -5,11 +5,11 @@
 module;
 
 #include <cassert>
-#include <memory>
 #include <Windows.h>
 
 export module NNetWin32:MainScales;
 
+import std;
 import Types;
 import Scale;
 import Observable;

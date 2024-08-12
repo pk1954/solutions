@@ -2,11 +2,9 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <vector>
-
 export module Types:LinCombVector;
+
+import std;
 
 using std::vector;
 

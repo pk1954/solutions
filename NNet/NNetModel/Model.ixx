@@ -5,15 +5,11 @@
 module;
 
 #include <cassert>
-#include <ctime>
-#include <memory>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <optional>
 
 export module NNetModel:Model;
 
+import std;
+import std.compat;
 import Observable;
 import ObserverInterface;
 import Types;

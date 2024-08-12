@@ -4,13 +4,12 @@
 
 module;
 
-#include <optional>
-#include <memory>
 #include <Windows.h>
 #include <d2d1helper.h>
 
 export module NNetWin32:NNetWindow;
 
+import std;
 import Types;
 import Scale;
 import DrawContext;

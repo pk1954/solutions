@@ -4,14 +4,12 @@
 
 module;
 
-#include <bit>
-#include <memory>
 #include <cassert>
-#include <string>
 #include <Windows.h>
 
 module NNetSignals:SignalDesigner;
 
+import std;
 import Types;
 import PixFpDimension;
 import Win32_Util;

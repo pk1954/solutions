@@ -5,13 +5,10 @@
 module;
 
 #include <cassert> 
-#include <memory>
-#include <iomanip>
-#include <iostream>
-#include <algorithm>
 
 module NNetModel:Nob;
 
+import std;
 import Win32_Util_Resource;
 import Debug;
 import Types;
