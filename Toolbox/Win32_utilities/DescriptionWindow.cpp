@@ -252,7 +252,7 @@ bool DescriptionWindow::OnSize(PIXEL const width, PIXEL const height)
 
 bool DescriptionWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-    int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+    int  const iDelta     { MouseWheelDelta(wParam) };
     bool const bDirection { iDelta > 0 };
     bool       bResult    { true };
 

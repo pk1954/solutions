@@ -2,16 +2,13 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module Scale;
 
 import std;
 import std.compat;
 import Win32_Util_Resource;
 import Win32_Sound;
+import WinBasics;
 import Util;
 import ObserverInterface;
 import Types;
@@ -41,9 +38,10 @@ public:
 	(
 		HWND                 const hwndParent,
 		bool                 const bVertScale,
+		Sound                    & sound,
 		PixFpDimension<LogUnits> & pixCoord
 	)
-	  : BaseScale(hwndParent, bVertScale),
+	  : BaseScale(hwndParent, sound, bVertScale),
 		m_pixCoord(pixCoord)
 	{
 		pixCoord.RegisterObserver(*this);
@@ -174,7 +172,7 @@ private:
 		if (IsZoomAllowed())
 		{
 			bool             bResult    { true };
-			int        const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+			int        const iDelta     { MouseWheelDelta(wParam) };
 			bool       const bDirection { iDelta > 0 };
 			PixelPoint const ptCrsr     { GetRelativeCrsrPosition() };
 			fPixel           fPixCenter { Convert2fPixel(ptCrsr.GetX()) };
@@ -188,7 +186,7 @@ private:
 			}
 
 			if (!bResult)
-				MessageBeep(MB_ICONWARNING);
+				m_sound.WarningSound();
 		}
 		GraphicsWindow::OnMouseWheel(wParam, lParam);
 		return true;

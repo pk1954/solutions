@@ -49,13 +49,15 @@ public:
 	(
 		RootWindow           * pRootWinParent,
 		Uniform2D<MicroMeter>& coord,
-		Observable           & coordObservable
+		Observable           & coordObservable,
+		Sound                * pSound
 	)
 	{
 		m_pRootWinParent = pRootWinParent;
+		m_pSound         = pSound;
 
-		m_upHorzScale = make_unique<Scale<MicroMeter>>(pRootWinParent->GetWindowHandle(), false, coord.GetXdim());
-		m_upVertScale = make_unique<Scale<MicroMeter>>(pRootWinParent->GetWindowHandle(), true,  coord.GetYdim());
+		m_upHorzScale = make_unique<Scale<MicroMeter>>(pRootWinParent->GetWindowHandle(), false, *m_pSound, coord.GetXdim());
+		m_upVertScale = make_unique<Scale<MicroMeter>>(pRootWinParent->GetWindowHandle(), true,  *m_pSound, coord.GetYdim());
 
 		coordObservable.RegisterObserver(*m_upHorzScale.get());
 		coordObservable.RegisterObserver(*m_upVertScale.get());
@@ -163,6 +165,7 @@ public:
 private:
 
 	RootWindow                  * m_pRootWinParent { nullptr };
+	Sound                       * m_pSound         { nullptr };
 	unique_ptr<Scale<MicroMeter>> m_upHorzScale    {};
 	unique_ptr<Scale<MicroMeter>> m_upVertScale    {};
 	fPixelPoint                   m_fPixScaleSize  { fPP_ZERO };

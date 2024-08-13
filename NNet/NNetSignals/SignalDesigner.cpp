@@ -17,6 +17,7 @@ import Win32_Util_Resource;
 import Win32_Controls;
 import ArrowButton;
 import Win32_PixelTypes;
+import SoundInterface;
 import Direct2D;
 import Scale;
 import Signals;
@@ -36,7 +37,8 @@ void SignalDesigner::Initialize
 	HWND const         hwndParent,
 	SimuRunning const &simuRunning,
 	Observable        &runObservable,
-	Observable        &dynamicModelObservable
+	Observable        &dynamicModelObservable,
+	Sound             *pSound
 )
 {
 	HWND hwndSigDes = GraphicsWindow::Initialize
@@ -48,6 +50,7 @@ void SignalDesigner::Initialize
 
 	runObservable.RegisterObserver(*this);
 	m_pSimuRunning = &simuRunning;
+	m_pSound       = pSound;
 
 	// coords
 
@@ -77,7 +80,7 @@ void SignalDesigner::Initialize
 	m_upHorzScale[1] = makeHorzScale();
 	m_upHorzScale[2] = makeHorzScale();
 
-	m_upVertScaleFreq = make_unique<Scale<fHertz>>(hwndSigDes, true, m_vertCoordFreq);
+	m_upVertScaleFreq = make_unique<Scale<fHertz>>(hwndSigDes, true, *m_pSound, m_vertCoordFreq);
 	m_upVertScaleFreq->SetInverted(true);
 	m_upVertScaleFreq->SetParentContextMenueMode(true);
 	m_upVertScaleFreq->SetTicksDir(BaseScale::TICKS_LEFT);
@@ -87,7 +90,7 @@ void SignalDesigner::Initialize
 
 	for (int i = 0; i <= 1; ++i)
 	{
-		m_upVertScaleVolt[i] = make_unique<Scale<mV>>(hwndSigDes, true, m_vertCoordVolt);
+		m_upVertScaleVolt[i] = make_unique<Scale<mV>>(hwndSigDes, true, *m_pSound, m_vertCoordVolt);
 		m_upVertScaleVolt[i]->SetInverted(true);
 		m_upVertScaleVolt[i]->SetParentContextMenueMode(true);
 		m_upVertScaleVolt[i]->SetScaleColor(COLOR_VOLT[i]);
@@ -128,7 +131,7 @@ void SignalDesigner::Initialize
 
 unique_ptr<Scale<fMicroSecs>> SignalDesigner::makeHorzScale()
 {
-	unique_ptr<Scale<fMicroSecs>> upScale { make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, m_horzCoord) };
+	unique_ptr<Scale<fMicroSecs>> upScale { make_unique<Scale<fMicroSecs>>(GetWindowHandle(), false, *m_pSound, m_horzCoord) };
 	upScale->SetTicksDir(BaseScale::TICKS_DOWN);
 	upScale->SetOrthoOffset(Convert2fPixel(H_SCALE_HEIGHT));
 	upScale->SetParentContextMenueMode(true);

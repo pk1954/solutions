@@ -5,11 +5,11 @@
 module;
 
 #include <cassert>
-#include <Windows.h>
 
 module NNetWin32:MainWindow;
 
 import std;
+import std.compat;
 import HiResTimer;
 import NNetCommands;
 import DrawContext;
@@ -33,6 +33,7 @@ import :MainScales;
 import :Compute;
 import Resource;
 
+using std::abs;
 using std::bit_cast;
 using std::unordered_map;
 using std::unique_ptr;
@@ -54,6 +55,7 @@ void MainWindow::Start
 	Observable            & cursorObservable,
 	Observable            & coordObservable,
 	Observable            & pStaticModelObservable,
+	Sound                 & sound, 
 	Compute         const & compute,      
 	HiResTimer    * const pActionTimer,
 	MonitorWindow * const pMonitorWindow
@@ -72,10 +74,11 @@ void MainWindow::Start
 	m_pCursorPosObservable = & cursorObservable;
 	m_pCoordObservable     = & coordObservable;
 	m_pCompute             = & compute;
+	m_pSound               = & sound;
 	m_pDisplayTimer        = pActionTimer;
 	m_upScanLut            = make_unique<D2D_ColorLUT>(&NNetPreferences::m_colorLutScan, GetGraphics());
 	m_selectionMenu.Start(GetWindowHandle());
-	m_mainScales.Start(this, GetCoord(), coordObservable);
+	m_mainScales.Start(this, GetCoord(), coordObservable, &sound);
 }
 
 void MainWindow::Reset()
@@ -416,7 +419,7 @@ bool MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
 	static float const ZOOM_FACTOR { 1.1f };
 
-	int   const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	int   const iDelta     { MouseWheelDelta(wParam) };
 	bool  const bDirection { iDelta > 0 };
 	float const fFactor    { bDirection ? 1.0f / ZOOM_FACTOR : ZOOM_FACTOR };
 
@@ -447,7 +450,7 @@ bool MainWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 				}
 				else
 				{
-					MessageBeep(MB_ICONWARNING);
+					m_pSound->WarningSound();
 				}
 			}
 		}
@@ -702,7 +705,7 @@ void MainWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 bool MainWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
-	switch (int const wmId { LOWORD(wParam) } )
+	switch (int const wmId { LoWord(wParam) } )
 	{
 
 	case IDM_DELETE:   // keyboard delete key

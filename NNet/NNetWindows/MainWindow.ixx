@@ -37,6 +37,7 @@ public:
 		Observable&,
 		Observable&,
 		Observable&,
+		Sound&, 
 		Compute const&,  
 		HiResTimer    * const,
 		MonitorWindow * const
@@ -90,6 +91,7 @@ private:
 	Observable              *m_pCoordObservable       { nullptr };
 	Observable              *m_pCursorPosObservable   { nullptr };
 	Observable              *m_pStaticModelObservable { nullptr };
+	Sound                   *m_pSound;
 	NobId                    m_nobIdHighlighted       { NO_NOB };
 	NobId                    m_nobIdTarget            { NO_NOB };
 	SigGenId                 m_idSigGenUnderCrsr      { NO_SIGGEN };

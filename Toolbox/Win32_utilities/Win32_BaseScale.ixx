@@ -14,6 +14,7 @@ import BoolOp;
 import Types;
 import Direct2D;
 import PixFpDimension;
+import SoundInterface;
 import GraphicsWindow;
 
 using std::wstring;
@@ -22,7 +23,7 @@ using std::bit_cast;
 export class BaseScale : public GraphicsWindow
 {
 public:
-	BaseScale(HWND const, bool const);
+	BaseScale(HWND const, Sound&, bool const);
 
 	virtual bool ZoomCoordFactor(float const, fPixel const) = 0;
 	virtual void MoveCoord(PIXEL const) = 0;
@@ -87,6 +88,7 @@ protected:
 	fPixel yPos(fPixel const y) const { return m_bInverted ? getClHeight() - y : y; }
 
 	fPixelPoint m_fPixUnitOffset { fPP_NULL };
+	Sound     & m_sound;        
 
 private:
 

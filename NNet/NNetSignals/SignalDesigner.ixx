@@ -15,6 +15,7 @@ import PixFpDimension;
 import ArrowButton;
 import Direct2D;
 import GraphicsWindow;
+import SoundInterface;
 import Scale;
 import BaseScale;
 import NNetModel;
@@ -35,7 +36,8 @@ public:
 		HWND const, 
 		SimuRunning const&,
 		Observable &,
-		Observable &
+		Observable &,
+		Sound *
 	);
 
 	COLORREF GetBackgroundColorRef() const final { return m_upSignalPreview->GetBackgroundColorRef(); }
@@ -95,6 +97,7 @@ private:
 	unique_ptr<StimulusButton>        m_upStimulusButton;
 	
 	SimuRunning        const * m_pSimuRunning   { nullptr };
+	Sound                    * m_pSound         { nullptr };
 	NNetModelWriterInterface * m_pNMWI          { nullptr };
 	HMENU                      m_hMenu          { nullptr };
 	bool                       m_bIntegrated    { false };

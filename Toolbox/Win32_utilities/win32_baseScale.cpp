@@ -2,16 +2,14 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module BaseScale;
 
 import std;
 import Win32_Util_Resource;
+import WinBasics;
 import BoolOp;
 import Types;
+import SoundInterface;
 import PixFpDimension;
 import GraphicsWindow;
 
@@ -21,9 +19,11 @@ using std::bit_cast;
 BaseScale::BaseScale
 (
 	HWND const hwndParent,
+	Sound     &sound,
 	bool const bVertScale
 )
-  : m_bVertScale(bVertScale)
+  : m_sound(sound),
+	m_bVertScale(bVertScale)
 {
 	GraphicsWindow::Initialize
 	(
@@ -144,7 +144,7 @@ bool BaseScale::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 
 bool BaseScale::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (int const wmId = LOWORD(wParam))
+	switch (int const wmId = LoWord(wParam))
 	{
 	case IDM_SCALE_UNLOCK:
 		if (m_bUnlockAllowed)

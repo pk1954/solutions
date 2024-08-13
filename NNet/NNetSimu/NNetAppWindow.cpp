@@ -88,7 +88,8 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 		m_hwndApp, 
 		m_simuRunning, 
 		m_runObservable, 
-		m_dynamicModelObservable
+		m_dynamicModelObservable,
+		&m_sound
 	);
 
 	m_compute.Initialize
@@ -135,6 +136,7 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 		m_cursorPosObservable,
 		m_coordObservable,
 		m_staticModelObservable,
+		m_sound,
 		m_compute,
 		& m_atDisplay,
 		& m_monitorWindow
