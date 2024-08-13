@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include <Windows.h>
 
 export module NNetWin32:MainScales;
 
@@ -21,6 +20,7 @@ import SetGridCmd;
 import SetScalesCmd;
 import Win32_Util;
 import Win32_Util_Resource;
+import WinBasics;
 import Resource;
 
 using std::unique_ptr;

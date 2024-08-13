@@ -69,7 +69,7 @@ export bool Evaluate(HWND const, float &);
 export bool Evaluate(HWND const, unsigned long &);
 
 export bool SetWindowText(HWND hwnd, wstring        const& s) { return ::SetWindowText(hwnd, s.c_str()); }
-export bool SetWindowText(HWND hwnd, wostringstream const& s) { return  ::SetWindowText(hwnd, s.str()); }
+export bool SetWindowText(HWND hwnd, wostringstream const& s) { return ::SetWindowText(hwnd, s.str()); }
 
 export inline void SetText(HWND const hwnd, wchar_t const* const wstrText)
 {

@@ -18,6 +18,11 @@ const DWORD WS_CAPTION_CONST          = WS_CAPTION;
 const DWORD WS_SIZEBOX_CONST          = WS_SIZEBOX;
 
 const DWORD SW_HIDE_CONST             = SW_HIDE;
+
+const HWND  HWND_TOP_CONST            = HWND_TOP;
+
+const DWORD SWP_NOSIZE_CONST          = SWP_NOSIZE;
+const DWORD SWP_SHOWWINDOW_CONST      = SWP_SHOWWINDOW;
                                      
 const DWORD VK_SPACE_CONST            = VK_SPACE;
                                      

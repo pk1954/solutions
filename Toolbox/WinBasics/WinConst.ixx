@@ -17,6 +17,11 @@ extern const DWORD WS_SIZEBOX_CONST;
 
 extern const DWORD SW_HIDE_CONST;
 
+extern const HWND  HWND_TOP_CONST;
+
+extern const DWORD SWP_NOSIZE_CONST;
+extern const DWORD SWP_SHOWWINDOW_CONST;
+
 extern const DWORD VK_SPACE_CONST;
 
 extern const DWORD MF_STRING_CONST;
@@ -50,6 +55,11 @@ export
     const DWORD WS_SIZEBOX          = WS_SIZEBOX_CONST;
 
     const DWORD SW_HIDE             = SW_HIDE_CONST;
+
+    const HWND  HWND_TOP            = HWND_TOP_CONST;
+
+    const DWORD SWP_NOSIZE          = SWP_NOSIZE_CONST;
+    const DWORD SWP_SHOWWINDOW      = SWP_SHOWWINDOW_CONST;
                                    
     const DWORD VK_SPACE            = VK_SPACE_CONST;
                                    

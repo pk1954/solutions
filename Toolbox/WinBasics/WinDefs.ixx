@@ -22,6 +22,7 @@ export
     using WORD             = WORD;
     using DWORD_PTR        = DWORD_PTR;
     using LPCWSTR          = LPCWSTR;
+    using LPCTSTR          = LPCTSTR;
     using HBITMAP          = HBITMAP;
     using BITMAPINFO       = BITMAPINFO;
     using BITMAPFILEHEADER = BITMAPFILEHEADER;
@@ -36,6 +37,8 @@ export
     using ::MessageBoxW;
     using ::ReleaseCapture;
     using ::SetCursor;
+    using ::SetWindowPos;
+    using ::SetWindowTextW;
 
     constexpr WORD LoWord(DWORD value) { return static_cast<WORD>(value & 0xFFFF); }
 

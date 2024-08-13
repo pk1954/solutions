@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include <Windows.h>
 
 module NNetSignals:SignalDesigner;
 
@@ -15,6 +14,7 @@ import PixFpDimension;
 import Win32_Util;
 import Win32_Util_Resource;
 import Win32_Controls;
+import WinBasics;
 import ArrowButton;
 import Win32_PixelTypes;
 import SoundInterface;
@@ -235,7 +235,7 @@ void SignalDesigner::Trigger(bool const bImmediately)
 
 bool SignalDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (auto const wId = LOWORD(wParam))
+	switch (auto const wId = LoWord(wParam))
 	{
 	case IDM_SIGNAL_DESIGNER_TOGGLE:
 		m_bIntegrated = !m_bIntegrated;
@@ -286,7 +286,7 @@ void SignalDesigner::SetGrid(bool const bOn, bool const bAnim)
 void SignalDesigner::OnScaleCommand(WPARAM const wParam, LPARAM const lParam)
 {
 	BaseScale * const pScale { bit_cast<BaseScale *>(lParam) };
-	switch (auto const wId = LOWORD(wParam))
+	switch (auto const wId = LoWord(wParam))
 	{
 	case SC_LBUTTONDBLCLK:
 		scale(pScale);
@@ -361,7 +361,7 @@ void SignalDesigner::adjustLayout
 	PIXEL const pixControlHeight { pixTileHeight  - H_SCALE_HEIGHT };
 	PIXEL       pixControlWidth  { pixClientWidth - V_SCALE_WIDTH  };
 
-	::SetWindowText(m_hwndPreviewButton, m_bPreview ? L"- P" : L"+ P");
+	::SetWindowTextW(m_hwndPreviewButton, m_bPreview ? L"- P" : L"+ P");
 	for (int i = 0; i <= 1; ++i)
 		m_upArrowButton[i]->SetDirection(!m_bIntegrated);
 
@@ -411,7 +411,7 @@ void SignalDesigner::adjustLayout
 	m_upHorzScale    [2]->Show(m_bPreview);
 
 	m_upStimulusButton->CenterInParentWin();
-	::SetWindowPos // TODO: use RootWindow::Move?
+	SetWindowPos
 	(
 		m_upArrowButton[0]->GetWindowHandle(),
 		HWND_TOP,
@@ -426,7 +426,7 @@ void SignalDesigner::adjustLayout
 			pixArrowButtonPos = PixelPoint { pixClientWidth - V_SCALE_WIDTH, pixControlHeight };
 		else
 			pixArrowButtonPos = PixelPoint { 0_PIXEL, pixControlHeight + H_SCALE_HEIGHT + pixControlHeight };
-		::SetWindowPos // TODO: use RootWindow::Move?
+		SetWindowPos
 		(
 			m_upArrowButton[1]->GetWindowHandle(),
 			HWND_TOP,
@@ -442,7 +442,7 @@ void SignalDesigner::adjustLayout
 	}
 
 	PIXEL const pixPreviewButtonXpos { (m_bIntegrated && !m_bPreview) ? pixClientWidth - V_SCALE_WIDTH : 0_PIXEL };
-	::SetWindowPos
+	SetWindowPos
 	(
 		m_hwndPreviewButton,
 		HWND_TOP,

@@ -2,10 +2,6 @@
 //
 // NNetSignals
 
-module;
-
-#include <Windows.h>
-
 export module NNetSignals:SignalDesigner;
 
 import std;
@@ -16,6 +12,7 @@ import ArrowButton;
 import Direct2D;
 import GraphicsWindow;
 import SoundInterface;
+import WinBasics;
 import Scale;
 import BaseScale;
 import NNetModel;
