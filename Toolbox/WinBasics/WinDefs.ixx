@@ -30,6 +30,7 @@ export
     using PAINTSTRUCT      = PAINTSTRUCT;
 
     using ::AppendMenuW;
+    using ::BringWindowToTop;
     using ::CreateDIBSection;
     using ::EnableWindow;
     using ::IsWindowVisible;

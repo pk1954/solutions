@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 export module NNetSignals:StimulusButton;
 
 import Types;

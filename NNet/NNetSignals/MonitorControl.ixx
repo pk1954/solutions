@@ -2,10 +2,6 @@
 //
 // NNetSignals
 
-module;
-
-#include <Windows.h>
-
 export module NNetSignals:MonitorControl;
 
 import Types;

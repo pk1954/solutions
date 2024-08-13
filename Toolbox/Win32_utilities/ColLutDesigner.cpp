@@ -2,10 +2,6 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h> 
-
 module ColLutDesigner;
 
 import WinBasics;
@@ -182,7 +178,7 @@ bool ColLutDesigner::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
     BasePointNr const bpNr { static_cast<BasePointNr>(lParam) };
 	bool bRes = false;
 
-	switch (int const wmId = LOWORD(wParam))
+	switch (int const wmId = LoWord(wParam))
 	{
 	case IDM_ADD_SUPPORT_PNT:
         addSupportPoint(Convert2fPixelPoint(pixPoint));

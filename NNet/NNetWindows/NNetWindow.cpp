@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include <Windows.h>
 
 module NNetWin32:NNetWindow;
 
@@ -209,7 +208,7 @@ bool NNetWindow::OnSize(PIXEL const width, PIXEL const height)
 bool NNetWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	MicroMeterPnt const umPoint { GetCoordC().Transform2logUnitPntPos(pixPoint) };
-	if (m_pCmdHandler->HandleCommand(LOWORD(wParam), lParam, umPoint))
+	if (m_pCmdHandler->HandleCommand(LoWord(wParam), lParam, umPoint))
 		return true;
 
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);

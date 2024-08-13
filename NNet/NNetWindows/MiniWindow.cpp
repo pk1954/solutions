@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 module NNetWin32:MiniWindow;
 
 import HiResTimer;
