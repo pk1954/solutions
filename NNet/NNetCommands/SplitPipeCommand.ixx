@@ -2,12 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <memory>
-
 export module NNetCommands:SplitPipeCommand;
 
+import std;
 import Types;
 import :NNetCommand;
 import NNetModel;

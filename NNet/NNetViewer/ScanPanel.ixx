@@ -4,11 +4,11 @@
 
 module;
 
-#include <memory>
 #include <Windows.h>
 
 export module ScanPanel;
 
+import std;
 import BaseWindow;
 import NNetSignals;
 import NNetModel;

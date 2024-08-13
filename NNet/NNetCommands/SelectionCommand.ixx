@@ -2,13 +2,9 @@
 //
 // NNetCommands
 
-module;
-
-#include <vector>
-#include <memory>
-
 export module NNetCommands:SelectionCommand;
 
+import std;
 export import :NNetCommand;
 
 using std::unique_ptr;

@@ -4,13 +4,11 @@
 
 module;
 
-#include <array>
-#include <string>
-#include <memory>
 #include <Windows.h>
 
 export module NNetSignals:SignalDesigner;
 
+import std;
 import Types;
 import Observable;
 import PixFpDimension;

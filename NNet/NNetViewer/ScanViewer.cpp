@@ -4,12 +4,11 @@
 
 module;
 
-#include <optional>
-#include <memory>
 #include <Windows.h>
 
 module ScanViewer;
 
+import std;
 import Tooltip;
 import NNetPreferences;
 import NNetWin32;

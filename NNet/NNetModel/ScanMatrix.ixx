@@ -4,13 +4,11 @@
 
 module;
 
-#include <memory>
-#include <vector>
-#include <optional>
 #include <Windows.h>
 
 export module NNetModel:ScanMatrix;
 
+import std;
 import Types;
 import SaveCast;
 import Vector2D;

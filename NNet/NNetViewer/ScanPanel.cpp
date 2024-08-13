@@ -4,13 +4,12 @@
 
 module;
 
-#include <memory>
 #include <cassert>
-#include <algorithm>
 #include <Windows.h>
 
 module ScanPanel;
 
+import std;
 import Types;
 import Raster;
 import WinBasics;

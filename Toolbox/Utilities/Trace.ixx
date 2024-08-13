@@ -11,3 +11,4 @@ using std::wstring;
 
 export wofstream OpenTraceFile(wstring const &);
 export bool      SwitchWcoutTo(wstring const &);
+export wstring   StacktraceToWString();

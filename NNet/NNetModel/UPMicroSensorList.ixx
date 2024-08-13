@@ -2,15 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-#include <memory>
-#include <vector>
-#include <algorithm>
-
 export module NNetModel:UPMicroSensorList;
 
+import std;
 import Types;
 import :UPNobList;
 import :MicroSensor;

@@ -4,11 +4,11 @@
 
 module;
 
-#include <memory>
 #include <Windows.h>
 
 export module ScanViewer;
 
+import std;
 import Types;
 import Tooltip;
 import D2D_ColorLUT;

@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <memory>
-
 module NNetModel:SignalFactory;
 
+import std;
 import Types;
 import Signals;
 import :NNetModelWriterInterface;

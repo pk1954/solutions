@@ -5,12 +5,10 @@
 module;
 
 #include <cassert>
-#include <memory>
-#include <vector>
-#include <algorithm>
 
 export module Vector2D;
 
+import std;
 import SaveCast;
 import Raster;
 
