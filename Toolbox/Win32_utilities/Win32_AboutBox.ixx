@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
-import std;
 export module AboutBox;
 
+import std;
+import WinBasics;
 import StdDialogBox;
 
 using std::wstring;

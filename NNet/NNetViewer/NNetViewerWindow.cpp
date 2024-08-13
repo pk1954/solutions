@@ -2,10 +2,6 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-
 module NNetViewerWindow;
 
 import std;
@@ -72,12 +68,12 @@ bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void NNetViewerWindow::addScanAllowed(bool const bAllowed)
 {
-	::EnableWindow(m_hwndAddButton, bAllowed);
+	EnableWindow(m_hwndAddButton, bAllowed);
 }
 
 bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	int const wmId = LOWORD(wParam);
+	int const wmId = LoWord(wParam);
 	
 	static int     iCount = 0;
 	static wstring wstrFileName;
@@ -102,7 +98,7 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 			}
 			else
 			{
-				MessageBox(nullptr, L"No scan data in file", L"Error", MB_OK);
+				MessageBoxW(nullptr, L"No scan data in file", L"Error", MB_OK);
 				upModel.release();
 			}
 			addScanAllowed(true);
@@ -110,12 +106,12 @@ bool NNetViewerWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixel
 		return true;
 
 	case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
-		MessageBox(nullptr, L"Could not find scan file", L"Error", MB_OK);
+		MessageBoxW(nullptr, L"Could not find scan file", L"Error", MB_OK);
 		addScanAllowed(true);
 		return true;
 
 	case IDX_ERROR_IN_FILE:  //no user command, only internal usage
-		MessageBox(nullptr, L"Error reading scan file\r\nSee main_trace.out for details", L"Error", MB_OK);
+		MessageBoxW(nullptr, L"Error reading scan file\r\nSee main_trace.out for details", L"Error", MB_OK);
 		addScanAllowed(true);
 		return true;
 

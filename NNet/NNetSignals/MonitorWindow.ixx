@@ -2,10 +2,6 @@
 //
 // NNetSignals
 
-module;
-
-#include <Windows.h>
-
 export module NNetSignals:MonitorWindow;
 
 import std;
@@ -78,6 +74,7 @@ private:
 
 	wstring GetCaption() const final;
 
+	Sound                       * m_pSound;        
 	PixFpDimension<fMicroSecs>    m_horzCoord;
 	PixFpDimension<mV>            m_vertCoord;
 	unique_ptr<Scale<fMicroSecs>> m_upHorzScale;

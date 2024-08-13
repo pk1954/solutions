@@ -5,7 +5,6 @@
 module;
 
 #include <cassert>
-#include <Windows.h>
 
 module ScanPanel;
 
@@ -101,7 +100,7 @@ void ScanPanel::OnPaint()
 
 bool ScanPanel::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (auto const wId = LOWORD(wParam))
+	switch (auto const wId = LoWord(wParam))
 	{
 	case IDD_REMOVE_SCAN_PANEL:
 		PostCommand2Parent(wParam, LPARAM(this));
@@ -115,6 +114,6 @@ bool ScanPanel::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint c
 
 LPARAM ScanPanel::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	AppendMenu(hPopupMenu, MF_STRING, IDD_REMOVE_SCAN_PANEL, L"Remove scan");
+	AppendMenuW(hPopupMenu, MF_STRING, IDD_REMOVE_SCAN_PANEL, L"Remove scan");
 	return 0L;
 }

@@ -2,14 +2,12 @@
 //
 // NNetSignals
 
-module;
-
-#include <Windows.h>
-
 module NNetSignals:MonitorWindow;
 
 import std;
+import std.compat;
 import Win32_Util_Resource;
+import WinBasics;
 import Types;
 import Observable;
 import SoundInterface;
@@ -35,6 +33,7 @@ void MonitorWindow::Start
 {
 	m_pMoveSizeObservable = &observable;
 	m_pSimuRunning        = &simuRunning;
+	m_pSound              = &sound;
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
@@ -90,7 +89,7 @@ wstring MonitorWindow::GetCaption() const
 
 bool MonitorWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (int const wmId = LOWORD(wParam))
+	switch (int const wmId = LoWord(wParam))
 	{
 	case IDM_SCALE_LOCK2ZERO:
 		ResetHorzCoord();
@@ -127,7 +126,7 @@ bool MonitorWindow::OnMove(PIXEL const pixPosX, PIXEL const pixPosY)
 
 bool MonitorWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {  
-	int  const iDelta     { GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA };
+	int  const iDelta     { MouseWheelDelta(wParam) };
 	bool const bShiftKey  { (wParam & MK_SHIFT) != 0 };
 	bool const bDirection { iDelta > 0 };
 	bool       bResult    { true };
@@ -139,7 +138,6 @@ bool MonitorWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 		: m_vertCoord.ZoomDir(bDirection, 0.0_fPixel);
 	}
 	if (!bResult)
-		MessageBeep(MB_ICONWARNING);
+		m_pSound->WarningSound();
 	return true;
 }
-

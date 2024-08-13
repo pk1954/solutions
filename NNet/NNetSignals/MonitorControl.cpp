@@ -2,20 +2,20 @@
 //
 // NNetSignals
 
-module;
-
-#include <Windows.h>
-
 module NNetSignals:MonitorControl;
 
 import std;
+import std.compat;
 import Win32_Util_Resource;
+import WinBasics;
 import Types;
 import Signals;
 import WinManager;
 import NNetCommands;
 import Resource;
 
+using std::min;
+using std::max;
 using std::vector;
 using std::to_wstring;
 
@@ -45,8 +45,8 @@ MonitorControl::MonitorControl
 	m_hTextFormat = m_upGraphics->NewTextFormat(16.f);
 	m_hTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
-	m_hCrsrNS = LoadCursor(nullptr, IDC_SIZENS);
-	m_hCrsrWE = LoadCursor(nullptr, IDC_SIZEWE);
+	m_hCrsrNS = LoadCursorW(nullptr, IDC_SIZENS);
+	m_hCrsrWE = LoadCursorW(nullptr, IDC_SIZEWE);
 
 	m_vertCoord.SetPixelSizeLimits(0.001_mV, 1000._mV);   
 	m_vertCoord.SetPixelSize(0.2_mV);
@@ -77,23 +77,23 @@ void MonitorControl::SetModelInterface(NNetModelReaderInterface const * const pN
 LPARAM MonitorControl::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	if (m_measurement.IsActive())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_MEASUREMENT_OFF, L"Measurement off");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_MEASUREMENT_OFF, L"Measurement off");
 	else
-		AppendMenu(hPopupMenu, MF_STRING, IDD_MEASUREMENT_ON,  L"Measurement on");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_MEASUREMENT_ON,  L"Measurement on");
 
 	if (m_trackNrHighlighted.IsNotNull() && m_pMonitorData->IsEmptyTrack(m_trackNrHighlighted))
-		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_DELETE_TRACK, L"Delete track");
 
 	if (m_pMonitorData->AnyEmptyTracks())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_EMPTY_TRACKS, L"Delete empty tracks");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_DELETE_EMPTY_TRACKS, L"Delete empty tracks");
 
 	if (m_trackNrHighlighted.IsNotNull())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"Add track");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_ADD_TRACK, L"Add track");
 
 	if (IsAnySignalHighlighted())
-		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL, L"Delete signal");
 
-	AppendMenu(hPopupMenu, MF_STRING, IDD_SCALE_EEG_SIGNALS, L"Auto scale");
+	AppendMenuW(hPopupMenu, MF_STRING, IDD_SCALE_EEG_SIGNALS, L"Auto scale");
 	
 	NNetTimeGraph::AddContextMenuEntries(hPopupMenu);
 
@@ -496,7 +496,7 @@ bool MonitorControl::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPo
 {
 	bool bRes = false;
 
-	switch (int const wmId = LOWORD(wParam))
+	switch (int const wmId = LoWord(wParam))
 	{
 	case IDD_MEASUREMENT_OFF:
 		m_measurement.SetActive(false);

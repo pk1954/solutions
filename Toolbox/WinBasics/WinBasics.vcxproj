@@ -22,6 +22,9 @@
     <ClCompile Include="Win32_PIXEL.cpp" />
     <ClCompile Include="Win32_PIXEL.ixx" />
     <ClCompile Include="WinBasics.ixx" />
+    <ClCompile Include="WinConst.cpp" />
+    <ClCompile Include="WinConst.ixx" />
+    <ClCompile Include="WinDefs.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IoUtil\IoUtil.vcxproj">
@@ -33,6 +36,9 @@
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WinConstants.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

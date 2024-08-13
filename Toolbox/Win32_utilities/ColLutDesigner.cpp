@@ -54,12 +54,12 @@ void ColLutDesigner::Start
 
 LPARAM ColLutDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
-	AppendMenu(hPopupMenu, MF_STRING, IDM_ADD_SUPPORT_PNT, L"Add support point");
+	AppendMenuW(hPopupMenu, MF_STRING, IDM_ADD_SUPPORT_PNT, L"Add support point");
     if (IsBasePointDefined(m_bpSelected))
     {
-	    AppendMenu(hPopupMenu, MF_STRING, IDM_EDIT_SUPPORT_PNT, L"Edit support point");
+	    AppendMenuW(hPopupMenu, MF_STRING, IDM_EDIT_SUPPORT_PNT, L"Edit support point");
         if (m_pLut->IsDeleteable(m_bpSelected))
-	        AppendMenu(hPopupMenu, MF_STRING, IDM_REMOVE_SUPPORT_PNT, L"Remove support point");
+	        AppendMenuW(hPopupMenu, MF_STRING, IDM_REMOVE_SUPPORT_PNT, L"Remove support point");
     }
 	
 	// do not call GraphicsWindow::AddContextMenuEntries(hPopupMenu);

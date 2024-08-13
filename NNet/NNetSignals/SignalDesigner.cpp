@@ -161,19 +161,19 @@ void SignalDesigner::AddSigGenMenu
 {
 	if (IsMutable(idSigGen))
 	{
-		AppendMenu(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
-		AppendMenu(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_RENAME_SIGNAL_GENERATOR, L"Rename signal generator");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_DELETE_SIGNAL_GENERATOR, L"Delete signal generator");
 	}
 	else if (idSigGen == ADD_SIGGEN)
 	{
-		AppendMenu(hPopupMenu, MF_STRING, IDD_ADD_SIG_GEN_TO_MONITOR, L"Add to EEG monitor");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_ADD_SIG_GEN_TO_MONITOR, L"Add to EEG monitor");
 	}
 }
 
 LPARAM SignalDesigner::AddContextMenuEntries(HMENU const hPopupMenu)
 {
 	AddSigGenMenu(hPopupMenu, m_pNMWI->GetSigGenIdSelected());
-	AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_GRID, L"Grid on/off");
+	AppendMenuW(hPopupMenu, MF_STRING, IDM_SCALE_GRID, L"Grid on/off");
 	GraphicsWindow::AddContextMenuEntries(hPopupMenu);
 	return 0L; // will be forwarded to HandleContextMenuCommand
 }

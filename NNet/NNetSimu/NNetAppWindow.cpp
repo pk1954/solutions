@@ -353,12 +353,12 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_UNDO:
 			if (!m_cmdStack.UndoStackCommand())
-				m_sound.Warning();
+				m_sound.WarningSound();
 			return true;
 
 		case IDM_REDO:
 			if (!m_cmdStack.RedoStackCommand())
-				m_sound.Warning();
+				m_sound.WarningSound();
 			return true;
 
 		case IDM_RESET_DYNAMIC_DATA:

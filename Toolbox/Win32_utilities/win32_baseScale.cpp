@@ -176,9 +176,9 @@ LPARAM BaseScale::AddContextMenuEntries(HMENU const hPopupMenu)
 	if (m_bUnlockAllowed)
 	{
 		if (IsScaleLocked())
-			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_UNLOCK,    L"Unlock scale");
+			AppendMenuW(hPopupMenu, MF_STRING, IDM_SCALE_UNLOCK,    L"Unlock scale");
 		else
-			AppendMenu(hPopupMenu, MF_STRING, IDM_SCALE_LOCK2ZERO, L"Lock scale");
+			AppendMenuW(hPopupMenu, MF_STRING, IDM_SCALE_LOCK2ZERO, L"Lock scale");
 	}
 
 	return 0L; // will be forwarded to HandleContextMenuCommand

@@ -43,7 +43,7 @@ public:
 		}
 	}
 
-	void Warning() const final
+	void WarningSound() const final
 	{
 		if (Preferences::m_bSound.Get())
 			MessageBeep(MB_ICONWARNING);

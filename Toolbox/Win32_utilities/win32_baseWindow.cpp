@@ -43,7 +43,7 @@ HWND BaseWindow::StartBaseWindow
     wcex.cbWndExtra	   = sizeof(void *);	
     wcex.hInstance	   = hInstance;
     wcex.hIcon		   = nullptr; 
-    wcex.hCursor	   = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hCursor	   = LoadCursorW(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName  = nullptr;
     wcex.lpszClassName = szClass;

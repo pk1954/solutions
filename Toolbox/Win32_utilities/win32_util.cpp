@@ -163,7 +163,7 @@ void StdOutConsole()
 HMENU PopupMenu(HMENU const hMenuParent, LPCTSTR const text)
 {
     HMENU hMenuPopup = CreatePopupMenu();
-    ::AppendMenu(hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text);
+    AppendMenuW(hMenuParent, MF_POPUP, (UINT_PTR)hMenuPopup, text);
     return hMenuPopup;
 }
 
@@ -213,7 +213,7 @@ void AddMenu
     LPCWSTR  const lpNewItem
 )
 {
-    ::AppendMenu(hMenu, uFlags, uIDNewItem, lpNewItem);
+    AppendMenuW(hMenu, uFlags, uIDNewItem, lpNewItem);
     SetMenuItemData(hMenu, GetMenuItemCount(hMenu) - 1, uIDNewItem);
 }
 

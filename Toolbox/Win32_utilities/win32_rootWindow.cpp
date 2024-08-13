@@ -91,10 +91,10 @@ void RootWindow::addWinMenu(HMENU const hMenuParent, wstring const & strTitle) c
 {
 	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 	HMENU const hMenu = CreatePopupMenu();
-	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto");
-	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on" );
-	(void)AppendMenu(hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off");
-	(void)AppendMenu(hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str());
+	AppendMenuW(hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto");
+	AppendMenuW(hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on" );
+	AppendMenuW(hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off");
+	AppendMenuW(hMenuParent, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu, strTitle.c_str());
 }
 
 void RootWindow::adjustWinMenu(HMENU const hMenu) const
@@ -222,8 +222,8 @@ void RootWindow::AddColorCtlMenu(HMENU const hPopupMenu)
 {
 	if (Preferences::m_bColorMenu.Get())
 	{
-		AppendMenu(hPopupMenu, MF_STRING, IDD_COLOR_CTL,        L"Choose background color");
-		AppendMenu(hPopupMenu, MF_STRING, IDM_DEFAULT_BK_COLOR, L"Default background color");
+		AppendMenuW(hPopupMenu, MF_STRING, IDD_COLOR_CTL,        L"Choose background color");
+		AppendMenuW(hPopupMenu, MF_STRING, IDM_DEFAULT_BK_COLOR, L"Default background color");
 	}
 }
 
@@ -249,7 +249,7 @@ void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr
 	// TODO
 	//if (m_bShowRefreshRateDlg && (m_upRefreshRate->GetRefreshRate() > 0ms))
 	//{
-	//	(void)AppendMenu(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
+	//	(void)AppendMenuW(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
 	//}
 
 	(void)SetForegroundWindow(GetWindowHandle());

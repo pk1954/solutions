@@ -46,8 +46,8 @@ void NNetController::Initialize
     m_pSlowMotionRatio = pSlowMotionRatio;
     m_pCompute         = pCompute;
     m_pAppTitle        = pAppTitle;
-    m_hCrsrWait        = LoadCursor(NULL,    IDC_WAIT);
-	m_hCrsrArrow       = LoadCursor(nullptr, IDC_ARROW);
+    m_hCrsrWait        = LoadCursorW(NULL,    IDC_WAIT);
+	m_hCrsrArrow       = LoadCursorW(nullptr, IDC_ARROW);
 }
 
 NNetController::~NNetController()

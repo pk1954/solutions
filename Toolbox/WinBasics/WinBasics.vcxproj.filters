@@ -24,5 +24,19 @@
     <ClCompile Include="WinBasics.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WinConst.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinConst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinDefs.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WinConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

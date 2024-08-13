@@ -110,7 +110,7 @@ void appendMenu(HMENU const hPopupMenu, int const idCommand)
 		{ IDD_STOP_ON_TRIGGER,        L"Stop on trigger on/off"         },
 		{ IDD_EMPHASIZE,              L"Feedback line on/off"           }
 	};
-	AppendMenu(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));
+	AppendMenuW(hPopupMenu, MF_STRING, idCommand, mapCommands.at(idCommand));
 }
 
 LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
@@ -157,7 +157,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	}
 	if (m_pNMRI->GetRawImageC())
 	{
-		AppendMenu
+		AppendMenuW
 		(
 			hPopupMenu, MF_STRING, IDD_FILTER,
 			NNetPreferences::ApplyFilter() ? L"No filter" : L"Mean filter"
@@ -165,7 +165,7 @@ LPARAM MainWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	}
 	if (NNetPreferences::ScanAreaVisible())
 	{
-		AppendMenu
+		AppendMenuW
 		(
 			hPopupMenu, MF_STRING, IDD_MODEL_FRONT,
 			NNetPreferences::ModelFront() ? L"Model in background" : L"Model in foreground"

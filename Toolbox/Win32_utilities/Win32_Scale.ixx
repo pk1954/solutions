@@ -11,6 +11,7 @@ export module Scale;
 import std;
 import std.compat;
 import Win32_Util_Resource;
+import Win32_Sound;
 import Util;
 import ObserverInterface;
 import Types;
