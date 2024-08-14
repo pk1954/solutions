@@ -10,10 +10,17 @@ export module Debug;
 
 import std;
 import std.compat;
+import FatalError;
 
 using std::uint8_t;
 
 #ifndef NDEBUG
+
+void Assert(bool const b)
+{
+	if (!b)
+		FatalError::Happened(1, L"assertion failed");
+}
 
 export template<typename SOURCE_TYPE>
 constexpr void AssertLimits(SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max)  
@@ -95,6 +102,7 @@ constexpr short AssertShortSum(SOURCE_TYPE const a, SOURCE_TYPE const b)
 }
 
 #else
+void Assert(bool const) {};
 export template<typename SOURCE_TYPE> constexpr void AssertLimits(SOURCE_TYPE const v, SOURCE_TYPE const min, SOURCE_TYPE const max) {} 
 export template<typename SOURCE_TYPE> constexpr void AssertFloat        (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertByte         (SOURCE_TYPE const value) {}

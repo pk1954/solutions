@@ -17,7 +17,7 @@ import SaveCast;
 import Observable;
 import StdDialogBox;
 import WinManager;
-import FatalError;
+import FatalErrorMB;
 import Commands;
 import IoUtil;
 import NNetCommands;
@@ -69,7 +69,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
 
     if (wmId == IDM_FATAL_ERROR)
     {
-        FatalError::Happened(static_cast<long>(lParam), L"unknown");
+        FatalErrorMB::Happened(static_cast<long>(lParam), L"unknown");
     }
 
     if (processUIcommand(wmId, lParam, umPoint)) // handle all commands that affect the UI
@@ -92,7 +92,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
     {
         wcout << COMMENT_START << L"command failed, id =  " << wmId << L", lparam =  "<< lParam << endl;
         m_pNMRI->DumpModel(__FILE__, __LINE__);
-        FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
+        FatalErrorMB::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
     }
     if (bRunning)
     	m_pCompute->StartComputation();

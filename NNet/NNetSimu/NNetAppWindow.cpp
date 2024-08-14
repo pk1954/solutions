@@ -19,7 +19,7 @@ import Vector2D;
 import ObserverInterface;
 import WinCommand;
 import AboutBox;
-import FatalError;
+import FatalErrorMB;
 import MessagePump;
 import ScriptFile;
 import BaseWindow;
@@ -498,9 +498,9 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		wcout << COMMENT_START << L"Command failed: " << endl;
 		wcout << COMMENT_START << L"File    : " << e.m_szFile  << endl;
 		wcout << COMMENT_START << L"Line    : " << e.m_iLineNr << endl;
-		wcout << COMMENT_START << L"Function: " << source_location::current().function_name()    << endl;
+		wcout << COMMENT_START << L"Function: " << source_location::current().function_name() << endl;
 		wcout << COMMENT_START << L"NobType : " << to_wstring(static_cast<int>(e.m_type.GetValue())) << endl;
-		FatalError::Happened(10, L"Invalid NobType");
+		FatalErrorMB::Happened(10, L"Invalid NobType");
 	}
 
 	return BaseWindow::OnCommand(wParam, lParam, pixPoint);

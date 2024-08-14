@@ -240,6 +240,9 @@
     <ClCompile Include="WrapSetScales.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Commands\Commands.vcxproj">
       <Project>{7f40ede9-bae2-4924-87d3-5cd19477b54a}</Project>
     </ProjectReference>

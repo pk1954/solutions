@@ -10,7 +10,10 @@ import std.compat;
 using std::vector;
 using std::function;
 using std::wstring;
+using std::string;
 using std::abs;
+using std::runtime_error;
+using std::mbstowcs;
 using std::wostringstream;
 using std::chrono::system_clock;
 using std::put_time;
@@ -111,4 +114,14 @@ export extern void UpperCase(wstring& str)
 {
 	for (auto& c : str)
 		c = toupper(c);
+}
+
+export wstring ConvertToWideString(const string& str) 
+{
+    size_t len = mbstowcs(nullptr, str.c_str(), 0);
+    if (len == static_cast<size_t>(-1)) 
+        throw runtime_error("Conversion error");
+    wstring wstr(len, L'\0');
+    mbstowcs(&wstr[0], str.c_str(), len);
+    return wstr;
 }

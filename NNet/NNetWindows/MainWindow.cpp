@@ -13,7 +13,7 @@ import std.compat;
 import HiResTimer;
 import NNetCommands;
 import DrawContext;
-import FatalError;
+import FatalErrorMB;
 import NNetModel;
 import NNetSignals;
 import Observable;
@@ -660,11 +660,11 @@ bool MainWindow::UserProc
 	}
 	catch (NobException const & e)
 	{
-		wcout << COMMENT_START << L"command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
+		wcout << COMMENT_START << L"Command failed, uMsg = " << uMsg << L", wparam =  " << wParam << L", lparam =  " << lParam << endl;
 		m_pNMRI->DumpModel(__FILE__, __LINE__);
-		wcout << L"highlighted = " << m_nobIdHighlighted << endl;
-		wcout << L"target      = " << m_nobIdTarget << endl;
-		FatalError::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
+		wcout << L"Highlighted = " << m_nobIdHighlighted << endl;
+		wcout << L"Target      = " << m_nobIdTarget << endl;
+		FatalErrorMB::Happened(9, L"Invalid NobId: " + to_wstring(e.m_id.GetValue()));
 	}
 	return bRes;
 }

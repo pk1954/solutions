@@ -9,7 +9,6 @@ import BoolOp;
 import SlowMotionRatio;
 import Observable;
 import WinManager;
-import FatalError;
 import PerfCounter;
 import SimulationTime;
 import NNetModel;
