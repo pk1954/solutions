@@ -2,12 +2,9 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <algorithm>
-
 export module Types:RectType;
 
+import std;
 import Debug;
 import :PointType;
 

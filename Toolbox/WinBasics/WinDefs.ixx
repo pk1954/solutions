@@ -14,6 +14,7 @@ export
     using HCURSOR          = HCURSOR;
     using HFONT            = HFONT;
     using HMENU            = HMENU;
+    using HINSTANCE        = HINSTANCE;
     using LRESULT          = LRESULT;
     using WPARAM           = WPARAM;
     using LPARAM           = LPARAM;
@@ -32,12 +33,16 @@ export
     using ::AppendMenuW;
     using ::BringWindowToTop;
     using ::CreateDIBSection;
+    using ::CreateMenu;
+    using ::DrawMenuBar;
     using ::EnableWindow;
+    using ::GetModuleHandleW;
     using ::IsWindowVisible;
     using ::LoadCursorW;
     using ::MessageBoxW;
     using ::ReleaseCapture;
     using ::SetCursor;
+    using ::SetMenu;
     using ::SetWindowPos;
     using ::SetWindowTextW;
 

@@ -2,13 +2,9 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <math.h>
-#include <vector>
-
 export module Types:MoreTypes;
 
+import std;
 import :BasicTypes;
 import :CircleType;
 import :EllipseType;

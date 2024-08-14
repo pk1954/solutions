@@ -2,13 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <vector>
-#include <string>
-
 export module NNetModel:ModelDescription;
 
+import std;
 import DescriptionUI;
 
 using std::vector;

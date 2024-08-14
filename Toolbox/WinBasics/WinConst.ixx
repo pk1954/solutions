@@ -24,6 +24,7 @@ extern const DWORD SWP_SHOWWINDOW_CONST;
 
 extern const DWORD VK_SPACE_CONST;
 
+extern const DWORD MF_BITMAP_CONST;
 extern const DWORD MF_STRING_CONST;
 
 extern const DWORD MB_OK_CONST;
@@ -63,6 +64,7 @@ export
                                    
     const DWORD VK_SPACE            = VK_SPACE_CONST;
                                    
+    const DWORD MF_BITMAP           = MF_BITMAP_CONST;
     const DWORD MF_STRING           = MF_STRING_CONST;
                                    
     const DWORD MB_OK               = MB_OK_CONST;

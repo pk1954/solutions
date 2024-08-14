@@ -4,7 +4,6 @@
 
 module;
 
-#include <Windows.h>
 #include "d2d1helper.h"
 
 export module Color;

@@ -26,6 +26,7 @@ const DWORD SWP_SHOWWINDOW_CONST      = SWP_SHOWWINDOW;
                                      
 const DWORD VK_SPACE_CONST            = VK_SPACE;
                                      
+const DWORD MF_BITMAP_CONST           = MF_BITMAP;
 const DWORD MF_STRING_CONST           = MF_STRING;
                                      
 const DWORD MB_OK_CONST               = MB_OK;

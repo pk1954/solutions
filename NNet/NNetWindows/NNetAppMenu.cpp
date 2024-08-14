@@ -2,15 +2,12 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 module NNetWin32:NNetAppMenu;
 
 import std;
 import Debug;
 import Win32_Util_Resource;
+import WinBasics;
 import SoundInterface;
 import Bitmap;
 import IconUndo;
@@ -47,7 +44,7 @@ void NNetAppMenu::Start
 	CommandStack const & commandStack
 ) 
 {
-    HINSTANCE const hInstance = GetModuleHandle(nullptr);
+    HINSTANCE const hInstance = GetModuleHandleW(nullptr);
 
 	m_hwndApp       = hwndApp;
 	m_pCompute      = & compute;
