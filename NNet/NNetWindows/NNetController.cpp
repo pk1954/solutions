@@ -2,16 +2,14 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 module NNetWin32:NNetController;
 
 import std;
 import Win32_Util;
 import Win32_Util_Resource;
+import WinBasics;
 import SlowMotionRatio;
+import SoundInterface;
 import ScriptFile;
 import SaveCast;
 import Observable;
@@ -40,13 +38,15 @@ void NNetController::Initialize
 (
     Compute         * const pCompute,
     SlowMotionRatio * const pSlowMotionRatio,
-    AppTitle        * const pAppTitle
+    AppTitle        * const pAppTitle,
+    Sound           * const pSound
 ) 
 {
     m_pSlowMotionRatio = pSlowMotionRatio;
     m_pCompute         = pCompute;
     m_pAppTitle        = pAppTitle;
-    m_hCrsrWait        = LoadCursorW(NULL,    IDC_WAIT);
+    m_pSound           = pSound;
+    m_hCrsrWait        = LoadCursorW(nullptr, IDC_WAIT);
 	m_hCrsrArrow       = LoadCursorW(nullptr, IDC_ARROW);
 }
 
@@ -77,7 +77,7 @@ bool NNetController::HandleCommand(int const wmId, LPARAM const lParam, MicroMet
 
     if (m_pNMRI->ModelLocked())
     {
-   		MessageBox(nullptr, L"Unlock model to perform this command", L"Model is locked", MB_OK);
+   		MessageBoxW(nullptr, L"Unlock model to perform this command", L"Model is locked", MB_OK);
         return true;
     }
 
@@ -135,12 +135,12 @@ bool NNetController::processUIcommand(int const wmId, LPARAM const lParam, Micro
 
     case IDM_SLOWER:
         if (! m_pSlowMotionRatio->IncRatio())
-            MessageBeep(MB_ICONWARNING);
+            m_pSound->WarningSound();
         break;
 
     case IDM_FASTER:
         if (! m_pSlowMotionRatio->DecRatio())
-            MessageBeep(MB_ICONWARNING);
+            m_pSound->WarningSound();
         break;
 
     case IDM_MAX_SPEED:
@@ -322,7 +322,7 @@ bool NNetController::AskAndSave()
 {
 	if (m_pAppTitle->AnyUnsavedChanges())
 	{
-		int iRes = MessageBox(nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL);
+		int iRes = MessageBoxW(nullptr, L"Save now?", L"Unsaved changes", MB_YESNOCANCEL);
 		if (iRes == IDYES)
 			SaveModel();
 		else if (iRes == IDNO)

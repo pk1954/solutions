@@ -10,10 +10,12 @@ export module WinBasics:WinDefs;
 
 export 
 {
+    using ACCEL            = ACCEL;
     using HWND             = HWND;
     using HCURSOR          = HCURSOR;
     using HFONT            = HFONT;
     using HMENU            = HMENU;
+    using HACCEL           = HACCEL;
     using HINSTANCE        = HINSTANCE;
     using LRESULT          = LRESULT;
     using WPARAM           = WPARAM;
@@ -22,6 +24,7 @@ export
     using DWORD            = DWORD;
     using WORD             = WORD;
     using DWORD_PTR        = DWORD_PTR;
+    using LPACCEL          = LPACCEL;
     using LPCWSTR          = LPCWSTR;
     using LPCTSTR          = LPCTSTR;
     using HBITMAP          = HBITMAP;
@@ -32,6 +35,7 @@ export
 
     using ::AppendMenuW;
     using ::BringWindowToTop;
+    using ::CreateAcceleratorTableW;
     using ::CreateDIBSection;
     using ::CreateMenu;
     using ::DrawMenuBar;

@@ -2,10 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 export module NNetWin32:NNetAppMenu;
 
 import std;

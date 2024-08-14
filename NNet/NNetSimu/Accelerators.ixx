@@ -2,14 +2,11 @@
 //
 // NNetSimu  
 
-module;
-
-#include <Windows.h>
-
 export module Accelerators;
 
 import std;
 import Win32_Util_Resource;
+import WinBasics;
 import SaveCast;
 import Resource;
 
@@ -20,7 +17,7 @@ export class Accelerators
 public:
     HACCEL Get()
     {
-        HACCEL haccel { CreateAcceleratorTable(LPACCEL(m_acc), sizeof(m_acc) / sizeof(ACCEL)) };
+        HACCEL haccel { CreateAcceleratorTableW(LPACCEL(m_acc), sizeof(m_acc) / sizeof(ACCEL)) };
         return haccel;
     }
 

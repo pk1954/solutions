@@ -7,6 +7,7 @@ export module NNetWin32:NNetController;
 import std;
 import Observable;
 import SlowMotionRatio;
+import SoundInterface;
 import Types;
 import WinBasics;
 import WinManager;
@@ -26,7 +27,7 @@ export class NNetController: public NNetCommandHandler
 public:
 	NNetController() = default;
 
-	void Initialize(Compute *const, SlowMotionRatio *const, AppTitle *const);
+	void Initialize(Compute *const, SlowMotionRatio *const, AppTitle *const, Sound *const);
 
 	virtual ~NNetController();
 
@@ -55,4 +56,5 @@ private:
 	NNetModelReaderInterface const* m_pNMRI            { nullptr };
 	AppTitle                      * m_pAppTitle        { nullptr };
 	SlowMotionRatio               * m_pSlowMotionRatio { nullptr };
+	Sound                         * m_pSound           { nullptr };
 };				          

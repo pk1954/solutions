@@ -22,13 +22,17 @@ extern const HWND  HWND_TOP_CONST;
 extern const DWORD SWP_NOSIZE_CONST;
 extern const DWORD SWP_SHOWWINDOW_CONST;
 
-extern const DWORD VK_SPACE_CONST;
+extern const WORD  VK_SPACE_CONST;
+extern const WORD  VK_BACK_CONST;
+extern const WORD  VK_DELETE_CONST;
+extern const WORD  VK_ESCAPE_CONST;
 
 extern const DWORD MF_BITMAP_CONST;
 extern const DWORD MF_STRING_CONST;
 
 extern const DWORD MB_OK_CONST;
 extern const DWORD MB_ICONWARNING_CONST;
+extern const DWORD MB_YESNOCANCEL_CONST;
 
 extern const DWORD MK_SHIFT_CONST;
 extern const DWORD MK_CONTROL_CONST;
@@ -41,8 +45,18 @@ extern const DWORD CS_HREDRAW_CONST;
 extern const DWORD CS_VREDRAW_CONST;     
 extern const DWORD CS_DBLCLKS_CONST;     
 
+extern const BYTE  FVIRTKEY_CONST; 
+extern const BYTE  FCONTROL_CONST; 
+extern const BYTE  FALT_CONST; 
+
+extern const int   IDYES_CONST; 
+extern const int   IDNO_CONST; 
+extern const int   IDCANCEL_CONST; 
+
 extern const LPCWSTR IDC_SIZENS_CONST;     
 extern const LPCWSTR IDC_SIZEWE_CONST;     
+extern const LPCWSTR IDC_WAIT_CONST;     
+extern const LPCWSTR IDC_ARROW_CONST;     
 
 export 
 {
@@ -62,14 +76,18 @@ export
     const DWORD SWP_NOSIZE          = SWP_NOSIZE_CONST;
     const DWORD SWP_SHOWWINDOW      = SWP_SHOWWINDOW_CONST;
                                    
-    const DWORD VK_SPACE            = VK_SPACE_CONST;
+    const WORD  VK_SPACE            = VK_SPACE_CONST;
+    const WORD  VK_BACK             = VK_BACK_CONST;
+    const WORD  VK_DELETE           = VK_DELETE_CONST;
+    const WORD  VK_ESCAPE           = VK_ESCAPE_CONST;
                                    
     const DWORD MF_BITMAP           = MF_BITMAP_CONST;
     const DWORD MF_STRING           = MF_STRING_CONST;
                                    
     const DWORD MB_OK               = MB_OK_CONST;
     const DWORD MB_ICONWARNING      = MB_ICONWARNING_CONST;
-                                   
+    const DWORD MB_YESNOCANCEL      = MB_YESNOCANCEL_CONST;
+                                  
     const DWORD MK_SHIFT            = MK_SHIFT_CONST;
     const DWORD MK_CONTROL          = MK_CONTROL_CONST;
     const DWORD MK_LBUTTON          = MK_LBUTTON_CONST;
@@ -81,6 +99,16 @@ export
     const DWORD CS_VREDRAW          = CS_VREDRAW_CONST;     
     const DWORD CS_DBLCLKS          = CS_DBLCLKS_CONST; 
 
+    const BYTE  FVIRTKEY            = FVIRTKEY_CONST; 
+    const BYTE  FCONTROL            = FCONTROL_CONST; 
+    const BYTE  FALT                = FALT_CONST; 
+
+    const int   IDYES               = IDYES_CONST; 
+    const int   IDNO                = IDNO_CONST; 
+    const int   IDCANCEL            = IDCANCEL_CONST; 
+
     const LPCWSTR IDC_SIZENS        = IDC_SIZENS_CONST; 
     const LPCWSTR IDC_SIZEWE        = IDC_SIZEWE_CONST; 
+    const LPCWSTR IDC_WAIT          = IDC_WAIT_CONST; 
+    const LPCWSTR IDC_ARROW         = IDC_ARROW_CONST; 
 }
