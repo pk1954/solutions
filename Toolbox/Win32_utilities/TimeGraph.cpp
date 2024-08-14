@@ -9,6 +9,7 @@ module;
 module TimeGraph;
 
 import std.compat;
+import Debug;
 import Types;
 import Scale;
 import PixFpDimension;
@@ -38,13 +39,13 @@ fMicroSecs TimeGraph::GetTime(fPixelPoint const & p) const
 
 fMicroSecs TimeGraph::GetTime(fPixel const fPixX) const 
 { 
-	//assert(m_pHorzCoord);
+	Assert(m_pHorzCoord);
 	return Pixel2scaleTime(fPixX);
 }
 
 fPixel TimeGraph::xTime(fMicroSecs const time) const 
 { 
-	//assert(m_pHorzCoord);
+	Assert(m_pHorzCoord);
 	return Scale2pixelTime(time);
 }
 

@@ -5,11 +5,12 @@
 module;
 
 #include <d2d1helper.h>
-#include <cassert>
 #include <math.h>
 #include <Windows.h>
 
 module NNetSignals:NNetTimeGraph;
+
+import Debug;
 
 NNetTimeGraph::NNetTimeGraph
 (
@@ -21,7 +22,7 @@ NNetTimeGraph::NNetTimeGraph
 
 void NNetTimeGraph::SetModelInterface(NNetModelReaderInterface const * const p)
 {
-	assert(p);
+	Assert(p);
 	if (m_pNMRI)
 		const_cast<NNetParameters *>(GetParams())->UnregisterObserver(*this);
 	m_pNMRI = p;

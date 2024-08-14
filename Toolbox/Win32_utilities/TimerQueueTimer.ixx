@@ -9,6 +9,7 @@ module;
 export module TimerQueueTimer;
 
 import std;
+import Debug;
 
 using std::bit_cast;
 using std::wstring;
@@ -57,7 +58,7 @@ private:
 			dwTime,                         // timer is signaled periodically every dwTime msecs
 			0                               // no flags
 		);
-		//assert(m_hTimer != nullptr);
+		Assert(m_hTimer != nullptr);
 	}
 
 	void deleteTimer()

@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:IoConnector;
 
 import std;
+import Debug;
 import BoolOp;
 import DrawContext;
 import Types;

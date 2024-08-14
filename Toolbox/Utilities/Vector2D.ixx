@@ -2,13 +2,10 @@
 //
 // ToolBox\Utilities
 
-module;
-
-#include <cassert>
-
 export module Vector2D;
 
 import std;
+import Debug;
 import SaveCast;
 import Raster;
 
@@ -75,13 +72,13 @@ public:
 
     UNIT& GetRef(RasterPoint const& rp)
     {
-        assert(IsValid(rp));
+        Assert(IsValid(rp));
         return m_data[rp.m_y * Width() + rp.m_x];
     }
 
     UNIT const& GetConstRef(RasterPoint const& rp) const
     {
-        assert(IsValid(rp));
+        Assert(IsValid(rp));
         return m_data[rp.m_y * Width() + rp.m_x];
     }
 
@@ -98,7 +95,7 @@ public:
     UNIT Get(RasterPoint const& rp) const
     {
         UNIT const* pUnit{ GetConstPtr(rp) };
-        assert(pUnit);
+        Assert(pUnit);
         return *pUnit;
     }
 
@@ -117,7 +114,7 @@ public:
 
     Vector2D& operator+= (Vector2D const &rhs)
     {
-        assert(m_size == rhs.m_size);
+        Assert(m_size == rhs.m_size);
 	    m_size.VisitAllRasterPoints
 	    (
 		    [this, &rhs](RasterPoint const &rp)
@@ -168,7 +165,7 @@ public:
 
     unique_ptr<Vector2D> MeanFilter() const
     {
-        assert(Height() > 0);
+        Assert(Height() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(Size()) };
         m_size.VisitAllRasterPointsC([this, &dst](RasterPoint const& rp){ dst->Set(rp, getMeanFiltered(rp)); });
         return dst;
@@ -176,7 +173,7 @@ public:
 
     unique_ptr<Vector2D> MedianFilter() const
     {
-        assert(Height() > 0);
+        Assert(Height() > 0);
         unique_ptr<Vector2D> dst { make_unique<Vector2D>(Size()) };
         m_size.VisitAllRasterPointsC([this, &dst](RasterPoint const& rp) { dst->Set(rp, getMedianFiltered(rp)); });
         return dst;

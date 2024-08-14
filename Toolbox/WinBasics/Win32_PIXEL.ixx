@@ -4,12 +4,12 @@
 
 module;
 
-#include <cassert>
 #include <Windows.h>
 
 export module WinBasics:Win32_PIXEL;
 
 import std;
+import Debug;
 import Types;
 import RunTime;
 
@@ -101,7 +101,7 @@ inline RECT getWindowRect(HWND const hwnd)
 {
     RECT rect;
     BOOL bRes { GetWindowRect(hwnd, &rect) };
-    assert(bRes);
+    Assert(bRes);
     return rect;
 }
 

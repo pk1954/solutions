@@ -5,12 +5,12 @@
 module;
 
 #include <d2d1helper.h>
-#include <cassert>
 #include <Windows.h>
 
 export module NNetSignals:NNetTimeGraph;
 
 import std;
+import Debug;
 import Types;
 import Color;
 import Scale;

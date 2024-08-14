@@ -2,13 +2,10 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:PlugIoConnectorsCmd;
 
 import std;
+import Debug;
 import IoUtil;
 import :NNetCommand;
 import :NNetSound;
@@ -24,7 +21,7 @@ public:
         IoConnector* pNobTarget   { m_pNMWI->GetNobPtr<IoConnector*>(idTarget) };
         m_pInputConnector  = pNobAnimated->IsInputNob () ? pNobAnimated : pNobTarget;
         m_pOutputConnector = pNobAnimated->IsOutputNob() ? pNobAnimated : pNobTarget;
-        assert(m_pInputConnector->Size() == m_pOutputConnector->Size());
+        Assert(m_pInputConnector->Size() == m_pOutputConnector->Size());
 
         m_size = m_pInputConnector->Size();
         for (size_t i = 0; i < m_size; ++i)

@@ -5,6 +5,7 @@
 module Commands:CommandStack;
 
 import std;
+import Debug;
 import Observable;
 import RunTime;
 
@@ -39,13 +40,13 @@ void CommandStack::Clear()
 void CommandStack::clearRedoStack()
 {
     m_CommandStack.erase(m_CommandStack.begin() + m_iIndex, m_CommandStack.end());
-    //assert(RedoStackEmpty());
+    Assert(RedoStackEmpty());
 }
 
 BaseCommand* CommandStack::getCmdPtr(size_t const index) const
 {
     BaseCommand* pCmd { m_CommandStack.at(index).get() };
-    //assert(pCmd != nullptr);
+    Assert(pCmd != nullptr);
     return pCmd;
 }
 
@@ -61,13 +62,13 @@ BaseCommand& CommandStack::previousCmd() const
 
 void CommandStack::set2OlderCmd()
 {
-    //assert(!UndoStackEmpty());
+    Assert(!UndoStackEmpty());
     --m_iIndex;
 }
 
 void CommandStack::set2YoungerCmd()
 {
-    //assert(m_iIndex < m_CommandStack.size());
+    Assert(m_iIndex < m_CommandStack.size());
     ++m_iIndex;
 }
 

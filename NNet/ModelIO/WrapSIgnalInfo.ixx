@@ -2,13 +2,10 @@
 //
 // ModelIO
 
-module;
-
-#include <cassert>
-
 export module WrapSignalInfo;
 
 import std;
+import Debug;
 import Commands;
 import RunTime;
 import Types;
@@ -95,7 +92,7 @@ public:
                         out << Signal::SIGSRC_NOB << SPACE << idNobCompact << endl;
                     }
                     else
-                        assert(false);
+                        Assert(false);
                 }
             }
         );

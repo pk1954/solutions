@@ -4,13 +4,13 @@
 
 module;
 
-#include <cassert>
 #include <Windows.h>
 #include <d2d1helper.h>
 
 module PanelPlatform;
 
 import std;
+import Debug;
 import SaveCast;
 import Win32_Util;
 import DeletePanelCmd;
@@ -142,7 +142,7 @@ void PanelPlatform::removeScan(ScanPanel *p)
 {
 	p->SendMsg(WM_CLOSE, 0, 0);
 	auto iterUpPanels { find_if(m_upPanels, [p](UpPanel const &upPanel){ return upPanel.get() == p; }) };
-	assert(iterUpPanels != m_upPanels.end());
+	Assert(iterUpPanels != m_upPanels.end());
 	auto index { distance(m_upPanels.begin(), iterUpPanels) };
 	m_upPanels.erase(m_upPanels.begin() + index);
 	recalc();

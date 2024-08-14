@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:Knot;
 
 import std;
+import Debug;
 import DrawContext;
 import Types;
 import :NobType;
@@ -68,13 +65,13 @@ void Knot::SelectAllConnected(bool const bFirst)
 }
 void Knot::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 {
-	assert(pDel == m_pPipeIn);
+	Assert(pDel == m_pPipeIn);
 	m_pPipeIn = pAdd;
 }
 
 void Knot::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 {
-	assert(pDel == m_pPipeOut);
+	Assert(pDel == m_pPipeOut);
 	m_pPipeOut = pAdd;
 }
 
@@ -132,14 +129,14 @@ void Knot::AppendMenuItems(AddMenuFunc const& add) const
 
 Knot const* Cast2Knot(Nob const* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsKnot());
+	Assert(pNob);
+	Assert(pNob->IsKnot());
 	return static_cast<Knot const*>(pNob);
 }
 
 Knot* Cast2Knot(Nob* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsKnot());
+	Assert(pNob);
+	Assert(pNob->IsKnot());
 	return static_cast<Knot*>(pNob);
 }

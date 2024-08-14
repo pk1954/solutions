@@ -4,12 +4,12 @@
 
 module;
 
-#include <cassert>
 #include <Windows.h>
 
 module NNetWin32:NNetAppMenu;
 
 import std;
+import Debug;
 import Win32_Util_Resource;
 import SoundInterface;
 import Bitmap;
@@ -125,7 +125,7 @@ void NNetAppMenu::Start
     }
 
     bool bRes = SetMenu(m_hwndApp, m_hMenu);
-    assert(bRes);
+    Assert(bRes);
 }
 
 void NNetAppMenu::SetModelInterface(NNetModelReaderInterface const * const pNMRI)

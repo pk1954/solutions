@@ -9,6 +9,7 @@ module;
 module WinManager;
 
 import std;
+import Debug;
 import IoConstants;
 import RunTime;
 import Commands;
@@ -57,13 +58,13 @@ public:
                 if (WinManager::IsSizeable(id))
                 {
                     bool bRes = ::MoveWindowAbsolute(hwnd, pixRect, true);
-                    //assert(bRes);
+                    Assert(bRes);
                 }
                 else
                 {
      				bool bRes = ::MoveWindowAbsolute(hwnd, pixRect.GetStartPoint(), true); 
                 	DWORD dwErr = GetLastError();
-                	//assert(bRes);
+                	Assert(bRes);
                 }
             }
 		}

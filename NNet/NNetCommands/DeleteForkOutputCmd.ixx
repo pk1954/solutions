@@ -8,6 +8,7 @@
 export module NNetCommands:DeleteForkOutputCmd;
 
 import std;
+import Debug;
 import :NNetCommand;
 
 using std::unique_ptr;
@@ -30,7 +31,7 @@ public:
 	void Do() final
 	{
 		m_upFork = m_pNMWI->RemoveFromModel<Fork>(m_nobId);
-		//assert(m_upFork);
+		Assert(m_upFork.get());
 		handleInputLine(m_upInputLine1);
 		handleInputLine(m_upInputLine2);
 	}

@@ -4,12 +4,12 @@
 
 module;
 
-#include <cassert>
 #include <Windows.h>
 
 module NNetModel:ScanMatrix;
 
 import std;
+import Debug;
 import Types;
 import Raster;
 import SaveCast;
@@ -56,7 +56,7 @@ void ScanMatrix::add2list(Pipe const& pipe, Raster const& raster)
 
 void ScanMatrix::DensityCorrection(RawImage &image) const
 {
-    assert(image.Size() == m_scanPixels.Size());
+    Assert(image.Size() == m_scanPixels.Size());
 	image.Divide([this](RasterPoint const& pnt){ return NrOfDataPntsInPixel(pnt); });
 }
 

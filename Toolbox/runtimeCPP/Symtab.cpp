@@ -5,6 +5,7 @@
 module RunTime:Symtab;
 
 import std;
+import Debug;
 import :Script;
 import IoConstants;
 
@@ -51,7 +52,7 @@ bool Symbol::operator< (const Symbol & rhs) const
         return m_wstrValue < rhs.m_wstrValue;
 
     default:
-          ;// assert(false);
+          ;// Assert(false);
     }
     return false;
 }
@@ -61,7 +62,7 @@ wostream& operator<< (wostream& out, Symbol const& symbol)
     switch (symbol.GetSymbolType())
     {
     case tSTYPE::UnknownSTYPE:
-        //assert(false);
+        Assert(false);
         break;
 
     case tSTYPE::Function:
@@ -85,7 +86,7 @@ wostream& operator<< (wostream& out, Symbol const& symbol)
         break;
 
     default:
-        ;  //assert(false);
+        Assert(false);
     }
     return out;
 }
@@ -106,7 +107,7 @@ wstring const & SymbolTable::GetSymbolName(Symbol const & symbol)
 {
     auto const iter { m_upReverseTab->find(symbol) };
 
-    //assert(iter != m_upReverseTab->end());
+    Assert(iter != m_upReverseTab->end());
 
     return iter->second;
 }

@@ -23,7 +23,7 @@ public:
 		m_fFactor(fFactor)
 	{
 		Sensor* pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
-		// assert(pSensor->IsSensor());
+		// Assert(pSensor->IsSensor());
 		m_pSensor = static_cast<Sensor*>(pSensor);
 	}
 

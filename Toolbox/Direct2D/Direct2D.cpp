@@ -4,7 +4,6 @@
 
 module;
 
-#include <cassert>
 #include "d2d1.h"
 #include "dwrite.h"
 #include <Windows.h>
@@ -13,6 +12,7 @@ module Direct2D;
 
 import std;
 import std.compat;
+import Debug;
 import Color;
 import Util;
 import WinBasics;
@@ -36,7 +36,7 @@ void D2D_driver::createResources()
 		D2D1_FACTORY_TYPE_SINGLE_THREADED,
 		& m_pD2DFactory
 	);
-	assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(m_hr));
 
 	m_hr = DWriteCreateFactory
 	(
@@ -44,7 +44,7 @@ void D2D_driver::createResources()
 		__uuidof(m_pDWriteFactory),
 		bit_cast<IUnknown **>(& m_pDWriteFactory)
 	);
-	assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(m_hr));
 
 	RECT rc { ::GetClRect(m_hwnd) };
 
@@ -54,7 +54,7 @@ void D2D_driver::createResources()
 		D2D1::HwndRenderTargetProperties(m_hwnd, D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top)),
 		& m_pRenderTarget
 	);
-	assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(m_hr));
 
 	m_pTextFormat = NewTextFormat(12.0f);
 
@@ -64,7 +64,7 @@ void D2D_driver::createResources()
 
 bool D2D_driver::startFrame()
 {
-	assert(m_pRenderTarget != nullptr);
+	Assert(m_pRenderTarget != nullptr);
 	m_pRenderTarget->BeginDraw();
 	return true;
 }
@@ -80,7 +80,7 @@ void D2D_driver::endFrame()
 		discardResources();
 		createResources();
 	}
-	assert(m_hr == S_OK);
+	Assert(m_hr == S_OK);
 }
 
 void D2D_driver::Display(function<void()> func)
@@ -119,7 +119,7 @@ void D2D_driver::Resize(PIXEL const width, PIXEL const height)
 	if (m_pRenderTarget)
 	{
 		HRESULT hres = m_pRenderTarget->Resize(D2D1::SizeU(width.GetValue(), height.GetValue()));
-		assert(hres == S_OK);
+		Assert(hres == S_OK);
 	}
 }
 
@@ -293,7 +293,7 @@ ID2D1GradientStopCollection * D2D_driver::simpleGradientStopCollection
 	ID2D1GradientStopCollection * pGradientStopColl = nullptr;
 	array<D2D1_GRADIENT_STOP, 2>  gradientStops { D2D1_GRADIENT_STOP(0.0f, colF1), D2D1_GRADIENT_STOP(1.0f, colF2) };
 	hr = m_pRenderTarget->CreateGradientStopCollection(gradientStops.data(), 2, &pGradientStopColl);
-	assert(SUCCEEDED(hr));
+	Assert(SUCCEEDED(hr));
 	return pGradientStopColl;
 }
 
@@ -313,7 +313,7 @@ void D2D_driver::FillGradientRect
 		pGradientStopColl,
 		&m_pLinearGradientBrush
 	);
-	assert(SUCCEEDED(hr));
+	Assert(SUCCEEDED(hr));
 
 	D2D1_RECT_F const d2dRect { convertD2D(rect) };
 	m_pRenderTarget->FillRectangle(& d2dRect, m_pLinearGradientBrush);
@@ -343,7 +343,7 @@ void D2D_driver::FillGradientEllipse
 		pGradientStopColl,
 		&m_pRadialGradientBrush
 	);
-	assert(SUCCEEDED(hr));
+	Assert(SUCCEEDED(hr));
 
 	m_pRenderTarget->FillEllipse(convertD2D(fPE), m_pRadialGradientBrush);
 
@@ -602,7 +602,7 @@ ID2D1SolidColorBrush* D2D_driver::createBrush(Color const d2dCol) const
 {
 	ID2D1SolidColorBrush* pBrush;
 	HRESULT hres = m_pRenderTarget->CreateSolidColorBrush(d2dCol, &pBrush);
-	assert(hres == S_OK);
+	Assert(hres == S_OK);
 	return pBrush;
 }
 
@@ -679,9 +679,9 @@ void D2D_driver::DrawBezier
 {
 	ID2D1PathGeometry* m_pPathGeometry { nullptr };
 	m_hr = m_pD2DFactory->CreatePathGeometry(&m_pPathGeometry);
-	assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(m_hr));
 	m_hr = m_pPathGeometry->Open(&m_pSink);
-	assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(m_hr));
 	m_pSink->BeginFigure(convertD2D(fPixPnt0), D2D1_FIGURE_BEGIN_HOLLOW);
 	m_pSink->AddBezier(D2D1::BezierSegment(convertD2D(fPixPnt1), convertD2D(fPixPnt2), convertD2D(fPixPnt3)));
 	m_pSink->EndFigure(D2D1_FIGURE_END_OPEN);

@@ -4,11 +4,9 @@
 // 
 // Handle 24 bit data type 
 
-module;
-
-#include <cassert>
-
 export module Int24;
+
+import Debug;
 
 export class Int24
 {
@@ -22,7 +20,7 @@ public:
 
 	Int24(int i)
 	{
-		assert(i <= 0xffffff);
+		Assert(i <= 0xffffff);
 		m_byte[0] = i >> 16;
 		m_byte[1] = (i & 0x00ff00) >> 8;
 		m_byte[2] = (i & 0x0000ff);

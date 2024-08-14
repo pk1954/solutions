@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:Fork;
 
+import Debug;
 import DrawContext;
 import :Nob;
 import :PosNob;
@@ -95,14 +92,14 @@ private:
 
 export Fork const* Cast2Fork(Nob const* pNob)
 {
-    assert(pNob);
-    assert(pNob->IsFork());
+    Assert(pNob);
+    Assert(pNob->IsFork());
     return static_cast<Fork const*>(pNob);
 }
 
 export Fork* Cast2Fork(Nob* pNob)
 {
-    assert(pNob);
-    assert(pNob->IsFork());
+    Assert(pNob);
+    Assert(pNob->IsFork());
     return static_cast<Fork*>(pNob);
 }

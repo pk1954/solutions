@@ -4,11 +4,11 @@
 
 module;
 
-#include <cassert>
 #include <algorithm>
 
 export module Types:RectType;
 
+import Debug;
 import :PointType;
 
 using std::min;
@@ -53,7 +53,7 @@ public:
 			m_Bottom = pt2.GetY();
 			m_Top    = pt1.GetY();
 		}
-		assert(m_Bottom >= m_Top);
+		Assert(m_Bottom >= m_Top);
 	};
 
 	RectType
@@ -68,7 +68,7 @@ public:
 		m_Right (right), 
 		m_Bottom(bottom)
 	{ 
-		assert(m_Bottom >= m_Top);
+		Assert(m_Bottom >= m_Top);
 	};
 
 	RectType
@@ -81,7 +81,7 @@ public:
 		m_Right(m_Left + size.GetX()),
 		m_Bottom(m_Top + size.GetY())
 	{
-		assert(m_Bottom >= m_Top);
+		Assert(m_Bottom >= m_Top);
 	}
 
 	RectType
@@ -94,7 +94,7 @@ public:
 		m_Right(width),
 		m_Bottom(height)
 	{
-		assert(m_Bottom >= m_Top);
+		Assert(m_Bottom >= m_Top);
 	}
 
 	RectType
@@ -107,7 +107,7 @@ public:
 		m_Right(m_Left + size.GetValue()),
 		m_Bottom(m_Top + size.GetValue())
 	{
-		assert(m_Bottom >= m_Top);
+		Assert(m_Bottom >= m_Top);
 	}
 
 	void SetLeft  (BASE_TYPE const val) { m_Left   = val; }
@@ -155,7 +155,7 @@ public:
 		case CardPoint::northEast: return POS_TYPE(GetRight(),   GetTop());
 		case CardPoint::southWest: return POS_TYPE(GetLeft(),    GetBottom());
 		case CardPoint::southEast: return POS_TYPE(GetRight(),   GetBottom());
-		default: assert(false);
+		default: Assert(false);
 		}
 		return POS_TYPE::ZERO_VAL();
 	}
@@ -176,7 +176,7 @@ public:
 		case CardPoint::northEast: m_Top    += pos.GetY(); m_Right += pos.GetX(); break;
 		case CardPoint::southWest: m_Bottom += pos.GetY(); m_Left  += pos.GetX(); break;
 		case CardPoint::southEast: m_Bottom += pos.GetY(); m_Right += pos.GetX(); break;
-		default: assert(false);
+		default: Assert(false);
 		}
 	}
 

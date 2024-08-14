@@ -58,7 +58,7 @@ SignalNr MonitorData::AddSignal
 	TrackNr      const trackNr
 )
 {
-	//assert(upSignal);
+	Assert(upSignal.get());
 	++m_iNrOfSignals;
 	return getTrack(trackNr)->AddSignal(move(upSignal));
 }
@@ -69,21 +69,21 @@ void MonitorData::AddSignal
 	SignalId   const & id
 )
 {
-	//assert(upSignal);
+	Assert(upSignal.get());
 	++m_iNrOfSignals;
 	getTrack(id.GetTrackNr())->AddSignal(move(upSignal), id.GetSignalNr());
 }
 
 unique_ptr<Signal> MonitorData::RemoveSignal(SignalId const & id)
 {
-	//assert(IsValid(id));
+	Assert(IsValid(id));
 	--m_iNrOfSignals;
 	return removeSignal(id);
 }
 
 SignalNr MonitorData::MoveSignal(SignalId const & id, TrackNr const trackNrDst)
 {
-	//assert(IsValid(id) && IsValid(trackNrDst));
+	Assert(IsValid(id) && IsValid(trackNrDst));
 	SignalNr sigNr { AddSignal(removeSignal(id), trackNrDst) };
 	return sigNr;
 }

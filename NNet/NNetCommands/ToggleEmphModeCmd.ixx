@@ -2,13 +2,10 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:ToggleEmphModeCmd;
 
 import std;
+import Debug;
 import :NNetCommand;
 import NNetModel;
 import IoUtil;
@@ -19,7 +16,7 @@ public:
 	explicit ToggleEmphModeCmd(NobId const id)
 		: m_pPipe(m_pNMWI->GetNobPtr<Pipe*>(id))
 	{
-		assert(m_pPipe);
+		Assert(m_pPipe);
 	}
 
 	void Do() final

@@ -5,11 +5,11 @@
 module;
 
 #include <ctime>
-#include <cassert>
 
 module NNetModel:NNetModelWriterInterface;
 
 import std;
+import Debug;
 import Observable;
 import Types;
 import D2D_ColorLUT;
@@ -46,7 +46,7 @@ Nob * NNetModelWriterInterface::GetNob(NobId const id)
 PosNob & NNetModelWriterInterface::GetPosNob(NobId const id)
 {
 	PosNob * pPosNob { GetNobPtr<PosNob*>(id) };
-	assert(pPosNob);
+	Assert(pPosNob);
 	return *pPosNob;
 }
 
@@ -87,7 +87,7 @@ void NNetModelWriterInterface::AddEvent // for model import
 		m_pModel->m_events.push_back(make_unique<StopScanEvent>(usTimeStamp));
 		break;
 	default:
-		assert(false);
+		Assert(false);
 	}
 }
 

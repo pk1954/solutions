@@ -5,6 +5,7 @@
 export module Signals:SigGenStaticData;
 
 import std;
+import Debug;
 import Observable;
 import Types;
 import BasePeak;
@@ -155,7 +156,7 @@ private:
 			T     const stimulus  { boost * fStimulus };
 			result += stimulus;
 		}
-		//assert(result >= T(0.0f));
+		Assert(result >= T(0.0f));
 		return result;
 	}
 };

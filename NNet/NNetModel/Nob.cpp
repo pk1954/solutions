@@ -2,10 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert> 
-
 module NNetModel:Nob;
 
 import std;
@@ -85,7 +81,7 @@ Color Nob::GetInteriorColor(tHighlight const type, mV const voltage) const
 		case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_EMP_SELECTED : NNetColors::INT_EMPHASIZED;
 		case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
 		case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
-		default: assert(false);
+		default: Assert(false);
 		}
 	else
 		switch (type)
@@ -94,7 +90,7 @@ Color Nob::GetInteriorColor(tHighlight const type, mV const voltage) const
 		case tHighlight::highlighted: return pNob->IsSelected() ? NNetColors::INT_SELECTED : NNetColors::INT_NORMAL;
 		case tHighlight::targetFit:   return NNetColors::INT_TARGET_FIT;
 		case tHighlight::targetNoFit: return NNetColors::INT_TARGET_NOFIT;
-		default: assert(false);
+		default: Assert(false);
 		}
 	return NNetColors::INT_NORMAL;
 };

@@ -2,13 +2,10 @@
 //
 // NNetWindows
 
-module;
-
-#include <cassert>
-
 module NNetWin32:NNetWindow;
 
 import std;
+import Debug;
 import Win32_Util_Resource;
 import Types;
 import Direct2D;

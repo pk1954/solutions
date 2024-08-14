@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:IoLine;
 
 import std;
+import Debug;
 import Types;
 import :IoConnector;
 import :PipeList;

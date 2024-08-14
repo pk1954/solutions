@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:InputLine;
 
+import Debug;
 import Direct2D;
 import Types;
 import DrawContext;
@@ -43,7 +40,7 @@ public:
 
 	void CollectInput() final;
 
-	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final { assert(false); };
+	void ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd) final { Assert(false); };
 	void ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd) final;
 
 	void Apply2AllInPipes (PipeFunc  const& f)       final {};

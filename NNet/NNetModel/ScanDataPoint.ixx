@@ -19,7 +19,7 @@ public:
 
     void Check() const
     {
-        //assert(m_segNr.GetValue() < m_pPipe->GetNrOfSegments());
+        Assert(m_segNr.GetValue() < m_pPipe->GetNrOfSegments());
     }
 
     mV GetSignalValue() const

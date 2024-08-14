@@ -4,12 +4,12 @@
 
 module;
 
-#include <cassert>
 #include "d2d1.h"
 
 export module D2D_ColorLUT;
 
 import std;
+import Debug;
 import Direct2D;
 import ColorLUT;
 
@@ -44,9 +44,9 @@ public:
         BrushHandle hBrush { m_brushTable[index] };
         if (hBrush == nullptr)
         {
-            assert(m_pColorLut);
+            Assert(m_pColorLut);
             Color const color { m_pColorLut->GetColor(index) };
-            assert(m_pDriver);
+            Assert(m_pDriver);
             hBrush = m_pDriver->CreateBrushHandle(color);
             m_brushTable[index] = hBrush;
         }

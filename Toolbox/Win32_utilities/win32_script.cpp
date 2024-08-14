@@ -12,6 +12,7 @@ module;
 module ScriptFile;
 
 import std;
+import Debug;
 import RunTime;
 import Commands;
 import IoConstants;
@@ -38,7 +39,7 @@ wstring ScriptFile::GetPathOfExecutable()
 ScriptFile::ScriptFile()
 {
     HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED|COINIT_DISABLE_OLE1DDE);
-    //assert(SUCCEEDED(hr));
+    Assert(SUCCEEDED(hr));
 }
 
 ScriptFile::~ScriptFile()
@@ -63,7 +64,7 @@ IFileDialog * ScriptFile::createOpenDialog()
         return nullptr;
     }
     hr = pFileDlg->SetTitle(L"Open file");
-    //assert(SUCCEEDED(hr));
+    Assert(SUCCEEDED(hr));
     return pFileDlg;
 }
 
@@ -85,10 +86,10 @@ IFileDialog * ScriptFile::createSaveDialog(wstring const &wstrFileName)
     }
 
     hr = pFileDlg->SetTitle(L"Save file");
-    //assert(SUCCEEDED(hr));
+    Assert(SUCCEEDED(hr));
     if (wstrFileName != L"")
         hr = pFileDlg->SetFileName(wstrFileName.c_str());
-    //assert(SUCCEEDED(hr));
+    Assert(SUCCEEDED(hr));
     return pFileDlg;
 }
 

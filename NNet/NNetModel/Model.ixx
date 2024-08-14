@@ -2,14 +2,11 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:Model;
 
 import std;
 import std.compat;
+import Debug;
 import Observable;
 import ObserverInterface;
 import Types;

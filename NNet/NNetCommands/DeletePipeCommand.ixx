@@ -175,7 +175,7 @@ public:
 			case fork:      m_upCmdStart = make_unique<ForkStartCmd>                   (m_pipe);	break;
 			case synapse:   m_upCmdStart = make_unique<SynapseStartCmd>                (m_pipe);    break;
 			case neuron:    m_upCmdStart = make_unique<DeleteNeuronInputCmd>           (m_pipe.GetStartNobPtr()); break;
-			default: ;       //assert(false);
+			default: Assert(false);
 		}
 
 		switch (m_pNMWI->GetNobType(m_idEnd).GetValue())
@@ -189,7 +189,7 @@ public:
 					         else
 				                 m_upCmdEnd = make_unique<NeuronEndMultipleCmd>(m_pipe, m_idEnd);
 							 break;
-			default: ;       //assert(false);
+			default: Assert(false);
 		}
 	}
 

@@ -4,12 +4,12 @@
 
 module;
 
-#include <cassert>
 #include <algorithm>  // min/max/abs templates
 #include <cmath>
 
 export module Types:PointType;
 
+import Debug;
 import Util;
 import :BasicTypes;
 
@@ -112,7 +112,7 @@ public:
 	friend PointType Normalize(PointType const & pt) 
 	{ 
 		BASE_TYPE fHypot { Hypot(pt) };
-		assert(! ::IsCloseToZero(fHypot.GetValue()));
+		Assert(! ::IsCloseToZero(fHypot.GetValue()));
 		return pt / fHypot.GetValue();
 	};
 

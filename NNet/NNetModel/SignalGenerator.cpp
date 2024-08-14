@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <string>
-#include <cassert>
-
 module NNetModel:SignalGenerator;
 
+import std;
+import Debug;
 import ObserverInterface;
 import Types;
 import Signals;
@@ -66,7 +63,7 @@ void SignalGenerator::SetParam(ParamType::Value const par, float const f)
 		case inputBaseVolt: m_statData.SetAmplBase(mV(f));         break;
 		case inputPeakVolt: m_statData.SetAmplPeak(mV(f));         break;
 		case inputPeakTime: m_statData.SetPeakTime(fMicroSecs(f)); break;
-		default: assert(false);
+		default: Assert(false);
 	}
 }
 

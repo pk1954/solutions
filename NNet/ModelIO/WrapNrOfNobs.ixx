@@ -2,13 +2,10 @@
 //
 // ModelIO
 
-module;
-
-#include <cassert>
-
 export module WrapNrOfNobs;
 
 import std;
+import Debug;
 import Commands;
 import RunTime;
 import NNetModelIO;
@@ -28,7 +25,7 @@ public:
         script.ScrReadSpecial(EQUALS);
         long       lNrOfNobs { script.ScrReadLong() };
         UPNobList& list      { NNetModelIO::GetImportNMWI().GetUPNobs() };
-        assert(list.IsEmpty());
+        Assert(list.IsEmpty());
         list.IncreaseSize(lNrOfNobs);
     }
 

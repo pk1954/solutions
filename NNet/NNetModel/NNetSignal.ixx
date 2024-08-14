@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:NNetSignal;
 
+import Debug;
 import Observable;
 import Signals;
 import :NNetSignalSource;
@@ -19,7 +16,7 @@ public:
     NNetSignal(NNetSignalSource * const pSigSrc)
       : m_pSigSrc(pSigSrc)
     {
-        assert(m_pSigSrc);
+        Assert(m_pSigSrc);
         m_pSigSrc->RegisterObserver(*this);
     }
 

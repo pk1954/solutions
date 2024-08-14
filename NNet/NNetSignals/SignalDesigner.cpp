@@ -2,13 +2,10 @@
 //
 // NNetSignals
 
-module;
-
-#include <cassert>
-
 module NNetSignals:SignalDesigner;
 
 import std;
+import Debug;
 import Types;
 import PixFpDimension;
 import Win32_Util;
@@ -141,7 +138,7 @@ unique_ptr<Scale<fMicroSecs>> SignalDesigner::makeHorzScale()
 
 void SignalDesigner::SetModelInterface(NNetModelWriterInterface * const p)
 {
-	assert(p);
+	Assert(p);
 	m_upSignalControl[0]->SetModelInterface(p);
 	m_upSignalControl[1]->SetModelInterface(p);
 	m_upSignalPreview   ->SetModelInterface(p);

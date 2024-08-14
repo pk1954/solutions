@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert> 
-
 module NNetModel:MicroSensor;
 
 import std;
+import Debug;
 import Types;
 import DrawContext;
 import Signals;
@@ -36,7 +33,7 @@ void MicroSensor::Dump() const
 
 mV MicroSensor::GetSignalValue() const
 {
-    assert(m_pNob);
+    Assert(m_pNob);
     return m_pNob->GetPotential();
 }
 

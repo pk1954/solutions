@@ -107,14 +107,14 @@ private:
 
 export Neuron const* Cast2Neuron(Nob const* pNob)
 {
-	//assert(pNob);
-	//assert(pNob->IsNeuron());
+	Assert(pNob);
+	Assert(pNob->IsNeuron());
 	return static_cast<Neuron const*>(pNob);
 }
 
 export Neuron* Cast2Neuron(Nob* pNob)
 {
-	//assert(pNob);
-	//assert(pNob->IsNeuron());
+	Assert(pNob);
+	Assert(pNob->IsNeuron());
 	return static_cast<Neuron*>(pNob);
 }

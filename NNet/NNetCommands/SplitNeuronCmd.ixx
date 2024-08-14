@@ -2,13 +2,10 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:SplitNeuronCmd;
 
 import std;
+import Debug;
 import Types;
 import :NNetCommand;
 import :NNetSound;
@@ -23,7 +20,7 @@ public:
     explicit SplitNeuronCmd(NobId const id)
         : m_neuron(*m_pNMWI->GetNobPtr<Neuron *>(id))
     {
-        assert(m_neuron.GetNrOfInConns() == 1);
+        Assert(m_neuron.GetNrOfInConns() == 1);
         MicroMeterPnt umPos { m_neuron.GetPos() };
         m_upInputLine  = make_unique<InputLine >(umPos);
         m_upOutputLine = make_unique<OutputLine>(umPos);

@@ -140,14 +140,14 @@ private:
 
 export Synapse const* Cast2Synapse(Nob const* pNob)
 {
-    //assert(pNob);
-    //assert(pNob->IsSynapse());
+    Assert(pNob);
+    Assert(pNob->IsSynapse());
     return static_cast<Synapse const*>(pNob);
 }
 
 export Synapse* Cast2Synapse(Nob* pNob)
 {
-    //assert(pNob);
-    //assert(pNob->IsSynapse());
+    Assert(pNob);
+    Assert(pNob->IsSynapse());
     return static_cast<Synapse*>(pNob);
 }

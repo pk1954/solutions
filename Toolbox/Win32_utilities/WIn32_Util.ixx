@@ -129,7 +129,7 @@ export inline void DeleteWindowExStyle(HWND const hwnd, LONG_PTR const dwStyle)
     LONG_PTR const dwOldStyle = GetWindowExStyle(hwnd);
     LONG_PTR const dwNewStyle = dwOldStyle & ~dwStyle;
     LONG_PTR const dwRes       = SetWindowExStyle(hwnd, dwNewStyle);
-    //assert(dwRes == dwNewStyle);
+    Assert(dwRes == dwNewStyle);
 }
 
 export inline MONITORINFO GetMonitorInfo(HMONITOR hMonitor)

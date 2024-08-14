@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:OutputLine;
 
 import Types;
+import Debug;
 import DrawContext;
 import :tHighlight;
 import :Synapse;
@@ -41,7 +38,7 @@ OutputLine::OutputLine(Pipe& pipe)
 
 void OutputLine::Check() const
 {
-	assert(GetPipeC()->GetEndNobPtr() == this);
+	Assert(GetPipeC()->GetEndNobPtr() == this);
 	PosNob::Check();
 }
 
@@ -60,12 +57,12 @@ void OutputLine::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 	if (pDel == GetPipe())
 		SetPipe(pAdd);
 	else
-		assert(false);
+		Assert(false);
 }
 
 void OutputLine::SetAllOutgoing(PosNob& src)
 { 
-	assert(false); 
+	Assert(false); 
 }
 
 void OutputLine::SetAllIncoming(PosNob& src)
@@ -113,14 +110,14 @@ void OutputLine::AppendMenuItems(AddMenuFunc const & add) const
 
 OutputLine const* Cast2OutputLine(Nob const* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsOutputLine());
+	Assert(pNob);
+	Assert(pNob->IsOutputLine());
 	return static_cast<OutputLine const*>(pNob);
 }
 
 OutputLine* Cast2OutputLine(Nob* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsOutputLine());
+	Assert(pNob);
+	Assert(pNob->IsOutputLine());
 	return static_cast<OutputLine*>(pNob);
 }

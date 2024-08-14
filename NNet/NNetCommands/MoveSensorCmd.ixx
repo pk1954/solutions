@@ -2,13 +2,10 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:MoveSensorCmd;
 
 import std;
+import Debug;
 import IoUtil;
 import IoConstants;
 import :NNetCommand;
@@ -24,8 +21,8 @@ public:
 	  : m_delta(delta)
 	{
 		Sensor * pSensor { m_pNMWI->GetSensorList().GetSensor(id) };
-		assert(pSensor);
-		assert(pSensor->IsSensor());
+		Assert(pSensor);
+		Assert(pSensor->IsSensor());
 		m_pSensor = static_cast<Sensor *>(pSensor);
 	}
 

@@ -9,6 +9,7 @@ module;
 export module TimeGraph;
 
 import std;
+import Debug;
 import Types;
 import SaveCast;
 import Scale;
@@ -75,7 +76,7 @@ protected:
 			for (fMicroSecs time = timeStart + usResolution; time < timeEnd; time += usResolution)
 			{
 				fPixelPoint actPoint { getPoint(time) };
-				//assert(actPoint.IsNotNull());
+				Assert(actPoint.IsNotNull());
 				if (actPoint.GetY() < fPixYmin)
 				{
 					fPixYmin = actPoint.GetY();

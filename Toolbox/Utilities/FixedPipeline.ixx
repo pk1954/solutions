@@ -2,13 +2,10 @@
 //
 // Toolbox\Utilities
 
-module;
-
-#include <cassert>
-
 export module FixedPipeline;
 
 import std;
+import Debug;
 
 using std::vector;
 using std::ranges::fill;
@@ -31,7 +28,7 @@ public:
 
     void Resize(size_t const newSize, T const elem)
     {
-        assert(newSize > 0);
+        Assert(newSize > 0);
         m_data.resize(newSize, elem);
         m_index = 0;
     }
@@ -45,13 +42,13 @@ public:
 
     void Push(T const& elem)
     {
-        assert(m_index < m_data.size());
+        Assert(m_index < m_data.size());
         m_data[m_index] = elem;
         if (m_index == 0)
             m_index = m_data.size() - 1;
         else
             --m_index;
-        assert(m_index < m_data.size());
+        Assert(m_index < m_data.size());
     }
 
     T Get() const
@@ -61,7 +58,7 @@ public:
 
     T Get(size_t const nr) const
     {
-        assert(nr < m_data.size());
+        Assert(nr < m_data.size());
         size_t index { m_index + nr };
         if (index >= m_data.size())
             index -= m_data.size();

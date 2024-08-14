@@ -2,14 +2,11 @@
 //
 // NNetWindows
 
-module;
-
-#include <cassert>
-
 module NNetWin32:MainWindow;
 
 import std;
 import std.compat;
+import Debug;
 import HiResTimer;
 import NNetCommands;
 import DrawContext;
@@ -378,7 +375,7 @@ void MainWindow::connect(NobId const idSrc, NobId const idDst)
 	case ct_plugConnectors:
 		PlugIoConnectorsCmd::Push(idSrc, idDst);     // case 6
 		break;
-	default: assert(false);
+	default: Assert(false);
 	}
 }
 

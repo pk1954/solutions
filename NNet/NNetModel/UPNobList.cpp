@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:UPNobList;
 
 import std;
+import Debug;
 import :NobException;
 import :InputConnector;
 import :OutputConnector;
@@ -79,8 +76,8 @@ bool UPNobList::operator==(UPNobList const & other) const
 
 UPNob UPNobList::ExtractNob(NobId const id)	
 {
-	assert(IsDefined(id));
-	assert(IsValidNobId(id));
+	Assert(IsDefined(id));
+	Assert(IsValidNobId(id));
 
 	UPNob upNob { move(m_list[id.GetValue()]) };
 	decCounter(upNob.get());
@@ -95,9 +92,9 @@ void UPNobList::SetNob2Slot(UPNob upNob)
 
 void UPNobList::SetNob2Slot(NobId const id, UPNob upNob) 
 {
-	assert(upNob);
-	assert(IsDefined(id));
-	assert(IsValidNobId(id));
+	Assert(upNob.get());
+	Assert(IsDefined(id));
+	Assert(IsValidNobId(id));
 	if (IsEmptySlot(id))
 	{
 		incCounter(upNob.get());
@@ -113,8 +110,8 @@ Nob * UPNobList::ReplaceNob(UPNob upT)
 {
 	NobId const id { upT->GetId() };
 
-	assert(IsDefined(id));
-	assert(IsValidNobId(id));
+	Assert(IsDefined(id));
+	Assert(IsValidNobId(id));
 
 	incCounter(upT.get());
 	decCounter(GetAt(id));
@@ -183,7 +180,7 @@ void UPNobList::CheckNobList() const
 	{
 		if (m_list[i])
 		{
-			assert(m_list[i]->GetId().GetValue() == i);
+			Assert(m_list[i]->GetId().GetValue() == i);
 			m_list[i]->Check();
 		}
 	}

@@ -2,14 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert> 
-#include <sstream> 
-#include <iomanip>
-
 module NNetModel:Neuron;
 
+import std;
+import Debug;
 import Types;
 import DrawContext;
 import Signals;
@@ -134,7 +130,7 @@ void Neuron::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 	if (pDel == m_pPipeAxon)
 		m_pPipeAxon = pAdd;
 	else
-		assert(false);
+		Assert(false);
 }
 
 void Neuron::DrawExterior(DrawContext const & context, tHighlight const type) const

@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:IoConnector;
 
 import std;
+import Debug;
 import Types;
 import IoUtil;
 import DrawContext;
@@ -33,13 +30,13 @@ void IoConnector::Check() const
         return;
     for (auto it : m_list) 
     { 
-        assert(it);
-        assert(it->IsIoLine());
+        Assert(it);
+        Assert(it->IsIoLine());
     } 
     NobType const nobType { m_list.front()->GetNobType() };
     for (auto it : m_list) 
     { 
-        assert(it->GetNobType() == nobType);
+        Assert(it->GetNobType() == nobType);
         it->Check();
     } 
 }
@@ -99,7 +96,7 @@ Radian IoConnector::GetDir() const
 
 MicroMeterPnt IoConnector::GetPos() const 
 { 
-    assert(!m_list.empty());
+    Assert(!m_list.empty());
     return (m_list.front()->GetPos() + m_list.back()->GetPos()) * 0.5f; 
 }
 
@@ -219,7 +216,7 @@ void IoConnector::AlignPositions(MicroMeterLine const& umLine)
 
 void IoConnector::SetPositions(vector<MicroMeterPnt> const& posList)
 {
-    assert(posList.size() == Size());
+    Assert(posList.size() == Size());
     for (int i = 0; i < Size(); ++i)
     {
         m_list[i]->SetPos(posList[i]);
@@ -236,13 +233,13 @@ vector<MicroMeterPnt> IoConnector::GetPositions() const
 
 IoConnector const * Cast2IoConnector(Nob const * pNob)
 {
-    assert(pNob->IsIoConnector());
+    Assert(pNob->IsIoConnector());
     return static_cast<IoConnector const *>(pNob);
 }
 
 IoConnector * Cast2IoConnector(Nob * pNob)
 {
-    assert(pNob->IsIoConnector());
+    Assert(pNob->IsIoConnector());
     return static_cast<IoConnector *>(pNob);
 }
 

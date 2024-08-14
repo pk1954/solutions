@@ -114,7 +114,7 @@ void RootWindow::CenterIn(HWND const hwnd, PIXEL const width, PIXEL const height
 
 void RootWindow::SetWindowHandle(HWND const hwnd) 
 { 
-	//assert(hwnd);
+	//Assert(hwnd);
 	m_hwnd = hwnd;  
 };
 
@@ -391,8 +391,8 @@ void ArrangeVertical
 
 	HWND hwnd1 = pWinTop->GetParent();
 	HWND hwnd2 = pWinBottom->GetParent();
-	//assert(pWinTop->GetParent() == pWinBottom->GetParent());
-	//assert(pWinTop->GetParent() == pWinBottom->GetParent());
+	Assert(pWinTop->GetParent() == pWinBottom->GetParent());
+	Assert(pWinTop->GetParent() == pWinBottom->GetParent());
 
 	PixelRectSize const size         { ::GetClRectSize(pWinTop->GetParent()) };
 	PIXEL         const pixNetHeight { size.GetY() - pixFrameWidth * 3 };
@@ -414,7 +414,7 @@ void ArrangeVertical
 		pixTopHeight    = pixNetHeight / 2;
 		pixBottomHeight = pixTopHeight;
 	}
-	//assert(size.GetY() > pixTopHeight - pixFrameWidth * 3);
+	Assert(size.GetY() > pixTopHeight - pixFrameWidth * 3);
 
 	pWinTop->Move
 	(

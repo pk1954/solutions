@@ -49,8 +49,8 @@ public:
 
 	static bool TypeFits(NobType const type) { return type.IsPipeType(); }
 
-	void Recalc     ()                         final { /*assert(false);*/ }
-	void SetPosNoFix(MicroMeterPnt const& pos) final { /*assert(false); */ }
+	void Recalc     ()                         final { Assert(false); }
+	void SetPosNoFix(MicroMeterPnt const& pos) final { Assert(false);  }
 
 	void SetStartPnt(Nob * const);   //TODO: Nob --> PosNob
 	void SetEndPnt  (Nob * const);   //TODO: Nob --> PosNob
@@ -149,24 +149,24 @@ private:
 
 export Pipe const* Cast2Pipe(Nob const* pNob)
 {
-	//assert(pNob->IsPipe());
+	Assert(pNob->IsPipe());
 	return static_cast<Pipe const*>(pNob);
 }
 
 export Pipe* Cast2Pipe(Nob* pNob)
 {
-	//assert(pNob->IsPipe());
+	Assert(pNob->IsPipe());
 	return static_cast<Pipe*>(pNob);
 }
 
 export Pipe const& Cast2Pipe(Nob const& nob)
 {
-	//assert(nob.IsPipe());
+	Assert(nob.IsPipe());
 	return *static_cast<Pipe const*>(&nob);
 }
 
 export Pipe& Cast2Pipe(Nob &nob)
 {
-	//assert(nob.IsPipe());
+	Assert(nob.IsPipe());
 	return *static_cast<Pipe *>(&nob);
 }

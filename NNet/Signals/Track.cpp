@@ -69,7 +69,7 @@ void Track::CheckSignals() const
 #ifdef _DEBUG
 	for (const auto & pSignal : m_signals)
 	{
-		//assert(pSignal != nullptr);
+		Assert(pSignal != nullptr);
 		pSignal->CheckSignal();
 	}
 #endif

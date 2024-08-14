@@ -5,6 +5,8 @@
 export module BoolOp;
 
 import std;
+import Debug;
+
 using std::wostream;
 
 export enum class tBoolOp { opTrue, opFalse, opToggle, opNoChange };
@@ -31,7 +33,7 @@ export inline tBoolOp Reverse(tBoolOp const op)
         return tBoolOp::opNoChange;
 
     default:
-        ;   //assert(false);
+        Assert(false);
         return tBoolOp::opNoChange;
     }
 }
@@ -53,7 +55,7 @@ export inline bool ApplyOp2(bool const b, tBoolOp const op)
         return b;
 
     default:
-        ;  //assert(false);
+        Assert(false);
         return false;
     }
 }

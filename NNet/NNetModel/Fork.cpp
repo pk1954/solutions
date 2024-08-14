@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:Fork;
 
+import Debug;
 import DrawContext;
 import Types;
 import Resource;
@@ -32,9 +29,9 @@ void Fork::Check() const
 	m_pPipeIn->Check();
 	m_pPipeOut1->Check();
 	m_pPipeOut2->Check();
-	assert(m_pPipeIn  ->GetEndKnotId()   == GetId());
-	assert(m_pPipeOut1->GetStartKnotId() == GetId());
-	assert(m_pPipeOut2->GetStartKnotId() == GetId());
+	Assert(m_pPipeIn  ->GetEndKnotId()   == GetId());
+	Assert(m_pPipeOut1->GetStartKnotId() == GetId());
+	Assert(m_pPipeOut2->GetStartKnotId() == GetId());
 }
 
 Pipe* Fork::GetOtherOutgoing(Pipe* pPipe)
@@ -44,7 +41,7 @@ Pipe* Fork::GetOtherOutgoing(Pipe* pPipe)
 	else if (pPipe == m_pPipeOut2)
 		return m_pPipeOut1;
 	else
-		assert(false);
+		Assert(false);
 	return nullptr;
 }
 
@@ -68,7 +65,7 @@ void Fork::RotateNob(MicroMeterPnt const& umPntPivot, Radian const radDelta)
 
 void Fork::ReplaceIncoming(Pipe* const pDel, Pipe* const pAdd)
 { 
-	assert(pDel == m_pPipeIn);
+	Assert(pDel == m_pPipeIn);
 	m_pPipeIn = pAdd;
 }
 
@@ -79,7 +76,7 @@ void Fork::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 	else if (pDel == m_pPipeOut2)
 		m_pPipeOut2 = pAdd;
 	else
-		assert(false);
+		Assert(false);
 }
 
 void Fork::Apply2AllInPipes(PipeFunc const& f)
@@ -176,7 +173,7 @@ void Fork::AddIncoming(Pipe * pPipe)
 
 void Fork::AddOutgoing(Pipe * pPipe)
 {
-	assert(m_pPipeOut2 == nullptr);
+	Assert(m_pPipeOut2 == nullptr);
 	if (m_pPipeOut1)
 		m_pPipeOut2 = pPipe;
 	else

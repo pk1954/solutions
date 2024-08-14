@@ -9,6 +9,7 @@ module;
 module TextWindow;
 
 import std;
+import Debug;
 import Win32_Util_Resource;
 import Win32_Util;
 import BaseWindow;
@@ -42,7 +43,7 @@ void TextWindow::StartTextWindow
    );
 
     HDC const hDC { GetDC(hwnd) };
-    //assert(hDC != nullptr);
+    Assert(hDC != nullptr);
 	HDC const hDC_Memory { CreateCompatibleDC(hDC) };
 	m_hBitmap = CreateCompatibleBitmap(hDC);
 	SelectObject(hDC_Memory, m_hBitmap);

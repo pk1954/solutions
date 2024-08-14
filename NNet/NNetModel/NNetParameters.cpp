@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:NNetParameters;
 
+import Debug;
 import Types;
 import Signals;
 import :ParamType;
@@ -35,7 +32,7 @@ float NNetParameters::GetParameterValue(ParamType::Value const param) const
 	case scanHorzPixels: return static_cast<float>(ScanSize().m_x);
 	case scanVertPixels: return static_cast<float>(ScanSize().m_y);
 	case scanResolution: return ScanResolution().GetValue();
-	default: assert(false);
+	default: Assert(false);
 	}
 	return 0.f;
 }
@@ -69,7 +66,7 @@ void NNetParameters::SetParameterValue
 	case scanResolution: m_pScanRaster      ->SetResolution(static_cast<MicroMeter> (fNewValue)); break;
 	case scanHorzPixels: m_pScanRaster      ->SetWidth     (static_cast<RasterIndex>(fNewValue)); break;
 	case scanVertPixels: m_pScanRaster      ->SetHeight    (static_cast<RasterIndex>(fNewValue)); break;
-	default: assert(false);
+	default: Assert(false);
 	}
 	NotifyAll();
 }

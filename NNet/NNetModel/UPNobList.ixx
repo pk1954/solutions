@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 export module NNetModel:UPNobList;
 
 import std;
+import Debug;
 import SaveCast;
 import Types;
 import :NobType;

@@ -5,6 +5,7 @@
 export module NNetWin32:NNetInputOutputUI;
 
 import std;
+import Debug;
 import InputOutputUI;
 import WinBasics;
 import Win32_Util;
@@ -44,7 +45,7 @@ public:
 		case ok:     	   ::SendCommand(m_hwndInitiator, m_msgJobFinished,   0); break;
 		case fileNotFound: ::SendCommand(m_hwndInitiator, IDX_FILE_NOT_FOUND, 0); break;
 		case errorInFile:  ::SendCommand(m_hwndInitiator, IDX_ERROR_IN_FILE,  0); break;
-		default: ; //assert(false);
+		default: Assert(false);
 		}
 	};
 

@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:InputLine;
 
+import Debug;
 import Direct2D;
 import DrawContext;
 import :tHighlight;
@@ -55,12 +52,12 @@ void InputLine::ReplaceOutgoing(Pipe* const pDel, Pipe* const pAdd)
 	if (pDel == GetPipe())
 		SetPipe(pAdd);
 	else
-		assert(false);
+		Assert(false);
 }
 
 void InputLine::SetAllIncoming(PosNob& src)
 {
-	assert(false);
+	Assert(false);
 }
 
 void InputLine::SetAllOutgoing(PosNob& src)
@@ -130,14 +127,14 @@ void InputLine::AppendMenuItems(AddMenuFunc const & add) const
 
 InputLine const* Cast2InputLine(Nob const* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsInputLine());
+	Assert(pNob);
+	Assert(pNob->IsInputLine());
 	return static_cast<InputLine const*>(pNob);
 }
 
 InputLine* Cast2InputLine(Nob* pNob)
 {
-	assert(pNob);
-	assert(pNob->IsInputLine());
+	Assert(pNob);
+	Assert(pNob->IsInputLine());
 	return static_cast<InputLine*>(pNob);
 }

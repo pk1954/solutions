@@ -2,15 +2,12 @@
 //
 // Model
 
-module;
-
-#include <cassert>
-
 module NNetModel:Model;
 
 import HiResTimer;
 
 import std;
+import Debug;
 import Observable;
 import Types;
 import Signals;

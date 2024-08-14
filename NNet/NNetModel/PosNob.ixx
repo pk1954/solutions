@@ -57,8 +57,8 @@ public:
 
 	bool Apply2AllConnectedPipesB(PipeCrit const&) const;
 
-	virtual void AddIncoming(Pipe*) { /*assert(false);*/ }
-	virtual void AddOutgoing(Pipe*) { /*assert(false);*/ }
+	virtual void AddIncoming(Pipe*) { Assert(false); }
+	virtual void AddOutgoing(Pipe*) { Assert(false); }
 
 	virtual void SetAllIncoming(PosNob &) = 0;
 	virtual void SetAllOutgoing(PosNob &) = 0;

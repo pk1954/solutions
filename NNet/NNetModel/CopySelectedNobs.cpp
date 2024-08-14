@@ -2,14 +2,11 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:CopySelectedNobs;
 
 import std;
 import Types;
+import Debug;
 import :NNetModelWriterInterface;
 import :UPNobList;
 import :Synapse;
@@ -63,17 +60,17 @@ unique_ptr<UPNobList> CopySelectedNobs::Do(NNetModelWriterInterface & nmwi)
 
 Nob const & CopySelectedNobs::copy2model(Nob * const pNobCopy) 
 { 
-	assert(pNobCopy);
-	assert(IsDefined(pNobCopy->GetId()));
+	Assert(pNobCopy);
+	Assert(IsDefined(pNobCopy->GetId()));
 	auto const it { m_mapCopy2model.find(pNobCopy) };
-	assert(it != m_mapCopy2model.end());
+	Assert(it != m_mapCopy2model.end());
 	return * it->second;
 }
 
 Nob * CopySelectedNobs::model2copy(Nob const * const pNobModel) 
 { 
-	assert(pNobModel);
-	assert(IsDefined(pNobModel->GetId()));
+	Assert(pNobModel);
+	Assert(IsDefined(pNobModel->GetId()));
 	auto const it { m_mapModel2copy.find(pNobModel) };
 	return (it != m_mapModel2copy.end()) ? it->second : nullptr;
 }

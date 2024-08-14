@@ -2,13 +2,10 @@
 //
 // ModelIO
 
-module;
-
-#include <cassert>
-
 module WrapVoltage;
 
 import std;
+import Debug;
 import Types;
 import SaveCast;
 import IoUtil;
@@ -47,7 +44,7 @@ void WrapVoltage::setVoltage(Script & script) const
         break;
 
     default:
-        assert(false);
+        Assert(false);
         break;
     }
 }
@@ -126,7 +123,7 @@ void WrapVoltage::writeVoltage(wostream & out, Nob const & nob) const
             break;
 
         default:
-            assert(false);
+            Assert(false);
             break;
         }
         out << endl;

@@ -2,13 +2,10 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:PlugIoLinesCmd;
 
 import std;
+import Debug;
 import IoUtil;
 import :NNetCommand;
 import :NNetSound;
@@ -24,10 +21,10 @@ public:
       : m_nobAnimated(*m_pNMWI->GetNobPtr<IoLine*>(idAnimated)),
         m_nobTarget  (*m_pNMWI->GetNobPtr<IoLine*>(idTarget))
     {
-        assert(m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob());
-        assert(m_nobAnimated.GetIoMode() != NobIoMode::internal);
-        assert(m_nobTarget  .GetIoMode() != NobIoMode::internal);
-        assert(m_nobTarget  .GetIoMode() != m_nobAnimated.GetIoMode());
+        Assert(m_nobAnimated.IsCompositeNob() == m_nobTarget.IsCompositeNob());
+        Assert(m_nobAnimated.GetIoMode() != NobIoMode::internal);
+        Assert(m_nobTarget  .GetIoMode() != NobIoMode::internal);
+        Assert(m_nobTarget  .GetIoMode() != m_nobAnimated.GetIoMode());
 
         m_upKnot = make_unique<Knot>(m_nobTarget.GetPos());
         m_upKnot->AddIncoming((m_nobAnimated.IsOutputNob() ? m_nobAnimated : m_nobTarget).GetPipe());

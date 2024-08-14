@@ -5,6 +5,7 @@
 module NobIo;
 
 import std;
+import Debug;
 import IoUtil;
 import IoConstants;
 import NNetWrapperHelpers;
@@ -69,10 +70,10 @@ Pipe* NobIo::createPipe
     }
     PosNob * const pNobStart { static_cast<PosNob *>(list.GetAt(idStart)) };
     PosNob * const pNobEnd   { static_cast<PosNob *>(list.GetAt(idEnd)) };
-    //assert(pNobStart);
-    //assert(pNobEnd);
+    Assert(pNobStart);
+    Assert(pNobEnd);
     Pipe * pPipe { getPipePtr(idFromScript) };
-    //assert(pPipe);
+    Assert(pPipe);
     pPipe->SetStartPnt(pNobStart);
     pPipe->SetEndPnt(pNobEnd);
     return pPipe;
@@ -175,7 +176,7 @@ UPNob NobIo::createSynapse(Script& script) const
 
 void NobIo::writeIoConnector(wostream& out, IoConnector const& conn) const
 {
-    //assert(conn.Size() > 0);
+    Assert(conn.Size() > 0);
     size_t const iLast { conn.Size() - 1 };
     out << CURLY_OPEN_BRACKET << conn.Size() << NR_SEPARATOR;
     for (size_t i = 0;; ++i)
@@ -357,7 +358,7 @@ void NobIo::writeNob(wostream& out, Nob const& nob) const
             break;
 
         default:
-            //assert(false);
+            Assert(false);
             break;
         }
         out << endl;
@@ -397,7 +398,7 @@ Nob* NobIo::createNob(Script& script) const
     case pipe:
         return createPipe(script, idFromScript);
     default:
-        //assert(false);  // handled in ScrReadNobType
+        Assert(false);  // handled in ScrReadNobType
         break;
     }
 

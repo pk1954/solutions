@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cassert>
-
 module NNetModel:Pipe;
 
 import std;
+import Debug;
 import Geometry;
 import IoUtil;
 import Types;
@@ -45,8 +42,8 @@ Pipe::Pipe
   :	m_pNobStart(pKnotStart),
 	m_pNobEnd  (pKnotEnd)
 {
-	assert(pKnotStart);
-	assert(pKnotEnd);
+	Assert(pKnotStart);
+	Assert(pKnotEnd);
 	RecalcSegments();
 }
 
@@ -105,8 +102,8 @@ void Pipe::Link(Nob const & nobSrc,	Nob2NobFunc const & dstFromSrc)
 void Pipe::Check() const
 {
 	Nob::Check();
-	assert(m_pNobStart);
-	assert(m_pNobEnd);
+	Assert(m_pNobStart);
+	Assert(m_pNobEnd);
 }
 
 void Pipe::Expand(MicroMeterRect & umRect) const
@@ -147,13 +144,13 @@ bool Pipe::IsIncludedIn(MicroMeterRect const & umRect) const
 
 void Pipe::SetStartPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
-	assert(pPosNob);
+	Assert(pPosNob);
 	m_pNobStart = pPosNob;
 }
 
 void Pipe::SetEndPnt(Nob * const pPosNob)  //TODO: Nob --> PosNob
 {
-	assert(pPosNob);
+	Assert(pPosNob);
 	m_pNobEnd = pPosNob;
 }
 
@@ -174,13 +171,13 @@ MicroMeterPnt Pipe::dislocation() const
 
 MicroMeterPnt Pipe::GetStartPoint() const 
 { 
-	assert(m_pNobStart);
+	Assert(m_pNobStart);
 	return m_pNobStart->GetPos();
 }
 
 MicroMeterPnt Pipe::GetEndPoint() const 
 { 
-	assert(m_pNobEnd);
+	Assert(m_pNobEnd);
 	if (m_pNobEnd->IsSynapse())
 	{
 		Synapse * pSynapse { Cast2Synapse(m_pNobEnd) };
@@ -232,10 +229,10 @@ bool Pipe::IsConnectedTo(NobId const idPosNob) const
 
 MicroMeterPnt Pipe::GetVector() const
 {
-	assert(m_pNobStart);
-	assert(m_pNobEnd);
+	Assert(m_pNobStart);
+	Assert(m_pNobEnd);
 	MicroMeterPnt umVector { GetEndPoint() - m_pNobStart->GetPos() };
-	assert(!umVector.IsCloseToZero());
+	Assert(!umVector.IsCloseToZero());
 	return umVector;
 }
 
@@ -269,7 +266,7 @@ FixedPipeline<mV> const& Pipe::getSegments() const
 
 void Pipe::PosChanged()
 {
-	assert(IsPipe());
+	Assert(IsPipe());
 	if (m_pNobStart)
 		m_pNobStart->DirectionDirty();
 	if (m_pNobEnd)
@@ -296,10 +293,10 @@ MicroMeterPnt Pipe::GetSegmentVector() const
 
 MicroMeterPnt Pipe::GetVector(float const fFactor) const
 {
-	assert(m_pNobStart);
-	assert(m_pNobEnd);
+	Assert(m_pNobStart);
+	Assert(m_pNobEnd);
 	MicroMeterPnt const umResult { GetStartPoint() + GetVector() * fFactor};
-	assert(! umResult.IsCloseToZero());
+	Assert(! umResult.IsCloseToZero());
 	return umResult;
 }
 

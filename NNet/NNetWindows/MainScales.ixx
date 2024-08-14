@@ -2,13 +2,10 @@
 //
 // NNetWindows
 
-module;
-
-#include <cassert>
-
 export module NNetWin32:MainScales;
 
 import std;
+import Debug;
 import Types;
 import Scale;
 import Observable;
@@ -151,7 +148,7 @@ public:
 			break;
 
 		default:
-			assert(false);
+			Assert(false);
 		}
 	}
 

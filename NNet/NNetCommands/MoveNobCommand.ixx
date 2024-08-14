@@ -2,13 +2,10 @@
 //
 // NNetCommands
 
-module;
-
-#include <cassert>
-
 export module NNetCommands:MoveNobCommand;
 
 import std;
+import Debug;
 import IoUtil;
 import :NNetCommand;
 
@@ -23,7 +20,7 @@ public:
 	  : m_delta(delta),
 		m_nob(nob)
 	{ 
-		assert(&nob);
+		Assert(&nob);
 	}
 
 	void Do() final 
