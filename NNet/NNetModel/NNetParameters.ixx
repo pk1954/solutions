@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <chrono>
-
 export module NNetModel:NNetParameters;
 
+import std;
 import Observable;
 import SaveCast;
 import Types;
