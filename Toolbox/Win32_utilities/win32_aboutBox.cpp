@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module AboutBox;
 
 import std;
+import WinBasics;
 import Win32_Util_Resource;
 import Win32_Util;
 import Win32_Controls;

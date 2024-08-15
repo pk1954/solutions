@@ -10,6 +10,7 @@ module;
 export module Win32_Util;
 
 import std;
+import std.compat;
 import BoolOp;
 import Types;
 

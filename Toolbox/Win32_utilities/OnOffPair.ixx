@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module OnOffPair;
 
 import Win32_Util;
+import WinBasics;
 
 export class OnOffPair
 {

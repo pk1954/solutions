@@ -2,15 +2,14 @@
 //
 // NNetSignals
 
-module;
-
-#include <d2d1helper.h>
-#include <math.h>
-#include <Windows.h>
-
 module NNetSignals:NNetTimeGraph;
 
+import std;
+import std.compat;
 import Debug;
+
+using std::min;
+using std::max;
 
 NNetTimeGraph::NNetTimeGraph
 (

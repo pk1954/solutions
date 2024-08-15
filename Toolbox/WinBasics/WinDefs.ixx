@@ -27,6 +27,7 @@ export
     using LPACCEL               = LPACCEL;
     using LPCWSTR               = LPCWSTR;
     using LPCTSTR               = LPCTSTR;
+    using LPPOINT               = LPPOINT;
     using HBITMAP               = HBITMAP;
     using BITMAPINFO            = BITMAPINFO;
     using BITMAPFILEHEADER      = BITMAPFILEHEADER;
@@ -42,9 +43,11 @@ export
     using ::CreateMenu;
     using ::DrawMenuBar;
     using ::EnableWindow;
+    using ::EndDialog;
     using ::GetModuleHandleW;
     using ::IsWindowVisible;
     using ::LoadCursorW;
+    using ::MapWindowPoints;
     using ::MessageBoxW;
     using ::PostQuitMessage;
     using ::ReleaseCapture;

@@ -2,11 +2,9 @@
 //
 // ModelIO
 
-module;
-
-#include <exception>
-
 export module NNetModelStorage;
+
+import std;
 
 using std::exception;
 

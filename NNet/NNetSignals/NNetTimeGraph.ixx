@@ -2,14 +2,10 @@
 //
 // NNetSignals
 
-module;
-
-#include <d2d1helper.h>
-#include <Windows.h>
-
 export module NNetSignals:NNetTimeGraph;
 
 import std;
+import WinBasics;
 import Debug;
 import Types;
 import Color;

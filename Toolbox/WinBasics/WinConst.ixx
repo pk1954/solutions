@@ -18,11 +18,13 @@ extern const DWORD WS_OVERLAPPEDWINDOW_CONST;
 extern const DWORD WS_POPUPWINDOW_CONST;
 extern const DWORD WS_CAPTION_CONST;
 extern const DWORD WS_SIZEBOX_CONST;
+extern const DWORD WS_GROUP_CONST;
 
 extern const DWORD SW_HIDE_CONST;
 extern const DWORD SW_SHOW_CONST;
 
 extern const HWND  HWND_TOP_CONST;
+extern const HWND  HWND_DESKTOP_CONST;
 
 extern const DWORD SWP_NOSIZE_CONST;
 extern const DWORD SWP_SHOWWINDOW_CONST;
@@ -57,6 +59,7 @@ extern const BYTE  FALT_CONST;
 
 extern const int   IDYES_CONST; 
 extern const int   IDNO_CONST; 
+extern const int   IDOK_CONST; 
 extern const int   IDCANCEL_CONST; 
 
 extern const LPCWSTR IDC_SIZENS_CONST;     
@@ -78,11 +81,13 @@ export
     const DWORD WS_POPUPWINDOW      = WS_POPUPWINDOW_CONST;
     const DWORD WS_CAPTION          = WS_CAPTION_CONST;
     const DWORD WS_SIZEBOX          = WS_SIZEBOX_CONST;
+    const DWORD WS_GROUP            = WS_GROUP_CONST;
                                     
     const DWORD SW_HIDE             = SW_HIDE_CONST;
     const DWORD SW_SHOW             = SW_SHOW_CONST;
                                     
     const HWND  HWND_TOP            = HWND_TOP_CONST;
+    const HWND  HWND_DESKTOP        = HWND_DESKTOP_CONST;
                                     
     const DWORD SWP_NOSIZE          = SWP_NOSIZE_CONST;
     const DWORD SWP_SHOWWINDOW      = SWP_SHOWWINDOW_CONST;
@@ -117,6 +122,7 @@ export
                                     
     const int   IDYES               = IDYES_CONST; 
     const int   IDNO                = IDNO_CONST; 
+    const int   IDOK                = IDOK_CONST; 
     const int   IDCANCEL            = IDCANCEL_CONST; 
                                     
     const LPCWSTR IDC_SIZENS        = IDC_SIZENS_CONST; 

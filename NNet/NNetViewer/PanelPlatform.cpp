@@ -2,21 +2,18 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-#include <d2d1helper.h>
-
 module PanelPlatform;
 
 import std;
 import Debug;
 import SaveCast;
 import Win32_Util;
+import WinBasics;
 import DeletePanelCmd;
 import Resource;
 
 using std::min;
+using std::max;
 using std::vector;
 using std::unique_ptr;
 using std::make_unique;
@@ -179,7 +176,7 @@ void PanelPlatform::OnPaint()
 
 bool PanelPlatform::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (auto const wId = LOWORD(wParam))
+	switch (auto const wId = LoWord(wParam))
 	{
 	case IDD_REMOVE_SCAN_PANEL:
 		removeScan(bit_cast<ScanPanel*>(lParam));

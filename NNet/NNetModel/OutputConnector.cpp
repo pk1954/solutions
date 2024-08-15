@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <vector>
-
 module NNetModel:OutputConnector;
 
+import std;
 import DrawContext;
 import Types;
 import :tHighlight;

@@ -2,10 +2,6 @@
 //
 // ModelIO
 
-module;
-
-#include <Windows.h>
-
 module NNetPreferences;
 
 import std;

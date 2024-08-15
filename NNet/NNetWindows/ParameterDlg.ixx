@@ -2,13 +2,10 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 export module NNetWin32:ParameterDialog;
 
 import std;
+import WinBasics;
 import Direct2D;
 import BaseDialog;
 import NNetModel;

@@ -20,11 +20,13 @@ const DWORD WS_OVERLAPPEDWINDOW_CONST = WS_OVERLAPPEDWINDOW;
 const DWORD WS_POPUPWINDOW_CONST      = WS_POPUPWINDOW;
 const DWORD WS_CAPTION_CONST          = WS_CAPTION;
 const DWORD WS_SIZEBOX_CONST          = WS_SIZEBOX;
+const DWORD WS_GROUP_CONST            = WS_GROUP;
 
 const DWORD SW_HIDE_CONST             = SW_HIDE;
 const DWORD SW_SHOW_CONST             = SW_SHOW;
 
 const HWND  HWND_TOP_CONST            = HWND_TOP;
+const HWND  HWND_DESKTOP_CONST        = HWND_DESKTOP;
 
 const DWORD SWP_NOSIZE_CONST          = SWP_NOSIZE;
 const DWORD SWP_SHOWWINDOW_CONST      = SWP_SHOWWINDOW;
@@ -44,6 +46,7 @@ const DWORD MB_YESNO_CONST            = MB_YESNO;
                                      
 const int   IDYES_CONST               = IDYES; 
 const int   IDNO_CONST                = IDNO; 
+const int   IDOK_CONST                = IDOK; 
 const int   IDCANCEL_CONST            = IDCANCEL; 
 
 const DWORD MK_SHIFT_CONST            = MK_SHIFT;

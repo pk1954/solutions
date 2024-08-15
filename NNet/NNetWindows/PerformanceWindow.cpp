@@ -2,14 +2,10 @@
 //
 // NNetWindows
 
-module;
-
-#include <iomanip>
-#include <sstream>
-#include <Windows.h>
-
 module NNetWin32:PerformanceWindow;
 
+import std;
+import WinBasics;
 import SlowMotionRatio;
 import HiResTimer;
 import NNetModel;
