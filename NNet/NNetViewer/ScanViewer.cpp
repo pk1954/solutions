@@ -2,13 +2,10 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-
 module ScanViewer;
 
 import std;
+import WinBasics;
 import Tooltip;
 import NNetPreferences;
 import NNetWin32;

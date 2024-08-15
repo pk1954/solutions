@@ -2,10 +2,6 @@
 //
 // ModelIO
 
-module;
-
-#include <Windows.h>
-
 export module WrapColorLUT;
 
 import std;

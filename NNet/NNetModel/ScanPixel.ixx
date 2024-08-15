@@ -2,12 +2,9 @@
 //
 // NNetModel
 
-module;
-
-#include <vector>
-
 export module NNetModel:ScanPixel;
 
+import std;
 import Types;
 import Raster;
 import :ScanDataPoint;

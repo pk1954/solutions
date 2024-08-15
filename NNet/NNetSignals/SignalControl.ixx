@@ -2,14 +2,9 @@
 //
 // NNetSignals
 
-module;
-
-#include <cmath>
-#include <array>
-#include <Windows.h>
-
 export module NNetSignals:SignalControl;
 
+import std;
 import Types;
 import Scale;
 import Color;

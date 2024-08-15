@@ -2,13 +2,10 @@
 //
 // NNetModel
 
-module;
-
-#include <cmath>
-
 module NNetModel:Synapse;
 
 import std;
+import std.compat;
 import SimulationTime;
 import DrawContext;
 import Types;

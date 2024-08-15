@@ -4,7 +4,7 @@
 
 module;
 
-#include <Windows.h>
+#include <Windows.h>    // RGB !
 
 export module NNetWin32:SelectionMenu;
 

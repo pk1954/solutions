@@ -2,10 +2,6 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-
 export module ScanPanel;
 
 import std;

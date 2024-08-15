@@ -2,11 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-#include <windowsx.h>
-
 module NNetWin32:ParameterDialog;
 
 import std;
@@ -15,6 +10,7 @@ import Win32_Util_Resource;
 import WinManager;
 import Win32_Controls;
 import Win32_Util;
+import WinBasics;
 import WinManager;
 import BaseDialog;
 import NNetPreferences;
@@ -39,7 +35,7 @@ void ParameterDialog::Notify(bool const bImmediate)
 
 void ParameterDialog::resetParameter(ParamField& field) const
 {
-	::SetWindowText(field.m_hwnd, Float2wstring(m_pNMWI->GetParams().GetParameterValue(field.m_type)));
+	::SetWindowTextW(field.m_hwnd, Float2wstring(m_pNMWI->GetParams().GetParameterValue(field.m_type)));
 }
 
 void ParameterDialog::applyParameter(ParamField &field)   // read out edit field and write data to model
@@ -87,7 +83,7 @@ void ParameterDialog::enableAllEditFields()
 	{
 		m_bEditParamsEnabled = bEnable;
 		for (auto& field : m_fields)
-			Edit_Enable(field.m_hwnd, m_bEditParamsEnabled);
+			EnableWindow(field.m_hwnd, m_bEditParamsEnabled);
 	}
 //	Edit_Enable(m_hwndFilter, m_bEditParamsEnabled);
 }
@@ -99,7 +95,7 @@ void ParameterDialog::Start(HWND const hwndParent)
 	m_hTextFormatHeader = m_upGraphics->NewTextFormat(16.f);
 	m_hTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
-	SetWindowText(L"Global parameters");
+	SetWindowTextW(L"Global parameters");
 	SetWindowStyle(DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);
 
 	int iYpos { VERT_SPACE + 16 };
@@ -149,7 +145,7 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(2, L"General");
 	paintHeader(7, L"Scan");
 	refreshParameters();
-	::SetWindowText(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
+	::SetWindowTextW(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
 }
 
 void ParameterDialog::paintHeader
@@ -183,7 +179,7 @@ void ParameterDialog::SetModelInterface(NNetModelWriterInterface * const pNMWI)
 
 bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (LOWORD(wParam))
+	switch (LoWord(wParam))
 	{
 	case IDD_APPLY:
 		applyParameters();

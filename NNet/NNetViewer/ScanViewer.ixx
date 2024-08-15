@@ -2,13 +2,10 @@
 //
 // NNetViewer
 
-module;
-
-#include <Windows.h>
-
 export module ScanViewer;
 
 import std;
+import WinBasics;
 import Types;
 import Tooltip;
 import D2D_ColorLUT;

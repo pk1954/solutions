@@ -2,10 +2,6 @@
 //
 // NNetCommands
 
-module;
-
-#include <Windows.h>
-
 export module NNetCommands:RenameSigGenCmd;
 
 import std;

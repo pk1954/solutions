@@ -2,14 +2,11 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 module NNetWin32:SelectionMenu;
 
 import Win32_Util_Resource;
 import Win32_Controls;
+import WinBasics;
 import NNetModel;
 import Win32_Util;
 import Direct2D;
@@ -29,9 +26,7 @@ void SelectionMenu::Start(HWND const hwndParent)
 		nullptr
 	);
 
-	SetWindowText(L"Selection");
-
-	m_hwndParent = hwndParent;
+	SetWindowTextW(L"Selection");
 
 	m_hwndDeselect = CreateButton(hwnd, L"Deselect [ESC]", 10, 10, 250, 20, IDM_DESELECT);
 	m_hwndCopy     = CreateButton(hwnd, L"Copy [Strg+C]",  10, 40, 250, 20, IDM_COPY_SELECTION);
@@ -46,7 +41,7 @@ void SelectionMenu::Start(HWND const hwndParent)
 
 bool SelectionMenu::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	return ::SendMessage(m_hwndParent, WM_COMMAND, wParam, 0);
+	return SendCommand2Parent(wParam, 0);
 }
 
 void SelectionMenu::OnPaint()

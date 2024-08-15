@@ -172,9 +172,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Accelerators.ixx" />
     <ClCompile Include="NNetAppWindow.cpp" />
     <ClCompile Include="NNetAppWindow.ixx" />

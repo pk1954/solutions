@@ -15,6 +15,7 @@ export
     using HCURSOR               = HCURSOR;
     using HFONT                 = HFONT;
     using HMENU                 = HMENU;
+    using HGDIOBJ               = HGDIOBJ;
     using HACCEL                = HACCEL;
     using HINSTANCE             = HINSTANCE;
     using LRESULT               = LRESULT;
@@ -45,12 +46,14 @@ export
     using ::EnableWindow;
     using ::EndDialog;
     using ::GetModuleHandleW;
+    using ::GetStockObject;
     using ::IsWindowVisible;
     using ::LoadCursorW;
     using ::MapWindowPoints;
     using ::MessageBoxW;
     using ::PostQuitMessage;
     using ::ReleaseCapture;
+    using ::SetBkColor;
     using ::SetCursor;
     using ::SetMenu;
     using ::SetWindowPos;

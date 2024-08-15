@@ -2,10 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <Windows.h>
-
 export module NNetModel:ScanMatrix;
 
 import std;

@@ -2,14 +2,9 @@
 //
 // NNetSignals
 
-module;
-
-#include <chrono>
-#include <algorithm>  // min/max/abs templates
-#include <Windows.h>
-
 module NNetSignals:SignalControl;
 
+import std;
 import Types;
 import NNetModel;
 import NNetCommands;
