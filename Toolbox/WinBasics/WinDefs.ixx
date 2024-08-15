@@ -10,28 +10,30 @@ export module WinBasics:WinDefs;
 
 export 
 {
-    using ACCEL            = ACCEL;
-    using HWND             = HWND;
-    using HCURSOR          = HCURSOR;
-    using HFONT            = HFONT;
-    using HMENU            = HMENU;
-    using HACCEL           = HACCEL;
-    using HINSTANCE        = HINSTANCE;
-    using LRESULT          = LRESULT;
-    using WPARAM           = WPARAM;
-    using LPARAM           = LPARAM;
-    using UINT             = UINT;
-    using DWORD            = DWORD;
-    using WORD             = WORD;
-    using DWORD_PTR        = DWORD_PTR;
-    using LPACCEL          = LPACCEL;
-    using LPCWSTR          = LPCWSTR;
-    using LPCTSTR          = LPCTSTR;
-    using HBITMAP          = HBITMAP;
-    using BITMAPINFO       = BITMAPINFO;
-    using BITMAPFILEHEADER = BITMAPFILEHEADER;
-    using BITMAPINFOHEADER = BITMAPINFOHEADER;
-    using PAINTSTRUCT      = PAINTSTRUCT;
+    using ACCEL                 = ACCEL;
+    using HWND                  = HWND;
+    using HCURSOR               = HCURSOR;
+    using HFONT                 = HFONT;
+    using HMENU                 = HMENU;
+    using HACCEL                = HACCEL;
+    using HINSTANCE             = HINSTANCE;
+    using LRESULT               = LRESULT;
+    using WPARAM                = WPARAM;
+    using LPARAM                = LPARAM;
+    using UINT                  = UINT;
+    using DWORD                 = DWORD;
+    using WORD                  = WORD;
+    using DWORD_PTR             = DWORD_PTR;
+    using LPACCEL               = LPACCEL;
+    using LPCWSTR               = LPCWSTR;
+    using LPCTSTR               = LPCTSTR;
+    using HBITMAP               = HBITMAP;
+    using BITMAPINFO            = BITMAPINFO;
+    using BITMAPFILEHEADER      = BITMAPFILEHEADER;
+    using BITMAPINFOHEADER      = BITMAPINFOHEADER;
+    using PAINTSTRUCT           = PAINTSTRUCT;
+    using DRAWITEMSTRUCT        = DRAWITEMSTRUCT;
+    using PTP_CALLBACK_INSTANCE = PTP_CALLBACK_INSTANCE;
 
     using ::AppendMenuW;
     using ::BringWindowToTop;
@@ -44,11 +46,13 @@ export
     using ::IsWindowVisible;
     using ::LoadCursorW;
     using ::MessageBoxW;
+    using ::PostQuitMessage;
     using ::ReleaseCapture;
     using ::SetCursor;
     using ::SetMenu;
     using ::SetWindowPos;
     using ::SetWindowTextW;
+    using ::ShellExecuteW;
 
     constexpr WORD LoWord(DWORD value) { return static_cast<WORD>(value & 0xFFFF); }
 

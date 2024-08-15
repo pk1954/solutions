@@ -2,21 +2,18 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module BaseWindow;
 
 import std;
 import Types;
 import BoolType;
 import HiResTimer;
+import WinBasics;
 import RootWindow;
 
 using std::wstring;
 
-static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
+static LRESULT __stdcall BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
 export class BaseWindow : public RootWindow
 {
@@ -73,7 +70,7 @@ private:
 
 	void trackMouse(bool const) const;
 
-	friend static LRESULT CALLBACK BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
+	friend static LRESULT __stdcall BaseWndProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
 	HiResTimer m_paintTimer;
 	fMicroSecs m_usPaintTime { fMicroSecs(0) };

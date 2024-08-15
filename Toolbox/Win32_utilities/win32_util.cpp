@@ -106,7 +106,7 @@ ULONGLONG GetPhysicalMemory()  // in bytes
     return ramKB * 1024;                                // compute number of bytes
 }
 
-wstring GetComputerName()
+wstring GetComputerNameAsWstring()
 {
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];
@@ -115,7 +115,7 @@ wstring GetComputerName()
     return wstring(buffer);
 }
 
-wstring GetUserName()
+wstring GetUserNameAsWstring()
 {
     static int const SIZE { 128 };
     wchar_t buffer[SIZE];

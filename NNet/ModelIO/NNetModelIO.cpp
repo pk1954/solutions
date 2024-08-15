@@ -2,14 +2,11 @@
 //
 // ModelIO
 
-module;
-
-#include <ctime>
-#include <Windows.h>
-
 module NNetModelIO;
 
 import std;
+import std.compat;
+import WinBasics;
 import NNetModelStorage;
 import WrapSignalGenerator;
 import Observable;
@@ -144,7 +141,7 @@ void NNetModelIO::importModel()
                     << L"This program needs at least protocol version " 
                     << setprecision(2) << NNetModelStorage::PROTOCOL_VERSION 
                     << endl;
-            MessageBox
+            MessageBoxW
             (
                 nullptr,
                 wBuffer.str().c_str(),
@@ -264,9 +261,9 @@ bool NNetModelIO::Import
 void NNetModelIO::writeHeader(wostream & out)
 {
     out << COMMENT_SYMBOL << L" NNetModel"       << endl;
-    out << COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime() << endl;
-    out << COMMENT_SYMBOL << L" Computer name: " << ::GetComputerName()     << endl;
-    out << COMMENT_SYMBOL << L" User name: "     << ::GetUserName()         << endl; 
+    out << COMMENT_SYMBOL << L" Created "        << GetCurrentDateAndTime()      << endl;
+    out << COMMENT_SYMBOL << L" Computer name: " << ::GetComputerNameAsWstring() << endl;
+    out << COMMENT_SYMBOL << L" User name: "     << ::GetUserNameAsWstring()     << endl; 
     out << endl;
 }
 

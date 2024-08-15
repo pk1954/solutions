@@ -2,10 +2,6 @@
 //
 // NNetModel
 
-module;
-
-#include <xutility>
-
 export module NNetModel:NNetModelWriterInterface;
 
 import std;

@@ -6,6 +6,10 @@ export module WinBasics:WinConst;
 
 import :WinDefs;
 
+extern const UINT  WM_ENTERMENULOOP_CONST;
+extern const UINT  WM_DESTROY_CONST;
+extern const UINT  WM_CLOSE_CONST;
+
 extern const DWORD WS_CHILD_CONST;
 extern const DWORD WS_CLIPSIBLINGS_CONST;
 extern const DWORD WS_CLIPCHILDREN_CONST;
@@ -16,6 +20,7 @@ extern const DWORD WS_CAPTION_CONST;
 extern const DWORD WS_SIZEBOX_CONST;
 
 extern const DWORD SW_HIDE_CONST;
+extern const DWORD SW_SHOW_CONST;
 
 extern const HWND  HWND_TOP_CONST;
 
@@ -33,6 +38,7 @@ extern const DWORD MF_STRING_CONST;
 extern const DWORD MB_OK_CONST;
 extern const DWORD MB_ICONWARNING_CONST;
 extern const DWORD MB_YESNOCANCEL_CONST;
+extern const DWORD MB_YESNO_CONST;
 
 extern const DWORD MK_SHIFT_CONST;
 extern const DWORD MK_CONTROL_CONST;
@@ -60,6 +66,10 @@ extern const LPCWSTR IDC_ARROW_CONST;
 
 export 
 {
+    const UINT  WM_ENTERMENULOOP    = WM_ENTERMENULOOP_CONST;
+    const UINT  WM_DESTROY          = WM_DESTROY_CONST;
+    const UINT  WM_CLOSE            = WM_CLOSE_CONST;
+
     const DWORD WS_CHILD            = WS_CHILD_CONST;
     const DWORD WS_CLIPSIBLINGS     = WS_CLIPSIBLINGS_CONST;
     const DWORD WS_CLIPCHILDREN     = WS_CLIPCHILDREN_CONST;
@@ -68,45 +78,47 @@ export
     const DWORD WS_POPUPWINDOW      = WS_POPUPWINDOW_CONST;
     const DWORD WS_CAPTION          = WS_CAPTION_CONST;
     const DWORD WS_SIZEBOX          = WS_SIZEBOX_CONST;
-
+                                    
     const DWORD SW_HIDE             = SW_HIDE_CONST;
-
+    const DWORD SW_SHOW             = SW_SHOW_CONST;
+                                    
     const HWND  HWND_TOP            = HWND_TOP_CONST;
-
+                                    
     const DWORD SWP_NOSIZE          = SWP_NOSIZE_CONST;
     const DWORD SWP_SHOWWINDOW      = SWP_SHOWWINDOW_CONST;
-                                   
+                                    
     const WORD  VK_SPACE            = VK_SPACE_CONST;
     const WORD  VK_BACK             = VK_BACK_CONST;
     const WORD  VK_DELETE           = VK_DELETE_CONST;
     const WORD  VK_ESCAPE           = VK_ESCAPE_CONST;
-                                   
+                                    
     const DWORD MF_BITMAP           = MF_BITMAP_CONST;
     const DWORD MF_STRING           = MF_STRING_CONST;
-                                   
+                                    
     const DWORD MB_OK               = MB_OK_CONST;
     const DWORD MB_ICONWARNING      = MB_ICONWARNING_CONST;
     const DWORD MB_YESNOCANCEL      = MB_YESNOCANCEL_CONST;
-                                  
+    const DWORD MB_YESNO            = MB_YESNO_CONST;
+                                    
     const DWORD MK_SHIFT            = MK_SHIFT_CONST;
     const DWORD MK_CONTROL          = MK_CONTROL_CONST;
     const DWORD MK_LBUTTON          = MK_LBUTTON_CONST;
-                                   
+                                    
     const DWORD BS_PUSHBUTTON       = BS_PUSHBUTTON_CONST;
-                                   
+                                    
     const DWORD CS_OWNDC            = CS_OWNDC_CONST;     
     const DWORD CS_HREDRAW          = CS_HREDRAW_CONST;
     const DWORD CS_VREDRAW          = CS_VREDRAW_CONST;     
     const DWORD CS_DBLCLKS          = CS_DBLCLKS_CONST; 
-
+                                    
     const BYTE  FVIRTKEY            = FVIRTKEY_CONST; 
     const BYTE  FCONTROL            = FCONTROL_CONST; 
     const BYTE  FALT                = FALT_CONST; 
-
+                                    
     const int   IDYES               = IDYES_CONST; 
     const int   IDNO                = IDNO_CONST; 
     const int   IDCANCEL            = IDCANCEL_CONST; 
-
+                                    
     const LPCWSTR IDC_SIZENS        = IDC_SIZENS_CONST; 
     const LPCWSTR IDC_SIZEWE        = IDC_SIZEWE_CONST; 
     const LPCWSTR IDC_WAIT          = IDC_WAIT_CONST; 

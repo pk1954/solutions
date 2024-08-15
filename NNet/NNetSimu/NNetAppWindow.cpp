@@ -2,11 +2,6 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-#include <CommCtrl.h>
-
 module NNetAppWindow;
 
 import std;
@@ -17,6 +12,7 @@ import Trace;
 import Direct2D;
 import Vector2D;
 import ObserverInterface;
+import WinBasics;
 import WinCommand;
 import AboutBox;
 import FatalErrorMB;
@@ -265,22 +261,16 @@ bool NNetAppWindow::UserProc
 	LPARAM const lParam 
 )
 {
-	switch (message)
+	if (message == WM_ENTERMENULOOP)
 	{
-
-	case WM_ENTERMENULOOP:
 		if (wParam == false)
 			m_appMenu.Notify(true);
-		break;
 
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-
-	default:
-		break;
 	}
-
+	else if (message == WM_DESTROY)
+	{
+		PostQuitMessage(0);
+	}
 	return BaseWindow::UserProc(message, wParam, lParam);
 }
 
@@ -316,13 +306,6 @@ void NNetAppWindow::OnClose()
 	BaseWindow::OnClose();
 }
 
-void NNetAppWindow::OnNotify(WPARAM const wParam, LPARAM const lParam)
-{
-	NMHDR const * nmhdr { bit_cast<NMHDR const *>(lParam) };
-	if (nmhdr->code == NM_DBLCLK)
-		SendCommand(IDM_RESET_DYNAMIC_DATA, 0);
-}
-
 void NNetAppWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
 	m_mainNNetWindow.OnChar(wParam, lParam);
@@ -330,7 +313,7 @@ void NNetAppWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 
 bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	int const wmId = LOWORD(wParam);
+	int const wmId = LoWord(wParam);
 	
 	try
 	{
@@ -341,7 +324,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDM_DOCU:
-			ShellExecute(0, 0, L"https://nnetsimu.miraheze.org/wiki/Main_Page ", 0, 0, SW_SHOW);
+			ShellExecuteW(0, 0, L"https://nnetsimu.miraheze.org/wiki/Main_Page ", 0, 0, SW_SHOW);
 			return true;
 
 		case IDM_EXIT:
@@ -475,11 +458,11 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 			return true;
 
 		case IDX_FILE_NOT_FOUND:  //no user command, only internal usage
-			MessageBox(nullptr, L"Could not find model file", L"Error", MB_OK);
+			MessageBoxW(nullptr, L"Could not find model file", L"Error", MB_OK);
 			return true;
 
 		case IDX_ERROR_IN_FILE:  //no user command, only internal usage
-			MessageBox
+			MessageBoxW
 			(
 				nullptr, 
 				L"Error reading model file\r\nSee main_trace.out for details", 
@@ -510,7 +493,7 @@ bool NNetAppWindow::AskNotUndoable()
 {
 	if (m_appTitle.AnyUnsavedChanges() && NNetPreferences::m_bAskNotUndoable.Get())
 	{
-		int iRes = MessageBox(nullptr, L"This command will not be undoable.\nCommand history will be lost.\n\nContinue?", L"Warning", MB_YESNO);
+		int iRes = MessageBoxW(nullptr, L"This command will not be undoable.\nCommand history will be lost.\n\nContinue?", L"Warning", MB_YESNO);
 		return iRes == IDYES;
 	}
 	return true;

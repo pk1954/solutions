@@ -2,13 +2,10 @@
 //
 // ModelIO
 
-module;
-
-#include <ctime>
-
 export module WrapTimestamp;
 
 import std;
+import std.compat;
 import Commands;
 import RunTime;
 import NNetModelIO;
@@ -35,10 +32,8 @@ public:
         (
             [this, &out](wstring const& name, time_t const t)
             {
-                char buffer[26];
-                ctime_s(buffer, sizeof(buffer), &t);
                 WriteCmdName(out);
-                out << Quoted(name) << SPACE << t << SPACE << COMMENT_SYMBOL << SPACE << buffer << endl;
+                out << Quoted(name) << SPACE << t << SPACE << COMMENT_SYMBOL << SPACE << ctime(&t) << endl;
             }
         );
     };

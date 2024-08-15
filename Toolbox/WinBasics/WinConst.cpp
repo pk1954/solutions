@@ -8,6 +8,10 @@ module;
 
 module WinBasics:WinConst;
 
+const UINT  WM_ENTERMENULOOP_CONST    = WM_ENTERMENULOOP;
+const UINT  WM_DESTROY_CONST          = WM_DESTROY;
+const UINT  WM_CLOSE_CONST            = WM_CLOSE;
+
 const DWORD WS_CHILD_CONST            = WS_CHILD;
 const DWORD WS_CLIPSIBLINGS_CONST     = WS_CLIPSIBLINGS;
 const DWORD WS_CLIPCHILDREN_CONST     = WS_CLIPCHILDREN;
@@ -18,6 +22,7 @@ const DWORD WS_CAPTION_CONST          = WS_CAPTION;
 const DWORD WS_SIZEBOX_CONST          = WS_SIZEBOX;
 
 const DWORD SW_HIDE_CONST             = SW_HIDE;
+const DWORD SW_SHOW_CONST             = SW_SHOW;
 
 const HWND  HWND_TOP_CONST            = HWND_TOP;
 
@@ -35,6 +40,7 @@ const DWORD MF_STRING_CONST           = MF_STRING;
 const DWORD MB_OK_CONST               = MB_OK;
 const DWORD MB_ICONWARNING_CONST      = MB_ICONWARNING;
 const DWORD MB_YESNOCANCEL_CONST      = MB_YESNOCANCEL;
+const DWORD MB_YESNO_CONST            = MB_YESNO;
                                      
 const int   IDYES_CONST               = IDYES; 
 const int   IDNO_CONST                = IDNO; 

@@ -1,0 +1,7 @@
+0> D:\SW-projects\Solutions\NNet\NNetWindows\NNetWindow.cpp(51): NNetSimu!NNetWindow::Start+0x164
+1> D:\SW-projects\Solutions\NNet\NNetSimu\NNetAppWindow.cpp(145): NNetSimu!NNetAppWindow::NNetAppWindow+0xB9D
+2> C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\memory(3595): NNetSimu!std::make_unique<NNetAppWindow,std::basic_string<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> > const &,MessagePump &,0>+0x56
+3> D:\SW-projects\Solutions\NNet\NNetSimu\NNetSimu.cpp(77): NNetSimu!wWinMain+0x1F1
+4> D:\a\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl(288): NNetSimu!__scrt_common_main_seh+0x106
+5> KERNEL32!BaseThreadInitThunk+0x10
+6> ntdll!RtlUserThreadStart+0x2B

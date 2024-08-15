@@ -147,8 +147,8 @@ export void MakeLayered(HWND const, bool const, COLORREF const, UINT const);
 
 export DWORD     GetNrOfCPUs();
 export ULONGLONG GetPhysicalMemory();
-export wstring   GetComputerName();
-export wstring   GetUserName();
+export wstring   GetComputerNameAsWstring();
+export wstring   GetUserNameAsWstring();
 export wstring   GetClassName(HWND const);
 export void      SetApplicationTitle(HWND const, wstring const&, wstring const & = L"");
 export void      StdOutConsole();
