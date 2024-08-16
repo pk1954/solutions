@@ -2,10 +2,7 @@
 //
 // EvolutionCore
 
-module;
-
-#include <array>
-
+import std;
 import Random;
 import EvolutionTypes;
 

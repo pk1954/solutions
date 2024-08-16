@@ -2,10 +2,7 @@
 //
 // EvolutionCore
 
-module;
-
-#include <functional>
-
+import std;
 import EvolutionCore;
 import GridDimensions;
 import EvolutionTypes;

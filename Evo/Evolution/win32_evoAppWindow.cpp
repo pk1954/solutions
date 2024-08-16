@@ -41,7 +41,7 @@ import GridDimensions;
 import EvolutionDump;
 import Trace;
 #include "errhndl.h"
-import Script;
+import RunTime;
 #include "UtilityWrappers.h"
 #include "win32_wrappers.h"
 #include "win32_EvoEditorWrappers.h"

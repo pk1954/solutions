@@ -16,7 +16,7 @@ import EvolutionDump;
 
 // scripting and tracing
 
-import Script;
+import RunTime;
 import Trace;
 import Config;
 import GridDimensions;

@@ -1,15 +1,12 @@
-// Status.ixx
+// StatusBar.ixx
 //
 // Win32_utilities
-
-module;
-
-#include <Windows.h>
 
 export module StatusBar;
 
 import std;
 import Types;
+import WinBasics;
 import RootWindow;
 import BaseRefreshRate;
 import RunTime;
@@ -25,10 +22,10 @@ public:
 
 	PIXEL GetFixedHeight() const final { return HEIGHT; }
 
-	HWND WINAPI AddStaticControl(int const);
-	HWND WINAPI AddStaticControl(LPCTSTR const);
-	HWND WINAPI AddButton       (LPCTSTR const, int const, DWORD const);
-	HWND WINAPI AddTrackBar     (int const);
+	HWND AddStaticControl(int const);
+	HWND AddStaticControl(LPCTSTR const);
+	HWND AddButton       (LPCTSTR const, int const, DWORD const);
+	HWND AddTrackBar     (int const);
 
 	void AddCustomControl(int const);
 
@@ -47,7 +44,7 @@ private:
 
 	inline static PIXEL const HEIGHT { 22_PIXEL };
 
-	HWND WINAPI addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, int const);
+	HWND addControl(LPCTSTR const, LPCTSTR const, int const, DWORD const, int const);
 
 	vector<PIXEL> m_statWidths;
 
@@ -58,7 +55,7 @@ private:
 
 	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 
-	friend static LRESULT CALLBACK OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+	friend static LRESULT __stdcall OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 };
 
 export class StatusBarRefreshRate : public BaseRefreshRate

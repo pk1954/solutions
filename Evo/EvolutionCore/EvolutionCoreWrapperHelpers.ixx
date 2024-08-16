@@ -4,7 +4,7 @@
 
 export module EvolutionCoreWrapperHelpers;
 
-import Script;
+import RunTime;
 import GridCoord;
 import GridPoint;
 import GridRect;

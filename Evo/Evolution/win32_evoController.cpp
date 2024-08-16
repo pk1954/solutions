@@ -22,7 +22,7 @@
 #include "win32_evoController.h"
 
 import LogarithmicTrackbar;
-import Script;
+import RunTime;
 import WinManager;
 import GridDimensions;
 import Config;

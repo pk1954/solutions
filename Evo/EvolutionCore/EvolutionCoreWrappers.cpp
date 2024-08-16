@@ -2,7 +2,7 @@
 //
 
 #include <cassert>
-import Script;
+import RunTime;
 #include "symtab.h"
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"

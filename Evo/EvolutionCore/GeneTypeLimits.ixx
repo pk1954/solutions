@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <algorithm>  // min/max templates
-
 export module GeneTypeLimits;
 
+import std;
 import Util;
 import Debug;
 import SaveCast;

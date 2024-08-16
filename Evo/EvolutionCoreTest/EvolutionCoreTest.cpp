@@ -5,7 +5,7 @@
 #include <chrono>
 #include <iostream>
 import Trace;
-import Script;
+import RunTime;
 #include "win32_hiResTimer.h"
 import GridDimensions;
 #include "EvolutionCoreWrappers.h"

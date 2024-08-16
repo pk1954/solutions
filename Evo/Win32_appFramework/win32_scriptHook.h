@@ -4,8 +4,8 @@
 
 module;
 
-#include "win32_status.h"
-import Script;
+import RunTime;
+import StatusBar;
 
 class ScriptHook : public Script_Functor
 {

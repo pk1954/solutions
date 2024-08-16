@@ -5,13 +5,9 @@
 // knows static size of the GridModel and number of neighbors
 // contains functions directly dependent on GridModel size
 
-module;
-
-#include <algorithm>  // min/max templates
-#include <vector>
-
 export module GridDimensions;
 
+import std;
 import GridRect;
 import GridNeighbor;
 
