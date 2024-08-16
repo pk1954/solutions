@@ -17,7 +17,7 @@ import RunTime;
 using std::to_wstring;
 using std::wstring;
 
-static LRESULT CALLBACK OwnerDrawStatusBar
+static LRESULT __stdcall OwnerDrawStatusBar
 (
 	HWND      hwnd, 
 	UINT      uMsg, 
@@ -99,7 +99,7 @@ LRESULT StatusBar::UserProc
 	return DefSubclassProc(GetWindowHandle(), uMsg, wParam, lParam);
 }
 
-HWND __stdcall StatusBar::addControl
+HWND StatusBar::addControl
 (
     LPCTSTR const lpClassName,
     LPCTSTR const lpWindowName,
@@ -131,25 +131,25 @@ HWND __stdcall StatusBar::addControl
 	return hwnd;
 }
 
-HWND __stdcall StatusBar::AddStaticControl(LPCTSTR const lpWindowName)
+HWND StatusBar::AddStaticControl(LPCTSTR const lpWindowName)
 {
 	HWND hwnd = addControl(WC_STATIC, lpWindowName, 0, 0, 0);
 	return hwnd;
 }
 
-HWND __stdcall StatusBar::AddStaticControl(int const width)
+HWND StatusBar::AddStaticControl(int const width)
 {
 	HWND hwnd = addControl(WC_STATIC, L"", width, 0, 0);
 	return hwnd;
 }
 
-HWND __stdcall StatusBar::AddButton(LPCTSTR const lpWindowName, int const iMenu, DWORD const dwStyle)
+HWND StatusBar::AddButton(LPCTSTR const lpWindowName, int const iMenu, DWORD const dwStyle)
 { 
 	HWND hwnd = addControl(WC_BUTTON, lpWindowName, 0, dwStyle, iMenu);
 	return hwnd;
 }
 
-HWND __stdcall StatusBar::AddTrackBar(int const iMenu)
+HWND StatusBar::AddTrackBar(int const iMenu)
 { 
 	HWND hwnd = addControl(TRACKBAR_CLASS, L"   Trackbar Control   ", 0, WS_TABSTOP|WS_BORDER|TBS_NOTICKS, iMenu);
 	return hwnd;
