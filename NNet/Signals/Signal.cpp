@@ -72,7 +72,7 @@ void Signal::WriteSignalData(wostream & out) const
 SIG_INDEX Signal::time2index
 (
     SignalParameters const & param,
-    SIMU_TIME                usSimu
+    SimuTime                 usSimu
 ) const
 {
     if (usSimu < m_timeStart)
@@ -83,24 +83,24 @@ SIG_INDEX Signal::time2index
     return index;
 }
 
-SIMU_TIME Signal::index2time
+SimuTime Signal::index2time
 (
     SignalParameters const & param,
-    SIG_INDEX       const   index
+    SIG_INDEX        const   index
 ) const
 {
     if (index < 0)
         return 0.0_MicroSecs;
     float      const fNrOfPoints { static_cast<float>(index) };
     fMicroSecs const usSignal    { param.TimeResolution() * fNrOfPoints };
-    SIMU_TIME  const usSimu      { usSignal + m_timeStart };
+    SimuTime   const usSimu      { usSignal + m_timeStart };
     return usSimu;
 }
 
 mV Signal::GetDataPoint
 (
     SignalParameters const & param,
-    SIMU_TIME        const   usSimu
+    SimuTime         const   usSimu
 ) const
 {
     SIG_INDEX index { time2index(param, usSimu) };
@@ -119,10 +119,10 @@ void Signal::Add2Signal(mV const val)
     m_data.push_back(val);
 }
 
-SIMU_TIME Signal::FindNextMaximum
+SimuTime Signal::FindNextMaximum
 (
     SignalParameters const & param,
-    SIMU_TIME        const   usSimu
+    SimuTime         const   usSimu
 ) const
 {
     SIG_INDEX index { time2index(param, usSimu) };

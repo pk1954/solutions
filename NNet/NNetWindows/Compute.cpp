@@ -26,6 +26,7 @@ using std::wcout;
 using std::endl;
 using std::wstring;
 
+Compute::Compute() = default;
 Compute::~Compute() = default;
 
 void Compute::Initialize   // runs in main thread

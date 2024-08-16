@@ -12,6 +12,7 @@ import ObserverInterface;
 import Observable;
 import PerfCounter;
 import SlowMotionRatio;
+import SimulationTime;
 import NNetModel;
 
 using namespace std::chrono;
@@ -22,6 +23,7 @@ export class Compute: public ObserverInterface
 {
 public:
 
+	Compute();
 	~Compute();
 
 	void Initialize
@@ -59,7 +61,6 @@ private:
 
 	NNetModelWriterInterface * m_pNMWI          { nullptr };
 
-	Compute   const * m_compute                 { nullptr };
 	SlowMotionRatio * m_pSlowMotionRatio        { nullptr };
 	Observable      * m_pRunObservable          { nullptr };
 	Observable      * m_pPerformanceObservable  { nullptr };
@@ -72,7 +73,7 @@ private:
 	unique_ptr<RawImage> m_upSumImage;
 	int                  m_iScanNr   { 0 };
 	RasterPoint          m_rpScanRun { RasterPoint(0, 0) };
-	fMicroSecs           m_usSimuNextPixelScan;
+	SimuTime             m_usSimuNextPixelScan;
 
 	void startScanPass();
 	void scanNextPixel();

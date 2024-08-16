@@ -44,6 +44,8 @@ public:
 
 	constexpr BASE_TYPE const & GetValue() const { return m_value; }
 
+	void SetValue(BASE_TYPE const v) { m_value = v; }
+
 	constexpr NamedType GetAbs     () const { return NamedType(abs(m_value)); }
 	constexpr BASE_TYPE GetAbsValue() const { return BASE_TYPE(abs(m_value)); }
 

@@ -19,7 +19,6 @@ using std::unique_ptr;
 class NNetModelIO;
 
 export using SIG_INDEX = long;
-export using SIMU_TIME = fMicroSecs;
 
 export class Signal : public ObserverInterface  // observes signal source 
 {
@@ -40,13 +39,13 @@ public:
     // TODO
     void Reset();
 
-    mV        GetDataPoint   (SignalParameters const &, SIMU_TIME const)  const;
-    SIMU_TIME FindNextMaximum(SignalParameters const &, SIMU_TIME const)  const;
+    mV       GetDataPoint   (SignalParameters const &, SimuTime const)  const;
+    SimuTime FindNextMaximum(SignalParameters const &, SimuTime const)  const;
 
     void WriteSignalData(wostream &) const;
 
-    SIMU_TIME GetStartTime() const { return m_timeStart; }
-    void      SetStartTime(SIMU_TIME const t) { m_timeStart = t; }
+    SimuTime GetStartTime() const { return m_timeStart; }
+    void     SetStartTime(SimuTime const t) { m_timeStart = t; }
 
     void Reserve(size_t const);
     void Add2Signal(mV const);
@@ -66,10 +65,10 @@ private:
 
     inline static Observable * m_pDynModelObservable;
 
-    SIMU_TIME    m_timeStart { SimulationTime::Get() };
-    vector<mV>   m_data;
-    fMicroSecs   m_usResolution { 100._MicroSecs };
+    SimuTime   m_timeStart { SimulationTime::Get() };
+    vector<mV> m_data;
+    fMicroSecs m_usResolution { 100._MicroSecs };
 
-    SIG_INDEX time2index(SignalParameters const &, SIMU_TIME) const;
-    SIMU_TIME index2time(SignalParameters const &, SIG_INDEX const) const;
+    SIG_INDEX time2index(SignalParameters const &, SimuTime) const;
+    SimuTime  index2time(SignalParameters const &, SIG_INDEX const) const;
 };

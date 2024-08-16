@@ -6,6 +6,20 @@ export module SimulationTime;
 
 import Types;
 
+export class SimuTime : public fMicroSecs
+{
+public:
+	SimuTime()
+	{
+		SetValue(0.0f);
+	}
+
+	SimuTime(fMicroSecs const t)
+	{
+		SetValue(t.GetValue());
+	}
+};
+
 export class SimulationTime
 {
 public:
@@ -14,7 +28,7 @@ public:
 		m_timestamp = newVal;
 	}
 
-	static fMicroSecs Get()
+	static SimuTime Get()
 	{
 		return m_timestamp;
 	}
@@ -26,5 +40,5 @@ public:
 
 private:
 
-	inline static fMicroSecs m_timestamp { 0._MicroSecs };
+	inline static SimuTime m_timestamp { 0._MicroSecs };
 };
