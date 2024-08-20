@@ -19,7 +19,7 @@ public:
 	{
 		wcout << L"+++ Fatal error" << endl;
 		wcout << L"+++ Error number:  " << errnr   << endl;
-		wcout << L"+++ Error message: " << errText << endl;
+		wcout << L"+++ " << errText << endl;
 		wcout << L"Stack trace:" << endl;
 		wcout << StacktraceToWString();
 		wcout << L"+++ forced application exit" << endl;

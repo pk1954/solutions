@@ -41,3 +41,15 @@ bool MessagePump::accelerator(MSG& msg)
 	}
 	return false;
 }
+
+void MessagePump::dispatch(MSG const& msg) 
+{
+	__try 
+	{
+		DispatchMessage(&msg);
+	}
+	__except (EXCEPTION_EXECUTE_HANDLER) 
+	{
+		throw std::runtime_error("Access violation dispatching message");
+	}
+}

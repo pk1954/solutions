@@ -60,7 +60,7 @@ export
     using ::SetWindowTextW;
     using ::ShellExecuteW;
 
-    constexpr WORD LoWord(DWORD value) { return static_cast<WORD>(value & 0xFFFF); }
+    constexpr WORD LoWord(DWORD_PTR value) { return static_cast<WORD>(value & 0xFFFF); }
 
     constexpr int MouseWheelDelta(WPARAM const wParam) 
     { 

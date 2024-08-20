@@ -20,41 +20,48 @@ public:
 	void SetAccelTable(HACCEL const);
 	void RegisterWindow(HWND const, bool const);
 
-int Run(auto const gameFunc)
-{
-	MSG msg;
-
-	while (true)
+	int Run(auto const gameFunc)
 	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		MSG msg;
+
+		while (true)
 		{
-			if (!accelerator(msg))
+			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 			{
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-				if (msg.message == WM_APP_UI_CALL)
-					WinCommand::AnimationUpdate(msg.wParam, msg.lParam);
-				else if (msg.message == WM_QUIT)
-					break;
+				if (!accelerator(msg))
+				{
+					TranslateMessage(&msg);
+					dispatch(msg);
+					if (msg.message == WM_APP_UI_CALL)
+						WinCommand::AnimationUpdate(msg.wParam, msg.lParam);
+					else if (msg.message == WM_QUIT)
+						break;
+				}
+			}
+			__try 
+			{
+				gameFunc();
+			}
+			__except (EXCEPTION_EXECUTE_HANDLER) 
+			{
+				throw std::runtime_error("Access violation in gameFuncred");
 			}
 		}
-		gameFunc();
+
+		return (int)msg.wParam;
 	}
 
-	return (int)msg.wParam;
-}
-
-int Run()
-{
-	MSG msg;
-
-	while (GetMessage(&msg, NULL, 0, 0) != 0) 
+	int Run()
 	{
-        TranslateMessage(&msg); // Translate virtual-key messages
-        DispatchMessage(&msg);  // Dispatch the message to the appropriate window procedure
-    }
-	return (int)msg.wParam;
-}
+		MSG msg;
+
+		while (GetMessage(&msg, NULL, 0, 0) != 0) 
+		{
+			TranslateMessage(&msg); // Translate virtual-key messages
+			dispatch(msg);         // Dispatch the message to the appropriate window procedure
+		}
+		return (int)msg.wParam;
+	}
 
 private:
 	struct AccEntry
@@ -67,4 +74,5 @@ private:
 	HACCEL           m_defaultAccelTable { nullptr };
 
 	bool accelerator(MSG &);
+	void dispatch(MSG const&);
 };

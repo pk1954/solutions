@@ -108,5 +108,11 @@
     <ClCompile Include="TimestampList.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IconRedo.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IconUndo.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

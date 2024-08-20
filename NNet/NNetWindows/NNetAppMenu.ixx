@@ -12,7 +12,6 @@ import Win32_Util;
 import WinBasics;
 import OnOffPair;
 import Commands;
-import NNetModel;
 import :Compute;
 
 using std::wstring;

@@ -577,8 +577,6 @@
     <ClCompile Include="AppTitle.ixx" />
     <ClCompile Include="Compute.cpp" />
     <ClCompile Include="Compute.ixx" />
-    <ClCompile Include="IconRedo.ixx" />
-    <ClCompile Include="IconUndo.ixx" />
     <ClCompile Include="MainScales.ixx" />
     <ClCompile Include="NNetCommandHandler.ixx" />
     <ClCompile Include="NNetInputOutputUI.ixx" />

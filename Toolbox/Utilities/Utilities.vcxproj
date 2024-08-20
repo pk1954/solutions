@@ -31,6 +31,8 @@
     <ClCompile Include="EnumArray.ixx" />
     <ClCompile Include="FixedPipeline.ixx" />
     <ClCompile Include="Geometry.ixx" />
+    <ClCompile Include="IconRedo.ixx" />
+    <ClCompile Include="IconUndo.ixx" />
     <ClCompile Include="Int24.ixx" />
     <ClCompile Include="IoConstants.ixx" />
     <ClCompile Include="LogarithmicTrackBar.ixx" />

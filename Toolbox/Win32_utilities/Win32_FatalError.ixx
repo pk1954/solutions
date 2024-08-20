@@ -21,8 +21,8 @@ public:
 	static void Happened(long const errnr, wstring const &errText)
 	{
 		wostringstream wBuffer;
-		wBuffer << L"Error number:  " << errnr   << endl;
-		wBuffer << L"Error message: " << errText << endl;
+		wBuffer << L"Error number:  " << errnr << endl;
+		wBuffer << errText << endl;
 		wBuffer << L"Press OK to exit application" << endl;
 		MessageBox(nullptr, wBuffer.str().c_str(), L"Fatal error", MB_OK|MB_SYSTEMMODAL);
 		FatalError::Happened(errnr, errText);

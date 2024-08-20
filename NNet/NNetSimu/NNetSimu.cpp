@@ -6,6 +6,7 @@
 #include "CommCtrl.h"
 
 import std;
+import FatalErrorMB;
 import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
@@ -80,5 +81,15 @@ int APIENTRY wWinMain
 
 	wcout << setw(30) << left << COMMENT_START + L"App.Start " << PerfCounter::Ticks2wstring(hrtimer.AfterAction()) << endl;
 
-	return pump.Run([&upApp]() { upApp->DoGameStuff(); });
+	int iRes { 0 };
+	try 
+	{
+		iRes = pump.Run([&upApp]() { upApp->DoGameStuff(); });
+	} catch (const std::exception& e) 
+	{
+		FatalErrorMB::Happened(3, L"Caught C++ exception: " + ConvertToWideString(e.what()));
+		//std::cerr << "Caught C++ exception: " << e.what() << std::endl;
+		iRes = -3;
+	}
+	return iRes;
 }
