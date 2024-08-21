@@ -27,19 +27,19 @@ public:
 
 	~Win32_Event()
 	{
-		(void)CloseHandle(m_eventHandle);
+		CloseHandle(m_eventHandle);
 		m_eventHandle = nullptr;
 	}
 
 	virtual void Wait()
 	{
-		(void)ResetEvent(m_eventHandle);
-		(void)WaitForSingleObject(m_eventHandle, INFINITE);
+		ResetEvent(m_eventHandle);
+		WaitForSingleObject(m_eventHandle, INFINITE);
 	}
 
 	virtual void Continue()
 	{
-		(void)SetEvent(m_eventHandle);
+		SetEvent(m_eventHandle);
 	}
 
 private:

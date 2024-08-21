@@ -4,8 +4,6 @@
 
 module;
 
-#include <fstream>
-#include <iostream>
 #include "win32_event.h"
 #include "win32_delay.h"
 #include "win32_actionTimer.h"
@@ -25,7 +23,8 @@ module;
 #include "win32_evoAppMenu.h"
 #include "win32_evoController.h"
 
-import import D3D_driver;
+import std;
+import D3D_driver;
 
 class Script;
 class FocusPoint;

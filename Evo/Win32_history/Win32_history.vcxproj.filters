@@ -18,33 +18,28 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="HistAllocThread.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_historyInfo.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="GenDisplayWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_histWindow.cpp">
+    <ClCompile Include="HistWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_historyInfo.cpp">
+    <ClCompile Include="HistInfoWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GenDisplayWindow.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="HistAllocThread.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistWindow.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="HistInfoWindow.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="WinHistory.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

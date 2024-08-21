@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
+ module Action;
 
-#include <functional>
-
-module Action;
-
+import std;
 import Genome;
 
 using std::function;

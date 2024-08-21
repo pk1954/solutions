@@ -4,7 +4,7 @@
 
 module;
 
-#include <cassert>
+import Debug;
 
 module StrategyData;
 
@@ -45,7 +45,7 @@ MEM_INDEX StrategyData::FindInListOfCulprits(IND_ID const idPartner)
 
 void StrategyData::RemoveFromListOfCulprits(MEM_INDEX const index)
 {
-    assert(m_memUsed > index);
+    Assert(m_memUsed > index);
  
     MEM_INDEX const indexStop = --m_memUsed;
     for	(MEM_INDEX iRun = index; iRun < indexStop; ++iRun)
@@ -67,7 +67,7 @@ void StrategyData::AddToListOfCulprits(IND_ID const partnerId)
 
 void StrategyData::SetMemorySize(short const newSize)
 {
-    assert(newSize <= IMEMSIZE_MAX);
+    Assert(newSize <= IMEMSIZE_MAX);
 
     m_memSize = static_cast<MEM_INDEX>(newSize);
     m_memUsed = MEM_INDEX(0);

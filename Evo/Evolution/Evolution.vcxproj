@@ -152,6 +152,8 @@
       <EnablePREfast>false</EnablePREfast>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -227,6 +229,8 @@
       </AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -260,20 +264,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GenerationDisplay.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_evoAppMenu.h" />
     <ClInclude Include="win32_evoAppWindow.h" />
     <ClInclude Include="win32_evoController.h" />
     <ClInclude Include="win32_resetDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EvoAppMenu.ixx" />
     <ClCompile Include="Evolution.cpp" />
     <ClCompile Include="GenerationDisplay.cpp" />
     <ClCompile Include="Version.ixx" />
-    <ClCompile Include="win32_evoAppMenu.cpp" />
-    <ClCompile Include="win32_evoAppWindow.cpp" />
-    <ClCompile Include="win32_evoController.cpp" />
-    <ClCompile Include="win32_resetDlg.cpp" />
+    <ClCompile Include="EvoAppMenu.cpp" />
+    <ClCompile Include="EvoAppWindow.cpp" />
+    <ClCompile Include="EvoController.cpp" />
+    <ClCompile Include="ResetDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Evolution.rc" />
@@ -282,6 +285,11 @@
   <ItemGroup>
     <Image Include="Evolution.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
+      <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

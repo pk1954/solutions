@@ -3,10 +3,11 @@
 // EvolutionCore
 //
 
+module GridDimensions;
 
-#include <array>
-import GridDimensions;
 #include "grid_model.h"
+
+import std;
 
 GridPoint                       GridDimensions::m_gridSize       { GP_NULL }; 
 int                             GridDimensions::m_iNrOfNeighbors { 0 }; 
@@ -68,7 +69,7 @@ void GridDimensions::DefineGridSize
 {
 	m_iNrOfNeighbors = iNrOfNeighbors;
 	m_gridSize = GridPoint(width, height);
-	assert((iNrOfNeighbors == 4) || (iNrOfNeighbors == 6) || (iNrOfNeighbors == 8));
+	Assert((iNrOfNeighbors == 4) || (iNrOfNeighbors == 6) || (iNrOfNeighbors == 8));
 
 	m_pGridNeighbors = new NEIGHBOR_GRID;
 	m_pGridNeighbors->resize(GridWidthVal());

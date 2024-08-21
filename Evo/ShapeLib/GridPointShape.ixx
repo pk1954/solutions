@@ -2,9 +2,7 @@
 //
 // ShapeLib
 
-module;
-
-export module GridPointShape;
+export module ShapeLib:GridPointShape;
 
 import GridPoint;
 import Shape;

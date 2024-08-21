@@ -100,6 +100,8 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,6 +136,8 @@
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,28 +165,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_appMenu.h" />
-    <ClInclude Include="win32_appWindowInterface.h" />
-    <ClInclude Include="win32_baseAppWindow.h" />
-    <ClInclude Include="win32_messagePump.h" />
-    <ClInclude Include="win32_readBuffer.h" />
-    <ClInclude Include="win32_scriptHook.h" />
-    <ClInclude Include="win32_status.h" />
-    <ClInclude Include="win32_WorkThread.h" />
-    <ClInclude Include="win32_WorkThreadInterface.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppMenu.ixx" />
+    <ClCompile Include="AppWindowInterface.ixx" />
+    <ClCompile Include="BaseAppWindow.ixx" />
+    <ClCompile Include="MessagePump.ixx" />
+    <ClCompile Include="ReadBuffer.ixx" />
+    <ClCompile Include="ScriptHook.ixx" />
     <ClCompile Include="SpeedControl.cpp" />
     <ClCompile Include="SpeedControl.ixx" />
-    <ClCompile Include="win32_baseAppWindow.cpp" />
-    <ClCompile Include="win32_messagePump.cpp" />
-    <ClCompile Include="win32_status.cpp" />
-    <ClCompile Include="win32_WorkThread.cpp" />
-    <ClCompile Include="win32_WorkThreadInterface.cpp" />
+    <ClCompile Include="BaseAppWindow.cpp" />
+    <ClCompile Include="MessagePump.cpp" />
+    <ClCompile Include="StatusBar.cpp" />
+    <ClCompile Include="StatusBar.ixx" />
+    <ClCompile Include="WorkThread.cpp" />
+    <ClCompile Include="WorkThread.ixx" />
+    <ClCompile Include="WorkThreadInterface.cpp" />
+    <ClCompile Include="WorkThreadInterface.ixx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
+      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
+      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

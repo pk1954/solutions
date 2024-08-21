@@ -4,12 +4,12 @@
 
 module;
 
-#include <string>
 #include <d3d9.h>
 #include "d3dx9core.h"
 
 export module D3D_driver;
 
+import std;
 import Types;
 import D3dSystem;
 import D3dIndexBuffer;

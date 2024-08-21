@@ -94,6 +94,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,6 +141,8 @@
       </AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,16 +154,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvoHistorySysGlue.h" />
-    <ClInclude Include="EvoModelFactory.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="EvoGenerationCmd.ixx" />
     <ClCompile Include="EvoGenerationCmd.cpp" />
     <ClCompile Include="EvoHistorySysGlue.cpp" />
+    <ClCompile Include="EvoHistorySysGlue.ixx" />
     <ClCompile Include="EvoModelDataGlue.cpp" />
     <ClCompile Include="EvoModelDataGlue.ixx" />
+    <ClCompile Include="EvoModelFactory.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EvolutionCore\EvolutionCore.vcxproj">

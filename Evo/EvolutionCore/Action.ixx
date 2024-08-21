@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <array>
-#include <functional>
-
 export module Action;
+
+import std;
 
 using std::function;
 

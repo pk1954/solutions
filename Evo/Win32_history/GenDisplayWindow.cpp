@@ -7,7 +7,7 @@ module;
 #include "strsafe.h"
 #include "Windows.h"
 
-module GenDisplayWindow;
+module WinHistory:GenDisplayWindow;
 
 import Win32_Util;
 import BaseWindow;

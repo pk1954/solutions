@@ -92,7 +92,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ExceptionHandling>Async</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <EnableModules>true</EnableModules>
@@ -151,7 +151,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ExceptionHandling>Async</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>

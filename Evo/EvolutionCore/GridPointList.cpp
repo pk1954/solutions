@@ -16,8 +16,8 @@ void GridPointList::CheckGridPointList(GridModel const & grid) const
 
     if (ListIsEmpty())
     {
-        assert(m_iCount == 0);
-        assert(GetYoungestGp().IsNull());
+        Assert(m_iCount == 0);
+        Assert(GetYoungestGp().IsNull());
 //        EvolutionDump::Dump(L" CheckGridPointList empty");
         return;
     }
@@ -27,7 +27,7 @@ void GridPointList::CheckGridPointList(GridModel const & grid) const
 
     for (;;)
     {
-        assert(grid.IsAlive(gpRun));
+        Assert(grid.IsAlive(gpRun));
         ++ iCount;
 //       EvolutionDump::Dump(grid, gpRun);
 //        EvolutionDump::Flush();
@@ -36,17 +36,17 @@ void GridPointList::CheckGridPointList(GridModel const & grid) const
         else
         {
             GridPoint gpJunior = grid.GetJuniorGp(gpRun);
-            assert(IsInGrid(gpJunior));
+            Assert(IsInGrid(gpJunior));
             if (grid.GetSeniorGp(gpJunior) != gpRun)
             {
                 EvolutionDump::Dump(L" CheckGridPointList detected inconsistency");
-                assert(false);
+                Assert(false);
             }
             gpRun = gpJunior;
         }
     } 
    
-    assert(iCount == m_iCount);
+    Assert(iCount == m_iCount);
 
 //    EvolutionDump::Dump(L" CheckGridPointList end");
 //	EvolutionDump::DumpNL();

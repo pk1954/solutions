@@ -2,12 +2,6 @@
 //
 // EvolutionCore
 
-module;
-
-//#include "EvolutionCore.h"
-//#include "EvolutionCoreImpl.h"
-//#include "EvolutionCoreWrappers.h"
-
 module EvolutionCore;
 
 import Genome;
@@ -15,6 +9,8 @@ import Strategy;
 import GridPOI;
 import GridNeighbor;
 import GridModel;
+import EvolutionCoreImpl;
+import EvolutionCoreWrappers;
 
 void EvolutionCore::InitClass
 (

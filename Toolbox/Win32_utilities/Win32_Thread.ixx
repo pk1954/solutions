@@ -4,12 +4,11 @@
 
 module;
 
-#include <string>
-#include <cassert>
 #include "Windows.h"
 
 export module Thread;
 
+import std;
 import Win32_Event;
 
 using std::wstring;

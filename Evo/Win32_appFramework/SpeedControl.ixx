@@ -2,10 +2,10 @@
 //
 // win32_appFramework
 
-module;
+export module SpeedControl;
 
-#include "win32_WorkThreadInterface.h"
-#include "win32_status.h"
+import WorkThreadInterface;
+import StatusBar;
 
 export module SpeedControl;
 

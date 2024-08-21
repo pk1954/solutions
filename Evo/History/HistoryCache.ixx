@@ -2,13 +2,9 @@
 //
 // History
 
-module;
-
-#include <cassert>
-#include <vector>
-
 export module HistoryCache;
 
+import Debug;
 import ObserverInterface;
 import HistCacheItem;
 import HistGeneration;

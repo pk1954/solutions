@@ -55,8 +55,8 @@ void EvoStatistics::aquireData
 	EVO_GENERATION const age      { core.GetAge(gp) };
 	MEM_INDEX      const memSize  { core.GetMemSize(gp) };
 
-	assert(strategy != Strategy::Id::empty);
-	assert(age.IsNotNull());
+	Assert(strategy != Strategy::Id::empty);
+	Assert(age.IsNotNull());
 	
 	GeneType::Apply2AllEnabledGeneTypes
 	(
@@ -88,7 +88,7 @@ void EvoStatistics::scale(float & op, float const div)
         op = 0;
     else
 	{
-		assert(op <= (std::numeric_limits<float>::max)() / 100);
+		Assert(op <= (std::numeric_limits<float>::max)() / 100);
         op = (op * 100 + 50) / div;
 	}
 }

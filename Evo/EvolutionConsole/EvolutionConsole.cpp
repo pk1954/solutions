@@ -41,7 +41,7 @@ int main(int argc, char * argv [], char * envp [])
 
 	GridDimensions::DefineGridSize(200_GRID_COORD, 100_GRID_COORD, iNrOfNeighbors);
 
-    Script::ProcessScript(L"std_configuration.in");
+    RunTime::ProcessScript(L"std_configuration.in");
 
 	EvolutionCore::InitClass(iNrOfNeighbors, nullptr, nullptr);
 
@@ -78,7 +78,7 @@ int main(int argc, char * argv [], char * envp [])
     }
 
 	std::wstring wstr(wstrInputFile);
-	Script::ProcessScript(wstr);
+	RunTime::ProcessScript(wstr);
 
 	wcout << L" ***** EvolutionConsole terminates successfully *****" << endl;
 

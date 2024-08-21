@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <array>
-#include <functional>
-
 export module GeneType;
+
+import std;
 
 using std::function;
 

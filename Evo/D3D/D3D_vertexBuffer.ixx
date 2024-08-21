@@ -4,12 +4,13 @@
 
 module;
 
-#include <vector>
 #include <d3d9.h>
 
 export module D3D_vertexBuffer;
 
-class Vertex        // 16 Byte
+import std;
+
+export class Vertex        // 16 Byte
 {
 public:
 	Vertex(float const fx, float const fy, float const fz, D3DCOLOR const dwColor) :

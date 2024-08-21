@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <cassert>
-
 export module Gene;
 
+import Debug;
 import Random;
 import SaveCast;
 import GeneTypeLimits;
@@ -30,7 +27,7 @@ public:
 		Random& random
 	)
 	{
-		assert(dMutationRate <= 100);   // percentage
+		Assert(dMutationRate <= 100);   // percentage
 
 		double const dRand = random.NextWeightedDistribution() * lim.GetFactor();
 

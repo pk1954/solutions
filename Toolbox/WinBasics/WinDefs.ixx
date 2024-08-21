@@ -29,14 +29,18 @@ export
     using LPCWSTR               = LPCWSTR;
     using LPCTSTR               = LPCTSTR;
     using LPPOINT               = LPPOINT;
+    using SRWLOCK               = SRWLOCK;
     using HBITMAP               = HBITMAP;
     using BITMAPINFO            = BITMAPINFO;
     using BITMAPFILEHEADER      = BITMAPFILEHEADER;
     using BITMAPINFOHEADER      = BITMAPINFOHEADER;
     using PAINTSTRUCT           = PAINTSTRUCT;
     using DRAWITEMSTRUCT        = DRAWITEMSTRUCT;
+    using TRACKMOUSEEVENT       = TRACKMOUSEEVENT;
     using PTP_CALLBACK_INSTANCE = PTP_CALLBACK_INSTANCE;
 
+    using ::AcquireSRWLockExclusive;
+    using ::AcquireSRWLockShared;
     using ::AppendMenuW;
     using ::BringWindowToTop;
     using ::CreateAcceleratorTableW;
@@ -47,18 +51,22 @@ export
     using ::EndDialog;
     using ::GetModuleHandleW;
     using ::GetStockObject;
+    using ::InitializeSRWLock;
     using ::IsWindowVisible;
     using ::LoadCursorW;
     using ::MapWindowPoints;
     using ::MessageBoxW;
     using ::PostQuitMessage;
     using ::ReleaseCapture;
+    using ::ReleaseSRWLockExclusive;
+    using ::ReleaseSRWLockShared;
     using ::SetBkColor;
     using ::SetCursor;
     using ::SetMenu;
     using ::SetWindowPos;
     using ::SetWindowTextW;
     using ::ShellExecuteW;
+    using ::TryAcquireSRWLockExclusive;
 
     constexpr WORD LoWord(DWORD_PTR value) { return static_cast<WORD>(value & 0xFFFF); }
 

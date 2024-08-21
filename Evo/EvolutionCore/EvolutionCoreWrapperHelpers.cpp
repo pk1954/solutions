@@ -1,12 +1,12 @@
 // EvolutionCoreWrapperHelpers.cpp : wrapper functions for unit tests and scripting of application
 //
 
-#include <cassert>
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
 import EvolutionTypes;
 #include "EvolutionCoreWrapperHelpers.h"
 
+import Debug;
 import Config;
 
 GridCoord ScrReadGridCoord(Script & script)

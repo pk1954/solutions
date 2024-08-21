@@ -2,16 +2,15 @@
 //
 // EvolutionCore
 
-module;
-
-#include <iostream>
-
 export module InterAction;
 
-class Individual;
+import std;
+import Individual;
+
+using std::wostream;
 
 export namespace INTERACTION
 {
 	void RefreshCash();
-	void Interact(Individual &, Individual &, std::wostream *);
+	void Interact(Individual &, Individual &, wostream *);
 }

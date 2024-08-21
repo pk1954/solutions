@@ -15,45 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_individualShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_leftColumn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_memorySlot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_rightColumn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_infoShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="win32_individualShape.cpp">
+    <ClCompile Include="IndividualShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_leftColumn.cpp">
+    <ClCompile Include="LeftColumn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_gridPointShape.cpp">
+    <ClCompile Include="GridPointShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_rightColumn.cpp">
+    <ClCompile Include="RightColumn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_shape.cpp">
+    <ClCompile Include="Shape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_memorySlot.cpp">
+    <ClCompile Include="MemorySlot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_infoShape.cpp">
+    <ClCompile Include="InfoShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GridPointShape.ixx">
@@ -63,6 +43,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CoordShape.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IndividualShape.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LeftColumn.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RightColumn.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MemorySlot.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoShape.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeLib.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

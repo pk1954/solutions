@@ -4,7 +4,7 @@
 
 module;
 
-#include <cassert>
+import Debug;
 
 module Strategy;
 

@@ -2,13 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <unordered_map>
-#include <string>
-
 export module Config;
 
+import std;
 import SaveCast;
 import BoolOp;
 import Util;

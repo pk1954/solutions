@@ -1,13 +1,9 @@
 // EvolutionTypes.cpp
 //
 
-module;
-
-#include <array>
-#include <unordered_map>
-
 module EvolutionTypes;
 
+import std;
 import Strategy;
 
 using std::unordered_map;

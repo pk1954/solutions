@@ -1,13 +1,13 @@
 // EvolutionCoreImpl.cpp
 //
 
-#include <cassert>
-#include <array>
 #include "grid_model.h"
 #include "GplIterator.h"
 #include "EvolutionCoreWrappers.h"
 #include "EvolutionCoreImpl.h"
 
+import std;
+import Debug;
 import Config;
 import Strategy;
 import EvolutionDump;
@@ -39,8 +39,8 @@ bool EvolutionCoreImpl::Compute()
 	m_grid.PrepareComputation();
     while (gpRun.IsNotNull())
     {
-        assert(IsInGrid(gpRun));
-        assert(m_grid.IsAlive(gpRun));
+        Assert(IsInGrid(gpRun));
+        Assert(m_grid.IsAlive(gpRun));
 
 		gpRun = m_grid.ComputeNextGeneration(gpRun);   // may return NULL_VAL  
     }

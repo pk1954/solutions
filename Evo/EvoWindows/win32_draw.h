@@ -4,16 +4,13 @@
 
 module;
 
-#include <array>
-#include <iostream>     
-#include <sstream> 
 #include "Strategy.h"
 #include "PixelTypes.h"
 #include "EvolutionCore.h"
 #include "EvoReadBuffer.h"
-#include "win32_clut.h"
 #include "win32_gridPointShape.h"
 
+import std;
 import TextDisplay;
 import GridPoint;
 import GridRect;

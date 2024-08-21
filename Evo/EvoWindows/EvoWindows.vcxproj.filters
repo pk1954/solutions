@@ -18,59 +18,65 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_crsrWindow.cpp">
+    <ClCompile Include="CrsrWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_displayOptions.cpp">
+    <ClCompile Include="DisplayOptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_draw.cpp">
+    <ClCompile Include="DrawFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_gridWindow.cpp">
+    <ClCompile Include="GridWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_statistics.cpp">
+    <ClCompile Include="StatisticsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_wrappers.cpp">
+    <ClCompile Include="Wrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_colorManager.cpp">
+    <ClCompile Include="ColorManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_protocolServer.cpp">
+    <ClCompile Include="ProtocolServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_EvoWorkThread.cpp">
+    <ClCompile Include="EvoWorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_EvoWorkThreadInterface.cpp">
+    <ClCompile Include="EvoWorkThreadInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_EvoEditor.cpp">
+    <ClCompile Include="EvoEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_EvoEditorWrappers.cpp">
+    <ClCompile Include="EvoEditorWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_histWrappers.cpp">
+    <ClCompile Include="HistWrappers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_performanceWindow.cpp">
+    <ClCompile Include="PerformanceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextDisplay.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EvoReadBuffer.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorManager.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CrsrWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_crsrWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_displayOptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -89,19 +95,10 @@
     <ClInclude Include="win32_wrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_packGridPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_colorManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_protocolServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EvoReadBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_EvoWorkThread.h">

@@ -2,7 +2,11 @@
 //
 // Win32_history
 
-export module HistAllocThread;
+module;
+
+#include <windows.h>
+
+export module WinHistory:HistAllocThread;
 
 import HistorySystem;
 import Thread;
@@ -35,7 +39,7 @@ public:
 
 	~HistAllocThread() {};
 
-	void  ThreadStartupFunc()
+	void ThreadStartupFunc()
 	{
 		ThreadMsgDispatcher(MSG{0,0,0,0});
 	}
@@ -43,7 +47,7 @@ public:
 	void ThreadMsgDispatcher(MSG msg)
 	{
 		if (m_pHistorySys->AddHistorySlot())                    // if allocation of slot 
-		{                                                         // was successfull,
+		{                                                       // was successfull,
 			PostThreadMsg(msg.message, msg.wParam, msg.lParam); // do it again
 		}
 	}

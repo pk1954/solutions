@@ -6,7 +6,7 @@ module;
 
 #include "Windows.h"
 
-export module GenDisplayWindow;
+export module WinHistory:GenDisplayWindow;
 
 import BaseWindow;
 import HistGeneration;

@@ -59,7 +59,7 @@ void GridBrush::SetManipulator(tManipulator const man)
 	case tManipulator::subtract : m_manFunc = [](short const dst, short const src) { return std::max(0, dst - src); };  break; 
 	case tManipulator::max      : m_manFunc = [](short const dst, short const src) { return std::max(dst, src);     };  break;
 	case tManipulator::min      : m_manFunc = [](short const dst, short const src) { return std::min(dst, src);     };  break; 
-	default: assert(false);
+	default: Assert(false);
 	}
 }
 
@@ -91,13 +91,13 @@ void GridBrush::SetShape(tShape const shape)
 		break;
 
 	default:
-		assert(false);
+		Assert(false);
 	}
 }
 
 void GridBrush::SetRadius(GridCoord const radius) 
 { 
-	assert(radius <= MAX_GRID_COORD);
+	Assert(radius <= MAX_GRID_COORD);
 	m_radius = radius;    
 }
 

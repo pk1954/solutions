@@ -1,19 +1,16 @@
 // EvolutionCoreTest.cpp : Defines the entry point for the console application.
 //
 
-#include "version.h"
-#include <chrono>
-#include <iostream>
+import std;
 import Trace;
 import RunTime;
-#include "win32_hiResTimer.h"
-import GridDimensions;
-#include "EvolutionCoreWrappers.h"
-#include "EvolutionCore.h"
-
 import Config;
 import GridPoint;
 import GridRect;
+import HiResTimer;
+import GridDimensions;
+import EvolutionCore;
+import EvolutionCoreWrappers;
 
 using std::chrono::microseconds;
 using std::chrono::milliseconds;
@@ -48,7 +45,7 @@ void DoTest()
 
 	Config::SetDefaultConfiguration();
 	Config::DefineConfigWrapperFunctions();
-	Script::ProcessScript(L"std_configuration.in");
+	RunTime::ProcessScript(L"std_configuration.in");
 	GridDimensions::DefineGridSize
 	(
 		GridCoord{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
@@ -60,7 +57,7 @@ void DoTest()
 	pCore = EvolutionCore::CreateCore();
 	DefineCoreWrapperFunctions(pCore);
 
-	Script::ProcessScript(L"std_script.in");
+	RunTime::ProcessScript(L"std_script.in");
 
 	m_hrtimer.Start();
 	tara();

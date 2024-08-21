@@ -2,12 +2,9 @@
 //
 // GridPoint packed as Int24
 
-module;
-
-#include <cassert>
-
 export module GridPoint24;
 
+import Debug;
 import Int24;
 import GridPoint;
 
@@ -17,8 +14,8 @@ public:
 	GridPoint24(long const x, long const y) :
 		Int24((x << 12) + (y & 0x0fff))
 	{
-		assert(x <= 0x0fff);
-		assert(y <= 0x0fff);
+		Assert(x <= 0x0fff);
+		Assert(y <= 0x0fff);
 	}
 
 	GridPoint24(GridPoint const gp) :

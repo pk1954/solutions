@@ -2,13 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <array>
-#include <functional>
-
 export module Strategy;
 
+import std;
 import EvolutionTypes;
 import StrategyData;
 

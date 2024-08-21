@@ -1,7 +1,7 @@
 // EvolutionCoreWrappers.cpp : wrapper functions for unit tests and scripting of application
 //
 
-#include <cassert>
+import Debug;
 import RunTime;
 #include "symtab.h"
 #include "UtilityWrappers.h"

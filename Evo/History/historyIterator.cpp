@@ -2,13 +2,10 @@
 //
 // History
 
-module;
-
-#include <cassert>
-#include <limits.h>
-
 module HistoryIterator;
 
+import std;
+import Debug;
 import HistSlot;
 import HistoryCache;
 import HistoryIterator;
@@ -20,7 +17,7 @@ HistoryIterator::HistoryIterator(HistoryCache const * pHistCache) :
 
 HistSlotNr HistoryIterator::Set2Youngest()
 {
-    assert(!m_pHistCache->IsEmpty());
+    Assert(!m_pHistCache->IsEmpty());
     return m_slotNrRun = m_pHistCache->GetHead();
 }
 
@@ -62,26 +59,26 @@ bool HistoryIterator::IsOldest() const
 
 HistCacheItem const * HistoryIterator::GetCurrentHistCacheItem() const
 {
-    assert(m_slotNrRun.IsNotNull());
+    Assert(m_slotNrRun.IsNotNull());
     return m_pHistCache->GetHistCacheItemC(m_slotNrRun);
 }
 
 HistGeneration HistoryIterator::GetCurrentGeneration() const
 {
-    assert(m_slotNrRun.IsNotNull());
+    Assert(m_slotNrRun.IsNotNull());
     return m_pHistCache->GetGridGen(m_slotNrRun);
 };
 
 HistGeneration HistoryIterator::GetJuniorGeneration() const
 {
-    assert(m_slotNrRun.IsNotNull());
+    Assert(m_slotNrRun.IsNotNull());
     HistSlotNr const slotNrJunior = m_pHistCache->GetJunior(m_slotNrRun);
-    return (slotNrJunior.IsNull()) ? LONG_MAX : m_pHistCache->GetGridGen(slotNrJunior);  //TODO: check if safe
+    return (slotNrJunior.IsNull()) ? std::numeric_limits<long>::max()  : m_pHistCache->GetGridGen(slotNrJunior);  //TODO: check if safe
 };
 
 HistGeneration HistoryIterator::GetSeniorGeneration() const
 {
-    assert(m_slotNrRun.IsNotNull());
+    Assert(m_slotNrRun.IsNotNull());
     HistSlotNr const slotNrSenior = m_pHistCache->GetSenior(m_slotNrRun);
     return (slotNrSenior.IsNull()) ? 0 : m_pHistCache->GetGridGen(slotNrSenior);
 };

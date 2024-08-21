@@ -107,6 +107,8 @@
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,6 +144,8 @@
       </AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -153,17 +157,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HistAllocThread.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_historyInfo.h" />
-    <ClInclude Include="win32_histWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="GenDisplayWindow.ixx" />
     <ClCompile Include="GenDisplayWindow.cpp" />
     <ClCompile Include="HistAllocThread.ixx" />
-    <ClCompile Include="win32_historyInfo.cpp" />
-    <ClCompile Include="win32_histWindow.cpp" />
+    <ClCompile Include="HistInfoWindow.cpp" />
+    <ClCompile Include="HistInfoWindow.ixx" />
+    <ClCompile Include="HistWindow.ixx" />
+    <ClCompile Include="HistWindow.cpp" />
+    <ClCompile Include="WinHistory.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">

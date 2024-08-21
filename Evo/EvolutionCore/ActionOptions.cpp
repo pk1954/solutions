@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <iostream>     
-
 module ActionOptions;
 
+import std;
 import Genome;
 
 using std::endl;

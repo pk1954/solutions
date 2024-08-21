@@ -2,13 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <cassert>
-#include <iostream>
-
 export module GridField;
 
+import std;
 import Debug;
 import Random;
 import Types;
@@ -159,12 +155,12 @@ private:
 
 // private functions
 
-	void setFoodStock (ENERGY_UNITS const s) { assert(s >= 0_ENERGY_UNITS); m_enFoodStock  = s; }
-	void setFertility (ENERGY_UNITS const s) { assert(s >= 0_ENERGY_UNITS); m_enFertility  = s; }
-	void setFertilizer(ENERGY_UNITS const s) { assert(s >= 0_ENERGY_UNITS); m_enFertilizer = s; }
+	void setFoodStock (ENERGY_UNITS const s) { Assert(s >= 0_ENERGY_UNITS); m_enFoodStock  = s; }
+	void setFertility (ENERGY_UNITS const s) { Assert(s >= 0_ENERGY_UNITS); m_enFertility  = s; }
+	void setFertilizer(ENERGY_UNITS const s) { Assert(s >= 0_ENERGY_UNITS); m_enFertilizer = s; }
 	void setMutRate   (PERCENT      const s) 
 	{ 
-		assert(s >= 0_PERCENT); 
+		Assert(s >= 0_PERCENT); 
 		m_mutRate = PERCENT{ std::min(s.GetValue(), (short)100) }; 
 	}
 };

@@ -4,7 +4,7 @@
 
 module;
 
-#include <cassert>
+import Debug;
 
 export module GplIterator;
 
@@ -27,7 +27,7 @@ public:
 
     GridPoint GotoNext()
     {
-        assert(IsInGrid(m_gpCurrent));
+        Assert(IsInGrid(m_gpCurrent));
         m_gpCurrent = m_grid.GetJuniorGp(m_gpCurrent);
         return m_gpCurrent;
     } 

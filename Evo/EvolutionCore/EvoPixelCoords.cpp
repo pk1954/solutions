@@ -48,7 +48,7 @@ PixelPoint EvoPixelCoords::calcCenterOffset    // calculate new pixel offset,
 	PixelPoint const pixCenter 
 )  
 {
-	assert(IsInGrid(gpCenter));
+	Assert(IsInGrid(gpCenter));
 	PixelPoint const pixPnt(Grid2PixelSize(gpCenter) + m_pixFieldSize / 2);
 	PixelPoint const pixOffset(pixPnt - pixCenter);
 	return pixOffset;

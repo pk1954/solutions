@@ -18,9 +18,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="win32_evoController.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -28,9 +25,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="GenerationDisplay.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_evoAppMenu.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="win32_evoAppWindow.h">
@@ -41,22 +35,25 @@
     <ClCompile Include="Evolution.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_evoController.cpp">
+    <ClCompile Include="EvoController.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_resetDlg.cpp">
+    <ClCompile Include="ResetDlg.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GenerationDisplay.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_evoAppMenu.cpp">
+    <ClCompile Include="EvoAppMenu.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="win32_evoAppWindow.cpp">
+    <ClCompile Include="EvoAppWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Version.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoAppMenu.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

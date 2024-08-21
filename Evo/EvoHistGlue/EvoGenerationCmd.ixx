@@ -2,12 +2,9 @@
 //
 // EvoHistGlue
 
-module;
-
-#include <iostream>
-
 export module EvoGenerationCmd;
 
+import std;
 import GenerationCmd;
 
 using std::wostream;

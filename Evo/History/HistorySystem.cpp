@@ -3,7 +3,6 @@
 
 module;
 
-#include <cassert>
 #include <Windows.h>
 
 module HistorySystem;
@@ -20,6 +19,7 @@ module HistorySystem;
 //	return sizeof(HistCacheItem);  
 //}
 
+import Debug;
 import SaveCast;
 import HistSlot;
 import HistSlotNr;
@@ -47,7 +47,7 @@ ModelData * HistorySystem::StartHistorySystem
 	m_pHistCacheItemWork = new HistCacheItem(pModelFactory);  //ok
 
 	size_t     const slotSize        { GetSlotSize() };
-	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize };    assert(ullMaxNrOfSlots < LONG_MAX);
+	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize };    Assert(ullMaxNrOfSlots < LONG_MAX);
 	ULONGLONG  const ullDemanded     { static_cast<ULONGLONG>(lHistEntriesDemanded) };
 	ULONGLONG  const ullHistEntries  { min(ullDemanded, ullMaxNrOfSlots * 70 / 100) };  // use only 70% of available memory
 	HistSlotNr const nrOfSlots       { Cast2Short(ullHistEntries) }; 
@@ -97,7 +97,7 @@ void HistorySystem::ClearHistory(HistGeneration const genFirst)
 void HistorySystem::ClearAllHistory() 
 { 
 	ApproachHistGen(0);
-	assert(GetCurrentGeneration() == 0);
+	Assert(GetCurrentGeneration() == 0);
 	ClearHistory(0);
 }
 
@@ -129,9 +129,9 @@ ModelData const * HistorySystem::ApproachHistGen(HistGeneration const genDemande
 {
     HistGeneration genActual = m_pHistCacheItemWork->GetHistGenCounter();
 
-    assert(genDemanded != genActual);
-	assert(genDemanded <= m_GenCmdList.GetMaxGeneration());
-	assert(m_GenCmdList[0].IsCachedGeneration());      // at least initial generation is cached
+    Assert(genDemanded != genActual);
+	Assert(genDemanded <= m_GenCmdList.GetMaxGeneration());
+	Assert(m_GenCmdList[0].IsCachedGeneration());      // at least initial generation is cached
 
     HistGeneration genCached   = genDemanded;  // search backwards starting with genDemanded
     bool            bMicrosteps = TRUE;
@@ -198,8 +198,8 @@ ModelData const * HistorySystem::save2History()
     if (genCmdFromCache.IsDefined())       // Hist slot was in use before. Save GenCommand
     {
         HistGeneration const genCached = pHistCacheItem->GetHistGenCounter();
-        assert(m_GenCmdList[genCached].IsCachedGeneration());
-        assert(m_GenCmdList[genCached].GetSlotNr() == slotNr);
+        Assert(m_GenCmdList[genCached].IsCachedGeneration());
+        Assert(m_GenCmdList[genCached].GetSlotNr() == slotNr);
         m_GenCmdList.SetGenerationCmd(genCached, genCmdFromCache);
         m_pHistoryCache->ResetHistCacheSlot(slotNr);
     }
@@ -222,7 +222,7 @@ void HistorySystem::step2NextGeneration(GenerationCmd genCmd)
 	
 	if (genCmd.IsCachedGeneration()) // can happen only in history mode
     {
-        assert(IsInHistoryMode());
+        Assert(IsInHistoryMode());
         HistSlotNr    const   slotNr         = genCmd.GetSlotNr();
         HistCacheItem const * pHistCacheItem = m_pHistoryCache->GetHistCacheItemC(slotNr);
         genCmd = pHistCacheItem->GetGenCmd();
@@ -287,7 +287,7 @@ void HistorySystem::checkHistoryStructure()  // used only in debug mode
             HistCacheItem   const * pHistCacheItem  = m_pHistoryCache->GetHistCacheItemC(slotNrFromList);
             HistGeneration const   genNrFromCache  = pHistCacheItem->GetHistGenCounter();
 	        GenerationCmd   const   genCmdFromCache = pHistCacheItem->GetGenCmd();
-            assert(genNrFromCache == gen);
+            Assert(genNrFromCache == gen);
 //			wcout << L" cache: slot "
 //				  << sSlotNrFromList
 //	              << L" (" << genCmdFromCache.GetCommand() << L"," << genCmdFromCache.GetParam() << L") "
@@ -317,8 +317,8 @@ void HistorySystem::checkHistoryStructure()  // used only in debug mode
 //				  << L"gen " << genNrFromCache
 //				  << L" slotNrFromList= " << slotNrFromList 
 //				  << endl;
-            assert(generationCmd.IsCachedGeneration());
-            assert(slotNrFromList == slotNr);
+            Assert(generationCmd.IsCachedGeneration());
+            Assert(slotNrFromList == slotNr);
         }
     }
 }

@@ -1,9 +1,13 @@
 // d3d_indexBuffer.cpp
 //
 
-#include <cassert>
+module;
+
 #include <d3d9.h>
-#include "d3d_indexBuffer.h"
+
+module D3dIndexBuffer;
+
+import Debug;
 
 D3dIndexBuffer::D3dIndexBuffer(LPDIRECT3DINDEXBUFFER9 const lpD3DiBuf, ULONG const ulNrOfIndices) :
     m_d3d_indexBuffer(lpD3DiBuf),
@@ -14,7 +18,7 @@ D3dIndexBuffer::D3dIndexBuffer(LPDIRECT3DINDEXBUFFER9 const lpD3DiBuf, ULONG con
 void D3dIndexBuffer::SetIndices(IDirect3DDevice9 * const device) const  // returns maximum number of primitives described by indices
 {
     HRESULT const hres = device->SetIndices(m_d3d_indexBuffer);  
-    assert(hres == D3D_OK);
+    Assert(hres == D3D_OK);
 }
 
 void D3dIndexBuffer::Release() 

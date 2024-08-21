@@ -4,13 +4,13 @@
 
 module;
 
-#include "windows.h"
-#include "Resource.h"
+#include <windows.h>
 
-export module CoordShape;
+export module ShapeLib:CoordShape;
 
 import Config;
 import Shape;
+import Resource;
 
 export class CoordShape : public Shape
 {

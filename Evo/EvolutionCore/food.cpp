@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-#include <cassert>
+import Debug;
 #include <limits.h>
 
 import Config;

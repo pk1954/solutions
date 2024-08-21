@@ -13,9 +13,6 @@ import GridRect;
 import GridPOI;
 import GridBrush;
 
-//class EventInterface;
-//class ObserverInterface;
-//
 class EvolutionCoreImpl : public EvolutionCore
 {
 public:
@@ -37,7 +34,7 @@ public:
 	virtual void SetBrushMode       (tBrushMode   const mode ) { m_brush.SetBrushMode  (mode );  }
 	virtual void SetBrushManipulator(tManipulator const op   ) { m_brush.SetManipulator(op   );  }
 	virtual void SetBrushShape      (tShape       const shape) { m_brush.SetShape      (shape);  }
-    virtual void SetBrushRadius     (GridCoord   const rad  ) { m_brush.SetRadius     (rad  );  }
+    virtual void SetBrushRadius     (GridCoord    const rad  ) { m_brush.SetRadius     (rad  );  }
     virtual void SetBrushIntensity  (PERCENT      const perc ) { m_brush.SetIntensity  (perc );  }
     virtual void ModelDoEdit        (GridPoint    const gp   ) { (m_brush)(gp); }
 

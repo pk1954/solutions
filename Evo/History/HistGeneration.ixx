@@ -2,14 +2,9 @@
 //
 // History
 
-module;
-
-#include <cassert>
-#include "limits.h"
-#include <iostream>
-#include <iomanip>
-
 export module HistGeneration;
+
+import std;
 
 using std::wostream;
 using std::ostream;
@@ -47,8 +42,8 @@ public:
     long const GetLong() const { return m_nr; }
 
 private:
-    static long const INFINITE_VAL = LONG_MAX;
-    static long const NULL_VAL     = LONG_MIN;
+    static long const INFINITE_VAL { std::numeric_limits<long>::max() };
+    static long const NULL_VAL     { std::numeric_limits<long>::min() };
 
     long m_nr;
 };

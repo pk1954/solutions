@@ -4,10 +4,8 @@
 
 module;
 
-#include <iostream>
 #include <io.h>
 #include <fcntl.h>
-#include <locale>
 #include <codecvt>
 #include <windows.h>
 

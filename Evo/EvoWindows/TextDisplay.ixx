@@ -2,20 +2,20 @@
 //
 // EvoWindows
 
-module;
-
-#include <sstream> 
-#include "EvolutionCore.h"
-#include "EvoPixelCoords.h"
-#include "win32_graphicsInterface.h"
-
 export module TextDisplay;
+
+import std;
+import EvolutionCore;
+import EvoPixelCoords;
+import GraphicsInterface;
+
+using std::wostringstream;
 
 export class TextDisplay
 {
 public:
 	TextDisplay()
-		: m_pGraphics(nullptr),
+	  : m_pGraphics(nullptr),
 		m_pBuffer(nullptr),
 		m_pEvoPixelCoords(nullptr)
 	{ }
@@ -23,7 +23,7 @@ public:
 	void Start
 	(
 		GraphicsInterface* pGgraphicsInterface,
-		std::wostringstream* pBuffer,
+		wostringstream* pBuffer,
 		EvoPixelCoords* pEvoPixelCoords
 	)
 	{
@@ -71,7 +71,7 @@ public:
 private:
 	static COLORREF const CLR_WHITE = RGB(255, 255, 255);
 
-	GraphicsInterface* m_pGraphics;
-	std::wostringstream* m_pBuffer;
-	EvoPixelCoords* m_pEvoPixelCoords;
+	GraphicsInterface * m_pGraphics;
+	wostringstream    * m_pBuffer;
+	EvoPixelCoords    * m_pEvoPixelCoords;
 };

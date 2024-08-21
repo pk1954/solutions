@@ -1,10 +1,7 @@
 /// HistoryTest.cpp : Defines the entry point for the console application.
 //
 
-
-#include <cassert>
-#include <iostream>
-
+import std;
 import Version;
 import Int24;
 import Symtab;
@@ -108,7 +105,7 @@ void DoTest()
 	for (long i = 1; i < NR_OF_SLOTS; ++i)
 		pHistorySys->AddHistorySlot();
 
-	assert(pHistorySys->GetNrOfHistCacheSlots().GetValue() == NR_OF_SLOTS);
+	Assert(pHistorySys->GetNrOfHistCacheSlots().GetValue() == NR_OF_SLOTS);
 
 	wcout << endl << L"*** Iterate thru generations" << endl << endl;
 
@@ -159,7 +156,7 @@ int _tmain(int argc, char * argv[])
 		}
     }
 
-	Script::ProcessScript(wstrInputFile);
+	RunTime::ProcessScript(wstrInputFile);
 
 	return 0;
 }

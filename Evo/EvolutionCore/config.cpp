@@ -3,13 +3,8 @@
 
 module Config;
 
-#include <fstream>
-#include <string>
-#include <cassert>
-#include "limits.h"
-#include <string>
-#include <iomanip>
-
+import std;
+import Debug;
 import Symtab;
 
 std::unordered_map< Config::tId, Config::tConfigItem > Config::m_mapConfigData;

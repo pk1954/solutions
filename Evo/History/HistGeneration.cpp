@@ -2,11 +2,9 @@
 //
 // History
 
-module;
-
-#include <iostream>
-
 module HistGeneration;
+
+import std;
 
 using std::wostream;
 using std::ostream;

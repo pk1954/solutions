@@ -1,13 +1,11 @@
 // Shape.ixx : 
 //
+// ShapeLib
+// 
 // Shape is defined by the offset of the top left corner
 // and the size of the rectangle 
 
-module;
-
-#include "Windows.h"
-
-export module Shape;
+export module ShapeLib:Shape;
 
 import Types;
 import TextDisplay;
@@ -95,7 +93,7 @@ public:
 
 	bool SetShapeRect(PixelPoint const ppOffset, PixelRectSize const ppSize)
 	{
-		bool bBigEnough = (ppSize >= m_minSize);
+		bool bBigEnough = (ppSize.GetX() >= m_minSize.GetX()) && (ppSize.GetY() >= m_minSize.GetY());
 		if (bBigEnough)
 			m_rect = PixelRect(ppOffset, ppSize);
 		else

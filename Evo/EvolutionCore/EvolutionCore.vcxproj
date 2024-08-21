@@ -113,6 +113,8 @@
       <AdditionalOptions> /GH /Gh %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,6 +163,8 @@
       </AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -173,9 +177,6 @@
       </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Action.ixx" />
@@ -242,6 +243,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
       <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>

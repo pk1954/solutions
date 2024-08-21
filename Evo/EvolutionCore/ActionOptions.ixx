@@ -2,13 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <array>
-#include <iostream>     
-
 export module ActionOptions;
 
+import std;
 import Random;
 import EnumArray;
 import EvolutionTypes;

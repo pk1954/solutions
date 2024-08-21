@@ -9,6 +9,7 @@ export module EvoStatistics;
 import EnumArray;
 import TextBuffer;
 import EvolutionTypes;
+import EvolutionCore;
 import Strategy;
 import GridPoint;
 import XArray;
@@ -42,7 +43,7 @@ public:
 class EvoStatistics
 {
 public:
-	EvoStatistics::EvoStatistics();
+	EvoStatistics();
 	virtual ~EvoStatistics();
 
     void Prepare

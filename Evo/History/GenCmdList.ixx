@@ -2,12 +2,9 @@
 //
 // History
 
-module;
-
-#include <vector>
-
 export module GenCmdList;
 
+import Debug;
 import GenerationCmd;
 import HistGeneration;
 import HistSlotNr;

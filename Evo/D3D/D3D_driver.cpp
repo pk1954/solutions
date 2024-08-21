@@ -3,18 +3,17 @@
 
 module;
 
-#include <cassert>
-#include <string>
 #include <d3d9.h>
 #include <d3dx9core.h>
 
 module D3D_driver;
 
+import std;
+import Debug;
 import Types;
+import WinBasics;
 import D3D_driver;
 import D3dSystem;
-import Win32_PixelTypes;
-import Win32_PIXEL;
 
 using std::wstring;
 
@@ -50,7 +49,7 @@ D3D_driver::~D3D_driver()
 	try
 	{
 		ULONG const ulres = m_d3d_vertexBuffer->Release();    
-		assert(ulres == 0);
+		Assert(ulres == 0);
 	}
 	catch (...)
 	{
@@ -81,7 +80,7 @@ void D3D_driver::Initialize
 	m_d3d_vertexBuffer = m_d3d->CreateVertexBuffer();
 
     HRESULT hres = m_d3d_device->GetSwapChain(0, &m_d3d_swapChain);   
-	assert(hres == D3D_OK);
+	Assert(hres == D3D_OK);
     
 	m_dwAlphaBlendable = 0;
     m_dwSrcBlend       = 0;
@@ -99,7 +98,7 @@ void D3D_driver::ShutDown()
 PixelRect D3D_driver::CalcGraphicsRect(std::wstring const & wstr)
 {
 	RECT rect{ 0, 0, 0, 0 };
-    assert(m_id3dx_font != nullptr);
+    Assert(m_id3dx_font != nullptr);
     m_id3dx_font->DrawText
     (
         nullptr,           // pSprite
@@ -121,7 +120,7 @@ void D3D_driver::DisplayGraphicsText
 )
 {
 	RECT rect(PixelRect2RECT(pixRect));			  
-    assert(m_id3dx_font != nullptr);
+    Assert(m_id3dx_font != nullptr);
     m_id3dx_font->DrawText
     (
         nullptr,           // pSprite
@@ -289,7 +288,7 @@ void D3D_driver::RenderTranspRect
 {
 	if (rectTransparent.IsNotEmpty())
 	{
-		assert(m_d3d_device != nullptr);
+		Assert(m_d3d_device != nullptr);
 		prepareTranspMode();
 
 		addRect2Buffer
@@ -324,8 +323,8 @@ void D3D_driver::renderIndexedTriangleStrip() const
 {
 	HRESULT hres;
 
-    assert(m_pVertBufStripMode->GetNrOfVertices() > 0);
-    assert(m_d3d_device != nullptr);
+    Assert(m_pVertBufStripMode->GetNrOfVertices() > 0);
+    Assert(m_d3d_device != nullptr);
 
     D3dIndexBuffer const * const iBuf = m_d3d->GetBgIndexBufferStripMode();
     
@@ -346,7 +345,7 @@ void D3D_driver::renderIndexedTriangleStrip() const
 		iBuf->GetMaxNrOfPrimitives() 
 	);
 
-    assert(hres == D3D_OK);
+    Assert(hres == D3D_OK);
 }
 
 void D3D_driver::renderPrimitives(D3dIndexBuffer const * const iBuf)
@@ -357,7 +356,7 @@ void D3D_driver::renderPrimitives(D3dIndexBuffer const * const iBuf)
 	if (ulNrOfPrimitives > 0)
     {
 		HRESULT hres = m_pVertBufPrimitives->LoadVertices(m_d3d_vertexBuffer, m_d3d_device);
-        assert(hres == D3D_OK); 
+        Assert(hres == D3D_OK); 
 
         iBuf->SetIndices(m_d3d_device);
         hres = m_d3d_device->DrawIndexedPrimitive
@@ -369,7 +368,7 @@ void D3D_driver::renderPrimitives(D3dIndexBuffer const * const iBuf)
 			0, 
 			ulNrOfPrimitives 
 		); 
-        assert(hres == D3D_OK); 
+        Assert(hres == D3D_OK); 
         m_pVertBufPrimitives->ResetVertexBuffer();
     }
 }
@@ -379,8 +378,8 @@ void D3D_driver::renderPrimitives(D3dIndexBuffer const * const iBuf)
 void D3D_driver::EndFrame(HWND const hwnd)
 {
     HRESULT hres;
-    hres = m_d3d_device->EndScene();                                       assert(hres == D3D_OK);
-	hres = m_d3d_swapChain->Present(nullptr, nullptr, hwnd, nullptr, 0); assert(hres == D3D_OK);
+    hres = m_d3d_device->EndScene();                                       Assert(hres == D3D_OK);
+	hres = m_d3d_swapChain->Present(nullptr, nullptr, hwnd, nullptr, 0); Assert(hres == D3D_OK);
     m_id3dx_font->Release();      
 }
 
@@ -403,8 +402,10 @@ void D3D_driver::AddfPixelLine
 	COLORREF    const   color
 )
 {
-	D3DCOLOR    const D3Dcolor { COLORREFtoD3DCOLOR(255, color) };
-	fPixelPoint const fOrthoScaled { OrthoVector(fpp1 - fpp2, fpixWidth) };
+	D3DCOLOR    const D3Dcolor      { COLORREFtoD3DCOLOR(255, color) };
+	fPixelPoint const fPixPntVec    { fpp1 - fpp2 };
+	fPixelPoint const fPixPntScaled { fPixPntVec.ScaledTo(fpixWidth) };
+	fPixelPoint const fOrthoScaled  { fPixPntScaled.OrthoVector() };
 	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp1.GetXvalue() + fOrthoScaled.GetXvalue()), Cast2Float(fpp1.GetYvalue() + fOrthoScaled.GetYvalue()), D3Dcolor);
 	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp1.GetXvalue() - fOrthoScaled.GetXvalue()), Cast2Float(fpp1.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor);
 	m_pVertBufPrimitives->AddVertex(Cast2Float(fpp2.GetXvalue() - fOrthoScaled.GetXvalue()), Cast2Float(fpp2.GetYvalue() - fOrthoScaled.GetYvalue()), D3Dcolor);
@@ -413,8 +414,8 @@ void D3D_driver::AddfPixelLine
 
 void D3D_driver::renderTriangleStrip(int const iNrOfPrimitives)
 {
-	HRESULT hres = m_pVertBufStripMode->LoadVertices(m_d3d_vertexBuffer, m_d3d_device); assert(hres == D3D_OK); 
-	hres = m_d3d_device->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, iNrOfPrimitives);        assert(hres == D3D_OK); 
+	HRESULT hres = m_pVertBufStripMode->LoadVertices(m_d3d_vertexBuffer, m_d3d_device); Assert(hres == D3D_OK); 
+	hres = m_d3d_device->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, iNrOfPrimitives);        Assert(hres == D3D_OK); 
 	m_pVertBufStripMode->ResetVertexBuffer();
 }
 
@@ -426,7 +427,9 @@ void D3D_driver::StartPipeline
 	COLORREF    const   color
 )
 {
-	m_fOrtho = OrthoVector(fppEnd - fppStart, fpixWidth);
+	fPixelPoint const fPixPntVec    { fppEnd - fppStart };
+	fPixelPoint const fPixPntScaled { fPixPntVec.ScaledTo(fpixWidth) };
+	m_fOrtho = fPixPntScaled.OrthoVector();
 	m_pVertBufStripMode->ResetVertexBuffer();
 	AddPipelinePoint(fppStart, color);
 }

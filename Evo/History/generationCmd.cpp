@@ -2,12 +2,9 @@
 //
 // History
 
-module;
-
-#include <unordered_map>
-#include <iostream>
-
 module GenerationCmd;
+
+import std;
 
 using std::unordered_map;
 using std::wostream;

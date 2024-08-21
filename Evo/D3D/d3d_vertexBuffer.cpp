@@ -2,10 +2,15 @@
 //
 // D3D
 
-#include <cassert>
+module;
+
 #include <d3d9.h>
 
-import D3D_vertexBuffer;
+module D3D_vertexBuffer;
+
+import Debug;
+import SaveCast;
+import WinBasics;
 
 VertexBuffer::VertexBuffer(ULONG const ulSize)
     : m_vertexVector()

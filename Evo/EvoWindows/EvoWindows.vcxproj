@@ -94,6 +94,8 @@
       </AdditionalOptions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,6 +123,8 @@
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,28 +150,27 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ColorManager.ixx" />
+    <ClCompile Include="CrsrWindow.ixx" />
+    <ClCompile Include="EvoReadBuffer.ixx" />
+    <ClCompile Include="Resource.ixx" />
     <ClCompile Include="TextDisplay.ixx" />
-    <ClCompile Include="win32_colorManager.cpp" />
-    <ClCompile Include="win32_crsrWindow.cpp" />
-    <ClCompile Include="win32_displayOptions.cpp" />
-    <ClCompile Include="win32_draw.cpp" />
-    <ClCompile Include="win32_EvoEditor.cpp" />
-    <ClCompile Include="win32_EvoEditorWrappers.cpp" />
-    <ClCompile Include="win32_gridWindow.cpp" />
-    <ClCompile Include="win32_histWrappers.cpp" />
-    <ClCompile Include="win32_performanceWindow.cpp" />
-    <ClCompile Include="win32_protocolServer.cpp" />
-    <ClCompile Include="win32_statistics.cpp" />
-    <ClCompile Include="win32_EvoWorkThread.cpp" />
-    <ClCompile Include="win32_EvoWorkThreadInterface.cpp" />
-    <ClCompile Include="win32_wrappers.cpp" />
+    <ClCompile Include="ColorManager.cpp" />
+    <ClCompile Include="CrsrWindow.cpp" />
+    <ClCompile Include="DisplayOptions.cpp" />
+    <ClCompile Include="DrawFrame.cpp" />
+    <ClCompile Include="EvoEditor.cpp" />
+    <ClCompile Include="EvoEditorWrappers.cpp" />
+    <ClCompile Include="GridWindow.cpp" />
+    <ClCompile Include="HistWrappers.cpp" />
+    <ClCompile Include="PerformanceWindow.cpp" />
+    <ClCompile Include="ProtocolServer.cpp" />
+    <ClCompile Include="StatisticsWindow.cpp" />
+    <ClCompile Include="EvoWorkThread.cpp" />
+    <ClCompile Include="EvoWorkThreadInterface.cpp" />
+    <ClCompile Include="Wrappers.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EvoReadBuffer.h" />
-    <ClInclude Include="win32_colorManager.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="win32_crsrWindow.h" />
     <ClInclude Include="win32_displayOptions.h" />
     <ClInclude Include="win32_draw.h" />
     <ClInclude Include="win32_EvoEditor.h" />

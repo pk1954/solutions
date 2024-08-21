@@ -4,12 +4,11 @@
 
 module;
 
-#include <cassert>
-#include <vector>
-#include <functional>
+import Debug;
 
 export module GridNeighbor;
 
+import std;
 import GridPoint;
 import GridModel;
 
@@ -34,7 +33,7 @@ public:
 
 	void AddToList(GridPoint const & gp)
 	{
-		assert(static_cast<int>(m_neighbors.size()) < m_iNrOfNeighbors);
+		Assert(static_cast<int>(m_neighbors.size()) < m_iNrOfNeighbors);
 		m_neighbors.push_back(gp);
 	}
 
@@ -60,7 +59,7 @@ public:
 
 	GridPoint const GetRandomElement(unsigned int const uiRandom) const 
 	{
-		assert(m_neighbors.size() > 0); 
+		Assert(m_neighbors.size() > 0); 
 		return m_neighbors[uiRandom % m_neighbors.size()];
 	}
 

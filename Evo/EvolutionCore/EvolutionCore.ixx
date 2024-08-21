@@ -2,12 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <iostream>     
-
 export module EvolutionCore;
 
+import std;
 import BoolOp;
 import Strategy;
 import EvolutionTypes;
@@ -24,7 +21,6 @@ class EvolutionCore : public ModelInterface
 public:
 
     virtual ~EvolutionCore() { };
-
 
 // debugging functions
 

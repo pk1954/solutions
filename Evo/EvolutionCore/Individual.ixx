@@ -2,12 +2,9 @@
 //
 // Evolutioncore
 
-module;
-
-#include <array>
-
 export module Individual;
 
+import std;
 import Random;
 import Debug;
 import Types;

@@ -15,7 +15,6 @@ import ObserverInterface;
 import WinBasics;
 import WinCommand;
 import AboutBox;
-import FatalError;
 import FatalErrorMB;
 import MessagePump;
 import ScriptFile;
@@ -322,7 +321,6 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 		{
 		case IDM_ABOUT:
 			m_aboutBox.Show(m_mainNNetWindow.GetWindowHandle());
-			FatalError::Provoke();
 			return true;
 
 		case IDM_DOCU:

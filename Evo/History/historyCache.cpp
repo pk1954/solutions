@@ -1,10 +1,15 @@
-// history.cpp
+// HistoryCache.cpp
+//
+// History
+
+module;
 
 #include <windows.h>
-#include <cassert>
-#include <new>
 
-import HistoryCache;
+module HistoryCache;
+
+import std;
+import Debug;
 
 #ifndef NDEBUG
 	#define CHECK_CONSISTENCY() checkConsistency()
@@ -41,7 +46,7 @@ void HistoryCache::InitHistoryCache
 {
 	m_pModelFactory = pModelFactory;
 
-    assert(nrOfSlots >= HistSlotNr(2));
+    Assert(nrOfSlots >= HistSlotNr(2));
 
     m_iNrOfRequestedSlots = nrOfSlots;
 
@@ -111,17 +116,17 @@ void HistoryCache::checkConsistency()
     for (HistSlotNr slotNr = m_histSlotHead; slotNr.IsNotNull(); slotNr = GetSenior(slotNr))
     {
         ++nrOfUsedSlots;
-        assert(nrOfUsedSlots <= m_iNrOfSlots);
+        Assert(nrOfUsedSlots <= m_iNrOfSlots);
     }
 
     for (HistSlotNr slotNr = m_iUnused; slotNr.IsNotNull(); slotNr = GetJunior(slotNr))
     {
         ++nrOfUnusedSlots;
-        assert(nrOfUnusedSlots <= m_iNrOfSlots);
+        Assert(nrOfUnusedSlots <= m_iNrOfSlots);
     }
 
-    assert(nrOfUsedSlots == m_iNrOfUsedSlots);
-    assert(nrOfUsedSlots + nrOfUnusedSlots == m_iNrOfSlots);
+    Assert(nrOfUsedSlots == m_iNrOfUsedSlots);
+    Assert(nrOfUsedSlots + nrOfUnusedSlots == m_iNrOfSlots);
 }
 
 HistSlotNr HistoryCache::GetFreeCacheSlot()
@@ -140,7 +145,7 @@ HistSlotNr HistoryCache::GetFreeCacheSlot()
 
     if (m_iUnused.IsNotNull())         // Unused slots available
     {
-        assert(m_iNrOfUsedSlots < m_iNrOfSlots);
+        Assert(m_iNrOfUsedSlots < m_iNrOfSlots);
         m_histSlotHead = m_iUnused;
         m_iUnused = GetJunior(m_iUnused);
         ++m_iNrOfUsedSlots;
@@ -148,7 +153,7 @@ HistSlotNr HistoryCache::GetFreeCacheSlot()
     }
     else                                // No unused slots. We have to reuse slots
     {
-        assert(m_iNrOfUsedSlots == m_iNrOfSlots);
+        Assert(m_iNrOfUsedSlots == m_iNrOfSlots);
         m_histSlotHead = findSlot4Reuse();
 
         HistSlotNr slotNrJunior = GetJunior(m_histSlotHead);
@@ -209,7 +214,7 @@ HistSlotNr HistoryCache::findSlot4Reuse()
 
     if (m_iStartSearching.IsNull())  // happens only once
     {
-        assert(candidate.IsNotNull());
+        Assert(candidate.IsNotNull());
         candidate = GetSenior(candidate);
         candidate = GetSenior(candidate);
         candidate = GetSenior(candidate);

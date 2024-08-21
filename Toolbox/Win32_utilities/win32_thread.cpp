@@ -4,12 +4,12 @@
 
 module;
 
-#include <string>
-#include <cassert>
-#include <process.h>
-#include "Windows.h"
+#include <Windows.h>
 
 module Thread;
+
+import std;
+import Debug;
 
 using std::wstring;
 
@@ -44,20 +44,20 @@ void Thread::StartThread
 {
 	m_strThreadName = strName;
 	m_handle = RunAsAsyncThread(::StdThreadProc, static_cast<void *>(this), &m_threadId);
-	assert(m_handle != nullptr);
+	Assert(m_handle != nullptr);
 	m_eventThreadStarter.Wait();
 }
 
 void Thread::PostThreadMsg(UINT uiMsg, WPARAM const wParam, LPARAM const lParam)
 {
-	assert(m_threadId != 0);
+	Assert(m_threadId != 0);
 	bool const bRes = ::PostThreadMessage(m_threadId, uiMsg, wParam, lParam);
 	DWORD err = GetLastError();
 	if (!bRes)
 	{
 		int x = 42;
 	}
-	assert(bRes);
+	Assert(bRes);
 }
 
 void Thread::Terminate()   // to be called from different thread
@@ -101,7 +101,7 @@ static unsigned int __stdcall StdThreadProc(void * data)
 			int iRes = GetMessage(&msg, nullptr, 0, 0);  // loop ends at WM_QUIT 
 			if (iRes == 0)
 				goto KILL_THREAD;
-			assert(iRes > 0);
+			Assert(iRes > 0);
 			pThread->ThreadMsgDispatcher(msg);
 		}
 	} 

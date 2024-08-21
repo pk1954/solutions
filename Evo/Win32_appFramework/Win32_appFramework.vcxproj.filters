@@ -15,62 +15,57 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_WorkThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_WorkThreadInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_readBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_status.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_baseAppWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_appMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_messagePump.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_appWindowInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_scriptHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_WorkThread.cpp">
+    <ClCompile Include="WorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_WorkThreadInterface.cpp">
+    <ClCompile Include="WorkThreadInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_status.cpp">
+    <ClCompile Include="StatusBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_baseAppWindow.cpp">
+    <ClCompile Include="BaseAppWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win32_messagePump.cpp">
+    <ClCompile Include="MessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpeedControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpeedControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppMenu.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StatusBar.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadBuffer.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppWindowInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAppWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MessagePump.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptHook.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkThread.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkThreadInterface.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

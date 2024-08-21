@@ -4,7 +4,7 @@
 
 module;
 
-#include <cassert>
+import Debug;
 #include <cstdlib> 
 #include <cmath> 
 
@@ -136,7 +136,7 @@ void CheckIndividuals(GridModel & grid)
 	);
 
 	int const iNrOfLivingIndividuals = grid.GetNrOfLivingIndividuals();
-    assert(iCount == iNrOfLivingIndividuals);
+    Assert(iCount == iNrOfLivingIndividuals);
 }
 
 void GridModel::ResetGrid()
@@ -195,7 +195,7 @@ void GridModel::inspectNeighborHood()
 		displayAndWait();
 	}
 
-	assert(m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors());
+	Assert(m_emptyNeighborSlots.GetLength() + m_occupiedNeighborSlots.GetLength() == Neighborhood::GetNrOfNeighbors());
 }
 
 Action::Id GridModel::decideOnAction(GridField const & gfRun)
@@ -244,7 +244,7 @@ GridField & GridModel::chooseTarget()
 	}
 
 	m_gpTarget = m_emptyNeighborSlots.GetRandomElement(m_random.NextRandomNumber()); // choose one of them randomly
-    assert(IsDead(m_gpTarget));
+    Assert(IsDead(m_gpTarget));
 	
 	if (m_bPOI)
 	{
@@ -266,7 +266,7 @@ GridField & GridModel::choosePartner()
 	}
 
 	m_gpPartner = m_occupiedNeighborSlots.GetRandomElement(m_random.NextRandomNumber());
-	assert(IsAlive(m_gpPartner));
+	Assert(IsAlive(m_gpPartner));
 
 	if (m_bPOI)
 	{
@@ -394,7 +394,7 @@ GridPoint GridModel::ComputeNextGeneration(GridPoint const gpRun)
 {
 	m_gpRun = gpRun;
 	GridField & gfRun = getGridField(m_gpRun);
-	assert(gfRun.IsAlive());
+	Assert(gfRun.IsAlive());
 
 	m_bPOI = GridPOI::IsPoi(m_gpRun);
 
@@ -428,10 +428,10 @@ GridPoint GridModel::ComputeNextGeneration(GridPoint const gpRun)
 		case Action::Id::passOn:    actionPassOn   (gfRun); break;
 		case Action::Id::fertilize: actionFertilize(gfRun); break;
 		case Action::Id::undefined:	actionUndefined(gfRun); break;
-		default: assert(false);
+		default: Assert(false);
     }
 
-	assert((m_gpNext.IsNull()) || IsAlive(m_gpNext));
+	Assert((m_gpNext.IsNull()) || IsAlive(m_gpNext));
 
 	if (gfRun.IsAlive())
 		incActionCounter(gfRun.GetStrategyId(), m_action);
@@ -450,7 +450,7 @@ void GridModel::EditSetStrategy
     Strategy::Id    strategy
 )
 {
-	assert(intensity >= 0_PERCENT);
+	Assert(intensity >= 0_PERCENT);
 	if (m_random.NextRandomNumber() < intensity.GetValue() * Random::MAX_VAL / 100ul)
 	{
 		GridField & gf       = getGridField(gp);

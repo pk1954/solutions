@@ -2,13 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <functional>
-#include <iostream>
-
 export module EvolutionTypes;
 
+import std;
 import Types;
 import SaveCast;
 import GeneType;

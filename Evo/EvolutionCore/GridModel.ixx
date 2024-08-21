@@ -2,16 +2,9 @@
 //
 // EvolutionCore
 
-module;
-
-#include <array> 
-#include <vector> 
-#include <algorithm>
-#include <string>     
-#include <sstream>     
-
 export module GridModel;
 
+import Debug;
 import Random;
 import GridPointList;
 import GridField;
@@ -90,7 +83,7 @@ public:
 
     GridField const & GetGridField(GridPoint const gp) const
     {
-        assert(IsInGrid(gp));
+        Assert(IsInGrid(gp));
         return m_aGF[gp.GetXvalue()][gp.GetYvalue()];
     };
 
@@ -124,8 +117,8 @@ public:
 		unsigned int const uiAction   = static_cast<unsigned int>(action);
 		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
 
-		assert(uiAction   < Action::COUNT);
-		assert(uiStrategy < Strategy::COUNT);
+		Assert(uiAction   < Action::COUNT);
+		Assert(uiStrategy < Strategy::COUNT);
 
 		return m_ActionCounter[uiAction][uiStrategy];
 	}
@@ -199,8 +192,8 @@ private:
 		unsigned int const uiAction   = static_cast<unsigned int>(action);
 		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
 
-		assert(uiAction   < Action::COUNT);
-		assert(uiStrategy < Strategy::COUNT);
+		Assert(uiAction   < Action::COUNT);
+		Assert(uiStrategy < Strategy::COUNT);
 
 		++ m_ActionCounter[uiAction][uiStrategy];
 	}
@@ -234,7 +227,7 @@ private:
 
     GridField & getGridField(GridPoint const gp)
     {
-        assert(IsInGrid(gp));
+        Assert(IsInGrid(gp));
         return m_aGF[gp.GetXvalue()][gp.GetYvalue()];
     };
 

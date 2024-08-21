@@ -11,7 +11,7 @@ import EvoGenerationCmd;
 import EvolutionCore;
 import GridPOI;
 
-Stopwatch EvoModelDataGlue::stopwatch;
+//Stopwatch EvoModelDataGlue::stopwatch;
 
 void EvoModelDataGlue::OnAppCommand(GenerationCmd const cmd)
 {
@@ -49,6 +49,6 @@ void EvoModelDataGlue::OnAppCommand(GenerationCmd const cmd)
 		break;
 
 	default:
-		assert(false);
+		Assert(false);
 	}
 }

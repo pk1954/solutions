@@ -246,5 +246,14 @@
     <ClCompile Include="Bitmap.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Win32_Thread.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Thread.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32_Event.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

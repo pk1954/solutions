@@ -5,20 +5,15 @@
 //
 // History
 
-module;
-
-#include <fstream>
-#include <iomanip>
-#include <bitset>
-#include <cassert>
-#include "limits.h"
-
 export module GenerationCmd;
 
+import std;
 import Int24;
 import Debug;
 import SaveCast;
 import HistSlotNr;
+
+using std::int8_t;
 
 export class GenerationCmd
 {
@@ -42,7 +37,7 @@ public:
 	Int24      GetParam()   const { return m_Param; }
 	HistSlotNr GetSlotNr()  const
 	{
-		assert(m_Cmd == Id::CACHED);
+		Assert(m_Cmd == Id::CACHED);
 		return HistSlotNr{ m_Param.GetValue() };
 	}
 

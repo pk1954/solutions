@@ -2,13 +2,9 @@
 //
 // Toolbox\Types
 
-module;
-
-#include <algorithm>  // min/max/abs templates
-#include <cmath>
-
 export module Types:PointType;
 
+import std;
 import Debug;
 import Util;
 import :BasicTypes;

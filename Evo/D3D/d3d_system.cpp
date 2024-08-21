@@ -3,15 +3,17 @@
 
 module;
 
-#include <cassert>
 #include <d3d9.h>
 #include <d3dx9core.h>
 
 module D3dSystem;
 
+import Types;
+import Debug;
+import WinBasics;
 import D3dSystem;
 import D3D_vertexBuffer;
-import Stopwatch;
+//import Stopwatch;
 
 D3dSystem::D3dSystem() :
 	m_bHexagon(FALSE),
@@ -26,11 +28,11 @@ D3dSystem::D3dSystem() :
     m_d3d_pIndexBufIndividuals(nullptr),
     m_d3d_pIndexBufRect(nullptr)
 {
-	Stopwatch stopwatch;
-	stopwatch.Start();
+	//Stopwatch stopwatch;
+	//stopwatch.Start();
 	m_d3d_object = Direct3DCreate9(D3D_SDK_VERSION);
-	assert(m_d3d_object != nullptr);
-	stopwatch.Stop(L"Direct3DCreate9");
+	Assert(m_d3d_object != nullptr);
+	//stopwatch.Stop(L"Direct3DCreate9");
 }
 
 IDirect3DDevice9 * D3dSystem::Create_D3D_Device
@@ -41,10 +43,10 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 	bool  const bHexagon 
 )
 {
-	Stopwatch stopwatch;
-	stopwatch.Start();
+	//Stopwatch stopwatch;
+	//stopwatch.Start();
 
-	PixelRectSize const pntSize = Util::GetClRectSize(hwndApp);
+	PixelRectSize const pntSize = GetClRectSize(hwndApp);
 
 	m_bHexagon = bHexagon;
 
@@ -89,7 +91,7 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 		& m_d3d_device
 	);
 
-	assert(hres == D3D_OK);
+	Assert(hres == D3D_OK);
 
 	m_d3d_matrix = D3DMATRIX 
 	{
@@ -107,12 +109,12 @@ IDirect3DDevice9 * D3dSystem::Create_D3D_Device
 	m_d3d_pIndexBufIndividuals    = createIndsIndices (ulModelWidth, ulModelHeight, bHexagon); // Index buffer for individuals
 	m_d3d_pIndexBufRect           = createRectIndices ();                                       // Index buffer for one rectangle  
 
-	hres = m_d3d_device->SetRenderState(D3DRS_LIGHTING, false);        assert(hres == D3D_OK);
-	hres = m_d3d_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); assert(hres == D3D_OK);
-	hres = m_d3d_device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);          assert(hres == D3D_OK);
+	hres = m_d3d_device->SetRenderState(D3DRS_LIGHTING, false);        Assert(hres == D3D_OK);
+	hres = m_d3d_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); Assert(hres == D3D_OK);
+	hres = m_d3d_device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);          Assert(hres == D3D_OK);
 
-	stopwatch.Stop(L"Create_D3D_Device");
-	assert(m_d3d_device != nullptr);
+	//stopwatch.Stop(L"Create_D3D_Device");
+	Assert(m_d3d_device != nullptr);
 	return m_d3d_device;
 }
 
@@ -129,20 +131,20 @@ LPDIRECT3DVERTEXBUFFER9 D3dSystem::CreateVertexBuffer()
 		& buffer,
 		nullptr
 	);
-	assert(hres == D3D_OK);
+	Assert(hres == D3D_OK);
 	return buffer;
 }
 
 HRESULT D3dSystem::ResizeD3dSystem(HWND const hwnd)
 {
     HRESULT hres;
-	PixelRectSize const pntSize = Util::GetClRectSize(hwnd);
+	PixelRectSize const pntSize = GetClRectSize(hwnd);
 
 	m_d3d_presentationParameters.hDeviceWindow    = hwnd;
 	m_d3d_presentationParameters.BackBufferWidth  = static_cast<unsigned int>(pntSize.GetXvalue());
 	m_d3d_presentationParameters.BackBufferHeight = static_cast<unsigned int>(pntSize.GetYvalue());
 
-	assert(m_d3d_device != nullptr);
+	Assert(m_d3d_device != nullptr);
 	hres = m_d3d_device->Reset(& m_d3d_presentationParameters); 
 	if (hres != D3D_OK) return hres;
 
@@ -177,7 +179,7 @@ D3dIndexBuffer * D3dSystem::prepareIndices(ULONG const * const pulIndex, ULONG c
 {
 	LPDIRECT3DINDEXBUFFER9 d3d_indexBuffer;
 
-	assert(m_d3d_device != nullptr);
+	Assert(m_d3d_device != nullptr);
 	HRESULT hres = m_d3d_device->CreateIndexBuffer
 	(
 		sizeof(ULONG) * ulNrOfIndices,
@@ -188,12 +190,12 @@ D3dIndexBuffer * D3dSystem::prepareIndices(ULONG const * const pulIndex, ULONG c
 		nullptr
 	);
 
-	assert(hres == D3D_OK);
+	Assert(hres == D3D_OK);
 
 	VOID *pVoid;
-	hres = d3d_indexBuffer->Lock(0, 0, static_cast<void**>(&pVoid), 0);  assert(hres == D3D_OK);
+	hres = d3d_indexBuffer->Lock(0, 0, static_cast<void**>(&pVoid), 0);  Assert(hres == D3D_OK);
 	memcpy(pVoid, pulIndex, ulNrOfIndices * sizeof(ULONG));
-	hres = d3d_indexBuffer->Unlock();                                     assert(hres == D3D_OK);
+	hres = d3d_indexBuffer->Unlock();                                     Assert(hres == D3D_OK);
 
 	return new D3dIndexBuffer(d3d_indexBuffer, ulNrOfIndices);
 }
@@ -314,7 +316,7 @@ D3dIndexBuffer * D3dSystem::createStripIndices(ULONG const ulModelWidth, ULONG c
 		}
 	}
 
-	assert(pulIndexRun - pulIndices == static_cast<int>(ulNrOfIndices));
+	Assert(pulIndexRun - pulIndices == static_cast<int>(ulNrOfIndices));
 
 	D3dIndexBuffer * const pRes = prepareIndices(pulIndices, ulNrOfIndices);
 
