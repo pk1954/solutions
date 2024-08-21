@@ -2,12 +2,12 @@
 //
 // EvolutionCore
 
-export module Gene;
+export module EvolutionCore:Gene;
 
 import Debug;
 import Random;
 import SaveCast;
-import GeneTypeLimits;
+import :GeneTypeLimits;
 
 export class Gene
 {

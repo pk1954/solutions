@@ -3,7 +3,7 @@
 // EvolutionCore
 //
 
-module GridDimensions;
+module EvolutionCore:GridDimensions;
 
 #include "grid_model.h"
 

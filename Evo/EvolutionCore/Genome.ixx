@@ -2,16 +2,14 @@
 //
 // EvolutionCore
 
-module;
-
-export module Genome;
+export module EvolutionCore:Genome;
 
 import EnumArray;
 import Types;
-import Action;
-import Gene;
-import GeneType;
-import EvolutionTypes;
+import :Action;
+import :Gene;
+import :GeneType;
+import :EvolutionTypes;
 
 class Random;
 

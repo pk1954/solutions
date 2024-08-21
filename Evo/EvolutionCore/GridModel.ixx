@@ -2,17 +2,17 @@
 //
 // EvolutionCore
 
-export module GridModel;
+export module EvolutionCore:GridModel;
 
 import Debug;
 import Random;
 import GridPointList;
-import GridField;
+import :GridField;
 import ActionOptions;
-import GridDimensions;
-import EvolutionTypes;
-import GridPoint;
-import GridRect;
+import :GridDimensions;
+import :EvolutionTypes;
+import :GridPoint;
+import :GridRect;
 import GridPOI;
 import GridCircle;
 import Manipulator;

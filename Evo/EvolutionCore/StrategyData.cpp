@@ -2,11 +2,11 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 
-module StrategyData;
+module EvolutionCore:StrategyData;
 
 MEM_INDEX    StrategyData::m_uiMaxPartnerMemory                 = MEM_INDEX(0);
 unsigned int StrategyData::m_uiNrInteractionsWithKnownCulprit   = 0;

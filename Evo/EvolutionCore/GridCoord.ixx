@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-export module GridCoord;
+export module EvolutionCore:GridCoord;
 
 import Types;
 import SaveCast;

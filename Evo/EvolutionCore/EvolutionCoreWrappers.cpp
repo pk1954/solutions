@@ -6,7 +6,7 @@ import RunTime;
 #include "symtab.h"
 #include "UtilityWrappers.h"
 #include "EvolutionCore.h"
-import EvolutionTypes;
+import :EvolutionTypes;
 #include "EvoPixelCoords.h"
 #include "EvolutionCoreWrapperHelpers.h"
 #include "EvolutionCoreWrappers.h"

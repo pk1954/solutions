@@ -3,11 +3,11 @@
 // EvolutionCore
 
 #include <algorithm>  // min/max templates
-import GridDimensions;
+import :GridDimensions;
 #include "PixelTypes.h"
 #include "EvoPixelCoords.h"
 
-import GridPoint;
+import :GridPoint;
 
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;
 static double const SQRT3_DIV3 = sqrt(3.) / 3.;

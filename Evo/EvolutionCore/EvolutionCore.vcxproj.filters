@@ -51,9 +51,6 @@
     <ClCompile Include="Strategy.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EvolutionCoreImpl.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="dump.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -184,9 +181,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GridPoint24.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="EvolutionCoreImpl.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="MortalityTable.ixx">

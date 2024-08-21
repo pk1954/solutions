@@ -2,15 +2,15 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 
-module Individual;
+module EvolutionCore:Individual;
 
 import Random;
 import Config;
-import Strategy;
+import :Strategy;
 
 static DefectAlways    StratD;
 static CooperateAlways StratC;

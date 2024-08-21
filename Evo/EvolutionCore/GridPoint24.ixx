@@ -2,11 +2,11 @@
 //
 // GridPoint packed as Int24
 
-export module GridPoint24;
+export module EvolutionCore:GridPoint24;
 
 import Debug;
 import Int24;
-import GridPoint;
+import :GridPoint;
 
 export class GridPoint24: public Int24  
 {

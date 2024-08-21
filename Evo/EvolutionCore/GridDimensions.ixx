@@ -5,11 +5,11 @@
 // knows static size of the GridModel and number of neighbors
 // contains functions directly dependent on GridModel size
 
-export module GridDimensions;
+export module EvolutionCore:GridDimensions;
 
 import std;
-import GridRect;
-import GridNeighbor;
+import :GridRect;
+import :GridNeighbor;
 
 using std::min;
 using std::max;
@@ -57,7 +57,7 @@ public:
 	}
 
 private:
-	using NEIGHBOR_GRID = vector< vector< NEIGHBORS > >;
+	using NEIGHBOR_GRID = vector<vector<NEIGHBORS>>;
 
 	static GridPoint       m_gridSize; 
 	static int             m_iNrOfNeighbors;
@@ -66,7 +66,7 @@ private:
 
 export inline bool const Neighbors(GridPoint const a, GridPoint const b)
 { 
-	GridPoint  const gpDiff { a - b };
+	GridPoint const gpDiff { a - b };
 	GridCoord const dx     { GridCoord(std::abs(gpDiff.GetXvalue())) }; 
 	GridCoord const dy     { GridCoord(std::abs(gpDiff.GetYvalue())) };
     return (

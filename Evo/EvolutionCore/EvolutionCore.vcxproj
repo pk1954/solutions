@@ -188,8 +188,6 @@
     <ClCompile Include="EvoDump.ixx" />
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCore.ixx" />
-    <ClCompile Include="EvolutionCoreImpl.cpp" />
-    <ClCompile Include="EvolutionCoreImpl.ixx" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.ixx" />
     <ClCompile Include="EvolutionCoreWrappers.ixx" />
     <ClCompile Include="EvolutionTypes.cpp" />

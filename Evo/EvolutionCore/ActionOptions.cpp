@@ -2,10 +2,10 @@
 //
 // EvolutionCore
 
-module ActionOptions;
+module EvolutionCore:ActionOptions;
 
 import std;
-import Genome;
+import :Genome;
 
 using std::endl;
 using std::setw;

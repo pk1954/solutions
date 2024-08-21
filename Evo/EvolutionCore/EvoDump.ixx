@@ -2,11 +2,11 @@
 //
 // EvolutionCore
 
-export module EvolutionDump;
+export module EvolutionCore:EvolutionDump;
 
 import std;
-import GridPoint;
-import GridCoord;
+import :GridPoint;
+import :GridCoord;
 
 class GridModel;
 class GridField;

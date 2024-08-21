@@ -2,10 +2,10 @@
 //
 // EvolutionCore
 
-export module StrategyData;
+export module EvolutionCore:StrategyData;
 
 import std;
-import EvolutionTypes;
+import :EvolutionTypes;
 
 export class StrategyData
 {

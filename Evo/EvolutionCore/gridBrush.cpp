@@ -2,11 +2,11 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 #include "grid_model.h"
 
-module GridBrush;
+module EvolutionCore:GridBrush;
 
 using namespace std;
 	

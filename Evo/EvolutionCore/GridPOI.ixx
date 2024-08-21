@@ -1,10 +1,10 @@
 // GridPOI.ixx
 //
 
-export module GridPOI;
+export module EvolutionCore:GridPOI;
 
-import EvolutionTypes;
-import GridPoint;
+import :EvolutionTypes;
+import :GridPoint;
 
 class GridPOI  // point of interest
 {

@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-export module GeneTypeLimits;
+export module EvolutionCore:GeneTypeLimits;
 
 import std;
 import Util;

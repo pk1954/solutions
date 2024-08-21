@@ -2,10 +2,10 @@
 //
 // EvolutionCore
 
-module;
+export module EvolutionCore:GridSelection;
 
-import GridDimensions;
-import GridRect;
+import :GridDimensions;
+import :GridRect;
 
 export class GridSelection
 {

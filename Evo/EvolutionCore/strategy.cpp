@@ -2,15 +2,15 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 
-module Strategy;
+module EvolutionCore:Strategy;
 
 import Random;
 import StrategyData;
-import Strategy;
+import :Strategy;
 
 bool Tit4Tat::InteractWith(StrategyData &data, IND_ID const idPartner) const
 {

@@ -2,11 +2,11 @@
 //
 // EvolutionCore
 
-export module Strategy;
+export module EvolutionCore:Strategy;
 
 import std;
-import EvolutionTypes;
-import StrategyData;
+import :EvolutionTypes;
+import :StrategyData;
 
 using std::function;
 

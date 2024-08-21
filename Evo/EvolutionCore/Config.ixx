@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-export module Config;
+export module EvolutionCore:Config;
 
 import std;
 import SaveCast;

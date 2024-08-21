@@ -2,16 +2,13 @@
 //
 // EvolutionCore
 
-module;
+export module EvolutionCore:GridBrush;
 
-#include <functional>
-
-export module GridBrush;
-
+import std;
 import Types;
-import EvolutionTypes;
-import GridPoint;
-import GridModel;
+import :EvolutionTypes;
+import :GridPoint;
+import :GridModel;
 
 export class GridBrush
 {

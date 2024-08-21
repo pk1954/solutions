@@ -2,9 +2,7 @@
 //
 // EvolutionCore
 
-module;
-
-export module PixelCore;
+export module EvolutionCore:PixelCore;
 
 import Types;
 

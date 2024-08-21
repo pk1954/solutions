@@ -2,9 +2,9 @@
 //
 // EvolutionCore
 
-module Interaction;
+module EvolutionCore:Interaction;
 
-import EvolutionTypes;
+import :EvolutionTypes;
 import Individual;
 import Config;
 

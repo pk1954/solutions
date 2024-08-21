@@ -2,17 +2,15 @@
 //
 // EvolutionCore
 
-module;
-
-export module EvoStatistics;
+export module EvolutionCore:EvoStatistics;
 
 import EnumArray;
-import TextBuffer;
-import EvolutionTypes;
-import EvolutionCore;
-import Strategy;
-import GridPoint;
 import XArray;
+import TextBuffer;
+import :EvolutionTypes;
+import EvolutionCore;
+import :Strategy;
+import :GridPoint;
 
 export template <typename T>
 class XaCounter : public XArray< T, Strategy::COUNT >

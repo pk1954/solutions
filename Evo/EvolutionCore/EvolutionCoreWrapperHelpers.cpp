@@ -3,7 +3,7 @@
 
 #include "ERRHNDL.H"
 #include "SCRIPT.H"
-import EvolutionTypes;
+import :EvolutionTypes;
 #include "EvolutionCoreWrapperHelpers.h"
 
 import Debug;

@@ -2,15 +2,15 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 
-export module GridNeighbor;
+export module EvolutionCore:GridNeighbor;
 
 import std;
-import GridPoint;
-import GridModel;
+import :GridPoint;
+import :GridModel;
 
 using std::vector;
 

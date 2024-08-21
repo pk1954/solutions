@@ -2,19 +2,19 @@
 //
 // EvolutionCore
 
-export module GridField;
+export module EvolutionCore:GridField;
 
 import std;
 import Debug;
 import Random;
 import Types;
-import Genome;
-import GeneType;
-import Strategy;
-import GridPoint;
-import Individual;
-import InterAction;
-import EvolutionTypes;
+import :Genome;
+import :GeneType;
+import :Strategy;
+import :GridPoint;
+import :Individual;
+import :InterAction;
+import :EvolutionTypes;
 
 export class GridField
 {
@@ -69,7 +69,7 @@ public:
 
     void ResetIndividual()                  { m_Individual.ResetIndividual(); }
     void SetEnergy(ENERGY_UNITS const sInc) { m_Individual.SetEnergy(sInc); }
-    void DecEnergy(ENERGY_UNITS const sDec) { m_Individual.IncEnergy(- sDec); }
+    void DecEnergy(ENERGY_UNITS const sDec) { m_Individual.IncEnergy(-sDec); }
     void IncEnergy(ENERGY_UNITS const sInc) { m_Individual.IncEnergy(sInc); }
 
     void ReduceFertilizer()                  { m_enFertilizer /= 2; }

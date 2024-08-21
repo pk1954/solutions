@@ -1,7 +1,7 @@
 // Config.cpp : 
 //
 
-module Config;
+module EvolutionCore:Config;
 
 import std;
 import Debug;

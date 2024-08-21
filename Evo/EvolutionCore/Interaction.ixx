@@ -2,10 +2,10 @@
 //
 // EvolutionCore
 
-export module InterAction;
+export module EvolutionCore:InterAction;
 
 import std;
-import Individual;
+import :Individual;
 
 using std::wostream;
 

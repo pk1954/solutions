@@ -2,11 +2,11 @@
 //
 // EvolutionCore
 
-export module GridRect;
+export module EvolutionCore:GridRect;
 
 import Types;
-import GridPoint;
-import GridCoord;
+import :GridPoint;
+import :GridCoord;
 
 export using GridRectSize = SizeType<GridCoord>;
 export using GridRect     = RectType<GridCoord>;

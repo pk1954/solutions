@@ -2,19 +2,19 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 #include <cstdlib> 
 #include <cmath> 
 
-module GridModel;
+module EvolutionCore:GridModel;
 
 import Config;
-import GridRect;
+import :GridRect;
 import GridPOI;
-import GridField;
-import Strategy;
+import :GridField;
+import :Strategy;
 import Individual;
 import Interaction;
 import EvolutionDump;
@@ -23,7 +23,7 @@ import MortalityTable;
 import ViewCollection;
 import GplIterator;
 import gpList;
-import Genome;
+import :Genome;
 
 //#ifndef NDEBUG
 //    #define CHECK_INDIVIDUALS CheckIndividuals(* this)

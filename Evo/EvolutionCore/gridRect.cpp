@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-module GridRect;
+module EvolutionCore:GridRect;
 
 void Apply2Rect
 (

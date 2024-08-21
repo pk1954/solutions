@@ -2,14 +2,14 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 #include "grid_model.h"
 
-module GridNeighbor;
+module EvolutionCore:GridNeighbor;
 
-import GridPoint;
-import GridRect;
+import :GridPoint;
+import :GridRect;
 
 int Neighborhood::m_iNrOfNeighbors = 0;
 

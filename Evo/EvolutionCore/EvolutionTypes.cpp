@@ -1,10 +1,10 @@
 // EvolutionTypes.cpp
 //
 
-module EvolutionTypes;
+module EvolutionCore:EvolutionTypes;
 
 import std;
-import Strategy;
+import :Strategy;
 
 using std::unordered_map;
 using std::setbase;

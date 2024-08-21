@@ -2,14 +2,12 @@
 //
 // EvolutionCore
 
-module;
-
-export module EvoPixelCoords;
+export module EvolutionCore:EvoPixelCoords;
 
 import Types;
 import SmoothMoveFp;
-import GridPoint;
-import GridRect;
+import :GridPoint;
+import :GridRect;
 
 export class EvoPixelCoords
 {

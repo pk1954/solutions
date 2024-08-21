@@ -2,14 +2,11 @@
 //
 // EvolutionCore
 
-module;
+export module EvolutionCore:GridPoint;
 
-#include <functional>
-
-export module GridPoint;
-
+import std;
 import Types;
-import GridCoord;
+import :GridCoord;
 
 using std::function;
 

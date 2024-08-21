@@ -2,9 +2,11 @@
 //
 // EvolutionCore
 
+export module EvolutionCore:MortalityTable;
+
 import std;
 import Random;
-import EvolutionTypes;
+import :EvolutionTypes;
 
 class MortalityTable
 {

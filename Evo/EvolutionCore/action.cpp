@@ -2,10 +2,10 @@
 //
 // EvolutionCore
 
- module Action;
+module EvolutionCore:Action;
 
 import std;
-import Genome;
+import :Genome;
 
 using std::function;
 

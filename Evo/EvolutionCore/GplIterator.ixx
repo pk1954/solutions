@@ -2,14 +2,14 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 
-export module GplIterator;
+export module EvolutionCore:GplIterator;
 
-import GridPoint;
-import GridModel;
+import :GridPoint;
+import :GridModel;
 
 export class GplIterator
 {

@@ -6,10 +6,10 @@ import Debug;
 #include <limits.h>
 
 import Config;
-import GridRect;
-import GridNeighbor;
+import :GridRect;
+import :GridNeighbor;
 import Grid_model;
-import GridField;
+import :GridField;
 
 void GridModel::FoodGrowth()
 {

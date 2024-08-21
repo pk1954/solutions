@@ -2,14 +2,14 @@
 //
 // EvolutionCore
 
-export module ActionOptions;
+export module EvolutionCore:ActionOptions;
 
 import std;
 import Random;
 import EnumArray;
-import EvolutionTypes;
-import Action;
-import Genome;
+import :EvolutionTypes;
+import :Action;
+import :Genome;
 
 using std::wostream;
 

@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-export module Action;
+export module EvolutionCore:Action;
 
 import std;
 

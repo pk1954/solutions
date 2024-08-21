@@ -2,7 +2,7 @@
 //
 // EvolutionCore
 
-export module GeneType;
+export module EvolutionCore:GeneType;
 
 import std;
 

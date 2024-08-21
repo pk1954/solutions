@@ -2,12 +2,12 @@
 //
 // EvolutionCore
 
-export module EvolutionCoreWrapperHelpers;
+export module EvolutionCore:EvolutionCoreWrapperHelpers;
 
 import RunTime;
-import GridCoord;
-import GridPoint;
-import GridRect;
+import :GridCoord;
+import :GridPoint;
+import :GridRect;
 
 extern GridCoord ScrReadGridCoord(Script &);
 extern GridPoint ScrReadGridPoint(Script &);

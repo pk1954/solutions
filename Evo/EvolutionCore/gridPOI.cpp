@@ -2,11 +2,11 @@
 //
 
 
-module;
+module EvolutionCore:;
 
 #include "EvolutionCoreImpl.h"
 
-module GridPOI;
+module EvolutionCore:GridPOI;
 
 GridPoint GridPOI::m_gpPOI = GP_NULL;
 

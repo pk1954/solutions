@@ -2,15 +2,15 @@
 //
 // EvolutionCore
 
-module;
+module EvolutionCore:;
 
 import Debug;
 
-module Genome;
+module EvolutionCore:Genome;
 
 import Random;
 import Config;
-import Strategy;
+import :Strategy;
 
 // static members and functions
 

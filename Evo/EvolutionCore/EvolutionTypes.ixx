@@ -2,13 +2,13 @@
 //
 // EvolutionCore
 
-export module EvolutionTypes;
+export module EvolutionCore:EvolutionTypes;
 
 import std;
 import Types;
 import SaveCast;
-import GeneType;
-import Action;
+import :GeneType;
+import :Action;
 
 export using ENERGY_UNITS   = NamedType< short, struct ENERGY_UNITS_Parameter >;
 export using EVO_GENERATION = NamedType< long, struct EVO_GENERATION_Parameter >;
