@@ -2,12 +2,9 @@
 //
 // History
 
-module;
-
-#include <exception>
-
 export module HistorySystem;
 
+import std;
 import Observable;
 import GenerationCmd;
 import GenCmdList;

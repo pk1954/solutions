@@ -1,15 +1,14 @@
-// win32_performanceWindow.h 
+// PerformanceWindow.ixx
 //
 // EvoWindows
 
-module;
+export module PerformanceWindow;
 
-#include "win32_textWindow.h"
+import TextWindow:
+import ActionTimer;
+import Delay;
 
-class ActionTimer;
-class Delay;
-
-class PerformanceWindow: public TextWindow
+export class PerformanceWindow: public TextWindow
 {
 public:
     PerformanceWindow();

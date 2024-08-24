@@ -2,13 +2,9 @@
 //
 // Win32_history
 
-module;
-
-#include "strsafe.h"
-#include "Windows.h"
-
 module WinHistory:GenDisplayWindow;
 
+import WinBasics;
 import Win32_Util;
 import BaseWindow;
 

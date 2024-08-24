@@ -263,15 +263,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GenerationDisplay.h" />
-    <ClInclude Include="win32_evoAppWindow.h" />
-    <ClInclude Include="win32_evoController.h" />
-    <ClInclude Include="win32_resetDlg.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="EvoAppMenu.ixx" />
+    <ClCompile Include="EvoAppWindow.ixx" />
+    <ClCompile Include="EvoController.ixx" />
     <ClCompile Include="Evolution.cpp" />
     <ClCompile Include="GenerationDisplay.cpp" />
+    <ClCompile Include="GenerationDisplay.ixx" />
+    <ClCompile Include="ResetDlg.ixx" />
     <ClCompile Include="Version.ixx" />
     <ClCompile Include="EvoAppMenu.cpp" />
     <ClCompile Include="EvoAppWindow.cpp" />
@@ -287,6 +285,12 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
+      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
       <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
     </ProjectReference>

@@ -2,12 +2,7 @@
 //
 // Evolutopn
 
-
-
-#include <chrono>
-#include "WinUser.h"
-
-using namespace std::literals::chrono_literals;
+import std;
 
 // EvoCoreLib interfaces
 
@@ -29,20 +24,20 @@ import SpeedControl;
 import ZoomControl;
 
 // infrastructure
-#include "LogarithmicTrackbar.h"
-#include "pixelTypes.h"
-#include "ObserverInterface.h"
-#include "win32_focusPoint.h"
+import LogarithmicTrackbar;
+import Types;
+import ObserverInterface;
+import FocusPoint;
 
 // scripting and tracing
 
 import EvolutionDump;
 import Trace;
 import RunTime;
-#include "UtilityWrappers.h"
-#include "win32_wrappers.h"
-#include "win32_EvoEditorWrappers.h"
-#include "win32_histWrappers.h"
+import UtilityWrappers;
+import Wrappers;
+import EvoEditorWrappers;
+import HistWrappers;
 
 // system and resources
 
@@ -51,9 +46,10 @@ import Resource;
 
 // application
 
-#include "win32_evoAppWindow.h"
-
+import EvoAppWindow;
 import EvoCoreLib;
+
+using namespace std::literals::chrono_literals;
 
 EvoAppWindow::EvoAppWindow() :
 	m_pGraphics(nullptr),

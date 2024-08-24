@@ -110,7 +110,7 @@ export wstring GetCurrentDateAndTime()
 	return woss.str();
 }
 
-export extern void UpperCase(wstring& str)
+export void UpperCase(wstring& str)
 {
 	for (auto& c : str)
 		c = toupper(c);

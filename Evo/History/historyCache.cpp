@@ -2,14 +2,11 @@
 //
 // History
 
-module;
-
-#include <windows.h>
-
 module HistoryCache;
 
 import std;
 import Debug;
+import WinBasics;
 
 #ifndef NDEBUG
 	#define CHECK_CONSISTENCY() checkConsistency()

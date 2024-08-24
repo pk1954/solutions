@@ -1,15 +1,14 @@
-// Win32_protocolServer.h 
+// ProtocolServer.ixx
 //
-// Win32_utilities
+// EvoWindows
 
-module;
+export module ProtocolServer;
 
 import ObserverInterface;
+import EvoCoreLib;
+import HistorySystem;
 
-class EvolutionCore;
-class HistorySystem;
-
-class ProtocolServer : public ObserverInterface
+export class ProtocolServer : public ObserverInterface
 {
 public:
 	ProtocolServer();

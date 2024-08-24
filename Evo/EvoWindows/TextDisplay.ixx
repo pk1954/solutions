@@ -37,7 +37,7 @@ public:
 		m_pBuffer->clear();
 	}
 
-	std::wostringstream& Buffer()
+	wostringstream& Buffer()
 	{
 		return *m_pBuffer;
 	}

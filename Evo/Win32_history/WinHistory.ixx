@@ -2,8 +2,6 @@
 //
 // Win32_history
 
-module;
-
 export module WinHistory;
 
 export import :GenDisplayWindow;

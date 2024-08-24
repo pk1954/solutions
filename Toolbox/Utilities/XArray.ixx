@@ -53,7 +53,7 @@ public:
     T & General() { return m_tGeneral; }
     T & operator[] (unsigned int uiIndex) { return m_tArray.at(uiIndex); }
 
-	void Apply2XArray(function< void (T &) > const & func)
+	void Apply2XArray(function<void (T &)> const & func)
 	{
         for (auto & elem : m_tArray)
 		{

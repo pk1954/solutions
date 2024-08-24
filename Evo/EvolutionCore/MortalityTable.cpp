@@ -2,10 +2,10 @@
 //
 // EvoCoreLib
 
-
 module EvoCoreLib:MortalityTable;
 
 import std;
+import Debug;
 
 using std::array;
 

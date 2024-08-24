@@ -1,14 +1,13 @@
-// win32_focusPoint.h
+// FocusPoint.ixx
 //
 // EvoWindows
 
-module;
+export module FocusPoint;
 
 import EvoCoreLib;
 import Observable;
 import HistGeneration;
-
-class RootWindow;
+import RootWindow;
 
 class FocusPoint: public Observable
 {

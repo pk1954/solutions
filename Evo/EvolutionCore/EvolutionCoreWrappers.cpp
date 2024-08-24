@@ -12,8 +12,7 @@ import :EvolutionTypes;
 import :EvolutionCore;
 import :EvoPixelCoords;
 import :EvolutionCoreWrapperHelpers;
-
-import GridPOI;
+import :GridPOI;
 
 static EvolutionCore  * m_pCore;
 static EvoPixelCoords * m_pPixCoords;
@@ -184,30 +183,30 @@ void DefineCoreWrapperFunctions(EvolutionCore * pCore)
         SymbolTable::ScrDefConst(L"SetBrushIntensity", new WrapSetBrushIntensity);
         SymbolTable::ScrDefConst(L"SetBrushMode",      new WrapSetBrushMode);
 
-		DEF_ULONG_CONST(Strategy::Id::defect);
-		DEF_ULONG_CONST(Strategy::Id::cooperate);
-		DEF_ULONG_CONST(Strategy::Id::tit4tat);
+		SymbolTable::ScrDefConst(L"Strategy::Id::defect",    static_cast<unsigned long>(Strategy::Id::defect   ));
+		SymbolTable::ScrDefConst(L"Strategy::Id::cooperate", static_cast<unsigned long>(Strategy::Id::cooperate));
+		SymbolTable::ScrDefConst(L"Strategy::Id::tit4tat",   static_cast<unsigned long>(Strategy::Id::tit4tat  ));
 
-		DEF_ULONG_CONST(tShape::Rect);
-		DEF_ULONG_CONST(tShape::Circle);
-		DEF_ULONG_CONST(tShape::GridModel);
+        SymbolTable::ScrDefConst(L"tShape::Rect",            static_cast<unsigned long>(tShape::Rect           ));
+		SymbolTable::ScrDefConst(L"tShape::Circle",          static_cast<unsigned long>(tShape::Circle         ));
+		SymbolTable::ScrDefConst(L"tShape::GridModel",       static_cast<unsigned long>(tShape::GridModel      ));
 
-		DEF_ULONG_CONST(tManipulator::set);
-		DEF_ULONG_CONST(tManipulator::max);
-		DEF_ULONG_CONST(tManipulator::min);
-		DEF_ULONG_CONST(tManipulator::add);
-		DEF_ULONG_CONST(tManipulator::subtract);
-		DEF_ULONG_CONST(tManipulator::mean);
+		SymbolTable::ScrDefConst(L"tManipulator::set",       static_cast<unsigned long>(tManipulator::set      ));
+		SymbolTable::ScrDefConst(L"tManipulator::max",       static_cast<unsigned long>(tManipulator::max      ));
+		SymbolTable::ScrDefConst(L"tManipulator::min",       static_cast<unsigned long>(tManipulator::min      ));
+		SymbolTable::ScrDefConst(L"tManipulator::add",       static_cast<unsigned long>(tManipulator::add      ));
+		SymbolTable::ScrDefConst(L"tManipulator::subtract",  static_cast<unsigned long>(tManipulator::subtract ));
+		SymbolTable::ScrDefConst(L"tManipulator::mean",      static_cast<unsigned long>(tManipulator::mean     ));
 
-		DEF_ULONG_CONST(tBrushMode::move);
-		DEF_ULONG_CONST(tBrushMode::randomStrat);
-		DEF_ULONG_CONST(tBrushMode::cooperate);
-		DEF_ULONG_CONST(tBrushMode::defect);
-		DEF_ULONG_CONST(tBrushMode::tit4tat);
-		DEF_ULONG_CONST(tBrushMode::noAnimals);
-		DEF_ULONG_CONST(tBrushMode::mutRate);
-		DEF_ULONG_CONST(tBrushMode::fertility);
-		DEF_ULONG_CONST(tBrushMode::food);
-		DEF_ULONG_CONST(tBrushMode::fertilizer);
+        SymbolTable::ScrDefConst(L"tBrushMode::move",        static_cast<unsigned long>(tBrushMode::move       ));
+		SymbolTable::ScrDefConst(L"tBrushMode::randomStrat", static_cast<unsigned long>(tBrushMode::randomStrat));
+		SymbolTable::ScrDefConst(L"tBrushMode::cooperate",   static_cast<unsigned long>(tBrushMode::cooperate  ));
+		SymbolTable::ScrDefConst(L"tBrushMode::defect",      static_cast<unsigned long>(tBrushMode::defect     ));
+		SymbolTable::ScrDefConst(L"tBrushMode::tit4tat",     static_cast<unsigned long>(tBrushMode::tit4tat    ));
+		SymbolTable::ScrDefConst(L"tBrushMode::noAnimals",   static_cast<unsigned long>(tBrushMode::noAnimals  ));
+		SymbolTable::ScrDefConst(L"tBrushMode::mutRate",     static_cast<unsigned long>(tBrushMode::mutRate    ));
+		SymbolTable::ScrDefConst(L"tBrushMode::fertility",   static_cast<unsigned long>(tBrushMode::fertility  ));
+		SymbolTable::ScrDefConst(L"tBrushMode::food",        static_cast<unsigned long>(tBrushMode::food       ));
+		SymbolTable::ScrDefConst(L"tBrushMode::fertilizer",  static_cast<unsigned long>(tBrushMode::fertilizer ));
 	}
 }

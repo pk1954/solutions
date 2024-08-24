@@ -9,6 +9,6 @@ import :GridCoord;
 import :GridPoint;
 import :GridRect;
 
-extern GridCoord ScrReadGridCoord(Script &);
-extern GridPoint ScrReadGridPoint(Script &);
-extern GridRect  ScrReadGridRect (Script &);
+export GridCoord ScrReadGridCoord(Script &);
+export GridPoint ScrReadGridPoint(Script &);
+export GridRect  ScrReadGridRect (Script &);

@@ -1,50 +1,47 @@
-// win32_evoAppWindow.h : 
+// EvoAppWindow.ixx
 //
 // Evolution
 
 module;
 
-#include "win32_event.h"
-#include "win32_delay.h"
-#include "win32_actionTimer.h"
+import std;
+import D3D_driver;
+import Event;
+import Delay;
+import ActionTimer;
 
 // infrastructure
 
-#include "win32_appWindowInterface.h"
-#include "win32_protocolServer.h"
-#include "win32_scriptHook.h"
-#include "win32_colorManager.h"
-#include "win32_EvoWorkThreadInterface.h"
-#include "EvoHistorySysGlue.h"
-#include "EvoReadBuffer.h"
+import WppWindowInterface;
+import ProtocolServer;
+import ScriptHook;
+import ColorManager;
+import EvoWorkThreadInterface;
+import EvoHistorySysGlue;
+import EvoReadBuffer;
 
 // application
 
-#include "win32_evoAppMenu.h"
-#include "win32_evoController.h"
+import EvoAppMenu;
+import EvoController;
+import RunTime;
+import FocusPoint;
+import GridWindow;
+import EvoEditorWindow;
+import StatisticsWindow;
+import CrsrWindow;
+import PerformanceWindow;
+import GenerationDisplay;
+import StatusBar;
+import ScriptHook;
+import GraphicsInterface;
+import EvoModelDataGlue;
+import EvolutionCore;
+import DspOptWindow;
+import EvoController;
+import AppMenu;
 
-import std;
-import D3D_driver;
-
-class Script;
-class FocusPoint;
-class GridWindow;
-class EvoEditorWindow;
-class StatisticsWindow;
-class CrsrWindow;
-class PerformanceWindow;
-class GenerationDisplay;
-class StatusBar;
-class ScriptHook;
-class GraphicsInterface;
-class D3D_driver;
-class EvoModelDataGlue;
-class EvolutionCore;
-class DspOptWindow;
-class EvoController;
-class AppMenu;
-
-class EvoAppWindow : public AppWindowInterface
+export class EvoAppWindow : public AppWindowInterface
 {
 public:
     EvoAppWindow();

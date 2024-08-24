@@ -1,13 +1,12 @@
-// GenerationDisplay.h
+// GenerationDisplay.ixx
 //
 // Evolution
 
-module;
+export module GenerationDisplay;
 
-#include "EvoReadBuffer.h"
-#include "ObserverInterface.h"
-
-class StatusBar;
+import ObserverInterface;
+import EvoReadBuffer;
+import StatusBar;
 
 class GenerationDisplay : public ObserverInterface
 {
@@ -21,4 +20,3 @@ private:
 
 	RefreshRate * m_pRefreshRate;
 };
-

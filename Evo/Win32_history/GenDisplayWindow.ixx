@@ -2,12 +2,9 @@
 //
 // Win32_history
 
-module;
-
-#include "Windows.h"
-
 export module WinHistory:GenDisplayWindow;
 
+import WinBasics;
 import BaseWindow;
 import HistGeneration;
 

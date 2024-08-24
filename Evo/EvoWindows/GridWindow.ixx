@@ -1,25 +1,22 @@
-// win32_gridWindow.h : 
+// GridWindow.ixx
 //
 // EvoWindows
 
-module;
+export module GridWindow;
 
-#include "GridPoint.h"
-#include "EvoPixelCoords.h"
-#include "EvoReadBuffer.h"
-#include "win32_modelWindow.h"
-#include "win32_draw.h"
+import EvoCoreLib;
+import EvoReadBuffer:
+import ModelWindow;
+import DrawFrame;
+import GraphicsInterface;
+import EvoWorkThreadInterface;
+import DspOptWindow;
+import ObserverInterface;
+import ActionTimer;
+import FocusPoint;
+import ColorManager;
 
-class EvolutionCore;
-class GraphicsInterface;
-class EvoWorkThreadInterface;
-class DspOptWindow;
-class ObserverInterface;
-class ActionTimer;
-class FocusPoint;
-class ColorManager;
-
-class GridWindow : public ModelWindow
+export class GridWindow : public ModelWindow
 {
 public:
 	static void InitClass

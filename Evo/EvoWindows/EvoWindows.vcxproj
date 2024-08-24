@@ -155,9 +155,18 @@
     <ClCompile Include="DrawFrame.ixx" />
     <ClCompile Include="DspOptWindow.ixx" />
     <ClCompile Include="EvoEditor.ixx" />
+    <ClCompile Include="EvoEditorWrappers.ixx" />
     <ClCompile Include="EvoReadBuffer.ixx" />
+    <ClCompile Include="EvoWorkThread.ixx" />
+    <ClCompile Include="EvoWorkThreadInterface.ixx" />
+    <ClCompile Include="FocusPoint.ixx" />
+    <ClCompile Include="GridWindow.ixx" />
     <ClCompile Include="HistWrappers.ixx" />
+    <ClCompile Include="PackGridPoint.ixx" />
+    <ClCompile Include="PerformanceWindow.ixx" />
+    <ClCompile Include="ProtocolServer.ixx" />
     <ClCompile Include="Resource.ixx" />
+    <ClCompile Include="Statistics.ixx" />
     <ClCompile Include="TextDisplay.ixx" />
     <ClCompile Include="ColorManager.cpp" />
     <ClCompile Include="CrsrWindow.cpp" />
@@ -173,22 +182,17 @@
     <ClCompile Include="EvoWorkThread.cpp" />
     <ClCompile Include="EvoWorkThreadInterface.cpp" />
     <ClCompile Include="Wrappers.cpp" />
+    <ClCompile Include="Wrappers.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_EvoEditorWrappers.h" />
-    <ClInclude Include="win32_focusPoint.h" />
-    <ClInclude Include="win32_gridWindow.h" />
-    <ClInclude Include="win32_packGridPoint.h" />
-    <ClInclude Include="win32_performanceWindow.h" />
-    <ClInclude Include="win32_protocolServer.h" />
-    <ClInclude Include="win32_statistics.h" />
-    <ClInclude Include="win32_EvoWorkThread.h" />
-    <ClInclude Include="win32_EvoWorkThreadInterface.h" />
-    <ClInclude Include="win32_wrappers.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
       <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EvolutionCore\EvolutionCore.vcxproj">
+      <Project>{561ad550-b857-4d93-aa39-5ca48e48e02f}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
       <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>

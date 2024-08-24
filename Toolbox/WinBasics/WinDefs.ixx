@@ -25,6 +25,7 @@ export
     using DWORD                 = DWORD;
     using WORD                  = WORD;
     using DWORD_PTR             = DWORD_PTR;
+    using MAKELONG              = MAKELONG;
     using LPACCEL               = LPACCEL;
     using LPCWSTR               = LPCWSTR;
     using LPCTSTR               = LPCTSTR;

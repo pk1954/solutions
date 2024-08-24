@@ -2,10 +2,6 @@
 //
 // Win32_history
 
-module;
-
-#include "Windowsx.h"
-
 module WinHistory:HistWindow;
 
 import std;

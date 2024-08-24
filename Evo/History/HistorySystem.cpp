@@ -1,11 +1,18 @@
 // HistorySystem.cpp
 //
-
-module;
-
-#include <Windows.h>
+// History
 
 module HistorySystem;
+
+import Debug;
+import SaveCast;
+import HistSlot;
+import HistSlotNr;
+import HistoryCache;
+import HistoryIterator;
+import HistGeneration;
+import ObserverInterface;
+import WinBasics;
 
 //import HistorySystem;
 //
@@ -18,16 +25,6 @@ module HistorySystem;
 //{ 
 //	return sizeof(HistCacheItem);  
 //}
-
-import Debug;
-import SaveCast;
-import HistSlot;
-import HistSlotNr;
-import HistoryCache;
-import HistoryIterator;
-import HistGeneration;
-import ObserverInterface;
-
 // public member functions
 
 HistorySystem::HistorySystem() :

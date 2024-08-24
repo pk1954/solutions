@@ -1,27 +1,23 @@
-// win32_EvoWorkThread.h
+// EvoWorkThread.ixx
 //
 // EvoWindows
 
-module;
-
-#include "win32_WorkThread.h"
-
 export module EvoWorkThread;
 
+import WorkThread;
 import GridPoint24;
 import HistGeneration;
-
-class Delay;
-class ActionTimer;
-class ColorManager;
-class EvoEditorWindow;
-class RootWindow;
-class EvolutionCore;
-class WinManager;
-class HistorySystem;
-class EventInterface;
-class EvoHistorySysGlue;
-class EvoWorkThreadInterface;
+import Delay;
+import ActionTimer;
+import ColorManager;
+import EvoEditorWindow;
+import RootWindow;
+import EvolutionCore;
+import WinManager;
+import HistorySystem;
+import EventInterface;
+import EvoHistorySysGlue;
+import EvoWorkThreadInterface;
 
 export class EvoWorkThreadMessage
 {

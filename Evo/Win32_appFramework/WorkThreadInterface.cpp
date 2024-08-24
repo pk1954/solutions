@@ -1,12 +1,13 @@
-// win32_workThreadInterface.cpp
+// WorkThreadInterface.cpp
 //
 // Win32_appFramework
 
+module WorkThreadInterface;
 
 import Debug;
-#include "win32_script.h"
-#include "win32_WorkThread.h"
-#include "win32_WorkThreadInterface.h"
+import RunTime;
+import WorkThread;
+import WorkThreadInterface;
 
 using std::wostream;
 using std::wcout;

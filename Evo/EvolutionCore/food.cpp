@@ -9,7 +9,7 @@ import Debug;
 import :EvoConfig;
 import :GridRect;
 import :GridNeighborhood;
-import :Grid_model;
+import :GridModel;
 import :GridField;
 
 void GridModel::FoodGrowth()

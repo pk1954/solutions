@@ -6,9 +6,7 @@ module DspOptWindow;
 
 import std;
 import BaseDialog;
-import GridPoint;
-
-class EvolutionCore;
+import EvoCoreLib;
 
 class DspOptWindow : public BaseDialog
 {

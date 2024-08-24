@@ -4,6 +4,9 @@
 
 export module EvoAppMenu;
 
+import WinBasics;
+import WorkThreadInterface;
+import WinManager;
 import AppMenu;
 
 class EvoAppMenu : public AppMenu

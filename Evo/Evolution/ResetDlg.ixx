@@ -1,12 +1,12 @@
-// win32_resetDialog.h 
+// ResetDialog.ixx
 //
 // Evolution
 
-module;
+export module ResetDlg;
 
-#include "Windows.h"
+import WinBasics;
 
-class ResetDialog
+export class ResetDialog
 {
 public:
 	static int Show(HWND const);

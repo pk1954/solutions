@@ -3,11 +3,10 @@
 // EvoWindows
 
 import EvoCoreLib;
-#include "EvoReadBuffer.h"
-#include "win32_graphicsInterface.h"
-#include "win32_displayOptions.h"
-#include "win32_colorManager.h"
-#include "win32_draw.h"
+import EvoReadBuffer;
+import GraphicsInterface;
+import DisplayOptions;
+import ColorManager;
 
 static COLORREF const CLR_BLACK  = RGB(  0,   0,   0);
 static COLORREF const CLR_GREY   = RGB(128, 128, 128);

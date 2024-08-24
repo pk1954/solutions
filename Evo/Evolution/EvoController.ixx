@@ -1,20 +1,20 @@
-// win32_evoController.h
+// EvoController.ixx
 //
 // Evolution
 
-module;
+export module EvoController;
 
-class EvoAppWindow;
-class Delay;
-class StatusBar;
-class EvoWorkThreadInterface;
-class EvoHistorySysGlue;
-class WinManager;
-class GridWindow;
-class EvoEditorWindow;
-class ColorManager;
+import EvoAppWindow;
+import Delay;
+import StatusBar;
+import EvoWorkThreadInterface;
+import EvoHistorySysGlue;
+import WinManager;
+import GridWindow;
+import EvoEditorWindow;
+import ColorManager;
 
-class EvoController 
+export class EvoController 
 {
 public:
 	EvoController

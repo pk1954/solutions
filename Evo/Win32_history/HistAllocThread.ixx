@@ -2,12 +2,9 @@
 //
 // Win32_history
 
-module;
-
-#include <windows.h>
-
 export module WinHistory:HistAllocThread;
 
+import WinBasics;
 import HistorySystem;
 import Thread;
 

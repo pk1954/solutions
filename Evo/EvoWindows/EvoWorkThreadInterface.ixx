@@ -1,25 +1,23 @@
-// win32_EvoWorkThreadInterface.h
+// EvoWorkThreadInterface.ixx
 //
 // EvoWindows
 
-module;
+export module EvoWorkThreadInterface;
 
-#include <fstream>
-#include "boolOp.h"
-#include "win32_WorkThreadInterface.h"
-
+import std;
+import BoolOp;
 import Strategy;
 import GridRect;
 import GridField;
 import EvolutionTypes;
-
-class ColorManager;
-class ActionTimer;
-class EventInterface;
-class Delay;
-class ObserverInterface;
-class EvoHistorySysGlue;
-class EvoWorkThread;
+import ColorManager;
+import ActionTimer;
+import EventInterface;
+import Delay;
+import ObserverInterface;
+import EvoHistorySysGlue;
+import EvoWorkThread;
+import WorkThreadInterface;
 
 class EvoWorkThreadInterface : public WorkThreadInterface
 {

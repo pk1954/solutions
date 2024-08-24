@@ -1,15 +1,16 @@
-// win32_statistics.h 
+// Statistics.ixx
 //
+// EvoWindows
 
-module;
+export module Statistics;
 
-#include "EvolutionCore.h"
-#include "EvoReadBuffer.h"
-#include "win32_textWindow.h"
+import WinBasics;
+import EvolCoreLib;
+import EvoReadBuffer;
+import TextWindow;
+import EvoStatistics;
 
-class EvoStatistics;
-
-class StatisticsWindow : public TextWindow
+export class StatisticsWindow : public TextWindow
 {
 public:
     StatisticsWindow();
