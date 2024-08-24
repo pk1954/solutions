@@ -1,9 +1,13 @@
 // MortalityTable.cpp 
 //
-// EvolutionCore
+// EvoCoreLib
 
 
-#include "MortalityTable.h"
+module EvoCoreLib:MortalityTable;
+
+import std;
+
+using std::array;
 
 std::array< unsigned int, MortalityTable::MAX_LIFE_SPAN + 1 > MortalityTable::m_mortalityTable;
 

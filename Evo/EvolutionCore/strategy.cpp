@@ -1,15 +1,12 @@
 // Strategy.cpp : 
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+module EvoCoreLib:Strategy;
 
 import Debug;
-
-module EvolutionCore:Strategy;
-
 import Random;
-import StrategyData;
+import :StrategyData;
 import :Strategy;
 
 bool Tit4Tat::InteractWith(StrategyData &data, IND_ID const idPartner) const

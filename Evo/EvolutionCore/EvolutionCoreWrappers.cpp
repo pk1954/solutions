@@ -1,22 +1,24 @@
 // EvolutionCoreWrappers.cpp : wrapper functions for unit tests and scripting of application
 //
+// EvoCoreLib
+
+module EvoCoreLib:EvolutionCoreWrappers;
 
 import Debug;
 import RunTime;
-#include "symtab.h"
-#include "UtilityWrappers.h"
-#include "EvolutionCore.h"
+import IoUtil;
+import UtilityWrappers;
 import :EvolutionTypes;
-#include "EvoPixelCoords.h"
-#include "EvolutionCoreWrapperHelpers.h"
-#include "EvolutionCoreWrappers.h"
+import :EvolutionCore;
+import :EvoPixelCoords;
+import :EvolutionCoreWrapperHelpers;
 
 import GridPOI;
 
 static EvolutionCore  * m_pCore;
 static EvoPixelCoords * m_pPixCoords;
 
-class WrapSetPoi : public Script_Functor
+class WrapSetPoi : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -26,7 +28,7 @@ public:
     }
 };
 
-class WrapClearPoi : public Script_Functor
+class WrapClearPoi : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -35,7 +37,7 @@ public:
     }
 };
 
-class WrapDumpGridPointList : public Script_Functor
+class WrapDumpGridPointList : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -44,7 +46,7 @@ public:
     }
 };
 
-class WrapCompute : public Script_Functor
+class WrapCompute : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -53,7 +55,7 @@ public:
     }
 };
 
-class WrapResetModel : public Script_Functor
+class WrapResetModel : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -62,14 +64,14 @@ public:
     }
 };
 
-class WrapPause : public Script_Functor
+class WrapPause : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
     { }
 };
 
-class WrapModelDoEdit : public Script_Functor
+class WrapModelDoEdit : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -79,7 +81,7 @@ public:
     }
 };
 
-class WrapSetBrushShape : public Script_Functor
+class WrapSetBrushShape : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -90,7 +92,7 @@ public:
     }
 };
 
-class WrapSetBrushRadius : public Script_Functor
+class WrapSetBrushRadius : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -100,7 +102,7 @@ public:
     }
 };
 
-class WrapSetBrushIntensity : public Script_Functor
+class WrapSetBrushIntensity : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -110,7 +112,7 @@ public:
     }
 };
 
-class WrapSetBrushMode : public Script_Functor
+class WrapSetBrushMode : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -121,7 +123,7 @@ public:
     }
 };
 
-class WrapPixel2GridPos : public Script_Functor
+class WrapPixel2GridPos : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -132,7 +134,7 @@ public:
     }
 };
 
-class WrapSetFieldSize : public Script_Functor
+class WrapSetFieldSize : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -141,7 +143,7 @@ public:
     }
 };
 
-class WrapMoveGrid : public Script_Functor
+class WrapMoveGrid : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -155,9 +157,9 @@ void DefineEvoPixelCoordsWrapperFunctions(EvoPixelCoords * pCoords)
 {
     m_pPixCoords = pCoords;
 
-    DEF_FUNC(Pixel2GridPos);
-    DEF_FUNC(SetFieldSize);
-    DEF_FUNC(MoveGrid);
+    SymbolTable::ScrDefConst(L"Pixel2GridPos", new WrapPixel2GridPos);
+    SymbolTable::ScrDefConst(L"SetFieldSize",  new WrapSetFieldSize);
+    SymbolTable::ScrDefConst(L"MoveGrid",      new WrapMoveGrid);
 }
 
 void DefineCoreWrapperFunctions(EvolutionCore * pCore)
@@ -169,19 +171,18 @@ void DefineCoreWrapperFunctions(EvolutionCore * pCore)
 	if (bFirst)
 	{
 		bFirst = false;
-		DEF_FUNC(Compute);
-		DEF_FUNC(DumpGridPointList);
-		DEF_FUNC(ResetModel);
-		DEF_FUNC(SetPoi);
-		DEF_FUNC(ClearPoi);
-		DEF_FUNC(Include);
-		DEF_FUNC(Pause);
-
-		DEF_FUNC(ModelDoEdit);
-		DEF_FUNC(SetBrushShape);
-		DEF_FUNC(SetBrushRadius);
-		DEF_FUNC(SetBrushIntensity);
-		DEF_FUNC(SetBrushMode);
+        SymbolTable::ScrDefConst(L"Compute",           new WrapCompute);
+        SymbolTable::ScrDefConst(L"DumpGridPointList", new WrapDumpGridPointList);
+        SymbolTable::ScrDefConst(L"ResetModel",        new WrapResetModel);
+        SymbolTable::ScrDefConst(L"SetPoi",            new WrapSetPoi);
+        SymbolTable::ScrDefConst(L"ClearPoi",          new WrapClearPoi);
+        SymbolTable::ScrDefConst(L"Include",           new WrapInclude);
+        SymbolTable::ScrDefConst(L"Pause",             new WrapPause);
+        SymbolTable::ScrDefConst(L"ModelDoEdit",       new WrapModelDoEdit);
+        SymbolTable::ScrDefConst(L"SetBrushShape",     new WrapSetBrushShape);
+        SymbolTable::ScrDefConst(L"SetBrushRadius",    new WrapSetBrushRadius);
+        SymbolTable::ScrDefConst(L"SetBrushIntensity", new WrapSetBrushIntensity);
+        SymbolTable::ScrDefConst(L"SetBrushMode",      new WrapSetBrushMode);
 
 		DEF_ULONG_CONST(Strategy::Id::defect);
 		DEF_ULONG_CONST(Strategy::Id::cooperate);

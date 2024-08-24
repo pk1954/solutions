@@ -4,14 +4,11 @@
 
 module;
 
-import GridDimensions;
-#include "GridPoint.h"
-#include "EvolutionCore.h"
+import EvoCoreLib;
 import Observable;
 import HistGeneration;
 
 class RootWindow;
-class EvolutionCore;
 
 class FocusPoint: public Observable
 {

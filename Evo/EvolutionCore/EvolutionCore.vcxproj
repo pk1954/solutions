@@ -182,10 +182,11 @@
     <ClCompile Include="Action.ixx" />
     <ClCompile Include="ActionOptions.cpp" />
     <ClCompile Include="ActionOptions.ixx" />
-    <ClCompile Include="Config.cpp" />
-    <ClCompile Include="Config.ixx" />
-    <ClCompile Include="dump.cpp" />
-    <ClCompile Include="EvoDump.ixx" />
+    <ClCompile Include="EvoConfig.cpp" />
+    <ClCompile Include="EvoConfig.ixx" />
+    <ClCompile Include="EvolutionDump.cpp" />
+    <ClCompile Include="EvoCoreLib.ixx" />
+    <ClCompile Include="EvolutionDump.ixx" />
     <ClCompile Include="EvolutionCore.cpp" />
     <ClCompile Include="EvolutionCore.ixx" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.ixx" />
@@ -210,21 +211,20 @@
     <ClCompile Include="GridDimensions.ixx" />
     <ClCompile Include="GridField.ixx" />
     <ClCompile Include="GridModel.ixx" />
-    <ClCompile Include="GridNeighbor.ixx" />
+    <ClCompile Include="GridNeighborhood.ixx" />
     <ClCompile Include="GridPOI.cpp" />
     <ClCompile Include="GridPOI.ixx" />
     <ClCompile Include="GridPoint.ixx" />
     <ClCompile Include="GridPoint24.ixx" />
     <ClCompile Include="GridPointList.ixx" />
     <ClCompile Include="GridRect.ixx" />
-    <ClCompile Include="GridSelection.cpp" />
     <ClCompile Include="GridSelection.ixx" />
     <ClCompile Include="Individual.ixx" />
     <ClCompile Include="Interaction.ixx" />
     <ClCompile Include="MortalityTable.cpp" />
     <ClCompile Include="Genome.cpp" />
     <ClCompile Include="GridPointList.cpp" />
-    <ClCompile Include="GridNeighbor.cpp" />
+    <ClCompile Include="GridNeighborhood.cpp" />
     <ClCompile Include="GridRect.cpp" />
     <ClCompile Include="GridModel.cpp" />
     <ClCompile Include="Individual.cpp" />
@@ -241,6 +241,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
       <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Toolbox\runtimeCPP\runtimeCPP.vcxproj">
       <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>

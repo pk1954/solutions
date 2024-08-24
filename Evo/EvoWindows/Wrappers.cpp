@@ -2,9 +2,9 @@
 //
 // EvoWindows
 
-#include "EvolutionCoreWrapperHelpers.h"
-#include "win32_EvoWorkThreadInterface.h"
-#include "win32_wrappers.h"
+#include"EvolutionCoreWrapperHelpers.h"
+#include"win32_EvoWorkThreadInterface.h"
+#include"win32_wrappers.h"
 
 import RunTime;
 import Resource;
@@ -13,7 +13,7 @@ module EvoGenerationCmd;
 
 static EvoWorkThreadInterface * m_pWorkThreadInterface;
 
-class WrapPostPrevGeneration : public Script_Functor
+class WrapPostPrevGeneration : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -22,7 +22,7 @@ public:
     }
 };
 
-class WrapPostBenchmark : public Script_Functor
+class WrapPostBenchmark : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -32,7 +32,7 @@ public:
     }
 };
 
-class WrapPostDoEdit : public Script_Functor
+class WrapPostDoEdit : public ScriptFunctor
 {
 public:
 	virtual void operator() (Script & script) const
@@ -42,7 +42,7 @@ public:
 	}
 };
 
-class WrapPostSetPOI : public Script_Functor
+class WrapPostSetPOI : public ScriptFunctor
 {
 public:
 	virtual void operator() (Script & script) const
@@ -52,7 +52,7 @@ public:
 	}
 };
 
-class WrapPostSetBrushMode : public Script_Functor
+class WrapPostSetBrushMode : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -63,7 +63,7 @@ public:
     }
 };
 
-class WrapPostSetBrushShape : public Script_Functor
+class WrapPostSetBrushShape : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -74,7 +74,7 @@ public:
     }
 };
 
-class WrapPostSetBrushIntensity : public Script_Functor
+class WrapPostSetBrushIntensity : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -84,7 +84,7 @@ public:
     }
 };
 
-class WrapPostSetBrushRadius : public Script_Functor
+class WrapPostSetBrushRadius : public ScriptFunctor
 {
 public:
 	virtual void operator() (Script & script) const
@@ -94,7 +94,7 @@ public:
 	}
 };
 
-class WrapPostSetBrushManipulator : public Script_Functor
+class WrapPostSetBrushManipulator : public ScriptFunctor
 {
 public:
 	virtual void operator() (Script & script) const
@@ -105,7 +105,7 @@ public:
 	}
 };
 
-class WrapPostGenerationStep : public Script_Functor
+class WrapPostGenerationStep : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -114,7 +114,7 @@ public:
     }
 };
 
-class WrapPostRunGenerations : public Script_Functor
+class WrapPostRunGenerations : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -123,7 +123,7 @@ public:
     }
 };
 
-class WrapBreak : public Script_Functor
+class WrapBreak : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
@@ -135,19 +135,19 @@ void DefineWin32WrapperFunctions(EvoWorkThreadInterface * const pWorkThreadInter
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
 
-    DEF_FUNC(PostPrevGeneration); 
-
-	DEF_FUNC(PostBenchmark);
-	DEF_FUNC(PostDoEdit);
-	DEF_FUNC(PostSetPOI);
-    DEF_FUNC(PostSetBrushMode);
-    DEF_FUNC(PostSetBrushShape);
-    DEF_FUNC(PostSetBrushIntensity);
-    DEF_FUNC(PostSetBrushRadius);
-	DEF_FUNC(PostSetBrushManipulator);
-    DEF_FUNC(PostGenerationStep);
-    DEF_FUNC(PostRunGenerations);
-    DEF_FUNC(Break);
+    SymbolTable::ScrDefConst(L"PostGotoGeneration",      new WrapPostGotoGeneration);
+    SymbolTable::ScrDefConst(L"PostPrevGeneration",      new WrapPostPrevGeneration); 
+	SymbolTable::ScrDefConst(L"PostBenchmark",           new WrapPostBenchmark);
+	SymbolTable::ScrDefConst(L"PostDoEdit",              new WrapPostDoEdit);
+	SymbolTable::ScrDefConst(L"PostSetPOI",              new WrapPostSetPOI);
+    SymbolTable::ScrDefConst(L"PostSetBrushMode",        new WrapPostSetBrushMode);
+    SymbolTable::ScrDefConst(L"PostSetBrushShape",       new WrapPostSetBrushShape);
+    SymbolTable::ScrDefConst(L"PostSetBrushIntensity",   new WrapPostSetBrushIntensity);
+    SymbolTable::ScrDefConst(L"PostSetBrushRadius",      new WrapPostSetBrushRadius);
+	SymbolTable::ScrDefConst(L"PostSetBrushManipulator", new WrapPostSetBrushManipulator);
+    SymbolTable::ScrDefConst(L"PostGenerationStep",      new WrapPostGenerationStep);
+    SymbolTable::ScrDefConst(L"PostRunGenerations",      new WrapPostRunGenerations);
+    SymbolTable::ScrDefConst(L"Break",                   new WrapBreak);
 
     DEF_ULONG_CONST(IDM_FORWARD);
     DEF_ULONG_CONST(IDM_BACKWARDS);

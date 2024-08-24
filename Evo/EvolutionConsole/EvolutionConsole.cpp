@@ -1,27 +1,18 @@
 // EvolutionConsole.cpp : Defines the entry point for the console application.
 //
 
-
-// EvolutionCore interfaces
-
-import EvolutionDump;
-#include "EvoHistorySysGlue.h"
-#include "EvolutionCoreWrappers.h"
-#include "EvolutionCore.h"
-#include "EvoPixelCoords.h"
-#include "win32_EvoWorkThreadInterface.h"
-#include "win32_wrappers.h"
-#include "win32_histWrappers.h"
-#include "version.h"
-
-// scripting and tracing
-
+import std;
 import RunTime;
 import Trace;
-import Config;
-import GridDimensions;
+import EvoCoreLib;
+import EvoHistorySysGlue;
+import win32_EvoWorkThreadInterface;
+import win32_wrappers;
+import win32_histWrappers;
+import version;
 
-using namespace std;
+using std::string;
+using std::wstring;
 
 HWND G_hwndApp;
 
@@ -34,10 +25,10 @@ int main(int argc, char * argv [], char * envp [])
 
 	wofstream m_traceStream = OpenTraceFile(L"main_trace.out");
 
-    Config::SetDefaultConfiguration();
-    Config::DefineConfigWrapperFunctions();
+    EvoConfig::SetDefaultConfiguration();
+    EvoConfig::DefineConfigWrapperFunctions();
 
-	int const iNrOfNeighbors = Config::GetConfigValue(Config::tId::nrOfNeighbors);
+	int const iNrOfNeighbors = EvoConfig::GetConfigValue(EvoConfig::tId::nrOfNeighbors);
 
 	GridDimensions::DefineGridSize(200_GRID_COORD, 100_GRID_COORD, iNrOfNeighbors);
 
@@ -69,7 +60,7 @@ int main(int argc, char * argv [], char * envp [])
 
 	for (int iCount = 1; iCount < argc; iCount++)
     {
-        std::string strCmd(argv[iCount]);
+        string strCmd(argv[iCount]);
 
 		if ((strCmd.find(".in") != string::npos) || (strCmd.find(".IN") != string::npos)) 
 		{
@@ -77,7 +68,7 @@ int main(int argc, char * argv [], char * envp [])
 		}
     }
 
-	std::wstring wstr(wstrInputFile);
+	wstring wstr(wstrInputFile);
 	RunTime::ProcessScript(wstr);
 
 	wcout << L" ***** EvolutionConsole terminates successfully *****" << endl;

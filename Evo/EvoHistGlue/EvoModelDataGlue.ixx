@@ -10,9 +10,7 @@ module;
 
 export module EvoModelDataGlue;
 
-import GridDimensions;
-import EvolutionCore;
-import GridRect;
+import EvoCoreLib;
 import ModelData;
 
 class EvoModelDataGlue: public ModelData

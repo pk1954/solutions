@@ -1,19 +1,22 @@
 // EvoPixelCoords.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
-#include <algorithm>  // min/max templates
+module EvoCoreLib:EvoPixelCoords;
+
+import std;
+import Types;
 import :GridDimensions;
-#include "PixelTypes.h"
-#include "EvoPixelCoords.h"
-
 import :GridPoint;
+
+using std::sqrt;
+using std::floor;
 
 static double const SQRT3_DIV2 = sqrt(3.) / 2.;
 static double const SQRT3_DIV3 = sqrt(3.) / 3.;
 
 EvoPixelCoords::EvoPixelCoords()
-  : m_pixOffset   (0_PIXEL),
+  : m_pixOffset   (PP_ZERO),
 	m_pixFieldSize(0_PIXEL),
 	m_smoothMove  (),
 	m_bMoving     (false),
@@ -26,7 +29,7 @@ void EvoPixelCoords::Start
 	bool  const bHexagon
 )
 {	
-	m_pixOffset    = 0_PIXEL;
+	m_pixOffset    = PP_ZERO;
 	m_pixFieldSize = fs;
 	m_bMoving      = false;
 	m_bHexagon     = bHexagon;
@@ -49,8 +52,9 @@ PixelPoint EvoPixelCoords::calcCenterOffset    // calculate new pixel offset,
 )  
 {
 	Assert(IsInGrid(gpCenter));
-	PixelPoint const pixPnt(Grid2PixelSize(gpCenter) + m_pixFieldSize / 2);
-	PixelPoint const pixOffset(pixPnt - pixCenter);
+	PIXEL      const pixHalfSize { m_pixFieldSize / 2 };
+	PixelPoint const pixPnt      { Grid2PixelSize(gpCenter) + PixelPoint(pixHalfSize, pixHalfSize) };
+	PixelPoint const pixOffset   { pixPnt - pixCenter };
 	return pixOffset;
 }
 
@@ -59,13 +63,9 @@ bool EvoPixelCoords::CenterPoi(PixelPoint const pixCenter, GridPoint const gpPoi
     if (gpPoi.IsNull())
         return true;
 
-    PixelPoint pixOffsetDesired(calcCenterOffset(gpPoi, pixCenter));
-    bool       bCentered(m_pixOffset == pixOffsetDesired);
+    m_pixOffset = calcCenterOffset(gpPoi, pixCenter);
 
-    if (! bCentered)
-        m_pixOffset = m_smoothMove.Step(m_pixOffset, pixOffsetDesired);
-
-    return bCentered;
+	return true;
 }
 
 void EvoPixelCoords::CenterGrid
@@ -152,11 +152,11 @@ PixelPoint EvoPixelCoords::Grid2PixelPosCenter(GridPoint const gp) const
 		ppRes += PixelPoint(
 			                  PIXEL(static_cast<long>(SQRT3_DIV3 * m_pixFieldSize.GetValue())),
 		                      PIXEL(m_pixFieldSize / 2) 
-			              );
+			               );
 	}
 	else
 	{
-		ppRes += m_pixFieldSize / 2; 
+		ppRes += PixelPoint(m_pixFieldSize / 2);
 	}
 	return ppRes;
 }
@@ -175,7 +175,7 @@ GridPoint EvoPixelCoords::Pixel2GridPos(PixelPoint const pp) const
 		double const dCi        = floor(dPixPointX/dSide);
 		double const dCx        = dPixPointX - dSide * dCi;
 
-		GridCoord const gCi    = GridCoord(Cast2Short(dCi));
+		GridCoord  const gCi    = GridCoord(Cast2Short(dCi));
 		bool       const bOdd   = IsOdd(gCi);
 
 		double const dPixPointY = static_cast<double>(pixPoint.GetYvalue());
@@ -233,7 +233,7 @@ PixelRect EvoPixelCoords::Grid2PixelRect(GridRect const & rcGrid) const
     return PixelRect
     (
         Grid2PixelPos(rcGrid.GetStartPoint()),
-        Grid2PixelPos(rcGrid.GetEndPoint  ()) + (m_pixFieldSize - 1_PIXEL) 
+        Grid2PixelPos(rcGrid.GetEndPoint  ()) + PixelPoint((m_pixFieldSize - 1_PIXEL))
    );
 }
 

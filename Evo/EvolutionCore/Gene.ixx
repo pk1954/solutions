@@ -1,8 +1,8 @@
 // Gene.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:Gene;
+export module EvoCoreLib:Gene;
 
 import Debug;
 import Random;
@@ -24,7 +24,7 @@ public:
 	(
 		double         const   dMutationRate,
 		GeneTypeLimits const& lim,
-		Random& random
+		Random              & random
 	)
 	{
 		Assert(dMutationRate <= 100);   // percentage

@@ -1,8 +1,8 @@
 // EvoPixelCoords.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvoPixelCoords;
+export module EvoCoreLib:EvoPixelCoords;
 
 import Types;
 import SmoothMoveFp;

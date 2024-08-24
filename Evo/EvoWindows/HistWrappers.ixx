@@ -1,9 +1,9 @@
-// win32_histWrappers.h : 
+// HistWrappers.ixx
 //
 // EvoWindows
 
-module;
+export module HistWrappers;
 
-class WorkThreadInterface;
+import WorkThreadInterface;
 
 extern void DefineWin32HistWrapperFunctions(WorkThreadInterface *);

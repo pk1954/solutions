@@ -50,9 +50,38 @@ export constexpr fPixel operator"" _fPixel(long double ld)
 
 /////////////////// conversions ///////////////////////////////////
 
+export PIXEL Convert2PIXEL(float const f)
+{
+	return PIXEL(Cast2Long(f));
+}
+
+export PixelPoint operator*
+(
+	PixelPoint const& pp, 
+	float      const  d
+)
+{ 
+	PixelPoint ppRes
+	{
+		Convert2PIXEL(pp.GetXvalue() * d),
+		Convert2PIXEL(pp.GetYvalue() * d)
+	};
+	return ppRes; 
+}
+
+export PixelPoint operator*(PixelPoint const& pp, long const d)
+{ 
+	return PixelPoint(PIXEL(pp.GetXvalue() * d), PIXEL(pp.GetYvalue() * d));
+}
+
+export PixelPoint operator/(PixelPoint const& pp, long const d)
+{ 
+	return PixelPoint(PIXEL(pp.GetXvalue() / d), PIXEL(pp.GetYvalue() / d));
+}
+
 export PIXEL Convert2PIXEL(fPixel const fPixel)
 {
-	return PIXEL(Cast2Long(fPixel.GetValue()));
+	return Convert2PIXEL(fPixel.GetValue());
 }
 
 export constexpr fPixel Convert2fPixel(PIXEL const pixel)

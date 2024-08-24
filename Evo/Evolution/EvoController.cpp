@@ -24,7 +24,7 @@ import LogarithmicTrackbar;
 import RunTime;
 import WinManager;
 import GridDimensions;
-import Config;
+import EvoConfig;
 import AboutBox;
 import Resource;
 
@@ -102,7 +102,7 @@ bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
 		break;
 
 	case IDD_TOGGLE_COORD_DISPLAY:
-		Config::SetConfigValueBoolOp(Config::tId::showGridPointCoords, tBoolOp::opToggle);
+		EvoConfig::SetConfigValueBoolOp(EvoConfig::tId::showGridPointCoords, tBoolOp::opToggle);
 		m_pGridWindow->Notify(TRUE);
 		break;
 

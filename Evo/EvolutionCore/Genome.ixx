@@ -1,17 +1,16 @@
 // Genome.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:Genome;
+export module EvoCoreLib:Genome;
 
 import EnumArray;
 import Types;
+import Random;
 import :Action;
 import :Gene;
 import :GeneType;
 import :EvolutionTypes;
-
-class Random;
 
 export class Genome
 {

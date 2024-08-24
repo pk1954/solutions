@@ -1,19 +1,19 @@
-// Config.ixx
+// EvoConfig.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:Config;
+export module EvoCoreLib:EvoConfig;
 
 import std;
 import SaveCast;
 import BoolOp;
 import Util;
 
-export class Config
+export class EvoConfig
 {
 public:
 
-    virtual ~Config() {};
+    virtual ~EvoConfig() {};
 
     static void SetDefaultConfiguration();
     static void DefineConfigWrapperFunctions();
@@ -121,5 +121,5 @@ private:
 
     static std::unordered_map< tId, tConfigItem > m_mapConfigData;
 
-    static void defineConfigId(Config::tId const, std::wstring const&, long const);
+    static void defineConfigId(EvoConfig::tId const, std::wstring const&, long const);
 };

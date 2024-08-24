@@ -6,7 +6,7 @@ module ShapeLib:InfoShape;
 
 #include "win32_infoShape.h"
 
-import Config;
+import EvoConfig;
 
 using std::wostringstream;
 using std::setw;

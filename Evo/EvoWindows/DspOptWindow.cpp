@@ -1,4 +1,4 @@
-// DisplayOptions.cpp 
+// DspOptWindow.cpp 
 //
 // EvoWindows
 
@@ -6,10 +6,10 @@ module;
 
 #include "windowsx.h"
 
-module DisplayOptions;
+module DspOptWindow;
 
 import std;
-import GridNeighbor;
+import GridNeighborhood;
 import Resource;
 import EvolutionCore;
 import Tooltip;

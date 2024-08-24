@@ -2,15 +2,14 @@
 //
 // EvoWindows
 
-#include "symtab.h"
-#include "SCRIPT.H"
-#include "win32_WorkThreadInterface.h"
+module HistWrappers;
 
 import Resource;
+import RunTime;
 
 static WorkThreadInterface * m_pWorkThreadInterface;
 
-class WrapPostGotoGeneration : public Script_Functor
+class WrapPostGotoGeneration : public ScriptFunctor
 {
 public:
 	virtual void operator() (Script & script) const
@@ -24,7 +23,7 @@ void DefineWin32HistWrapperFunctions(WorkThreadInterface * pWorkThreadInterface)
 {
     m_pWorkThreadInterface = pWorkThreadInterface;
 
-	DEF_FUNC(PostGotoGeneration);
+    SymbolTable::ScrDefConst(L"PostGotoGeneration", new WrapPostGotoGeneration);
 
 	DEF_ULONG_CONST(IDM_GOTO_ORIGIN);
     DEF_ULONG_CONST(IDM_GOTO_DEATH);

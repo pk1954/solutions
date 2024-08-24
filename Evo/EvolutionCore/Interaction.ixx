@@ -1,16 +1,17 @@
 // Interaction.ixx 
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:InterAction;
+export module EvoCoreLib:Interaction;
 
 import std;
 import :Individual;
 
 using std::wostream;
 
-export namespace INTERACTION
+export class Interaction
 {
-	void RefreshCash();
-	void Interact(Individual &, Individual &, wostream *);
-}
+public:
+	static void RefreshCash();
+	static void Interact(Individual&, Individual&, wostream*);
+};

@@ -1,16 +1,15 @@
 // Genome.cpp 
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+module EvoCoreLib:Genome;
 
 import Debug;
-
-module EvolutionCore:Genome;
-
 import Random;
-import Config;
+import :EvoConfig;
 import :Strategy;
+
+using std::numeric_limits;
 
 // static members and functions
 
@@ -35,14 +34,14 @@ void Genome::RefreshCash()
 	setLimits(GeneType::Id::eat,            1, 1000);    
 	setLimits(GeneType::Id::fertilize,      1, 1000);    
 	setLimits(GeneType::Id::memSize,        1, IMEMSIZE_MAX);
-	setLimits(GeneType::Id::appetite,       1, Config::GetConfigValue(Config::tId::maxFood     ));
-	setLimits(GeneType::Id::fertilInvest,   1, Config::GetConfigValue(Config::tId::maxFood     ));
-	setLimits(GeneType::Id::thresholdClone, 0, Config::GetConfigValue(Config::tId::stdCapacity ));
-	setLimits(GeneType::Id::thresholdMarry, 0, Config::GetConfigValue(Config::tId::stdCapacity ));
-	setLimits(GeneType::Id::thresholdMove,  0, Config::GetConfigValue(Config::tId::stdCapacity ));
-	setLimits(GeneType::Id::thresholdFert,  0, Config::GetConfigValue(Config::tId::stdCapacity ));
-	setLimits(GeneType::Id::maxEat,         0, Config::GetConfigValue(Config::tId::stdCapacity ));
-	setLimits(GeneType::Id::cloneDonation,  0, SHRT_MAX                                          );
+	setLimits(GeneType::Id::appetite,       1, EvoConfig::GetConfigValue(EvoConfig::tId::maxFood     ));
+	setLimits(GeneType::Id::fertilInvest,   1, EvoConfig::GetConfigValue(EvoConfig::tId::maxFood     ));
+	setLimits(GeneType::Id::thresholdClone, 0, EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity ));
+	setLimits(GeneType::Id::thresholdMarry, 0, EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity ));
+	setLimits(GeneType::Id::thresholdMove,  0, EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity ));
+	setLimits(GeneType::Id::thresholdFert,  0, EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity ));
+	setLimits(GeneType::Id::maxEat,         0, EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity ));
+	setLimits(GeneType::Id::cloneDonation,  0, numeric_limits<short>::max());
 
 	// initialize genome template 
 
@@ -52,23 +51,23 @@ void Genome::RefreshCash()
 	m_genomeTemplate.setGene(GeneType::Id::interact,       500);
 	m_genomeTemplate.setGene(GeneType::Id::eat,            500);
 	m_genomeTemplate.setGene(GeneType::Id::fertilize,      500);
-	m_genomeTemplate.setGene(GeneType::Id::appetite,       Config::GetConfigValueShort(Config::tId::defaultAppetite    ));
-	m_genomeTemplate.setGene(GeneType::Id::fertilInvest,   Config::GetConfigValueShort(Config::tId::defaultFertilInvest));
-	m_genomeTemplate.setGene(GeneType::Id::memSize,        Config::GetConfigValueShort(Config::tId::stdMemSize         ));
-	m_genomeTemplate.setGene(GeneType::Id::thresholdClone, Config::GetConfigValueShort(Config::tId::thresholdClone     ));
-	m_genomeTemplate.setGene(GeneType::Id::thresholdMarry, Config::GetConfigValueShort(Config::tId::thresholdMarry     ));
-	m_genomeTemplate.setGene(GeneType::Id::thresholdMove,  Config::GetConfigValueShort(Config::tId::thresholdMove      ));
-	m_genomeTemplate.setGene(GeneType::Id::thresholdFert,  Config::GetConfigValueShort(Config::tId::thresholdFert      ));
-	m_genomeTemplate.setGene(GeneType::Id::maxEat,         Config::GetConfigValueShort(Config::tId::maxEat             ));
-	m_genomeTemplate.setGene(GeneType::Id::cloneDonation,  SHRT_MAX / 2);
+	m_genomeTemplate.setGene(GeneType::Id::appetite,       EvoConfig::GetConfigValueShort(EvoConfig::tId::defaultAppetite    ));
+	m_genomeTemplate.setGene(GeneType::Id::fertilInvest,   EvoConfig::GetConfigValueShort(EvoConfig::tId::defaultFertilInvest));
+	m_genomeTemplate.setGene(GeneType::Id::memSize,        EvoConfig::GetConfigValueShort(EvoConfig::tId::stdMemSize         ));
+	m_genomeTemplate.setGene(GeneType::Id::thresholdClone, EvoConfig::GetConfigValueShort(EvoConfig::tId::thresholdClone     ));
+	m_genomeTemplate.setGene(GeneType::Id::thresholdMarry, EvoConfig::GetConfigValueShort(EvoConfig::tId::thresholdMarry     ));
+	m_genomeTemplate.setGene(GeneType::Id::thresholdMove,  EvoConfig::GetConfigValueShort(EvoConfig::tId::thresholdMove      ));
+	m_genomeTemplate.setGene(GeneType::Id::thresholdFert,  EvoConfig::GetConfigValueShort(EvoConfig::tId::thresholdFert      ));
+	m_genomeTemplate.setGene(GeneType::Id::maxEat,         EvoConfig::GetConfigValueShort(EvoConfig::tId::maxEat             ));
+	m_genomeTemplate.setGene(GeneType::Id::cloneDonation,  numeric_limits<short>::max() / 2);
 
-	m_abActionEnabled[Action::Id::move     ] = Config::GetConfigValueBool(Config::tId::moveEnabled     );
-	m_abActionEnabled[Action::Id::clone    ] = Config::GetConfigValueBool(Config::tId::cloneEnabled    );
-	m_abActionEnabled[Action::Id::marry    ] = Config::GetConfigValueBool(Config::tId::marryEnabled    );
-	m_abActionEnabled[Action::Id::interact ] = Config::GetConfigValueBool(Config::tId::interactEnabled );
-	m_abActionEnabled[Action::Id::eat      ] = Config::GetConfigValueBool(Config::tId::eatEnabled      );
-	m_abActionEnabled[Action::Id::fertilize] = Config::GetConfigValueBool(Config::tId::fertilizeEnabled);
-	m_abActionEnabled[Action::Id::passOn   ] = Config::GetConfigValueBool(Config::tId::passOnEnabled   );
+	m_abActionEnabled[Action::Id::move     ] = EvoConfig::GetConfigValueBool(EvoConfig::tId::moveEnabled     );
+	m_abActionEnabled[Action::Id::clone    ] = EvoConfig::GetConfigValueBool(EvoConfig::tId::cloneEnabled    );
+	m_abActionEnabled[Action::Id::marry    ] = EvoConfig::GetConfigValueBool(EvoConfig::tId::marryEnabled    );
+	m_abActionEnabled[Action::Id::interact ] = EvoConfig::GetConfigValueBool(EvoConfig::tId::interactEnabled );
+	m_abActionEnabled[Action::Id::eat      ] = EvoConfig::GetConfigValueBool(EvoConfig::tId::eatEnabled      );
+	m_abActionEnabled[Action::Id::fertilize] = EvoConfig::GetConfigValueBool(EvoConfig::tId::fertilizeEnabled);
+	m_abActionEnabled[Action::Id::passOn   ] = EvoConfig::GetConfigValueBool(EvoConfig::tId::passOnEnabled   );
 
 }
 

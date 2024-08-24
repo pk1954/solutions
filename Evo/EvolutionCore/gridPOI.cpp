@@ -1,12 +1,10 @@
 // GridPOI.cpp
 //
+// EvoCoreLib
 
+module EvoCoreLib:GridPOI;
 
-module EvolutionCore:;
-
-#include "EvolutionCoreImpl.h"
-
-module EvolutionCore:GridPOI;
+import :GridPoint;
 
 GridPoint GridPOI::m_gpPOI = GP_NULL;
 

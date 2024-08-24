@@ -4,7 +4,7 @@
 
 export module EvoReadBuffer;
 
-import EvolutionCore;
+import EvoCoreLib;
 import ReadBuffer;
 
 using EvoReadBuffer = ReadBuffer<EvolutionCore>;

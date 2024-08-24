@@ -2,10 +2,10 @@
 //
 // ShapeLib
 
-export module InfoShape;
+export module ShapeLib:InfoShape;
 
 import std;
-import Shape;
+import :Shape;
 
 class EvolutionCore;
 

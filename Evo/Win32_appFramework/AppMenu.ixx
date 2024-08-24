@@ -8,7 +8,7 @@ import WinBasics;
 import WorkThreadInterface;
 import WinManager;
 
-class AppMenu
+export class AppMenu
 {
 public:
 	virtual ~AppMenu() {}

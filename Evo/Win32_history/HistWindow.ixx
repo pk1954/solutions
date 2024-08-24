@@ -6,7 +6,6 @@ export module WinHistory:HistWindow;
 
 import BaseWindow;
 import HistGeneration;
-import WorkThread;
 import HistorySystem;
 import HistoryIterator;
 import WorkThreadInterface;
@@ -60,5 +59,5 @@ private:
     HistorySystem       * m_pHistSys;       
 	GenDisplayWindow    * m_pGenDisplay;
     TRACKMOUSEEVENT       m_trackStruct;
-    HistGeneration       m_genSelected;
+    HistGeneration        m_genSelected;
 };

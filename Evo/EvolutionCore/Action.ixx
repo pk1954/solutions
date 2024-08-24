@@ -1,8 +1,8 @@
 // Action.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:Action;
+export module EvoCoreLib:Action;
 
 import std;
 

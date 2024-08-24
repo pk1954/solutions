@@ -1,15 +1,11 @@
 // GridBrush.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+module EvoCoreLib:GridBrush;
 
-#include "grid_model.h"
+import :GridModel;
 
-module EvolutionCore:GridBrush;
-
-using namespace std;
-	
 GridBrush::GridBrush(GridModel * const pGrid) :
 	m_pGrid(pGrid),
 	m_shape(tShape::undefined),

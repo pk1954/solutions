@@ -1,9 +1,10 @@
 // EvolutionCoreWrappers.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvolutionCoreWrappers;
+export module EvoCoreLib:EvolutionCoreWrappers;
 
+import :EvolutionCore;
 import :EvoPixelCoords;
 
 extern void DefineCoreWrapperFunctions(EvolutionCore *);

@@ -1,8 +1,8 @@
 // ActionOptions.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:ActionOptions;
+export module EvoCoreLib:ActionOptions;
 
 import std;
 import Random;

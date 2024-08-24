@@ -1,25 +1,18 @@
-// win32_draw.h : 
+// DrawFrame.ixx 
 //
 // EvoWindows
 
-module;
+module EvoWindows:DrawFrame;
 
-#include "Strategy.h"
-#include "PixelTypes.h"
-#include "EvolutionCore.h"
-#include "EvoReadBuffer.h"
-#include "win32_gridPointShape.h"
 
 import std;
+import Types;
 import TextDisplay;
-import GridPoint;
-import GridRect;
-
-class GraphicsInterface;
-class EvoPixelCoords;
-class ColorManager;
-class DspOptWindow;
-class Shape;
+import EvoCoreLib;
+import EvoReadBuffer;
+import GraphicsInterface;
+import ColorManager;
+import DspOptWindow;
 
 class DrawFrame
 {

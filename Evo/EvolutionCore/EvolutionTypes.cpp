@@ -1,7 +1,7 @@
 // EvolutionTypes.cpp
 //
 
-module EvolutionCore:EvolutionTypes;
+module EvoCoreLib:EvolutionTypes;
 
 import std;
 import :Strategy;

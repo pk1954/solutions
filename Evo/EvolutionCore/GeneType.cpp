@@ -1,10 +1,14 @@
 // GeneType.cpp : 
 //
-// EvolutionCore
+// EvoCoreLib
 
+module EvoCoreLib:GeneType;
 
-#include "Genome.h"
-#include "GeneType.h"
+import std;
+import :Genome;
+import :GeneType;
+
+using std::function;
 
 void GeneType::Apply2AllEnabledGeneTypes(function<void(Id const &)> const & func)
 {

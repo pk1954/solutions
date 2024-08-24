@@ -8,6 +8,7 @@ import std;
 import GenerationCmd;
 
 using std::wostream;
+using std::int8_t;
 
 class EvoGenerationCmd : public GenerationCmd
 {

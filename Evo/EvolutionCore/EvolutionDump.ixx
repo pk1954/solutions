@@ -1,17 +1,16 @@
-// EvoDump.ixx 
+// EvolutionDump.ixx 
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvolutionDump;
+export module EvoCoreLib:EvolutionDump;
 
 import std;
 import :GridPoint;
 import :GridCoord;
+import :GridModel;
+import :GridField;
 
-class GridModel;
-class GridField;
-
-class EvolutionDump
+export class EvolutionDump
 {
 public:
     static void SetDumpStream(std::wostream * const);

@@ -1,8 +1,8 @@
 // GeneType.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GeneType;
+export module EvoCoreLib:GeneType;
 
 import std;
 

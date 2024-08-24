@@ -11,7 +11,7 @@
 #include "win32_displayOptions.h"
 #include "win32_EvoEditor.h"
 
-import Config;
+import EvoConfig;
 import Resource;
 
 EvoEditorWindow::EvoEditorWindow()

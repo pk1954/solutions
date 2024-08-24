@@ -2,14 +2,6 @@
 //
 // Win32_appFramework
 
-module;
-
-#include "EventInterface.h"
-#include "win32_thread.h"
-#include "win32_event.h"
-#include "win32_actionTimer.h"
-#include "win32_WorkThreadInterface.h"
-
 module WorkThread;
 
 //import StopWatch;
@@ -17,6 +9,11 @@ import std;
 import SaveCast;
 import RunTime;
 import Win32_Util_Resource;
+import EventInterface;
+import Win32_thread;
+import Win32_event;
+import Win32_actionTimer;
+import Win32_WorkThreadInterface;
 
 WorkThread::WorkThread
 (
@@ -25,7 +22,7 @@ WorkThread::WorkThread
 	EventInterface      * const pEvent,
 	ObserverInterface   * const pObserver,
 	HistorySystem       * const pHistSystem,
-	ModelInterface      * const pModel,
+	EvolutionCore       * const pModel,
 	WorkThreadInterface * const pWorkThreadInterface,
 	bool                  const bAsync
 ) :

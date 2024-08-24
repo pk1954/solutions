@@ -1,14 +1,14 @@
 // EvoStatistics.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvoStatistics;
+export module EvoCoreLib:EvoStatistics;
 
 import EnumArray;
 import XArray;
 import TextBuffer;
 import :EvolutionTypes;
-import EvolutionCore;
+import :EvolutionCore;
 import :Strategy;
 import :GridPoint;
 

@@ -9,26 +9,24 @@
 
 using namespace std::literals::chrono_literals;
 
-// EvolutionCore interfaces
+// EvoCoreLib interfaces
 
-import GridDimensions;
-#include "EvolutionCoreWrappers.h"
-#include "EvolutionCore.h"
+import EvoCoreLib;
 
 // interfaces of various windows
 
-#include "win32_evoAppWindow.h"
-#include "win32_statistics.h"
-#include "win32_crsrWindow.h"
-#include "win32_performanceWindow.h"
-#include "win32_displayOptions.h"
-#include "win32_status.h"
-#include "GenerationDisplay.h"
-#include "win32_histWindow.h"
-#include "win32_gridWindow.h"
-#include "win32_EvoEditor.h"
-#include "win32_speedControl.h"
-#include "win32_zoomControl.h"
+import GenerationDisplay;
+import EvoAppWindow;
+import Statistics;
+import CrsrWindow;
+import PerformanceWindow;
+import DisplayOptions;
+import StatusBar;
+import HistWindow;
+import GridWindow;
+import EvoEditor;
+import SpeedControl;
+import ZoomControl;
 
 // infrastructure
 #include "LogarithmicTrackbar.h"
@@ -40,7 +38,6 @@ import GridDimensions;
 
 import EvolutionDump;
 import Trace;
-#include "errhndl.h"
 import RunTime;
 #include "UtilityWrappers.h"
 #include "win32_wrappers.h"
@@ -56,8 +53,7 @@ import Resource;
 
 #include "win32_evoAppWindow.h"
 
-import Config;
-import GridRect;
+import EvoCoreLib;
 
 EvoAppWindow::EvoAppWindow() :
 	m_pGraphics(nullptr),
@@ -78,8 +74,8 @@ EvoAppWindow::EvoAppWindow() :
 	m_pEvoReadBuffer = new EvoReadBuffer(TRUE);  // use double buffering
 
 	EvolutionDump::SetDumpStream(& std::wcout);
-	Config::SetDefaultConfiguration();
-    Config::DefineConfigWrapperFunctions();
+	EvoConfig::SetDefaultConfiguration();
+    EvoConfig::DefineConfigWrapperFunctions();
 	RunTime::ProcessScript(L"std_configuration.in");
 
 	m_ColorManager.Initialize();
@@ -136,9 +132,9 @@ EvoAppWindow::EvoAppWindow() :
 
 	GridDimensions::DefineGridSize
 	(
-		GridCoord{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
-		GridCoord{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
-		Config::GetConfigValue(Config::tId::nrOfNeighbors) 
+		GridCoord{ EvoConfig::GetConfigValueShort(EvoConfig::tId::gridWidth) }, 
+		GridCoord{ EvoConfig::GetConfigValueShort(EvoConfig::tId::gridHeight) }, 
+		EvoConfig::GetConfigValue(EvoConfig::tId::nrOfNeighbors) 
 	);
 };
 

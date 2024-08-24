@@ -1,23 +1,22 @@
 // GridModel.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GridModel;
+export module EvoCoreLib:GridModel;
 
 import Debug;
 import Random;
-import GridPointList;
-import :GridField;
-import ActionOptions;
-import :GridDimensions;
-import :EvolutionTypes;
-import :GridPoint;
-import :GridRect;
-import GridPOI;
-import GridCircle;
-import Manipulator;
 import EventInterface;
 import ObserverInterface;
+import :ActionOptions;
+import :EvolutionTypes;
+import :GridNeighborhood;
+import :GridDimensions;
+import :GridPointList;
+import :GridField;
+import :GridPoint;
+import :GridRect;
+import :GridPOI;
 
 using std::array;
 using std::vector;
@@ -43,6 +42,8 @@ public:
 
 	void ResetGrid ();
     void FoodGrowth();
+
+	void PrepareComputation(); 
 
 	GridPoint ComputeNextGeneration(GridPoint const);
 
@@ -95,53 +96,14 @@ public:
     EVO_GENERATION const GetGenBirth (GridPoint const gp) const { return GetGridField(gp).GetGenBirth (); }
     EVO_GENERATION const GetAge      (GridPoint const gp) const { return getAge(GetGridField(gp)); }
 
-    GridPoint const FindGridPoint(GridPointBoolFunc const &, GridRect const &) const;
-	GridPoint const FindGridPointFromId(IND_ID const) const;
-
-	size_t const GetGridHeapSize() const;
+    GridPoint    const FindGridPoint(GridPointBoolFunc const &, GridRect const &) const;
+	GridPoint    const FindGridPointFromId(IND_ID const)                          const;
+	ACTION_COUNT const GetActionCounter(Strategy::Id const, Action::Id const)     const;
+	tDisplayMode const GetDisplayMode(GridPoint const)                            const;
+	size_t       const GetGridHeapSize()                                          const;
 
 	EVO_GENERATION GetEvoGenerationNr()       const { return m_genEvo; }
     int            GetNrOfLivingIndividuals() const { return m_gpList.GetSize(); }
-
-	void PrepareComputation() 
-	{ 
-		m_gpTarget .Set2Null();
-		m_gpPartner.Set2Null();
-		StrategyData::ResetCounters();
-		for (auto & ax: (m_ActionCounter))
-			ax.fill(ACTION_COUNT(0)); 
-	}
-
-	ACTION_COUNT const GetActionCounter(Strategy::Id const strategy, Action::Id const action) const 
-	{
-		unsigned int const uiAction   = static_cast<unsigned int>(action);
-		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
-
-		Assert(uiAction   < Action::COUNT);
-		Assert(uiStrategy < Strategy::COUNT);
-
-		return m_ActionCounter[uiAction][uiStrategy];
-	}
-
-	tDisplayMode const GetDisplayMode(GridPoint const gp) const 
-	{ 
-		if (GridPOI::IsPoiDefined())
-		{
-			if (GridPOI::IsPoi(gp))
-				return tDisplayMode::POI;
-
-			if (gp == m_gpPartner)
-				return tDisplayMode::partner;
-
-			if (gp == m_gpTarget)
-				return tDisplayMode::target;
-
-			if (m_pDisplayList && 	m_pDisplayList->Includes(gp))
-				return tDisplayMode::neighbor;
-		}
-
-		return tDisplayMode::normal; 
-	};
 
 	// static functions
 
@@ -158,89 +120,16 @@ public:
 
 private:
 
-	void printGridPoint(wchar_t const * text, GridPoint const gp)
-	{
-		* m_pProtocol << text << GetId(gp) << L" at " << gp << endl;
-	}
-
-	void decEnergy(GridField & gf, ENERGY_UNITS en)
-	{
-		gf.DecEnergy(en);
-		if (m_bPOI)
-		{
-			* m_pProtocol << L"   consumption:      " << en.GetValue() << endl;
-			* m_pProtocol << L"   remaining energy: " << gf.GetEnergy().GetValue() << endl;
-			displayAndWait();
-		}
-	}
-
-	void Donate(GridField & gfDonator, GridField & gfReceiver, ENERGY_UNITS enDonation)
-	{
-		gfDonator.DecEnergy(enDonation);
-		gfReceiver.IncEnergy(enDonation);
-		if (m_bPOI)
-		{
-			* m_pProtocol << gfDonator.GetId()  << L" donates " << enDonation.GetValue() << L" units to " << gfReceiver.GetId() << endl;
-			* m_pProtocol << gfDonator.GetId()  << L" now has " << gfDonator .GetEnergy().GetValue() << L" units" << endl;
-			* m_pProtocol << gfReceiver.GetId() << L" now has " << gfReceiver.GetEnergy().GetValue() << L" units" << endl;
-			displayAndWait();
-		}
-	}
-
-	void incActionCounter(Strategy::Id const strategy, Action::Id const action)
-	{
-		unsigned int const uiAction   = static_cast<unsigned int>(action);
-		unsigned int const uiStrategy = static_cast<unsigned int>(strategy);
-
-		Assert(uiAction   < Action::COUNT);
-		Assert(uiStrategy < Strategy::COUNT);
-
-		++ m_ActionCounter[uiAction][uiStrategy];
-	}
-		
-    void deleteAndReset(GridField & gf)
-    {
-		if (m_bPOI)
-		{
-			* m_pProtocol << L"   individual " << gf.GetGridPoint() << L" dies of starvation" << endl;
-			displayAndWait();
-		}
-		m_gpList.DeleteGridPointFromList(* this, gf);
-        gf.ResetIndividual();  // zero individual data
-		if (GridPOI::IsPoi(gf.GetGridPoint()))
-			GridPOI::ClearPoi();
-    }
-
-    void deleteIfDead(GridField & gf)
-    {
-        if (gf.IsDead())
-            deleteAndReset(gf);
-    }
-
-	ENERGY_UNITS GridModel::getBestNeighborSlots(Neighborhood & list)
-	{
-		ENERGY_UNITS enMaxFoodStock = 0_ENERGY_UNITS;
-		list.Apply2All(	     [&](GridPoint const gp) { enMaxFoodStock = std::max(enMaxFoodStock, GetFoodStock(gp)); });
-		list.RemoveFromList([&](GridPoint const gp) { return (GetFoodStock(gp) != enMaxFoodStock); });
-		return enMaxFoodStock;
-	}
-
-    GridField & getGridField(GridPoint const gp)
-    {
-        Assert(IsInGrid(gp));
-        return m_aGF[gp.GetXvalue()][gp.GetYvalue()];
-    };
-
-	bool isPoi(GridPoint const gp) 
-	{ 
-		return gp.IsNotNull() &&  GridPOI::IsPoi(gp); 
-	}
-
-	EVO_GENERATION getAge(GridField const & gf) const 
-	{
-		EVO_GENERATION genBirth = gf.GetGenBirth();
-		return genBirth.IsNull() ? EVO_GENERATION::NULL_VAL() : (m_genEvo - genBirth); 
-	}
+	EVO_GENERATION getAge        (GridField const&) const;
+	void           decEnergy     (GridField&, ENERGY_UNITS);
+	void           donate        (GridField&, GridField&, ENERGY_UNITS);
+    void           deleteAndReset(GridField&);
+    void           deleteIfDead  (GridField&);
+	void           printGridPoint(wchar_t const *, GridPoint const);
+	void           incActionCounter(Strategy::Id const, Action::Id const);
+	ENERGY_UNITS   getBestNeighborSlots(GridNeighborhood&);
+    GridField&     getGridField(GridPoint const);
+	bool           isPoi(GridPoint const);
 
 	GridField & chooseTarget ();
 	GridField & choosePartner();
@@ -262,33 +151,33 @@ private:
 
 	// member variables
 
-	vector< vector < GridField > > m_aGF;     // 15.000 * 108 byte = 1.620.000 byte
+	vector<vector<GridField>> m_aGF;     // 15.000 * 108 byte = 1.620.000 byte
                                               
-    GridPointList   m_gpList;                 //                            10 byte
-    EVO_GENERATION  m_genEvo;                 //                             4 byte
-    Neighborhood    m_emptyNeighborSlots;
-    Neighborhood    m_occupiedNeighborSlots;
-	GridPoint       m_gpTarget;  // target for move, clone and marry
-	GridPoint       m_gpPartner; // partner for interaction and marry 
-	GridPoint       m_gpNext;
-	GridPoint       m_gpRun;
-	Action::Id      m_action;
-	ENERGY_UNITS    m_enBaseConsumption;
-	bool            m_bPOI;
-	Neighborhood  * m_pDisplayList;
-	ActionOptions   m_options;
-	GROWTH_RATE     m_enFoodGrowthRate;
-    ENERGY_UNITS    m_enMoveFoodConsumption;
-    ENERGY_UNITS    m_enCloneFoodConsumption;
-    ENERGY_UNITS    m_enMarryFoodConsumption;
-    ENERGY_UNITS    m_enInteractFoodConsumption;
-	ENERGY_UNITS    m_enMaxFertilizer;
-	ENERGY_UNITS    m_enFoodReserve;
-	ENERGY_UNITS    m_enBasicFoodConsumption;
-	ENERGY_UNITS    m_enMemSizeFoodConsumption;
-	long            m_lFertilizerYield;
-	bool            m_bNeighborhoodFoodSensitivity;
-	bool            m_bPassOnEnabled;
+    GridPointList     m_gpList;            //                            10 byte
+    EVO_GENERATION    m_genEvo;            //                             4 byte
+    GridNeighborhood  m_emptyNeighborSlots;
+    GridNeighborhood  m_occupiedNeighborSlots;
+	GridPoint         m_gpTarget;  // target for move, clone and marry
+	GridPoint         m_gpPartner; // partner for interaction and marry 
+	GridPoint         m_gpNext;
+	GridPoint         m_gpRun;
+	Action::Id        m_action;
+	ENERGY_UNITS      m_enBaseConsumption;
+	bool              m_bPOI;
+	GridNeighborhood* m_pDisplayList;
+	ActionOptions     m_options;
+	GROWTH_RATE       m_enFoodGrowthRate;
+    ENERGY_UNITS      m_enMoveFoodConsumption;
+    ENERGY_UNITS      m_enCloneFoodConsumption;
+    ENERGY_UNITS      m_enMarryFoodConsumption;
+    ENERGY_UNITS      m_enInteractFoodConsumption;
+	ENERGY_UNITS      m_enMaxFertilizer;
+	ENERGY_UNITS      m_enFoodReserve;
+	ENERGY_UNITS      m_enBasicFoodConsumption;
+	ENERGY_UNITS      m_enMemSizeFoodConsumption;
+	long              m_lFertilizerYield;
+	bool              m_bNeighborhoodFoodSensitivity;
+	bool              m_bPassOnEnabled;
 
 	array< array < ACTION_COUNT, Strategy::COUNT>, Action::COUNT > m_ActionCounter;
 

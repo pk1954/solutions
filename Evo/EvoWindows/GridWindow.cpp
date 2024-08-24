@@ -2,25 +2,24 @@
 //
 // EvoWindows
 
-module GridWindow;;
+module EvoWindow:GridWindow;
 
 import Types;
 import GridDimensions;
 import GridSelection;
-import GridPoint24;
-import EvolutionCore;
-import EvoReadBuffer.h"
+import EvoCoreLib;
+import EvoReadBuffer;
 import ColorManager;
 import FocusPoint;
 import CrsrWindow;:
 import GraphicsInterface;
 import EvoWorkThreadInterface;
 import PackGridPoint;
-import DisplayOptions;
+import DspOptWindow;
 import GridWindow;
 
 import BoolOp;
-import Config;
+import EvoConfig;
 import GridPOI;
 import Resource;
 
@@ -98,7 +97,7 @@ void GridWindow::Start
 	(
 		bHexagonMode     // in hexagon mode do not use strip mode (looks ugly)
 		? tBoolOp::opFalse 
-		: Config::GetConfigValueBoolOp(Config::tId::stripMode) 
+		: EvoConfig::GetConfigValueBoolOp(EvoConfig::tId::stripMode) 
 	);
 
 	m_pReadBuffer->RegisterObserver(this);

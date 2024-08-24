@@ -1,20 +1,20 @@
-// EvolutionCore.cpp
+// EvoCoreLib.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:EvolutionCore;
+module EvoCoreLib:EvolutionCore;
 
 import std;
 import Debug;
-import Config;
+import :EvolutionDump;
+import :EvolutionCoreWrappers;
+import :GplIterator;
+import :EvoConfig;
 import :Genome;
 import :Strategy;
-import GridPOI;
+import :GridPOI;
 import :GridModel;
-import :GridNeighbor;
-import EvolutionDump;
-import EvolutionCoreWrappers;
-import GplIterator;
+import :GridNeighborhood;
 
 void EvolutionCore::InitClass
 (
@@ -23,7 +23,7 @@ void EvolutionCore::InitClass
 	EventInterface    * const pEvent
 )
 {
-    Neighborhood::InitClass(iNrOfNeighbors);
+    GridNeighborhood::InitClass(iNrOfNeighbors);
     GridModel::InitClass(pObservers, pEvent);
 }
 
@@ -33,10 +33,10 @@ EvolutionCore::EvolutionCore()
 	ResetAll();
 };
 
-EvolutionCore * CreateCore()
-{
-    return new EvolutionCoreImpl();
-}
+//EvolutionCore * CreateCore()   //TODO: unique_ptr?
+//{
+//    return new EvolutionCoreImpl();
+//}
 
 void EvolutionCore::ResetAll()
 {
@@ -76,7 +76,7 @@ void EvolutionCore::DestroyModel(EvolutionCore * pCore)
 
 size_t const EvolutionCore::GetCoreSize() 
 { 
-	return sizeof(EvolutionCoreImpl) + GetGridHeapSize(); 
+	return sizeof(EvolutionCore) + GetGridHeapSize(); 
 };
 
 unsigned int EvolutionCore::GetMaxPartnerMemory()

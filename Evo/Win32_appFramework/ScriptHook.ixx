@@ -7,7 +7,7 @@ export module ScriptHook;
 import RunTime;
 import StatusBar;
 
-class ScriptHook : public Script_Functor
+class ScriptHook : public ScriptFunctor
 {
 public:
 	ScriptHook()

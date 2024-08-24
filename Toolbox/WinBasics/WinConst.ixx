@@ -41,6 +41,7 @@ extern const WORD  VK_ESCAPE_CONST;
 
 extern const DWORD MF_BITMAP_CONST;
 extern const DWORD MF_STRING_CONST;
+extern const DWORD MF_BYPOSITION_CONST;
 
 extern const DWORD MB_OK_CONST;
 extern const DWORD MB_ICONWARNING_CONST;
@@ -115,6 +116,7 @@ export
                                     
     const DWORD MF_BITMAP           = MF_BITMAP_CONST;
     const DWORD MF_STRING           = MF_STRING_CONST;
+    const DWORD MF_BYPOSITION       = MF_BYPOSITION_CONST;
                                     
     const DWORD MB_OK               = MB_OK_CONST;
     const DWORD MB_ICONWARNING      = MB_ICONWARNING_CONST;

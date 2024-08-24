@@ -5,7 +5,6 @@
 export module WorkThread;
 
 import GenerationCmd;
-import ModelInterface;
 import HistorySystem.h;
 import Thread;
 import HistGeneration;
@@ -50,7 +49,7 @@ public:
 		EventInterface      * const,
 		ObserverInterface   * const,
 		HistorySystem       * const,
-		ModelInterface      * const,
+		EvolutionCore      * const,
 		WorkThreadInterface * const,
 		bool                  const
 	);
@@ -131,9 +130,9 @@ private:
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;
     HistorySystem       * m_pHistorySystem;   // if HistorySystem is not used: nullptr 
-	ModelInterface      * m_pModel;           // if HistorySystem is     used: nullptr
+	EvolutionCore      * m_pModel;           // if HistorySystem is     used: nullptr
 	WorkThreadInterface * m_pWorkThreadInterface;
-    HistGeneration       m_genDemanded;
+    HistGeneration        m_genDemanded;
     bool                  m_bContinue;
 	HWND                  m_hwndApplication;
 };

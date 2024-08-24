@@ -21,7 +21,7 @@
     <ClCompile Include="CrsrWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayOptions.cpp">
+    <ClCompile Include="DspOptWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DrawFrame.cpp">
@@ -75,14 +75,20 @@
     <ClCompile Include="CrsrWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DspOptWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawFrame.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HistWrappers.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoEditor.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_displayOptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_draw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_focusPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -107,13 +113,7 @@
     <ClInclude Include="win32_EvoWorkThreadInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="win32_EvoEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win32_EvoEditorWrappers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_histWrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win32_performanceWindow.h">

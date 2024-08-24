@@ -1,22 +1,19 @@
-// GridNeighbor.ixx
+// GridNeighborhood.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
-
-import Debug;
-
-export module EvolutionCore:GridNeighbor;
+export module EvoCoreLib:GridNeighborhood;
 
 import std;
+import Debug;
 import :GridPoint;
-import :GridModel;
 
 using std::vector;
+using std::function;
 
 export using NEIGHBORS = vector<GridPoint>;
 
-export class Neighborhood
+export class GridNeighborhood
 {
 public:
     static void InitClass(int const);
@@ -26,7 +23,7 @@ public:
 		return m_iNrOfNeighbors; 
 	}
 
-	Neighborhood()	: m_neighbors()
+	GridNeighborhood()	: m_neighbors()
 	{
 		m_neighbors.reserve(m_iNrOfNeighbors);
 	}

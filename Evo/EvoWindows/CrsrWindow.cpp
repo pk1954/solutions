@@ -4,11 +4,10 @@
 
 module CrsrWindow;
 
-import EvolutionCore;
+import EvoCoreLib;
 import EvoReadBuffer;
 import FocusPoint;
 import TextBuffer;
-import Config;
 
 CrsrWindow::CrsrWindow() :
     TextWindow(),
@@ -86,7 +85,7 @@ void CrsrWindow::DoPaint(TextBuffer & textBuf)
 	{
 		textBuf.nextLine(L"Energy:");
 		textBuf.setHorizontalPos(4_TEXT_POSITION);
-		textBuf.printPercentage(enIndEnergy.GetValue(), Config::GetConfigValueShort(Config::tId::stdCapacity));
+		textBuf.printPercentage(enIndEnergy.GetValue(), EvoConfig::GetConfigValueShort(EvoConfig::tId::stdCapacity));
 	}
 
 	// Deactivated, see win32_focusPoint.cpp

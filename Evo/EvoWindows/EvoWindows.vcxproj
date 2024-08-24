@@ -152,12 +152,16 @@
   <ItemGroup>
     <ClCompile Include="ColorManager.ixx" />
     <ClCompile Include="CrsrWindow.ixx" />
+    <ClCompile Include="DrawFrame.ixx" />
+    <ClCompile Include="DspOptWindow.ixx" />
+    <ClCompile Include="EvoEditor.ixx" />
     <ClCompile Include="EvoReadBuffer.ixx" />
+    <ClCompile Include="HistWrappers.ixx" />
     <ClCompile Include="Resource.ixx" />
     <ClCompile Include="TextDisplay.ixx" />
     <ClCompile Include="ColorManager.cpp" />
     <ClCompile Include="CrsrWindow.cpp" />
-    <ClCompile Include="DisplayOptions.cpp" />
+    <ClCompile Include="DspOptWindow.cpp" />
     <ClCompile Include="DrawFrame.cpp" />
     <ClCompile Include="EvoEditor.cpp" />
     <ClCompile Include="EvoEditorWrappers.cpp" />
@@ -171,13 +175,9 @@
     <ClCompile Include="Wrappers.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_displayOptions.h" />
-    <ClInclude Include="win32_draw.h" />
-    <ClInclude Include="win32_EvoEditor.h" />
     <ClInclude Include="win32_EvoEditorWrappers.h" />
     <ClInclude Include="win32_focusPoint.h" />
     <ClInclude Include="win32_gridWindow.h" />
-    <ClInclude Include="win32_histWrappers.h" />
     <ClInclude Include="win32_packGridPoint.h" />
     <ClInclude Include="win32_performanceWindow.h" />
     <ClInclude Include="win32_protocolServer.h" />
@@ -185,6 +185,14 @@
     <ClInclude Include="win32_EvoWorkThread.h" />
     <ClInclude Include="win32_EvoWorkThreadInterface.h" />
     <ClInclude Include="win32_wrappers.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
+      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
+      <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,4 @@
-// ReadBuffer.h : 
+// ReadBuffer.ixx : 
 //
 // Win32_appFramework
 //

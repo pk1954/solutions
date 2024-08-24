@@ -1,14 +1,15 @@
 // Food.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
+module EvoCoreLib:GridModel;
+
+import std;
 import Debug;
-#include <limits.h>
-
-import Config;
+import :EvoConfig;
 import :GridRect;
-import :GridNeighbor;
-import Grid_model;
+import :GridNeighborhood;
+import :Grid_model;
 import :GridField;
 
 void GridModel::FoodGrowth()

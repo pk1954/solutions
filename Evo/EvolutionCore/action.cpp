@@ -1,8 +1,8 @@
 // Action.cpp : 
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:Action;
+module EvoCoreLib:Action;
 
 import std;
 import :Genome;

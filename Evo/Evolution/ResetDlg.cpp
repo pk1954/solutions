@@ -3,7 +3,7 @@
 // Evolution
 
 
-import GridDimensions;
+import EvoCoreLib;
 #include "win32_resetDlg.h"
 
 import Resource;

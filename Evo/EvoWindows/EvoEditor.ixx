@@ -1,17 +1,15 @@
-// win32_EvoEditor.h 
+// EvoEditor.ixx
 //
 // EvoWindows
 
-module;
+export module EvoEditor;
 
 import EvolutionTypes;
-#include "EvolutionCore.h"
-#include "EvoReadBuffer.h"
-#include "win32_baseDialog.h"
-
-class EvoWorkThreadInterface;
-class DspOptWindow;
-class StatusBar;
+import EvoCoreLib;
+import BaseDialog;
+import EvoWorkThreadInterface;
+import DspOptWindow;
+import StatusBar;
 
 class EvoEditorWindow : public BaseDialog
 {

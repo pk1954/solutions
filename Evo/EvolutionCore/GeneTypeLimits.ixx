@@ -1,8 +1,8 @@
 // GeneTypeLimits.ixx : 
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GeneTypeLimits;
+export module EvoCoreLib:GeneTypeLimits;
 
 import std;
 import Util;

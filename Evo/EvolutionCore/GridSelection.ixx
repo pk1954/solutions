@@ -1,8 +1,8 @@
 // GridSelection.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GridSelection;
+export module EvoCoreLib:GridSelection;
 
 import :GridDimensions;
 import :GridRect;
@@ -38,5 +38,5 @@ public:
 	}
 
 private:
-	static GridRect m_gridRectSelection;
+	inline static GridRect m_gridRectSelection { GridRect::ZERO_VAL() };
 };

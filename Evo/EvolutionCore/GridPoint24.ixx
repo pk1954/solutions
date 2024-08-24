@@ -2,7 +2,7 @@
 //
 // GridPoint packed as Int24
 
-export module EvolutionCore:GridPoint24;
+export module EvoCoreLib:GridPoint24;
 
 import Debug;
 import Int24;

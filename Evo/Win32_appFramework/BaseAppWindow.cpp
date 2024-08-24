@@ -1,6 +1,8 @@
-// win32_baseAppWindow.cpp
+// BaseAppWindow.cpp
 //
 // Win32_appFramework
+
+module BaseAppWindow;
 
 import std;
 import Trace;

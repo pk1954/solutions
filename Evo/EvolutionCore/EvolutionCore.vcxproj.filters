@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Config.cpp">
+    <ClCompile Include="EvoConfig.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvolutionCore.cpp">
@@ -36,7 +36,7 @@
     <ClCompile Include="GridModel.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="GridNeighbor.cpp">
+    <ClCompile Include="GridNeighborhood.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GridRect.cpp">
@@ -51,7 +51,7 @@
     <ClCompile Include="Strategy.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="dump.cpp">
+    <ClCompile Include="EvolutionDump.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp">
@@ -78,9 +78,6 @@
     <ClCompile Include="Action.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="GridSelection.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="GridPOI.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -102,7 +99,7 @@
     <ClCompile Include="GeneTypeLimits.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Config.ixx">
+    <ClCompile Include="EvoConfig.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvolutionTypes.ixx">
@@ -126,7 +123,7 @@
     <ClCompile Include="GridModel.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EvoDump.ixx">
+    <ClCompile Include="EvolutionDump.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GeneType.ixx">
@@ -156,7 +153,7 @@
     <ClCompile Include="GridDimensions.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="GridNeighbor.ixx">
+    <ClCompile Include="GridNeighborhood.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GridBrush.ixx">
@@ -190,6 +187,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EvolutionCoreWrapperHelpers.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="EvoCoreLib.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

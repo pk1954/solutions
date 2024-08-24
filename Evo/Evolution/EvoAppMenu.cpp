@@ -1,16 +1,18 @@
-// win32_appMenu.cpp
+// EvoAppMenu.cpp
 //
 // Evolution
 
+module;
 
 #include "WinUser.h"
-#include "resource.h"
-#include "win32_WorkThreadInterface.h"
-#include "win32_winManager.h"
-#include "win32_evoAppMenu.h"
 
-import Config;
-import GridDimensions;
+export module EvoAppMenu;
+
+import Resource;
+import EvoCoreLib;
+import WorkThreadInterface;
+import WinManager;
+import EvoAppMenu;
 
 void EvoAppMenu::Initialize
 (

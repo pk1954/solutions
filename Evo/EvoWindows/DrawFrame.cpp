@@ -2,9 +2,7 @@
 //
 // EvoWindows
 
-#include "EvolutionCore.h"
-import GridDimensions;
-#include "EvoPixelCoords.h"
+import EvoCoreLib;
 #include "EvoReadBuffer.h"
 #include "win32_graphicsInterface.h"
 #include "win32_displayOptions.h"

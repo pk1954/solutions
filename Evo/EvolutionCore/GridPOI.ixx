@@ -1,7 +1,7 @@
 // GridPOI.ixx
 //
 
-export module EvolutionCore:GridPOI;
+export module EvoCoreLib:GridPOI;
 
 import :EvolutionTypes;
 import :GridPoint;

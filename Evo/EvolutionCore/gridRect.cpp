@@ -1,8 +1,8 @@
 // GridRect.cpp :
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:GridRect;
+module EvoCoreLib:GridRect;
 
 void Apply2Rect
 (

@@ -2,7 +2,7 @@
 //
 // Evolutioncore
 
-export module EvolutionCore:Individual;
+export module EvoCoreLib:Individual;
 
 import std;
 import Random;

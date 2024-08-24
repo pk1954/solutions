@@ -1,13 +1,10 @@
 // GplIterator.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+export module EvoCoreLib:GplIterator;
 
 import Debug;
-
-export module EvolutionCore:GplIterator;
-
 import :GridPoint;
 import :GridModel;
 

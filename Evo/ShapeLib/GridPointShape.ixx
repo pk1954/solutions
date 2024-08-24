@@ -4,15 +4,12 @@
 
 export module ShapeLib:GridPointShape;
 
-import GridPoint;
-import Shape;
-import CoordShape;
-import IndividualShape;
-
-class TextDisplay;
-class EvoPixelCoords;
-class EvolutionCore;
-class D3D_driver;
+import D3D_driver;
+import EvoCoreLib;
+import TextDisplay;
+import :Shape;
+import :CoordShape;
+import :IndividualShape;
 
 export class GridPointShape
 {

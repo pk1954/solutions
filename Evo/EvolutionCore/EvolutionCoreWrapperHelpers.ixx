@@ -1,8 +1,8 @@
 // EvolutionCoreWrapperHelpers.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvolutionCoreWrapperHelpers;
+export module EvoCoreLib:EvolutionCoreWrapperHelpers;
 
 import RunTime;
 import :GridCoord;

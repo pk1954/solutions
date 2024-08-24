@@ -9,7 +9,7 @@ export module ShapeLib:Shape;
 
 import Types;
 import TextDisplay;
-import GridDimensions;
+import EvoCoreLib;
 
 export class Shape
 {

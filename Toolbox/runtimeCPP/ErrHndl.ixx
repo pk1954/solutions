@@ -44,7 +44,7 @@ public:
     };
 
     static void PrintErrorInfo(Scanner const &, ScriptException const &);
-    static void PrintMarkerLine  (Scanner const &);
+    static void PrintMarkerLine(Scanner const &);
     static void ScrSetOutputStream(wostream * const);
     static void Print(wstring const& = L"");
     static void PrintNL(wstring const& = L"");

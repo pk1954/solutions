@@ -5,8 +5,7 @@
 export module TextDisplay;
 
 import std;
-import EvolutionCore;
-import EvoPixelCoords;
+import EvoCoreLib;
 import GraphicsInterface;
 
 using std::wostringstream;

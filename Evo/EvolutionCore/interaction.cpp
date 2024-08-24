@@ -1,27 +1,27 @@
 // Interaction.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:Interaction;
+module EvoCoreLib:Interaction;
 
 import :EvolutionTypes;
-import Individual;
-import Config;
+import :Individual;
+import :EvoConfig;
 
 static ENERGY_UNITS R;  // Beide kooperieren und fahren das gute Ergebnis R (Reward) ein. 
 static ENERGY_UNITS S;  // Der Spieler wurde betrogen, er bekommt S (Suckers Payoff). 
 static ENERGY_UNITS T;  // Der Spieler hat den anderen ausgenutzt und erhält T (Temptation).
 static ENERGY_UNITS P;  // Gegenseitige Defektion führt nur zu P (Penalty). 
 
-void INTERACTION::RefreshCash()
+void Interaction::RefreshCash()
 {
-	R = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::interactionPayOff_R));
-	S = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::interactionPayOff_S));
-	T = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::interactionPayOff_T));
-	P = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::interactionPayOff_P));
+	R = ENERGY_UNITS(EvoConfig::GetConfigValueShort(EvoConfig::tId::interactionPayOff_R));
+	S = ENERGY_UNITS(EvoConfig::GetConfigValueShort(EvoConfig::tId::interactionPayOff_S));
+	T = ENERGY_UNITS(EvoConfig::GetConfigValueShort(EvoConfig::tId::interactionPayOff_T));
+	P = ENERGY_UNITS(EvoConfig::GetConfigValueShort(EvoConfig::tId::interactionPayOff_P));
 }
 
-void INTERACTION::Interact(Individual &IndA, Individual &IndB, std::wostream * pOut)
+void Interaction::Interact(Individual &IndA, Individual &IndB, std::wostream * pOut)
 {
 	bool const resA = IndA.InteractWith(IndB.GetId());
 	bool const resB = IndB.InteractWith(IndA.GetId());

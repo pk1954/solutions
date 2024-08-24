@@ -1,11 +1,13 @@
-// EvolutionCore.ixx
+// EvoCoreLib.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvolutionCore;
+export module EvoCoreLib:EvolutionCore;
 
 import std;
 import BoolOp;
+import ObserverInterface;
+import EventInterface;
 import :Strategy;
 import :EvolutionTypes;
 import :GridDimensions;
@@ -13,22 +15,19 @@ import :GridField;
 import :GridModel;
 import :GridPoint;
 import :GridRect;
-import GridPOI;
-import GridBrush;
-import ModelInterface;
-import ObserverInterface;
-import EventInterface;
+import :GridPOI;
+import :GridBrush;
 
-class EvolutionCore : public ModelInterface
+export class EvolutionCore
 {
 public:
 
 	EvolutionCore();
     virtual ~EvolutionCore() = default;
 
-	void CopyModelData(ModelInterface const * const src)
+	void CopyModelData(EvolutionCore const * const src)
 	{
-		* this = * static_cast<EvolutionCoreImpl const *>(src);
+		* this = * static_cast<EvolutionCore const *>(src);
 	}
 
 	// debugging functions
@@ -58,7 +57,6 @@ public:
     ENERGY_UNITS    const GetFertilizer  (GridPoint const gp) const { return getGridField(gp).GetFertilizer(); }
 	PERCENT         const GetMutRate     (GridPoint const gp) const { return getGridField(gp).GetMutRate(); }
     EVO_GENERATION  const GetGenBirth    (GridPoint const gp) const { return getGridField(gp).GetGenBirth(); }
-    EVO_GENERATION  const GetGenBirth    (GridPoint const) const = 0;
 	EVO_GENERATION  const GetAge         (GridPoint const gp) const { return m_grid.GetAge(gp); }
     Strategy::Id    const GetStrategyId  (GridPoint const gp) const { return getGridField(gp).GetStrategyId(); }
     MEM_INDEX       const GetMemSize     (GridPoint const gp) const { return getGridField(gp).GetMemSize(); }

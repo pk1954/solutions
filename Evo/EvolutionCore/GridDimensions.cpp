@@ -1,13 +1,12 @@
 // GridDimensions.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 //
 
-module EvolutionCore:GridDimensions;
-
-#include "grid_model.h"
+module EvoCoreLib:GridDimensions;
 
 import std;
+import :GridModel;
 
 GridPoint                       GridDimensions::m_gridSize       { GP_NULL }; 
 int                             GridDimensions::m_iNrOfNeighbors { 0 }; 

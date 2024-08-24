@@ -1,14 +1,16 @@
 // GridBrush.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GridBrush;
+export module EvoCoreLib:GridBrush;
 
 import std;
 import Types;
 import :EvolutionTypes;
 import :GridPoint;
 import :GridModel;
+
+using std::function;
 
 export class GridBrush
 {

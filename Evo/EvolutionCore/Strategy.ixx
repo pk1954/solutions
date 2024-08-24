@@ -1,8 +1,8 @@
 // Strategy.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:Strategy;
+export module EvoCoreLib:Strategy;
 
 import std;
 import :EvolutionTypes;

@@ -2,7 +2,7 @@
 //
 // Win32_appFramework
 
-module;
+export module BaseAppWindow;
 
 import std;
 
@@ -11,11 +11,10 @@ import WinManager;
 import WinHistory;
 import HistoryInfo;
 import StatusBar;
-
-class WorkThreadInterface;
-class HistorySystem;
-class ModelWindow;
-class AppMenu;
+import WorkThreadInterface;
+import HistorySystem;
+import ModelWindow;
+import AppMenu;
 
 class BaseAppWindow : public BaseWindow
 {

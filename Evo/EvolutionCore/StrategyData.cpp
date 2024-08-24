@@ -1,12 +1,10 @@
 // StrategyData.cpp : 
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+module EvoCoreLib:StrategyData;
 
 import Debug;
-
-module EvolutionCore:StrategyData;
 
 MEM_INDEX    StrategyData::m_uiMaxPartnerMemory                 = MEM_INDEX(0);
 unsigned int StrategyData::m_uiNrInteractionsWithKnownCulprit   = 0;

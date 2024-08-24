@@ -1,8 +1,8 @@
 // GridRect.ixx : 
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GridRect;
+export module EvoCoreLib:GridRect;
 
 import Types;
 import :GridPoint;

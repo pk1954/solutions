@@ -1,8 +1,8 @@
 // GridField.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GridField;
+export module EvoCoreLib:GridField;
 
 import std;
 import Debug;
@@ -13,7 +13,7 @@ import :GeneType;
 import :Strategy;
 import :GridPoint;
 import :Individual;
-import :InterAction;
+import :Interaction;
 import :EvolutionTypes;
 
 export class GridField
@@ -69,7 +69,7 @@ public:
 
     void ResetIndividual()                  { m_Individual.ResetIndividual(); }
     void SetEnergy(ENERGY_UNITS const sInc) { m_Individual.SetEnergy(sInc); }
-    void DecEnergy(ENERGY_UNITS const sDec) { m_Individual.IncEnergy(-sDec); }
+    void DecEnergy(ENERGY_UNITS const sDec) { m_Individual.IncEnergy(ENERGY_UNITS(0) - sDec); }
     void IncEnergy(ENERGY_UNITS const sInc) { m_Individual.IncEnergy(sInc); }
 
     void ReduceFertilizer()                  { m_enFertilizer /= 2; }
@@ -132,7 +132,7 @@ public:
 //		int siz = sizeof(GridField);
 		Individual& iA { gfA.m_Individual };
 		Individual& iB { gfB.m_Individual };
-		INTERACTION::Interact(iA, iB, pOut);
+		Interaction::Interact(iA, iB, pOut);
 	};
 
 private:

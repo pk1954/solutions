@@ -1,8 +1,8 @@
 // MortalityTable.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:MortalityTable;
+export module EvoCoreLib:MortalityTable;
 
 import std;
 import Random;

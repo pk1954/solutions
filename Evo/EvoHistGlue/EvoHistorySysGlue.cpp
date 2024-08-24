@@ -2,17 +2,12 @@
 //
 // EvoHistGlue
 
-module;
+module EvoHistorySysGlue;
 
 import HistGeneration;
 import HistorySystem;
-import EvolutionTypes;
-
-module EvoHistorySysGlue;
-
-import Config;
-
-class WorkThread;
+import EvoCoreLib;
+import WorkThread;
 
 EvoHistorySysGlue::EvoHistorySysGlue() :
     m_pHistorySystem(nullptr)
@@ -28,8 +23,8 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
 
 	ModelData * pModelWork = m_pHistorySystem->StartHistorySystem
     (
-        Config::GetConfigValue(Config::tId::maxGeneration),
-        Config::GetConfigValue(Config::tId::nrOfHistorySlots),
+        EvoConfig::GetConfigValue(EvoConfig::tId::maxGeneration),
+        EvoConfig::GetConfigValue(EvoConfig::tId::nrOfHistorySlots),
 		Util::GetPhysicalMemory(),
         & m_EvoModelFactory
    );

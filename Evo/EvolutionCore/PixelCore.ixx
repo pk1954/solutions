@@ -1,8 +1,8 @@
 // PixelCore.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:PixelCore;
+export module EvoCoreLib:PixelCore;
 
 import Types;
 

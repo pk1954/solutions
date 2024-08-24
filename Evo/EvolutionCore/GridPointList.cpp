@@ -1,14 +1,13 @@
 // GridPointList.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+module EvoCoreLib:GridPointList;
 
-#include "grid_model.h"
-
-import EvolutionDump;
+import :EvolutionDump;
 import :GridPoint;
 import :GridField;
+import :GridModel;
 
 void GridPointList::CheckGridPointList(GridModel const & grid) const
 {

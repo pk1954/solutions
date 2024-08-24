@@ -1,10 +1,11 @@
 // EvoStatistics.cpp :
 //
-// EvolutionCore
+// EvoCoreLib
 
-#include "TextBuffer.h"
-#include "EvolutionCore.h"
-#include "EvoStatistics.h"
+module EvoCoreLib:EvoStatistics;
+
+import TextBuffer;
+import :EvolutionCore;
 
 EvoStatistics::EvoStatistics() :
 	m_pTextBuf(nullptr)

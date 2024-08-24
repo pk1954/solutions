@@ -1,15 +1,16 @@
 // GridDimensions.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 //
 // knows static size of the GridModel and number of neighbors
 // contains functions directly dependent on GridModel size
 
-export module EvolutionCore:GridDimensions;
+export module EvoCoreLib:GridDimensions;
 
 import std;
 import :GridRect;
-import :GridNeighbor;
+import :GridCoord;
+import :GridNeighborhood;
 
 using std::min;
 using std::max;
@@ -34,7 +35,7 @@ public:
 	static GridCoord const GridMaxY()        { return GridHeight() - 1_GRID_COORD; }
 	static GridPoint const GridRectSize()    { return m_gridSize; }
 	static GridPoint const GridOrigin()      { return GP_ZERO; }
-	static GridPoint const GridMaximum()     { return m_gridSize - 1_GRID_COORD; }
+	static GridPoint const GridMaximum()     { return GridPoint(GridMaxX(), GridMaxY()); }
 	static GridRect  const GridRectFull()    { return GridRect(GridOrigin(), GridMaximum()); }
 
 	static int const GridWidthVal()  { return GridWidth() .GetValue(); }; // abbreviations for e.g. array dims

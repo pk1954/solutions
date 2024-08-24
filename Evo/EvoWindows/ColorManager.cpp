@@ -9,7 +9,7 @@ module;
 
 module ColorManager;
 
-import Config;
+import EvoCoreLib;
 
 void ColorManager::Initialize()
 {
@@ -17,7 +17,7 @@ void ColorManager::Initialize()
 	m_colorSelection = RGB(  0, 217, 255);
 	m_colorHighlight = RGB(255, 217,   0);
 
-	CLUT_INDEX clutSize { Config::GetConfigValue(Config::tId::stdCapacity) };
+	CLUT_INDEX clutSize { EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity) };
 	for (auto & strategy : m_aClutStrat)
 		strategy.Allocate(clutSize);
 
@@ -25,7 +25,7 @@ void ColorManager::Initialize()
 	setStrategyColor(Strategy::Id::cooperate, RGB(130, 147,  86));
 	setStrategyColor(Strategy::Id::tit4tat,   RGB(192,  47,  29));
 
-    setupClut(Config::GetConfigValueBoolOp(Config::tId::dimmMode));
+    setupClut(EvoConfig::GetConfigValueBoolOp(EvoConfig::tId::dimmMode));
 }
 
 void ColorManager::setupClut(tBoolOp const bOp)

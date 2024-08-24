@@ -1,11 +1,11 @@
-// win32_displayOptions.h 
+// DspOptWindow.ixx
 //
+// EvoWindows
 
-module;
+module DspOptWindow;
 
-#include "win32_baseDialog.h"
-#include <functional>
-
+import std;
+import BaseDialog;
 import GridPoint;
 
 class EvolutionCore;

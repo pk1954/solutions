@@ -4,13 +4,8 @@
 import std;
 import Trace;
 import RunTime;
-import Config;
-import GridPoint;
-import GridRect;
 import HiResTimer;
-import GridDimensions;
-import EvolutionCore;
-import EvolutionCoreWrappers;
+import EvoCoreLib;
 
 using std::chrono::microseconds;
 using std::chrono::milliseconds;
@@ -43,14 +38,14 @@ void DoTest()
 	HiResTimer m_hrtimer;
 	wofstream  m_traceStream = OpenTraceFile(L"main_trace.out");
 
-	Config::SetDefaultConfiguration();
-	Config::DefineConfigWrapperFunctions();
+	EvoConfig::SetDefaultConfiguration();
+	EvoConfig::DefineConfigWrapperFunctions();
 	RunTime::ProcessScript(L"std_configuration.in");
 	GridDimensions::DefineGridSize
 	(
-		GridCoord{ Config::GetConfigValueShort(Config::tId::gridWidth) }, 
-		GridCoord{ Config::GetConfigValueShort(Config::tId::gridHeight) }, 
-		Config::GetConfigValue(Config::tId::nrOfNeighbors) 
+		GridCoord{ EvoConfig::GetConfigValueShort(EvoConfig::tId::gridWidth) }, 
+		GridCoord{ EvoConfig::GetConfigValueShort(EvoConfig::tId::gridHeight) }, 
+		EvoConfig::GetConfigValue(EvoConfig::tId::nrOfNeighbors) 
 	);
 	EvolutionCore::InitClass(GridDimensions::GetNrOfNeigbors(), nullptr, nullptr);
 

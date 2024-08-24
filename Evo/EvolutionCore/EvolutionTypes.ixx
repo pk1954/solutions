@@ -1,8 +1,8 @@
 // EvolutionTypes.ixx
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:EvolutionTypes;
+export module EvoCoreLib:EvolutionTypes;
 
 import std;
 import Types;
@@ -10,11 +10,11 @@ import SaveCast;
 import :GeneType;
 import :Action;
 
-export using ENERGY_UNITS   = NamedType< short, struct ENERGY_UNITS_Parameter >;
-export using EVO_GENERATION = NamedType< long, struct EVO_GENERATION_Parameter >;
-export using IND_ID         = NamedType< long, struct IND_ID_Parameter >;
-export using MEM_INDEX      = NamedType< short, struct MEM_INDEX_Parameter >;
-export using ACTION_COUNT   = NamedType< long, struct ACTION_COUNT_Parameter >;
+export using ENERGY_UNITS   = NamedType<short, struct ENERGY_UNITS_Parameter>;
+export using EVO_GENERATION = NamedType<long,  struct EVO_GENERATION_Parameter>;
+export using IND_ID         = NamedType<long,  struct IND_ID_Parameter>;
+export using MEM_INDEX      = NamedType<short, struct MEM_INDEX_Parameter>;
+export using ACTION_COUNT   = NamedType<long,  struct ACTION_COUNT_Parameter>;
 
 std::wostream& operator<< (std::wostream& out, IND_ID const&);
 

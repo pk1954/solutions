@@ -1,12 +1,13 @@
 // GridPointList.ixx : 
 //
-// EvolutionCore
+// EvoCoreLib
 
-export module EvolutionCore:GridPointList;
+export module EvoCoreLib:GridPointList;
 
 import :GridPoint;
 import :GridField;
-import :GridModel;
+
+class GridModel;
 
 #ifdef _DEBUG
 #define CHECK_GRIDPOINT_LIST(grid) CheckGridPointList(grid)
@@ -43,9 +44,9 @@ public:
         m_iCount = 0;
     };
 
-    void AddGridPointToList     (GridModel &, GridField &);
-    void ReplaceGridPointInList (GridModel &, GridField &, GridField &);
-    void DeleteGridPointFromList(GridModel &, GridField &);
+    void AddGridPointToList     (GridModel&, GridField&);
+    void ReplaceGridPointInList (GridModel&, GridField&, GridField &);
+    void DeleteGridPointFromList(GridModel&, GridField&);
 
     void CheckGridPointList(GridModel const &) const;
 

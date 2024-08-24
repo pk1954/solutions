@@ -4,7 +4,7 @@
 
 export module EvoModelFactory;
 
-import EvolutionCore;
+import EvoCoreLib;
 import EvoModelDataGlue;
 import ModelData;
 

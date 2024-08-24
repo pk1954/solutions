@@ -43,6 +43,7 @@ const WORD  VK_ESCAPE_CONST           = VK_ESCAPE;
                                      
 const DWORD MF_BITMAP_CONST           = MF_BITMAP;
 const DWORD MF_STRING_CONST           = MF_STRING;
+const DWORD MF_BYPOSITION_CONST           = MF_BYPOSITION;
                                      
 const DWORD MB_OK_CONST               = MB_OK;
 const DWORD MB_ICONWARNING_CONST      = MB_ICONWARNING;

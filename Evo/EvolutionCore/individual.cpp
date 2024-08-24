@@ -1,15 +1,15 @@
 // Individual.cpp
 //
-// EvolutionCore
+// EvoCoreLib
 
-module EvolutionCore:;
+module EvoCoreLib:;
 
 import Debug;
 
-module EvolutionCore:Individual;
+module EvoCoreLib:Individual;
 
 import Random;
-import Config;
+import :EvoConfig;
 import :Strategy;
 
 static DefectAlways    StratD;
@@ -29,8 +29,8 @@ const std::array< Strategy * const, Strategy::COUNT > Individual::m_apStrat =
 
 void Individual::RefreshCache()
 {
-    m_stdEnergyCapacity = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::stdCapacity));
-    m_initialEnergy     = ENERGY_UNITS(Config::GetConfigValueShort(Config::tId::initialEnergy));
+    m_stdEnergyCapacity = ENERGY_UNITS(EvoConfig::GetConfigValueShort(EvoConfig::tId::stdCapacity));
+    m_initialEnergy     = ENERGY_UNITS(EvoConfig::GetConfigValueShort(EvoConfig::tId::initialEnergy));
 }
 
 Individual::Individual()
