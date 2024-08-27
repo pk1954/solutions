@@ -6,6 +6,7 @@ export module WorkThreadInterface;
 
 import std;
 import BoolOp;
+import WinBasics;
 import HistoryLib;
 import WorkThread;
 
@@ -40,8 +41,8 @@ public:
 
 protected:
 
-	bool            IsTraceOn  () const { return   m_bTrace; }
-	std::wostream & TraceStream()       { return * m_pTraceStream; }
+	bool       IsTraceOn  () const { return   m_bTrace; }
+	wostream & TraceStream()       { return * m_pTraceStream; }
 
 	void WorkMessage
 	(

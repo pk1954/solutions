@@ -1,11 +1,10 @@
-// win32_resetDialog.cpp
+// ResetDialog.cpp
 //
 // Evolution
 
+module ResetDialog;
 
 import EvoCoreLib;
-#include "win32_resetDlg.h"
-
 import Resource;
 
 static int const BUFLEN = 20;

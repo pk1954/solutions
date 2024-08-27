@@ -34,7 +34,8 @@ int main(int argc, char * argv [], char * envp [])
 
 	GridDimensions::DefineGridSize(200_GRID_COORD, 100_GRID_COORD, iNrOfNeighbors);
 
-    RunTime::ProcessScript(L"std_configuration.in");
+    Script script;
+	script.ScrProcess(L"std_configuration.in");
 
 	EvolutionCore::InitClass(iNrOfNeighbors, nullptr, nullptr);
 
@@ -51,7 +52,7 @@ int main(int argc, char * argv [], char * envp [])
 	DefineEvoPixelCoordsWrapperFunctions(& PixCoords);
 
 	PixCoords.Start(FIELDSIZE, bHexagonMode);
-	pEvoHistGlue->Start(pHistorySystem, FALSE);  // do history cache allocation **not** asynchroniously
+	pEvoHistGlue->Start(pHistorySystem, false);  // do history cache allocation **not** asynchroniously
     DefineWin32HistWrapperFunctions(pWorkThreadInterface);
 
 	pWorkThreadInterface->Start(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, pEvoHistGlue);

@@ -2,12 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <Windows.h>
-#include "CommCtrl.h"
-
 module Win32_Controls;
+
+import WinBasics;
 
 HWND CreateButton
 (
@@ -23,15 +20,16 @@ HWND CreateButton
 {
 	DWORD style { BS_DEFPUSHBUTTON|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
 	HWND  hwnd  { 
-					CreateWindow
+					CreateWindowExW
 					(
+						0,
 						WC_BUTTON, 
 						text, 
 						style, 
 						x, y, w, h, 
 						hwndParent, 
 						reinterpret_cast<HMENU>(id), 
-						GetModuleHandle(nullptr), 
+						GetModuleHandleW(nullptr), 
 						0
 					) 
 				};
@@ -52,15 +50,16 @@ HWND CreateCheckBox
 {
 	DWORD style { BS_AUTOCHECKBOX|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
 	HWND  hwnd  { 
-					CreateWindow
+					CreateWindowExW
 					(
+						0, 
 						WC_BUTTON,
 						text,
 						style, 
 						x, y, w, h, 
 						hwndParent, 
 						reinterpret_cast<HMENU>(id), 
-						GetModuleHandle(nullptr), 
+						GetModuleHandleW(nullptr), 
 						0
 					) 
 				};
@@ -71,15 +70,16 @@ HWND CreateOwnerDrawButton(HWND const hwndParent, int const x, int const y, int 
 {
 	HWND hwnd  
 	{ 
-		CreateWindow
+		CreateWindowExW
 		(
+			0, 
 			WC_BUTTON, 
 			0,
 			WS_CHILD|WS_VISIBLE|BS_OWNERDRAW, 
 			x, y, w, h, 
 			hwndParent, 
 			reinterpret_cast<HMENU>(id), 
-			GetModuleHandle(nullptr), 
+			GetModuleHandleW(nullptr), 
 			0
 		) 
 	};
@@ -97,12 +97,12 @@ HWND CreateStaticField
 	DWORD           const dwStyle
 )
 {
-	HWND hwnd = CreateWindow(WC_STATIC, text, WS_CHILD|WS_VISIBLE|dwStyle, iXpos, iYpos, iWidth, height, hwndParent, 0, GetModuleHandle(nullptr), 0);
+	HWND hwnd = CreateWindowExW(0, WC_STATIC, text, WS_CHILD|WS_VISIBLE|dwStyle, iXpos, iYpos, iWidth, height, hwndParent, 0, GetModuleHandleW(nullptr), 0);
 	return hwnd;
 }
 
 HWND CreateEditField(HWND const hwndParent, int const iXpos, int const iYpos, int const iWidth, int const height)
 {
-	HWND hwnd = CreateWindow(WC_EDIT, 0, WS_CHILD|WS_VISIBLE|ES_RIGHT, iXpos, iYpos, iWidth, height, hwndParent, 0, GetModuleHandle(nullptr), 0);
+	HWND hwnd = CreateWindowExW(0, WC_EDIT, 0, WS_CHILD|WS_VISIBLE|ES_RIGHT, iXpos, iYpos, iWidth, height, hwndParent, 0, GetModuleHandleW(nullptr), 0);
 	return hwnd;
 }

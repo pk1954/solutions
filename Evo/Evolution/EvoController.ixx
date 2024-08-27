@@ -32,7 +32,7 @@ public:
 
 	virtual ~EvoController();
 
-	void EvoController::Initialize
+	void Initialize
 	(
 		EvoAppWindow           * const,
 		EvoWorkThreadInterface * const

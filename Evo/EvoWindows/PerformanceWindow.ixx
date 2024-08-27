@@ -4,7 +4,7 @@
 
 export module PerformanceWindow;
 
-import TextWindow:
+import TextWindow;
 import ActionTimer;
 import Delay;
 

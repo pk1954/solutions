@@ -46,7 +46,7 @@ public:
 		EventInterface      * const,
 		ObserverInterface   * const,
 		HistorySystem       * const,
-		EvolutionCore      * const,
+		EvolutionCore       * const,
 		WorkThreadInterface * const,
 		bool                  const
 	);
@@ -127,7 +127,7 @@ private:
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;
     HistorySystem       * m_pHistorySystem;   // if HistorySystem is not used: nullptr 
-	EvolutionCore      * m_pModel;           // if HistorySystem is     used: nullptr
+	EvolutionCore       * m_pModel;           // if HistorySystem is     used: nullptr
 	WorkThreadInterface * m_pWorkThreadInterface;
     HistGeneration        m_genDemanded;
     bool                  m_bContinue;

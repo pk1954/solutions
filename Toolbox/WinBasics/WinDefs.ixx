@@ -25,8 +25,10 @@ export
     using DWORD                 = DWORD;
     using WORD                  = WORD;
     using DWORD_PTR             = DWORD_PTR;
+    using INT_PTR               = INT_PTR;
     using LPACCEL               = LPACCEL;
     using LPCWSTR               = LPCWSTR;
+    using LPCSTR                = LPCSTR;
     using LPCTSTR               = LPCTSTR;
     using LPPOINT               = LPPOINT;
     using SRWLOCK               = SRWLOCK;
@@ -46,6 +48,7 @@ export
     using ::CreateAcceleratorTableW;
     using ::CreateDIBSection;
     using ::CreateMenu;
+    using ::CreateWindowExW;
     using ::DrawMenuBar;
     using ::EnableWindow;
     using ::EndDialog;

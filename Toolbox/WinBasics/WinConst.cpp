@@ -25,6 +25,7 @@ const DWORD WS_POPUP_CONST            = WS_POPUP;
 const DWORD WS_CAPTION_CONST          = WS_CAPTION;
 const DWORD WS_SIZEBOX_CONST          = WS_SIZEBOX;
 const DWORD WS_GROUP_CONST            = WS_GROUP;
+const DWORD WS_TABSTOP_CONST          = WS_TABSTOP;
 const DWORD WS_SYSMENU_CONST          = WS_SYSMENU;
 
 const DWORD SW_HIDE_CONST             = SW_HIDE;
@@ -43,7 +44,7 @@ const WORD  VK_ESCAPE_CONST           = VK_ESCAPE;
                                      
 const DWORD MF_BITMAP_CONST           = MF_BITMAP;
 const DWORD MF_STRING_CONST           = MF_STRING;
-const DWORD MF_BYPOSITION_CONST           = MF_BYPOSITION;
+const DWORD MF_BYPOSITION_CONST       = MF_BYPOSITION;
                                      
 const DWORD MB_OK_CONST               = MB_OK;
 const DWORD MB_ICONWARNING_CONST      = MB_ICONWARNING;
@@ -62,11 +63,16 @@ const DWORD MK_CONTROL_CONST          = MK_CONTROL;
 const DWORD MK_LBUTTON_CONST          = MK_LBUTTON;
                                      
 const DWORD BS_PUSHBUTTON_CONST       = BS_PUSHBUTTON;
+const DWORD BS_DEFPUSHBUTTON_CONST    = BS_DEFPUSHBUTTON;
+const DWORD BS_AUTOCHECKBOX_CONST     = BS_AUTOCHECKBOX;
+const DWORD BS_OWNERDRAW_CONST        = BS_OWNERDRAW;
                                      
 const DWORD CS_OWNDC_CONST            = CS_OWNDC;
 const DWORD CS_HREDRAW_CONST          = CS_HREDRAW;
 const DWORD CS_VREDRAW_CONST          = CS_VREDRAW;
 const DWORD CS_DBLCLKS_CONST          = CS_DBLCLKS;
+
+const DWORD ES_RIGHT_CONST            = ES_RIGHT;
 
 const DWORD DS_CENTER_CONST           = DS_CENTER;
 const DWORD DS_MODALFRAME_CONST       = DS_MODALFRAME;
