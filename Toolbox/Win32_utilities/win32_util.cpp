@@ -99,11 +99,11 @@ DWORD GetNrOfCPUs(void)
     return siSysInfo.dwNumberOfProcessors; 
 }
 
-ULONGLONG GetPhysicalMemory()  // in bytes
+unsigned long long GetPhysicalMemory()  // in bytes
 {
-    ULONGLONG ramKB;
-    (void)GetPhysicallyInstalledSystemMemory(&ramKB);   // get physical memory in KB
-    return ramKB * 1024;                                // compute number of bytes
+    unsigned long long ramKB;
+    GetPhysicallyInstalledSystemMemory(&ramKB);   // get physical memory in KB
+    return ramKB * 1024;                          // compute number of bytes
 }
 
 wstring GetComputerNameAsWstring()

@@ -6,17 +6,13 @@
 //
 // EvoHistGlue
 
-export module EvoGenerationCmd;
+export module EvoHistGlueLib:EvoHistorySysGlue;
 
-import HistorySystem;
-import HistAllocThread;
-import EvoModelDataGlue;
-import EvoModelFactory;
-
-class RootWindow;
-class EvoModelFactory;
-class EvolutionCore;
-class ObserverInterface;
+import EvoCoreLib;
+import HistoryLib;
+import WinHistory;
+import :EvoModelDataGlue;
+import :EvoModelFactory;
 
 class EvoHistorySysGlue
 {
@@ -34,7 +30,10 @@ public:
     //                      to allow user interaction
     //                    - But actual history generation is alterered by at least 1
 
-    ModelData const * EvoApproachHistGen(HistGeneration const genDemanded) { return m_pHistorySystem->ApproachHistGen(genDemanded); } 
+    ModelData const * EvoApproachHistGen(HistGeneration const genDemanded) 
+	{ 
+		return m_pHistorySystem->ApproachHistGen(genDemanded); 
+	}
 	
 	HistGeneration GetGenWithIndividual(GridPoint const, bool const) const; 
 

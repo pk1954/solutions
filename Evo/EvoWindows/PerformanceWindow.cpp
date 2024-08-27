@@ -2,12 +2,12 @@
 //
 // EvoWindows
 
+module PerformanceWindow;
 
-#include "Strsafe.h"
-#include <chrono>
-#include "win32_delay.h"
-#include "win32_actionTimer.h"
-#include "win32_performanceWindow.h"
+import std;
+import Strsafe;
+import Delay;
+import ActionTimer;
 
 using std::chrono::milliseconds;
 using std::chrono::microseconds;

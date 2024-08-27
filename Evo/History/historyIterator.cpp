@@ -2,13 +2,13 @@
 //
 // History
 
-module HistoryIterator;
+module HistoryLib:HistoryIterator;
 
 import std;
 import Debug;
-import HistSlot;
-import HistoryCache;
-import HistoryIterator;
+import :HistSlot;
+import :HistoryCache;
+import :HistoryIterator;
 
 HistoryIterator::HistoryIterator(HistoryCache const * pHistCache) : 
     m_pHistCache(pHistCache),

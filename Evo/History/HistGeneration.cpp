@@ -2,7 +2,7 @@
 //
 // History
 
-module HistGeneration;
+module HistoryLib:HistGeneration;
 
 import std;
 

@@ -96,13 +96,7 @@
     <ClCompile Include="LogarithmicTrackBar.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnumArray.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ColorLUT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XArray.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TimestampList.ixx">
@@ -115,6 +109,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EventInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnumArray.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,10 +2,10 @@
 //
 // EvoHistGlue
 
-export module EvoGenerationCmd;
+export module EvoHistGlueLib:EvoGenerationCmd;
 
 import std;
-import GenerationCmd;
+import HistoryLib;
 
 using std::wostream;
 using std::int8_t;

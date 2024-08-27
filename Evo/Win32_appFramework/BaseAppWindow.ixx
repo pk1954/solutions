@@ -12,7 +12,7 @@ import WinHistory;
 import HistoryInfo;
 import StatusBar;
 import WorkThreadInterface;
-import HistorySystem;
+import HistoryLib;
 import ModelWindow;
 import AppMenu;
 

@@ -2,14 +2,12 @@
 //
 // EvoWindows
 
-#include "GridPoint24.h"
-import EvolutionTypes;
-#include "EvolutionCore.h"
-#include "EvoReadBuffer.h"
-#include "EvoHistorySysGlue.h"
-#include "win32_script.h"
-#include "win32_EvoWorkThread.h"
-#include "win32_EvoWorkThreadInterface.h"
+module EvoWorkThreadInterface;
+
+import EvoCoreLib;
+import EvoReadBuffer;
+import EvoHistorySysGlue;
+import EvoWorkThread;
 
 import Debug;
 import GridPOI;

@@ -2,13 +2,9 @@
 //
 // EvoWindows
 
-module;
-
-#include "Windows.h"
-#include "Commdlg.h"
-
 module ColorManager;
 
+import WinBasics;
 import EvoCoreLib;
 
 void ColorManager::Initialize()

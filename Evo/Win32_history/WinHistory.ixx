@@ -5,5 +5,6 @@
 export module WinHistory;
 
 export import :GenDisplayWindow;
+export import :HistAllocThread;
 export import :HistInfoWindow;
 export import :HistWindow;

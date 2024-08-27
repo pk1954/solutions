@@ -2,12 +2,12 @@
 //
 // History
 
-export module HistSlot;
+export module HistoryLib:HistSlot;
 
-import HistCacheItem;
-import HistGeneration;
-import HistSlotNr;
-import ModelData;
+import :HistCacheItem;
+import :HistGeneration;
+import :HistSlotNr;
+import :ModelData;
 
 export class HistSlot
 {

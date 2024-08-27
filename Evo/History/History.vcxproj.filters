@@ -63,5 +63,8 @@
     <ClCompile Include="HistModelData.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="HistoryLib.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

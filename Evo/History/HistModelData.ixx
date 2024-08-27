@@ -2,10 +2,10 @@
 //
 // History
 
-export module HistModelData;
+export module HistoryLib:HistModelData;
 
-import ModelData;
-import GenerationCmd;
+import :ModelData;
+import :GenerationCmd;
 
 class HistModelData : public ModelData
 {

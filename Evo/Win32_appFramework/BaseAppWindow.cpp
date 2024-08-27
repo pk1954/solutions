@@ -6,7 +6,7 @@ module BaseAppWindow;
 
 import std;
 import Trace;
-import HistorySystem;
+import HistoryLib;
 import win32_util_resource;
 import UtilityWrappers;
 import AboutBox;

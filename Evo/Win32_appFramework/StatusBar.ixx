@@ -54,5 +54,5 @@ private:
 
 	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
 
-friend static LRESULT CALLBACK OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+friend static LRESULT __stdcall OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 };

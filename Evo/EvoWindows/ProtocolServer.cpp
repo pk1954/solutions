@@ -2,13 +2,11 @@
 //
 // EvoWindows
 
-module;
-
-#include "EvolutionCore.h"
-#include "HistorySystem.h"
-#include "win32_protocolServer.h"
+module ProtocolServer;
 
 import std;
+import EvoCoreLib;
+import HistoryLib;
 
 ProtocolServer::ProtocolServer()
   : m_pHistorySystem(nullptr)

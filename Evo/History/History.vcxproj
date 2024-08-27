@@ -183,6 +183,7 @@
     <ClCompile Include="HistGeneration.cpp" />
     <ClCompile Include="HistoryIterator.cpp" />
     <ClCompile Include="HistoryIterator.ixx" />
+    <ClCompile Include="HistoryLib.ixx" />
     <ClCompile Include="HistorySystem.cpp" />
     <ClCompile Include="HistorySystem.ixx" />
     <ClCompile Include="HistSlot.ixx" />

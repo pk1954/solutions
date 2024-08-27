@@ -61,14 +61,14 @@ public:
 	static Ticks MicrosecondsToTicks(microseconds const time)
 	{
 		Assert(time.count() < LLONG_MAX / m_frequency.GetValue());
-		auto ullTime = static_cast<ULONGLONG>(time.count());
+		auto ullTime = static_cast<unsigned long long>(time.count());
 		return Ticks((ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS); 
 	}
 
 	static microseconds TicksToMicroseconds(Ticks const ticks)
 	{
 		Assert(ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS);
-		auto ullTicks = static_cast<ULONGLONG>(ticks.GetValue());
+		auto ullTicks = static_cast<unsigned long long>(ticks.GetValue());
 		microseconds result
 		(                                                 
 			(ullTicks * MICROSECONDS_TO_SECONDS) // converts from seconds to microseconds.

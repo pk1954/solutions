@@ -4,6 +4,8 @@
 
 export module EvoController;
 
+import Types;
+import WinBasics;
 import EvoAppWindow;
 import Delay;
 import StatusBar;

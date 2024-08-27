@@ -2,19 +2,19 @@
 //
 // History
 
-export module HistorySystem;
+export module HistoryLib:HistorySystem;
 
 import std;
 import Observable;
-import GenerationCmd;
-import GenCmdList;
-import HistGeneration;
-import HistSlotNr;
-import ModelData;
-import HistoryIterator;
-import HistoryCache;
-import HistCacheItem;
-import ModelData;
+import :GenerationCmd;
+import :GenCmdList;
+import :HistGeneration;
+import :HistSlotNr;
+import :ModelData;
+import :HistoryIterator;
+import :HistoryCache;
+import :HistCacheItem;
+import :ModelData;
 
 export class GenerationProperty  // used when searching for generation with certain property
 {

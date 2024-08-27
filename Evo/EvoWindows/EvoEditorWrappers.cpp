@@ -2,13 +2,12 @@
 //
 // EvoWindows
 
-#include "EvolutionCoreWrapperHelpers.h"
-import EvolutionTypes;
-#include "win32_EvoEditor.h"
-#include "win32_EvoEditorWrappers.h"
+module EvoEditorWrappers;
 
 import RunTime;
 import Resource;
+import EvoCoreLib;
+import EvoEditor;
 
 static EvoEditorWindow const * m_pEvoEditorWindow;
  

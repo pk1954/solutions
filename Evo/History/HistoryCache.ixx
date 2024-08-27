@@ -2,15 +2,15 @@
 //
 // History
 
-export module HistoryCache;
+export module HistoryLib:HistoryCache;
 
 import Debug;
 import ObserverInterface;
-import HistCacheItem;
-import HistGeneration;
-import HistSlotNr;
-import HistSlot;
-import ModelData;
+import :HistCacheItem;
+import :HistGeneration;
+import :HistSlotNr;
+import :HistSlot;
+import :ModelData;
 
 export class HistoryCache
 {

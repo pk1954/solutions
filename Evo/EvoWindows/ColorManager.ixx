@@ -5,7 +5,7 @@
 export module ColorManager;
 
 import std;
-import Strategy;
+import EvoCoreLib;
 import WinBasics;
 
 using std::array;

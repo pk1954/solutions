@@ -2,10 +2,6 @@
 //
 // EvoWindows
 
-module;
-
-#include "windowsx.h"
-
 module DspOptWindow;
 
 import std;

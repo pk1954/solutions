@@ -2,7 +2,7 @@
 //
 // History
 
-module GenerationCmd;
+module HistoryLib:GenerationCmd;
 
 import std;
 

@@ -7,8 +7,7 @@ module WinHistory:HistInfoWindow;
 import std;
 import Types;
 import WinBasics;
-import HistGeneration;
-import HistorySystem;
+import HistoryLib;
 import ObserverInterface;
 
 using std::function;

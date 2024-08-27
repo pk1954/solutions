@@ -6,8 +6,10 @@ export module WorkThreadInterface;
 
 import std;
 import BoolOp;
-import HistGeneration;
+import HistoryLib;
 import WorkThread;
+
+using std::wostream;
 
 class WorkThreadInterface
 {
@@ -57,7 +59,7 @@ protected:
 private:
 	void postGotoGeneration(HistGeneration const);
 
-	WorkThread     * m_pWorkThread;
-    std::wostream  * m_pTraceStream;
-	bool             m_bTrace;
+	WorkThread * m_pWorkThread;
+    wostream   * m_pTraceStream;
+	bool         m_bTrace;
 }; 

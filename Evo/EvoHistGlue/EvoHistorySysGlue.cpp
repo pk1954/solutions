@@ -2,10 +2,9 @@
 //
 // EvoHistGlue
 
-module EvoHistorySysGlue;
+module EvoHistGlueLib:EvoHistorySysGlue;
 
-import HistGeneration;
-import HistorySystem;
+import HistoryLib;
 import EvoCoreLib;
 import WorkThread;
 

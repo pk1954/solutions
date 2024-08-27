@@ -2,11 +2,11 @@
 //
 // History
 
-export module HistCacheItem;
+export module HistoryLib:HistCacheItem;
 
-import GenerationCmd;
-import HistGeneration;
-import ModelData;
+import :GenerationCmd;
+import :HistGeneration;
+import :ModelData;
 
 export class HistCacheItem
 {

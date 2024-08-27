@@ -37,13 +37,14 @@ void GenDisplayWindow::OnPaint()
 {
     if (m_genDisplay.GetLong() >= 0)
     {
+    // TODO: Use TextBuffer or TextWindow?
         wchar_t szBuffer[30];
         PAINTSTRUCT ps;
         HDC hDC = BeginPaint(&ps);
-        FillBackground(hDC, CLR_BACK);
+//        FillBackground(hDC, CLR_BACK);
         StringCchPrintf(szBuffer, sizeof(szBuffer) / sizeof(*szBuffer), L"%u", m_genDisplay.GetLong());
         SetTextAlign(hDC, TA_CENTER);
-        SetTextColor(hDC, CLR_TEXT);
+//        SetTextColor(hDC, CLR_TEXT);
         TextOut(hDC, 25, 0, szBuffer, (int)wcslen(szBuffer));
         EndPaint(&ps);
     }

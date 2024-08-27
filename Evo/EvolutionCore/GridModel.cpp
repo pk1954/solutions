@@ -20,6 +20,8 @@ import :GplIterator;
 import :Genome;
 
 using std::endl;
+using std::setw;
+using std::vector;
 using std::numeric_limits;
 using std::wostringstream;
 
@@ -155,7 +157,7 @@ tDisplayMode const GridModel::GetDisplayMode(GridPoint const gp) const
 size_t const GridModel::GetGridHeapSize() const
 {
 	unsigned long long gridFieldSize { sizeof (GridField) };
-	unsigned long long gridRowSize   { sizeof(vector< GridField >) + GridDimensions::GridHeightVal() * gridFieldSize };
+	unsigned long long gridRowSize   { sizeof(vector<GridField>) + GridDimensions::GridHeightVal() * gridFieldSize };
 	unsigned long long gridAreaSize  { GridDimensions::GridWidthVal() * gridRowSize };
 	return size_t(gridAreaSize);
 }

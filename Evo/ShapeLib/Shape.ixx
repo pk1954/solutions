@@ -8,6 +8,7 @@
 export module ShapeLib:Shape;
 
 import Types;
+import WinBasics;
 import TextDisplay;
 import EvoCoreLib;
 

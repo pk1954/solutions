@@ -10,7 +10,7 @@ import StatusBar;
 export module SpeedControl;
 
 import LogarithmicTrackbar;
-import HistorySystem;
+import HistoryLib;
 
 export class SpeedControl
 {

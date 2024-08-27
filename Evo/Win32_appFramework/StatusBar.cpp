@@ -11,7 +11,7 @@ import WWorkThreadInterface;
 
 static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
 
-static LRESULT CALLBACK OwnerDrawStatusBar(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+static LRESULT __stdcall OwnerDrawStatusBar(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
 {
 	StatusBar * const pStatusBar = (StatusBar *)dwRefData;
 	switch (uMsg)

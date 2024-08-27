@@ -5,13 +5,13 @@
 //
 // History
 
-export module GenerationCmd;
+export module HistoryLib:GenerationCmd;
 
 import std;
 import Int24;
 import Debug;
 import SaveCast;
-import HistSlotNr;
+import :HistSlotNr;
 
 using std::int8_t;
 

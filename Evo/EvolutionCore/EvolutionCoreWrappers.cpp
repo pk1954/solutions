@@ -7,7 +7,6 @@ module EvoCoreLib:EvolutionCoreWrappers;
 import Debug;
 import RunTime;
 import IoUtil;
-import UtilityWrappers;
 import :EvolutionTypes;
 import :EvolutionCore;
 import :EvoPixelCoords;

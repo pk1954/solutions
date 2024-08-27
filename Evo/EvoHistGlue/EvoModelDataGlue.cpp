@@ -2,14 +2,10 @@
 //
 // EvoHistGlue
 
-module;
+module EvoHistGlueLib:EvoModelDataGlue;
 
-module EvoModelDataGlue;
-
-import GridPoint24;
-import EvoGenerationCmd;
-import EvolutionCore;
-import GridPOI;
+import EvoCoreLib;
+import :EvoGenerationCmd;
 
 //Stopwatch EvoModelDataGlue::stopwatch;
 

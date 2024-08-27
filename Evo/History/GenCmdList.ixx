@@ -2,12 +2,12 @@
 //
 // History
 
-export module GenCmdList;
+export module HistoryLib:GenCmdList;
 
 import Debug;
-import GenerationCmd;
-import HistGeneration;
-import HistSlotNr;
+import :GenerationCmd;
+import :HistGeneration;
+import :HistSlotNr;
 
 export class GenCmdList
 {

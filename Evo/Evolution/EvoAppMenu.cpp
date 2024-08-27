@@ -2,15 +2,12 @@
 //
 // Evolution
 
-module;
-
-#include "WinUser.h"
-
 export module EvoAppMenu;
 
 import Resource;
 import EvoCoreLib;
 import WorkThreadInterface;
+import WinBasics;
 import WinManager;
 import EvoAppMenu;
 

@@ -2,11 +2,11 @@
 //
 // EvoHistGlue
 
-export module EvoModelFactory;
+export module EvoHistGlueLib:EvoModelFactory;
 
 import EvoCoreLib;
-import EvoModelDataGlue;
-import ModelData;
+import HistoryLib;
+import :EvoModelDataGlue;
 
 class EvoModelFactory: public ModelFactory
 {

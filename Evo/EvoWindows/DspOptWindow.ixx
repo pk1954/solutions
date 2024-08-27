@@ -2,11 +2,13 @@
 //
 // EvoWindows
 
-module DspOptWindow;
+export module DspOptWindow;
 
 import std;
 import BaseDialog;
 import EvoCoreLib;
+
+using std::function;
 
 class DspOptWindow : public BaseDialog
 {

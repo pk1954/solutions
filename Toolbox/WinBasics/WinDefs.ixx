@@ -25,7 +25,6 @@ export
     using DWORD                 = DWORD;
     using WORD                  = WORD;
     using DWORD_PTR             = DWORD_PTR;
-    using MAKELONG              = MAKELONG;
     using LPACCEL               = LPACCEL;
     using LPCWSTR               = LPCWSTR;
     using LPCTSTR               = LPCTSTR;
@@ -70,6 +69,8 @@ export
     using ::TryAcquireSRWLockExclusive;
 
     constexpr WORD LoWord(DWORD_PTR value) { return static_cast<WORD>(value & 0xFFFF); }
+
+    constexpr long MakeLong(auto a, auto b) { return MAKELONG(a, b); }
 
     constexpr int MouseWheelDelta(WPARAM const wParam) 
     { 

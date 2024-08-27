@@ -76,8 +76,8 @@ public:
 	NamedType& operator*= (BASE_TYPE const i) { m_value *= i; return * this; }
 	NamedType& operator/= (BASE_TYPE const i) { m_value /= i; return * this; }
 
-	NamedType  operator- () const { NamedType res { -m_value }; return res; }
-	NamedType  operator+ () const { NamedType res { +m_value }; return res; }
+	NamedType  operator- () const { NamedType res { static_cast<BASE_TYPE>(-m_value) }; return res; }
+	NamedType  operator+ () const { NamedType res { static_cast<BASE_TYPE>(+m_value) }; return res; }
 
 	NamedType  operator++() { ++m_value; return * this; }
 	NamedType  operator--() { --m_value; return * this; }

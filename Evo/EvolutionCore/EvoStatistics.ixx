@@ -5,37 +5,88 @@
 export module EvoCoreLib:EvoStatistics;
 
 import EnumArray;
-import XArray;
 import TextBuffer;
 import :EvolutionTypes;
 import :EvolutionCore;
 import :Strategy;
 import :GridPoint;
 
+using std::array;
+using std::function;
+
+template <typename T>
+void DivNonZero(T & op, T const div)
+{
+    if (div == 0)
+        op = 0;
+    else
+        op /= div;
+}
+
+template <typename T, size_t SIZE>
+void DivNonZero(array<T, SIZE> &a, array<T, SIZE> const &div)
+{
+    for (unsigned int uiRun = 0; uiRun < SIZE; ++uiRun)
+        DivNonZero(a[uiRun], div[uiRun]);
+}
+
 export template <typename T>
-class XaCounter : public XArray< T, Strategy::COUNT >
+class XaCounter
 {
 public:
-    T & operator[] (Strategy::Id strategy) 
+    XaCounter()
+    {
+        Zero();
+    }
+
+    void Zero()
+    {
+        m_tGeneral = 0;
+        m_tArray.fill(0);
+    }
+
+    T& General() { return m_tGeneral; }
+
+	T& operator[] (Strategy::Id strategy) 
 	{ 
-		return XArray::operator[](static_cast<unsigned int>(strategy));
+		return m_tArray.at(static_cast<unsigned int>(strategy));
 	}
 
 	void operator= (T const op)
 	{
-		Apply2XArray([&](T elem) { elem = op; });
+		apply2XArray([&](T elem) { elem = op; });
 	}
 
     void Add(Strategy::Id strategy, T const op)
     {
-		XArray::Add(static_cast<unsigned int>(strategy), op);
+        m_tArray.at(static_cast<unsigned int>(strategy)) += op;
+        m_tGeneral += op;
 	}
 
-    void printGeneLine(TextBuffer * pTextBuf, wchar_t const * const data)
+    void DivNonZero(XaCounter const & div)
+    {
+        ::DivNonZero(m_tGeneral, div.m_tGeneral);
+        ::DivNonZero(m_tArray,   div.m_tArray);
+    }
+
+    void PrintGeneLine(TextBuffer * pTextBuf, wchar_t const * const data)
     {
 		pTextBuf->nextLine(data);
- 		Apply2XArray([&](T elem) { pTextBuf->printNumber(elem); });
+ 		apply2XArray([&](T elem) { pTextBuf->printNumber(elem); });
     };
+
+private:
+
+    T                         m_tGeneral;
+    array<T, Strategy::COUNT> m_tArray;
+
+    void apply2XArray(function<void (T &)> const & func)
+	{
+        for (auto &elem : m_tArray)
+            func(elem);
+
+		func(m_tGeneral);
+	}
 };
 
 class EvoStatistics

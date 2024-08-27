@@ -5,9 +5,7 @@
 export module WinHistory:HistWindow;
 
 import BaseWindow;
-import HistGeneration;
-import HistorySystem;
-import HistoryIterator;
+import HistoryLib;
 import WorkThreadInterface;
 import RootWinDisplayFunctor;
 

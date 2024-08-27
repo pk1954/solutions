@@ -5,7 +5,7 @@
 export module WinHistory:HistAllocThread;
 
 import WinBasics;
-import HistorySystem;
+import HistoryLib;
 import Thread;
 
 export class HistAllocThread : public Thread

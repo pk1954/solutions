@@ -13,7 +13,7 @@ GridCoord ScrReadGridCoord(Script & script)
 {
 	unsigned short us = script.ScrReadUshort();
 	if (us > MAX_GRID_COORD.GetValue())
-		ScriptErrorHandler::throwError(777, L"GridCoord too big");
+		throw ScriptErrorHandler::ScriptException(777, L"GridCoord too big");
     return GridCoord(us);
 }
 

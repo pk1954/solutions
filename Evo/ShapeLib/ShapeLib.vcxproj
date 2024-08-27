@@ -135,7 +135,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderFile />
-      <EnableModules>false</EnableModules>
+      <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>

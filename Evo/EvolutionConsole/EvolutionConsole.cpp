@@ -13,6 +13,7 @@ import version;
 
 using std::string;
 using std::wstring;
+using std::wofstream;
 using std::endl;
 
 HWND G_hwndApp;
@@ -70,7 +71,8 @@ int main(int argc, char * argv [], char * envp [])
     }
 
 	wstring wstr(wstrInputFile);
-	Script::ProcessScript(wstr);
+	Script script;
+	script.ScrProcess(wstr);
 
 	wcout << L" ***** EvolutionConsole terminates successfully *****" << endl;
 

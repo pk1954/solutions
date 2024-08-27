@@ -5,7 +5,7 @@
 export module PackGridPoint;
 
 import WinBasics;
-import EvorCoreLib;
+import EvoCoreLib;
 
 export static LPARAM Pack2LParam(GridPoint const gp)
 {

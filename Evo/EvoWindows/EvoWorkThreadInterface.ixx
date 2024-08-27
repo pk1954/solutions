@@ -6,9 +6,7 @@ export module EvoWorkThreadInterface;
 
 import std;
 import BoolOp;
-import Strategy;
-import GridRect;
-import GridField;
+import EvoCoreLib;
 import EvolutionTypes;
 import ColorManager;
 import ActionTimer;

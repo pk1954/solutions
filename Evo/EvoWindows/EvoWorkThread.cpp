@@ -2,19 +2,20 @@
 //
 // EvoWindows
 
-#include <sstream> 
-#include "SCRIPT.H"
-#include "EvoHistorySysGlue.h"
-#include "EventInterface.h"
-#include "EvoReadBuffer.h"
-#include "win32_delay.h"
-#include "win32_thread.h"
-#include "win32_event.h"
-#include "win32_actionTimer.h"
-#include "win32_colorManager.h"
-#include "win32_util_resource.h"
-#include "win32_EvoWorkThreadInterface.h"
-#include "win32_EvoWorkThread.h"
+module EvoWorkThread;
+
+import std;
+import RunTime;
+import EvoHistorySysGlue;
+import EventInterface;
+import EvoReadBuffer;
+import Delay"
+import Thread;
+import EventINterface;
+import ActionTimer;
+import ColorManager;
+import EvoWorkThreadInterface;
+import EvoWorkThread:
 
 import GridRect;
 

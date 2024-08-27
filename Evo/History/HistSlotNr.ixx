@@ -2,7 +2,7 @@
 //
 // History
 
-export module HistSlotNr;
+export module HistoryLib:HistSlotNr;
 
 import Types;
 

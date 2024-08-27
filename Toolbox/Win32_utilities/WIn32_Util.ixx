@@ -146,19 +146,19 @@ export inline bool LeftMouseButtonDown() { return GetKeyState(VK_LBUTTON) & 0x80
 
 export void MakeLayered(HWND const, bool const, COLORREF const, UINT const);
 
-export DWORD     GetNrOfCPUs();
-export ULONGLONG GetPhysicalMemory();
-export wstring   GetComputerNameAsWstring();
-export wstring   GetUserNameAsWstring();
-export wstring   GetClassName(HWND const);
-export void      SetApplicationTitle(HWND const, wstring const&, wstring const & = L"");
-export void      StdOutConsole();
-export bool      EscapeKeyPressed();
-export HMENU     PopupMenu(HMENU const, LPCTSTR const);
-export void      SetNotifyByPos(HMENU const);
-export void      SetMenuItemData(HMENU const, UINT const, UINT_PTR const);
-export UINT_PTR  GetMenuItemData(HMENU const, UINT const);
-export void      AddMenu(HMENU const, UINT const, UINT_PTR const, LPCWSTR const);
-export void      CheckMenuItem(HMENU const, UINT const, bool const);
-export void      ModifyMenuItem(HMENU const, UINT const, UINT const, LPCWSTR const);
-export void      InsertMenuItem(HMENU const, UINT const, UINT_PTR const, wstring const&);
+export DWORD              GetNrOfCPUs();
+export unsigned long long GetPhysicalMemory();
+export wstring            GetComputerNameAsWstring();
+export wstring            GetUserNameAsWstring();
+export wstring            GetClassName(HWND const);
+export void               SetApplicationTitle(HWND const, wstring const&, wstring const & = L"");
+export void               StdOutConsole();
+export bool               EscapeKeyPressed();
+export HMENU              PopupMenu(HMENU const, LPCTSTR const);
+export void               SetNotifyByPos(HMENU const);
+export void               SetMenuItemData(HMENU const, UINT const, UINT_PTR const);
+export UINT_PTR           GetMenuItemData(HMENU const, UINT const);
+export void               AddMenu(HMENU const, UINT const, UINT_PTR const, LPCWSTR const);
+export void               CheckMenuItem(HMENU const, UINT const, bool const);
+export void               ModifyMenuItem(HMENU const, UINT const, UINT const, LPCWSTR const);
+export void               InsertMenuItem(HMENU const, UINT const, UINT_PTR const, wstring const&);

@@ -5,8 +5,7 @@
 module WinHistory:HistWindow;
 
 import std;
-import HistorySystem;
-import HistoryIterator;
+import HistoryLib;
 import Tooltip;
 import WorkThreadInterface;
 import :GenDisplayWindow;

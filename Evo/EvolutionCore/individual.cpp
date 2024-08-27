@@ -2,12 +2,9 @@
 //
 // EvoCoreLib
 
-module EvoCoreLib:;
-
-import Debug;
-
 module EvoCoreLib:Individual;
 
+import Debug;
 import Random;
 import :EvoConfig;
 import :Strategy;

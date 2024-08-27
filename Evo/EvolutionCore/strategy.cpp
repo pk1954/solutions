@@ -8,13 +8,13 @@ import Debug;
 import Random;
 import :StrategyData;
 
-bool Tit4Tat::InteractWith(StrategyData &data, IND_ID const idPartner) const
+bool Tit4Tat::InteractWith(StrategyData& data, IND_ID const idPartner) const
 {
     bool const bNotorious = data.FindInListOfCulprits(idPartner).IsNotNull();
     return ! bNotorious;                                    // If he is not in the list of bad guys, be friendly
 }
 
-void Tit4Tat::Remember(StrategyData &data, IND_ID const idPartner, bool const bPartnerReaction) const
+void Tit4Tat::Remember(StrategyData& data, IND_ID const idPartner, bool const bPartnerReaction) const
 {
     MEM_INDEX const index = data.FindInListOfCulprits(idPartner);
 

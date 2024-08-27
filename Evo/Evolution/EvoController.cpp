@@ -3,27 +3,25 @@
 // Evolution
 
 
-#include "Windowsx.h"
-#include "Windows.h"
-#include "EvoHistorySysGlue.h"
-#include "win32_evoAppWindow.h"
-#include "win32_delay.h"
-#include "win32_speedControl.h"
-#include "win32_zoomControl.h"
-#include "win32_status.h"
-#include "win32_EvoEditor.h"
-#include "win32_evoAppMenu.h"
-#include "win32_gridWindow.h"
-#include "win32_packGridPoint.h"
-#include "win32_colorManager.h"
-#include "win32_resetDlg.h"
-#include "win32_EvoWorkThreadInterface.h"
-#include "win32_evoController.h"
+module EvoController;
 
+import EvoHistorySysGlue;
+import EvoAppWindow;
+import Delay;
+import SpeedControl;
+import ZoomControl;
+import StatusBar;
+import EvoEditor;
+import EvoAppMenu;
+import GridWindow;
+import PackGridPoint;
+import ColorManager;
+import ResetDlg;
+import EvoWorkThreadInterface;
 import LogarithmicTrackbar;
 import RunTime;
 import WinManager;
-import GridDimensions;
+import EvoCoreLib;
 import EvoConfig;
 import AboutBox;
 import Resource;

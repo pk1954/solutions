@@ -6,7 +6,7 @@ export module ProtocolServer;
 
 import ObserverInterface;
 import EvoCoreLib;
-import HistorySystem;
+import HistoryLib;
 
 export class ProtocolServer : public ObserverInterface
 {

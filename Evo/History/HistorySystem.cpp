@@ -2,19 +2,20 @@
 //
 // History
 
-module HistorySystem;
+module HistoryLib:HistorySystem;
 
+import std;
 import Debug;
 import SaveCast;
-import HistSlot;
-import HistSlotNr;
-import HistoryCache;
-import HistoryIterator;
-import HistGeneration;
+import :HistSlot;
+import :HistSlotNr;
+import :HistoryCache;
+import :HistoryIterator;
+import :HistGeneration;
 import ObserverInterface;
-import WinBasics;
 
-//import HistorySystem;
+using std::min;
+
 //
 //HistorySystem * HistorySystem::CreateHistorySystem()
 //{
@@ -42,12 +43,12 @@ ModelData * HistorySystem::StartHistorySystem
 )
 {
 	m_pHistCacheItemWork = new HistCacheItem(pModelFactory);  //ok
-
-	size_t     const slotSize        { GetSlotSize() };
-	ULONGLONG  const ullMaxNrOfSlots { ullMemorySize / slotSize };    Assert(ullMaxNrOfSlots < LONG_MAX);
-	ULONGLONG  const ullDemanded     { static_cast<ULONGLONG>(lHistEntriesDemanded) };
-	ULONGLONG  const ullHistEntries  { min(ullDemanded, ullMaxNrOfSlots * 70 / 100) };  // use only 70% of available memory
-	HistSlotNr const nrOfSlots       { Cast2Short(ullHistEntries) }; 
+	     
+	size_t              const slotSize        { GetSlotSize() };
+	unsigned long long  const ullMaxNrOfSlots { ullMemorySize / slotSize };    AssertLong(ullMaxNrOfSlots);
+	unsigned long long  const ullDemanded     { static_cast<unsigned long long>(lHistEntriesDemanded) };
+	unsigned long long  const ullHistEntries  { min(ullDemanded, ullMaxNrOfSlots * 70 / 100) };  // use only 70% of available memory
+	HistSlotNr          const nrOfSlots       { Cast2Short(ullHistEntries) }; 
 
 	m_pHistoryCache = new HistoryCache;                    //ok
 	m_GenCmdList.Resize(genMaxNrOfGens);
@@ -131,7 +132,7 @@ ModelData const * HistorySystem::ApproachHistGen(HistGeneration const genDemande
 	Assert(m_GenCmdList[0].IsCachedGeneration());      // at least initial generation is cached
 
     HistGeneration genCached   = genDemanded;  // search backwards starting with genDemanded
-    bool            bMicrosteps = TRUE;
+    bool           bMicrosteps = true;
         
     while (m_GenCmdList[genCached].IsNotCachedGeneration())
         --genCached;

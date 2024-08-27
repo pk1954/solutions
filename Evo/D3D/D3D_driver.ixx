@@ -1,6 +1,6 @@
 // D3D_driver.ixx : 
 //
-// D2D
+// D3D
 
 module;
 

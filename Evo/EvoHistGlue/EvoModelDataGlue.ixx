@@ -6,12 +6,10 @@
 //
 // EvoHistGlue
 
-module;
-
-export module EvoModelDataGlue;
+export module EvoHistGlueLib:EvoModelDataGlue;
 
 import EvoCoreLib;
-import ModelData;
+import HistoryLib;
 
 class EvoModelDataGlue: public ModelData
 {

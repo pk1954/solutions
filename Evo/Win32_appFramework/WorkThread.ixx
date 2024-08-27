@@ -4,15 +4,12 @@
 
 export module WorkThread;
 
-import GenerationCmd;
-import HistorySystem.h;
 import Thread;
-import HistGeneration;
+import HistoryLib;
 import ActionTimer;
 import EvoEditorWindow;
 import RootWindow;
 import WinManager;
-import HistorySystem;
 import EventInterface;
 import ObserverInterface;
 import WorkThreadInterface;

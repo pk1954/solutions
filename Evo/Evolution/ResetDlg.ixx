@@ -16,5 +16,5 @@ public:
 	static int GetNewNrOfNeighbors();
 
 private:
-	friend static INT_PTR CALLBACK dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
+	friend static INT_PTR __stdcall dialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 };

@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="EvoGenerationCmd.ixx" />
     <ClCompile Include="EvoGenerationCmd.cpp" />
+    <ClCompile Include="EvoHistGlueLib.ixx" />
     <ClCompile Include="EvoHistorySysGlue.cpp" />
     <ClCompile Include="EvoHistorySysGlue.ixx" />
     <ClCompile Include="EvoModelDataGlue.cpp" />
@@ -168,6 +169,9 @@
     </ProjectReference>
     <ProjectReference Include="..\History\History.vcxproj">
       <Project>{642c34fc-f20c-45a6-bab8-c75988c88f52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Win32_history\Win32_history.vcxproj">
+      <Project>{1f07043f-bc80-42a8-ac9e-ff92cacda7e4}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

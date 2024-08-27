@@ -50,7 +50,7 @@ private:
     DescriptionWindow& m_descWin;
 };
 
-static LRESULT CALLBACK OwnerDrawEditBox
+static LRESULT __stdcall OwnerDrawEditBox
 (
     HWND     hwnd, 
     UINT     uMsg, 

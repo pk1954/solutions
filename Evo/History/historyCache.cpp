@@ -2,11 +2,13 @@
 //
 // History
 
-module HistoryCache;
+module HistoryLib:HistoryCache;
 
 import std;
 import Debug;
-import WinBasics;
+
+using std::this_thread::sleep_for;
+using std::chrono::milliseconds;
 
 #ifndef NDEBUG
 	#define CHECK_CONSISTENCY() checkConsistency()
@@ -133,8 +135,8 @@ HistSlotNr HistoryCache::GetFreeCacheSlot()
 	CHECK_CONSISTENCY();
 
     while (m_bAllocationRunning && (m_iNrOfSlots <= m_iNrOfUsedSlots))  // possible race condition during start up
-    {                                                                       // slot usage might be faster than slot creation
-        Sleep(10);                                                        // wait until slots are created
+    {                                                                   // slot usage might be faster than slot creation
+        sleep_for(milliseconds(10));                                                      // wait until slots are created
         ++lSleepCounter; 
     }
 

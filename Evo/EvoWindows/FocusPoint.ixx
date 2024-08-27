@@ -6,7 +6,7 @@ export module FocusPoint;
 
 import EvoCoreLib;
 import Observable;
-import HistGeneration;
+import HistoryLib;
 import RootWindow;
 
 class FocusPoint: public Observable

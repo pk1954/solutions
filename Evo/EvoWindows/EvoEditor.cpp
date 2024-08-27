@@ -2,14 +2,14 @@
 //
 // EvoWindows
 
-#include <unordered_map>
-#include "commctrl.h"
-#include "EvolutionCore.h"
-#include "EvoReadBuffer.h"
-#include "win32_tooltip.h"
-#include "win32_EvoWorkThreadInterface.h"
-#include "win32_displayOptions.h"
-#include "win32_EvoEditor.h"
+module EvoEditor;
+
+import std;
+import Tooltip;
+import EvoCoreLib;
+import EvoReadBuffer;
+import EvoWorkThreadInterface;
+import DisplayOptions;
 
 import EvoConfig;
 import Resource;

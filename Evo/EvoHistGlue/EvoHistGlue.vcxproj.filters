@@ -39,5 +39,8 @@
     <ClCompile Include="EvoModelFactory.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EvoHistGlueLib.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

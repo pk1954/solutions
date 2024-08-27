@@ -6,6 +6,7 @@ export module XArray;
 
 import std;
 
+using std::array;
 using std::function;
 
 export template <typename T>
@@ -18,10 +19,10 @@ void DivNonZero(T & op, T const div)
 }
 
 export template <typename T, size_t SIZE>
-void DivNonZero(std::array<T, SIZE> & a, std::array<T, SIZE> const & div)
+void DivNonZero(array<T, SIZE> &a, array<T, SIZE> const &div)
 {
     for (unsigned int uiRun = 0; uiRun < SIZE; ++uiRun)
-        DivNonZero(a[ uiRun ], div[ uiRun ]);
+        DivNonZero(a[uiRun], div[uiRun]);
 }
 
 export template <typename T, size_t SIZE> class XArray
@@ -63,6 +64,6 @@ public:
 	}
 
 private:
-    T                      m_tGeneral;
-    std::array < T, SIZE > m_tArray;
+    T              m_tGeneral;
+    array<T, SIZE> m_tArray;
 };

@@ -25,8 +25,8 @@ void EvoStatistics::Prepare
 {
 	m_pTextBuf = pTextBuf;
 
-	m_gsCounter.zero();         
-    m_gsAverageAge.zero();      
+	m_gsCounter.Zero();         
+    m_gsAverageAge.Zero();      
 	m_XaAction  .Apply2All([&](auto & elem) { elem = 0; });
 	m_XaGenes   .Apply2All([&](auto & elem) { elem = 0; });
 	m_auiMemSize.Apply2All([&](auto & elem) { elem = 0; });
@@ -139,12 +139,12 @@ void EvoStatistics::printHeader()
 
 void EvoStatistics::printCounter(wchar_t const * const data)
 {
-    m_gsCounter.printGeneLine(m_pTextBuf, data);
+    m_gsCounter.PrintGeneLine(m_pTextBuf, data);
 }
 
 void EvoStatistics::printAvAge(wchar_t const * const data)
 {
-    m_gsAverageAge.printGeneLine(m_pTextBuf, data);
+    m_gsAverageAge.PrintGeneLine(m_pTextBuf, data);
 }
 
 void EvoStatistics::printCounters
@@ -179,7 +179,7 @@ void EvoStatistics::printProbabilities()
 		[&](Action::Id action)
 		{
 			if (GeneType::IsDefined(GetRelatedGeneType(action)) )
-				m_XaAction[action].printGeneLine(m_pTextBuf, Action::GetName(action));
+				m_XaAction[action].PrintGeneLine(m_pTextBuf, Action::GetName(action));
 		}
 	);
 
@@ -191,7 +191,7 @@ void EvoStatistics::printGeneStat()
 	(
 		[&](GeneType::Id geneType)
 		{
-			m_XaGenes[geneType].printGeneLine(m_pTextBuf, GeneType::GetName(geneType));
+			m_XaGenes[geneType].PrintGeneLine(m_pTextBuf, GeneType::GetName(geneType));
 		}
 	);
 }
@@ -210,7 +210,7 @@ void EvoStatistics::printAvFood(wchar_t const * const data)
 
     fsAvFood.General() = m_XaGenes[GeneType::Id::appetite].General() * m_XaAction[Action::Id::eat].General() / 100 ;
 
-    fsAvFood.printGeneLine(m_pTextBuf, data);
+    fsAvFood.PrintGeneLine(m_pTextBuf, data);
 }
 
 void EvoStatistics::printMemory(wchar_t const * const data)

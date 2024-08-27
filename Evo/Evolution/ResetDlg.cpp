@@ -57,7 +57,7 @@ void enableGridTypeControls(HWND const hwndDlg, bool const bState)
 	EnableWindow(GetDlgItem(hwndDlg, IDM_GRID_TYPE_RECT), bState);
 }
 
-static INT_PTR CALLBACK dialogProc
+static INT_PTR __stdcall dialogProc
 (
 	HWND   const hDlg, 
 	UINT   const message, 

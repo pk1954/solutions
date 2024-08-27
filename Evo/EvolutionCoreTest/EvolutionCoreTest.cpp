@@ -40,7 +40,8 @@ void DoTest()
 
 	EvoConfig::SetDefaultConfiguration();
 	EvoConfig::DefineConfigWrapperFunctions();
-	RunTime::ProcessScript(L"std_configuration.in");
+	Script script;
+	script.ScrProcess(L"std_configuration.in");
 	GridDimensions::DefineGridSize
 	(
 		GridCoord{ EvoConfig::GetConfigValueShort(EvoConfig::tId::gridWidth) }, 

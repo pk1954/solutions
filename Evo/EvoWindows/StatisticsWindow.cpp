@@ -2,16 +2,14 @@
 //
 // EvoWindows
 
+module StatisticsWindow;
 
-#include "resource.h"
-#include "Strsafe.h"
-#include "gridSelection.h"
-#include "EvolutionCore.h"
-#include "EvoStatistics.h"
-#include "EvoReadBuffer.h"
-#include "win32_baseWindow.h"
-
-import GridRect;
+import Resource;
+import Strsafe;
+import EvoCoreLib;
+import EvoStatistics;
+import EvoReadBuffer;
+import BaseWindow
 
 StatisticsWindow::StatisticsWindow()
 :  TextWindow(),

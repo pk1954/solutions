@@ -2,12 +2,12 @@
 //
 // History
 
-export module HistoryIterator;
+export module HistoryLib:HistoryIterator;
 
-import HistSlotNr;
-import HistoryCache;
-import HistCacheItem;
-import HistGeneration;
+import :HistSlotNr;
+import :HistoryCache;
+import :HistCacheItem;
+import :HistGeneration;
 
 export class HistoryIterator
 {

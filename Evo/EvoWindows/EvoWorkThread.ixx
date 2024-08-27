@@ -4,17 +4,17 @@
 
 export module EvoWorkThread;
 
+import Delay;
 import WorkThread;
 import GridPoint24;
-import HistGeneration;
-import Delay;
+import HistoryLib;
 import ActionTimer;
 import ColorManager;
 import EvoEditorWindow;
 import RootWindow;
 import EvolutionCore;
 import WinManager;
-import HistorySystem;
+import HistoryLib;
 import EventInterface;
 import EvoHistorySysGlue;
 import EvoWorkThreadInterface;

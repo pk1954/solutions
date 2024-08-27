@@ -2,14 +2,13 @@
 //
 // EvoWindows
 
-#include"EvolutionCoreWrapperHelpers.h"
-#include"win32_EvoWorkThreadInterface.h"
-#include"win32_wrappers.h"
+module Wrappers;
 
 import RunTime;
 import Resource;
-
-module EvoGenerationCmd;
+import EvolutionCoreWrapperHelpers;
+import EvoWorkThreadInterface;
+import EvoGenerationCmd;
 
 static EvoWorkThreadInterface * m_pWorkThreadInterface;
 
