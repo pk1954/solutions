@@ -6,6 +6,7 @@ export module TextDisplay;
 
 import std;
 import Types;
+import WinBasics;
 import D3D_driver;
 import EvoCoreLib;
 import GraphicsInterface;

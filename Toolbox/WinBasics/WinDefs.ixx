@@ -27,6 +27,7 @@ export
     using DWORD_PTR             = DWORD_PTR;
     using INT_PTR               = INT_PTR;
     using LPACCEL               = LPACCEL;
+    using COLORREF              = COLORREF;
     using LPCWSTR               = LPCWSTR;
     using LPCSTR                = LPCSTR;
     using LPCTSTR               = LPCTSTR;

@@ -8,7 +8,7 @@ import Delay;
 import WorkThread;
 import GridPoint24;
 import HistoryLib;
-import ActionTimer;
+//import ActionTimer;  //TODO
 import ColorManager;
 import EvoEditorWindow;
 import RootWindow;
@@ -54,7 +54,7 @@ public:
 	(
 		HWND                     const,
 		ColorManager           * const,
-		ActionTimer            * const,
+		//ActionTimer            * const,  //TODO
 		EventInterface         * const,
 		Delay                  * const,
 		ObserverInterface      * const,

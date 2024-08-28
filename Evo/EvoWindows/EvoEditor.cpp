@@ -180,7 +180,7 @@ void EvoEditorWindow::setBrushManipulator(WORD const wId) const
 	m_pWorkThreadInterface->PostSetBrushManipulator(brushOperator);
 }
 
-LRESULT EvoEditorWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
+bool EvoEditorWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
 {
     switch (message)
     {

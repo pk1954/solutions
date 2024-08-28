@@ -2,17 +2,15 @@
 //
 // win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module Win32_Util_Resource;
+
+import WinBasics;
 
 // application defined window messages
 
-export inline int const WM_APP_UI_CALL       { WM_APP };
-export inline int const WM_APP_CAPTION       { WM_APP + 1 };
-export inline int const WM_APP_SCALE_COMMAND { WM_APP + 2 };
+export constexpr unsigned int WM_APP_UI_CALL       { WM_APP };
+export constexpr unsigned int WM_APP_CAPTION       { WM_APP + 1 };
+export constexpr unsigned int WM_APP_SCALE_COMMAND { WM_APP + 2 };
 
 // message ids for WM_APP_SCALE_COMMAND
 

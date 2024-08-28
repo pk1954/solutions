@@ -5,6 +5,7 @@
 export module DspOptWindow;
 
 import std;
+import WinBasics;
 import BaseDialog;
 import EvoCoreLib;
 
@@ -33,7 +34,7 @@ private:
     DspOptWindow             (DspOptWindow const &);  // noncopyable class 
     DspOptWindow & operator= (DspOptWindow const &);  // noncopyable class 
 
-	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
 	function<int(EvolutionCore const * const, GridPoint const)> m_IntValueLambda;
 };

@@ -9,21 +9,20 @@ import RunTime;
 import EvoHistorySysGlue;
 import EventInterface;
 import EvoReadBuffer;
-import Delay"
+import Delay;
 import Thread;
-import EventINterface;
-import ActionTimer;
+import EventInterface;
+//import ActionTimer;
 import ColorManager;
+import EvoCoreLib;
 import EvoWorkThreadInterface;
 import EvoWorkThread:
-
-import GridRect;
 
 EvoWorkThread::EvoWorkThread
 (
 	HWND                     const hwndApplication,
 	ColorManager           * const pColorManager,
-	ActionTimer            * const pActionTimer,
+	//ActionTimer            * const pActionTimer,   //TODO
 	EventInterface         * const pEvent,
 	Delay                  * const pDelay,
 	ObserverInterface      * const pObserver, 

@@ -32,7 +32,7 @@ public:
 
 
 private:
-    virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
+    virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
 	void setBrushMode       (WORD const) const;
 	void setBrushShape      (WORD const) const;

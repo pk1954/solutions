@@ -31,7 +31,7 @@ void EvoWorkThreadInterface::Start
 (
 	HWND                const hwndApplication,
     ColorManager      * const pColorManager,
-	ActionTimer       * const pActionTimer,
+	//ActionTimer       * const pActionTimer,   //TODO
     EventInterface    * const pEvent,
 	Delay             * const pDelay,
 	ObserverInterface * const pObserver, 

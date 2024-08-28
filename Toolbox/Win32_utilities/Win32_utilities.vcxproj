@@ -162,6 +162,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionTimer.ixx" />
     <ClCompile Include="AnimationCommand.ixx" />
     <ClCompile Include="AppStartProtocol.ixx" />
     <ClCompile Include="Bitmap.ixx" />

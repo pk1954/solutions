@@ -35,7 +35,7 @@ void GridWindow::InitClass
     EvoWorkThreadInterface * const pWorkThreadInterface,
     FocusPoint             * const pFocusPoint,
     DspOptWindow           * const pDspOptWindow,
-	ActionTimer            * const pActionTimer,
+	//ActionTimer            * const pActionTimer,  //TODO
 	ColorManager           * const pColorManager
 )
 {

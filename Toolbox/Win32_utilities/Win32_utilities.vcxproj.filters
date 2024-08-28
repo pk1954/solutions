@@ -255,5 +255,8 @@
     <ClCompile Include="Win32_Event.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ActionTimer.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

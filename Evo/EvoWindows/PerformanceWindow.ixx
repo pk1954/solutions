@@ -5,7 +5,7 @@
 export module PerformanceWindow;
 
 import TextWindow;
-import ActionTimer;
+//import ActionTimer;
 import Delay;
 
 export class PerformanceWindow: public TextWindow
@@ -18,8 +18,8 @@ public:
 	(
 		HWND const, 
 		Delay &, 
-		ActionTimer &, 
-		ActionTimer &,
+		//ActionTimer &, TODO
+		//ActionTimer &,
 		function<bool()> const 
 	);
 
@@ -31,7 +31,7 @@ private:
 	void printLine(TextBuffer &, wchar_t const * const, microseconds const);
 	void printLine(TextBuffer &, wchar_t const * const, Hertz        const);
 
-	ActionTimer * m_pAtComputation;
-	ActionTimer * m_pAtDisplay;
+	//ActionTimer * m_pAtComputation;    //TODO
+	//ActionTimer * m_pAtDisplay;
 	Delay       * m_pDelay;
 };

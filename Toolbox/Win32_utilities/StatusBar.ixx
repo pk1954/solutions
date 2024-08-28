@@ -53,7 +53,7 @@ private:
 	PIXEL m_pixBorderY      { 0_PIXEL };
 	PIXEL m_pixPosX         { 0_PIXEL };
 
-	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
 	friend static LRESULT __stdcall OwnerDrawStatusBar(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 };

@@ -60,8 +60,8 @@ private:
 
 	Util::Event              m_eventPOI;
 					         
-	ActionTimer              m_atComputation;
-	ActionTimer              m_atDisplay;
+	//ActionTimer              m_atComputation;   //TODO
+	//ActionTimer              m_atDisplay;
 	Delay                    m_Delay;
 	EvoHistorySysGlue        m_EvoHistGlue;
 	ColorManager             m_ColorManager;

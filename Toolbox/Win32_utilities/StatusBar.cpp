@@ -89,7 +89,7 @@ void StatusBar::LastPart()
 	SendMsg(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
 }
 
-LRESULT StatusBar::UserProc
+bool StatusBar::UserProc
 (
 	UINT   const uMsg, 
 	WPARAM const wParam, 

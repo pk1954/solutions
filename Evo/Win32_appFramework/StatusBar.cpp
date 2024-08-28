@@ -96,7 +96,7 @@ void StatusBar::Stop()
 	DestroyWindow();
 }
 
-LRESULT StatusBar::UserProc
+bool StatusBar::UserProc
 (
 	UINT   const uMsg, 
 	WPARAM const wParam, 

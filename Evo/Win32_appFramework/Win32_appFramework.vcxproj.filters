@@ -20,9 +20,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WorkThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WorkThreadInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScriptHook.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkThread.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WorkThreadInterface.ixx">

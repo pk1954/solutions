@@ -5,7 +5,6 @@
 export module BaseAppWindow;
 
 import std;
-
 import BaseWindow;
 import WinManager;
 import WinHistory;
@@ -15,6 +14,8 @@ import WorkThreadInterface;
 import HistoryLib;
 import ModelWindow;
 import AppMenu;
+
+using std::wofstream;
 
 class BaseAppWindow : public BaseWindow
 {
@@ -52,9 +53,9 @@ private:
 	ModelWindow         * m_pModelWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;
 
-	std::wofstream m_traceStream;
+	wofstream m_traceStream;
 
 	void adjustChildWindows();
 
-	virtual LRESULT UserProc(UINT const, WPARAM const, LPARAM const);
+	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 };

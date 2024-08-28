@@ -25,8 +25,8 @@ void PerformanceWindow::Start
 (
 	HWND             const hwndParent, 
 	Delay                & delay,
-	ActionTimer          & atCompute, 
-	ActionTimer          & atDisplay,
+	//ActionTimer          & atCompute, TODO
+	//ActionTimer          & atDisplay,
 	function<bool()> const visibilityCriterion 
 )
 {

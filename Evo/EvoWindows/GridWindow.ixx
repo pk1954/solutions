@@ -4,6 +4,8 @@
 
 export module GridWindow;
 
+import ObserverInterface;
+import WinBasics;
 import EvoCoreLib;
 import EvoReadBuffer:
 import ModelWindow;
@@ -11,8 +13,7 @@ import DrawFrame;
 import GraphicsInterface;
 import EvoWorkThreadInterface;
 import DspOptWindow;
-import ObserverInterface;
-import ActionTimer;
+//import ActionTimer;  //TODO
 import FocusPoint;
 import ColorManager;
 
@@ -25,7 +26,7 @@ public:
         EvoWorkThreadInterface * const,
         FocusPoint             * const,
         DspOptWindow           * const,
-        ActionTimer            * const, 
+        //ActionTimer            * const, //TODO
 		ColorManager           * const 
 	);
 

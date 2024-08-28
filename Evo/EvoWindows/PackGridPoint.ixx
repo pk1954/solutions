@@ -7,12 +7,12 @@ export module PackGridPoint;
 import WinBasics;
 import EvoCoreLib;
 
-export static LPARAM Pack2LParam(GridPoint const gp)
+export LPARAM Pack2LParam(GridPoint const gp)
 {
-	return MAKELONG(gp.GetXvalue(), gp.GetYvalue());
+	return MakeLong(gp.GetXvalue(), gp.GetYvalue());
 }
 
-export static GridPoint UnpackFromLParam(LPARAM const lParam)
+export GridPoint UnpackFromLParam(LPARAM const lParam)
 {
 	return GridPoint
 	(

@@ -291,6 +291,9 @@
     <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
       <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\EvoWindows\EvoWindows.vcxproj">
+      <Project>{8830da2b-c953-4702-a9e7-3bce05366f1b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
       <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
     </ProjectReference>

@@ -67,6 +67,8 @@ extern const DWORD DS_CENTER_CONST;
 extern const DWORD DS_MODALFRAME_CONST;
 extern const DWORD DS_SHELLFONT_CONST;
 
+extern const DWORD DT_LEFT_CONST;
+
 extern const DWORD ES_RIGHT_CONST;
 
 extern const BYTE  FVIRTKEY_CONST; 
@@ -92,6 +94,7 @@ export
     const UINT    WM_CTLCOLOREDIT     = WM_CTLCOLOREDIT_CONST;
     const UINT    WM_DESTROY          = WM_DESTROY_CONST;
     const UINT    WM_CLOSE            = WM_CLOSE_CONST;
+    const UINT    WM_APP              = 0x8000;
                   
     const DWORD   WS_BORDER           = WS_BORDER_CONST;
     const DWORD   WS_CHILD            = WS_CHILD_CONST;
@@ -149,6 +152,8 @@ export
     const DWORD   DS_MODALFRAME       = DS_MODALFRAME_CONST;
     const DWORD   DS_SHELLFONT        = DS_SHELLFONT_CONST;
                   
+    const DWORD   DT_LEFT             = DT_LEFT_CONST;
+
     const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
                   
     const BYTE    FVIRTKEY            = FVIRTKEY_CONST; 

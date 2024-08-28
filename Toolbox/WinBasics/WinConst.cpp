@@ -72,6 +72,8 @@ const DWORD CS_HREDRAW_CONST          = CS_HREDRAW;
 const DWORD CS_VREDRAW_CONST          = CS_VREDRAW;
 const DWORD CS_DBLCLKS_CONST          = CS_DBLCLKS;
 
+const DWORD DT_LEFT_CONST             = DT_LEFT;
+
 const DWORD ES_RIGHT_CONST            = ES_RIGHT;
 
 const DWORD DS_CENTER_CONST           = DS_CENTER;
