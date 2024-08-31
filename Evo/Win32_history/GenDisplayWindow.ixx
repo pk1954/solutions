@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-export module WinHistory:GenDisplayWindow;
+export module WinHistLib:GenDisplayWindow;
 
 import WinBasics;
 import BaseWindow;
@@ -23,7 +23,7 @@ private:
     HistGeneration m_genDisplay;
 
     // TODO: Use TextBuffer or TextWindow?
-    //static COLORREF const CLR_BACK = RGB(255, 255, 0);
-    //static COLORREF const CLR_TEXT = RGB(255, 0, 0);
+    static COLORREF const CLR_BACK = MakeRGB(255, 255, 0);
+    static COLORREF const CLR_TEXT = MakeRGB(255, 0, 0);
 };
 

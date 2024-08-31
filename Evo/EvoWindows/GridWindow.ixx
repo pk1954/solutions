@@ -8,7 +8,7 @@ import ObserverInterface;
 import WinBasics;
 import EvoCoreLib;
 import EvoReadBuffer:
-import ModelWindow;
+import BaseWindow;
 import DrawFrame;
 import GraphicsInterface;
 import EvoWorkThreadInterface;
@@ -17,7 +17,7 @@ import DspOptWindow;
 import FocusPoint;
 import ColorManager;
 
-export class GridWindow : public ModelWindow
+export class GridWindow : public BaseWindow
 {
 public:
 	static void InitClass

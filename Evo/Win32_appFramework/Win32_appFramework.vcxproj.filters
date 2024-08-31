@@ -23,13 +23,7 @@
     <ClCompile Include="WorkThreadInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StatusBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseAppWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpeedControl.ixx">
@@ -41,9 +35,6 @@
     <ClCompile Include="AppMenu.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StatusBar.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ReadBuffer.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,9 +42,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseAppWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MessagePump.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScriptHook.ixx">

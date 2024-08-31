@@ -66,10 +66,10 @@ public:
 	}                                              
 
 	MODEL const * LockReadBuffer()                // Consumers call LockReadBuffer 
-	{                                              // for read access to model
-		if (m_pModel4Display)                    // and call RealeaseReadBuffer afterwards
-			AcquireSRWLockShared(& m_SRWLock);   // The MODEL pointer provided by LockReadBuffer
-		return m_pModel4Display;                   // is no longer valid after ReleaseReadBuffer call
+	{                                             // for read access to model
+		if (m_pModel4Display)                     // and call RealeaseReadBuffer afterwards
+			AcquireSRWLockShared(& m_SRWLock);    // The MODEL pointer provided by LockReadBuffer
+		return m_pModel4Display;                  // is no longer valid after ReleaseReadBuffer call
 	}                                              
 
 	void ReleaseReadBuffer()
@@ -85,19 +85,19 @@ public:
 		if (m_bCopyModel)                     
 		{
 			if (bImmediate)                                       // In immediate mode
-			{                                                       // acquire lock definitely
+			{                                                     // acquire lock definitely
 				AcquireSRWLockExclusive(& m_SRWLock);             // if locked by readers, wait
 			}
-			else if (! TryAcquireSRWLockExclusive(& m_SRWLock))  // In high frequency mode, try to aquire lock. 
-			{                                                       // If buffer is locked by readers,
-				return;                                             // just continue your work.
-			}														// Readers can synchronize with later version
+			else if (! TryAcquireSRWLockExclusive(& m_SRWLock))   // In high frequency mode, try to aquire lock. 
+			{                                                     // If buffer is locked by readers,
+				return;                                           // just continue your work.
+			}												 	  // Readers can synchronize with later version
 
 			m_pModel4Display->CopyModelData(m_pModelWork);        // We have exclusive access, copy Model
 			ReleaseSRWLockExclusive(& m_SRWLock);                 // Release lock
 		}
 
-		NotifyAll(bImmediate);                            // Notify Observers  
+		NotifyAll(bImmediate);                                    // Notify Observers  
 	}
 
 private:

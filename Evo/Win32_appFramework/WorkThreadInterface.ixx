@@ -9,14 +9,12 @@ import BoolOp;
 import SaveCast;
 import EventInterface;
 import ObserverInterface;
-//import ActionTimer;
 import RootWindow;
 import WinManager;
 import Thread;
 import WinBasics;
 import HistoryLib;
 import EvoCoreLib;
-//import EvoEditorWindow;
 
 using std::wostream;
 
@@ -41,6 +39,8 @@ public:
 
 	static UINT const FIRST_APP_MESSAGE = static_cast<UINT>(Id::LAST) + 1;
 };
+
+class WorkThreadInterface;
 
 class WorkThread: public Thread
 {
@@ -165,7 +165,7 @@ public:
 	HistGeneration GetCurrentGeneration() const { return m_pWorkThread->GetCurrentGeneration(); }
 
 	bool IsRunning    () const	{ return m_pWorkThread->IsRunning    (); }
-	bool IsAsyncThread() const	{ return m_pWorkThread->IsAsyncThread(); }
+	bool IsAsyncThread() const	{ return true; }
 
 protected:
 

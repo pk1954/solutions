@@ -5,6 +5,7 @@
 module;
 
 #include <Windows.h>
+#include <CommCtrl.h>
 
 export module WinBasics:WinDefs;
 
@@ -49,12 +50,16 @@ export
     using ::CreateAcceleratorTableW;
     using ::CreateDIBSection;
     using ::CreateMenu;
+    using ::GetModuleHandleW;
     using ::CreateWindowExW;
+    using ::DefSubclassProc;
     using ::DrawMenuBar;
     using ::EnableWindow;
     using ::EndDialog;
+    using ::GetDlgCtrlID;
     using ::GetModuleHandleW;
     using ::GetStockObject;
+    using ::GetSystemMetrics;
     using ::InitializeSRWLock;
     using ::IsWindowVisible;
     using ::LoadCursorW;
@@ -68,6 +73,7 @@ export
     using ::SetCursor;
     using ::SetMenu;
     using ::SetWindowPos;
+    using ::SetWindowSubclass;
     using ::SetWindowTextW;
     using ::ShellExecuteW;
     using ::TryAcquireSRWLockExclusive;
@@ -80,4 +86,9 @@ export
     { 
         return GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA; 
     };
+
+    constexpr COLORREF MakeRGB(WORD const r, WORD const g, WORD const b)
+    {
+        return RGB(r, g, b);
+    }
 }

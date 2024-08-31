@@ -18,11 +18,7 @@ class StatusBar : public RootWindow
 public:
 	StatusBar();
 
-	void Start
-	(
-		HWND                        const, 
-		WorkThreadInterface const * const
-	);
+	void  Start(HWND const);
 	void  Stop();
 
 	PIXEL GetHeight() const;
@@ -49,8 +45,6 @@ private:
     PIXEL m_pixBorderX;
     PIXEL m_pixBorderY;
     PIXEL m_pixPosX;
-
-	WorkThreadInterface const * m_pWorkThreadInterface;
 
 	virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 

@@ -8,10 +8,10 @@ import GraphicsInterface;
 import DisplayOptions;
 import ColorManager;
 
-static COLORREF const CLR_BLACK  = RGB(  0,   0,   0);
-static COLORREF const CLR_GREY   = RGB(128, 128, 128);
-static COLORREF const CLR_WHITE  = RGB(255, 255, 255);
-static COLORREF const CLR_YELLOW = RGB(255, 255,   0);
+static COLORREF const CLR_BLACK  = MakeRGB(  0,   0,   0);
+static COLORREF const CLR_GREY   = MakeRGB(128, 128, 128);
+static COLORREF const CLR_WHITE  = MakeRGB(255, 255, 255);
+static COLORREF const CLR_YELLOW = MakeRGB(255, 255,   0);
 
 DrawFrame::DrawFrame()
  : 	m_hwnd             (nullptr),
@@ -141,7 +141,7 @@ void DrawFrame::drawBackground(EvolutionCore const * const pCore)
 	(         
     	[&](GridPoint const gp)
 		{
-			CLUT_INDEX const index   { m_pDspOptWindow->GetIntValue(pCore, GridDimensions::Wrap2Grid(gp)) };
+			ColIndex const index   { m_pDspOptWindow->GetIntValue(pCore, GridDimensions::Wrap2Grid(gp)) };
 			DWORD      const dwColor { getBackgroundColor(index) };
 			PixelPoint const pnt     { m_pEvoPixelCoords->Grid2PixelPosCenter(gp) };
 			m_pGraphics->AddBackGround(pnt, dwColor, m_fPxSize);
@@ -224,15 +224,15 @@ void DrawFrame::setIndividualColor(EvolutionCore const * const pCore, GridPoint 
 	Assert(static_cast<int>(strat) < Strategy::COUNT);
 	Assert(energy >= 0_ENERGY_UNITS);
 
-	CLUT_INDEX const index { Cast2Int(energy.GetValue()) };
+	ColIndex const index { Cast2Int(energy.GetValue()) };
 	COLORREF   const color { m_pColorManager->GetColor(tColorObject::individual, strat, index) };
     addPrimitive(gp, color, fHalfSize);
 }
 
-COLORREF DrawFrame::getBackgroundColor(CLUT_INDEX index) const
+COLORREF DrawFrame::getBackgroundColor(ColIndex index) const
 {
-    if (index < CLUT_INDEX(0))
-        index = CLUT_INDEX(0);
+    if (index < ColIndex(0))
+        index = ColIndex(0);
     else if (index > MAX_BG_COLOR())
         index = MAX_BG_COLOR();
     return m_clutBackground.GetColor(index);

@@ -71,7 +71,7 @@ public:
 	}
 
 private:
-	static COLORREF const CLR_WHITE = RGB(255, 255, 255);
+	static COLORREF const CLR_WHITE = MakeRGB(255, 255, 255);
 
 	GraphicsInterface * m_pGraphics;
 	wostringstream    * m_pBuffer;

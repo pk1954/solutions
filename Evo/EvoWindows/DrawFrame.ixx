@@ -57,13 +57,13 @@ private:
     GraphicsInterface * m_pGraphics;
 	Shape const       * m_pShapeHighlight;
 
-	static CLUT_INDEX const MAX_BG_COLOR()
+	static ColIndex const MAX_BG_COLOR()
 	{
-		static CLUT_INDEX constexpr res(255);
+		static ColIndex constexpr res(255);
 		return res;
 	}
 
-    CLUT m_clutBackground;
+    ColorLUT m_clutBackground;
 
     std::wostringstream m_wBuffer;
 
@@ -73,7 +73,7 @@ private:
 		m_wBuffer.clear();
 	}
 
-    COLORREF getBackgroundColor(CLUT_INDEX) const;
+    COLORREF getBackgroundColor(ColIndex) const;
     void     setIndividualColor(EvolutionCore const * const, GridPoint const, float const) const;
 	void     addPrimitive(GridPoint const, COLORREF const, float const) const;
 	

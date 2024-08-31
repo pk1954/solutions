@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-export module WinHistory:HistAllocThread;
+export module WinHistLib:HistAllocThread;
 
 import WinBasics;
 import HistoryLib;

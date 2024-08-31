@@ -36,7 +36,7 @@
     <ClCompile Include="HistInfoWindow.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WinHistory.ixx">
+    <ClCompile Include="WinHistLib.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

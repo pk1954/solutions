@@ -10,12 +10,11 @@ import HistoryLib;
 import win32_util_resource;
 import UtilityWrappers;
 import AboutBox;
-import ModelWindow;
+import BaseWindow;
 import AppMenu;
 import BaseWindow;
 import WinManager;
-import WinHistory;
-import HistoryInfo;
+import WinHistLib;
 import StatusBar;
 import WorkThreadInterface;
 
@@ -73,7 +72,7 @@ BaseAppWindow::~BaseAppWindow()
 {
 };
 
-void BaseAppWindow::Start(ModelWindow * const pModelWindow)
+void BaseAppWindow::Start(BaseWindow * const pModelWindow)
 {
 	m_pModelWindow = pModelWindow;
 
@@ -177,7 +176,7 @@ LRESULT BaseAppWindow::UserProc
 
 	case WM_PAINT:
 	{
-		static COLORREF const CLR_GREY = RGB(128, 128, 128);
+		static COLORREF const CLR_GREY = MakeRGB(128, 128, 128);
 		PAINTSTRUCT   ps;
 		HDC           hDC = BeginPaint(&ps);
 		FillBackground(hDC, CLR_GREY);

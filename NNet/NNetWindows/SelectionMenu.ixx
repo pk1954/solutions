@@ -2,12 +2,9 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>    // RGB !
-
 export module NNetWin32:SelectionMenu;
 
+import WinBasics;
 import BaseWindow;
 
 export class SelectionMenu : public BaseWindow
@@ -31,7 +28,7 @@ private:
 	HWND m_hwndCopy     { nullptr };
 	HWND m_hwndDelete   { nullptr };
 
-	COLORREF m_colBackground { RGB(0,0,0) };
+	COLORREF m_colBackground { MakeRGB(0,0,0) };
 
 	void OnPaint() final;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;

@@ -7,12 +7,10 @@ export module BaseAppWindow;
 import std;
 import BaseWindow;
 import WinManager;
-import WinHistory;
-import HistoryInfo;
 import StatusBar;
 import WorkThreadInterface;
 import HistoryLib;
-import ModelWindow;
+import WinHistLib;
 import AppMenu;
 
 using std::wofstream;
@@ -25,7 +23,7 @@ public:
 
 	void Initialize(WorkThreadInterface * const, bool const);
 
-	void Start(ModelWindow * const);
+	void Start(BaseWindow * const);
 
 	virtual void ProcessAppCommand(WPARAM const, LPARAM const = 0) = 0;
 
@@ -50,7 +48,7 @@ private:
 	HistWindow     m_HistWindow;
 	HistInfoWindow m_HistInfoWindow;
 
-	ModelWindow         * m_pModelWindow;
+	BaseWindow          * m_pModelWindow;
 	WorkThreadInterface * m_pWorkThreadInterface;
 
 	wofstream m_traceStream;

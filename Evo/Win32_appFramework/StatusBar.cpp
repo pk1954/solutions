@@ -11,7 +11,15 @@ import WWorkThreadInterface;
 
 static PIXEL const STATUS_BAR_HEIGHT = 22_PIXEL;
 
-static LRESULT __stdcall OwnerDrawStatusBar(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+static LRESULT __stdcall OwnerDrawStatusBar
+(
+	HWND      hwnd, 
+	UINT      uMsg, 
+	WPARAM    wParam, 
+	LPARAM    lParam, 
+	UINT_PTR  uIdSubclass, 
+	DWORD_PTR dwRefData
+)
 {
 	StatusBar * const pStatusBar = (StatusBar *)dwRefData;
 	switch (uMsg)
@@ -36,11 +44,7 @@ StatusBar::StatusBar() :
 	m_pWorkThreadInterface(nullptr)
 { }
 
-void StatusBar::Start
-(
-	HWND                        const hwndParent,
-	WorkThreadInterface const * const pWorkThreadInterface
-)
+void StatusBar::Start(HWND const hwndParent)
 {
 	m_pWorkThreadInterface = pWorkThreadInterface;
 
@@ -58,7 +62,7 @@ void StatusBar::Start
 
 	SetWindowHandle(hwndStatus);
 
-	(void)SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this) ;
+	SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this) ;
 
 	m_pixBorderX      = PIXEL(PIXEL(GetSystemMetrics(SM_CXSIZEFRAME))) + 10_PIXEL;
 	m_pixBorderY      = PIXEL(PIXEL(GetSystemMetrics(SM_CYSIZEFRAME)));
@@ -67,10 +71,7 @@ void StatusBar::Start
 	m_pixPosX = 0_PIXEL;
 }
 
-void StatusBar::AddCustomControl
-(
-	PIXEL const  pixWidth
-)
+void StatusBar::AddCustomControl(PIXEL const pixWidth)
 {
 	m_pixPosX += pixWidth;
 }
@@ -87,7 +88,7 @@ void StatusBar::LastPart()
 {
 	NewPart();
 	m_statWidths.push_back(-1_PIXEL ); // Stop
-	(void)SendMessage(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
+	SendMessage(SB_SETPARTS, m_statWidths.size(), (LPARAM)(m_statWidths.data()));
 }
 
 void StatusBar::Stop()

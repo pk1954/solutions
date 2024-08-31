@@ -2,8 +2,7 @@
 //
 // Evolution
 
-#include "win32_messagePump.h"
-#include "win32_evoAppWindow.h"
+import EvoAppWindow;
 
 import Resource;
 
@@ -24,5 +23,19 @@ int APIENTRY wWinMain
 	EvoAppWindow App;
 	App.Start();
 
-	return MessagePump(hInstance, App.GetWindowHandle(), IDC_EVOLUTION_MAIN);
+	//	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
+
+	INITCOMMONCONTROLSEX icex // load common control's DLL 
+	{
+		sizeof(INITCOMMONCONTROLSEX),
+		ICC_STANDARD_CLASSES | 
+		ICC_BAR_CLASSES | 
+		ICC_TAB_CLASSES | 
+		ICC_TREEVIEW_CLASSES  // for tooltips
+	};
+
+	//bool bRes = InitCommonControlsEx(&icex);
+	//Assert(bRes);
+
+	return MessagePump(hInstance, IDC_EVOLUTION_MAIN);
 }

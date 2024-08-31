@@ -10,7 +10,7 @@ export module EvoHistGlueLib:EvoHistorySysGlue;
 
 import EvoCoreLib;
 import HistoryLib;
-import WinHistory;
+import WinHistLib;
 import :EvoModelDataGlue;
 import :EvoModelFactory;
 

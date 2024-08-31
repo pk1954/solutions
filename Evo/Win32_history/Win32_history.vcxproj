@@ -161,7 +161,7 @@
     <ClCompile Include="HistInfoWindow.ixx" />
     <ClCompile Include="HistWindow.ixx" />
     <ClCompile Include="HistWindow.cpp" />
-    <ClCompile Include="WinHistory.ixx" />
+    <ClCompile Include="WinHistLib.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">

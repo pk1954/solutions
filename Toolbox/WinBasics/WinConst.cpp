@@ -31,6 +31,12 @@ const DWORD WS_SYSMENU_CONST          = WS_SYSMENU;
 const DWORD SW_HIDE_CONST             = SW_HIDE;
 const DWORD SW_SHOW_CONST             = SW_SHOW;
 
+const DWORD SB_SETTEXT_CONST          = SB_SETTEXT;
+const DWORD SB_SETPARTS_CONST         = SB_SETPARTS;
+                                      
+const DWORD SM_CXSIZEFRAME_CONST      = SM_CXSIZEFRAME;
+const DWORD SM_CYSIZEFRAME_CONST      = SM_CYSIZEFRAME;
+
 const HWND  HWND_TOP_CONST            = HWND_TOP;
 const HWND  HWND_DESKTOP_CONST        = HWND_DESKTOP;
 
@@ -72,7 +78,11 @@ const DWORD CS_HREDRAW_CONST          = CS_HREDRAW;
 const DWORD CS_VREDRAW_CONST          = CS_VREDRAW;
 const DWORD CS_DBLCLKS_CONST          = CS_DBLCLKS;
 
+const DWORD CW_USEDEFAULT_CONST       = CW_USEDEFAULT;
+
 const DWORD DT_LEFT_CONST             = DT_LEFT;
+
+const DWORD TBS_NOTICKS_CONST         = TBS_NOTICKS;
 
 const DWORD ES_RIGHT_CONST            = ES_RIGHT;
 

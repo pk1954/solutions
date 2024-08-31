@@ -5,21 +5,22 @@
 module ColorManager;
 
 import WinBasics;
+import ColorLUT;
 import EvoCoreLib;
 
 void ColorManager::Initialize()
 {
 	m_bDimmIndividuals = TRUE;
-	m_colorSelection = RGB(  0, 217, 255);
-	m_colorHighlight = RGB(255, 217,   0);
+	m_colorSelection = MakeRGB(  0, 217, 255);
+	m_colorHighlight = MakeRGB(255, 217,   0);
 
-	CLUT_INDEX clutSize { EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity) };
+	ColIndex clutSize { EvoConfig::GetConfigValue(EvoConfig::tId::stdCapacity) };
 	for (auto & strategy : m_aClutStrat)
 		strategy.Allocate(clutSize);
 
-	setStrategyColor(Strategy::Id::defect,    RGB(20, 150, 187));
-	setStrategyColor(Strategy::Id::cooperate, RGB(130, 147,  86));
-	setStrategyColor(Strategy::Id::tit4tat,   RGB(192,  47,  29));
+	setStrategyColor(Strategy::Id::defect,    MakeRGB(20, 150, 187));
+	setStrategyColor(Strategy::Id::cooperate, MakeRGB(130, 147,  86));
+	setStrategyColor(Strategy::Id::tit4tat,   MakeRGB(192,  47,  29));
 
     setupClut(EvoConfig::GetConfigValueBoolOp(EvoConfig::tId::dimmMode));
 }
@@ -28,9 +29,9 @@ void ColorManager::setupClut(tBoolOp const bOp)
 {
     ApplyOp(m_bDimmIndividuals, bOp);
 
-    CLUT_INDEX const clutBase = m_bDimmIndividuals // color of individuals ...
-                                ? CLUT_INDEX(30)   // ... varies from 30% - 100%, depending on energy 
-                                : CLUT_INDEX(100); // ... is always at 100%
+    ColIndex const clutBase = m_bDimmIndividuals // color of individuals ...
+                                ? ColIndex(30)   // ... varies from 30% - 100%, depending on energy 
+                                : ColIndex(100); // ... is always at 100%
 
     for (auto &strategy : m_aClutStrat)
         strategy.SetClutBase(clutBase);
@@ -91,7 +92,7 @@ COLORREF ColorManager::GetColor
 (
 	tColorObject const object, 
 	Strategy::Id const strat, 
-	CLUT_INDEX   const clutIndex
+	ColIndex   const clutIndex
 )
 {
 	switch (object)

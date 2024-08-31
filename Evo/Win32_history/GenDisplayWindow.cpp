@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-module WinHistory:GenDisplayWindow;
+module WinHistLib:GenDisplayWindow;
 
 import WinBasics;
 import Win32_Util;

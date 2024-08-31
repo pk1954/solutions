@@ -139,7 +139,7 @@ public:
 	virtual void AddColorCtlMenu(HMENU const);
 
 	virtual void     SetBackgroundColorRef(COLORREF const c) {}
-	virtual COLORREF GetBackgroundColorRef() const           { return RGB(0, 0, 0); }
+	virtual COLORREF GetBackgroundColorRef() const           { return MakeRGB(0, 0, 0); }
 
 	virtual void SetGrid  (bool const, bool const) {}
 	virtual void SetScales(bool const, bool const) {}

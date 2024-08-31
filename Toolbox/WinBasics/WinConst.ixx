@@ -29,6 +29,12 @@ extern const DWORD WS_SYSMENU_CONST;
 extern const DWORD SW_HIDE_CONST;
 extern const DWORD SW_SHOW_CONST;
 
+extern const DWORD SB_SETTEXT_CONST;
+extern const DWORD SB_SETPARTS_CONST;
+
+extern const DWORD SM_CXSIZEFRAME_CONST;
+extern const DWORD SM_CYSIZEFRAME_CONST;
+
 extern const HWND  HWND_TOP_CONST;
 extern const HWND  HWND_DESKTOP_CONST;
 
@@ -63,11 +69,15 @@ extern const DWORD CS_HREDRAW_CONST;
 extern const DWORD CS_VREDRAW_CONST;     
 extern const DWORD CS_DBLCLKS_CONST;     
 
+extern const DWORD CW_USEDEFAULT_CONST;
+
 extern const DWORD DS_CENTER_CONST;
 extern const DWORD DS_MODALFRAME_CONST;
 extern const DWORD DS_SHELLFONT_CONST;
 
 extern const DWORD DT_LEFT_CONST;
+
+extern const DWORD TBS_NOTICKS_CONST;
 
 extern const DWORD ES_RIGHT_CONST;
 
@@ -94,6 +104,8 @@ export
     const UINT    WM_CTLCOLOREDIT     = WM_CTLCOLOREDIT_CONST;
     const UINT    WM_DESTROY          = WM_DESTROY_CONST;
     const UINT    WM_CLOSE            = WM_CLOSE_CONST;
+    const UINT    WM_HSCROLL          = 0x0114;
+    const UINT    WM_COMMAND          = 0x0111;
     const UINT    WM_APP              = 0x8000;
                   
     const DWORD   WS_BORDER           = WS_BORDER_CONST;
@@ -114,6 +126,12 @@ export
     const DWORD   SW_HIDE             = SW_HIDE_CONST;
     const DWORD   SW_SHOW             = SW_SHOW_CONST;
                                       
+    const DWORD   SB_SETTEXT          = SB_SETTEXT_CONST;
+    const DWORD   SB_SETPARTS         = SB_SETPARTS_CONST;
+                                  
+    const DWORD   SM_CXSIZEFRAME      = SM_CXSIZEFRAME_CONST;
+    const DWORD   SM_CYSIZEFRAME      = SM_CYSIZEFRAME_CONST;
+
     const HWND    HWND_TOP            = HWND_TOP_CONST;
     const HWND    HWND_DESKTOP        = HWND_DESKTOP_CONST;
                                       
@@ -148,11 +166,15 @@ export
     const DWORD   CS_VREDRAW          = CS_VREDRAW_CONST;     
     const DWORD   CS_DBLCLKS          = CS_DBLCLKS_CONST; 
                   
+    const DWORD   CW_USEDEFAULT       = CW_USEDEFAULT_CONST; 
+                  
     const DWORD   DS_CENTER           = DS_CENTER_CONST;
     const DWORD   DS_MODALFRAME       = DS_MODALFRAME_CONST;
     const DWORD   DS_SHELLFONT        = DS_SHELLFONT_CONST;
                   
     const DWORD   DT_LEFT             = DT_LEFT_CONST;
+
+    const DWORD   TBS_NOTICKS         = TBS_NOTICKS_CONST;
 
     const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
                   
@@ -175,4 +197,7 @@ export
     const LPCWSTR WC_BUTTON           = L"Button";
     const LPCWSTR WC_EDIT             = L"Edit";
     const LPCWSTR WC_STATIC           = L"Static";
+
+    const LPCWSTR STATUSCLASSNAME     = L"msctls_statusbar";
+    const LPCWSTR TRACKBAR_CLASS      = L"msctls_trackbar32";
 }

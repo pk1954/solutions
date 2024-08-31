@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-module WinHistory:HistWindow;
+module WinHistLib:HistWindow;
 
 import std;
 import HistoryLib;

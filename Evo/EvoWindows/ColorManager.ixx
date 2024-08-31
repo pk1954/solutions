@@ -5,6 +5,8 @@
 export module ColorManager;
 
 import std;
+import Debug;
+import ColorLUT;
 import EvoCoreLib;
 import WinBasics;
 
@@ -15,13 +17,13 @@ class ColorManager
 public:
 	void     Initialize();
 	void     ColorDialog(HWND const, tColorObject const, Strategy::Id const = Strategy::Id::empty);
-	COLORREF GetColor(tColorObject const, Strategy::Id const = Strategy::Id::empty, CLUT_INDEX const = STRATEGY_COLOR());
+	COLORREF GetColor(tColorObject const, Strategy::Id const = Strategy::Id::empty, ColIndex const = STRATEGY_COLOR());
 	void     SetColor(COLORREF const, tColorObject const, Strategy::Id const = Strategy::Id::empty);
 	void     ToggleClutMode();
 
-	static CLUT_INDEX const STRATEGY_COLOR()
+	static ColIndex const STRATEGY_COLOR()
 	{
-		static CLUT_INDEX constexpr res(-1);
+		static ColIndex constexpr res(-1);
 		return res;
 	}
 
@@ -32,9 +34,9 @@ private:
 	COLORREF m_colorSelection;
 	COLORREF m_colorHighlight;
 	
-	array<CLUT, Strategy::COUNT> m_aClutStrat;
+	array<ColorLUT, Strategy::COUNT> m_aClutStrat;
 
-	CLUT & getClut(Strategy::Id const strat)
+	ColorLUT & getClut(Strategy::Id const strat)
 	{
 		int iIndex = static_cast<int>(strat);
 		AssertLimits(iIndex, 0, Strategy::COUNT - 1);

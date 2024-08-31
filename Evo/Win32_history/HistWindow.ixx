@@ -2,12 +2,12 @@
 //
 // Win32_history
 
-export module WinHistory:HistWindow;
+export module WinHistLib:HistWindow;
 
+import WinBasics;
 import BaseWindow;
 import HistoryLib;
 import WorkThreadInterface;
-import RootWinDisplayFunctor;
 
 class HistWindow : public BaseWindow
 {
@@ -27,14 +27,14 @@ private:
 
     virtual bool UserProc(UINT const, WPARAM const, LPARAM const);
 
-    //static COLORREF const CLR_GREEN  = RGB(  0, 255,   0);
-    //static COLORREF const CLR_YELLOW = RGB(255, 255,   0);
-    //static COLORREF const CLR_RED    = RGB(255,  50,  50);
-    //static COLORREF const CLR_BACK   = RGB(240, 240, 240);
-    //static COLORREF const CLR_MIX    = RGB(100, 100, 100);
-    //static COLORREF const CLR_DARK   = RGB( 32,  32,  32);
-    //static COLORREF const CLR_POI    = RGB( 32,  32, 255);
-    //static COLORREF const CLR_EDIT   = RGB(255, 128,   0);
+    static COLORREF const CLR_GREEN  = MakeRGB(  0, 255,   0);
+    static COLORREF const CLR_YELLOW = MakeRGB(255, 255,   0);
+    static COLORREF const CLR_RED    = MakeRGB(255,  50,  50);
+    static COLORREF const CLR_BACK   = MakeRGB(240, 240, 240);
+    static COLORREF const CLR_MIX    = MakeRGB(100, 100, 100);
+    static COLORREF const CLR_DARK   = MakeRGB( 32,  32,  32);
+    static COLORREF const CLR_POI    = MakeRGB( 32,  32, 255);
+    static COLORREF const CLR_EDIT   = MakeRGB(255, 128,   0);
 
 	void gotoGeneration(HistGeneration const);
 	void doPaint(HDC const);
@@ -47,11 +47,11 @@ private:
     PixelRect getGenerationRect(HistGeneration const, HistGeneration const) const;
 
     void paintGeneration(HDC const, HistGeneration const, COLORREF const) const;
-    void paintPixelPos  (HDC const, PIXEL const, HistoryIterator & )       const;
+    void paintPixelPos  (HDC const, PIXEL const, HistoryIterator & )      const;
 
-	void            gotoNewGeneration(LPARAM const);
+	void           gotoNewGeneration(LPARAM const);
     HistGeneration getGenFromXpos(LPARAM const) const;
-    void            dispGenerationWindow()       const;
+    void           dispGenerationWindow()       const;
 
 	WorkThreadInterface * m_pWorkThreadInterface;
     HistorySystem       * m_pHistSys;       

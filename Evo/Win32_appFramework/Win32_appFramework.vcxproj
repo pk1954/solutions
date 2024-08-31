@@ -171,15 +171,11 @@
     <ClCompile Include="AppMenu.ixx" />
     <ClCompile Include="AppWindowInterface.ixx" />
     <ClCompile Include="BaseAppWindow.ixx" />
-    <ClCompile Include="MessagePump.ixx" />
     <ClCompile Include="ReadBuffer.ixx" />
     <ClCompile Include="ScriptHook.ixx" />
     <ClCompile Include="SpeedControl.cpp" />
     <ClCompile Include="SpeedControl.ixx" />
     <ClCompile Include="BaseAppWindow.cpp" />
-    <ClCompile Include="MessagePump.cpp" />
-    <ClCompile Include="StatusBar.cpp" />
-    <ClCompile Include="StatusBar.ixx" />
     <ClCompile Include="WorkThreadInterface.cpp" />
     <ClCompile Include="WorkThreadInterface.ixx" />
   </ItemGroup>
@@ -204,6 +200,9 @@
     </ProjectReference>
     <ProjectReference Include="..\History\History.vcxproj">
       <Project>{642c34fc-f20c-45a6-bab8-c75988c88f52}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Win32_history\Win32_history.vcxproj">
+      <Project>{1f07043f-bc80-42a8-ac9e-ff92cacda7e4}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

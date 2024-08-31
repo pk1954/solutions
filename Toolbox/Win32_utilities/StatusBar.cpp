@@ -1,11 +1,11 @@
-// Status.cpp
+// StatusBar.cpp
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-#include <CommCtrl.h>
+//module;
+//
+//#include <Windows.h>
+//#include <CommCtrl.h>
 
 module StatusBar;
 
@@ -13,9 +13,12 @@ import std;
 import Tooltip;
 import Types;
 import RunTime;
+import WinBasics;
+import Win32_Util_Resource;
 
 using std::to_wstring;
 using std::wstring;
+using std::wcslen;
 
 static LRESULT __stdcall OwnerDrawStatusBar
 (
@@ -32,8 +35,12 @@ static LRESULT __stdcall OwnerDrawStatusBar
 	{
 
 	case WM_COMMAND:
-		pStatusBar->PostCommand2Parent(LOWORD(wParam));
+		pStatusBar->PostCommand2Parent(LoWord(wParam));
 		return true;
+
+	case WM_HSCROLL:
+		pStatusBar->PostCommand2Parent(IDM_TRACKBAR, GetDlgCtrlID((HWND)lParam));
+		return false;
 
 	default: 
 		break;
@@ -44,21 +51,22 @@ static LRESULT __stdcall OwnerDrawStatusBar
 
 void StatusBar::Start(HWND const hwndParent)
 {
-	HWND hwndStatus = CreateWindow
+	HWND hwndStatus = CreateWindowExW
 	(
+		0,
 		STATUSCLASSNAME, 
 		nullptr, 
 		WS_CHILD,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, HEIGHT.GetValue(),
 		hwndParent,
 		nullptr, 
-		GetModuleHandle(nullptr), 
+		GetModuleHandleW(nullptr), 
 		nullptr
 	); 
 
 	SetWindowHandle(hwndStatus);
 
-	(void)SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this);
+	SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this);
 
 	m_pixBorderX      = static_cast<PIXEL>(GetSystemMetrics(SM_CXSIZEFRAME)) + 10_PIXEL;
 	m_pixBorderY      = static_cast<PIXEL>(GetSystemMetrics(SM_CYSIZEFRAME));
@@ -112,9 +120,10 @@ HWND StatusBar::addControl
 	PIXEL const pixWidth { PIXEL(iWidth * 9) };
     HWND  const hwnd     
 	{ 
-		CreateWindow
+		CreateWindowExW
 		(
-			lpClassName,                     // class name 
+			0,
+     		lpClassName,                     // class name 
 			lpWindowName,                    // title (caption) 
 			WS_CHILD | WS_VISIBLE | dwStyle, // style 
 			m_pixPosX.GetValue(),            // x position
@@ -123,7 +132,7 @@ HWND StatusBar::addControl
 			m_pixClientHeight.GetValue(),    // height
 			GetWindowHandle(),               // parent window 
 			(HMENU)(UINT_PTR)iMenu,          // control identifier 
-			GetModuleHandle(nullptr),        // instance 
+			GetModuleHandleW(nullptr),       // instance 
 			nullptr                          // no WM_CREATE parameter 
 		)
 	};

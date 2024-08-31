@@ -4,8 +4,11 @@
 
 export module ScriptHook;
 
+import std;
 import RunTime;
 import StatusBar;
+
+using std::wstring;
 
 class ScriptHook : public ScriptFunctor
 {

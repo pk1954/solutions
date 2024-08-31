@@ -2,7 +2,7 @@
 //
 // Win32_history
 
-export module WinHistory:HistInfoWindow;
+export module WinHistLib:HistInfoWindow;
 
 import std;
 import TextWindow;

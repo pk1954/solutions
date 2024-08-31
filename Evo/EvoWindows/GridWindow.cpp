@@ -39,7 +39,7 @@ void GridWindow::InitClass
 	ColorManager           * const pColorManager
 )
 {
-	ModelWindow::InitClass(pActionTimer);
+	BaseWindow::InitClass(pActionTimer);
 	m_pReadBuffer             = pReadBuffer;
 	m_pEvoWorkThreadInterface = pWorkThreadInterface;
 	m_pDspOptWindow           = pDspOptWindow;
@@ -48,7 +48,7 @@ void GridWindow::InitClass
 }
 
 GridWindow::GridWindow() :
-    ModelWindow(),
+    BaseWindow(),
 	m_pGraphics(nullptr),
 	m_hPopupMenu(nullptr),
     m_pGridWindowObserved(nullptr),
@@ -357,7 +357,7 @@ bool GridWindow::OnCommand(WPARAM const wParam, LPARAM const lParam)
 		cf.lpLogFont = &lf; 
 		cf.iPointSize = 0; 
 		cf.Flags = CF_SCREENFONTS | CF_FIXEDPITCHONLY; 
-		cf.rgbColors = RGB(0,0,0); 
+		cf.rgbColors = MakeRGB(0,0,0); 
 		cf.lCustData = 0L; 
 		cf.lpfnHook = (LPCFHOOKPROC)nullptr; 
 		cf.lpTemplateName = (LPCTSTR)nullptr; 
