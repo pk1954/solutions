@@ -12,9 +12,6 @@
     <ClCompile Include="TextBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoolOp.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -31,9 +28,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SmoothMoveFp.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Trace.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SlowMotionRatio.ixx">

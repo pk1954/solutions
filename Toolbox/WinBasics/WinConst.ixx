@@ -11,6 +11,9 @@ extern const UINT  WM_CTLCOLOREDIT_CONST;
 extern const UINT  WM_DESTROY_CONST;
 extern const UINT  WM_CLOSE_CONST;
 
+extern const UINT  PM_REMOVE_CONST;
+extern const UINT  CP_UTF8_CONST;
+
 extern const DWORD WS_BORDER_CONST;
 extern const DWORD WS_CHILD_CONST;
 extern const DWORD WS_CLIPSIBLINGS_CONST;
@@ -98,16 +101,22 @@ extern const LPCWSTR IDC_SIZEWE_CONST;
 extern const LPCWSTR IDC_WAIT_CONST;     
 extern const LPCWSTR IDC_ARROW_CONST;     
 
+extern const int EXCEPTION_EXECUTE_HANDLER_CONST;
+
 export 
 {
     const UINT    WM_ENTERMENULOOP    = WM_ENTERMENULOOP_CONST;
     const UINT    WM_CTLCOLOREDIT     = WM_CTLCOLOREDIT_CONST;
     const UINT    WM_DESTROY          = WM_DESTROY_CONST;
     const UINT    WM_CLOSE            = WM_CLOSE_CONST;
+    const UINT    WM_QUIT             = 0x0012;
     const UINT    WM_HSCROLL          = 0x0114;
     const UINT    WM_COMMAND          = 0x0111;
     const UINT    WM_APP              = 0x8000;
                   
+    const UINT    PM_REMOVE           = PM_REMOVE_CONST;
+    const UINT    CP_UTF8             = CP_UTF8_CONST;
+
     const DWORD   WS_BORDER           = WS_BORDER_CONST;
     const DWORD   WS_CHILD            = WS_CHILD_CONST;
     const DWORD   WS_CLIPSIBLINGS     = WS_CLIPSIBLINGS_CONST;
@@ -188,7 +197,7 @@ export
     const int     IDCANCEL            = IDCANCEL_CONST; 
                                       
     const int     DC_BRUSH            = DC_BRUSH_CONST; 
-                                      
+
     const LPCWSTR IDC_SIZENS          = IDC_SIZENS_CONST; 
     const LPCWSTR IDC_SIZEWE          = IDC_SIZEWE_CONST; 
     const LPCWSTR IDC_WAIT            = IDC_WAIT_CONST; 
@@ -200,4 +209,6 @@ export
 
     const LPCWSTR STATUSCLASSNAME     = L"msctls_statusbar";
     const LPCWSTR TRACKBAR_CLASS      = L"msctls_trackbar32";
+
+    const int EXCEPTION_EXECUTE_HANDLER = EXCEPTION_EXECUTE_HANDLER_CONST;
 }

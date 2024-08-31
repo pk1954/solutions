@@ -2,14 +2,13 @@
 //
 // win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module MessagePump;
 
 import std;
+import WinBasics;
 import Win32_Util;
+
+using std::runtime_error;
 
 void MessagePump::SetAccelTable(HACCEL const haccel)
 {
@@ -28,14 +27,14 @@ bool MessagePump::accelerator(MSG& msg)
 		if ((entry.m_hwnd == msg.hwnd) || IsChild(entry.m_hwnd, msg.hwnd))
 		{
 			SetLastError(0);
-			if (TranslateAccelerator(entry.m_hwnd, m_defaultAccelTable, &msg))
+			if (TranslateAcceleratorW(entry.m_hwnd, m_defaultAccelTable, &msg))
 				return true;
 			DWORD err = GetLastError();
 			if (err)
 			{
 				int x = 42;
 			}
-			if (entry.m_bIsDialog && IsDialogMessage(entry.m_hwnd, &msg))
+			if (entry.m_bIsDialog && IsDialogMessageW(entry.m_hwnd, &msg))
 				return true;
 		}
 	}
@@ -46,10 +45,10 @@ void MessagePump::dispatch(MSG const& msg)
 {
 	__try 
 	{
-		DispatchMessage(&msg);
+		DispatchMessageW(&msg);
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER) 
 	{
-		throw std::runtime_error("Access violation dispatching message");
+		throw runtime_error("Access violation dispatching message");
 	}
 }

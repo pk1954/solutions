@@ -6,6 +6,7 @@
 #include "CommCtrl.h"
 
 import std;
+import WinBasics;
 import FatalErrorMB;
 import AppStartProtocol;
 import Win32_Util_Resource;
@@ -33,18 +34,14 @@ using std::endl;
 using std::setw;
 using std::left;
 
-int APIENTRY wWinMain
+int wWinMain
 (
-	_In_     HINSTANCE hInstance,
-	_In_opt_ HINSTANCE hPrevInstance,
-	_In_     LPWSTR    lpCmdLine,
-	_In_     int       nCmdShow
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPWSTR    lpCmdLine,
+	int       nCmdShow
 )
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
-    UNREFERENCED_PARAMETER(nCmdShow);
-
 	PerfCounter::Initialize();
 
 	HiResTimer hrtimer;

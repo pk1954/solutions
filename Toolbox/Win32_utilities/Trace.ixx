@@ -1,6 +1,6 @@
 // Trace.ixx : 
 //
-// Toolbox\Utilities
+// Win32_utilities
 
 export module Trace;
 
@@ -10,5 +10,4 @@ using std::wofstream;
 using std::wstring;
 
 export wofstream OpenTraceFile(wstring const &);
-export bool      SwitchWcoutTo(wstring const &);
 export wstring   StacktraceToWString();

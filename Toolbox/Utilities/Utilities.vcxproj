@@ -50,8 +50,6 @@
     <ClCompile Include="TextBuffer.cpp" />
     <ClCompile Include="TextBuffer.ixx" />
     <ClCompile Include="TimestampList.ixx" />
-    <ClCompile Include="Trace.cpp" />
-    <ClCompile Include="Trace.ixx" />
     <ClCompile Include="Uniform2D.ixx" />
     <ClCompile Include="Vector2D.ixx" />
   </ItemGroup>

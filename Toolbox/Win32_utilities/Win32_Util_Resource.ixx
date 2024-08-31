@@ -1,6 +1,6 @@
 // Win32_Util_Resource.ixx
 //
-// win32_utilities
+// Win32_utilities
 
 export module Win32_Util_Resource;
 

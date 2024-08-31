@@ -7,7 +7,6 @@ module IoUtil;
 import std;
 import SaveCast;
 import BoolOp;
-import Trace;
 import Types;
 import RunTime;
 import IoConstants;

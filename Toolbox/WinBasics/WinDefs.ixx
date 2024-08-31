@@ -4,13 +4,21 @@
 
 module;
 
+#include <io.h>
+#include <fcntl.h>
+#include <codecvt>
 #include <Windows.h>
 #include <CommCtrl.h>
 
 export module WinBasics:WinDefs;
 
+import std;
+
+using std::wstring;
+
 export 
 {
+    using MSG                   = MSG;
     using ACCEL                 = ACCEL;
     using HWND                  = HWND;
     using HCURSOR               = HCURSOR;
@@ -31,6 +39,7 @@ export
     using COLORREF              = COLORREF;
     using LPCWSTR               = LPCWSTR;
     using LPCSTR                = LPCSTR;
+    using LPWSTR                = LPWSTR;
     using LPCTSTR               = LPCTSTR;
     using LPPOINT               = LPPOINT;
     using SRWLOCK               = SRWLOCK;
@@ -43,6 +52,7 @@ export
     using TRACKMOUSEEVENT       = TRACKMOUSEEVENT;
     using PTP_CALLBACK_INSTANCE = PTP_CALLBACK_INSTANCE;
 
+    using ::_setmode;
     using ::AcquireSRWLockExclusive;
     using ::AcquireSRWLockShared;
     using ::AppendMenuW;
@@ -50,32 +60,43 @@ export
     using ::CreateAcceleratorTableW;
     using ::CreateDIBSection;
     using ::CreateMenu;
+    using ::GetMessageW;
     using ::GetModuleHandleW;
     using ::CreateWindowExW;
     using ::DefSubclassProc;
+    using ::DispatchMessageW;
     using ::DrawMenuBar;
     using ::EnableWindow;
     using ::EndDialog;
     using ::GetDlgCtrlID;
+    using ::GetLastError;
     using ::GetModuleHandleW;
     using ::GetStockObject;
     using ::GetSystemMetrics;
     using ::InitializeSRWLock;
+    using ::IsChild;
+    using ::IsDialogMessageW;
     using ::IsWindowVisible;
     using ::LoadCursorW;
     using ::MapWindowPoints;
     using ::MessageBoxW;
+    using ::MultiByteToWideChar;
+    using ::PeekMessageW;
     using ::PostQuitMessage;
     using ::ReleaseCapture;
     using ::ReleaseSRWLockExclusive;
     using ::ReleaseSRWLockShared;
     using ::SetBkColor;
+    using ::SetConsoleOutputCP;
     using ::SetCursor;
+    using ::SetLastError;
     using ::SetMenu;
     using ::SetWindowPos;
     using ::SetWindowSubclass;
     using ::SetWindowTextW;
     using ::ShellExecuteW;
+    using ::TranslateAcceleratorW;
+    using ::TranslateMessage;
     using ::TryAcquireSRWLockExclusive;
 
     constexpr WORD LoWord(DWORD_PTR value) { return static_cast<WORD>(value & 0xFFFF); }
@@ -90,5 +111,14 @@ export
     constexpr COLORREF MakeRGB(WORD const r, WORD const g, WORD const b)
     {
         return RGB(r, g, b);
+    }
+
+    bool SwitchWcoutTo(wstring const & wszTraceFileName)
+    { 
+        FILE  * fp;
+        errno_t res = _wfreopen_s(&fp, wszTraceFileName.c_str(), L"w", stdout);
+        _setmode(_fileno(stdout), _O_U8TEXT);  // set code page to UTF-8
+        SetConsoleOutputCP(CP_UTF8);           // for printing Unicode
+        return res == 0;
     }
 }

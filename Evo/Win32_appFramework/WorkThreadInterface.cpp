@@ -101,9 +101,9 @@ void WorkThread::ThreadMsgDispatcher(MSG const msg )
 		if (
 			  WorkThread::Dispatch(msg)  // Give WorkThread a chance to handle message by itself. 
 			  || Dispatch(msg)           // Otherwise hand over to application
-		  )                               // If one of these could handle the message, ...
+		  )                              // If one of these could handle the message, ...
 		{
-			if (m_pObserver != nullptr)              // ... notify main thread, that model has changed.
+			if (m_pObserver != nullptr)            // ... notify main thread, that model has changed.
 				m_pObserver->Notify(m_bContinue);  // Continue immediately, if in run mode and
 		}
 		else  // Nobody could handle message
@@ -280,6 +280,8 @@ void WorkThread::generationStop()
 	setRunMode(FALSE);
 	RunTime::StopProcessing();
 }
+
+////////////////// Work thread interface /////////////////////////////
 
 WorkThreadInterface::WorkThreadInterface() :
 	m_pWorkThread (nullptr),

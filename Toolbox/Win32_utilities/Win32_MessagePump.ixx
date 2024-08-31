@@ -2,17 +2,15 @@
 //
 // win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module MessagePump;
 
 import std;
+import WinBasics;
 import Win32_Util_Resource;
 import WinCommand;
 
 using std::vector;
+using std::runtime_error;
 
 export class MessagePump
 {
@@ -26,7 +24,7 @@ public:
 
 		while (true)
 		{
-			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+			if (PeekMessageW(&msg, (HWND)0, 0, 0, PM_REMOVE))
 			{
 				if (!accelerator(msg))
 				{
@@ -42,9 +40,9 @@ public:
 			{
 				gameFunc();
 			}
-			__except (EXCEPTION_EXECUTE_HANDLER) 
+			__except (EXCEPTION_EXECUTE_HANDLER)
 			{
-				throw std::runtime_error("Access violation in gameFuncred");
+				throw runtime_error("Access violation in gameFunc");
 			}
 		}
 
@@ -55,7 +53,7 @@ public:
 	{
 		MSG msg;
 
-		while (GetMessage(&msg, NULL, 0, 0) != 0) 
+		while (GetMessageW(&msg, HWND(0), 0, 0) != 0) 
 		{
 			TranslateMessage(&msg); // Translate virtual-key messages
 			dispatch(msg);         // Dispatch the message to the appropriate window procedure

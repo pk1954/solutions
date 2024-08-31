@@ -2,8 +2,8 @@
 //
 // Evolution
 
+import MessagePump;
 import EvoAppWindow;
-
 import Resource;
 
 int APIENTRY wWinMain

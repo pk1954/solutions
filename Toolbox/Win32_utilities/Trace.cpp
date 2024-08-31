@@ -1,21 +1,16 @@
 // Trace.cpp
 //
-// Utilities
-
-module;
-
-#include <io.h>
-#include <fcntl.h>
-#include <codecvt>
-#include <windows.h>
+// Win32_utilities
 
 module Trace;
 
 import std;
+import WinBasics;
 
 using std::cout;
 using std::wofstream;
 using std::ostringstream;
+using std::string;
 using std::wstring;
 using std::wstringstream;
 using std::ios;
@@ -34,19 +29,9 @@ wofstream OpenTraceFile(wstring const & wszTraceFileName)
     return traceStream;
 }
 
-bool SwitchWcoutTo(wstring const & wszTraceFileName)
-{ 
-    FILE  * fp;
-    errno_t res = _wfreopen_s(&fp, wszTraceFileName.c_str(), L"w", stdout);
-    _setmode(_fileno(stdout), _O_U8TEXT);  // set code page to UTF-8
-    SetConsoleOutputCP(CP_UTF8);           // for printing Unicode
-    return res == 0;
-}
-
-
-wstring stringToWString(const std::string& str) 
+wstring stringToWString(const string& str) 
 {
-    int size_needed = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), (int)str.size(), NULL, 0);
+    int size_needed = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), (int)str.size(), (LPWSTR)0, 0);
     wstring wstrTo(size_needed, 0);
     MultiByteToWideChar(CP_UTF8, 0, str.c_str(), (int)str.size(), &wstrTo[0], size_needed);
     return wstrTo;
