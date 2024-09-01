@@ -7,7 +7,6 @@ export module EvoController;
 import Types;
 import WinBasics;
 import EvoAppWindow;
-import Delay;
 import StatusBar;
 import EvoWorkThreadInterface;
 import EvoHistorySysGlue;
@@ -23,7 +22,6 @@ public:
 	(
 		WinManager        * const,
 		EvoHistorySysGlue * const,
-		Delay             * const,
 		ColorManager      * const,
 		StatusBar         * const,
 		GridWindow        * const,
@@ -48,7 +46,6 @@ private:
 	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
 	WinManager             * m_pWinManager;
 	EvoHistorySysGlue      * m_pEvoHistGlue;
-	Delay                  * m_pDelay;
 	StatusBar              * m_pStatusBar;
 	GridWindow             * m_pGridWindow;
 	EvoEditorWindow        * m_pEvoEditorWindow;

@@ -4,11 +4,9 @@
 
 export module EvoWorkThread;
 
-import Delay;
 import WorkThread;
 import GridPoint24;
 import HistoryLib;
-//import ActionTimer;  //TODO
 import ColorManager;
 import EvoEditorWindow;
 import RootWindow;
@@ -54,9 +52,7 @@ public:
 	(
 		HWND                     const,
 		ColorManager           * const,
-		//ActionTimer            * const,  //TODO
 		EventInterface         * const,
-		Delay                  * const,
 		ObserverInterface      * const,
 		EvoHistorySysGlue      * const,
 		EvoWorkThreadInterface * const
@@ -81,9 +77,6 @@ private:
 
 	virtual bool Dispatch(MSG const);
 
-	virtual void WaitTilNextActivation();
-
-	Delay             * m_pDelay;
 	ColorManager      * m_pColorManager;
     EvoHistorySysGlue * m_pEvoHistGlue;
 };

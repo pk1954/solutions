@@ -7,7 +7,6 @@ module EvoController;
 
 import EvoHistorySysGlue;
 import EvoAppWindow;
-import Delay;
 import SpeedControl;
 import ZoomControl;
 import StatusBar;
@@ -32,7 +31,6 @@ EvoController::EvoController
 (
 	WinManager        * const pWinManager,
 	EvoHistorySysGlue * const pEvoHistGlue,
-	Delay             * const pDelay,
 	ColorManager      * const pColorManager,
 	StatusBar         * const pStatusBar,
 	GridWindow        * const pGridWindow,
@@ -42,7 +40,6 @@ EvoController::EvoController
 	m_pEvoWorkThreadInterface (nullptr),
 	m_pWinManager             (pWinManager  ),
 	m_pEvoHistGlue            (pEvoHistGlue ),
-    m_pDelay                  (pDelay       ),
 	m_pColorManager           (pColorManager),
 	m_pStatusBar              (pStatusBar   ),
 	m_pGridWindow             (pGridWindow  ),
@@ -57,7 +54,6 @@ EvoController::~EvoController()
 	m_pWinManager             = nullptr;
 	m_pEvoHistGlue            = nullptr;
 	m_pColorManager           = nullptr;
-	m_pDelay                  = nullptr;
     m_pStatusBar              = nullptr;
 	m_pGridWindow             = nullptr;
 	m_pEvoEditorWindow        = nullptr;
@@ -114,7 +110,6 @@ bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
 			HWND hwndStatusBar = m_pStatusBar->GetWindowHandle();
 			m_pStatusBar->SetTrackBarPos(IDM_SIMULATION_SPEED,  Cast2Long(MAX_DELAY.count()));                
 			EnableWindow(GetDlgItem(hwndStatusBar, IDM_MAX_SPEED), FALSE);
-			m_pDelay->SetDelay(0ms);
 		}
 		break;
 
@@ -136,7 +131,7 @@ bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
 			LONG const lValue      = LogarithmicTrackbar::Value2TrackbarL(Cast2Long(MAX_DELAY.count())) - lLogicalPos;
 			LONG const lPos        = LogarithmicTrackbar::TrackBar2ValueL(lValue);
 			EnableWindow(m_pStatusBar->GetDlgItem(IDM_MAX_SPEED), TRUE);
-			m_pDelay->SetDelay(milliseconds(lPos));
+			//m_pDelay->SetDelay(milliseconds(lPos));
 		}
 		break;
 

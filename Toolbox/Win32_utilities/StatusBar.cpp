@@ -2,11 +2,6 @@
 //
 // Win32_utilities
 
-//module;
-//
-//#include <Windows.h>
-//#include <CommCtrl.h>
-
 module StatusBar;
 
 import std;

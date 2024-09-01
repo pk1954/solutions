@@ -11,7 +11,6 @@ import EvolutionTypes;
 import ColorManager;
 import ActionTimer;
 import EventInterface;
-import Delay;
 import ObserverInterface;
 import EvoHistorySysGlue;
 import EvoWorkThread;
@@ -29,7 +28,6 @@ public:
 		ColorManager      * const,
 		ActionTimer       * const,
 		EventInterface    * const,
-		Delay             * const,
 		ObserverInterface * const, 
 	    EvoHistorySysGlue * const
    );

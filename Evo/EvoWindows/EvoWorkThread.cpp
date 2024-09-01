@@ -9,10 +9,8 @@ import RunTime;
 import EvoHistorySysGlue;
 import EventInterface;
 import EvoReadBuffer;
-import Delay;
 import Thread;
 import EventInterface;
-//import ActionTimer;
 import ColorManager;
 import EvoCoreLib;
 import EvoWorkThreadInterface;
@@ -22,9 +20,7 @@ EvoWorkThread::EvoWorkThread
 (
 	HWND                     const hwndApplication,
 	ColorManager           * const pColorManager,
-	//ActionTimer            * const pActionTimer,   //TODO
 	EventInterface         * const pEvent,
-	Delay                  * const pDelay,
 	ObserverInterface      * const pObserver, 
 	EvoHistorySysGlue      * const pEvoHistorySys,
 	EvoWorkThreadInterface * const pWorkThreadInterface
@@ -40,7 +36,6 @@ EvoWorkThread::EvoWorkThread
 		pWorkThreadInterface,
 		TRUE
 	),
-	m_pDelay(pDelay),
 	m_pColorManager(pColorManager),
 	m_pEvoHistGlue (pEvoHistorySys)
 { 
@@ -122,10 +117,4 @@ bool EvoWorkThread::Dispatch(MSG const msg )
 	} 
 
 	return TRUE;
-}
-
-void EvoWorkThread::WaitTilNextActivation()
-{
-	if (m_pDelay != nullptr)
-		m_pDelay->SleepDelay();
 }

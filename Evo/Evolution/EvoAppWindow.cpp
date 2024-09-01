@@ -101,7 +101,6 @@ EvoAppWindow::EvoAppWindow() :
 	(
 		& m_WinManager,
 		& m_EvoHistGlue,
-		& m_Delay, 
 		& m_ColorManager,
 		& m_StatusBar, 
 		  m_pMainGridWindow, 
@@ -189,7 +188,6 @@ void EvoAppWindow::Start()
 		& m_ColorManager, 
 		& m_atComputation,
 		& m_eventPOI, 
-		& m_Delay, 
 		  m_pEvoReadBuffer, 
 		& m_EvoHistGlue
 	);
@@ -216,7 +214,7 @@ void EvoAppWindow::Start()
 	m_pEvoEditorWindow->Start(m_hwndApp, m_pEvoWorkThreadInterface, m_pEvoReadBuffer, m_pDspOptWindow);
 	m_pCrsrWindow     ->Start(m_hwndApp, m_pEvoReadBuffer, m_pFocusPoint);
 	m_pStatistics     ->Start(m_hwndApp, m_pEvoReadBuffer);
-	m_pPerfWindow     ->Start(m_hwndApp, m_Delay, m_atComputation, m_atDisplay, [&](){ return m_pEvoWorkThreadInterface->IsRunning(); });
+	m_pPerfWindow     ->Start(m_hwndApp, m_atComputation, m_atDisplay, [&](){ return m_pEvoWorkThreadInterface->IsRunning(); });
 
 	m_WinManager.AddWindow(L"IDM_PERF_WINDOW", IDM_PERF_WINDOW, * m_pPerfWindow,      TRUE, FALSE);
 	m_WinManager.AddWindow(L"IDM_CRSR_WINDOW", IDM_CRSR_WINDOW, * m_pCrsrWindow,      TRUE, FALSE);
@@ -254,7 +252,6 @@ void EvoAppWindow::Stop()
 	m_pEvoWorkThreadInterface->Stop();
 
 	m_pEvoReadBuffer->UnregisterAllObservers();
-	m_Delay          .UnregisterAllObservers();
 
 	m_EvoHistGlue.Stop();
 

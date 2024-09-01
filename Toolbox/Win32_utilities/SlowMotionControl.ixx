@@ -2,12 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module SlowMotionControl;
 
+import WinBasics;
 import Win32_Util_Resource;
 import StatusBar;
 

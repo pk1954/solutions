@@ -260,16 +260,16 @@ void WorkThread::generationRun(bool const bFirst)
 		else
 			Compute();  // compute next generation
 
-		WaitTilNextActivation();
+		//WaitTilNextActivation();
 
-		if (m_pWorkThreadInterface->IsAsyncThread())
-		{
-			m_pWorkThreadInterface->PostRunGenerations(false);
-		}
-		else
-		{
+		//if (m_pWorkThreadInterface->IsAsyncThread())
+		//{
+		//	m_pWorkThreadInterface->PostRunGenerations(false);
+		//}
+		//else
+		//{
 			PostMessage(m_hwndApplication, WM_COMMAND, IDM_RUN, 0);
-		}
+		//}
 	}
 }
 

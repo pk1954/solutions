@@ -7,8 +7,6 @@ module;
 import std;
 import D3D_driver;
 import Event;
-import Delay;
-import ActionTimer;
 
 // infrastructure
 
@@ -60,9 +58,6 @@ private:
 
 	Util::Event              m_eventPOI;
 					         
-	//ActionTimer              m_atComputation;   //TODO
-	//ActionTimer              m_atDisplay;
-	Delay                    m_Delay;
 	EvoHistorySysGlue        m_EvoHistGlue;
 	ColorManager             m_ColorManager;
 	D3D_driver               m_D3d_driver;

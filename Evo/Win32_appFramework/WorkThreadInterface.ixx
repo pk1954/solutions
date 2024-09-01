@@ -107,8 +107,6 @@ protected:
 
 	virtual void Compute() { m_pModel->Compute(); }
 
-	virtual void WaitTilNextActivation() = 0;
-
 	virtual void SetRunModeHook(bool const) {};  // hook for application when run mode starts/stops
 
 private:
@@ -164,8 +162,8 @@ public:
 	HistGeneration GetGenDemanded      () const { return m_pWorkThread->GetGenDemanded      (); }
 	HistGeneration GetCurrentGeneration() const { return m_pWorkThread->GetCurrentGeneration(); }
 
-	bool IsRunning    () const	{ return m_pWorkThread->IsRunning    (); }
-	bool IsAsyncThread() const	{ return true; }
+	bool IsRunning    () const	{ return m_pWorkThread->IsRunning(); }
+	//bool IsAsyncThread() const	{ return true; }
 
 protected:
 
