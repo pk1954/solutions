@@ -47,7 +47,7 @@ private:
     PixelRect getGenerationRect(HistGeneration const, HistGeneration const) const;
 
     void paintGeneration(HDC const, HistGeneration const, COLORREF const) const;
-    void paintPixelPos  (HDC const, PIXEL const, HistoryIterator & )      const;
+    void paintPixelPos  (HDC const, PIXEL const, HistoryIterator &)       const;
 
 	void           gotoNewGeneration(LPARAM const);
     HistGeneration getGenFromXpos(LPARAM const) const;

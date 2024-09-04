@@ -4,6 +4,7 @@
 
 export module HistoryLib:HistoryCache;
 
+import std;
 import Debug;
 import ObserverInterface;
 import :HistCacheItem;
@@ -12,6 +13,10 @@ import :HistSlotNr;
 import :HistSlot;
 import :ModelData;
 
+using std::vector;
+using std::unique_ptr;
+using std::make_unique;
+
 export class HistoryCache
 {
 public:
@@ -19,7 +24,7 @@ public:
     explicit HistoryCache();
     ~HistoryCache();
     
-    void       InitHistoryCache(HistSlotNr const, ModelFactory const * const);
+    void       InitHistoryCache(HistSlotNr const, ModelFactory const&);
     bool       AddCacheSlot();
     void       ResetHistoryCache();
     HistSlotNr GetFreeCacheSlot();
@@ -30,19 +35,19 @@ public:
 		getSlot(slotNr).ResetSlot();
 	}
 
-    ModelData const * Save2CacheSlot
+    void Save2CacheSlot
 	(
 		HistSlotNr    const   slotNr,
 		HistCacheItem const * pSource
 	)
 	{
-		return GetHistCacheItem(slotNr)->CopyCacheItemFrom(pSource);
+		GetHistCacheItem(slotNr)->CopyCacheItemFrom(pSource);
 	}
 
     void CopyFromCacheSlot
 	(
-		HistSlotNr    const slotNr,
-		HistCacheItem     * pTarget
+		HistSlotNr const slotNr,
+		HistCacheItem  * pTarget
 	)
 	{
         pTarget->CopyCacheItemFrom(GetHistCacheItemC(slotNr));
@@ -58,13 +63,13 @@ public:
 	
 	HistGeneration GetGridGen(HistSlotNr slotNr) const { return getSlotC(slotNr).GetGridGeneration(); }
 
-    HistSlotNr      GetNrOfHistCacheSlots    () const { return m_iNrOfSlots; }
-    HistSlotNr      GetNrOfUsedHistCacheSlots() const { return m_iNrOfUsedSlots; }
+    HistSlotNr     GetNrOfHistCacheSlots    () const { return m_iNrOfSlots; }
+    HistSlotNr     GetNrOfUsedHistCacheSlots() const { return m_iNrOfUsedSlots; }
     HistGeneration GetYoungestGeneration    () const { return IsEmpty() ? -1 : GetGridGen(m_histSlotHead); };
     
     void ShutDownHistCache()
 	{ 
-		m_aHistSlot.clear();
+		//m_aHistSlot.clear();
 	};
 
     HistCacheItem const * GetHistCacheItemC(HistSlotNr const slotNr) const
@@ -84,7 +89,7 @@ private:
 	ModelFactory const * m_pModelFactory;
 	ObserverInterface  * m_pObserver; 
 
-    std::vector< HistSlot > m_aHistSlot;  // is tail of list
+    vector<HistSlot> m_aHistSlot;  // is tail of list
 
 	HistSlot & getSlot(HistSlotNr const slotNr)
 	{
@@ -98,8 +103,7 @@ private:
 
 	void newSlot()
     {
-		HistSlot * pNewSlot = new HistSlot(m_pModelFactory);
-		m_aHistSlot.push_back(* pNewSlot);
+		m_aHistSlot.emplace_back(HistSlot(*m_pModelFactory));
     }
 
 	HistSlotNr m_histSlotHead;     // slot with youngest generation

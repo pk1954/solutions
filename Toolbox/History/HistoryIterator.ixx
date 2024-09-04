@@ -37,6 +37,6 @@ public:
 private:
     HistoryIterator(HistoryIterator const&); // Disable copy constructor
 
-    HistoryCache const* m_pHistCache;
+    HistoryCache const * m_pHistCache;
     HistSlotNr           m_slotNrRun;
 };

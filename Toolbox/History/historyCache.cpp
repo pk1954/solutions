@@ -39,11 +39,11 @@ HistoryCache::~HistoryCache()
 
 void HistoryCache::InitHistoryCache
 (
-	HistSlotNr           const nrOfSlots, 
-	ModelFactory const * const pModelFactory
+	HistSlotNr   const  nrOfSlots, 
+	ModelFactory const &factory
 )
 {
-	m_pModelFactory = pModelFactory;
+	m_pModelFactory = &factory;
 
     Assert(nrOfSlots >= HistSlotNr(2));
 

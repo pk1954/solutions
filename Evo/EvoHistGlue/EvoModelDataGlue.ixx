@@ -42,9 +42,10 @@ public:
 		return m_pEvolutionCore->GetCoreSize() + sizeof(EvoModelDataGlue);
 	}
 
-	virtual void CopyFrom(ModelData const * const src)
+	virtual void CopyFrom(ModelData const &src)
 	{
-		m_pEvolutionCore->CopyModelData(static_cast<EvoModelDataGlue const * const>(src)->m_pEvolutionCore);
+		*m_pEvolutionCore = src;
+//		m_pEvolutionCore->CopyModelData(static_cast<EvoModelDataGlue const&>(src)->m_pEvolutionCore);
 	}
 
     GridPoint FindGridPointFromId(IND_ID const id) const

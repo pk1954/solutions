@@ -4,10 +4,13 @@
 
 export module HistoryLib:GenCmdList;
 
+import std;
 import Debug;
 import :GenerationCmd;
 import :HistGeneration;
 import :HistSlotNr;
+
+using std::vector;
 
 export class GenCmdList
 {
@@ -49,5 +52,5 @@ public:
 
 private:
 
-    std::vector< GenerationCmd > m_generationCommands;     // m_generationCommands[n] describes the operation to transform generation n-1 to generation n 
+    vector<GenerationCmd> m_generationCommands;     // m_generationCommands[n] describes the operation to transform generation n-1 to generation n 
 };

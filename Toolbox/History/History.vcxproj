@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{642C34FC-F20C-45A6-BAB8-C75988C88F52}</ProjectGuid>
+    <ProjectGuid>{0BFC7D59-A231-449A-90C2-EB64C59289BA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>History</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>

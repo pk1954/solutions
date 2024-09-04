@@ -14,6 +14,7 @@ import SaveCast;
 import :HistSlotNr;
 
 using std::int8_t;
+using std::wostream;
 
 export class GenerationCmd
 {
@@ -47,10 +48,7 @@ public:
 	bool IsNotCachedGeneration() const { return m_Cmd != Id::CACHED; }
 	bool IsAppCommand()          const { return IsAppCmd(m_Cmd); }
 
-	void InitializeCmd()
-	{
-		m_Cmd = Id::UNDEFINED;
-	}
+	void InitializeCmd() { m_Cmd = Id::UNDEFINED; }
 
 	static int const MIN_APP_CMD = static_cast<int>(Id::FIRST_APP_CMD);
 	static int const MAX_APP_CMD = 0xff;
@@ -89,6 +87,6 @@ private:
 };
 
 wchar_t const* const GetGenerationCmdNameShort(GenerationCmd::Id const);
-wchar_t const* const GetGenerationCmdName(GenerationCmd::Id const);
+wchar_t const* const GetGenerationCmdName     (GenerationCmd::Id const);
 
-std::wostream& operator << (std::wostream&, GenerationCmd const&);
+wostream& operator << (wostream&, GenerationCmd const&);

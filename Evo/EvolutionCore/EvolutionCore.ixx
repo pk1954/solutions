@@ -25,10 +25,7 @@ public:
 	EvolutionCore();
     virtual ~EvolutionCore() = default;
 
-	void CopyModelData(EvolutionCore const * const src)
-	{
-		* this = * static_cast<EvolutionCore const *>(src);
-	}
+    EvolutionCore & operator= (EvolutionCore const &) = default;
 
 	// debugging functions
 
