@@ -99,7 +99,11 @@ export
     using ::TranslateMessage;
     using ::TryAcquireSRWLockExclusive;
 
-    constexpr WORD LoWord(DWORD_PTR value) { return static_cast<WORD>(value & 0xFFFF); }
+    constexpr WORD LoWord(DWORD_PTR const lp) { return static_cast<WORD>( lp        & 0xffff); }
+    constexpr WORD HiWord(DWORD_PTR const lp) { return static_cast<WORD>((lp >> 16) & 0xffff); }
+
+    constexpr WORD GetXlparam(LPARAM const lp) { return LoWord(lp); }
+    constexpr WORD GetYlparam(LPARAM const lp) { return HiWord(lp); }
 
     constexpr long MakeLong(auto a, auto b) { return MAKELONG(a, b); }
 

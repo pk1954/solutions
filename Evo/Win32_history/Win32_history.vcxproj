@@ -173,8 +173,11 @@
     <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\History\History.vcxproj">
-      <Project>{642c34fc-f20c-45a6-bab8-c75988c88f52}</Project>
+    <ProjectReference Include="..\Toolbox\History\History.vcxproj">
+      <Project>{0bfc7d59-a231-449a-90c2-eb64c59289ba}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Toolbox\Types\Types.vcxproj">
+      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

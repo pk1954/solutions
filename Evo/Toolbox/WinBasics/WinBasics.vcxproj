@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -18,11 +18,30 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IoUtil\IoUtil.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\Win32_PIXEL.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\Win32_PIXEL.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\WinBasics.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\WinConst.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\WinConst.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\WinDefs.ixx" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{094EDA97-B901-45F1-9735-DAC22C5BC699}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Win32appFramework</RootNamespace>
+    <ProjectGuid>{6a823b71-361a-428b-b329-203a6c5232ed}</ProjectGuid>
+    <RootNamespace>WinBasics</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,141 +89,88 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)\HistoryInterface;$(SolutionDir)\Win32_history;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Utilities;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)\HistoryInterface;$(SolutionDir)\Win32_history;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Utilities;$(IncludePath)</IncludePath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="AppMenu.ixx" />
-    <ClCompile Include="AppWindowInterface.ixx" />
-    <ClCompile Include="BaseAppWindow.ixx" />
-    <ClCompile Include="ReadBuffer.ixx" />
-    <ClCompile Include="ScriptHook.ixx" />
-    <ClCompile Include="SpeedControl.cpp" />
-    <ClCompile Include="SpeedControl.ixx" />
-    <ClCompile Include="BaseAppWindow.cpp" />
-    <ClCompile Include="WorkThreadInterface.cpp" />
-    <ClCompile Include="WorkThreadInterface.ixx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
-      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
-      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
-      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
-      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
-      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\EvolutionCore\EvolutionCore.vcxproj">
-      <Project>{561ad550-b857-4d93-aa39-5ca48e48e02f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Toolbox\History\History.vcxproj">
-      <Project>{0bfc7d59-a231-449a-90c2-eb64c59289ba}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32_history\Win32_history.vcxproj">
-      <Project>{1f07043f-bc80-42a8-ac9e-ff92cacda7e4}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -18,11 +18,56 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Types\Types.vcxproj">
+      <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Toolbox\Utilities\BasePeak.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\BoolOp.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\BoolOp.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\BoolType.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Color.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\ColorLUT.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\ColorLUT.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\DescriptionUI.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\DisplayFunctor.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\DrawContext.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\EnumArray.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\EventInterface.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\FixedPipeline.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\IconRedo.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\IconUndo.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Int24.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\IoConstants.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\LogarithmicTrackBar.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Observable.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\ObserverInterface.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\PixFpDimension.ixx">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Random.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Raster.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Raster.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\SimulationTime.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\SlowMotionRatio.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\SmoothMoveFp.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\SoundInterface.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\TextBuffer.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\TextBuffer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\TimestampList.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Uniform2D.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Vector2D.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\XArray.ixx" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{8830DA2B-C953-4702-A9E7-3BCE05366F1B}</ProjectGuid>
+    <ProjectGuid>{D6E82F0A-C93F-4FA0-AACF-910EF2F59FDC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>EvoWindows</RootNamespace>
+    <RootNamespace>Utilities</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,46 +115,32 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)Utilities;$(SolutionDir)runtimeCPP;$(SolutionDir)HistoryInterface;$(SolutionDir)win32_utilities;$(SolutionDir)Win32_history;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)EvoHistGlue;$(SolutionDir)Direct3D;$(SolutionDir)ShapeLib;$(SolutionDir)EvolutionCoreInterface;$(SolutionDir)HistoryInterface;$(SolutionDir)Win32_history;$(SolutionDir)Win32_appFramework;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
-    </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(SolutionDir)runtimeCPP;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,15 +152,21 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>
+      </AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ConformanceMode>Default</ConformanceMode>
       <EnableModules>true</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <Lib>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -139,7 +176,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,61 +187,32 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="ColorManager.ixx" />
-    <ClCompile Include="CrsrWindow.ixx" />
-    <ClCompile Include="DrawFrame.ixx" />
-    <ClCompile Include="DspOptWindow.ixx" />
-    <ClCompile Include="EvoEditor.ixx" />
-    <ClCompile Include="EvoEditorWrappers.ixx" />
-    <ClCompile Include="EvoReadBuffer.ixx" />
-    <ClCompile Include="EvoWorkThread.ixx" />
-    <ClCompile Include="EvoWorkThreadInterface.ixx" />
-    <ClCompile Include="FocusPoint.ixx" />
-    <ClCompile Include="GridWindow.ixx" />
-    <ClCompile Include="HistWrappers.ixx" />
-    <ClCompile Include="PackGridPoint.ixx" />
-    <ClCompile Include="PerformanceWindow.ixx" />
-    <ClCompile Include="ProtocolServer.ixx" />
-    <ClCompile Include="Resource.ixx" />
-    <ClCompile Include="Statistics.ixx" />
-    <ClCompile Include="TextDisplay.ixx" />
-    <ClCompile Include="ColorManager.cpp" />
-    <ClCompile Include="CrsrWindow.cpp" />
-    <ClCompile Include="DspOptWindow.cpp" />
-    <ClCompile Include="DrawFrame.cpp" />
-    <ClCompile Include="EvoEditor.cpp" />
-    <ClCompile Include="EvoEditorWrappers.cpp" />
-    <ClCompile Include="GridWindow.cpp" />
-    <ClCompile Include="HistWrappers.cpp" />
-    <ClCompile Include="PerformanceWindow.cpp" />
-    <ClCompile Include="ProtocolServer.cpp" />
-    <ClCompile Include="StatisticsWindow.cpp" />
-    <ClCompile Include="EvoWorkThread.cpp" />
-    <ClCompile Include="EvoWorkThreadInterface.cpp" />
-    <ClCompile Include="Wrappers.cpp" />
-    <ClCompile Include="Wrappers.ixx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
-      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
-      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\D3D\D3D.vcxproj">
-      <Project>{a4747612-fa1d-444b-9b61-6d5c35601837}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\EvolutionCore\EvolutionCore.vcxproj">
-      <Project>{561ad550-b857-4d93-aa39-5ca48e48e02f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Toolbox\History\History.vcxproj">
-      <Project>{0bfc7d59-a231-449a-90c2-eb64c59289ba}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
-      <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalOptions>%(AdditionalOptions) %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <ConformanceMode>true</ConformanceMode>
+      <EnableModules>true</EnableModules>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

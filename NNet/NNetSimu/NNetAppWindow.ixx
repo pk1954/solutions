@@ -1,6 +1,6 @@
 // NNetAppWindow.ixx
 //
-// NNetWindows
+// NNetSimu
 
 export module NNetAppWindow;
 

@@ -1,4 +1,4 @@
-// NNetViewerWindow.ixx
+// NNetViewerWindow.cpp
 //
 // NNetViewer
 

@@ -123,7 +123,7 @@ public:
 	short       GetTrackBarPos       (INT    const idTbar) const { return Cast2Short(SendDlgItemMessage(idTbar, TBM_GETPOS, 0, 0)); }
 	PixelPoint  GetCrsrPosFromLparam (LPARAM const lParam) const { return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) }; }
 	fPixelPoint GetCrsrPosFromLparamF(LPARAM const lParam) const { return Convert2fPixelPoint(GetCrsrPosFromLparam(lParam)); }
-	PIXEL       CrsrXpos             (LPARAM const lParam) const { return PIXEL(GET_X_LPARAM(lParam)); }
+	PIXEL       CrsrXpos             (LPARAM const lParam) const { return PIXEL(GetXlparam(lParam)); }
 	PIXEL       CrsrYpos             (LPARAM const lParam) const { return PIXEL(GET_Y_LPARAM(lParam)); }
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }

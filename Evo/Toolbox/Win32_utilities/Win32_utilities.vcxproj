@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7C1B51ED-011D-4B73-867C-AC23F0A9E6D1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Win32_utilities</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(SolutionDir)\Utilities;$(SolutionDir)\runtimeCPP;$(SolutionDir)\HistoryInterface;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir)\Utilities;$(SolutionDir)\runtimeCPP;$(SolutionDir)\HistoryInterface;$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+      <ExceptionHandling>Sync</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Lib>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <EnableModules>true</EnableModules>
+      <BuildStlModules>true</BuildStlModules>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib />
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BasicUtils\BasicUtils.vcxproj">
+      <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Commands\Commands.vcxproj">
+      <Project>{7f40ede9-bae2-4924-87d3-5cd19477b54a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Direct2D\Direct2D.vcxproj">
+      <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\IoUtil\IoUtil.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\runtimeCPP\runtimeCPP.vcxproj">
+      <Project>{dd49b1e3-6916-4230-b2a7-9e16e6ecdf95}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WinBasics\WinBasics.vcxproj">
+      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ActionTimer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Animation.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\AnimationCommand.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\AppStartProtocol.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Bitmap.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ColLutDesigner.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ColLutDesigner.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ColorDialog.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\CoordAnimationCmd.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\CycleTimer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\D2D_DrawContext.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\D2D_DrawContext.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\DescriptionWindow.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\DescriptionWindow.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\HiResClockGen.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ScriptHook.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SetGridCmd.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SetScalesCmd.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SlowMotionControl.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SlowMotionDisplay.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SlowMotionDisplay.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\StatusBar.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\StatusBar.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\StatusBarDisplayFunctor.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ThreadPoolTimer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\TimeDisplay.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\TimeDisplay.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\TimeGraph.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\TimeGraph.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\TimerQueueTimer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Trace.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Trace.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_AboutBox.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_AboutBox.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_ArrowButton.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseDialog.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseDialog.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseRefreshRate.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseRefreshRate.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseScale.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseScale.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseWindow.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_BaseWindow.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Command.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Controls.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Controls.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_DialogTemplate.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_EditLineBox.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_EditLineBox.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Escape.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Event.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_FatalError.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_GraphicsWindow.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_GraphicsWindow.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_HiResTimer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_MessagePump.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_MessagePump.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_PerfCounter.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_PixelTypes.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_RootWindow.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_RootWindow.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Scale.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Script.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Script.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Sound.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_StdDialogBox.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_StdDialogBox.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_TextBuffer.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_TextBuffer.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_TextWindow.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_TextWindow.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Thread.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Thread.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Tooltip.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Tooltip.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Util.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Util.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_Util_Resource.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_WinManager.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_WinManager.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WinCommand.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WrapSetGrid.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WrapSetScales.ixx" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

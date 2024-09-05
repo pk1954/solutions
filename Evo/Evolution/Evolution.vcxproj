@@ -285,12 +285,6 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
-      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
-      <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\EvoWindows\EvoWindows.vcxproj">
       <Project>{8830da2b-c953-4702-a9e7-3bce05366f1b}</Project>
     </ProjectReference>

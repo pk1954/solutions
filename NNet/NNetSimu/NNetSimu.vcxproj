@@ -187,12 +187,6 @@
     <None Include="NNetSimuWindows.vcxproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
-      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
-      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ModelIO\ModelIO.vcxproj">
       <Project>{e33a1409-350a-457f-ba47-e84659426576}</Project>
     </ProjectReference>
@@ -207,6 +201,9 @@
     </ProjectReference>
     <ProjectReference Include="..\NNetWindows\NNetWindows.vcxproj">
       <Project>{4902962c-f97d-458f-9528-15dda5b7f846}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

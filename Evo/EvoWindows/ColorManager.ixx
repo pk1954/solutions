@@ -6,6 +6,7 @@ export module ColorManager;
 
 import std;
 import Debug;
+import BoolOp;
 import ColorLUT;
 import EvoCoreLib;
 import WinBasics;

@@ -4,6 +4,7 @@
 
 export module PackGridPoint;
 
+import SaveCast;
 import WinBasics;
 import EvoCoreLib;
 
@@ -16,7 +17,7 @@ export GridPoint UnpackFromLParam(LPARAM const lParam)
 {
 	return GridPoint
 	(
-		GridCoord(GET_X_LPARAM(lParam)), 
-		GridCoord(GET_Y_LPARAM(lParam)) 
+		GridCoord(Cast2Short(GetXlparam(lParam))), 
+		GridCoord(Cast2Short(GetYlparam(lParam))) 
 	);
 }
