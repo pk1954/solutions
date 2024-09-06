@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(VC_IncludePath);$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(VC_IncludePath);$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)Direct3D;$(SolutionDir)EvoWindows;$(SolutionDir)EvolutionCoreInterface;C:\Program Files\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -181,7 +181,7 @@
     <ClCompile Include="ShapeLib.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
+    <ProjectReference Include="..\Toolbox\Types\Types.vcxproj">
       <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\EvolutionCore\EvolutionCore.vcxproj">

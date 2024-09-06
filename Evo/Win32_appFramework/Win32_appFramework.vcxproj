@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)\HistoryInterface;$(SolutionDir)\Win32_history;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)\HistoryInterface;$(SolutionDir)\Win32_history;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\..\Toolbox\Utilities;$(SolutionDir)\..\Toolbox\Win32_utilities;$(SolutionDir)\HistoryInterface;$(SolutionDir)\Win32_history;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\..\ToolBox\runtimeCPP;$(SolutionDir)\Toolbox\Utilities;$(SolutionDir)\Toolbox\Win32_utilities;$(SolutionDir)\HistoryInterface;$(SolutionDir)\Win32_history;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -180,19 +180,19 @@
     <ClCompile Include="WorkThreadInterface.ixx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\BasicUtils\BasicUtils.vcxproj">
+    <ProjectReference Include="..\Toolbox\BasicUtils\BasicUtils.vcxproj">
       <Project>{62c73be1-212f-4084-80e8-f8d0b79f3498}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Types\Types.vcxproj">
+    <ProjectReference Include="..\Toolbox\Types\Types.vcxproj">
       <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+    <ProjectReference Include="..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+    <ProjectReference Include="..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\WinBasics\WinBasics.vcxproj">
+    <ProjectReference Include="..\Toolbox\WinBasics\WinBasics.vcxproj">
       <Project>{6a823b71-361a-428b-b329-203a6c5232ed}</Project>
     </ProjectReference>
     <ProjectReference Include="..\EvolutionCore\EvolutionCore.vcxproj">
