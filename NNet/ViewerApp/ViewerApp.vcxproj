@@ -144,10 +144,10 @@
     <ClCompile Include="ViewerApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+    <ProjectReference Include="..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+    <ProjectReference Include="..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ModelIO\ModelIO.vcxproj">

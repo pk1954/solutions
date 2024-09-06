@@ -57,6 +57,8 @@ int wWinMain
 		ICC_TAB_CLASSES | 
 		ICC_TREEVIEW_CLASSES  // for tooltips
 	};
+	bool bRes = InitCommonControlsEx(&icex);
+	DWORD errCode = GetLastError();
 
 	static wstring const PRODUCT_NAME { L"NNetSimu 6.2 " + BUILD_MODE };
 

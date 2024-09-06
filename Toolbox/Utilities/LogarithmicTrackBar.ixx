@@ -5,9 +5,11 @@
 export module LogarithmicTrackbar;
 
 import std;
-import std.compat;
 import Util;
 import SaveCast;
+
+using std::pow;
+using std::log;
 
 export class LogarithmicTrackbar
 {

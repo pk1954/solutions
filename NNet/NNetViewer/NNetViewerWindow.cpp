@@ -37,11 +37,7 @@ NNetViewerWindow::NNetViewerWindow()
 	::SetApplicationTitle(hwnd, L"Scan viewer");
 
 	m_upPanelPlatform = make_unique<PanelPlatform>(hwnd);
-
 	m_statusBar.Start(hwnd);
-	configureStatusBar();
-	m_statusBar.Arrange(*this, *m_upPanelPlatform.get());
-
 	Show(true);
 }
 
@@ -52,17 +48,18 @@ void NNetViewerWindow::configureStatusBar()
 	int iPart = 0;
 	m_hwndAddButton = m_statusBar.AddButton(L" Add scan ", IDM_ADD_SCAN, BS_PUSHBUTTON);
 	iPart = m_statusBar.NewPart();
-	m_ScriptHook.Initialize(& m_statusBar, iPart);
+	m_ScriptHook.Initialize(&m_statusBar, iPart);
 	m_statusBar.ClearPart(iPart);
-	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
+	m_statusBarDispFunctor.Initialize(&m_statusBar, iPart);
 	m_statusMessagePart = iPart;
 	m_statusBar.LastPart();
+	::ArrangeVertical(m_upPanelPlatform.get(), &m_statusBar);
 	m_statusBar.Show(true);
 }
 
 bool NNetViewerWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	m_statusBar.Arrange(*this, *m_upPanelPlatform.get());
+	::ArrangeVertical(m_upPanelPlatform.get(), &m_statusBar);
 	return true;
 }
 

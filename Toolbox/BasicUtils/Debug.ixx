@@ -5,7 +5,6 @@
 export module Debug;
 
 import std;
-import std.compat;
 import FatalError;
 
 using std::uint8_t;

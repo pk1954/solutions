@@ -5,7 +5,6 @@
 module NNetModel:NNetModelWriterInterface;
 
 import std;
-import std.compat;
 import Debug;
 import Observable;
 import Types;

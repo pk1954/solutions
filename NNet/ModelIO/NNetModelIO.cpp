@@ -5,7 +5,6 @@
 module NNetModelIO;
 
 import std;
-import std.compat;
 import WinBasics;
 import NNetModelStorage;
 import WrapSignalGenerator;

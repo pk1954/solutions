@@ -6,12 +6,10 @@ module;
 
 #include "d2d1.h"
 #include "dwrite.h"
-#include <Windows.h>
 
 module Direct2D;
 
 import std;
-import std.compat;
 import Debug;
 import Color;
 import Util;
@@ -23,6 +21,7 @@ using std::bit_cast;
 using std::unique_ptr;
 using std::make_unique;
 using std::function;
+using std::sqrtf;
 
 D2D_driver::~D2D_driver()
 {

@@ -156,7 +156,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	WinManager::AddWindow(L"IDM_VIEWER_WINDOW",  RootWinId(IDM_VIEWER_WINDOW ), m_viewerWindow,                 true,  true );
 
 	configureStatusBar();
-	m_statusBar.Arrange(*this, m_mainNNetWindow);
 
 	m_monitorWindow .Move(PixelRect{ 200_PIXEL,   0_PIXEL, 300_PIXEL, 200_PIXEL }, true);
 	m_miniNNetWindow.Move(PixelRect{   0_PIXEL,   0_PIXEL, 300_PIXEL, 300_PIXEL }, true);
@@ -250,7 +249,7 @@ void NNetAppWindow::setModelInterface()
 
 bool NNetAppWindow::OnSize(PIXEL const width, PIXEL const height)
 {
-	m_statusBar.Arrange(*this, m_mainNNetWindow);
+	::ArrangeVertical(&m_mainNNetWindow, &m_statusBar);
 	return true;
 }
 
@@ -294,6 +293,8 @@ void NNetAppWindow::configureStatusBar()
 	m_statusMessagePart = iPart;
 
 	m_statusBar.LastPart();
+
+	::ArrangeVertical(&m_mainNNetWindow, &m_statusBar);
 	m_timeDisplay.Notify(true);
 	m_slowMotionDisplay.Notify(true);
 }

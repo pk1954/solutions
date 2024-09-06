@@ -574,16 +574,16 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Toolbox\Direct2D\Direct2D.vcxproj">
+    <ProjectReference Include="..\Toolbox\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\IoUtil\IoUtil.vcxproj">
+    <ProjectReference Include="..\Toolbox\IoUtil\IoUtil.vcxproj">
       <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Utilities\Utilities.vcxproj">
+    <ProjectReference Include="..\Toolbox\Utilities\Utilities.vcxproj">
       <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+    <ProjectReference Include="..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\NNetCommands\NNetCommands.vcxproj">

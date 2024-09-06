@@ -10,6 +10,7 @@ import std;
 import :PointType;
 
 using std::swap;
+using std::isnan;
 
 export template <typename BASE_TYPE>
 BASE_TYPE PointToLine(PosType<BASE_TYPE> const& l1, PosType<BASE_TYPE> const& l2, PosType<BASE_TYPE> const& p0)

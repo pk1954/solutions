@@ -12,6 +12,7 @@ import :PointType;
 import :RectType;
 import :LineType;
 
+using std::atan2f;
 using std::vector;
 
 export using MicroMeterRect     = RectType   <MicroMeter>;

@@ -58,9 +58,7 @@ void StatusBar::Start(HWND const hwndParent)
 		GetModuleHandleW(nullptr), 
 		nullptr
 	); 
-
 	SetWindowHandle(hwndStatus);
-
 	SetWindowSubclass(hwndStatus, OwnerDrawStatusBar, 0, (DWORD_PTR)this);
 
 	m_pixBorderX      = static_cast<PIXEL>(GetSystemMetrics(SM_CXSIZEFRAME)) + 10_PIXEL;
@@ -186,13 +184,4 @@ void StatusBar::ReadProgressReport(int const iPart, Script * pScript) const
 void StatusBar::WriteProgressReport(int const iPart, wstring const & msg) const
 {
 	DisplayInPart(iPart, L"Writing " + msg);
-}
-
-void StatusBar::Arrange
-(
-	RootWindow const& winParent,
-	RootWindow const& winMain
-)
-{
-	::ArrangeVertical(&winMain, this);
 }

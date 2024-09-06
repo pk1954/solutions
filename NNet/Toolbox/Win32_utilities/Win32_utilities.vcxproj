@@ -200,6 +200,7 @@
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\DescriptionWindow.cpp" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\DescriptionWindow.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\HiResClockGen.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\OnOffPair.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ScriptHook.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SetGridCmd.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\SetScalesCmd.ixx" />

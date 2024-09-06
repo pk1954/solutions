@@ -5,7 +5,6 @@
 module NNetWin32:MainWindow;
 
 import std;
-import std.compat;
 import Debug;
 import HiResTimer;
 import NNetCommands;

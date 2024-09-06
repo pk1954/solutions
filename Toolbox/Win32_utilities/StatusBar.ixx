@@ -38,8 +38,6 @@ public:
 	void ReadProgressReport (int const, Script *) const;
 	void WriteProgressReport(int const, wstring const &) const;
 
-	void Arrange(RootWindow const&, RootWindow const&);
-
 private:
 
 	inline static PIXEL const HEIGHT { 22_PIXEL };

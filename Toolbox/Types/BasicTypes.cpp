@@ -5,13 +5,13 @@
 module Types:BasicTypes;
 
 import std;
-import std.compat;
 
 using std::wstring;
 using std::wostringstream;
 using std::streamsize;
 using std::setprecision;
 using std::fixed;
+using std::powf;
 
 wstring Float2wstring(float fValue, streamsize prec)
 {

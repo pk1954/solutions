@@ -5,7 +5,6 @@
 export module NNetModel:Nob;
 
 import std;
-import std.compat;
 import BoolOp;
 import Color;
 import Types;
@@ -24,6 +23,7 @@ using std::wostream;
 using std::wstring;
 using std::function;
 using std::vector;
+using std::uint16_t;
 
 export enum class NobIoMode { input, output, internal };
 

@@ -207,7 +207,7 @@ export
     const LPCWSTR WC_EDIT             = L"Edit";
     const LPCWSTR WC_STATIC           = L"Static";
 
-    const LPCWSTR STATUSCLASSNAME     = L"msctls_statusbar";
+    const LPCWSTR STATUSCLASSNAME     = L"msctls_statusbar32";
     const LPCWSTR TRACKBAR_CLASS      = L"msctls_trackbar32";
 
     const int EXCEPTION_EXECUTE_HANDLER = EXCEPTION_EXECUTE_HANDLER_CONST;

@@ -5,7 +5,6 @@
 module NNetSignals:MonitorWindow;
 
 import std;
-import std.compat;
 import Win32_Util_Resource;
 import WinBasics;
 import Types;
@@ -16,6 +15,7 @@ import :SimuRunning;
 import :MonitorControl;
 import Resource;
 
+using std::abs;
 using std::find;
 using std::wstring;
 using std::make_unique;

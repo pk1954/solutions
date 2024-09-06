@@ -5,7 +5,6 @@
 module NNetSignals:NNetTimeGraph;
 
 import std;
-import std.compat;
 import Debug;
 
 using std::min;

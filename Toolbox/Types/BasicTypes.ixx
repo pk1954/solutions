@@ -5,17 +5,18 @@
 export module Types:BasicTypes;
 
 import std;
-import std.compat;
-import :NamedType;
-
 import Util;
 import SaveCast;
+import :NamedType;
 
 using std::chrono::microseconds;
 using std::numeric_limits;
 using std::wstring;
 using std::numbers::pi;
 using std::streamsize;
+using std::fmodf;
+using std::sinf;
+using std::cosf;
 
 ////////////// MilliSecs /////////////////////////////////////
 

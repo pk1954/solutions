@@ -8,7 +8,6 @@
 export module Types:NamedType;
 
 import std;
-import std.compat;
 import Util;
 
 using std::roundf;

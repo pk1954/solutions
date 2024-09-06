@@ -5,7 +5,6 @@
 module NNetSignals:MonitorControl;
 
 import std;
-import std.compat;
 import Win32_Util_Resource;
 import WinBasics;
 import Types;

@@ -40,6 +40,7 @@
     <ClCompile Include="..\..\..\Toolbox\Utilities\EnumArray.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\EventInterface.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\FixedPipeline.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Utilities\Geometry.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\IconRedo.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\IconUndo.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\Int24.ixx" />
