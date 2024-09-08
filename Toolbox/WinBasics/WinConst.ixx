@@ -25,9 +25,13 @@ extern const DWORD WS_SIZEBOX_CONST;
 extern const DWORD WS_GROUP_CONST;
 extern const DWORD WS_TABSTOP_CONST;
 extern const DWORD WS_SYSMENU_CONST;
+extern const DWORD WS_EX_TOPMOST_CONST;
 
 extern const DWORD SW_HIDE_CONST;
 extern const DWORD SW_SHOW_CONST;
+extern const DWORD SW_RESTORE_CONST;
+extern const DWORD SW_SHOWNORMAL_CONST;
+extern const DWORD SW_MAXIMIZE_CONST;
 
 extern const DWORD SB_SETTEXT_CONST;
 extern const DWORD SB_SETPARTS_CONST;
@@ -37,8 +41,10 @@ extern const DWORD SM_CYSIZEFRAME_CONST;
 
 extern const HWND  HWND_TOP_CONST;
 extern const HWND  HWND_DESKTOP_CONST;
+extern const HWND  HWND_TOPMOST_CONST;
 
 extern const DWORD SWP_NOSIZE_CONST;
+extern const DWORD SWP_NOMOVE_CONST;
 extern const DWORD SWP_SHOWWINDOW_CONST;
 
 extern const WORD  VK_SPACE_CONST;
@@ -169,10 +175,14 @@ export
     const DWORD   WS_GROUP            = WS_GROUP_CONST;
     const DWORD   WS_TABSTOP          = WS_TABSTOP_CONST;
     const DWORD   WS_SYSMENU          = WS_SYSMENU_CONST;
+    const DWORD   WS_EX_TOPMOST       = WS_EX_TOPMOST_CONST;
                                       
     const DWORD   SW_HIDE             = SW_HIDE_CONST;
     const DWORD   SW_SHOW             = SW_SHOW_CONST;
-                                      
+    const DWORD   SW_RESTORE          = SW_RESTORE_CONST;
+    const DWORD   SW_SHOWNORMAL       = SW_SHOWNORMAL_CONST;
+    const DWORD   SW_MAXIMIZE         = SW_MAXIMIZE_CONST;
+                                  
     const DWORD   SB_SETTEXT          = SB_SETTEXT_CONST;
     const DWORD   SB_SETPARTS         = SB_SETPARTS_CONST;
                                   
@@ -181,8 +191,10 @@ export
 
     const HWND    HWND_TOP            = HWND_TOP_CONST;
     const HWND    HWND_DESKTOP        = HWND_DESKTOP_CONST;
+    const HWND    HWND_TOPMOST        = HWND_TOPMOST_CONST;
                                       
     const DWORD   SWP_NOSIZE          = SWP_NOSIZE_CONST;
+    const DWORD   SWP_NOMOVE          = SWP_NOMOVE_CONST;
     const DWORD   SWP_SHOWWINDOW      = SWP_SHOWWINDOW_CONST;
                                       
     const WORD    VK_SPACE            = VK_SPACE_CONST;

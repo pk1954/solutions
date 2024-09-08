@@ -2,11 +2,6 @@
 //
 // Toolbox Win32_utilities
 
-//module;
-//
-//#include <Windows.h>
-//#include "CommCtrl.h"
-//
 module RootWindow;
 
 import std;

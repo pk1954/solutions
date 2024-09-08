@@ -2,10 +2,6 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module WinManager;
 
 import std;
@@ -159,7 +155,7 @@ static bool operator != (MONITORINFO const & a, MONITORINFO const & b)
     return (a.rcMonitor != b.rcMonitor) || (a.rcWork != b.rcWork) || (a.dwFlags != b.dwFlags);
 };
 
-static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
+static BOOL __stdcall CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
 {
     auto * const pMonStruct { (CHECK_MON_STRUCT *)dwData };
     bool         bRes       { true };
@@ -179,7 +175,7 @@ static BOOL CALLBACK CheckMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwD
             ++(pMonStruct->m_iMonCounter);
     
             MONITORINFO monInfoScript = ScrReadMonitorInfo(* pScript);
-            MONITORINFO monInfoSystem = ::GetMonitorInfo(hMonitor);
+            MONITORINFO monInfoSystem = ::GetMonitorInfoW(hMonitor);
             if (
                   (monInfoScript != monInfoSystem) ||
                   (pMonStruct->m_iMonFromScript != pMonStruct->m_iMonCounter)
@@ -291,11 +287,11 @@ struct DUMP_MON_STRUCT    // communication between DumpWindowCoordinates and Dum
     wofstream * m_postr;
 };
 
-static BOOL CALLBACK DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
+static BOOL __stdcall DumpMonitorInfo(HMONITOR hMonitor, HDC, LPRECT, LPARAM dwData)
 {
     auto      * const pMonStruct { (DUMP_MON_STRUCT*)dwData };
     wofstream * const postr      { pMonStruct->m_postr };
-    MONITORINFO const monInfo    { ::GetMonitorInfo(hMonitor) };
+    MONITORINFO const monInfo    { ::GetMonitorInfoW(hMonitor) };
 
     ++(pMonStruct->m_iMonCounter);
 
@@ -355,7 +351,7 @@ void WinManager::Initialize()
 void WinManager::SetCaptions()
 {
     for (const auto& [key, value] : *m_upMap.get())
-        ::SendMessage(value.m_hwnd, WM_APP_CAPTION, 0, 0);
+        ::SendMessageW(value.m_hwnd, WM_APP_CAPTION, 0, 0);
 }
 
 void WinManager::BringToTop(RootWinId const id)
@@ -446,12 +442,12 @@ RootWindow* WinManager::GetRootWindow(RootWinId const id)
 
 LRESULT WinManager::SendMsg(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
-    return ::SendMessage(GetHWND(id), msg, wParam, lParam);
+    return ::SendMessageW(GetHWND(id), msg, wParam, lParam);
 }
 
 LRESULT WinManager::PostMsg(RootWinId const id, UINT const msg, WPARAM const wParam, LPARAM const lParam)
 {
-    return ::PostMessage(GetHWND(id), msg, wParam, lParam);
+    return ::PostMessageW(GetHWND(id), msg, wParam, lParam);
 }
 
 LRESULT WinManager::SendCommand(RootWinId const id, WPARAM const wParam, LPARAM const lParam)

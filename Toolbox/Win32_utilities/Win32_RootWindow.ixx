@@ -2,11 +2,6 @@
 //
 // Win32_utilities
 
-module;
-
-//#include <Windows.h>
-//#include <windowsx.h>
-
 export module RootWindow;
 
 import std;

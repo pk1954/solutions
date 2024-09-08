@@ -72,22 +72,22 @@ UP_TTIP ToolTip::createToolTip
 	if (bBalloon)
 		dwStyle |= TTS_BALLOON;
 
-	upToolTip->m_hwndToolTip = CreateWindowEx
+	upToolTip->m_hwndToolTip = CreateWindowExW
 	(
 		WS_EX_TOPMOST,                   // ex style
 		TOOLTIPS_CLASS,                  // class name - defined in commctrl.h
-		NULL,                            // dummy text
+		0,                               // dummy text
 		dwStyle,                         // style
 		CW_USEDEFAULT, CW_USEDEFAULT, 
 		CW_USEDEFAULT, CW_USEDEFAULT,  
 		hwndParent,                      // parent
-		NULL,                            // ID
+		0,                               // ID
 		GetModuleHandleW(nullptr),       // instance
-		NULL                             // no extra data
+		0                                // no extra data
 	);
 
 	if (!upToolTip->m_hwndToolTip)
-		return NULL;
+		return nullptr;
 
 	SetWindowPos
 	(
@@ -108,7 +108,7 @@ UP_TTIP ToolTip::createToolTip
 	GetClientRect(upToolTip->m_ti.hwnd, static_cast<LPRECT>(&upToolTip->m_ti.rect));
 
 	upToolTip->sendTTipMessage(TTM_ADDTOOL);
-	SendMessage(upToolTip->m_hwndToolTip, TTM_SETMAXTIPWIDTH, 0, 200);
+	SendMessageW(upToolTip->m_hwndToolTip, TTM_SETMAXTIPWIDTH, 0, 200);
 
 	return upToolTip;
 }
@@ -122,12 +122,12 @@ void ToolTip::setRect(PixelRect const& rect)
 
 LRESULT ToolTip::sendTTipMessage(UINT const msg, WPARAM const wParam)
 {
-	return SendMessage(m_hwndToolTip, msg, wParam, (LPARAM)&m_ti);
+	return SendMessageW(m_hwndToolTip, msg, wParam, (LPARAM)&m_ti);
 }
 
 void ToolTip::SetDuration(MilliSecs const ms)
 {
-	SendMessage(m_hwndToolTip, TTM_SETDELAYTIME, TTDT_AUTOPOP, ms.GetValue());
+	SendMessageW(m_hwndToolTip, TTM_SETDELAYTIME, TTDT_AUTOPOP, ms.GetValue());
 }
 
 //void SetToolTipText(HWND const hwndToolTip, wstring const text)

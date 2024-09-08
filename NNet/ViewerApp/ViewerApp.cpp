@@ -2,27 +2,19 @@
 //
 // ViewerApp
 
-#include <Windows.h>
-#include "CommCtrl.h"
-
 import std;
 import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
-import WinCommand;
+import WinBasics;
 import Commands;
-import SaveCast;
-import IoUtil;
-import Util;
-import IoConstants;
-import Trace;
-import MessagePump;
-import RunTime;
-import NNetSignals;
+import WinCommand;
 import NNetModelIO;
 import NNetPreferences;
+import MessagePump;
 import NNetViewerWindow;
-import ScanViewer;
+import IoUtil;
+import NNetSignals;
 
 using std::wstring;
 using std::wcout;
@@ -35,26 +27,17 @@ int wWinMain
 	int       nCmdShow
 )
 {
-	//PerfCounter::Initialize();
-
-	INITCOMMONCONTROLSEX icex // load common control's DLL 
-	{
-		sizeof(INITCOMMONCONTROLSEX),
-		ICC_STANDARD_CLASSES | 
-		ICC_BAR_CLASSES | 
-		ICC_TAB_CLASSES | 
-		ICC_TREEVIEW_CLASSES  // for tooltips
-	};
-
 	static wstring const PRODUCT_NAME { L"ViewerApp 1.1 " + BUILD_MODE };
+
+	//PerfCounter::Initialize();
 
 	CommandStack     cmdStack;
 	MessagePump      pump;
 	NNetViewerWindow viewerWindow;
 	bool             bViewerMode { true };
 
+	InitCommCtrl();
 	SwitchWcoutTo(L"main_trace.out");
-
 	PrintAppStartProtocol(PRODUCT_NAME);
 	DefineUtilityWrapperFunctions();
 	NNetModelIO::AddModelWrapper<MonitorScrollState>(L"MonitorScrollState");  // Every model contains MonitorScrollState

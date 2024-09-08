@@ -2,29 +2,19 @@
 //
 // NNetSimu
 
-#include <Windows.h>
-#include "CommCtrl.h"
-
 import std;
 import WinBasics;
 import FatalErrorMB;
 import AppStartProtocol;
 import Win32_Util_Resource;
 import Win32_Util;
-import SaveCast;
-import IoUtil;
-import Util;
-import IoConstants;
-import Trace;
+import PerfCounter;
 import HiResTimer;
-import MessagePump;
-import RunTime;
-import Accelerators;
 import NNetModelIO;
+import IoUtil;
+import Accelerators;
+import MessagePump;
 import NNetAppWindow;
-import NNetViewerWindow;
-import ScanViewer;
-import Resource;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -42,6 +32,8 @@ int wWinMain
 	int       nCmdShow
 )
 {
+	static wstring const PRODUCT_NAME { L"NNetSimu 6.2 " + BUILD_MODE };
+
 	PerfCounter::Initialize();
 
 	HiResTimer hrtimer;
@@ -49,21 +41,8 @@ int wWinMain
 
 	//SetThreadAffinityMask(GetCurrentThread(), 0x0001);
 
-	INITCOMMONCONTROLSEX icex // load common control's DLL 
-	{
-		sizeof(INITCOMMONCONTROLSEX),
-		ICC_STANDARD_CLASSES | 
-		ICC_BAR_CLASSES | 
-		ICC_TAB_CLASSES | 
-		ICC_TREEVIEW_CLASSES  // for tooltips
-	};
-	bool bRes = InitCommonControlsEx(&icex);
-	DWORD errCode = GetLastError();
-
-	static wstring const PRODUCT_NAME { L"NNetSimu 6.2 " + BUILD_MODE };
-
+	InitCommCtrl();
 	SwitchWcoutTo(L"main_trace.out");
-
 	PrintAppStartProtocol(PRODUCT_NAME);
 	DefineUtilityWrapperFunctions();
 	NNetModelIO::Initialize();

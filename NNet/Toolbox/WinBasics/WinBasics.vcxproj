@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinConst.cpp" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinConst.ixx" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinDefs.ixx" />
+    <ClCompile Include="CommCtrl.ixx" />
+    <ClCompile Include="CommCtrlDefs.ixx" />
+    <ClCompile Include="StdOutput.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

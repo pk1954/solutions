@@ -4,11 +4,7 @@
 
 module;
 
-#include <io.h>
-#include <fcntl.h>
-#include <codecvt>
 #include <Windows.h>
-#include <CommCtrl.h>
 
 export module WinBasics:WinDefs;
 
@@ -26,6 +22,7 @@ export
     using HCURSOR               = HCURSOR;
     using HFONT                 = HFONT;
     using HMENU                 = HMENU;
+    using HMONITOR              = HMONITOR;
     using HGDIOBJ               = HGDIOBJ;
     using HACCEL                = HACCEL;
     using HINSTANCE             = HINSTANCE;
@@ -46,6 +43,7 @@ export
     using LPPAINTSTRUCT         = LPPAINTSTRUCT;
     using LPCREATESTRUCT        = LPCREATESTRUCT;
     using LPPOINT               = LPPOINT;
+    using LPRECT                = LPRECT;
     using LONG_PTR              = LONG_PTR;
     using SRWLOCK               = SRWLOCK;
     using HBITMAP               = HBITMAP;
@@ -57,8 +55,8 @@ export
     using TRACKMOUSEEVENT       = TRACKMOUSEEVENT;
     using PTP_CALLBACK_INSTANCE = PTP_CALLBACK_INSTANCE;
     using WNDCLASSEX            = WNDCLASSEX;
+    using MONITORINFO           = MONITORINFO;
 
-    using ::_setmode;
     using ::AcquireSRWLockExclusive;
     using ::AcquireSRWLockShared;
     using ::AppendMenuW;
@@ -72,10 +70,10 @@ export
     using ::CreateMenu;
     using ::CreatePopupMenu;
     using ::DefWindowProcW;
+    using ::GetClientRect;
     using ::GetMessageW;
     using ::GetModuleHandleW;
     using ::CreateWindowExW;
-    using ::DefSubclassProc;
     using ::DestroyMenu;
     using ::DestroyWindow;
     using ::DispatchMessageW;
@@ -84,11 +82,13 @@ export
     using ::EnableWindow;
     using ::EndDialog;
     using ::EndPaint;
+    using ::EnumDisplayMonitors;
     using ::GetCapture;
     using ::GetDlgItem;
     using ::GetDlgCtrlID;
     using ::GetLastError;
     using ::GetParent;
+    using ::GetMonitorInfoW;
     using ::GetStockObject;
     using ::GetSystemMetrics;
     using ::GetWindowLong;
@@ -100,6 +100,7 @@ export
     using ::IsDlgButtonChecked;
     using ::IsDialogMessageW;
     using ::IsWindowVisible;
+    using ::IsZoomed;
     using ::LoadCursorW;
     using ::MapWindowPoints;
     using ::MessageBoxW;
@@ -124,7 +125,6 @@ export
     using ::SetLastError;
     using ::SetMenu;
     using ::SetWindowPos;
-    using ::SetWindowSubclass;
     using ::SetWindowTextW;
     using ::ShellExecuteW;
     using ::ShowWindow;
@@ -151,14 +151,5 @@ export
     constexpr COLORREF MakeRGB(WORD const r, WORD const g, WORD const b)
     {
         return RGB(r, g, b);
-    }
-
-    bool SwitchWcoutTo(wstring const & wszTraceFileName)
-    { 
-        FILE  * fp;
-        errno_t res = _wfreopen_s(&fp, wszTraceFileName.c_str(), L"w", stdout);
-        _setmode(_fileno(stdout), _O_U8TEXT);  // set code page to UTF-8
-        SetConsoleOutputCP(CP_UTF8);           // for printing Unicode
-        return res == 0;
     }
 }
