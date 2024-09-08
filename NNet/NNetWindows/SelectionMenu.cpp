@@ -26,7 +26,7 @@ void SelectionMenu::Start(HWND const hwndParent)
 		nullptr
 	);
 
-	SetWindowTextW(L"Selection");
+	SetWindowText(L"Selection");
 
 	m_hwndDeselect = CreateButton(hwnd, L"Deselect [ESC]", 10, 10, 250, 20, IDM_DESELECT);
 	m_hwndCopy     = CreateButton(hwnd, L"Copy [Strg+C]",  10, 40, 250, 20, IDM_COPY_SELECTION);

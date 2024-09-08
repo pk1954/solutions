@@ -2,15 +2,12 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module WinCommand;
 
 import std;
 import Win32_Util_Resource;
 import WinManager;
+import WinBasics;
 import RunTime;
 import Commands;
 

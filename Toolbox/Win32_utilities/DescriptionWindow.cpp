@@ -5,13 +5,13 @@
 module;
 
 #include <Windows.h>
-#include <windowsx.h>
-#include <CommCtrl.h>
+#include <Windowsx.h>
 
 module NNetWin32:DescriptionWindow;
 
 import std;
 import Win32_Util_Resource;
+import WinBasics;
 import Commands;
 import IoUtil;
 
@@ -115,12 +115,12 @@ void DescriptionWindow::Start(HWND const hwndParent)
         |ES_MULTILINE            // enables multi line edit 
         |ES_WANTRETURN           // Enter key -> CR
         |ES_AUTOHSCROLL          // horizontal scroll bar
-        |ES_AUTOVSCROLL          // vertical scroll bar
-        |ES_EX_ZOOMABLE,         // not working
+        |ES_AUTOVSCROLL,          // vertical scroll bar
+//        |ES_EX_ZOOMABLE,         // not working
         0, 0, 0, 0,              // set size in WM_SIZE message 
         hwndDlg,                 // parent window 
         (HMENU)ID_EDIT_CTRL,     // control id
-        GetModuleHandle(nullptr), 
+        GetModuleHandleW(nullptr), 
         nullptr
     );
 

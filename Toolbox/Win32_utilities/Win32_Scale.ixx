@@ -5,14 +5,13 @@
 export module Scale;
 
 import std;
-import std.compat;
+import Util;
+import Types;
+import SaveCast;
 import Win32_Util_Resource;
 import Win32_Sound;
 import WinBasics;
-import Util;
 import ObserverInterface;
-import Types;
-import SaveCast;
 import PixFpDimension;
 import Direct2D;
 import GraphicsWindow;
@@ -25,6 +24,9 @@ using std::wostringstream;
 using std::to_wstring;
 using std::wstring;
 using std::bit_cast;
+using std::log10f;
+using std::powf;
+using std::abs;
 
 export PIXEL const V_SCALE_WIDTH  { 35_PIXEL };
 export PIXEL const H_SCALE_HEIGHT { 30_PIXEL };

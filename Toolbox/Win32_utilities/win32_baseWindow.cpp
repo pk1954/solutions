@@ -2,10 +2,6 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module BaseWindow;
 
 import std;
@@ -13,6 +9,7 @@ import Debug;
 import Win32_Util_Resource;
 import Util;
 import Types;
+import WinBasics;
 import Win32_Util;
 import RootWindow;
 
@@ -31,7 +28,7 @@ HWND BaseWindow::StartBaseWindow
 	VisCrit   const & visibilityCriterion
 )
 {
-    HINSTANCE const hInstance = GetModuleHandle(nullptr);
+    HINSTANCE const hInstance = GetModuleHandleW(nullptr);
     WNDCLASSEX      wcex {};
 
     Assert(szClass != nullptr);
@@ -45,12 +42,12 @@ HWND BaseWindow::StartBaseWindow
     wcex.hInstance	   = hInstance;
     wcex.hIcon		   = nullptr; 
     wcex.hCursor	   = LoadCursorW(nullptr, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+    wcex.hbrBackground = 0; //static_cast<HBRUSH>(COLOR_WINDOW+1);
     wcex.lpszMenuName  = nullptr;
     wcex.lpszClassName = szClass;
     wcex.hIconSm	   = nullptr; 
 
-    ATOM const atom = RegisterClassEx(&wcex);
+    ATOM const atom = RegisterClassExW(&wcex);
 
     if (atom == 0)
     {
@@ -58,8 +55,9 @@ HWND BaseWindow::StartBaseWindow
         Assert(dwErr == ERROR_CLASS_ALREADY_EXISTS);
     }
 
-    HWND hwnd = CreateWindow
+    HWND hwnd = CreateWindowExW
     (
+        0,
         szClass,
         nullptr,
         dwWindowStyle,
@@ -236,7 +234,7 @@ bool BaseWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
     return RootWindow::CommonMessageHandler(message, wParam, lParam);
 }
 
-static LRESULT CALLBACK BaseWndProc
+static LRESULT __stdcall BaseWndProc
 (
     HWND   const hwnd,
     UINT   const message, 
@@ -259,5 +257,5 @@ static LRESULT CALLBACK BaseWndProc
         }
     }
 
-    return DefWindowProc(hwnd, message, wParam, lParam);
+    return DefWindowProcW(hwnd, message, wParam, lParam);
 }

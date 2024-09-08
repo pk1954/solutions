@@ -82,7 +82,7 @@ UP_TTIP ToolTip::createToolTip
 		CW_USEDEFAULT, CW_USEDEFAULT,  
 		hwndParent,                      // parent
 		NULL,                            // ID
-		GetModuleHandle(nullptr),        // instance
+		GetModuleHandleW(nullptr),       // instance
 		NULL                             // no extra data
 	);
 
@@ -98,7 +98,7 @@ UP_TTIP ToolTip::createToolTip
 	upToolTip->m_ti.cbSize   = sizeof(TOOLINFO_REDEF);
 	upToolTip->m_ti.uFlags   = TTF_SUBCLASS;
 	upToolTip->m_ti.hwnd     = hwndParent;
-	upToolTip->m_ti.hinst    = GetModuleHandle(nullptr);
+	upToolTip->m_ti.hinst    = GetModuleHandleW(nullptr);
 	upToolTip->m_ti.lpszText = wstrText.c_str();
 	if (idTool > 0)
 	{

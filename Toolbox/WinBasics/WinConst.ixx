@@ -6,13 +6,10 @@ export module WinBasics:WinConst;
 
 import :WinDefs;
 
-extern const UINT  WM_ENTERMENULOOP_CONST;
-extern const UINT  WM_CTLCOLOREDIT_CONST;
-extern const UINT  WM_DESTROY_CONST;
-extern const UINT  WM_CLOSE_CONST;
-
 extern const UINT  PM_REMOVE_CONST;
 extern const UINT  CP_UTF8_CONST;
+extern const UINT  FIXED_PITCH_CONST;
+extern const UINT  GWL_STYLE_CONST;
 
 extern const DWORD WS_BORDER_CONST;
 extern const DWORD WS_CHILD_CONST;
@@ -52,6 +49,9 @@ extern const WORD  VK_ESCAPE_CONST;
 extern const DWORD MF_BITMAP_CONST;
 extern const DWORD MF_STRING_CONST;
 extern const DWORD MF_BYPOSITION_CONST;
+extern const DWORD MF_GRAYED_CONST;
+extern const DWORD MF_ENABLED_CONST;
+extern const DWORD MF_POPUP_CONST;
 
 extern const DWORD MB_OK_CONST;
 extern const DWORD MB_ICONWARNING_CONST;
@@ -80,7 +80,16 @@ extern const DWORD DS_SHELLFONT_CONST;
 
 extern const DWORD DT_LEFT_CONST;
 
+extern const DWORD TME_HOVER_CONST;
+extern const DWORD TME_LEAVE_CONST;
+extern const DWORD TBM_GETPOS_CONST;
+extern const DWORD TBM_SETRANGEMIN_CONST;
+extern const DWORD TBM_SETRANGEMAX_CONST;
 extern const DWORD TBS_NOTICKS_CONST;
+extern const DWORD TPM_TOPALIGN_CONST; 
+extern const DWORD TPM_LEFTALIGN_CONST;
+extern const DWORD TPM_RETURNCMD_CONST;
+extern const DWORD TPM_NONOTIFY_CONST;
 
 extern const DWORD ES_RIGHT_CONST;
 
@@ -105,17 +114,46 @@ extern const int EXCEPTION_EXECUTE_HANDLER_CONST;
 
 export 
 {
-    const UINT    WM_ENTERMENULOOP    = WM_ENTERMENULOOP_CONST;
-    const UINT    WM_CTLCOLOREDIT     = WM_CTLCOLOREDIT_CONST;
-    const UINT    WM_DESTROY          = WM_DESTROY_CONST;
-    const UINT    WM_CLOSE            = WM_CLOSE_CONST;
-    const UINT    WM_QUIT             = 0x0012;
-    const UINT    WM_HSCROLL          = 0x0114;
-    const UINT    WM_COMMAND          = 0x0111;
     const UINT    WM_APP              = 0x8000;
-                  
+    const UINT    WM_CHAR             = 0x0102;
+    const UINT    WM_CLOSE            = 0x0010;
+    const UINT    WM_COMMAND          = 0x0111;
+    const UINT    WM_CTLCOLOREDIT     = 0x0133;
+    const UINT    WM_CTLCOLORSTATIC   = 0x0138;
+    const UINT    WM_CONTEXTMENU      = 0x007B;
+    const UINT    WM_ENTERMENULOOP    = 0x0211;
+    const UINT    WM_ERASEBKGND       = 0x0014;
+    const UINT    WM_DESTROY          = 0x0002;
+    const UINT    WM_DRAWITEM         = 0x002B;
+    const UINT    WM_HSCROLL          = 0x0114;
+    const UINT    WM_LBUTTONDBLCLK    = 0x0203;
+    const UINT    WM_LBUTTONDOWN      = 0x0201;
+    const UINT    WM_LBUTTONUP        = 0x0202;
+    const UINT    WM_MENUCOMMAND      = 0x0126;
+    const UINT    WM_MOUSEHOVER       = 0x02A1;
+    const UINT    WM_MOUSELEAVE       = 0x02A3;
+    const UINT    WM_MOUSEMOVE        = 0x0200;
+    const UINT    WM_MOUSEWHEEL       = 0x020A;
+    const UINT    WM_MOVE             = 0x0003;
+    const UINT    WM_NCLBUTTONDBLCLK  = 0x00A3;
+    const UINT    WM_NCCREATE         = 0x0081;
+    const UINT    WM_NOTIFY           = 0x004E;
+    const UINT    WM_PAINT            = 0x000F;
+    const UINT    WM_RBUTTONDOWN      = 0x0204;
+    const UINT    WM_RBUTTONUP        = 0x0205;
+    const UINT    WM_QUIT             = 0x0012;
+    const UINT    WM_SETCURSOR        = 0x0020;
+    const UINT    WM_SETFONT          = 0x0030;
+    const UINT    WM_SHOWWINDOW       = 0x0018;
+    const UINT    WM_SIZE             = 0x0005;
+    const UINT    WM_TIMER            = 0x0113;
+
+    const DWORD   ERROR_CLASS_ALREADY_EXISTS = 1410L;
+
     const UINT    PM_REMOVE           = PM_REMOVE_CONST;
     const UINT    CP_UTF8             = CP_UTF8_CONST;
+    const UINT    FIXED_PITCH         = FIXED_PITCH_CONST;
+    const UINT    GWL_STYLE           = GWL_STYLE_CONST;
 
     const DWORD   WS_BORDER           = WS_BORDER_CONST;
     const DWORD   WS_CHILD            = WS_CHILD_CONST;
@@ -155,6 +193,9 @@ export
     const DWORD   MF_BITMAP           = MF_BITMAP_CONST;
     const DWORD   MF_STRING           = MF_STRING_CONST;
     const DWORD   MF_BYPOSITION       = MF_BYPOSITION_CONST;
+    const DWORD   MF_GRAYED           = MF_GRAYED_CONST;
+    const DWORD   MF_ENABLED          = MF_ENABLED_CONST;
+    const DWORD   MF_POPUP            = MF_POPUP_CONST;
                                       
     const DWORD   MB_OK               = MB_OK_CONST;
     const DWORD   MB_ICONWARNING      = MB_ICONWARNING_CONST;
@@ -183,7 +224,16 @@ export
                   
     const DWORD   DT_LEFT             = DT_LEFT_CONST;
 
+    const DWORD   TME_HOVER           = TME_HOVER_CONST;
+    const DWORD   TME_LEAVE           = TME_LEAVE_CONST;
+    const DWORD   TBM_GETPOS          = TBM_GETPOS_CONST;
+    const DWORD   TBM_SETRANGEMIN     = TBM_SETRANGEMIN_CONST;
+    const DWORD   TBM_SETRANGEMAX     = TBM_SETRANGEMAX_CONST;
     const DWORD   TBS_NOTICKS         = TBS_NOTICKS_CONST;
+    const DWORD   TPM_TOPALIGN        = TPM_TOPALIGN_CONST; 
+    const DWORD   TPM_LEFTALIGN       = TPM_LEFTALIGN_CONST;
+    const DWORD   TPM_RETURNCMD       = TPM_RETURNCMD_CONST;
+    const DWORD   TPM_NONOTIFY        = TPM_NONOTIFY_CONST;
 
     const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
                   

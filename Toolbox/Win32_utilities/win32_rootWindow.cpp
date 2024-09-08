@@ -2,11 +2,11 @@
 //
 // Toolbox Win32_utilities
 
-module;
-
-#include <Windows.h>
-#include "CommCtrl.h"
-
+//module;
+//
+//#include <Windows.h>
+//#include "CommCtrl.h"
+//
 module RootWindow;
 
 import std;
@@ -43,10 +43,10 @@ RootWindow * GetParentRootWindow(HWND const hwnd)
 
 wstring RootWindow::GetWindowText() const
 {
-	wstring wstrResult;
-	int     iLength { GetWindowTextLength() };
+	wstring         wstrResult;
+	int             iLength { GetWindowTextLength() };
 	vector<wchar_t> buffer(iLength + 1);
-	if (::GetWindowText(m_hwnd, buffer.data(), iLength) )
+	if (GetWindowTextW(m_hwnd, buffer.data(), iLength) )
 		wstrResult = wstring(buffer.data(), iLength);
 	return wstrResult;
 }
@@ -89,8 +89,8 @@ void RootWindow::StartRootWindow(VisCrit const &visibilityCriterion)
 
 void RootWindow::addWinMenu(HMENU const hMenuParent, wstring const & strTitle) const
 {
-	UINT  const STD_FLAGS = MF_BYPOSITION | MF_STRING;
-	HMENU const hMenu = CreatePopupMenu();
+	UINT  const STD_FLAGS { MF_BYPOSITION | MF_STRING };
+	HMENU const hMenu     { CreatePopupMenu() };
 	AppendMenuW(hMenu, STD_FLAGS, IDM_WINDOW_AUTO, L"auto");
 	AppendMenuW(hMenu, STD_FLAGS, IDM_WINDOW_ON,   L"on" );
 	AppendMenuW(hMenu, STD_FLAGS, IDM_WINDOW_OFF,  L"off");
@@ -147,7 +147,7 @@ bool RootWindow::IsOutOfClientRect(PixelPoint const &pnt) const
 	return pixDist > 0_PIXEL;
 }
 
-void RootWindow::SetTrackBarRange(INT const idTrackbar, LONG const lMin, LONG const lMax) const
+void RootWindow::SetTrackBarRange(int const idTrackbar, long const lMin, long const lMax) const
 {
 	SendDlgItemMessage
 	(
@@ -252,11 +252,11 @@ void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr
 	//	(void)AppendMenuW(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
 	//}
 
-	(void)SetForegroundWindow(GetWindowHandle());
+	::SetForegroundWindow(GetWindowHandle());
 
 	auto const uiID = static_cast<UINT>
 	(
-		TrackPopupMenu
+		::TrackPopupMenu
 		(
 			hPopupMenu,
 			TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD | TPM_NONOTIFY,
@@ -267,7 +267,7 @@ void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr
 		)
 	);
 
-	DestroyMenu(hPopupMenu);
+	::DestroyMenu(hPopupMenu);
 
 	if (uiID != 0)
 		OnCommand(uiID, lParamNew, Screen2Client(crsrPosScreen));
@@ -275,7 +275,7 @@ void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr
 
 bool RootWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
-	switch (UINT const uiCmdId { LOWORD(wParam) })
+	switch (UINT const uiCmdId { LoWord(wParam) })
 	{
 	case 0:             // unclear origin
 		return true;
@@ -363,12 +363,12 @@ bool RootWindow::CommonMessageHandler(UINT const message, WPARAM const wParam, L
 		return true;
 
 	case WM_SIZE:
-		if (OnSize(static_cast<PIXEL>(LOWORD(lParam)), static_cast<PIXEL>(HIWORD(lParam))))
+		if (OnSize(static_cast<PIXEL>(LoWord(lParam)), static_cast<PIXEL>(HiWord(lParam))))
 			return true;
 		break;
 
 	case WM_MOVE:
-		if (OnMove(static_cast<PIXEL>(LOWORD(lParam)), static_cast<PIXEL>(HIWORD(lParam))))
+		if (OnMove(static_cast<PIXEL>(LoWord(lParam)), static_cast<PIXEL>(HiWord(lParam))))
 			return true;
 		break;
 

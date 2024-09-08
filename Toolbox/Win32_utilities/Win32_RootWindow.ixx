@@ -4,9 +4,8 @@
 
 module;
 
-#include <Windows.h>
-#include <windowsx.h>
-#include "CommCtrl.h"
+//#include <Windows.h>
+//#include <windowsx.h>
 
 export module RootWindow;
 
@@ -77,18 +76,18 @@ public:
 	void     SetWindowWidth (PIXEL const w, bool const b)                         const { ::SetWindowWidth (m_hwnd, w, b); }
 	void     SetWindowHeight(PIXEL const h, bool const b)                         const { ::SetWindowHeight(m_hwnd, h, b); }
 	void     SetWindowSize  (PIXEL const w, PIXEL const h, bool const b)          const { ::SetWindowSize(m_hwnd, w, h, b); }
-	bool     WindowHasCaption()                                                   const { return ::GetWindowLong(m_hwnd, GWL_STYLE) & WS_CAPTION; }
+	bool     WindowHasCaption()                                                   const { return ::GetWindowStyle(m_hwnd) & WS_CAPTION; }
 	bool     IsWindowVisible()                                                    const { return ::IsWindowVisible(m_hwnd); }
 	HWND     SetCapture()                                                         const { return ::SetCapture(m_hwnd); }
 	HWND     SetFocus()                                                           const { return ::SetFocus(m_hwnd); }
 	HWND     GetParent()                                                          const { return ::GetParent(m_hwnd); }
 	HWND     GetDlgItem(int const i)                                              const { return ::GetDlgItem(m_hwnd, i); }
 	bool     IsCaptured()                                                         const { return ::GetCapture() == m_hwnd; }
-	int	     GetWindowTextLength()                                                const { return ::GetWindowTextLength(m_hwnd); }
+	int	     GetWindowTextLength()                                                const { return ::GetWindowTextLengthW(m_hwnd); }
 	LONG_PTR SetWindowStyle  (LONG_PTR dwNew)                                     const { return ::SetWindowStyle  (m_hwnd, dwNew); }
 	LONG_PTR SetWindowExStyle(LONG_PTR dwNew)                                     const { return ::SetWindowExStyle(m_hwnd, dwNew); }
 	LONG_PTR SetWindowId     (LONG_PTR dwNew)                                     const { return ::SetWindowId     (m_hwnd, dwNew); }
-	bool     SetWindowText(LPCWSTR        const   s)                              const { return ::SetWindowText(m_hwnd, s); }
+	bool     SetWindowText(LPCWSTR        const   s)                              const { return ::SetWindowTextW(m_hwnd, s); }
 	bool     SetWindowText(wstring        const & s)                              const { return   SetWindowText(s.c_str()); }
 	bool     SetWindowText(wostringstream const & s)                              const { return   SetWindowText(s.str()); }
 	void     CheckRadioButton(int iFirst, int iLast, int iCheck)                  const { ::CheckRadioButton(m_hwnd, iFirst, iLast, iCheck); }
@@ -108,23 +107,23 @@ public:
 	LRESULT SendCommand       (                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMsg       (WM_COMMAND, wParam, lParam); }
 	LRESULT SendCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   SendMsg2Parent(WM_COMMAND, wParam, lParam); }
 	LRESULT PostCommand2Parent(                WPARAM const wParam, LPARAM const lParam = 0) const { return   PostMsg2Parent(WM_COMMAND, wParam, lParam); }
-	LRESULT PostMsg           (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(m_hwnd,       msg, wParam, lParam); }
-	LRESULT PostMsg2Parent    (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessage(GetParent(),  msg, wParam, lParam); }
-	LRESULT SendMsg           (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(m_hwnd,       msg, wParam, lParam); }
-	LRESULT SendMsg2Parent    (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessage(GetParent(),  msg, wParam, lParam); }
-	LRESULT SendNotifyMessage (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessage(m_hwnd, msg, wParam, lParam); }
+	LRESULT PostMsg           (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessageW(m_hwnd,       msg, wParam, lParam); }
+	LRESULT PostMsg2Parent    (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::PostMessageW(GetParent(),  msg, wParam, lParam); }
+	LRESULT SendMsg           (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessageW(m_hwnd,       msg, wParam, lParam); }
+	LRESULT SendMsg2Parent    (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendMessageW(GetParent(),  msg, wParam, lParam); }
+	LRESULT SendNotifyMessage (UINT const msg, WPARAM const wParam, LPARAM const lParam = 0) const { return ::SendNotifyMessageW(m_hwnd, msg, wParam, lParam); }
 
-	LRESULT const DefWindowProc(UINT const msg, WPARAM const wParam, LPARAM const lParam) const { return ::DefWindowProc(m_hwnd, msg, wParam, lParam); }
+	LRESULT const DefWindowProc(UINT const msg, WPARAM const wParam, LPARAM const lParam) const { return ::DefWindowProcW(m_hwnd, msg, wParam, lParam); }
 
-	LRESULT SendDlgItemMessage(int const iItem, unsigned int msg, WPARAM wParam, LPARAM lParam) const { return ::SendDlgItemMessage(m_hwnd, iItem, msg, wParam, lParam); }
+	LRESULT SendDlgItemMessage(int const iItem, unsigned int msg, WPARAM wParam, LPARAM lParam) const { return ::SendDlgItemMessageW(m_hwnd, iItem, msg, wParam, lParam); }
 
 	void SetDlgText(int const iItem, wchar_t const* const wstrText) const {	::SetText(GetDlgItem(iItem), wstrText);	}
 
-	short       GetTrackBarPos       (INT    const idTbar) const { return Cast2Short(SendDlgItemMessage(idTbar, TBM_GETPOS, 0, 0)); }
+	short       GetTrackBarPos       (int    const idTbar) const { return Cast2Short(SendDlgItemMessage(idTbar, TBM_GETPOS, 0, 0)); }
 	PixelPoint  GetCrsrPosFromLparam (LPARAM const lParam) const { return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) }; }
 	fPixelPoint GetCrsrPosFromLparamF(LPARAM const lParam) const { return Convert2fPixelPoint(GetCrsrPosFromLparam(lParam)); }
 	PIXEL       CrsrXpos             (LPARAM const lParam) const { return PIXEL(GetXlparam(lParam)); }
-	PIXEL       CrsrYpos             (LPARAM const lParam) const { return PIXEL(GET_Y_LPARAM(lParam)); }
+	PIXEL       CrsrYpos             (LPARAM const lParam) const { return PIXEL(GetYlparam(lParam)); }
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
 
@@ -157,7 +156,7 @@ public:
 	void    UpdateImmediately()                                                  const;
 	void    Invalidate(bool const)                                               const;
 	void    FillBackground(HDC const, COLORREF const)                            const;
-	void    SetTrackBarRange(INT const, LONG const, LONG const)                  const;
+	void    SetTrackBarRange(int const, long const, long const)                  const;
 	void    CenterIn(HWND const, PIXEL const, PIXEL const)                       const;
 	HBITMAP CreateCompatibleBitmap(HDC const hDC)                                const;
 	void    SetRefreshRate(milliseconds const)                                   const;

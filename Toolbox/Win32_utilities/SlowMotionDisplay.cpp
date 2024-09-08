@@ -81,25 +81,25 @@ void SlowMotionDisplay::Initialize
 	m_upRefreshRate->SetRefreshRate(300ms);
 	pStatusBar->AddCustomControl(16);            // nr of characters 
 
-    HFONT hFont = CreateFontA
-    (
-        15,  //[in] int    cHeight,
-        0,            //[in] int    cWidth,
-        0,            //[in] int    cEscapement,
-        0,            //[in] int    cOrientation,
-        0,            //[in] int    cWeight,
-        0,            //[in] DWORD  bItalic,
-        0,            //[in] DWORD  bUnderline,
-        0,            //[in] DWORD  bStrikeOut,
-        0,            //[in] DWORD  iCharSet,
-        0,            //[in] DWORD  iOutPrecision,
-        0,            //[in] DWORD  iClipPrecision,
-        0,            //[in] DWORD  iQuality,
-        FIXED_PITCH,  //[in] DWORD  iPitchAndFamily,
-        nullptr       //[in] LPCSTR pszFaceName
-    );
+    //HFONT hFont = CreateFontA
+    //(
+    //    15,  //[in] int    cHeight,
+    //    0,            //[in] int    cWidth,
+    //    0,            //[in] int    cEscapement,
+    //    0,            //[in] int    cOrientation,
+    //    0,            //[in] int    cWeight,
+    //    0,            //[in] DWORD  bItalic,
+    //    0,            //[in] DWORD  bUnderline,
+    //    0,            //[in] DWORD  bStrikeOut,
+    //    0,            //[in] DWORD  iCharSet,
+    //    0,            //[in] DWORD  iOutPrecision,
+    //    0,            //[in] DWORD  iClipPrecision,
+    //    0,            //[in] DWORD  iQuality,
+    //    FIXED_PITCH,  //[in] DWORD  iPitchAndFamily,
+    //    nullptr       //[in] LPCSTR pszFaceName
+    //);
 
-    pStatusBar->SendMsg(WM_SETFONT, (WPARAM)hFont, true);
+    //pStatusBar->SendMsg(WM_SETFONT, (WPARAM)hFont, true);
 }
 
 void SlowMotionDisplay::Notify(bool const bImmediately)

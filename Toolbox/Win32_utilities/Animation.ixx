@@ -2,14 +2,11 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module Animation;
 
 import std;
 import Win32_Util_Resource;
+import WinBasics;
 import RootWindow;
 import WinCommand;
 import SmoothMoveFp;
@@ -97,7 +94,7 @@ private:
     SmoothMoveFp m_smoothMove;
     WinCommand * m_pCmd           { nullptr };
     DWORD  const m_dwFlags        { 0 };
-    SRWLOCK      m_srwlData       { SRWLOCK_INIT };
+    SRWLOCK      m_srwlData       { 0 };
     unsigned int m_uiMsPeriod     { 50 };
     unsigned int m_uiNrOfSteps    { 20 };
     bool         m_bTargetReached { false };

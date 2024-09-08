@@ -4,7 +4,7 @@
 
 export module SaveCast;
 
-import std.compat;
+import std.compat;  // uint8_t
 import Debug;
 
 using std::uint8_t;

@@ -5,11 +5,9 @@
 module Raster;
 
 import std;
-import std.compat;
 import SaveCast;
 import Types;
 
-using std::roundf;
 using std::optional;
 
 optional<RasterPoint> Raster::FindRasterPos(MicroMeterPnt const umPnt) const

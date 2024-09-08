@@ -155,9 +155,9 @@ void StdOutConsole()
     HWND hwnd = ::GetConsoleWindow();
     if (hwnd != NULL)
     {
-        LONG style = GetWindowLong(hwnd , GWL_STYLE);
+        DWORD style = GetWindowStyle(hwnd);
         style = style & ~(WS_SYSMENU);
-        SetWindowLong(hwnd, GWL_STYLE, style);
+        SetWindowStyle(hwnd, style);
     }	
 }
 

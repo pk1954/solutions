@@ -2,16 +2,13 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module TimeGraph;
 
 import std.compat;
 import Debug;
 import Types;
 import Scale;
+import WinBasics;
 import PixFpDimension;
 import GraphicsWindow;
 

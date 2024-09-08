@@ -4,10 +4,10 @@
 
 export module TimestampList;
 
-import Util;
-
 import std;
 import std.compat;
+import Util;
+
 using std::map;
 using std::wstring;
 using std::chrono::system_clock;

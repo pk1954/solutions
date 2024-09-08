@@ -95,7 +95,7 @@ void ParameterDialog::Start(HWND const hwndParent)
 	m_hTextFormatHeader = m_upGraphics->NewTextFormat(16.f);
 	m_hTextFormatHeader->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
 
-	SetWindowTextW(L"Global parameters");
+	SetWindowText(L"Global parameters");
 	SetWindowStyle(DS_CENTER|DS_MODALFRAME|DS_SHELLFONT|WS_CAPTION|WS_POPUP|WS_CLIPCHILDREN|WS_SYSMENU);
 
 	int iYpos { VERT_SPACE + 16 };

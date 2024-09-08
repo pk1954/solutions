@@ -6,7 +6,6 @@ module;
 
 #include "dwrite.h"
 #include "d2d1helper.h"
-#include <Windows.h>
 
 export module Direct2D;
 

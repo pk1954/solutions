@@ -102,7 +102,7 @@ public:
     void operator() (Script & script) const final
     {
 	    RootWinId const id      (script.ScrReadInt());
-		INT       const iCmdShow(script.ScrReadInt());  // WM_HIDE, WM_SHOW, ...
+		int       const iCmdShow(script.ScrReadInt());  // WM_HIDE, WM_SHOW, ...
 		if (id.GetValue() > 0)
 			ShowWindow(WinManager::GetHWND(id), iCmdShow);
     }

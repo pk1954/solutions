@@ -9,10 +9,6 @@ import SaveCast;
 
 using std::wcout;
 using std::wostream;
-using std::function;
-using std::vector;
-using std::unique_ptr;
-using std::wstring;
 
 export class BaseCommand
 {
