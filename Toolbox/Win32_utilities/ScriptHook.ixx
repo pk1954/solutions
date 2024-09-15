@@ -8,6 +8,7 @@ import std;
 import StatusBar;
 import RunTime;
 
+using std::wstring;
 using std::to_wstring;
 
 export class ScriptHook : public ScriptFunctor
@@ -31,17 +32,11 @@ public:
 
 		if (Script const * const pScript { ScriptStack::GetScript() })
 		{
-			m_pStatusBar->DisplayInPart
-			(
-				m_iStatusBarPart, 
-				pScript->GetActPath() + 
-				L"(" + 
-				to_wstring(pScript->GetActLineNr()) + 
-				L"//" + 
-				to_wstring(pScript->GetFileSize()) + 
-				L"): " + 
-				pScript->GetActLine()
-			);
+			wstring const & wszPath       = script.GetActPath();
+			wstring const & wszLine       = script.GetActLine();
+			int     const   iLineNr       = script.GetActLineNr();
+			wstring const   wszScriptLine = wszPath + L"(" + to_wstring(iLineNr) + L"): " + wszLine;
+			m_pStatusBar->DisplayInPart(m_iStatusBarPart, wszScriptLine);
 		}
 		else
 		{

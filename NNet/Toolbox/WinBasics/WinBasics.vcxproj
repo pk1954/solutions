@@ -30,15 +30,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\CommCtrl.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\CommCtrlDefs.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\WinBasics\StdOutput.ixx" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\Win32_PIXEL.cpp" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\Win32_PIXEL.ixx" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinBasics.ixx" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinConst.cpp" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinConst.ixx" />
     <ClCompile Include="..\..\..\Toolbox\WinBasics\WinDefs.ixx" />
-    <ClCompile Include="CommCtrl.ixx" />
-    <ClCompile Include="CommCtrlDefs.ixx" />
-    <ClCompile Include="StdOutput.ixx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

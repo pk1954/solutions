@@ -5,23 +5,28 @@
 export module BaseAppWindow;
 
 import std;
+import WinBasics;
 import BaseWindow;
 import WinManager;
 import StatusBar;
-import WorkThreadInterface;
+//import WorkThreadInterface;
 import HistoryLib;
 import WinHistLib;
 import AppMenu;
 
 using std::wofstream;
 
-class BaseAppWindow : public BaseWindow
+export class BaseAppWindow : public BaseWindow
 {
 public:
 	BaseAppWindow();
 	virtual ~BaseAppWindow(); 
 
-	void Initialize(WorkThreadInterface * const, bool const);
+	void Initialize
+	(
+		//WorkThreadInterface * const, 
+		bool const
+	);
 
 	void Start(BaseWindow * const);
 
@@ -45,11 +50,11 @@ private:
 	bool m_bStarted;          // if true, model is visible, all functions available
 	bool m_bUseHistorySystem;
 
-	HistWindow     m_HistWindow;
-	HistInfoWindow m_HistInfoWindow;
+	//HistWindow     m_HistWindow;
+	//HistInfoWindow m_HistInfoWindow;
 
 	BaseWindow          * m_pModelWindow;
-	WorkThreadInterface * m_pWorkThreadInterface;
+	//WorkThreadInterface * m_pWorkThreadInterface;
 
 	wofstream m_traceStream;
 

@@ -11,7 +11,7 @@ import EvoWorkThreadInterface;
 import DspOptWindow;
 import StatusBar;
 
-class EvoEditorWindow : public BaseDialog
+export class EvoEditorWindow : public BaseDialog
 {
 public:
     EvoEditorWindow();

@@ -9,7 +9,7 @@ import EvoReadBuffer;
 
 class FocusPoint;
 
-class CrsrWindow: public TextWindow
+export class CrsrWindow: public TextWindow
 {
 public:
     CrsrWindow();

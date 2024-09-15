@@ -5,7 +5,7 @@
 export module Statistics;
 
 import WinBasics;
-import EvolCoreLib;
+import EvoCoreLib;
 import EvoReadBuffer;
 import TextWindow;
 import EvoStatistics;

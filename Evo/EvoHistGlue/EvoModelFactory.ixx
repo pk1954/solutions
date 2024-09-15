@@ -12,16 +12,16 @@ import :EvoModelDataGlue;
 using std::unique_ptr;
 using std::make_unique;
 
-class EvoModelFactory: public ModelFactory
+export class EvoModelFactory: public ModelFactory
 {
 public:
-	virtual unique_ptr<EvoModelDataGlue>CreateModelData() const 
+	virtual unique_ptr<ModelData>CreateModelData() const 
 	{
 		return make_unique<EvoModelDataGlue>();
 	}
 
-	virtual void DestroyModelData(ModelData * pData)
-	{
-		delete pData;    //ok
-	}
+	//virtual void DestroyModelData(ModelData * pData)
+	//{
+	//	delete pData;    //ok
+	//}
 };

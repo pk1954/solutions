@@ -49,5 +49,5 @@ int wWinMain
 
 	pump.RegisterWindow(viewerWindow.GetWindowHandle(), false);
 
-	return pump.Run([&viewerWindow]() {});
+	return pump.Run([]() {});
 }

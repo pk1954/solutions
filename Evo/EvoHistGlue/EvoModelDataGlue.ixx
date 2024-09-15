@@ -11,7 +11,7 @@ export module EvoHistGlueLib:EvoModelDataGlue;
 import EvoCoreLib;
 import HistoryLib;
 
-class EvoModelDataGlue: public ModelData
+export class EvoModelDataGlue: public ModelData
 {
 public:
 	
@@ -44,7 +44,7 @@ public:
 
 	virtual void CopyFrom(ModelData const &src)
 	{
-		*m_pEvolutionCore = src;
+		//  *m_pEvolutionCore = src;  TODO
 //		m_pEvolutionCore->CopyModelData(static_cast<EvoModelDataGlue const&>(src)->m_pEvolutionCore);
 	}
 

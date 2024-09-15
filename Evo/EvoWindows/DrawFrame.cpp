@@ -117,7 +117,7 @@ void DrawFrame::DoPaint(EvolutionCore const * pCore)
 
 	if (m_pDspOptWindow->AreIndividualsVisible())
 	{
-		GridRect const rcGrid(m_pEvoPixelCoords->Pixel2GridRect(Util::GetClPixelRect(m_hwnd)));
+		GridRect const rcGrid(m_pEvoPixelCoords->Pixel2GridRect(GetClPixelRect(m_hwnd)));
 		drawIndividuals(pCore, rcGrid);
 		drawText(pCore, rcGrid);
 		//if (m_pShapeHighlight != nullptr)

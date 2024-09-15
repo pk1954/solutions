@@ -2,7 +2,9 @@
 //
 // Win32_appFramework
 
-module SPeedControl;
+module SpeedControl;
+
+import Win32_Util_Resource;
 
 StatusBar     * SpeedControl::m_pStatusBar     = nullptr;
 HistorySystem * SpeedControl::m_pHistorySystem = nullptr;

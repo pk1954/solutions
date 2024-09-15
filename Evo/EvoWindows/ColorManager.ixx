@@ -13,7 +13,7 @@ import WinBasics;
 
 using std::array;
 
-class ColorManager
+export class ColorManager
 {
 public:
 	void     Initialize();

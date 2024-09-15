@@ -48,7 +48,7 @@ void HistInfoWindow::DoPaint(TextBuffer & textBuf)
 		int    iNrOfUsedSlots { m_pHistSys->GetNrOfUsedHistCacheSlots().GetValue() };
 		int    iNrOfSlots     { m_pHistSys->GetNrOfHistCacheSlots().GetValue() };
 		size_t slotSize       { m_pHistSys->GetSlotSize() };
-		size_t totalSize      { slotSize.GetValue() * iNrOfSlots };
+		size_t totalSize      { slotSize * iNrOfSlots };
 
 		textBuf.printString(L"used slots  ");
 		textBuf.setHorizontalPos(3_TEXT_POSITION);
@@ -56,11 +56,11 @@ void HistInfoWindow::DoPaint(TextBuffer & textBuf)
 
 		textBuf.nextLine(L"slot size   ");
 		textBuf.setHorizontalPos(3_TEXT_POSITION);
-		textBuf.printNumber(slotSize.GetValue());
+		textBuf.printNumber(slotSize);
 
 		textBuf.nextLine(L"cache size  ");
 		textBuf.setHorizontalPos(3_TEXT_POSITION);
-		textBuf.printNumber(totalSize.GetValue());
+		textBuf.printNumber(totalSize);
 
 		textBuf.nextLine(L"genCurrent  ");
 		textBuf.setHorizontalPos(3_TEXT_POSITION);

@@ -23,11 +23,11 @@ static Color const EEG_SIGNAL_HIGH { 1.0f, 0.5f, 0.0f, 1.0f };
 
 void NNetWindow::Start
 (
-	HWND            const hwndParent, 
-	DWORD           const dwStyle,
-	bool            const bShowRefreshRateDialog,
-	NNetCommandHandler  & controller,
-	MonitorWindow       * pMonitorWindow
+	HWND           const hwndParent, 
+	DWORD          const dwStyle,
+	bool           const bShowRefreshRateDialog,
+	NNetCommandHandler & controller,
+	MonitorWindow      * pMonitorWindow
 )
 {
 	GraphicsWindow::Initialize

@@ -4,9 +4,9 @@
 
 module EvoHistGlueLib:EvoHistorySysGlue;
 
+import Win32_Util;
 import HistoryLib;
 import EvoCoreLib;
-import WorkThread;
 
 EvoHistorySysGlue::EvoHistorySysGlue() :
     m_pHistorySystem(nullptr)
@@ -24,7 +24,7 @@ EvoModelDataGlue * EvoHistorySysGlue::Start
     (
         EvoConfig::GetConfigValue(EvoConfig::tId::maxGeneration),
         EvoConfig::GetConfigValue(EvoConfig::tId::nrOfHistorySlots),
-		Util::GetPhysicalMemory(),
+		GetPhysicalMemory(),
         & m_EvoModelFactory
    );
 

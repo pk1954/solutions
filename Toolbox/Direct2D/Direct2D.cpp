@@ -105,9 +105,9 @@ void D2D_driver::discardResources()
 	SafeRelease(&m_pSink);
 }
 
-unique_ptr<D2D_driver> D2D_driver::Create(HWND const hwnd)
+UPD2D D2D_driver::Create(HWND const hwnd)
 {
-	unique_ptr<D2D_driver> upGraphics { make_unique<D2D_driver>() };
+	UPD2D upGraphics { make_unique<D2D_driver>() };
 	upGraphics->m_hwnd = hwnd;
 	upGraphics->createResources();
 	return upGraphics;
@@ -715,5 +715,22 @@ void D2D_driver::DrawBezier
 	BrushHandle hBrush { CreateBrushHandle(col) };
 	DrawBezier(fPixPnt0, fPixPnt1, fPixPnt2, fPixPnt3, hBrush, fPixWidth);
 	SafeRelease(&hBrush);
+}
+
+D2D1_MATRIX_3X2_F m_originalTransform;
+
+void D2D_driver::Push()
+{
+	m_pRenderTarget->GetTransform(&m_originalTransform);
+}
+
+void D2D_driver::Pop()
+{
+	m_pRenderTarget->SetTransform(m_originalTransform);
+}
+
+void D2D_driver::Rotation(fPixelPoint const center, float const angle)
+{
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(angle, D2D1::Point2F(center.GetXvalue(), center.GetYvalue())));
 }
 

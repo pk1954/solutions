@@ -224,7 +224,7 @@ bool GridWindow::inObservedClientRect(LPARAM const lParam)
     PixelPoint     const   ptCrsrCheck      = EvoPixel2PixelPos(ptCrsr, & m_EvoPixelCoords, pixCoordObserved);
 	HWND           const   hwndObserved     = m_pGridWindowObserved->GetWindowHandle();
 
-    return Util::IsInClientRect(hwndObserved, ptCrsrCheck);  // Is cursor position in observed client rect?
+    return IsInClientRect(hwndObserved, ptCrsrCheck);  // Is cursor position in observed client rect?
 }
 
 void GridWindow::moveGrid(PixelPoint const ptDiff)
@@ -262,7 +262,7 @@ void GridWindow::OnPaint()
 			if ((m_pGridWindowObserved != nullptr) && CrsrInClientRect())   // if I observe someone and cursor is in client area, show its position
 			{
 				EvoPixelCoords * const pixCoordObserved = & m_pGridWindowObserved->m_EvoPixelCoords;
-				PixelRect        const pixRectObserved  = Util::GetClPixelRect(m_pGridWindowObserved->GetWindowHandle());
+				PixelRect        const pixRectObserved  = GetClPixelRect(m_pGridWindowObserved->GetWindowHandle());
 				PixelRect        const pixRectTarget    = EvoPixel2PixelRect(pixRectObserved, pixCoordObserved, & m_EvoPixelCoords);
 				m_pGraphics->RenderTranspRect(pixRectTarget, 128, color);  
 			}
@@ -396,7 +396,7 @@ void GridWindow::Size()
 {
 	Move
 	(
-		Util::CalcWindowRect
+		CalcWindowRect
 		(
 			m_EvoPixelCoords.Grid2PixelRect(GridDimensions::GridRectFull()),
 			(DWORD)GetWindowLongPtr(GetWindowHandle(), GWL_STYLE) 

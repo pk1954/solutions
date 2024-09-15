@@ -54,3 +54,15 @@ LPARAM GraphicsWindow::AddContextMenuEntries(HMENU const hPopupMenu)
 	AddColorCtlMenu(hPopupMenu);
 	return 0;
 }
+
+void GraphicsWindow::SetForegroundColor(Color const c) 
+{ 
+	m_upGraphics->SetForegroundColor(c);
+	Trigger();
+}
+
+void GraphicsWindow::SetBackgroundColor(Color const c) 
+{ 
+	m_upGraphics->SetBackgroundColor(c);
+	Trigger();
+}

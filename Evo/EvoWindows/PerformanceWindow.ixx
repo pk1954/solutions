@@ -4,7 +4,10 @@
 
 export module PerformanceWindow;
 
+import std;
 import TextWindow;
+
+using std::function;
 
 export class PerformanceWindow: public TextWindow
 {

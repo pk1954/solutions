@@ -5,14 +5,11 @@
 // thin layer on top of BaseWindow
 // providing D2D graphics capability
 
-module;
-
-#include <Windows.h>
-
 export module GraphicsWindow;
 
 import std;
 import Color;
+import WinBasics;
 import Direct2D;
 import Types;
 import BaseWindow;
@@ -30,20 +27,11 @@ public:
 	void     SetBackgroundColorRef(COLORREF const c) override { SetBackgroundColor(Color(c)); }
 	COLORREF GetBackgroundColorRef() const           override { return Convert2COLORREF(GetBackgroundColor()); }
 
-	void SetForegroundColor(Color const c) 
-	{ 
-		m_upGraphics->SetForegroundColor(c);
-		Trigger();
-	}
-
-	void SetBackgroundColor(Color const c) 
-	{ 
-		m_upGraphics->SetBackgroundColor(c);
-		Trigger();
-	}
-
 	Color GetForegroundColor() const { return m_upGraphics->GetForegroundColor(); }
 	Color GetBackgroundColor() const { return m_upGraphics->GetBackgroundColor(); }
+
+	void SetForegroundColor(Color const); 
+	void SetBackgroundColor(Color const); 
 
 	LPARAM AddContextMenuEntries(HMENU const) override;
 
@@ -56,5 +44,5 @@ protected:
 
 	virtual void PaintGraphics() = 0;
 
-	unique_ptr<D2D_driver> m_upGraphics { nullptr };
+	UPD2D m_upGraphics { nullptr };
 };

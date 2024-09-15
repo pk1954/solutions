@@ -26,7 +26,7 @@ void EvoAppMenu::Initialize
     SendMessage(hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_EVOLUTION)));
     SendMessage(hwndApp, WM_SETICON, ICON_SMALL, (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_SMALL    )));
 
-	Util::SetApplicationTitle(hwndApp, IDS_APP_TITLE);
+	SetApplicationTitle(hwndApp, IDS_APP_TITLE);
 
 	bool bRes = SetMenu(hwndApp, LoadMenu(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDC_EVOLUTION_MAIN)));
 	Assert(bRes);

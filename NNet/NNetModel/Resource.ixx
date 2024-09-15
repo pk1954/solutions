@@ -1,3 +1,7 @@
+// Resource.ixx
+//
+// NNetModel
+
 export module Resource;
 
 // identifiers below 100 are reserved for win32_utilities

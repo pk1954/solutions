@@ -6,7 +6,7 @@ export module EvoCoreLib:GridPOI;
 import :EvolutionTypes;
 import :GridPoint;
 
-class GridPOI  // point of interest
+export class GridPOI  // point of interest
 {
 public:
 	static void SetPoi(GridPoint const);

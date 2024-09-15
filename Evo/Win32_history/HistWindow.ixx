@@ -7,9 +7,10 @@ export module WinHistLib:HistWindow;
 import WinBasics;
 import BaseWindow;
 import HistoryLib;
-import WorkThreadInterface;
+import :GenDisplayWindow;
+//import WorkThreadInterface;
 
-class HistWindow : public BaseWindow
+export class HistWindow : public BaseWindow
 {
 public:
     HistWindow();
@@ -18,8 +19,8 @@ public:
 	void Start
 	(
 		HWND const, 
-		HistorySystem *, 
-		WorkThreadInterface * const
+		HistorySystem *  //, 
+		//WorkThreadInterface * const
 	);
 	void Stop();
 
@@ -53,7 +54,7 @@ private:
     HistGeneration getGenFromXpos(LPARAM const) const;
     void           dispGenerationWindow()       const;
 
-	WorkThreadInterface * m_pWorkThreadInterface;
+	//WorkThreadInterface * m_pWorkThreadInterface;
     HistorySystem       * m_pHistSys;       
 	GenDisplayWindow    * m_pGenDisplay;
     TRACKMOUSEEVENT       m_trackStruct;

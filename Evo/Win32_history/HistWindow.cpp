@@ -5,18 +5,23 @@
 module WinHistLib:HistWindow;
 
 import std;
+import Debug;
 import HistoryLib;
 import Tooltip;
-import WorkThreadInterface;
+import WinBasics;
+import Win32_Util;
+import WinManager;
+//import WorkThreadInterface;
 import :GenDisplayWindow;
 
-import Debug;
+using std::min;
+using std::max;
 
 HistWindow::HistWindow() :
     BaseWindow(),
     m_pHistSys(nullptr),
     m_pGenDisplay(nullptr),
-	m_pWorkThreadInterface(nullptr),
+	//m_pWorkThreadInterface(nullptr),
     m_trackStruct({ sizeof(TRACKMOUSEEVENT), TME_LEAVE, nullptr, 0L }),
     m_genSelected()
 { }
@@ -24,12 +29,12 @@ HistWindow::HistWindow() :
 void HistWindow::Start
 (
     HWND                  const hwndParent,
-    HistorySystem       *       pHistSys,
-	WorkThreadInterface * const pWorkThreadInterface
+    HistorySystem       *       pHistSys
+	//WorkThreadInterface * const pWorkThreadInterface
 )
 {
     m_pHistSys             = pHistSys;
-	m_pWorkThreadInterface = pWorkThreadInterface;
+	//m_pWorkThreadInterface = pWorkThreadInterface;
 	m_pGenDisplay          = new GenDisplayWindow();
 
     HWND const hwndHistory = StartBaseWindow
@@ -39,21 +44,22 @@ void HistWindow::Start
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,
-		[&]() { return ! m_pWorkThreadInterface->IsRunning(); }
+		nullptr
+		//[&]() { return ! m_pWorkThreadInterface->IsRunning(); }
    );
 
-    Util::AddWindowStyle(hwndHistory, WS_EX_STATICEDGE);
+    AddWindowExStyle(hwndHistory, WS_EX_STATICEDGE);
     m_trackStruct.hwndTrack = hwndHistory;
 
     m_pGenDisplay->StartGenDisplayWindow(GetWindowHandle());
-	m_pHistSys->RegisterObserver(this);  // Trigger me, if something happens in history system
+	m_pHistSys->RegisterObserver(*this);  // Trigger me, if something happens in history system
 }
 
 void HistWindow::Stop()
 {
 	DestroyWindow();
 	m_pHistSys = nullptr;
-	m_pWorkThreadInterface = nullptr;
+	//m_pWorkThreadInterface = nullptr;
 }
 
 HistWindow::~HistWindow()
@@ -65,16 +71,16 @@ HistWindow::~HistWindow()
 
 void HistWindow::doPaint(HDC const hDC)
 {
-	if (m_pWorkThreadInterface)
-	{
-		paintAllGenerations(hDC);
-		paintHighlightGenerations(hDC, m_pWorkThreadInterface->GetGenDemanded());
-	}
+	//if (m_pWorkThreadInterface)
+	//{
+	//	paintAllGenerations(hDC);
+	//	paintHighlightGenerations(hDC, m_pWorkThreadInterface->GetGenDemanded());
+	//}
 }
 
 void HistWindow::gotoGeneration(HistGeneration const gen) 
 { 
-	m_pWorkThreadInterface->PostGotoGeneration(gen); 
+	//m_pWorkThreadInterface->PostGotoGeneration(gen); 
 }
 
 PixelRect HistWindow::getGenerationRect(HistGeneration const gen) const
@@ -88,8 +94,8 @@ PixelRect HistWindow::getGenerationRect  // position is relative to client area
     HistGeneration const genHi
 ) const
 {
-	PixelRectSize   const rectSize    { GetClRectSize() };
-	PIXEL           const pixSize     { rectSize.GetXvalue() };
+	PixelRectSize  const rectSize    { GetClRectSize() };
+	PIXEL          const pixSize     { rectSize.GetXvalue() };
 	HistGeneration const genNrOfGens { m_pHistSys->GetNrOfGenerations() };
     Assert(genNrOfGens  > 0);
 
@@ -104,11 +110,11 @@ PixelRect HistWindow::getGenerationRect  // position is relative to client area
 
 HistGeneration HistWindow::getGenFromXpos(LPARAM const lParam) const
 {
-    PIXEL           const pixXpos  { PIXEL(GET_X_LPARAM(lParam)) };
-    PIXEL           const pixWidth { GetClientWindowWidth() };
-    long            const lNrOfGens{ m_pHistSys->GetNrOfGenerations().GetLong() };
+    PIXEL          const pixXpos  { PIXEL(GetXlparam(lParam)) };
+    PIXEL          const pixWidth { GetClientWindowWidth() };
+    long           const lNrOfGens{ m_pHistSys->GetNrOfGenerations().GetLong() };
     HistGeneration const genMax   { lNrOfGens - 1 };
-	HistGeneration       genRes   { (max(0, pixXpos.GetValue()) * lNrOfGens) / pixWidth.GetValue() };
+	HistGeneration       genRes   { (max(0L, pixXpos.GetValue()) * lNrOfGens) / pixWidth.GetValue() };
 
 	if (genRes > genMax)
 		genRes = genMax;
@@ -148,7 +154,7 @@ void HistWindow::paintGeneration(HDC const hDC, HistGeneration const gen, COLORR
 {
     Assert(gen >= 0);
     SetBkColor(hDC, col);
-    Util::FastFill(hDC, getGenerationRect(gen));
+    FastFill(hDC, getGenerationRect(gen));
 }
 
 void HistWindow::paintPixelPos(HDC const hDC, PIXEL const pixPosX, HistoryIterator & histIter) const
@@ -189,7 +195,7 @@ void HistWindow::paintPixelPos(HDC const hDC, PIXEL const pixPosX, HistoryIterat
         : CLR_BACK
    );
 
-    Util::FastFill(hDC, PixelRect{ pixPosX, 0_PIXEL, pixPosX + 1_PIXEL, GetClientWindowHeight() });
+    FastFill(hDC, PixelRect{ pixPosX, 0_PIXEL, pixPosX + 1_PIXEL, GetClientWindowHeight() });
 }
 
 void HistWindow::paintAllGenerations(HDC const hDC)
@@ -246,7 +252,7 @@ void HistWindow::paintLifeLine(HDC const hDC, HistGeneration const genBirth, His
     PixelRect   pixRect = getGenerationRect(genBirth, max(genBirth, genDeath));
     PIXEL const height4 = GetClientWindowHeight() / 4;
     SetBkColor(hDC, CLR_POI);
-	Util::FastFill
+	FastFill
 	(
 		hDC, 
 		PixelRect
@@ -265,7 +271,7 @@ bool HistWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
     {
 
 	case WM_COMMAND:
-		PostCommand2Application(wParam, lParam); // not handled here, delegate to application
+		WinManager::PostCommand2App(wParam, lParam); // not handled here, delegate to application
 		return FALSE;
 
     case WM_PAINT:

@@ -40,7 +40,7 @@ public:
 		long               const, 
 		unsigned long long const, 
 		ModelFactory     * const
-   );
+    );
 
 	virtual void           StopHistorySystem();
 	virtual bool		   AddHistorySlot();

@@ -6,7 +6,7 @@ export module AppWindowInterface;
 
 import BaseAppWindow;
 
-class AppWindowInterface : public BaseAppWindow
+export class AppWindowInterface : public BaseAppWindow
 {
 
 public:

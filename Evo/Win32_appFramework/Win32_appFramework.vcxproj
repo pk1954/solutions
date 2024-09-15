@@ -172,7 +172,6 @@
     <ClCompile Include="AppWindowInterface.ixx" />
     <ClCompile Include="BaseAppWindow.ixx" />
     <ClCompile Include="ReadBuffer.ixx" />
-    <ClCompile Include="ScriptHook.ixx" />
     <ClCompile Include="SpeedControl.cpp" />
     <ClCompile Include="SpeedControl.ixx" />
     <ClCompile Include="BaseAppWindow.cpp" />

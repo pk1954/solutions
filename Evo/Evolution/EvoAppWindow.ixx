@@ -48,6 +48,8 @@ public:
 	virtual void Start();
 	virtual void Stop();
 
+	void DoGameStuff() { }
+
 private:
 	EvoAppWindow             (EvoAppWindow const &);  // noncopyable class 
     EvoAppWindow & operator= (EvoAppWindow const &);  // noncopyable class 
@@ -56,7 +58,7 @@ private:
 
 	void configureStatusBar();
 
-	Util::Event              m_eventPOI;
+	Event              m_eventPOI;
 					         
 	EvoHistorySysGlue        m_EvoHistGlue;
 	ColorManager             m_ColorManager;

@@ -7,8 +7,9 @@ module BaseAppWindow;
 import std;
 import Trace;
 import HistoryLib;
-import win32_util_resource;
-import UtilityWrappers;
+import WinBasics;
+import Win32_Util_Resource;
+//import UtilityWrappers;
 import AboutBox;
 import BaseWindow;
 import AppMenu;
@@ -28,20 +29,20 @@ BaseAppWindow::BaseAppWindow()
 	m_pAppMenu(nullptr),
 	m_pModelWindow(nullptr),
 	m_pHistorySystem(nullptr),
-	m_pWorkThreadInterface(nullptr),
+	//m_pWorkThreadInterface(nullptr),
 	m_traceStream()
 {
 }
 
 void BaseAppWindow::Initialize
 (
-	WorkThreadInterface * const pWorkThreadInterface,
+	//WorkThreadInterface * const pWorkThreadInterface,
 	bool                  const bUseHistorySystem
 )
 {
 	//	_CrtSetAllocHook(MyAllocHook);
 
-	m_pWorkThreadInterface = pWorkThreadInterface;
+	//m_pWorkThreadInterface = pWorkThreadInterface;
 	m_bUseHistorySystem = bUseHistorySystem;
 
 	m_hwndConsole = GetConsoleWindow();
@@ -77,7 +78,10 @@ void BaseAppWindow::Start(BaseWindow * const pModelWindow)
 	m_pModelWindow = pModelWindow;
 
 	m_pAppMenu->Start();
-	m_StatusBar.Start(m_hwndApp, m_pWorkThreadInterface);
+	m_StatusBar.Start
+	(
+		m_hwndApp //, m_pWorkThreadInterface
+	);
 
 	m_WinManager.AddWindow(L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 TRUE,  TRUE );
 	m_WinManager.AddWindow(L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                     TRUE,  TRUE );
@@ -86,7 +90,7 @@ void BaseAppWindow::Start(BaseWindow * const pModelWindow)
 	if (m_bUseHistorySystem)
 	{
 		m_pHistorySystem = HistorySystem::CreateHistorySystem();  // deleted in Stop function
-		m_HistWindow    .Start(m_hwndApp, m_pHistorySystem, m_pWorkThreadInterface);
+		m_HistWindow    .Start(m_hwndApp, m_pHistorySystem); //, m_pWorkThreadInterface);
 		m_HistInfoWindow.Start(m_hwndApp, nullptr);
 		m_WinManager.AddWindow(L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,     FALSE, FALSE); 
 		m_WinManager.AddWindow(L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow, TRUE,  FALSE);
@@ -110,8 +114,8 @@ void BaseAppWindow::Stop()
 
 	if (m_bUseHistorySystem)
 	{
-		m_HistInfoWindow.Stop();
-		m_HistWindow    .Stop();
+		//m_HistInfoWindow.Stop();
+		//m_HistWindow    .Stop();
 		delete m_pHistorySystem;   
 		m_pHistorySystem = nullptr;
 	}
@@ -121,7 +125,7 @@ void BaseAppWindow::adjustChildWindows()
 {
 	HWND hwndApp = GetParent(m_pModelWindow->GetWindowHandle());
 
-	PixelRectSize pntAppClientSize(Util::GetClRectSize(hwndApp));
+	PixelRectSize pntAppClientSize(GetClRectSize(hwndApp));
 	PIXEL pixAppClientWinWidth  = pntAppClientSize.GetX();
 	PIXEL pixAppClientWinHeight = pntAppClientSize.GetY();
 
@@ -155,7 +159,7 @@ void BaseAppWindow::adjustChildWindows()
 	}
 }
 
-LRESULT BaseAppWindow::UserProc
+bool BaseAppWindow::UserProc
 (
 	UINT   const message, 
 	WPARAM const wParam, 
@@ -211,7 +215,7 @@ LRESULT BaseAppWindow::UserProc
 
 bool BaseAppWindow::ProcessFrameworkCommand(WPARAM const wParam, LPARAM const lParam)
 {
-	int const wmId = LOWORD(wParam);
+	int const wmId = LoWord(wParam);
 
 	switch (wmId)
 	{
@@ -220,11 +224,11 @@ bool BaseAppWindow::ProcessFrameworkCommand(WPARAM const wParam, LPARAM const lP
 		break;
 
 	case IDM_EXIT:
-		PostMessage(WM_CLOSE, 0, 0);
+		PostMessageW(WM_CLOSE, 0, 0);
 		break;
 
 	case IDM_MAIN_WINDOW:
-		::SendMessage(m_WinManager.GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
+		::SendMessageW(m_WinManager.GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
 		break;
 
 	case IDM_HIST_INFO:

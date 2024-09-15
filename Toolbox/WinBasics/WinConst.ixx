@@ -26,6 +26,7 @@ extern const DWORD WS_GROUP_CONST;
 extern const DWORD WS_TABSTOP_CONST;
 extern const DWORD WS_SYSMENU_CONST;
 extern const DWORD WS_EX_TOPMOST_CONST;
+extern const DWORD WS_EX_STATICEDGE_CONST;
 
 extern const DWORD SW_HIDE_CONST;
 extern const DWORD SW_SHOW_CONST;
@@ -86,6 +87,10 @@ extern const DWORD DS_SHELLFONT_CONST;
 
 extern const DWORD DT_LEFT_CONST;
 
+extern const DWORD ES_RIGHT_CONST;
+
+extern const DWORD TA_CENTER_CONST;
+
 extern const DWORD TME_HOVER_CONST;
 extern const DWORD TME_LEAVE_CONST;
 extern const DWORD TBM_GETPOS_CONST;
@@ -96,8 +101,6 @@ extern const DWORD TPM_TOPALIGN_CONST;
 extern const DWORD TPM_LEFTALIGN_CONST;
 extern const DWORD TPM_RETURNCMD_CONST;
 extern const DWORD TPM_NONOTIFY_CONST;
-
-extern const DWORD ES_RIGHT_CONST;
 
 extern const BYTE  FVIRTKEY_CONST; 
 extern const BYTE  FCONTROL_CONST; 
@@ -120,6 +123,9 @@ extern const int EXCEPTION_EXECUTE_HANDLER_CONST;
 
 export 
 {
+    const UINT    TRUE                = 1;
+    const UINT    FALSE               = 0;
+
     const UINT    WM_APP              = 0x8000;
     const UINT    WM_CHAR             = 0x0102;
     const UINT    WM_CLOSE            = 0x0010;
@@ -176,6 +182,7 @@ export
     const DWORD   WS_TABSTOP          = WS_TABSTOP_CONST;
     const DWORD   WS_SYSMENU          = WS_SYSMENU_CONST;
     const DWORD   WS_EX_TOPMOST       = WS_EX_TOPMOST_CONST;
+    const DWORD   WS_EX_STATICEDGE    = WS_EX_STATICEDGE_CONST;
                                       
     const DWORD   SW_HIDE             = SW_HIDE_CONST;
     const DWORD   SW_SHOW             = SW_SHOW_CONST;
@@ -236,6 +243,10 @@ export
                   
     const DWORD   DT_LEFT             = DT_LEFT_CONST;
 
+    const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
+                  
+    const DWORD   TA_CENTER           = TA_CENTER_CONST;
+                  
     const DWORD   TME_HOVER           = TME_HOVER_CONST;
     const DWORD   TME_LEAVE           = TME_LEAVE_CONST;
     const DWORD   TBM_GETPOS          = TBM_GETPOS_CONST;
@@ -247,8 +258,6 @@ export
     const DWORD   TPM_RETURNCMD       = TPM_RETURNCMD_CONST;
     const DWORD   TPM_NONOTIFY        = TPM_NONOTIFY_CONST;
 
-    const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
-                  
     const BYTE    FVIRTKEY            = FVIRTKEY_CONST; 
     const BYTE    FCONTROL            = FCONTROL_CONST; 
     const BYTE    FALT                = FALT_CONST; 

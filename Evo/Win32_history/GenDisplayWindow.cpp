@@ -4,9 +4,13 @@
 
 module WinHistLib:GenDisplayWindow;
 
+import std;
 import WinBasics;
 import Win32_Util;
 import BaseWindow;
+
+using std::swprintf;
+using std::wcslen;
 
 GenDisplayWindow::GenDisplayWindow() 
   : BaseWindow()
@@ -42,10 +46,10 @@ void GenDisplayWindow::OnPaint()
         PAINTSTRUCT ps;
         HDC hDC = BeginPaint(&ps);
 //        FillBackground(hDC, CLR_BACK);
-        StringCchPrintf(szBuffer, sizeof(szBuffer) / sizeof(*szBuffer), L"%u", m_genDisplay.GetLong());
+        swprintf(szBuffer, sizeof(szBuffer) / sizeof(*szBuffer), L"%ld", m_genDisplay.GetLong());
         SetTextAlign(hDC, TA_CENTER);
 //        SetTextColor(hDC, CLR_TEXT);
-        TextOut(hDC, 25, 0, szBuffer, (int)wcslen(szBuffer));
+        TextOutW(hDC, 25, 0, szBuffer, (int)wcslen(szBuffer));
         EndPaint(&ps);
     }
 }

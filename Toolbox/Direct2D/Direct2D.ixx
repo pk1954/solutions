@@ -31,6 +31,10 @@ export D2D1_POINT_2F convertD2D(fPixelPoint   const &);
 export D2D1_RECT_F   convertD2D(fPixelRect    const &);
 export D2D1_ELLIPSE  convertD2D(fPixelEllipse const &);
 
+class D2D_driver;
+
+export using UPD2D = unique_ptr<D2D_driver>;
+
 export class D2D_driver
 {
 public:
@@ -38,10 +42,13 @@ public:
     D2D_driver() = default;
     virtual ~D2D_driver();
 
-    static unique_ptr<D2D_driver> Create(HWND const hwnd);
+    static UPD2D Create(HWND const hwnd);
 
     void Display(function<void()>);
     void ShutDown();
+    void Push();
+    void Pop();
+    void Rotation(fPixelPoint const, float const);
     void SetStdFontSize(float const);
     void Resize              (PIXEL const, PIXEL const);
     void DrawRectangle       (fPixelRect    const&, Color const, fPixel const)                                         const;

@@ -18,7 +18,7 @@ import EvoCoreLib;
 
 using std::wostream;
 
-class WorkThreadMessage
+export class WorkThreadMessage
 {
 public:
 	enum class Id : UINT
@@ -42,7 +42,7 @@ public:
 
 class WorkThreadInterface;
 
-class WorkThread: public Thread
+export class WorkThread: public Thread
 {
 public:
 	WorkThread

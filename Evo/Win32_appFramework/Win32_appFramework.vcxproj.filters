@@ -44,9 +44,6 @@
     <ClCompile Include="BaseAppWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptHook.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WorkThreadInterface.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

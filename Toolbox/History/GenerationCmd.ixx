@@ -86,7 +86,7 @@ private:
 	Int24 m_Param;
 };
 
-wchar_t const* const GetGenerationCmdNameShort(GenerationCmd::Id const);
-wchar_t const* const GetGenerationCmdName     (GenerationCmd::Id const);
+export wchar_t const* const GetGenerationCmdNameShort(GenerationCmd::Id const);
+export wchar_t const* const GetGenerationCmdName     (GenerationCmd::Id const);
 
-wostream& operator << (wostream&, GenerationCmd const&);
+export wostream& operator << (wostream&, GenerationCmd const&);

@@ -73,10 +73,10 @@ static INT_PTR __stdcall dialogProc
 		m_iGridType = (GridDimensions::GetNrOfNeigbors() == 6) ? IDM_GRID_TYPE_HEX : IDM_GRID_TYPE_RECT;
 
 		swprintf_s(m_wBuffer, BUFLEN, L"%d", m_iWidth);
-		Util::SetText(GetDlgItem(hDlg, IDM_CHANGE_GRID_TYPE_WIDTH), m_wBuffer);
+		SetText(GetDlgItem(hDlg, IDM_CHANGE_GRID_TYPE_WIDTH), m_wBuffer);
 
 		swprintf_s(m_wBuffer, BUFLEN, L"%d", m_iHeight);
-		Util::SetText(GetDlgItem(hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT), m_wBuffer);
+		SetText(GetDlgItem(hDlg, IDM_CHANGE_GRID_TYPE_HEIGHT), m_wBuffer);
 
 		SendDlgItemMessage(hDlg, m_iGridType,    BM_CLICK, 0, 0);
 		SendDlgItemMessage(hDlg, IDM_SOFT_RESET, BM_CLICK, 0, 0);

@@ -4,6 +4,6 @@
 
 export module EvoEditorWrappers;
 
-import EvoEditorWindow;
-
-export void DefineWin32EditorWrapperFunctions(EvoEditorWindow const *);
+//import EvoEditorWindow;
+//
+//export void DefineWin32EditorWrapperFunctions(EvoEditorWindow const *);

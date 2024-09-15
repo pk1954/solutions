@@ -105,6 +105,7 @@ export
     using ::MapWindowPoints;
     using ::MessageBoxW;
     using ::MoveWindow;
+    using ::MulDiv;
     using ::MultiByteToWideChar;
     using ::PeekMessageW;
     using ::PostMessageW;
@@ -124,10 +125,12 @@ export
     using ::SetForegroundWindow;
     using ::SetLastError;
     using ::SetMenu;
+    using ::SetTextAlign;
     using ::SetWindowPos;
     using ::SetWindowTextW;
     using ::ShellExecuteW;
     using ::ShowWindow;
+    using ::TextOutW;
     using ::TrackMouseEvent;
     using ::TrackPopupMenu;
     using ::TranslateAcceleratorW;

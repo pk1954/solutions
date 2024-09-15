@@ -171,6 +171,9 @@
     <ProjectReference Include="..\Toolbox\History\History.vcxproj">
       <Project>{0bfc7d59-a231-449a-90c2-eb64c59289ba}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
+      <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Win32_history\Win32_history.vcxproj">
       <Project>{1f07043f-bc80-42a8-ac9e-ff92cacda7e4}</Project>
     </ProjectReference>
