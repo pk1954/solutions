@@ -11,6 +11,7 @@ import WinBasics;
 import Direct2D;
 import GraphicsWindow;
 import Meeple;
+import Shape;
 
 using std::min;
 
@@ -21,6 +22,17 @@ Color const COL_GREEN  { Color(0.0f, 1.0f, 0.0f) };
 Color const COL_BLUE   { Color(0.4f, 0.4f, 1.0f) };
 Color const COL_YELLOW { Color(0.8f, 0.8f, 0.0f) };
 
+void BlokusWindow::Start(HWND const hwndParent)
+{
+	GraphicsWindow::Initialize
+	(
+		hwndParent, 
+		L"ClassBlokusWindow", 
+	    WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
+	);
+	initMeeples();
+}
+
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
@@ -30,7 +42,25 @@ bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 	return true;
 }
 
-void BlokusWindow::paintBoard()
+void BlokusWindow::showOrientations
+(
+	Meeple const& meeple,
+	fPixel const  fPosVert,
+	Color  const  color
+) const
+{
+	fPixelPoint fPos { m_fPixFieldSize, fPosVert };
+	meeple.Apply2AllOrientations
+	(
+		[this, &fPos, color](Shape const &s)
+		{
+			s.Draw(*m_upGraphics.get(), fPos, color, m_fPixFieldSize);
+			fPos.Move2Horz(m_fPixFieldSize * 5.5f);
+		}
+	);
+}
+
+void BlokusWindow::paintBoard() const
 {
 	Color          const BOARD_COLOR   { Color(0.9f, 0.9f, 0.9f) };
 	Color          const LINE_COLOR    { Color(0.2f, 0.2f, 0.2f) };
@@ -60,60 +90,129 @@ void BlokusWindow::paintBoard()
 void BlokusWindow::PaintGraphics()
 {
 	paintBoard();
-	Meeple m1
-	(
-		{
-			{
-				{true,  true,  false, false, false},
-				{false, true,  true,  false, false},
-				{false, false, true,  false, false}
-			}
-		}
-	);
-	m1.Draw(*m_upGraphics.get(), fPixelPoint(100._fPixel, 100._fPixel), COL_RED, m_fPixFieldSize);
+	showOrientations(m_meeples[16], m_fPixFieldSize *  1.0f, COL_RED);
+	showOrientations(m_meeples[17], m_fPixFieldSize *  6.0f, COL_GREEN);
+	showOrientations(m_meeples[18], m_fPixFieldSize * 11.0f, COL_BLUE);
+	showOrientations(m_meeples[19], m_fPixFieldSize * 16.0f, COL_YELLOW);
+	showOrientations(m_meeples[20], m_fPixFieldSize * 20.0f, COL_YELLOW);
 
-	Meeple m2
-	(
-		{
-			{
-				{true,  true,  true,  false, false},
-				{true,  false, true,  false, false},
-				{false, false, false, false, false}
-			}
-		}
-	);
-	m2.Draw(*m_upGraphics.get(), fPixelPoint(100._fPixel, 300._fPixel), COL_GREEN, m_fPixFieldSize);
-
-	m_upGraphics->Push();
-	m_upGraphics->Rotation(fPixelPoint(100._fPixel, 500._fPixel), 30.0f);
-
-	Meeple m3
-	(
-		{
-			{
-				{true,  true,  true,  true,  false},
-				{false, false, false, true,  false},
-				{false, false, false, false, false}
-			}
-		}
-	);
-	m3.Draw(*m_upGraphics.get(), fPixelPoint(100._fPixel, 500._fPixel), COL_BLUE, m_fPixFieldSize);
-
-	m_upGraphics->Pop();
-	Meeple m4
-	(
-		{
-			{
-				{true,  true, true,  false, false},
-				{false, true, false, false, false},
-				{false, true, false, false, false}
-			}
-		}
-	);
-	m4.Draw(*m_upGraphics.get(), fPixelPoint(100._fPixel, 700._fPixel), COL_YELLOW, m_fPixFieldSize);
-
-	//meepleSquare(fPixelPoint(100._fPixel, 100._fPixel), COL_RED);
-	//meepleSquare(fPixelPoint(100._fPixel, 200._fPixel), COL_GREEN);
-	//meepleSquare(fPixelPoint(100._fPixel, 300._fPixel), COL_BLUE);
-	//meepleSquare(fPixelPoint(100._fPixel, 400._fPixel), COL_YELLOW);
+	//m_upGraphics->Push();
+	//m_upGraphics->Rotation(fPixelPoint(100._fPixel, 500._fPixel), 30.0f);
+	//m_upGraphics->Pop();
 };
+
+void BlokusWindow::initMeeples()
+{
+	m_meeples[0] =
+	{{
+		{ true },
+		{ true,  true },
+		{ false, true, true  }
+	}};
+	m_meeples[1] =
+	{{
+		{ true, true },
+		{ true },
+		{ true, true }
+	}};
+	m_meeples[2] =
+	{{
+		{ true, true, true, true },
+		{ true }
+	}};
+	m_meeples[3] =
+	{{
+		{ true },
+		{ true, true, true },
+		{ true }
+	}};
+	m_meeples[4] =
+	{{
+		{ true,  true,  true,  true },
+		{ false, true }
+	}};
+	m_meeples[5] =
+	{{
+		{ true, true, true, true, true }
+	}};
+	m_meeples[6] =
+	{{
+		{ true,  true },
+		{ false, true, true, true }
+	}};
+	m_meeples[7] =
+	{{
+		{ true },
+		{ true,  true, true },
+		{ false, true }
+	}};
+	m_meeples[8] =
+	{{
+		{ true, true, true },
+		{ true },
+		{ true }
+	}};
+	m_meeples[9] =
+	{{
+		{ true, true,  true },
+		{ true, true  }
+	}};
+	m_meeples[10] =
+	{{
+		{ true },
+		{ true,  true,  true },
+		{ false, false, true }
+	}};
+	m_meeples[11] =
+	{{
+		{ false, true },
+		{ true,  true,  true },
+		{ false, true }
+	}};
+
+	m_meeples[12] =
+	{{
+		{ true,  true },
+		{ true,  true }
+	}};
+	m_meeples[13] =
+	{{
+		{ true,  true },
+		{ false, true, true }
+	}};
+	m_meeples[14] =
+	{{
+		{ true, true, true },
+		{ true }
+	}};
+	m_meeples[15] =
+	{{
+		{ true },
+		{ true, true },
+		{ true }
+	}};
+	m_meeples[16] =
+	{{
+		{ true, true, true, true }
+	}};
+
+	m_meeples[17] =
+	{{
+		{ true, true },
+		{ true }
+	}};
+	m_meeples[18] =
+	{{
+		{ true, true, true }
+	}};
+
+	m_meeples[19] =
+	{{
+		{ true, true }
+	}};
+
+	m_meeples[20] =
+	{{
+		{ true }
+	}};
+}

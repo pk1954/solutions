@@ -15,22 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Accelerators.ixx">
+    <ClCompile Include="Meeple.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Blokus.cpp">
+    <ClCompile Include="Meeple.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlokusAppWindow.cpp">
+    <ClCompile Include="Shape.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlokusAppWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BlokusWindow.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BlokusWindow.cpp">
+    <ClCompile Include="Shape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
