@@ -1,8 +1,8 @@
-// Pos.ixx
+// CoordPos.ixx
 //
 // BlokusCore
 
-export module BlokusCore:Pos;
+export module BlokusCore:CoordPos;
 
 import Util;
 import Types;
@@ -20,21 +20,14 @@ export int const MAX_SHAPE_EXTENSION { 5 };
 const Coord MAX_COL { MAX_SHAPE_EXTENSION - 1};
 const Coord MAX_ROW { MAX_SHAPE_EXTENSION - 1};
 
-export struct Pos
+export using CoordPos = PosType<Coord>;
+
+bool IsInShapeRange(CoordPos const &pos)
 {
-    Coord m_x;
-    Coord m_y;
+    return IsInRange(pos.GetX(), 0_COORD, MAX_COL) && IsInRange(pos.GetY(), 0_COORD, MAX_ROW);
+}
 
-	bool operator==(Pos const&) const = default;
-
-    bool IsInShapeRange() const
-    {
-        return IsInRange(m_x, 0_COORD, MAX_COL) && IsInRange(m_y, 0_COORD, MAX_ROW);
-    }
-
-	fPixelPoint TofPixelPos(fPixel const size) const
-	{
-		return fPixelPoint(size * m_x.GetValue(), size * m_y.GetValue());
-	}; 
-
-};
+fPixelPoint TofPixelPos(CoordPos const &pos, fPixel const size)
+{
+	return fPixelPoint(size * pos.GetXvalue(), size * pos.GetYvalue());
+}; 

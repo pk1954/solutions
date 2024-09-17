@@ -8,7 +8,7 @@ import std;
 import Types;
 import Color;
 import Direct2D;
-import :Pos;
+import :CoordPos;
 
 using std::array;
 using std::vector;
@@ -24,14 +24,14 @@ public:
 
 	bool operator==(Shape const&) const = default;
 
-	bool IsPartOfShape(Pos const& pos) const
+	bool IsPartOfShape(CoordPos const& pos) const
 	{
-		return pos.IsInShapeRange() && m_shape[pos.m_y.GetValue()][pos.m_x.GetValue()];
+		return IsInShapeRange(pos) && m_shape[pos.GetYvalue()][pos.GetXvalue()];
 	}
 
     void Apply2AllContactPnts(auto const& func) const
     {
-        for (Pos const& pos : m_contactPnts)
+        for (CoordPos const& pos : m_contactPnts)
             func(pos);
     }
 
@@ -42,15 +42,15 @@ public:
 
 private:
 
-    SHAPE       m_shape;
-	vector<Pos> m_contactPnts;
+    SHAPE            m_shape;
+	vector<CoordPos> m_contactPnts;
 
 	void colSquare        (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 	void shapeSquare      (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 	void drawShapeSquares (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 	void drawContactPoints(D2D_driver const &, fPixelPoint const, fPixel const) const;
-	bool diagContact (Pos const&) const;
-	bool orthoContact(Pos const&) const;
+	bool diagContact (CoordPos const&) const;
+	bool orthoContact(CoordPos const&) const;
 	bool spaceAtTop() const;
 	bool spaceAtLeft() const;
 	void shiftTop();

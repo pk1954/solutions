@@ -27,7 +27,7 @@
     <ClCompile Include="Shape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pos.ixx">
+    <ClCompile Include="CoordPos.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlokusCore.ixx">
@@ -37,6 +37,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Components.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PieceTypeId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

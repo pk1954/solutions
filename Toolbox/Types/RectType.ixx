@@ -214,17 +214,7 @@ public:
 		}
 	}
 
-	bool operator== (RectType const & a) const 
-	{ 
-		return (a.m_Left  == m_Left ) && (a.m_Top    == m_Top   ) && 
-			   (a.m_Right == m_Right) && (a.m_Bottom == m_Bottom); 
-	};
-
-	bool operator!= (RectType const & a) const 
-	{ 
-		return (a.m_Left  != m_Left ) || (a.m_Top    != m_Top   ) || 
-			   (a.m_Right != m_Right) || (a.m_Bottom != m_Bottom); 
-	};
+	bool operator== (RectType const & a) const = default;
 
 	RectType ScaleRect(BASE_TYPE const val) const // positive values of val enlarge rectangle
 	{                                             // negative values reduce its size

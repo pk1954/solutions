@@ -43,9 +43,8 @@ public:
 
     LineType() = default;
 
-    bool operator==(LineType const & a) const { return (m_p1 == a.m_p1) && (m_p2 == a.m_p2); }
-    bool operator!=(LineType const & a) const { return (m_p1 != a.m_p1) || (m_p2 != a.m_p2); }
-
+    bool operator==(LineType const & a) const = default;
+    
     LineType operator+= (POS_TYPE const a) { m_p1 += a; m_p2 += a; return * this; }
     LineType operator-= (POS_TYPE const a) { m_p1 -= a; m_p2 -= a; return * this; }
 

@@ -7,6 +7,7 @@ module BlokusWindow;
 import std;
 import Color;
 import Types;
+import SaveCast;
 import WinBasics;
 import Direct2D;
 import GraphicsWindow;
@@ -35,8 +36,8 @@ bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
 	fPixel const fPixAvailable { GetClientHeight() - BORDER * 2.0f };
-	m_fPixFieldSize = fPixAvailable / 22.f; // 20 fields + top and bottom reserve
-	m_fPixBoardSize = m_fPixFieldSize * 20.f;
+	m_fPixFieldSize = fPixAvailable / Cast2Float(Components::BOARD_SIZE + 2); // board height + top and bottom reserve
+	m_fPixBoardSize = m_fPixFieldSize * Cast2Float(Components::BOARD_SIZE);
 	m_fPixPntOrigin = fPixelPoint(BORDER, BORDER + m_fPixFieldSize);
 	Notify(false);
 	return true;
@@ -65,7 +66,8 @@ void BlokusWindow::paintBoard() const
 	Color          const BOARD_COLOR       { Color(0.9f, 0.9f, 0.9f) };
 	Color          const LINE_COLOR        { Color(0.2f, 0.2f, 0.2f) };
 	fPixelRectSize const fPixRectSizeBoard { fPixelRectSize(m_fPixBoardSize, m_fPixBoardSize) };
-	m_upGraphics->FillRectangle(fPixelRect(m_fPixPntOrigin, fPixRectSizeBoard), BOARD_COLOR);
+	fPixelRect     const fPixBoardRect     { m_fPixPntOrigin, fPixRectSizeBoard };
+	m_upGraphics->FillRectangle(fPixBoardRect, BOARD_COLOR);
 	for (fPixel x = m_fPixPntOrigin.GetX(); x <= m_fPixPntOrigin.GetX() + m_fPixBoardSize; x += m_fPixFieldSize)
 		m_upGraphics->DrawLine
 		(
@@ -96,11 +98,11 @@ void BlokusWindow::paintPieces() const
 	(
 		[this, &fPixPntOriginPieces](PieceType const& pt)
 		{
-			Pos const pos { pt.GetPos() };
+			CoordPos const pos { pt.GetPos() };
 			fPixelPoint const fPos 
 			{ 
-				m_fPixFieldSize * pos.m_x.GetValue() + m_fPixFieldSize * 0.5f,
-				m_fPixFieldSize * pos.m_y.GetValue() + m_fPixFieldSize * 0.5f
+				m_fPixFieldSize * pos.GetXvalue() + m_fPixFieldSize * 0.5f,
+				m_fPixFieldSize * pos.GetYvalue() + m_fPixFieldSize * 0.5f
 			};
 			pt.Draw
 			(

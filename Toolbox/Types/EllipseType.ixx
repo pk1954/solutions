@@ -37,13 +37,7 @@ public:
         m_radiusY(rect.GetHeight() / 2)
     {}
 
-    bool operator==(EllipseType const & a) const 
-    { 
-        return 
-            (m_position == a.m_position) &&
-            (m_radiusX  == a.m_radiusX) &&
-            (m_radiusY  == a.m_radiusY);
-    }
+    bool operator==(EllipseType const & a) const = default;
 
     EllipseType operator+= (POS_TYPE const a) { m_position += a.m_position; return * this; }
     EllipseType operator-= (POS_TYPE const a) { m_position -= a.m_position; return * this; }

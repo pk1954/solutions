@@ -11,43 +11,37 @@ import Direct2D;
 
 using std::swap;
 
-// A Pos in the environment of a Shape is a contact Pos
-// if at least one diagonal neighbour of the Pos is part of the Shape
-// and no orthogonal (horz or vert) neighbour of the Pos is part of the Shape
+// A CoordPos in the environment of a Shape is a contact CoordPos
+// if at least one diagonal neighbour of the CoordPos is part of the Shape
+// and no orthogonal (horz or vert) neighbour of the CoordPos is part of the Shape
 
-bool Shape::diagContact(Pos const& pos) const
+bool Shape::diagContact(CoordPos const& pos) const
 {
-	return IsPartOfShape(Pos(pos.m_x + 1, pos.m_y + 1)) ||
-		   IsPartOfShape(Pos(pos.m_x + 1, pos.m_y - 1)) ||
-		   IsPartOfShape(Pos(pos.m_x - 1, pos.m_y + 1)) ||
-		   IsPartOfShape(Pos(pos.m_x - 1, pos.m_y - 1));
+	return IsPartOfShape(CoordPos(pos.GetX() + 1_COORD, pos.GetY() + 1_COORD)) ||
+		   IsPartOfShape(CoordPos(pos.GetX() + 1_COORD, pos.GetY() - 1_COORD)) ||
+		   IsPartOfShape(CoordPos(pos.GetX() - 1_COORD, pos.GetY() + 1_COORD)) ||
+		   IsPartOfShape(CoordPos(pos.GetX() - 1_COORD, pos.GetY() - 1_COORD));
 }
 
-bool Shape::orthoContact(Pos const& pos) const
+bool Shape::orthoContact(CoordPos const& pos) const
 {
-	if (IsPartOfShape(Pos(pos.m_x,     pos.m_y + 1)))
-		return true;
-	if (IsPartOfShape(Pos(pos.m_x,     pos.m_y - 1)))
-		return true;
-	if (IsPartOfShape(Pos(pos.m_x + 1, pos.m_y    )))
-		return true;
-	if (IsPartOfShape(Pos(pos.m_x - 1, pos.m_y    )))
-		return true;
-	return false;
-  //return IsPartOfShape(Pos(pos.m_x,     pos.m_y + 1)) ||
-	//	   IsPartOfShape(Pos(pos.m_x,     pos.m_y - 1)) ||
-	//	   IsPartOfShape(Pos(pos.m_x + 1, pos.m_y    )) ||
-	//	   IsPartOfShape(Pos(pos.m_x - 1, pos.m_y    ));
+    return IsPartOfShape(CoordPos(pos.GetX(),           pos.GetY() + 1_COORD)) ||
+		   IsPartOfShape(CoordPos(pos.GetX(),           pos.GetY() - 1_COORD)) ||
+		   IsPartOfShape(CoordPos(pos.GetX() + 1_COORD, pos.GetY()          )) ||
+		   IsPartOfShape(CoordPos(pos.GetX() - 1_COORD, pos.GetY()          ));
 }
 
 Shape::Shape(SHAPE const &shape)
 	: m_shape(shape)
 {
-	Pos candidate;
-	for (candidate.m_x = -1_COORD; candidate.m_x <= 5_COORD; ++candidate.m_x)
-	for (candidate.m_y = -1_COORD; candidate.m_y <= 5_COORD; ++candidate.m_y)
+	for (int x = -1; x <= 5; ++x)
+	for (int y = -1; y <= 5; ++y)
+	{
+		CoordPos candidate { Coord(x), Coord(y) };
 		if (!IsPartOfShape(candidate) && diagContact(candidate) && !orthoContact(candidate))
 			m_contactPnts.push_back(candidate);
+
+	}
 }
 
 bool Shape::spaceAtTop() const
@@ -169,14 +163,16 @@ void Shape::drawContactPoints
 {
 	Apply2AllContactPnts
 	(
-		[this, &d2d, fPixPosShape, size](Pos const& posContactPnt)
+		[this, &d2d, fPixPosShape, size](CoordPos const& posContactPnt)
 		{
 			Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
-			fPixelPoint const pos 
-			{
-				fPixPosShape + posContactPnt.TofPixelPos(size)
-			}; 
-			colSquare(d2d, pos, CONTACT_POINT_COLOR, size);
+			colSquare
+			(
+				d2d, 
+				fPixPosShape + TofPixelPos(posContactPnt, size), 
+				CONTACT_POINT_COLOR, 
+				size
+			);
 		}
 	);
 }

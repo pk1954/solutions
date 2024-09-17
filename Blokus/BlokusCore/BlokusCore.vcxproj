@@ -22,7 +22,9 @@
     <ClCompile Include="BlokusCore.ixx" />
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="Components.ixx" />
-    <ClCompile Include="Pos.ixx" />
+    <ClCompile Include="Piece.ixx" />
+    <ClCompile Include="PieceTypeId.ixx" />
+    <ClCompile Include="CoordPos.ixx" />
     <ClCompile Include="PieceType.cpp" />
     <ClCompile Include="PieceType.ixx" />
     <ClCompile Include="Shape.cpp" />

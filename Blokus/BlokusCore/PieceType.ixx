@@ -11,7 +11,7 @@ import Types;
 import Color;
 import Direct2D;
 import :Shape;
-import :Pos;
+import :CoordPos;
 
 using std::vector;
 
@@ -23,11 +23,11 @@ public:
 
 	void SetPos(int const x, int const y) 
 	{ 
-		m_position.m_x = Cast2SignedChar(x); 
-		m_position.m_y = Cast2SignedChar(y); 
+		m_position.SetX(Coord(Cast2SignedChar(x))); 
+		m_position.SetY(Coord(Cast2SignedChar(y))); 
 	}
 
-	Pos GetPos() const { return m_position; }
+	CoordPos GetPos() const { return m_position; }
 
 	void Draw(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 
@@ -55,5 +55,5 @@ private:
 	void addOrientations(Shape&);
 
     vector<Shape> m_orientations;
-	Pos           m_position;
+	CoordPos      m_position;
 };

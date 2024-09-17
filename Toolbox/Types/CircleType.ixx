@@ -25,10 +25,7 @@ public:
         m_radius(radius)
     {}
 
-    bool operator==(CircleType const & a) const 
-    { 
-        return (m_position == a.m_position) && (m_radius == a.m_radius); 
-    }
+    bool operator==(CircleType const & a) const = default;
 
     CircleType operator+= (POS_TYPE const a) { m_position += a; return * this; }
     CircleType operator-= (POS_TYPE const a) { m_position -= a; return * this; }
