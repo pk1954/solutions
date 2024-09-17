@@ -8,6 +8,7 @@ import std;
 import WinBasics;
 import Win32_Util_Resource;
 import MessagePump;
+import BlokusCore;
 
 using std::wstring;
 
@@ -24,6 +25,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump & p
 		nullptr,
 		nullptr
 	);
+	Components::Initialize();
 	m_mainWindow.Start(m_hwndApp);
 	m_statusBar .Start(m_hwndApp);
 	configureStatusBar();

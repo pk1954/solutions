@@ -33,5 +33,11 @@
     <ClCompile Include="BlokusCore.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Components.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,9 +22,6 @@ private:
 	fPixel      m_fPixBoardSize;
 	fPixel      m_fPixFieldSize;
 
-	array<PieceType, 21> m_pieceTypes;
-
-	void initMeeples();
 	void showOrientations(PieceType const&, fPixel const, Color const) const;
 	void paintBoard() const;
 	void paintPieces() const;

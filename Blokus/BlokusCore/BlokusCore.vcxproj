@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlokusCore.ixx" />
+    <ClCompile Include="Components.cpp" />
+    <ClCompile Include="Components.ixx" />
     <ClCompile Include="Pos.ixx" />
     <ClCompile Include="PieceType.cpp" />
     <ClCompile Include="PieceType.ixx" />
