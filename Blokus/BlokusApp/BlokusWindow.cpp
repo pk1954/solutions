@@ -10,8 +10,7 @@ import Types;
 import WinBasics;
 import Direct2D;
 import GraphicsWindow;
-import Meeple;
-import Shape;
+import BlokusCore;
 
 using std::min;
 
@@ -36,21 +35,23 @@ void BlokusWindow::Start(HWND const hwndParent)
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
-	m_fPixMinSize   = min(GetClientWidth(), GetClientHeight()) - BORDER;
-	m_fPixFieldSize = m_fPixMinSize * 0.05f; // 20 fields
+	fPixel const fPixAvailable { GetClientHeight() - BORDER * 2.0f };
+	m_fPixFieldSize = fPixAvailable / 22.f; // 20 fields + top and bottom reserve
+	m_fPixBoardSize = m_fPixFieldSize * 20.f;
+	m_fPixPntOrigin = fPixelPoint(BORDER, BORDER + m_fPixFieldSize);
 	Notify(false);
 	return true;
 }
 
 void BlokusWindow::showOrientations
 (
-	Meeple const& meeple,
-	fPixel const  fPosVert,
-	Color  const  color
+	PieceType const& pt,
+	fPixel    const  fPosVert,
+	Color     const  color
 ) const
 {
 	fPixelPoint fPos { m_fPixFieldSize, fPosVert };
-	meeple.Apply2AllOrientations
+	pt.Apply2AllOrientations
 	(
 		[this, &fPos, color](Shape const &s)
 		{
@@ -62,157 +63,214 @@ void BlokusWindow::showOrientations
 
 void BlokusWindow::paintBoard() const
 {
-	Color          const BOARD_COLOR   { Color(0.9f, 0.9f, 0.9f) };
-	Color          const LINE_COLOR    { Color(0.2f, 0.2f, 0.2f) };
-	fPixel         const fPixHalfSize  { m_fPixMinSize * 0.5f };
-	fPixelPoint    const fPixPntCenter { Convert2fPixelPoint(GetClRectCenter()) };
-	fPixelPoint    const fPixPntOrigin { fPixPntCenter - fPixelPoint(fPixHalfSize, fPixHalfSize) };
-	fPixelRectSize const fPixBoardSize { fPixelRectSize(m_fPixMinSize, m_fPixMinSize) };
-	m_upGraphics->FillRectangle(fPixelRect(fPixPntOrigin, fPixBoardSize), BOARD_COLOR);
-	for (fPixel x = fPixPntOrigin.GetX(); x <= fPixPntOrigin.GetX() + m_fPixMinSize; x += m_fPixFieldSize)
+	Color          const BOARD_COLOR       { Color(0.9f, 0.9f, 0.9f) };
+	Color          const LINE_COLOR        { Color(0.2f, 0.2f, 0.2f) };
+	fPixelRectSize const fPixRectSizeBoard { fPixelRectSize(m_fPixBoardSize, m_fPixBoardSize) };
+	m_upGraphics->FillRectangle(fPixelRect(m_fPixPntOrigin, fPixRectSizeBoard), BOARD_COLOR);
+	for (fPixel x = m_fPixPntOrigin.GetX(); x <= m_fPixPntOrigin.GetX() + m_fPixBoardSize; x += m_fPixFieldSize)
 		m_upGraphics->DrawLine
 		(
-			fPixelPoint(x, fPixPntOrigin.GetY()),
-			fPixelPoint(x, fPixPntOrigin.GetY() + m_fPixMinSize),
+			fPixelPoint(x, m_fPixPntOrigin.GetY()),
+			fPixelPoint(x, m_fPixPntOrigin.GetY() + m_fPixBoardSize),
 			2.0_fPixel,
 			LINE_COLOR
 		);
-	for (fPixel y = fPixPntOrigin.GetY(); y <= fPixPntOrigin.GetY() + m_fPixMinSize; y += m_fPixFieldSize)
+	for (fPixel y = m_fPixPntOrigin.GetY(); y <= m_fPixPntOrigin.GetY() + m_fPixBoardSize; y += m_fPixFieldSize)
 		m_upGraphics->DrawLine
 		(
-			fPixelPoint(fPixPntOrigin.GetX(),                 y),
-			fPixelPoint(fPixPntOrigin.GetX() + m_fPixMinSize, y),
+			fPixelPoint(m_fPixPntOrigin.GetX(),                   y),
+			fPixelPoint(m_fPixPntOrigin.GetX() + m_fPixBoardSize, y),
 			2.0_fPixel,
 			LINE_COLOR
 		);
+};
+
+void BlokusWindow::paintPieces() const
+{
+	fPixelPoint const fPixPntOriginPieces 
+	{ 
+		m_fPixPntOrigin.GetX() + m_fPixBoardSize + BORDER,
+		m_fPixPntOrigin.GetY()
+	};
+
+	for (PieceType const& pt : m_pieceTypes)
+	{
+		Pos const pos { pt.GetPos() };
+		fPixelPoint const fPos 
+		{ 
+			m_fPixFieldSize * pos.m_x.GetValue() + m_fPixFieldSize * 0.5f,
+			m_fPixFieldSize * pos.m_y.GetValue() + m_fPixFieldSize * 0.5f
+		};
+		pt.Draw
+		(
+			*m_upGraphics.get(),
+			fPixPntOriginPieces + fPos,
+			COL_RED,
+			m_fPixFieldSize
+		);
+	}
 };
 
 void BlokusWindow::PaintGraphics()
 {
 	paintBoard();
-	showOrientations(m_meeples[16], m_fPixFieldSize *  1.0f, COL_RED);
-	showOrientations(m_meeples[17], m_fPixFieldSize *  6.0f, COL_GREEN);
-	showOrientations(m_meeples[18], m_fPixFieldSize * 11.0f, COL_BLUE);
-	showOrientations(m_meeples[19], m_fPixFieldSize * 16.0f, COL_YELLOW);
-	showOrientations(m_meeples[20], m_fPixFieldSize * 20.0f, COL_YELLOW);
-
-	//m_upGraphics->Push();
-	//m_upGraphics->Rotation(fPixelPoint(100._fPixel, 500._fPixel), 30.0f);
-	//m_upGraphics->Pop();
+	paintPieces();
 };
 
 void BlokusWindow::initMeeples()
 {
-	m_meeples[0] =
+	m_pieceTypes[0] =
+	{{
+		{ true, true, true, true },
+		{ true }
+	}};
+	m_pieceTypes[0].SetPos(4, 0);
+
+	m_pieceTypes[1] =
+	{{
+		{ true,  true,  true,  true },
+		{ false, true }
+	}};
+	m_pieceTypes[1].SetPos(8, 8);
+
+	m_pieceTypes[2] =
+	{{
+		{ true, true, true, true, true }
+	}};
+	m_pieceTypes[2].SetPos(7, 11);
+
+	m_pieceTypes[3] =
+	{{
+		{ true, true, true },
+		{ true },
+		{ true }
+	}};
+	m_pieceTypes[3].SetPos(0, 0);
+
+	m_pieceTypes[4] =
 	{{
 		{ true },
 		{ true,  true },
 		{ false, true, true  }
 	}};
-	m_meeples[1] =
-	{{
-		{ true, true },
-		{ true },
-		{ true, true }
-	}};
-	m_meeples[2] =
-	{{
-		{ true, true, true, true },
-		{ true }
-	}};
-	m_meeples[3] =
-	{{
-		{ true },
-		{ true, true, true },
-		{ true }
-	}};
-	m_meeples[4] =
-	{{
-		{ true,  true,  true,  true },
-		{ false, true }
-	}};
-	m_meeples[5] =
-	{{
-		{ true, true, true, true, true }
-	}};
-	m_meeples[6] =
-	{{
-		{ true,  true },
-		{ false, true, true, true }
-	}};
-	m_meeples[7] =
-	{{
-		{ true },
-		{ true,  true, true },
-		{ false, true }
-	}};
-	m_meeples[8] =
-	{{
-		{ true, true, true },
-		{ true },
-		{ true }
-	}};
-	m_meeples[9] =
-	{{
-		{ true, true,  true },
-		{ true, true  }
-	}};
-	m_meeples[10] =
-	{{
-		{ true },
-		{ true,  true,  true },
-		{ false, false, true }
-	}};
-	m_meeples[11] =
+	m_pieceTypes[4].SetPos(6, 2);
+
+	m_pieceTypes[5] =
 	{{
 		{ false, true },
 		{ true,  true,  true },
 		{ false, true }
 	}};
+	m_pieceTypes[5].SetPos(9, 0);
 
-	m_meeples[12] =
+	m_pieceTypes[6] =
+	{{
+		{ true },
+		{ true,  true, true },
+		{ false, true }
+	}};
+	m_pieceTypes[6].SetPos(0, 9);
+
+	m_pieceTypes[7] =
+	{{
+		{ true,  true },
+		{ false, true, true, true }
+	}};
+	m_pieceTypes[7].SetPos(4, 5);
+
+	m_pieceTypes[8] =
+	{{
+		{ true },
+		{ true, true, true },
+		{ true }
+	}};
+	m_pieceTypes[8].SetPos(2, 2);
+
+	m_pieceTypes[9] =
+	{{
+		{ true },
+		{ true,  true,  true },
+		{ false, false, true }
+	}};
+	m_pieceTypes[9].SetPos(0, 5);
+
+	m_pieceTypes[10] =
+	{{
+		{ true, true },
+		{ true },
+		{ true, true }
+	}};
+	m_pieceTypes[10].SetPos(10, 4);
+
+	m_pieceTypes[11] =
+	{{
+		{ true, true,  true },
+		{ true, true  }
+	}};
+	m_pieceTypes[11].SetPos(4, 8);
+
+
+	m_pieceTypes[12] =
 	{{
 		{ true,  true },
 		{ true,  true }
 	}};
-	m_meeples[13] =
+	m_pieceTypes[12].SetPos(2, 16);
+
+	m_pieceTypes[13] =
 	{{
 		{ true,  true },
 		{ false, true, true }
 	}};
-	m_meeples[14] =
+	m_pieceTypes[13].SetPos(8, 16);
+
+	m_pieceTypes[14] =
 	{{
 		{ true, true, true },
 		{ true }
 	}};
-	m_meeples[15] =
+	m_pieceTypes[14].SetPos(0, 14);
+
+	m_pieceTypes[15] =
 	{{
 		{ true },
 		{ true, true },
 		{ true }
 	}};
-	m_meeples[16] =
+	m_pieceTypes[15].SetPos(5, 14);
+
+	m_pieceTypes[16] =
 	{{
 		{ true, true, true, true }
 	}};
+	m_pieceTypes[16].SetPos(8, 14);
 
-	m_meeples[17] =
+
+	m_pieceTypes[17] =
 	{{
-		{ true, true },
-		{ true }
+		{ true },
+		{ true, true }
 	}};
-	m_meeples[18] =
+	m_pieceTypes[17].SetPos(0, 18);
+
+	m_pieceTypes[18] =
 	{{
 		{ true, true, true }
 	}};
+	m_pieceTypes[18].SetPos(4, 19);
 
-	m_meeples[19] =
+
+	m_pieceTypes[19] =
 	{{
 		{ true, true }
 	}};
+	m_pieceTypes[19].SetPos(8, 19);
 
-	m_meeples[20] =
+
+	m_pieceTypes[20] =
 	{{
 		{ true }
 	}};
+	m_pieceTypes[20].SetPos(11, 19);
+
 }

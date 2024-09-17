@@ -1,24 +1,33 @@
-// Meeple.ixx
+// PieceType.ixx
 //
 // BlokusCore
 
-export module Meeple;
+export module BlokusCore:PieceType;
 
 import std;
+import Debug;
+import SaveCast;
 import Types;
 import Color;
 import Direct2D;
-import Shape;
+import :Shape;
+import :Pos;
 
 using std::vector;
 
-export class Meeple
+export class PieceType
 {
 public:
 
-	Meeple();
-	Meeple(SHAPE const &);
-	Meeple& operator=(const SHAPE&);
+	PieceType& operator=(const SHAPE&);
+
+	void SetPos(int const x, int const y) 
+	{ 
+		m_position.m_x = Cast2SignedChar(x); 
+		m_position.m_y = Cast2SignedChar(y); 
+	}
+
+	Pos GetPos() const { return m_position; }
 
 	void Draw(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 
@@ -42,8 +51,9 @@ public:
 
 private:
 	void initialize(SHAPE const&);
-	void addIfNew(Shape const&);
+	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 
     vector<Shape> m_orientations;
+	Pos           m_position;
 };

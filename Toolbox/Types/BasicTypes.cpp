@@ -5,6 +5,7 @@
 module Types:BasicTypes;
 
 import std;
+import Util;
 
 using std::wstring;
 using std::wostringstream;

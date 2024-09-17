@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Meeple.cpp" />
-    <ClCompile Include="Meeple.ixx" />
+    <ClCompile Include="BlokusCore.ixx" />
+    <ClCompile Include="Pos.ixx" />
+    <ClCompile Include="PieceType.cpp" />
+    <ClCompile Include="PieceType.ixx" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Shape.ixx" />
   </ItemGroup>

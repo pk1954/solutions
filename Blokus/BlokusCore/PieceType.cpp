@@ -1,14 +1,15 @@
-// Meeple.cpp
+// PieceType.cpp
 //
 // BlokusCore
 
-module Meeple;
+module BlokusCore:PieceType;
 
 import std;
+import :Shape;
 
 using std::array;
 
-void Meeple::addIfNew(Shape const &shape)
+void PieceType::addIfNew(Shape const &shape)
 {
 	for (Shape const& s : m_orientations)
 		if (shape == s)
@@ -16,7 +17,7 @@ void Meeple::addIfNew(Shape const &shape)
 	m_orientations.push_back(shape);
 }
 
-void Meeple::addOrientations(Shape &shape)
+void PieceType::addOrientations(Shape &shape)
 {
 	addIfNew(shape);
 	shape.Rotate();
@@ -27,7 +28,7 @@ void Meeple::addOrientations(Shape &shape)
 	addIfNew(shape);
 }
 
-void Meeple::initialize(SHAPE const &shape)
+void PieceType::initialize(SHAPE const &shape)
 {
 	Shape shapeNew(shape);
 	addOrientations(shapeNew);
@@ -35,22 +36,13 @@ void Meeple::initialize(SHAPE const &shape)
 	addOrientations(shapeNew);
 }
 
-Meeple::Meeple()
-{
-}
-
-Meeple::Meeple(SHAPE const &shape)
-{
-	initialize(shape);
-}
-
-Meeple& Meeple::operator=(const SHAPE& shape)
+PieceType& PieceType::operator=(const SHAPE& shape)
 {
 	initialize(shape);
 	return *this;
 }
 
-void Meeple::Draw
+void PieceType::Draw
 (
 	D2D_driver  const &d2d,
 	fPixelPoint const  pos, 

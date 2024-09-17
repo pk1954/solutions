@@ -2,30 +2,32 @@
 //
 // BlokusCore
 
-export module Shape;
+export module BlokusCore:Shape;
 
 import std;
 import Types;
 import Color;
 import Direct2D;
+import :Pos;
 
 using std::array;
+using std::vector;
 
-const int COLS { 5 };
-const int ROWS { 5 };
-
-export using SHAPE = array<array<bool,COLS>,ROWS>;
+export using SHAPE = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
 export class Shape
 {
 public:
 	Shape() = default;
 
-	Shape(SHAPE const &shape)
-		: m_shape(shape)
-	{}
+	Shape(SHAPE const&);
 
-	bool operator==(const Shape&) const = default;
+	bool operator==(Shape const&) const = default;
+
+	bool IsPartOfShape(Pos const& pos) const
+	{
+		return pos.IsInShapeRange() && m_shape[pos.m_y.GetValue()][pos.m_x.GetValue()];
+	}
 
 	void Flip();
 	void Rotate();
@@ -34,10 +36,15 @@ public:
 
 private:
 
-    SHAPE m_shape;
+    SHAPE       m_shape;
+	vector<Pos> m_contactPnts;
 
-	void colSquare  (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
-	void shapeSquare(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void colSquare        (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void shapeSquare      (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void drawShapeSquares (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void drawContactPoints(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	bool diagContact (Pos const&) const;
+	bool orthoContact(Pos const&) const;
 	bool spaceAtTop() const;
 	bool spaceAtLeft() const;
 	void shiftTop();

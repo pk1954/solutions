@@ -52,6 +52,14 @@ constexpr void AssertShort(SOURCE_TYPE const value)
 }
 
 export template<typename SOURCE_TYPE>
+constexpr void AssertSignedChar(SOURCE_TYPE const value) 
+{
+	Assert(static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<signed char>::max)()));         
+	if (std::numeric_limits<SOURCE_TYPE>::is_signed)
+		Assert(static_cast<long long>(value) >= static_cast<long long>((std::numeric_limits<signed char>::min)()));         
+}
+
+export template<typename SOURCE_TYPE>
 constexpr void AssertInt(SOURCE_TYPE const value) 
 {
 	Assert(static_cast<long long>(value) <= static_cast<long long>((std::numeric_limits<int>::max)()));         

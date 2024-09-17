@@ -31,6 +31,13 @@ constexpr short Cast2Short(SOURCE_TYPE const value)
 }
 
 export template<typename SOURCE_TYPE>
+constexpr signed char Cast2SignedChar(SOURCE_TYPE const value) 
+{
+	AssertSignedChar(value);
+	return static_cast<signed char>(value);
+}
+
+export template<typename SOURCE_TYPE>
 constexpr unsigned short Cast2UnsignedShort(SOURCE_TYPE const value) 
 {
 	AssertUnsignedShort(value);

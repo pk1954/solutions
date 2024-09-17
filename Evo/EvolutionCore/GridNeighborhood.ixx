@@ -23,7 +23,8 @@ public:
 		return m_iNrOfNeighbors; 
 	}
 
-	GridNeighborhood()	: m_neighbors()
+	GridNeighborhood()
+		: m_neighbors()
 	{
 		m_neighbors.reserve(m_iNrOfNeighbors);
 	}
