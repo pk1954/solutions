@@ -29,6 +29,12 @@ public:
 		return pos.IsInShapeRange() && m_shape[pos.m_y.GetValue()][pos.m_x.GetValue()];
 	}
 
+    void Apply2AllContactPnts(auto const& func) const
+    {
+        for (Pos const& pos : m_contactPnts)
+            func(pos);
+    }
+
 	void Flip();
 	void Rotate();
 
@@ -42,7 +48,7 @@ private:
 	void colSquare        (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 	void shapeSquare      (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 	void drawShapeSquares (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
-	void drawContactPoints(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void drawContactPoints(D2D_driver const &, fPixelPoint const, fPixel const) const;
 	bool diagContact (Pos const&) const;
 	bool orthoContact(Pos const&) const;
 	bool spaceAtTop() const;

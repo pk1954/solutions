@@ -164,19 +164,21 @@ void Shape::drawContactPoints
 (
 	D2D_driver  const &d2d,
 	fPixelPoint const  fPixPosShape, 
-	Color       const  col,
 	fPixel      const  size
 ) const
 {
-	Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
-	for (Pos const& posContactPnt : m_contactPnts)
-	{
-		fPixelPoint const pos 
+	Apply2AllContactPnts
+	(
+		[this, &d2d, fPixPosShape, size](Pos const& posContactPnt)
 		{
-			fPixPosShape + posContactPnt.TofPixelPos(size)
-		}; 
-		colSquare(d2d, pos,  CONTACT_POINT_COLOR, size);
-	}
+			Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
+			fPixelPoint const pos 
+			{
+				fPixPosShape + posContactPnt.TofPixelPos(size)
+			}; 
+			colSquare(d2d, pos, CONTACT_POINT_COLOR, size);
+		}
+	);
 }
 
 void Shape::Draw
@@ -188,5 +190,5 @@ void Shape::Draw
 ) const
 {
 	drawShapeSquares (d2d, pos, col, size);
-//	drawContactPoints(d2d, pos, col, size);
+//	drawContactPoints(d2d, pos, size);
 }
