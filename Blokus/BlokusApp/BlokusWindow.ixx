@@ -18,6 +18,8 @@ public:
 
 private:
 
+	Game        m_game;
+
 	fPixelPoint m_fPixPntOrigin;
 	fPixel      m_fPixBoardSize;
 	fPixel      m_fPixFieldSize;

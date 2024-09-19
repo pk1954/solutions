@@ -20,13 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlokusCore.ixx" />
+    <ClCompile Include="Board.ixx" />
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="Components.ixx" />
+    <ClCompile Include="Game.ixx" />
+    <ClCompile Include="Move.ixx" />
     <ClCompile Include="Piece.ixx" />
     <ClCompile Include="PieceTypeId.ixx" />
     <ClCompile Include="CoordPos.ixx" />
     <ClCompile Include="PieceType.cpp" />
     <ClCompile Include="PieceType.ixx" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Player.ixx" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Shape.ixx" />
   </ItemGroup>

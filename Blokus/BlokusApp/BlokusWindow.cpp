@@ -17,11 +17,6 @@ using std::min;
 
 fPixel const BORDER { 10.0_fPixel };
 
-Color const COL_RED    { Color(1.0f, 0.2f, 0.2f) };
-Color const COL_GREEN  { Color(0.0f, 1.0f, 0.0f) };
-Color const COL_BLUE   { Color(0.4f, 0.4f, 1.0f) };
-Color const COL_YELLOW { Color(0.8f, 0.8f, 0.0f) };
-
 void BlokusWindow::Start(HWND const hwndParent)
 {
 	GraphicsWindow::Initialize
@@ -30,6 +25,7 @@ void BlokusWindow::Start(HWND const hwndParent)
 		L"ClassBlokusWindow", 
 	    WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
+	m_game.Initialize();
 }
 
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -51,7 +47,7 @@ void BlokusWindow::showOrientations
 ) const
 {
 	fPixelPoint fPos { m_fPixFieldSize, fPosVert };
-	pt.Apply2AllOrientations
+	pt.Apply2AllOrientationsC
 	(
 		[this, &fPos, color](Shape const &s)
 		{
@@ -90,29 +86,11 @@ void BlokusWindow::paintPieces() const
 {
 	fPixelPoint const fPixPntOriginPieces 
 	{ 
-		m_fPixPntOrigin.GetX() + m_fPixBoardSize + BORDER,
+		m_fPixPntOrigin.GetX() + BORDER,
 		m_fPixPntOrigin.GetY()
 	};
 
-	Components::Apply2AllPieceTypes
-	(
-		[this, &fPixPntOriginPieces](PieceType const& pt)
-		{
-			CoordPos const pos { pt.GetPos() };
-			fPixelPoint const fPos 
-			{ 
-				m_fPixFieldSize * pos.GetXvalue() + m_fPixFieldSize * 0.5f,
-				m_fPixFieldSize * pos.GetYvalue() + m_fPixFieldSize * 0.5f
-			};
-			pt.Draw
-			(
-				*m_upGraphics.get(),
-				fPixPntOriginPieces + fPos,
-				COL_RED,
-				m_fPixFieldSize
-			);
-		}
-	);
+	m_game.ActivePlayer().DrawPieces(*m_upGraphics.get(), fPixPntOriginPieces, m_fPixFieldSize);
 };
 
 void BlokusWindow::PaintGraphics()

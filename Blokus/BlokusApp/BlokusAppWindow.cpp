@@ -12,7 +12,7 @@ import BlokusCore;
 
 using std::wstring;
 
-BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump & pump)
+BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pump)
 {
 	m_pwstrProductName = &wstrProductName;
 	m_aboutBox.SetProductName(wstrProductName);
@@ -25,7 +25,6 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump & p
 		nullptr,
 		nullptr
 	);
-	Components::Initialize();
 	m_mainWindow.Start(m_hwndApp);
 	m_statusBar .Start(m_hwndApp);
 	configureStatusBar();

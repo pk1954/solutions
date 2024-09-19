@@ -15,6 +15,8 @@ using std::vector;
 
 export using SHAPE = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
+using ShapeCoordPos = CoordPos;
+
 export class Shape
 {
 public:
@@ -29,11 +31,20 @@ public:
 		return IsInShapeRange(pos) && m_shape[pos.GetYvalue()][pos.GetXvalue()];
 	}
 
-    void Apply2AllContactPnts(auto const& func) const
+    void Apply2AllContactPntsC(auto const& func) const
     {
         for (CoordPos const& pos : m_contactPnts)
             func(pos);
     }
+
+	void Apply2AllShapeCells(auto const& func) const
+	{
+		ShapeCoordPos pos;
+		for (pos.SetY(0_COORD); pos.GetY() < MAX_ROW; pos.IncY())
+		for (pos.SetX(0_COORD); pos.GetX() < MAX_ROW; pos.IncX())
+			if (IsPartOfShape(pos))
+				func(pos);
+	}
 
 	void Flip();
 	void Rotate();
@@ -42,8 +53,8 @@ public:
 
 private:
 
-    SHAPE            m_shape;
-	vector<CoordPos> m_contactPnts;
+    SHAPE                 m_shape;
+	vector<ShapeCoordPos> m_contactPnts;
 
 	void colSquare        (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 	void shapeSquare      (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;

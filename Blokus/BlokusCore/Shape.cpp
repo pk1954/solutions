@@ -135,23 +135,23 @@ void Shape::shapeSquare
 void Shape::drawShapeSquares
 (
 	D2D_driver  const &d2d,
-	fPixelPoint const  pos, 
+	fPixelPoint const  fPixPntShapePos, 
 	Color       const  col,
 	fPixel      const  size
 ) const
 {
-	fPixelPoint center { pos };
-	for (int y = 0; y < MAX_SHAPE_EXTENSION; ++y)
-	{
-		for (int x = 0; x < MAX_SHAPE_EXTENSION; ++x)
+	Apply2AllShapeCells
+	(
+		[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
 		{
-			if (m_shape[y][x])
-				shapeSquare(d2d, center, col, size);
-			center.Move2Horz(size);
+			fPixelPoint center 
+			{ 
+				fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
+				fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
+			};
+			shapeSquare(d2d, center, col, size);
 		}
-		center.SetX(pos.GetX());
-		center.Move2Vert(size);
-	}
+	);
 }
 
 void Shape::drawContactPoints
@@ -161,11 +161,11 @@ void Shape::drawContactPoints
 	fPixel      const  size
 ) const
 {
-	Apply2AllContactPnts
+	Apply2AllContactPntsC
 	(
-		[this, &d2d, fPixPosShape, size](CoordPos const& posContactPnt)
+		[this, &d2d, fPixPosShape, size](ShapeCoordPos const& posContactPnt)
 		{
-			Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
+			static Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
 			colSquare
 			(
 				d2d, 

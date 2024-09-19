@@ -13,7 +13,7 @@ using std::array;
 export class Components
 {
 public:
-    inline static int BOARD_SIZE { 20 };
+    inline static int const BOARD_SIZE { 20 };
 
     static void Initialize();
 
@@ -21,6 +21,11 @@ public:
     {
         for (PieceType const& pt : m_pieceTypes)
             func(pt);
+    }
+
+    static PieceType const& GetPieceType(PieceTypeId const id) 
+    { 
+        return m_pieceTypes.at(id.GetValue());
     }
 
 private:

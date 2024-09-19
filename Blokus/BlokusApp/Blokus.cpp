@@ -14,6 +14,7 @@ import HiResTimer;
 import Accelerators;
 import MessagePump;
 import BlokusAppWindow;
+import BlokusCore;
 
 using std::make_unique;
 using std::unique_ptr;
@@ -45,6 +46,8 @@ int wWinMain
 	Accelerators acc;
 	MessagePump  pump;
 	pump.SetAccelTable(acc.Get());
+
+	Components::Initialize();
 
 	unique_ptr<BlokusAppWindow> upApp { make_unique<BlokusAppWindow>(PRODUCT_NAME, pump) };
 
