@@ -11,6 +11,7 @@ import Types;
 import Color;
 import Direct2D;
 import :Shape;
+import :ShapeId;
 import :CoordPos;
 
 using std::vector;
@@ -27,21 +28,30 @@ public:
 		m_initialPos.SetY(Coord(Cast2SignedChar(y))); 
 	}
 
+	void SetPos(CoordPos const& newPos) { m_initialPos = newPos; }
 	CoordPos GetInitialPos() const { return m_initialPos; }
+
+	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
 	void Draw(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
 
-	Shape const& StdOrientation() const { return m_orientations.at(0); }
+	Shape const& StdOrientation() const { return m_shapes.at(0); }
 
-	void Apply2AllOrientationsC(auto const& func) const
+	void Apply2AllShapeIdsC(auto const& func) const
 	{
-		for (Shape const& s : m_orientations)
+		for (int i = 0; i < m_shapes.size(); ++i)
+			func(ShapeId(i));
+	}
+
+	void Apply2AllShapesC(auto const& func) const
+	{
+		for (Shape const& s : m_shapes)
 			func(s);
 	}
 
     void Apply2AllContactPntsC(auto const& func) const
     {
-		Apply2AllOrientationsC
+		Apply2AllShapesC
 		(
 			[&func](Shape const& s)
 			{
@@ -68,6 +78,6 @@ private:
 	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 
-    vector<Shape> m_orientations;
+    vector<Shape> m_shapes;
 	CoordPos      m_initialPos;
 };

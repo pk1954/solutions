@@ -11,10 +11,10 @@ using std::array;
 
 void PieceType::addIfNew(Shape const &shape)
 {
-	for (Shape const& s : m_orientations)
+	for (Shape const& s : m_shapes)
 		if (shape == s)
 			return;
-	m_orientations.push_back(shape);
+	m_shapes.push_back(shape);
 }
 
 void PieceType::addOrientations(Shape &shape)
@@ -50,5 +50,5 @@ void PieceType::Draw
 	fPixel      const  size
 ) const
 {
-	m_orientations.at(0).Draw(d2d, pos, col, size);
+	m_shapes.at(0).Draw(d2d, pos, col, size);
 }

@@ -7,45 +7,79 @@ export module BlokusCore:Game;
 import std;
 import Types;
 import Color;
+import :Board;
 import :Player;
+import :Players;
+import :PlayerId;
 import :Components;
 
-using std::array;
-
-export using PlayerId = NamedType<int, struct PlayerId_Parameter>;
-
-export inline PlayerId const NO_PLAYER { -1 };
+using std::vector;
 
 export class Game
 {
 public:
-    inline static Coord const MAX_COORD     { Components::BOARD_SIZE - 1 };
-    inline static int   const NR_OF_PLAYERS { 4 };
-
     void Initialize()
     {
-        for (Player &player : m_players)
-            player.InitPieces();
+        m_players.Initialize();
     }
 
-    Player const& ActivePlayer() const
+    void FindValidMoves(PlayerId const);
+
+    Player& ActivePlayer()
     {
-        return m_players[m_activePlayer.GetValue()];
+        return m_players.GetPlayer(m_activePlayer);
+    }
+
+    Player const& ActivePlayerC() const
+    {
+        return m_players.GetPlayerC(m_activePlayer);
+    }
+
+    void PerformMove(Move const& move)
+    {
+        ActivePlayer().PerformMove(move);
+        m_board.PerformMove(move, m_players);
+    }
+
+    void NextPlayer()
+    {
+        if (++m_activePlayer == PlayerId(NR_OF_PLAYERS))
+            m_activePlayer = PlayerId(0);
+    }
+
+    bool NextMove()
+    {
+        FindValidMoves(m_activePlayer);
+        if (m_validMoves.empty())
+            return false;
+        Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
+        PerformMove(move);
+        NextPlayer();
+        return true;
+    }
+
+    void DrawSetPieces
+    (
+	    D2D_driver     const& d2d,
+	    BlokusCoordSys const& coordSys
+    ) const
+    {
+	    for (Coord x = 0_COORD; x < COORD_BOARD_SIZE; ++x)
+	    for (Coord y = 0_COORD; y < COORD_BOARD_SIZE; ++y)
+	    {
+            CoordPos       pos      { x, y };
+		    PlayerId const idPlayer { m_board.GetPlayerId(pos) };
+		    if (idPlayer != NO_PLAYER)
+		    {
+                Player const& player { m_players.GetPlayerC(idPlayer) };
+                player.DrawCell(d2d, coordSys, pos);
+		    }
+	    }
     }
 
 private:
-    PlayerId m_activePlayer { 0 };
-
-    Color const COL_RED    { Color(1.0f, 0.2f, 0.2f) };
-    Color const COL_GREEN  { Color(0.0f, 1.0f, 0.0f) };
-    Color const COL_BLUE   { Color(0.4f, 0.4f, 1.0f) };
-    Color const COL_YELLOW { Color(0.8f, 0.8f, 0.0f) };
-
-    array<Player, NR_OF_PLAYERS> m_players
-    { 
-        Player(CoordPos(  0_COORD,   0_COORD), COL_RED),
-        Player(CoordPos(MAX_COORD,   0_COORD), COL_GREEN), 
-        Player(CoordPos(MAX_COORD, MAX_COORD), COL_BLUE),
-        Player(CoordPos(  0_COORD, MAX_COORD), COL_YELLOW) 
-    };
+    Board        m_board;
+    Players      m_players;
+    PlayerId     m_activePlayer { 0 };
+    vector<Move> m_validMoves;
 };

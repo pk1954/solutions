@@ -17,3 +17,8 @@ export bool IsValidPiecTypeId(PieceTypeId const id)
     return id.GetValue() < NR_OF_PIECE_TYPES;
 }
 
+export void Apply2AllPieceTypes(auto const& func)
+{
+    for (int i = 0; i < NR_OF_PIECE_TYPES; ++i)
+        func(PieceTypeId(i));
+}

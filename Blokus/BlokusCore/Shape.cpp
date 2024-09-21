@@ -8,8 +8,22 @@ import std;
 import Types;
 import Color;
 import Direct2D;
+import :Util;
 
 using std::swap;
+
+bool Shape::isPartOfShape(CoordPos const& pos) const
+{
+	return IsInShapeRange(pos) && m_shape[pos.GetYvalue()][pos.GetXvalue()];
+}
+
+bool Shape::isCornerPnt(CoordPos const& pos) const
+{
+	return (!isPartOfShape(northPos(pos)) && !isPartOfShape(eastPos (pos))) ||
+		   (!isPartOfShape(eastPos (pos)) && !isPartOfShape(southPos(pos))) ||
+		   (!isPartOfShape(southPos(pos)) && !isPartOfShape(westPos (pos))) ||
+		   (!isPartOfShape(westPos (pos)) && !isPartOfShape(northPos(pos)));
+}
 
 // A CoordPos in the environment of a Shape is a contact CoordPos
 // if at least one diagonal neighbour of the CoordPos is part of the Shape
@@ -17,31 +31,40 @@ using std::swap;
 
 bool Shape::diagContact(CoordPos const& pos) const
 {
-	return IsPartOfShape(CoordPos(pos.GetX() + 1_COORD, pos.GetY() + 1_COORD)) ||
-		   IsPartOfShape(CoordPos(pos.GetX() + 1_COORD, pos.GetY() - 1_COORD)) ||
-		   IsPartOfShape(CoordPos(pos.GetX() - 1_COORD, pos.GetY() + 1_COORD)) ||
-		   IsPartOfShape(CoordPos(pos.GetX() - 1_COORD, pos.GetY() - 1_COORD));
+	return isPartOfShape(northEastPos(pos)) || isPartOfShape(southEastPos(pos)) ||
+		   isPartOfShape(northWestPos(pos)) || isPartOfShape(southWestPos(pos));
 }
 
 bool Shape::orthoContact(CoordPos const& pos) const
 {
-    return IsPartOfShape(CoordPos(pos.GetX(),           pos.GetY() + 1_COORD)) ||
-		   IsPartOfShape(CoordPos(pos.GetX(),           pos.GetY() - 1_COORD)) ||
-		   IsPartOfShape(CoordPos(pos.GetX() + 1_COORD, pos.GetY()          )) ||
-		   IsPartOfShape(CoordPos(pos.GetX() - 1_COORD, pos.GetY()          ));
+    return isPartOfShape(northPos(pos)) || isPartOfShape(eastPos (pos)) ||
+		   isPartOfShape(southPos(pos)) || isPartOfShape(westPos (pos));
+}
+
+bool Shape::isContactPnt(CoordPos const& pos) const
+{
+	return !isPartOfShape(pos) && 
+		    diagContact  (pos) && 
+		   !orthoContact (pos);
 }
 
 Shape::Shape(SHAPE const &shape)
 	: m_shape(shape)
 {
-	for (int x = -1; x <= 5; ++x)
-	for (int y = -1; y <= 5; ++y)
-	{
-		CoordPos candidate { Coord(x), Coord(y) };
-		if (!IsPartOfShape(candidate) && diagContact(candidate) && !orthoContact(candidate))
-			m_contactPnts.push_back(candidate);
+	ShapeCoordPos pos;
+	for (pos.SetY(-1_COORD); pos.GetY() <= MAX_ROW + 1_COORD; pos.IncY())
+	for (pos.SetX(-1_COORD); pos.GetX() <= MAX_ROW + 1_COORD; pos.IncX())
+		if (isContactPnt(pos))
+			m_contactPnts.push_back(pos);
 
-	}
+	Apply2AllShapeCells
+	(
+		[this](CoordPos const& pos)
+		{
+			if (isCornerPnt(pos))
+			   m_cornerPnts.push_back(pos);
+		}
+	);
 }
 
 bool Shape::spaceAtTop() const
@@ -106,32 +129,6 @@ void Shape::Rotate()
 	normalize();
 }
 
-void Shape::colSquare
-(
-	D2D_driver  const &d2d,
-	fPixelPoint const  center,
-	Color       const  col,
-	fPixel      const  size
-) const
-{
-	fPixel         const fPixHalfSize  { size * 0.5f };
-	fPixelPoint    const fPixPntOrigin { center - fPixelPoint(fPixHalfSize, fPixHalfSize) };
-	fPixelRectSize const fPixSize      { fPixelRectSize(size, size) };
-	d2d.FillRectangle(fPixelRect(fPixPntOrigin, fPixSize), col);
-}
-
-void Shape::shapeSquare
-(
-    D2D_driver  const &d2d,
-	fPixelPoint const  center,
-	Color       const  col,
-	fPixel      const  size
-) const
-{
-	colSquare(d2d, center,  col,        size       );
-	colSquare(d2d, center,  col * 0.6f, size * 0.8f);
-}
-
 void Shape::drawShapeSquares
 (
 	D2D_driver  const &d2d,
@@ -149,9 +146,21 @@ void Shape::drawShapeSquares
 				fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
 				fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
 			};
-			shapeSquare(d2d, center, col, size);
+			ShapeSquare(d2d, center, col, size);
 		}
 	);
+	//Apply2AllCornerPntsC
+	//(
+	//	[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
+	//	{
+	//		fPixelPoint center 
+	//		{ 
+	//			fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
+	//			fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
+	//		};
+	//		d2d.FillCircle(fPixelCircle(center, size *0.2f));
+	//	}
+	//);
 }
 
 void Shape::drawContactPoints
@@ -166,7 +175,7 @@ void Shape::drawContactPoints
 		[this, &d2d, fPixPosShape, size](ShapeCoordPos const& posContactPnt)
 		{
 			static Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
-			colSquare
+			ColSquare
 			(
 				d2d, 
 				fPixPosShape + TofPixelPos(posContactPnt, size), 

@@ -8,30 +8,34 @@ import Debug;
 import :CoordPos;
 import :PieceTypeId;
 import :Components;
+import :Move;
 
 export class Piece
 {
 public:
     void Initialize(PieceTypeId const id)
     {
-        m_id  = id;
-        m_pos = GetPieceType().GetInitialPos();
+        m_idPieceType = id;
+        m_pos = GetPieceTypeC().GetInitialPos();
     }
 
-    bool IsAvailable() const { return m_pos.GetXvalue() < Components::BOARD_SIZE;}
+    void SetPos    (CoordPos const& pos) { m_pos = pos; }
+    void SetShapeId(ShapeId  const  id)  { m_idShape = id; }
 
-    CoordPos const& GetPos()         const { return m_pos; }
-    PieceTypeId     GetPieceTypeId() const { return m_id; }
-    PieceType       GetPieceType()   const 
+    bool IsAvailable() const { return m_pos.GetXvalue() > BOARD_SIZE;}
+
+    CoordPos const&  GetPos()         const { return m_pos; }
+    PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
+    PieceType const& GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
+
+    void PerformMove(Move const& move)
     {
-        if (!IsValidPiecTypeId(m_id))
-        {
-            int x = 42;
-        }
-        return Components::GetPieceType(m_id); 
+        SetPos    (move.m_boardPos);
+        SetShapeId(move.m_idShape);
     }
 
 private:
-    PieceTypeId m_id  { UndefinedPieceTypeId };
-    CoordPos    m_pos { -1_COORD, -1_COORD };
+    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
+    CoordPos    m_pos         { -1_COORD, -1_COORD };
+    ShapeId     m_idShape     { ShapeId(0) };
 };

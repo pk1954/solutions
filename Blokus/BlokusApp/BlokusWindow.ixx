@@ -16,18 +16,16 @@ export class BlokusWindow : public GraphicsWindow
 public:
 	void Start(HWND const);
 
+	void OnChar(WPARAM const, LPARAM const) final;
+
 private:
 
-	Game        m_game;
+	Game           m_game;
+	BlokusCoordSys m_coordSys;
+	fPixel         m_fPixBoardSize;
 
-	fPixelPoint m_fPixPntOrigin;
-	fPixel      m_fPixBoardSize;
-	fPixel      m_fPixFieldSize;
-
-	void showOrientations(PieceType const&, fPixel const, Color const) const;
 	void paintBoard() const;
-	void paintPieces() const;
 
-	bool OnSize(PIXEL const, PIXEL const) final;
+	bool OnSize(PIXEL  const, PIXEL  const) final;
 	void PaintGraphics() final;
 };

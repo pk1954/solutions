@@ -77,6 +77,7 @@ void BlokusAppWindow::OnClose()
 
 void BlokusAppWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
+	m_mainWindow.OnChar(wParam, lParam);
 }
 
 bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

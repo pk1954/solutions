@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlokusCore.ixx" />
+    <ClCompile Include="Util.ixx" />
     <ClCompile Include="Board.ixx" />
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="Components.ixx" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game.ixx" />
     <ClCompile Include="Move.ixx" />
     <ClCompile Include="Piece.ixx" />
@@ -32,8 +34,11 @@
     <ClCompile Include="PieceType.ixx" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Player.ixx" />
+    <ClCompile Include="PlayerId.ixx" />
+    <ClCompile Include="Players.ixx" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Shape.ixx" />
+    <ClCompile Include="ShapeId.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toolbox\BasicUtils\BasicUtils.vcxproj">
