@@ -4,9 +4,6 @@
 
 module BlokusCore:PieceType;
 
-import std;
-import :Shape;
-
 using std::array;
 
 void PieceType::addIfNew(Shape const &shape)

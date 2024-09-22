@@ -4,10 +4,7 @@
 
 module BlokusCore:Shape;
 
-import std;
-import Types;
-import Color;
-import Direct2D;
+import :Components;
 import :Util;
 
 using std::swap;
@@ -19,44 +16,15 @@ bool Shape::isPartOfShape(CoordPos const& pos) const
 
 bool Shape::isCornerPnt(CoordPos const& pos) const
 {
-	return (!isPartOfShape(northPos(pos)) && !isPartOfShape(eastPos (pos))) ||
-		   (!isPartOfShape(eastPos (pos)) && !isPartOfShape(southPos(pos))) ||
-		   (!isPartOfShape(southPos(pos)) && !isPartOfShape(westPos (pos))) ||
-		   (!isPartOfShape(westPos (pos)) && !isPartOfShape(northPos(pos)));
-}
-
-// A CoordPos in the environment of a Shape is a contact CoordPos
-// if at least one diagonal neighbour of the CoordPos is part of the Shape
-// and no orthogonal (horz or vert) neighbour of the CoordPos is part of the Shape
-
-bool Shape::diagContact(CoordPos const& pos) const
-{
-	return isPartOfShape(northEastPos(pos)) || isPartOfShape(southEastPos(pos)) ||
-		   isPartOfShape(northWestPos(pos)) || isPartOfShape(southWestPos(pos));
-}
-
-bool Shape::orthoContact(CoordPos const& pos) const
-{
-    return isPartOfShape(northPos(pos)) || isPartOfShape(eastPos (pos)) ||
-		   isPartOfShape(southPos(pos)) || isPartOfShape(westPos (pos));
-}
-
-bool Shape::isContactPnt(CoordPos const& pos) const
-{
-	return !isPartOfShape(pos) && 
-		    diagContact  (pos) && 
-		   !orthoContact (pos);
+	return (!isPartOfShape(NorthPos(pos)) && !isPartOfShape(EastPos (pos))) ||
+		   (!isPartOfShape(EastPos (pos)) && !isPartOfShape(SouthPos(pos))) ||
+		   (!isPartOfShape(SouthPos(pos)) && !isPartOfShape(WestPos (pos))) ||
+		   (!isPartOfShape(WestPos (pos)) && !isPartOfShape(NorthPos(pos)));
 }
 
 Shape::Shape(SHAPE const &shape)
 	: m_shape(shape)
 {
-	ShapeCoordPos pos;
-	for (pos.SetY(-1_COORD); pos.GetY() <= MAX_ROW + 1_COORD; pos.IncY())
-	for (pos.SetX(-1_COORD); pos.GetX() <= MAX_ROW + 1_COORD; pos.IncX())
-		if (isContactPnt(pos))
-			m_contactPnts.push_back(pos);
-
 	Apply2AllShapeCells
 	(
 		[this](CoordPos const& pos)
@@ -149,39 +117,16 @@ void Shape::drawShapeSquares
 			ShapeSquare(d2d, center, col, size);
 		}
 	);
-	//Apply2AllCornerPntsC
-	//(
-	//	[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
-	//	{
-	//		fPixelPoint center 
-	//		{ 
-	//			fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
-	//			fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
-	//		};
-	//		d2d.FillCircle(fPixelCircle(center, size *0.2f));
-	//	}
-	//);
-}
-
-void Shape::drawContactPoints
-(
-	D2D_driver  const &d2d,
-	fPixelPoint const  fPixPosShape, 
-	fPixel      const  size
-) const
-{
-	Apply2AllContactPntsC
+	Apply2AllCornerPntsC
 	(
-		[this, &d2d, fPixPosShape, size](ShapeCoordPos const& posContactPnt)
+		[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
 		{
-			static Color const CONTACT_POINT_COLOR { Color(0.5f, 0.5f, 0.5f) };
-			ColSquare
-			(
-				d2d, 
-				fPixPosShape + TofPixelPos(posContactPnt, size), 
-				CONTACT_POINT_COLOR, 
-				size
-			);
+			fPixelPoint center 
+			{ 
+				fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
+				fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
+			};
+			d2d.FillCircle(fPixelCircle(center, size *0.2f));
 		}
 	);
 }
@@ -195,5 +140,4 @@ void Shape::Draw
 ) const
 {
 	drawShapeSquares (d2d, pos, col, size);
-//	drawContactPoints(d2d, pos, size);
 }

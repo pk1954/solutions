@@ -14,6 +14,8 @@ void Game::FindValidMoves(PlayerId const idPlayer)
     Move move;
     move.m_idPlayer = idPlayer;
     Player const& player { m_players.GetPlayerC(idPlayer) };
+    if (!player.IsFirstMove())
+        FindContactPnts(m_activePlayer);
     player.Apply2FreePiecesC
     (
         [this, &move](Piece const& piece)
@@ -37,7 +39,14 @@ void Game::FindValidMoves(PlayerId const idPlayer)
                                     move.m_boardPos = posContact - posCorner;
                                     ++iNrOfContactPnts;
                                     if (m_board.IsValidMove(move, m_players))
+                                    {
                                         m_validMoves.push_back(move);
+                                        if (
+                                              (move.m_idPlayer.GetValue() == 1) &&
+                                              (move.m_idPieceType.GetValue() == 10)
+                                           )
+                                            m_board.IsValidMove(move, m_players);
+                                    }
                                 }
 				            );
 			            }

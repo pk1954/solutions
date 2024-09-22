@@ -35,6 +35,26 @@ public:
         return m_players.GetPlayerC(m_activePlayer);
     }
 
+    void DrawSetPieces
+    (
+	    D2D_driver     const& d2d,
+	    BlokusCoordSys const& coordSys
+    ) const
+    {
+        Apply2AllBoardCells
+        (
+            [this, &d2d, &coordSys](CoordPos const& pos)
+            {
+		        PlayerId const idPlayer { m_board.GetPlayerId(pos) };
+		        if (idPlayer != NO_PLAYER)
+		        {
+                    Player const& player { m_players.GetPlayerC(idPlayer) };
+                    player.DrawCell(d2d, coordSys, pos);
+		        }
+            }
+        );
+    }
+
     void PerformMove(Move const& move)
     {
         ActivePlayer().PerformMove(move);
@@ -45,7 +65,7 @@ public:
     {
         if (++m_activePlayer == PlayerId(NR_OF_PLAYERS))
             m_activePlayer = PlayerId(0);
-    }
+}
 
     bool NextMove()
     {
@@ -54,27 +74,21 @@ public:
             return false;
         Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
         PerformMove(move);
-        NextPlayer();
         return true;
     }
 
-    void DrawSetPieces
-    (
-	    D2D_driver     const& d2d,
-	    BlokusCoordSys const& coordSys
-    ) const
+    void FindContactPnts(PlayerId const id)
     {
-	    for (Coord x = 0_COORD; x < COORD_BOARD_SIZE; ++x)
-	    for (Coord y = 0_COORD; y < COORD_BOARD_SIZE; ++y)
-	    {
-            CoordPos       pos      { x, y };
-		    PlayerId const idPlayer { m_board.GetPlayerId(pos) };
-		    if (idPlayer != NO_PLAYER)
-		    {
-                Player const& player { m_players.GetPlayerC(idPlayer) };
-                player.DrawCell(d2d, coordSys, pos);
-		    }
-	    }
+        Player &player { m_players.GetPlayer(id) };
+        player.ClearContactPnts();
+        Apply2AllBoardCells
+        (
+            [this, id, &player](CoordPos const& pos)
+            {
+                if (m_board.IsContactPnt(pos, id))
+                    player.AddContactPnt(pos);
+            }
+        );
     }
 
 private:

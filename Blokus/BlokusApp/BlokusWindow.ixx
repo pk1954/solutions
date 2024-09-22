@@ -20,6 +20,7 @@ public:
 
 private:
 
+	bool           m_bMoveDone { false };
 	Game           m_game;
 	BlokusCoordSys m_coordSys;
 	fPixel         m_fPixBoardSize;

@@ -4,14 +4,10 @@
 
 module BlokusWindow;
 
-import std;
 import Color;
 import Types;
 import SaveCast;
-import WinBasics;
 import Direct2D;
-import GraphicsWindow;
-import BlokusCore;
 
 using std::min;
 
@@ -45,7 +41,11 @@ bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
-	m_game.NextMove();
+	if (m_bMoveDone)
+	    m_game.NextPlayer();
+	else
+		m_game.NextMove();
+	m_bMoveDone = !m_bMoveDone;
 	Notify(false);
 }
 
@@ -79,6 +79,7 @@ void BlokusWindow::PaintGraphics()
 {
 	m_game.ActivePlayerC().DrawFreePieces(*m_upGraphics.get(), m_coordSys);
  	paintBoard();
-    m_game.ActivePlayerC().DrawContactPnts(*m_upGraphics.get(), m_coordSys);
+	if (!m_bMoveDone)
+		m_game.ActivePlayerC().DrawContactPnts(*m_upGraphics.get(), m_coordSys);
 	m_game.DrawSetPieces(*m_upGraphics.get(), m_coordSys);
 };

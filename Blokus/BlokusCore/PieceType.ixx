@@ -49,20 +49,6 @@ public:
 			func(s);
 	}
 
-    void Apply2AllContactPntsC(auto const& func) const
-    {
-		Apply2AllShapesC
-		(
-			[&func](Shape const& s)
-			{
-				s.Apply2AllContactPntsC
-				(
-					[&func](CoordPos const & pos) { func(pos); }
-				);
-			}
-		);
-    }
-
 	void Flip()
 	{
 		//ActiveOrientation().Flip();

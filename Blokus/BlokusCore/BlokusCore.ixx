@@ -4,6 +4,7 @@
 
 export module BlokusCore;
 
+export import :BoardMap;
 export import :Components;
 export import :Board;
 export import :Game;

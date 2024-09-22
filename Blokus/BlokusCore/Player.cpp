@@ -4,12 +4,21 @@
 
 module BlokusCore:Player;
 
-import Types;
-import Color;
-import Direct2D;
-import :Components;
-import :CoordPos;
 import :Util;
+
+using std::vector;
+
+void Player::Initialize
+(
+    CoordPos const startPoint,
+    Color    const col
+)
+{
+    PieceTypeId id { 0 };
+    Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
+    m_color = col;
+    AddContactPnt(startPoint);
+}
 
 fPixelPoint Player::getCenter
 (
@@ -68,4 +77,33 @@ void Player::DrawContactPnts
 			ColSquare(d2d, getCenter(coordSys, pos), COL_CONTACT_POINT, coordSys.CellSize() );
 		}
 	);
+}
+
+Move const& Player::SelectMove(vector<Move> const& moves) const
+{
+    //unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };
+    //unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
+    //return moves[uiSel];
+    return moves[0];
+}
+
+void Player::PerformMove(Move const& move)
+{
+    PieceType const &pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
+    Shape     const &shape     { pieceType.GetShapeC(move.m_idShape)};
+    Piece           &piece     { GetPiece(move.m_idPieceType) };
+    piece.PerformMove(move);
+    shape.Apply2AllShapeCells
+    (
+        [this, &move](ShapeCoordPos const &shapePos)
+        { 
+            CoordPos const coordPos { move.m_boardPos + shapePos };
+            m_validPositions.SetCell(coordPos, false);
+            m_validPositions.SetCell(NorthPos(coordPos), false);
+            m_validPositions.SetCell(EastPos (coordPos), false);
+            m_validPositions.SetCell(SouthPos(coordPos), false);
+            m_validPositions.SetCell(WestPos (coordPos), false);
+        }
+    );
+    m_bFirstMove = false;
 }

@@ -55,15 +55,28 @@ public:
         Players const& players
     )
     {
-        Shape const& shape { GetShapeC(move, players) };
+        Player    const& player    { players    .GetPlayerC   (move.m_idPlayer) };
+        PieceType const& pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
+        Shape     const& shape     { pieceType  .GetShapeC    (move.m_idShape) };
         return shape.Apply2AllShapeCellsB
         (
-            [this, &move](ShapeCoordPos const &shapePos)
+            [this, &move, &player](ShapeCoordPos const &shapePos)
             {
                 CoordPos const coordPos { move.m_boardPos + shapePos };
-                return IsFreeCell(move.m_boardPos + shapePos);
+                return IsFreeCell(coordPos) && player.IsValidPos(coordPos);
             }
         );
+    }
+
+    bool IsContactPnt(CoordPos const& pos, PlayerId const id)
+    {
+	    if (!IsFreeCell(pos))
+            return false;
+        if (!hasDiagContact(pos, id))
+            return false;
+        if (hasOrthoContact(pos, id))
+            return false;
+        return true;
     }
 
     void PerformMove
@@ -84,6 +97,30 @@ public:
     }
 
 private:
+    // A cell in the environment of a cell is a contact point 
+    // if at least one diagonal neighbour of the cell belongs to the same player
+    // and no orthogonal (horz or vert) neighbour of the cell belongs to the same player
+
+    bool hasPlayerId(CoordPos const& pos, PlayerId const id) const
+    {
+        return IsOnBoard(pos) && (GetPlayerId(pos) == id);
+    }
+
+    bool hasDiagContact(CoordPos const& pos, PlayerId const id) const
+    {
+	    return (hasPlayerId(NorthEastPos(pos), id)) || 
+               (hasPlayerId(SouthEastPos(pos), id)) ||
+		       (hasPlayerId(NorthWestPos(pos), id)) || 
+               (hasPlayerId(SouthWestPos(pos), id));
+    }
+
+    bool hasOrthoContact(CoordPos const& pos, PlayerId const id) const
+    {
+        return (hasPlayerId(NorthPos(pos), id)) ||
+               (hasPlayerId(EastPos (pos), id)) ||
+		       (hasPlayerId(SouthPos(pos), id)) ||
+               (hasPlayerId(WestPos (pos), id));
+    }
 
     array<array<PlayerId, BOARD_SIZE>, BOARD_SIZE> m_cells;
 };
