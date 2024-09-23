@@ -55,17 +55,11 @@ public:
         );
     }
 
-    void PerformMove(Move const& move)
-    {
-        ActivePlayer().PerformMove(move);
-        m_board.PerformMove(move, m_players);
-    }
-
     void NextPlayer()
     {
         if (++m_activePlayer == PlayerId(NR_OF_PLAYERS))
             m_activePlayer = PlayerId(0);
-}
+    }
 
     bool NextMove()
     {
@@ -73,22 +67,29 @@ public:
         if (m_validMoves.empty())
             return false;
         Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
-        PerformMove(move);
+        ActivePlayer().PerformMove(move);
+        m_board.PerformMove(move, m_players);
         return true;
     }
 
-    void FindContactPnts(PlayerId const id)
+    void FindContactPnts()
     {
-        Player &player { m_players.GetPlayer(id) };
-        player.ClearContactPnts();
-        Apply2AllBoardCells
-        (
-            [this, id, &player](CoordPos const& pos)
-            {
-                if (m_board.IsContactPnt(pos, id))
-                    player.AddContactPnt(pos);
-            }
-        );
+        Player &player { m_players.GetPlayer(m_activePlayer) };
+        if (!player.IsFirstMove())
+        {
+            player.ClearContactPnts();
+            Apply2AllBoardCells
+            (
+                [this, &player](CoordPos const& pos)
+                {
+                    if (m_board.IsContactPnt(pos, m_activePlayer))
+                    {
+                        player.AddContactPnt(pos);
+                        m_board.IsContactPnt(pos, m_activePlayer);
+                    }
+                }
+            );
+        }
     }
 
 private:

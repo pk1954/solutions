@@ -35,3 +35,14 @@ export void ShapeSquare
 	ColSquare(d2d, center,  col * 0.6f, size * 0.8f);
 }
 
+export void SmallDot
+(
+    D2D_driver  const &d2d,
+	fPixelPoint const &fPixPos,
+	Color       const  col,
+	fPixel      const  size
+)
+{
+	d2d.FillCircle(fPixelCircle(fPixPos, size * 0.2f), col);
+}
+

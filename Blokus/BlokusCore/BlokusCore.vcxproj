@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BlokusCoordSys.ixx" />
     <ClCompile Include="BlokusCore.ixx" />
     <ClCompile Include="BoardMap.ixx" />
     <ClCompile Include="Util.ixx" />

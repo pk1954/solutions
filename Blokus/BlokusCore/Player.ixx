@@ -8,6 +8,7 @@ import std;
 import Types;
 import Color;
 import Direct2D;
+import :BlokusCoordSys;
 import :BoardMap;
 import :Piece;
 import :PlayerId;

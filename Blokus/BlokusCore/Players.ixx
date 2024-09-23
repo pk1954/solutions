@@ -5,6 +5,7 @@
 export module BlokusCore:Players;
 
 import std;
+import Color;
 import :Components;
 import :CoordPos;
 import :PlayerId;

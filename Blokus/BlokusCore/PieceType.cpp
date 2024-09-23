@@ -31,6 +31,8 @@ void PieceType::initialize(SHAPE const &shape)
 	addOrientations(shapeNew);
 	shapeNew.Flip();
 	addOrientations(shapeNew);
+	for (Shape &shape : m_shapes)
+		shape.CollectCornerPnts();
 }
 
 PieceType& PieceType::operator=(const SHAPE& shape)

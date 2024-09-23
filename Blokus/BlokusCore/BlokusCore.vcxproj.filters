@@ -78,5 +78,8 @@
     <ClCompile Include="BoardMap.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BlokusCoordSys.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

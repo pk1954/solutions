@@ -73,8 +73,7 @@ void Player::DrawContactPnts
 	(
 		[this, &d2d, &coordSys](CoordPos const& pos)
 		{
-		    Color const COL_CONTACT_POINT { Color(0.5f, 0.5f, 0.5f) };
-			ColSquare(d2d, getCenter(coordSys, pos), COL_CONTACT_POINT, coordSys.CellSize() );
+			SmallDot(d2d, getCenter(coordSys, pos), m_color, coordSys.CellSize());
 		}
 	);
 }

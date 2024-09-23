@@ -4,6 +4,7 @@
 
 module BlokusCore:Shape;
 
+import Color;
 import :Components;
 import :Util;
 
@@ -22,8 +23,7 @@ bool Shape::isCornerPnt(CoordPos const& pos) const
 		   (!isPartOfShape(WestPos (pos)) && !isPartOfShape(NorthPos(pos)));
 }
 
-Shape::Shape(SHAPE const &shape)
-	: m_shape(shape)
+void Shape::CollectCornerPnts()
 {
 	Apply2AllShapeCells
 	(
@@ -34,6 +34,10 @@ Shape::Shape(SHAPE const &shape)
 		}
 	);
 }
+
+Shape::Shape(SHAPE const &shape)
+	: m_shape(shape)
+{}
 
 bool Shape::spaceAtTop() const
 {
@@ -100,7 +104,7 @@ void Shape::Rotate()
 void Shape::drawShapeSquares
 (
 	D2D_driver  const &d2d,
-	fPixelPoint const  fPixPntShapePos, 
+	fPixelPoint const &fPixPntShapePos, 
 	Color       const  col,
 	fPixel      const  size
 ) const
@@ -126,7 +130,7 @@ void Shape::drawShapeSquares
 				fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
 				fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
 			};
-			d2d.FillCircle(fPixelCircle(center, size *0.2f));
+			SmallDot(d2d, center, Color(0.0f, 0.0f, 0.0f), size);
 		}
 	);
 }
@@ -139,5 +143,5 @@ void Shape::Draw
 	fPixel      const  size
 ) const
 {
-	drawShapeSquares (d2d, pos, col, size);
+	drawShapeSquares(d2d, pos, col, size);
 }

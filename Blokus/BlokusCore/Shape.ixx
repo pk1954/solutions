@@ -24,6 +24,8 @@ public:
 
 	Shape(SHAPE const&);
 
+	void CollectCornerPnts();
+
 	bool operator==(Shape const&) const = default;
 
     void Apply2AllCornerPntsC(auto const& func) const
@@ -64,7 +66,7 @@ private:
 	bool isPartOfShape(CoordPos const&) const;
 	bool isCornerPnt  (CoordPos const&) const;
 
-	void drawShapeSquares (D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void drawShapeSquares(D2D_driver const&, fPixelPoint const&, Color const, fPixel const) const;
 	bool spaceAtTop() const;
 	bool spaceAtLeft() const;
 	void shiftTop();
