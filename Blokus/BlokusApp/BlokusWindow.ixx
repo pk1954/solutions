@@ -5,6 +5,7 @@
 export module BlokusWindow;
 
 import std;
+import HiResTimer;
 import WinBasics;
 import GraphicsWindow;
 import BlokusCore;
@@ -20,6 +21,7 @@ public:
 
 private:
 
+    HiResTimer     m_timer;
 	bool           m_bMoveDone { false };
 	Game           m_game;
 	BlokusCoordSys m_coordSys;

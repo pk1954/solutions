@@ -7,6 +7,7 @@ export module BlokusCore:Game;
 import std;
 import Types;
 import Color;
+import HiResTimer;
 import :Board;
 import :Player;
 import :Players;
@@ -14,6 +15,10 @@ import :PlayerId;
 import :Components;
 
 using std::vector;
+
+int g_iNrOfPieces;
+int g_iNrOfShapes;
+int g_iNrOfMoves;
 
 export class Game
 {
@@ -35,64 +40,14 @@ public:
         return m_players.GetPlayerC(m_activePlayer);
     }
 
-    void DrawSetPieces
-    (
-	    D2D_driver     const& d2d,
-	    BlokusCoordSys const& coordSys
-    ) const
-    {
-        Apply2AllBoardCells
-        (
-            [this, &d2d, &coordSys](CoordPos const& pos)
-            {
-		        PlayerId const idPlayer { m_board.GetPlayerId(pos) };
-		        if (idPlayer != NO_PLAYER)
-		        {
-                    Player const& player { m_players.GetPlayerC(idPlayer) };
-                    player.DrawCell(d2d, coordSys, pos);
-		        }
-            }
-        );
-    }
-
-    void NextPlayer()
-    {
-        if (++m_activePlayer == PlayerId(NR_OF_PLAYERS))
-            m_activePlayer = PlayerId(0);
-    }
-
-    bool NextMove()
-    {
-        FindValidMoves(m_activePlayer);
-        if (m_validMoves.empty())
-            return false;
-        Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
-        ActivePlayer().PerformMove(move);
-        m_board.PerformMove(move, m_players);
-        return true;
-    }
-
-    void FindContactPnts()
-    {
-        Player &player { m_players.GetPlayer(m_activePlayer) };
-        if (!player.IsFirstMove())
-        {
-            player.ClearContactPnts();
-            Apply2AllBoardCells
-            (
-                [this, &player](CoordPos const& pos)
-                {
-                    if (m_board.IsContactPnt(pos, m_activePlayer))
-                    {
-                        player.AddContactPnt(pos);
-                        m_board.IsContactPnt(pos, m_activePlayer);
-                    }
-                }
-            );
-        }
-    }
+    void DrawSetPieces(D2D_driver const&, BlokusCoordSys const&) const;
+    void NextPlayer();
+    bool NextMove();
+    void FindContactPnts();
 
 private:
+    HiResTimer   m_timerFindContactPnts;
+    HiResTimer   m_timerFindValidMoves;
     Board        m_board;
     Players      m_players;
     PlayerId     m_activePlayer { 0 };

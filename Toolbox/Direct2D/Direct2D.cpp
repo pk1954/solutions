@@ -428,7 +428,7 @@ void D2D_driver::FillCircle
 void D2D_driver::FillCircle
 (
 	fPixelCircle const& circle,
-	Color const   colF
+	Color        const  colF
 ) const
 {
 	FillEllipse(fPixelEllipse { circle }, colF);
@@ -708,7 +708,7 @@ void D2D_driver::DrawBezier
 	fPixelPoint  const& fPixPnt1,
 	fPixelPoint  const& fPixPnt2,
 	fPixelPoint  const& fPixPnt3,
-	Color const  col,
+	Color        const  col,
 	fPixel       const  fPixWidth
 ) const
 {

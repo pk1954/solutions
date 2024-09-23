@@ -10,6 +10,8 @@ import SaveCast;
 import Direct2D;
 
 using std::min;
+using std::wcout;
+using std::endl;
 
 fPixel const BORDER { 10.0_fPixel };
 
@@ -41,16 +43,24 @@ bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_bMoveDone)
-	{
-	    m_game.NextPlayer();
-        m_game.FindContactPnts();
-	}
-	else
-	{
-		m_game.NextMove();
-	}
-	m_bMoveDone = !m_bMoveDone;
+    m_timer.BeforeAction();
+	m_game.NextPlayer();
+    m_game.FindContactPnts();
+	m_game.NextMove();
+    m_timer.AfterAction();
+    Ticks const ticks { m_timer.GetSingleActionTicks() };
+    wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+
+	//if (m_bMoveDone)
+	//{
+	//    m_game.NextPlayer();
+ //       m_game.FindContactPnts();
+	//}
+	//else
+	//{
+	//	m_game.NextMove();
+	//}
+	//m_bMoveDone = !m_bMoveDone;
 	Notify(false);
 }
 

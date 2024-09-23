@@ -110,6 +110,7 @@ export template<typename SOURCE_TYPE> constexpr void AssertLimits(SOURCE_TYPE co
 export template<typename SOURCE_TYPE> constexpr void AssertFloat        (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertByte         (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertShort        (SOURCE_TYPE const value) {}
+export template<typename SOURCE_TYPE> constexpr void AssertSignedChar   (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertInt          (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertLong         (SOURCE_TYPE const value) {}
 export template<typename SOURCE_TYPE> constexpr void AssertUnsignedShort(SOURCE_TYPE const value) {}

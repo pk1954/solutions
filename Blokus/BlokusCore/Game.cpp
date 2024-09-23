@@ -4,31 +4,93 @@
 
 module BlokusCore:Game;
 
-int iAvailablePieces { 0 };
-int iNrOfShapes      { 0 };
-int iNrOfContactPnts { 0 };
+import PerfCounter;
+
+using std::wcout;
+using std::endl;
+
+void Game::DrawSetPieces
+(
+	D2D_driver     const& d2d,
+	BlokusCoordSys const& coordSys
+) const
+{
+    Apply2AllBoardCells
+    (
+        [this, &d2d, &coordSys](CoordPos const& pos)
+        {
+		    PlayerId const idPlayer { m_board.GetPlayerId(pos) };
+		    if (idPlayer != NO_PLAYER)
+		    {
+                Player const& player { m_players.GetPlayerC(idPlayer) };
+                player.DrawCell(d2d, coordSys, pos);
+		    }
+        }
+    );
+}
+
+void Game::NextPlayer()
+{
+    if (++m_activePlayer == PlayerId(NR_OF_PLAYERS))
+        m_activePlayer = PlayerId(0);
+}
+
+bool Game::NextMove()
+{
+    FindValidMoves(m_activePlayer);
+    if (m_validMoves.empty())
+        return false;
+    Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
+    ActivePlayer().PerformMove(move);
+    m_board.PerformMove(move, m_players);
+    return true;
+}
+
+void Game::FindContactPnts()
+{
+    m_timerFindContactPnts.BeforeAction();
+    Player &player { m_players.GetPlayer(m_activePlayer) };
+    if (!player.IsFirstMove())
+    {
+        player.ClearContactPnts();
+        Apply2AllBoardCells
+        (
+            [this, &player](CoordPos const& pos)
+            {
+                if (m_board.IsContactPnt(pos, m_activePlayer))
+                {
+                    player.AddContactPnt(pos);
+                    m_board.IsContactPnt(pos, m_activePlayer);
+                }
+            }
+        );
+    }
+    m_timerFindContactPnts.AfterAction();
+    Ticks const ticks { m_timerFindContactPnts.GetSingleActionTicks() };
+    wcout << L"FindContactPnts:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+}
 
 void Game::FindValidMoves(PlayerId const idPlayer)
 {
+    g_iNrOfPieces = 0;
+    g_iNrOfShapes = 0;
+    g_iNrOfMoves  = 0;
+    m_timerFindValidMoves.BeforeAction();
     m_validMoves.clear();
     Move move;
     move.m_idPlayer = idPlayer;
-    Player const& player { m_players.GetPlayerC(idPlayer) };
-    player.Apply2FreePiecesC
+    m_players.GetPlayerC(idPlayer).Apply2FreePiecesC
     (
         [this, &move](Piece const& piece)
         {
             move.m_idPieceType = piece.GetPieceTypeId();
-            ++iAvailablePieces;
-            PieceType const &pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
-		    pieceType.Apply2AllShapeIdsC
+            ++g_iNrOfPieces;
+		    Components::GetPieceTypeC(move.m_idPieceType).Apply2AllShapeIdsC
 		    (
 			    [this, &move](ShapeId const& idShape)
 			    {
                     move.m_idShape = idShape;
-                    ++iNrOfShapes;
-
-                    Shape const& shape { m_board.GetShapeC(move, m_players) };  //debug
+                    ++g_iNrOfShapes;
 				    m_board.GetShapeC(move, m_players).Apply2AllCornerPntsC
 				    (
 					    [this, &move](ShapeCoordPos const &posCorner) 
@@ -38,15 +100,10 @@ void Game::FindValidMoves(PlayerId const idPlayer)
                                 [this, &move, &posCorner](CoordPos const& posContact)
                                 {
                                     move.m_boardPos = posContact - posCorner;
-                                    ++iNrOfContactPnts;
+                                    ++g_iNrOfMoves;
                                     if (m_board.IsValidMove(move, m_players))
                                     {
                                         m_validMoves.push_back(move);
-                                        if (                                          //debug
-                                              (move.m_idPlayer.GetValue() == 1) &&    //debug
-                                              (move.m_idPieceType.GetValue() == 10)   //debug
-                                           )                                          //debug
-                                            m_board.IsValidMove(move, m_players);     //debug
                                     }
                                 }
 				            );
@@ -56,4 +113,16 @@ void Game::FindValidMoves(PlayerId const idPlayer)
             );
         }
     );
+    m_timerFindValidMoves.AfterAction();
+    Ticks const ticks        { m_timerFindValidMoves.GetSingleActionTicks() };
+    Ticks const ticksPerMove {ticks / g_iNrOfMoves };
+    
+    wcout << L"FindValidMoves:"                     << endl;
+    wcout << g_iNrOfPieces       << L" pieces"      << endl;
+    wcout << g_iNrOfShapes       << L" shapes"      << endl;
+    wcout << g_iNrOfMoves        << L" moves"       << endl;
+    wcout << m_validMoves.size() << L" valid moves" << endl;
+    wcout << PerfCounter::Ticks2wstring(ticks) 
+          << L"(" << PerfCounter::Ticks2wstring(ticksPerMove) << L" per move)" 
+          << endl;
 }
