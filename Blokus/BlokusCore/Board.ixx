@@ -85,7 +85,7 @@ public:
         Players const& players
     )
     {
-        GetShapeC(move, players).Apply2AllShapeCells
+        GetShapeC(move, players).Apply2AllShapeCellsC
         (
             [this, &move](ShapeCoordPos const &shapePos)
             {

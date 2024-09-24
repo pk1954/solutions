@@ -13,7 +13,7 @@ export using PlayerId = NamedType<int, struct PlayerId_Parameter>;
 
 export inline PlayerId const NO_PLAYER { -1 };
 
-export inline int const NR_OF_PLAYERS { 4 };
+export inline unsigned int const NR_OF_PLAYERS { 4 };
 
 export inline PlayerId UndefinedPlayerId()
 {

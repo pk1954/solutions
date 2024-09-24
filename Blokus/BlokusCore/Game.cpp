@@ -35,14 +35,30 @@ void Game::NextPlayer()
         m_activePlayer = PlayerId(0);
 }
 
+void Game::playerFinished(Player& player)
+{
+    player.DoFinish();
+    if (--m_uiPlayersLeft == 0)
+        m_bGameFinished = true;
+}
+
 bool Game::NextMove()
 {
+    Player &player { m_players.GetPlayer(m_activePlayer) };
     FindValidMoves(m_activePlayer);
     if (m_validMoves.empty())
+    {
+        playerFinished(player);
         return false;
+    }
     Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
-    ActivePlayer().PerformMove(move);
+    player.PerformMove(move);
     m_board.PerformMove(move, m_players);
+    if (player.HasFinished())
+    {
+        playerFinished(player);
+        return false;
+    }
     return true;
 }
 

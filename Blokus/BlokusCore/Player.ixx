@@ -77,14 +77,42 @@ public:
         return m_validPositions.IsValidPos(pos); 
     }
 
+    void DoFinish()
+    {
+		m_bFinished = true;
+		Apply2FreePiecesC
+		(
+			[this](Piece const& piece)
+			{
+				PieceType const& pt { piece.GetPieceTypeC() };
+				m_bResult -= pt.NrOfCells();
+			}
+		);
+    	if (m_remainingPieces == 0)
+	    {
+		    m_bResult = 15;
+		    if (Components::GetPieceTypeC(m_pieceTypeIdMove).NrOfCells() == 1)
+			    m_bResult += 5;
+		    m_bFinished = true;
+	    }
+    }
+
+    bool HasFinished() const { return m_bFinished; }
+    int  Result()      const { return m_bResult; }
+
 private:
    // static Random m_random;
 
-    bool                            m_bFirstMove { true };
+    PieceTypeId                     m_pieceTypeIdMove { UndefinedPieceTypeId };
+    unsigned int                    m_remainingPieces { NR_OF_PIECE_TYPES };
+    int                             m_bResult         { 0 };
+    bool                            m_bFinished       { false };
+    bool                            m_bFirstMove      { true };
     Color                           m_color;
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
     vector<CoordPos>                m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
 
     fPixelPoint getCenter(BlokusCoordSys const&, CoordPos const&) const;
+    void reduceValidMoves(Move const&, PieceType const&);
 };

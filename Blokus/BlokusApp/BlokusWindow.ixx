@@ -22,7 +22,7 @@ public:
 private:
 
     HiResTimer     m_timer;
-	bool           m_bMoveDone { false };
+	//bool           m_bMoveDone { false };
 	Game           m_game;
 	BlokusCoordSys m_coordSys;
 	fPixel         m_fPixBoardSize;

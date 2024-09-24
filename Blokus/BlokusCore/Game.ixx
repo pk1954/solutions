@@ -40,16 +40,22 @@ public:
         return m_players.GetPlayerC(m_activePlayer);
     }
 
+    bool GameFinished() { return m_bGameFinished; }
+
     void DrawSetPieces(D2D_driver const&, BlokusCoordSys const&) const;
     void NextPlayer();
     bool NextMove();
     void FindContactPnts();
 
 private:
+    bool         m_bGameFinished { false };
+    unsigned int m_uiPlayersLeft { NR_OF_PLAYERS };
     HiResTimer   m_timerFindContactPnts;
     HiResTimer   m_timerFindValidMoves;
     Board        m_board;
     Players      m_players;
     PlayerId     m_activePlayer { 0 };
     vector<Move> m_validMoves;
+
+    void playerFinished(Player&);
 };

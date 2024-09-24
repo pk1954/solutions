@@ -43,24 +43,20 @@ bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 
 void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
-    m_timer.BeforeAction();
-	m_game.NextPlayer();
-    m_game.FindContactPnts();
-	m_game.NextMove();
-    m_timer.AfterAction();
-    Ticks const ticks { m_timer.GetSingleActionTicks() };
-    wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-
-	//if (m_bMoveDone)
-	//{
-	//    m_game.NextPlayer();
- //       m_game.FindContactPnts();
-	//}
-	//else
-	//{
-	//	m_game.NextMove();
-	//}
-	//m_bMoveDone = !m_bMoveDone;
+	if (m_game.GameFinished())
+	{
+		m_game.NextPlayer();
+	}
+	else
+	{
+		m_timer.BeforeAction();
+		m_game.NextPlayer();
+		m_game.FindContactPnts();
+		m_game.NextMove();
+		m_timer.AfterAction();
+		Ticks const ticks { m_timer.GetSingleActionTicks() };
+		wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+	}
 	Notify(false);
 }
 
@@ -95,6 +91,6 @@ void BlokusWindow::PaintGraphics()
 	m_game.ActivePlayerC().DrawFreePieces(*m_upGraphics.get(), m_coordSys);
  	paintBoard();
 	m_game.DrawSetPieces(*m_upGraphics.get(), m_coordSys);
-	if (!m_bMoveDone)
-		m_game.ActivePlayerC().DrawContactPnts(*m_upGraphics.get(), m_coordSys);
+	//if (!m_bMoveDone)
+	//	m_game.ActivePlayerC().DrawContactPnts(*m_upGraphics.get(), m_coordSys);
 };

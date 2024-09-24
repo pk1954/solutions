@@ -86,13 +86,14 @@ Move const& Player::SelectMove(vector<Move> const& moves) const
     return moves[0];
 }
 
-void Player::PerformMove(Move const& move)
+void Player::reduceValidMoves
+(
+	Move      const &move,
+	PieceType const &pieceType
+)
 {
-    PieceType const &pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
-    Shape     const &shape     { pieceType.GetShapeC(move.m_idShape)};
-    Piece           &piece     { GetPiece(move.m_idPieceType) };
-    piece.PerformMove(move);
-    shape.Apply2AllShapeCells
+    Shape const &shape { pieceType.GetShapeC(move.m_idShape)};
+    shape.Apply2AllShapeCellsC
     (
         [this, &move](ShapeCoordPos const &shapePos)
         { 
@@ -105,4 +106,21 @@ void Player::PerformMove(Move const& move)
         }
     );
     m_bFirstMove = false;
+}
+
+void Player::PerformMove(Move const& move)
+{
+	m_pieceTypeIdMove = move.m_idPieceType;
+    PieceType const &pieceType { Components::GetPieceTypeC(m_pieceTypeIdMove) };
+    Piece           &piece     { GetPiece(move.m_idPieceType) };
+    piece.PerformMove(move);
+    m_bFirstMove = false;
+	if (--m_remainingPieces == 0)
+	{
+		m_bFinished = true;
+	}
+	else
+	{
+		reduceValidMoves(move, pieceType);
+	}
 }

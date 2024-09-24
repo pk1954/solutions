@@ -34,7 +34,7 @@ public:
             func(pos);
     }
 
-	void Apply2AllShapeCells(auto const& func) const
+	void Apply2AllShapeCellsC(auto const& func) const
 	{
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
@@ -63,8 +63,8 @@ private:
     SHAPE                 m_shape;
 	vector<ShapeCoordPos> m_cornerPnts;
 
-	bool isPartOfShape(CoordPos const&) const;
 	bool isCornerPnt  (CoordPos const&) const;
+	bool isPartOfShape(ShapeCoordPos const&) const;
 
 	void drawShapeSquares(D2D_driver const&, fPixelPoint const&, Color const, fPixel const) const;
 	bool spaceAtTop() const;

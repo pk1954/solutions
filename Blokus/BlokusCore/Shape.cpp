@@ -10,7 +10,7 @@ import :Util;
 
 using std::swap;
 
-bool Shape::isPartOfShape(CoordPos const& pos) const
+bool Shape::isPartOfShape(ShapeCoordPos const& pos) const
 {
 	return IsInShapeRange(pos) && m_shape[pos.GetYvalue()][pos.GetXvalue()];
 }
@@ -25,7 +25,7 @@ bool Shape::isCornerPnt(CoordPos const& pos) const
 
 void Shape::CollectCornerPnts()
 {
-	Apply2AllShapeCells
+	Apply2AllShapeCellsC
 	(
 		[this](CoordPos const& pos)
 		{
@@ -109,7 +109,7 @@ void Shape::drawShapeSquares
 	fPixel      const  size
 ) const
 {
-	Apply2AllShapeCells
+	Apply2AllShapeCellsC
 	(
 		[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
 		{
@@ -121,18 +121,18 @@ void Shape::drawShapeSquares
 			ShapeSquare(d2d, center, col, size);
 		}
 	);
-	Apply2AllCornerPntsC
-	(
-		[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
-		{
-			fPixelPoint center 
-			{ 
-				fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
-				fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
-			};
-			SmallDot(d2d, center, Color(0.0f, 0.0f, 0.0f), size);
-		}
-	);
+	//Apply2AllCornerPntsC
+	//(
+	//	[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
+	//	{
+	//		fPixelPoint center 
+	//		{ 
+	//			fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
+	//			fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
+	//		};
+	//		SmallDot(d2d, center, Color(0.0f, 0.0f, 0.0f), size);
+	//	}
+	//);
 }
 
 void Shape::Draw

@@ -33,6 +33,10 @@ void PieceType::initialize(SHAPE const &shape)
 	addOrientations(shapeNew);
 	for (Shape &shape : m_shapes)
 		shape.CollectCornerPnts();
+	shapeNew.Apply2AllShapeCellsC
+	(
+		[this](ShapeCoordPos const&){++m_iNrOfCells;}
+	);
 }
 
 PieceType& PieceType::operator=(const SHAPE& shape)
