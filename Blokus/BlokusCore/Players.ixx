@@ -12,16 +12,29 @@ import :PlayerId;
 import :Player;
 
 using std::array;
+using std::wstring;
 
 class Players
 {
 public:
     void Initialize()
     {
-        m_players[0].Initialize(CoordPos(  0_COORD,   0_COORD), COL_RED   );
-        m_players[1].Initialize(CoordPos(MAX_COORD,   0_COORD), COL_GREEN ); 
-        m_players[2].Initialize(CoordPos(MAX_COORD, MAX_COORD), COL_BLUE  );
-        m_players[3].Initialize(CoordPos(  0_COORD, MAX_COORD), COL_YELLOW); 
+        m_players[0].Initialize(CoordPos(  0_COORD,   0_COORD), COL_RED,    L"RED"   );
+        m_players[1].Initialize(CoordPos(MAX_COORD,   0_COORD), COL_GREEN,  L"GREEN" ); 
+        m_players[2].Initialize(CoordPos(MAX_COORD, MAX_COORD), COL_BLUE,   L"BLUE"  );
+        m_players[3].Initialize(CoordPos(  0_COORD, MAX_COORD), COL_YELLOW, L"YELLOW"); 
+    }
+
+    void Apply2AllPlayersC(auto const& func) const
+    {
+        for (Player const& player: m_players)
+            func(player);
+    }
+
+    void Apply2AllPlayers(auto const& func)
+    {
+        for (Player &player: m_players)
+            func(player);
     }
 
     Player const& GetPlayerC(PlayerId const id) const

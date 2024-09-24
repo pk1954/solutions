@@ -19,19 +19,23 @@ import :Move;
 
 using std::array;
 using std::vector;
+using std::wstring;
 
 export class Player
 {
 public:
-    void Initialize(CoordPos const, Color const);
+    void Initialize(CoordPos const, Color const, wstring const&);
 
     bool IsFirstMove() const { return m_bFirstMove; }
+
+    wstring const& GetName() const { return m_wstrColor; }
 
     Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
 
     void DrawFreePieces (D2D_driver const&, BlokusCoordSys const&) const;
     void DrawContactPnts(D2D_driver const&, BlokusCoordSys const&) const;
+    void DrawResult     (D2D_driver const&, BlokusCoordSys const&, TextFormatHandle const) const;
     void DrawCell       (D2D_driver const&, BlokusCoordSys const&, CoordPos const&) const;
 
     Move const& SelectMove(vector<Move> const&) const;
@@ -77,41 +81,24 @@ public:
         return m_validPositions.IsValidPos(pos); 
     }
 
-    void DoFinish()
-    {
-		m_bFinished = true;
-		Apply2FreePiecesC
-		(
-			[this](Piece const& piece)
-			{
-				PieceType const& pt { piece.GetPieceTypeC() };
-				m_bResult -= pt.NrOfCells();
-			}
-		);
-    	if (m_remainingPieces == 0)
-	    {
-		    m_bResult = 15;
-		    if (Components::GetPieceTypeC(m_pieceTypeIdMove).NrOfCells() == 1)
-			    m_bResult += 5;
-		    m_bFinished = true;
-	    }
-    }
+    void DoFinish();
 
     bool HasFinished() const { return m_bFinished; }
-    int  Result()      const { return m_bResult; }
+    int  Result()      const { return m_iResult; }
 
 private:
    // static Random m_random;
 
-    PieceTypeId                     m_pieceTypeIdMove { UndefinedPieceTypeId };
-    unsigned int                    m_remainingPieces { NR_OF_PIECE_TYPES };
-    int                             m_bResult         { 0 };
-    bool                            m_bFinished       { false };
-    bool                            m_bFirstMove      { true };
+    PieceTypeId                     m_pieceTypeIdMove; 
+    unsigned int                    m_remainingPieces; 
+    int                             m_iResult;
+    bool                            m_bFinished;       
+    bool                            m_bFirstMove;      
     Color                           m_color;
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
     vector<CoordPos>                m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
+    wstring                         m_wstrColor;
 
     fPixelPoint getCenter(BlokusCoordSys const&, CoordPos const&) const;
     void reduceValidMoves(Move const&, PieceType const&);

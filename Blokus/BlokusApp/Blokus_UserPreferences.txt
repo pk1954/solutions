@@ -1,0 +1,7 @@
+# ***  User preferences
+SetSound  OFF
+SetColorMenu  OFF
+SetAutoOpen  ON
+ShowContactPnts  OFF
+ShowCornerCells  OFF
+# ***  End of Preferences

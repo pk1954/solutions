@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="BlokusCoordSys.ixx" />
     <ClCompile Include="BlokusCore.ixx" />
+    <ClCompile Include="BlokusPreferences.ixx" />
     <ClCompile Include="BoardMap.ixx" />
     <ClCompile Include="Util.ixx" />
     <ClCompile Include="Board.ixx" />

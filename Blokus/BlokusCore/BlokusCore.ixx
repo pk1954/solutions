@@ -5,6 +5,7 @@
 export module BlokusCore;
 
 export import :BlokusCoordSys;
+export import :BlokusPreferences;
 export import :BoardMap;
 export import :Components;
 export import :Board;

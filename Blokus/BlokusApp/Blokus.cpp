@@ -48,6 +48,7 @@ int wWinMain
 	pump.SetAccelTable(acc.Get());
 
 	Components::Initialize();
+	BlokusPreferences::Initialize();
 
 	unique_ptr<BlokusAppWindow> upApp { make_unique<BlokusAppWindow>(PRODUCT_NAME, pump) };
 

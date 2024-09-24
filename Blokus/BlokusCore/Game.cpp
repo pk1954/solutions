@@ -35,6 +35,24 @@ void Game::NextPlayer()
         m_activePlayer = PlayerId(0);
 }
 
+Player const& Game::Winner()
+{
+    Player const* pBestPlayer { nullptr };
+    int           iBestResult { (std::numeric_limits<int>::min)() };
+    m_players.Apply2AllPlayersC
+    (
+        [&pBestPlayer, &iBestResult](Player const &player)
+        {
+            if (player.Result() > iBestResult)
+            {
+                iBestResult = player.Result();
+                pBestPlayer = &player;
+            }
+        }
+    );
+    return *pBestPlayer;
+}
+
 void Game::playerFinished(Player& player)
 {
     player.DoFinish();
@@ -44,7 +62,7 @@ void Game::playerFinished(Player& player)
 
 bool Game::NextMove()
 {
-    Player &player { m_players.GetPlayer(m_activePlayer) };
+    Player &player { ActivePlayer() };
     FindValidMoves(m_activePlayer);
     if (m_validMoves.empty())
     {

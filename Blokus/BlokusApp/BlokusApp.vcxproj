@@ -21,10 +21,13 @@
   <ItemGroup>
     <ClCompile Include="Accelerators.ixx" />
     <ClCompile Include="Blokus.cpp" />
+    <ClCompile Include="BlokusAppMenu.cpp" />
+    <ClCompile Include="BlokusAppMenu.ixx" />
     <ClCompile Include="BlokusAppWindow.cpp" />
     <ClCompile Include="BlokusAppWindow.ixx" />
     <ClCompile Include="BlokusWindow.cpp" />
     <ClCompile Include="BlokusWindow.ixx" />
+    <ClCompile Include="Resource.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlokusCore\BlokusCore.vcxproj">
@@ -35,6 +38,9 @@
     </ProjectReference>
     <ProjectReference Include="..\Toolbox\Direct2D\Direct2D.vcxproj">
       <Project>{7a58b678-3520-4df0-b76b-cfcc20113ce9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Toolbox\IoUtil\IoUtil.vcxproj">
+      <Project>{dd5676cc-9c49-4ac7-82ff-5ce0f2f7bfed}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Toolbox\Types\Types.vcxproj">
       <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>

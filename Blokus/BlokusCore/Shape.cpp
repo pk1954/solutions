@@ -5,6 +5,7 @@
 module BlokusCore:Shape;
 
 import Color;
+import :BlokusPreferences;
 import :Components;
 import :Util;
 
@@ -121,18 +122,21 @@ void Shape::drawShapeSquares
 			ShapeSquare(d2d, center, col, size);
 		}
 	);
-	//Apply2AllCornerPntsC
-	//(
-	//	[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
-	//	{
-	//		fPixelPoint center 
-	//		{ 
-	//			fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
-	//			fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
-	//		};
-	//		SmallDot(d2d, center, Color(0.0f, 0.0f, 0.0f), size);
-	//	}
-	//);
+	if (BlokusPreferences::m_bShowCornerCells.Get())
+	{
+		Apply2AllCornerPntsC
+		(
+			[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
+			{
+				fPixelPoint center 
+				{ 
+					fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
+					fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
+				};
+				SmallDot(d2d, center, Color(0.0f, 0.0f, 0.0f), size);
+			}
+		);
+	}
 }
 
 void Shape::Draw

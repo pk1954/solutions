@@ -6,18 +6,28 @@ module BlokusCore:Player;
 
 import :Util;
 
+using std::wstring;
+using std::to_wstring;
 using std::vector;
 
 void Player::Initialize
 (
-    CoordPos const startPoint,
-    Color    const col
+    CoordPos const  startPoint,
+    Color    const  col,
+	wstring  const &wstrColor
 )
 {
     PieceTypeId id { 0 };
     Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
-    m_color = col;
+	m_validPositions.Initialize();
+	ClearContactPnts();
     AddContactPnt(startPoint);
+    m_color           = col;
+	m_wstrColor       = wstrColor;
+	m_pieceTypeIdMove = UndefinedPieceTypeId;
+	m_remainingPieces = NR_OF_PIECE_TYPES;
+    m_bFinished       = false;
+    m_bFirstMove      = true;
 }
 
 fPixelPoint Player::getCenter
@@ -30,6 +40,26 @@ fPixelPoint Player::getCenter
 	fPixel      const fPixHalfSize { fPixCellSize * 0.5f };
 	fPixelPoint const fPos         { coordSys.Transform2fPixelPos(pos) + fPixelPoint(fPixHalfSize) };
 	return fPos;
+}
+
+void Player::DrawResult
+(
+	D2D_driver       const& d2d,
+	BlokusCoordSys   const& coordSys,
+	TextFormatHandle const  hTextFormat
+) const
+{
+	fPixelRect fPixRect 
+	{ 
+		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE +  1_COORD, -1_COORD)),
+		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE + 12_COORD,  0_COORD))
+	};
+	d2d.DisplayText
+	(
+		fPixRect, 
+		L"Player finished with " + to_wstring(m_iResult) + L" points",
+		hTextFormat
+	);
 }
 
 void Player::DrawFreePieces
@@ -122,5 +152,26 @@ void Player::PerformMove(Move const& move)
 	else
 	{
 		reduceValidMoves(move, pieceType);
+	}
+}
+
+void Player::DoFinish()
+{
+	m_bFinished = true;
+	m_iResult = 0;
+	Apply2FreePiecesC
+	(
+		[this](Piece const& piece)
+		{
+			PieceType const& pt { piece.GetPieceTypeC() };
+			m_iResult -= pt.NrOfCells();
+		}
+	);
+    if (m_remainingPieces == 0)
+	{
+		m_iResult = 15;
+		if (Components::GetPieceTypeC(m_pieceTypeIdMove).NrOfCells() == 1)
+			m_iResult += 5;
+		m_bFinished = true;
 	}
 }

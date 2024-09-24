@@ -81,5 +81,8 @@
     <ClCompile Include="BlokusCoordSys.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BlokusPreferences.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

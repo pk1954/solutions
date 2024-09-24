@@ -8,6 +8,7 @@ import std;
 import HiResTimer;
 import WinBasics;
 import GraphicsWindow;
+import BlokusAppMenu;
 import BlokusCore;
 
 using std::array;
@@ -21,14 +22,18 @@ public:
 
 private:
 
-    HiResTimer     m_timer;
-	//bool           m_bMoveDone { false };
-	Game           m_game;
-	BlokusCoordSys m_coordSys;
-	fPixel         m_fPixBoardSize;
+    HiResTimer       m_timer;
+	Game             m_game;
+	BlokusCoordSys   m_coordSys;
+	fPixel           m_fPixBoardSize;
+	TextFormatHandle m_hTextFormat { nullptr };
 
 	void paintBoard() const;
 
-	bool OnSize(PIXEL  const, PIXEL  const) final;
+	bool OnSize   (PIXEL  const, PIXEL  const) final;
+	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+
 	void PaintGraphics() final;
+	void nextPlayer();
+	void drawFinishedMsg();
 };

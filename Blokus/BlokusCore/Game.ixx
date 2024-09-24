@@ -23,9 +23,18 @@ int g_iNrOfMoves;
 export class Game
 {
 public:
+    Game()
+    {
+        Initialize();
+    }
+
     void Initialize()
     {
+        m_board.Initialize();
         m_players.Initialize();
+        m_bGameFinished = false;
+        m_uiPlayersLeft = NR_OF_PLAYERS;
+        m_activePlayer  = 0;
     }
 
     void FindValidMoves(PlayerId const);
@@ -46,6 +55,7 @@ public:
     void NextPlayer();
     bool NextMove();
     void FindContactPnts();
+    Player const& Winner();
 
 private:
     bool         m_bGameFinished { false };

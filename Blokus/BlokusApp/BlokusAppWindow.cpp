@@ -5,10 +5,12 @@
 module BlokusAppWindow;
 
 import std;
+import IoUtil;
 import WinBasics;
 import Win32_Util_Resource;
 import MessagePump;
 import BlokusCore;
+import Resource;
 
 using std::wstring;
 
@@ -27,10 +29,15 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	);
 	m_mainWindow.Start(m_hwndApp);
 	m_statusBar .Start(m_hwndApp);
+	m_appMenu   .Start(m_hwndApp);
+	BlokusPreferences::m_bShowContactPnts.RegisterObserver(m_mainWindow);
+	BlokusPreferences::m_bShowCornerCells.RegisterObserver(m_mainWindow);
 	configureStatusBar();
 	m_mainWindow.Show(true);
 	m_statusBar .Show(true);
+	m_appMenu.Notify(true);
 	Show(true);
+	Preferences::ReadPreferences() ;
 }
 
 bool BlokusAppWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -48,9 +55,8 @@ bool BlokusAppWindow::UserProc
 {
 	if (message == WM_ENTERMENULOOP)
 	{
-		//if (wParam == false)
-		//	m_appMenu.Notify(true);
-
+		if (wParam == false)
+			m_appMenu.Notify(true);
 	}
 	else if (message == WM_DESTROY)
 	{
@@ -89,6 +95,16 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	case IDM_ABOUT:
 		m_aboutBox.Show(m_mainWindow.GetWindowHandle());
 		return true;
+
+	case IDD_CONTACT_PNTS:
+		BlokusPreferences::m_bShowContactPnts.Toggle();
+		Preferences::WritePreferences();
+		break;
+
+	case IDD_CORNER_CELLS:
+		BlokusPreferences::m_bShowCornerCells.Toggle();
+		Preferences::WritePreferences();
+		break;
 
 	case IDM_EXIT:
 		PostMsg(WM_CLOSE, 0, 0);
