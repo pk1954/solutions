@@ -6,6 +6,7 @@ module BlokusWindow;
 
 import Color;
 import Types;
+import IoUtil;
 import SaveCast;
 import Direct2D;
 import Resource;

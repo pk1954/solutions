@@ -42,7 +42,7 @@ bool Preferences::ReadPreferences()
     }
     else
     {
-        wcout << COMMENT_SYMBOL << L" +++ NNetPreferences file " << m_wstrPreferencesFile << L" not found" << endl;
+        wcout << COMMENT_SYMBOL << L" +++ Preferences file " << m_wstrPreferencesFile << L" not found" << endl;
         wcout << COMMENT_SYMBOL << L" +++ Using defaults" << endl;
         return false;
     }

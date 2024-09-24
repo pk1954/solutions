@@ -102,50 +102,28 @@ void Shape::Rotate()
 	normalize();
 }
 
-void Shape::drawShapeSquares
+void Shape::Draw
 (
-	D2D_driver  const &d2d,
-	fPixelPoint const &fPixPntShapePos, 
-	Color       const  col,
-	fPixel      const  size
+	D2D_driver const &d2d,
+	BlokusCoordSys   &coordSys,
+	Color      const  col
 ) const
 {
 	Apply2AllShapeCellsC
 	(
-		[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
+		[this, &d2d, &coordSys, &col](ShapeCoordPos const& shapePos)
 		{
-			fPixelPoint center 
-			{ 
-				fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
-				fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
-			};
-			ShapeSquare(d2d, center, col, size);
+			ShapeSquare(d2d, coordSys, shapePos, col);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
 	{
 		Apply2AllCornerPntsC
 		(
-			[this, &d2d, &fPixPntShapePos, &col, size](ShapeCoordPos const& pos)
+			[this, &d2d, &coordSys](ShapeCoordPos const& shapePos)
 			{
-				fPixelPoint center 
-				{ 
-					fPixPntShapePos.GetX() + size * Cast2Float(pos.GetXvalue()), 
-					fPixPntShapePos.GetY() + size * Cast2Float(pos.GetYvalue())
-				};
-				SmallDot(d2d, center, Color(0.0f, 0.0f, 0.0f), size);
+				SmallDot(d2d, coordSys, shapePos, Color(0.0f, 0.0f, 0.0f));
 			}
 		);
 	}
-}
-
-void Shape::Draw
-(
-	D2D_driver  const &d2d,
-	fPixelPoint const  pos, 
-	Color       const  col,
-	fPixel      const  size
-) const
-{
-	drawShapeSquares(d2d, pos, col, size);
 }

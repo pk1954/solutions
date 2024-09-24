@@ -9,6 +9,7 @@ import Types;
 import Color;
 import Direct2D;
 import :CoordPos;
+import :BlokusCoordSys;
 
 using std::array;
 using std::vector;
@@ -56,7 +57,7 @@ public:
 	void Flip();
 	void Rotate();
 
-	void Draw(D2D_driver const&, fPixelPoint const, Color const, fPixel const) const;
+	void Draw(D2D_driver const&, BlokusCoordSys&, Color const) const;
 
 private:
 
@@ -66,7 +67,6 @@ private:
 	bool isCornerPnt  (CoordPos const&) const;
 	bool isPartOfShape(ShapeCoordPos const&) const;
 
-	void drawShapeSquares(D2D_driver const&, fPixelPoint const&, Color const, fPixel const) const;
 	bool spaceAtTop() const;
 	bool spaceAtLeft() const;
 	void shiftTop();

@@ -30,18 +30,6 @@ void Player::Initialize
     m_bFirstMove      = true;
 }
 
-fPixelPoint Player::getCenter
-(
-	BlokusCoordSys const& coordSys,
-	CoordPos       const& pos
-) const
-{
-	fPixel      const fPixCellSize { coordSys.CellSize() };
-	fPixel      const fPixHalfSize { fPixCellSize * 0.5f };
-	fPixelPoint const fPos         { coordSys.Transform2fPixelPos(pos) + fPixelPoint(fPixHalfSize) };
-	return fPos;
-}
-
 void Player::DrawResult
 (
 	D2D_driver       const& d2d,
@@ -51,21 +39,21 @@ void Player::DrawResult
 {
 	fPixelRect fPixRect 
 	{ 
-		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE +  1_COORD, -1_COORD)),
-		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE + 12_COORD,  0_COORD))
+		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE,            -1_COORD)),
+		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE + 13_COORD,  0_COORD))
 	};
 	d2d.DisplayText
 	(
 		fPixRect, 
-		L"Player finished with " + to_wstring(m_iResult) + L" points",
+		L"Player " + m_wstrColor + L" finished with " + to_wstring(m_iResult) + L" points",
 		hTextFormat
 	);
 }
 
 void Player::DrawFreePieces
 (
-	D2D_driver     const& d2d,
-	BlokusCoordSys const& coordSys
+	D2D_driver const &d2d,
+	BlokusCoordSys   &coordSys
 ) const
 {
 	Apply2FreePiecesC
@@ -75,9 +63,9 @@ void Player::DrawFreePieces
 			piece.GetPieceTypeC().Draw
 			(
 				d2d,
-				getCenter(coordSys, piece.GetPos()),
-				m_color,
-				coordSys.CellSize()
+				coordSys,
+				piece.GetPos(),
+				m_color
 			);
 		}
 	);
@@ -85,25 +73,25 @@ void Player::DrawFreePieces
 
 void Player::DrawCell
 (
-	D2D_driver     const& d2d,
-	BlokusCoordSys const& coordSys,
-	CoordPos       const& pos
+	D2D_driver const &d2d,
+	BlokusCoordSys   &coordSys,
+	CoordPos   const &pos
 ) const
 {
-	ShapeSquare(d2d, getCenter(coordSys, pos), m_color, coordSys.CellSize() );
+	ShapeSquare(d2d, coordSys, pos, m_color );
 }
 
 void Player::DrawContactPnts
 (
-	D2D_driver     const& d2d,
-	BlokusCoordSys const& coordSys
+	D2D_driver const &d2d,
+	BlokusCoordSys   &coordSys
 ) const
 {
 	Apply2AllContactPntsC
 	(
 		[this, &d2d, &coordSys](CoordPos const& pos)
 		{
-			SmallDot(d2d, getCenter(coordSys, pos), m_color, coordSys.CellSize());
+			SmallDot(d2d, coordSys, pos, m_color);
 		}
 	);
 }

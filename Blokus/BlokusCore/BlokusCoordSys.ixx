@@ -26,6 +26,18 @@ public:
 	fPixel             CellSize() const { return m_cellSize; }
 	fPixelPoint const& Offset  () const { return m_offset; }
 
+	fPixelPoint SetOffset(fPixelPoint const& newOffset) 
+	{ 
+		fPixelPoint oldOffset = m_offset;
+		m_offset = newOffset;
+		return oldOffset; 
+	}
+
+	fPixelPoint Add2Offset(fPixelPoint const& addOffset) 
+	{ 
+		return SetOffset(m_offset + addOffset);
+	}
+
 	fPixelPoint Transform2fPixelSize(CoordPos const& coordPos) const
 	{
 		return fPixelPoint
@@ -38,6 +50,13 @@ public:
 	fPixelPoint Transform2fPixelPos(CoordPos const& coordPos) const
 	{
 		return Transform2fPixelSize(coordPos) + m_offset;
+	}
+
+    fPixelPoint GetCenter(CoordPos const& pos) const
+	{
+		fPixel      const fPixHalfSize { m_cellSize * 0.5f };
+		fPixelPoint const fPos         { Transform2fPixelPos(pos) + fPixelPoint(fPixHalfSize) };
+		return fPos;
 	}
 
 private:

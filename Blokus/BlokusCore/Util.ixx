@@ -8,8 +8,9 @@ import std;
 import Types;
 import Color;
 import Direct2D;
+import :BlokusCoordSys;
 
-export void ColSquare
+void colSquare
 (
 	D2D_driver  const &d2d,
 	fPixelPoint const  center,
@@ -26,23 +27,27 @@ export void ColSquare
 export void ShapeSquare
 (
     D2D_driver  const &d2d,
-	fPixelPoint const  center,
-	Color       const  col,
-	fPixel      const  size
+	BlokusCoordSys    &coordSys,
+	CoordPos    const &pos,
+	Color       const  col
 )
 {
-	ColSquare(d2d, center,  col,        size       );
-	ColSquare(d2d, center,  col * 0.6f, size * 0.8f);
+	fPixelPoint const center { coordSys.GetCenter(pos) };
+	fPixel      const size   { coordSys.CellSize() };
+	colSquare(d2d, center,  col,        size       );
+	colSquare(d2d, center,  col * 0.6f, size * 0.8f);
 }
 
 export void SmallDot
 (
     D2D_driver  const &d2d,
-	fPixelPoint const &fPixPos,
-	Color       const  col,
-	fPixel      const  size
+	BlokusCoordSys    &coordSys,
+	CoordPos    const &pos,
+	Color       const  col
 )
 {
-	d2d.FillCircle(fPixelCircle(fPixPos, size * 0.2f), col);
+	fPixelPoint const center { coordSys.GetCenter(pos) };
+	fPixel      const size   { coordSys.CellSize() };
+	d2d.FillCircle(fPixelCircle(center, size * 0.2f), col);
 }
 

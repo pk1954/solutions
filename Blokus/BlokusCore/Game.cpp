@@ -11,8 +11,8 @@ using std::endl;
 
 void Game::DrawSetPieces
 (
-	D2D_driver     const& d2d,
-	BlokusCoordSys const& coordSys
+	D2D_driver const& d2d,
+	BlokusCoordSys  & coordSys
 ) const
 {
     Apply2AllBoardCells

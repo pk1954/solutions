@@ -13,6 +13,7 @@ import Direct2D;
 import :Shape;
 import :ShapeId;
 import :CoordPos;
+import :BlokusCoordSys;
 
 using std::vector;
 
@@ -33,7 +34,7 @@ public:
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(D2D_driver const &, fPixelPoint const, Color const, fPixel const) const;
+	void Draw(D2D_driver const&, BlokusCoordSys&, CoordPos const&, Color const) const;
 
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 

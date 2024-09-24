@@ -33,10 +33,10 @@ public:
     Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (D2D_driver const&, BlokusCoordSys const&) const;
-    void DrawContactPnts(D2D_driver const&, BlokusCoordSys const&) const;
+    void DrawFreePieces (D2D_driver const&, BlokusCoordSys&) const;
+    void DrawContactPnts(D2D_driver const&, BlokusCoordSys&) const;
     void DrawResult     (D2D_driver const&, BlokusCoordSys const&, TextFormatHandle const) const;
-    void DrawCell       (D2D_driver const&, BlokusCoordSys const&, CoordPos const&) const;
+    void DrawCell       (D2D_driver const&, BlokusCoordSys&, CoordPos const&) const;
 
     Move const& SelectMove(vector<Move> const&) const;
     void PerformMove(Move const&);
@@ -100,6 +100,5 @@ private:
     BoardMap                        m_validPositions;
     wstring                         m_wstrColor;
 
-    fPixelPoint getCenter(BlokusCoordSys const&, CoordPos const&) const;
     void reduceValidMoves(Move const&, PieceType const&);
 };
