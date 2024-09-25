@@ -8,15 +8,15 @@ import std;
 import Types;
 import Color;
 import Direct2D;
-import :CoordPos;
-import :BlokusCoordSys;
+import :BlokusCoords;
+import :BlokusDrawContext;
 
 using std::array;
 using std::vector;
 
 export using SHAPE = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
-using ShapeCoordPos = CoordPos;
+using ShapeCoordPos = BlokusCoordPos;
 
 export class Shape
 {
@@ -31,7 +31,7 @@ public:
 
     void Apply2AllCornerPntsC(auto const& func) const
     {
-        for (CoordPos const& pos : m_cornerPnts)
+        for (BlokusCoordPos const& pos : m_cornerPnts)
             func(pos);
     }
 
@@ -57,14 +57,14 @@ public:
 	void Flip();
 	void Rotate();
 
-	void Draw(D2D_driver const&, BlokusCoordSys&, Color const) const;
+	void Draw(BlokusDrawContext&, Color const) const;
 
 private:
 
     SHAPE                 m_shape;
 	vector<ShapeCoordPos> m_cornerPnts;
 
-	bool isCornerPnt  (CoordPos const&) const;
+	bool isCornerPnt  (BlokusCoordPos const&) const;
 	bool isPartOfShape(ShapeCoordPos const&) const;
 
 	bool spaceAtTop() const;

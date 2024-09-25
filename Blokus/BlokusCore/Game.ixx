@@ -51,7 +51,7 @@ public:
 
     bool GameFinished() { return m_bGameFinished; }
 
-    void DrawSetPieces(D2D_driver const&, BlokusCoordSys&) const;
+    void DrawSetPieces(BlokusDrawContext&) const;
     void NextPlayer();
     bool NextMove();
     void FindContactPnts();

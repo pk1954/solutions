@@ -27,7 +27,7 @@
     <ClCompile Include="Shape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CoordPos.ixx">
+    <ClCompile Include="BlokusCoords.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlokusCore.ixx">
@@ -72,9 +72,6 @@
     <ClCompile Include="Players.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoardMap.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -82,6 +79,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlokusPreferences.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlokusDrawContext.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

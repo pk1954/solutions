@@ -1,8 +1,8 @@
-// CoordPos.ixx
+// BlokusCoords.ixx
 //
 // BlokusCore
 
-export module BlokusCore:CoordPos;
+export module BlokusCore:BlokusCoords;
 
 import std;
 import Util;
@@ -29,11 +29,13 @@ export int const MAX_SHAPE_EXTENSION { 5 };
 const Coord MAX_COL { MAX_SHAPE_EXTENSION - 1};
 const Coord MAX_ROW { MAX_SHAPE_EXTENSION - 1};
 
-export using CoordPos = PosType<Coord>;
+export using BlokusCoordPos = PosType<Coord>;
 
-export inline CoordPos const UndefinedCoordPos { UndefinedCoord(), UndefinedCoord() };
+export inline BlokusCoordPos const UndefinedCoordPos { UndefinedCoord(), UndefinedCoord() };
 
-bool IsInShapeRange(CoordPos const &pos)
+export using BlokusCoordRect = RectType<Coord>;
+
+bool IsInShapeRange(BlokusCoordPos const &pos)
 {
     return IsInRange(pos.GetX(), 0_COORD, MAX_COL) && IsInRange(pos.GetY(), 0_COORD, MAX_ROW);
 }

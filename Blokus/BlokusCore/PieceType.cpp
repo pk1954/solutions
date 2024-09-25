@@ -4,7 +4,7 @@
 
 module BlokusCore:PieceType;
 
-import :Util;
+import :BlokusDrawContext;
 
 using std::array;
 
@@ -49,13 +49,12 @@ PieceType& PieceType::operator=(const SHAPE& shape)
 
 void PieceType::Draw
 (
-	D2D_driver const &d2d,
-	BlokusCoordSys   &coordSys,
-	CoordPos   const &pos, 
-	Color      const  col
+	BlokusDrawContext    &context,
+	BlokusCoordPos const &pos, 
+	Color          const  col
 ) const
 {
-	fPixelPoint const offsetSave = coordSys.Add2Offset(coordSys.Transform2fPixelSize(pos));
-	m_shapes.at(0).Draw(d2d, coordSys, col);
-	coordSys.SetOffset(offsetSave);
+	fPixelPoint const offsetSave = context.Add2Offset(pos);
+	m_shapes.at(0).Draw(context, col);
+	context.SetOffset(offsetSave);
 }

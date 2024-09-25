@@ -22,11 +22,10 @@ public:
 
 private:
 
-    HiResTimer       m_timer;
-	Game             m_game;
-	BlokusCoordSys   m_coordSys;
-	fPixel           m_fPixBoardSize;
-	TextFormatHandle m_hTextFormat { nullptr };
+    HiResTimer        m_timer;
+	Game              m_game;
+	BlokusDrawContext m_context;
+	TextFormatHandle  m_hTextFormat { nullptr };
 
 	void paintBoard() const;
 

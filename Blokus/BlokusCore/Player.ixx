@@ -8,13 +8,13 @@ import std;
 import Types;
 import Color;
 import Direct2D;
-import :BlokusCoordSys;
+import :BlokusDrawContext;
 import :BoardMap;
 import :Piece;
 import :PlayerId;
 import :PieceTypeId;
 import :Components;
-import :CoordPos;
+import :BlokusCoords;
 import :Move;
 
 using std::array;
@@ -24,7 +24,7 @@ using std::wstring;
 export class Player
 {
 public:
-    void Initialize(CoordPos const, Color const, wstring const&);
+    void Initialize(BlokusCoordPos const, Color const, wstring const&);
 
     bool IsFirstMove() const { return m_bFirstMove; }
 
@@ -33,10 +33,10 @@ public:
     Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (D2D_driver const&, BlokusCoordSys&) const;
-    void DrawContactPnts(D2D_driver const&, BlokusCoordSys&) const;
-    void DrawResult     (D2D_driver const&, BlokusCoordSys const&, TextFormatHandle const) const;
-    void DrawCell       (D2D_driver const&, BlokusCoordSys&, CoordPos const&) const;
+    void DrawFreePieces (BlokusDrawContext&) const;
+    void DrawContactPnts(BlokusDrawContext&) const;
+    void DrawResult     (BlokusDrawContext&, TextFormatHandle const) const;
+    void DrawCell       (BlokusDrawContext&, BlokusCoordPos const&) const;
 
     Move const& SelectMove(vector<Move> const&) const;
     void PerformMove(Move const&);
@@ -62,7 +62,7 @@ public:
 
     void Apply2AllContactPntsC(auto const& func) const
     {
-        for (CoordPos const& pos : m_contactPntsOnBoard)
+        for (BlokusCoordPos const& pos : m_contactPntsOnBoard)
             func(pos);
     }
 
@@ -71,12 +71,12 @@ public:
         m_contactPntsOnBoard.clear();
     }
 
-    void AddContactPnt(CoordPos const &pos)
+    void AddContactPnt(BlokusCoordPos const &pos)
     {
         m_contactPntsOnBoard.push_back(pos);
     }
 
-    bool IsValidPos(CoordPos const &pos) const 
+    bool IsValidPos(BlokusCoordPos const &pos) const 
     { 
         return m_validPositions.IsValidPos(pos); 
     }
@@ -96,7 +96,7 @@ private:
     bool                            m_bFirstMove;      
     Color                           m_color;
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
-    vector<CoordPos>                m_contactPntsOnBoard;
+    vector<BlokusCoordPos>          m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
     wstring                         m_wstrColor;
 

@@ -26,6 +26,7 @@ void BlokusWindow::Start(HWND const hwndParent)
 	    WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	m_game.Initialize();
+	m_context.Start(m_upGraphics.get());
 	m_hTextFormat = m_upGraphics->NewTextFormat(24.f);
 }
 
@@ -49,8 +50,7 @@ bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 	GraphicsWindow::OnSize(width, height);
 	fPixel const fPixAvailable { GetClientHeight() - BORDER * 2.0f };
 	fPixel const fPixFieldSize { fPixAvailable / Cast2Float(BOARD_SIZE + 2) }; // board height + top and bottom reserve
-	m_fPixBoardSize = m_coordSys.CellSize() * Cast2Float(BOARD_SIZE);
-	m_coordSys.Reset(fPixelPoint(BORDER, BORDER + fPixFieldSize), fPixFieldSize);
+	m_context.Reset(fPixelPoint(BORDER, BORDER + fPixFieldSize), fPixFieldSize);
 	Notify(false);
 	return true;
 }
@@ -102,39 +102,38 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 void BlokusWindow::paintBoard() const
 {
 	Color          const BOARD_COLOR       { Color(0.8f, 0.8f, 0.8f) };
-	fPixelRectSize const fPixRectSizeBoard { fPixelRectSize(m_fPixBoardSize, m_fPixBoardSize) };
-	fPixelRect     const fPixBoardRect     { m_coordSys.Offset(), fPixRectSizeBoard };
+	fPixel         const fPixBoardSize     { m_context.CellSize() * Cast2Float(BOARD_SIZE) };
+	fPixelRectSize const fPixRectSizeBoard { fPixelRectSize(fPixBoardSize, fPixBoardSize) };
+	fPixelRect     const fPixBoardRect     { m_context.Offset(), fPixRectSizeBoard };
 	m_upGraphics->FillRectangle(fPixBoardRect, BOARD_COLOR);
 
 	Color const LINE_COLOR { Color(0.6f, 0.6f, 0.6f) };
 	for (Coord x = 0_COORD; x <= COORD_BOARD_SIZE; ++x)
-		m_upGraphics->DrawLine
+		m_context.DrawLine
 		(
-			m_coordSys.Transform2fPixelPos(CoordPos(x, 0_COORD)),
-			m_coordSys.Transform2fPixelPos(CoordPos(x, COORD_BOARD_SIZE)),
-			1.0_fPixel,
+			BlokusCoordPos(x, 0_COORD),
+			BlokusCoordPos(x, COORD_BOARD_SIZE),
 			LINE_COLOR
 		);
 	for (Coord y = 0_COORD; y <= COORD_BOARD_SIZE; ++y)
-		m_upGraphics->DrawLine
+		m_context.DrawLine
 		(
-			m_coordSys.Transform2fPixelPos(CoordPos(0_COORD, y)),
-			m_coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE, y)),
-			1.0_fPixel,
+			BlokusCoordPos(         0_COORD, y),
+			BlokusCoordPos(COORD_BOARD_SIZE, y),
 			LINE_COLOR
 		);
 };
 
 void BlokusWindow::drawFinishedMsg()
 {
-	fPixelRect fPixRect 
-	{ 
-		m_coordSys.Transform2fPixelPos(CoordPos(          0_COORD, -1_COORD)),
-		m_coordSys.Transform2fPixelPos(CoordPos( COORD_BOARD_SIZE,  0_COORD))
+	BlokusCoordRect rect
+	{
+		BlokusCoordPos(          0_COORD, -1_COORD),
+		BlokusCoordPos( COORD_BOARD_SIZE,  0_COORD)
 	};
-	m_upGraphics->DisplayText
+	m_context.DisplayText
 	(
-		fPixRect, 
+		rect, 
 		L"Game finished. The winner is " + m_game.Winner().GetName() + L".",
 		m_hTextFormat
 	);
@@ -143,13 +142,13 @@ void BlokusWindow::drawFinishedMsg()
 void BlokusWindow::PaintGraphics()
 {
 	Player const& player { m_game.ActivePlayerC() };
-	player.DrawFreePieces(*m_upGraphics.get(), m_coordSys);
+	player.DrawFreePieces(m_context);
  	paintBoard();
-	m_game.DrawSetPieces(*m_upGraphics.get(), m_coordSys);
+	m_game.DrawSetPieces(m_context);
 	if (BlokusPreferences::m_bShowContactPnts.Get())
-		m_game.ActivePlayerC().DrawContactPnts(*m_upGraphics.get(), m_coordSys);
+		m_game.ActivePlayerC().DrawContactPnts(m_context);
 	if (player.HasFinished())
-		player.DrawResult(*m_upGraphics.get(), m_coordSys, m_hTextFormat);
+		player.DrawResult(m_context, m_hTextFormat);
 	if (m_game.GameFinished())
 		drawFinishedMsg();
 };

@@ -7,7 +7,6 @@ module BlokusCore:Shape;
 import Color;
 import :BlokusPreferences;
 import :Components;
-import :Util;
 
 using std::swap;
 
@@ -16,7 +15,7 @@ bool Shape::isPartOfShape(ShapeCoordPos const& pos) const
 	return IsInShapeRange(pos) && m_shape[pos.GetYvalue()][pos.GetXvalue()];
 }
 
-bool Shape::isCornerPnt(CoordPos const& pos) const
+bool Shape::isCornerPnt(BlokusCoordPos const& pos) const
 {
 	return (!isPartOfShape(NorthPos(pos)) && !isPartOfShape(EastPos (pos))) ||
 		   (!isPartOfShape(EastPos (pos)) && !isPartOfShape(SouthPos(pos))) ||
@@ -28,7 +27,7 @@ void Shape::CollectCornerPnts()
 {
 	Apply2AllShapeCellsC
 	(
-		[this](CoordPos const& pos)
+		[this](BlokusCoordPos const& pos)
 		{
 			if (isCornerPnt(pos))
 			   m_cornerPnts.push_back(pos);
@@ -104,25 +103,24 @@ void Shape::Rotate()
 
 void Shape::Draw
 (
-	D2D_driver const &d2d,
-	BlokusCoordSys   &coordSys,
-	Color      const  col
+	BlokusDrawContext &context,
+	Color       const  col
 ) const
 {
 	Apply2AllShapeCellsC
 	(
-		[this, &d2d, &coordSys, &col](ShapeCoordPos const& shapePos)
+		[this, &context, &col](ShapeCoordPos const& shapePos)
 		{
-			ShapeSquare(d2d, coordSys, shapePos, col);
+			context.ShapeSquare(shapePos, col);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
 	{
 		Apply2AllCornerPntsC
 		(
-			[this, &d2d, &coordSys](ShapeCoordPos const& shapePos)
+			[this, &context](ShapeCoordPos const& shapePos)
 			{
-				SmallDot(d2d, coordSys, shapePos, Color(0.0f, 0.0f, 0.0f));
+				context.SmallDot(shapePos, Color(0.0f, 0.0f, 0.0f));
 			}
 		);
 	}

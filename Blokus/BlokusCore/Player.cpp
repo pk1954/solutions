@@ -4,7 +4,7 @@
 
 module BlokusCore:Player;
 
-import :Util;
+import :BlokusDrawContext;
 
 using std::wstring;
 using std::to_wstring;
@@ -12,9 +12,9 @@ using std::vector;
 
 void Player::Initialize
 (
-    CoordPos const  startPoint,
-    Color    const  col,
-	wstring  const &wstrColor
+    BlokusCoordPos const  startPoint,
+    Color          const  col,
+	wstring        const &wstrColor
 )
 {
     PieceTypeId id { 0 };
@@ -32,38 +32,32 @@ void Player::Initialize
 
 void Player::DrawResult
 (
-	D2D_driver       const& d2d,
-	BlokusCoordSys   const& coordSys,
-	TextFormatHandle const  hTextFormat
+	BlokusDrawContext     &context,
+	TextFormatHandle const hTextFormat
 ) const
 {
-	fPixelRect fPixRect 
+	BlokusCoordRect rect
 	{ 
-		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE,            -1_COORD)),
-		coordSys.Transform2fPixelPos(CoordPos(COORD_BOARD_SIZE + 13_COORD,  0_COORD))
+		BlokusCoordPos(COORD_BOARD_SIZE,           -1_COORD),
+		BlokusCoordPos(COORD_BOARD_SIZE + 13_COORD, 0_COORD)
 	};
-	d2d.DisplayText
+	context.DisplayText
 	(
-		fPixRect, 
+		rect, 
 		L"Player " + m_wstrColor + L" finished with " + to_wstring(m_iResult) + L" points",
 		hTextFormat
 	);
 }
 
-void Player::DrawFreePieces
-(
-	D2D_driver const &d2d,
-	BlokusCoordSys   &coordSys
-) const
+void Player::DrawFreePieces(BlokusDrawContext &context) const
 {
 	Apply2FreePiecesC
 	(
-		[this, &d2d, &coordSys](Piece const& piece)
+		[this, &context](Piece const& piece)
 		{
 			piece.GetPieceTypeC().Draw
 			(
-				d2d,
-				coordSys,
+				context,
 				piece.GetPos(),
 				m_color
 			);
@@ -73,25 +67,20 @@ void Player::DrawFreePieces
 
 void Player::DrawCell
 (
-	D2D_driver const &d2d,
-	BlokusCoordSys   &coordSys,
-	CoordPos   const &pos
+	BlokusDrawContext    &context,
+	BlokusCoordPos const &pos
 ) const
 {
-	ShapeSquare(d2d, coordSys, pos, m_color );
+	context.ShapeSquare(pos, m_color );
 }
 
-void Player::DrawContactPnts
-(
-	D2D_driver const &d2d,
-	BlokusCoordSys   &coordSys
-) const
+void Player::DrawContactPnts(BlokusDrawContext &context) const
 {
 	Apply2AllContactPntsC
 	(
-		[this, &d2d, &coordSys](CoordPos const& pos)
+		[this, &context](BlokusCoordPos const& pos)
 		{
-			SmallDot(d2d, coordSys, pos, m_color);
+			context.SmallDot(pos, m_color);
 		}
 	);
 }
@@ -115,7 +104,7 @@ void Player::reduceValidMoves
     (
         [this, &move](ShapeCoordPos const &shapePos)
         { 
-            CoordPos const coordPos { move.m_boardPos + shapePos };
+            BlokusCoordPos const coordPos { move.m_boardPos + shapePos };
             m_validPositions.SetCell(coordPos, false);
             m_validPositions.SetCell(NorthPos(coordPos), false);
             m_validPositions.SetCell(EastPos (coordPos), false);

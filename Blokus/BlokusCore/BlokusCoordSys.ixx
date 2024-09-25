@@ -8,16 +8,12 @@ import std;
 import Util;
 import Types;
 import SaveCast;
-import :CoordPos;
+import :BlokusCoords;
 
 export class BlokusCoordSys
 {
 public:
-	void Reset
-	(
-		fPixelPoint offset,
-		fPixel      cellSize
-	)
+	void Reset(fPixelPoint const& offset, fPixel const cellSize)
 	{
 		m_offset   = offset;
 		m_cellSize = cellSize;
@@ -26,6 +22,7 @@ public:
 	fPixel             CellSize() const { return m_cellSize; }
 	fPixelPoint const& Offset  () const { return m_offset; }
 
+	void        SetCellSize(fPixel const newSize) { m_cellSize = newSize; };
 	fPixelPoint SetOffset(fPixelPoint const& newOffset) 
 	{ 
 		fPixelPoint oldOffset = m_offset;
@@ -33,12 +30,13 @@ public:
 		return oldOffset; 
 	}
 
-	fPixelPoint Add2Offset(fPixelPoint const& addOffset) 
+	fPixelPoint Add2Offset(BlokusCoordPos const &addOffset) 
 	{ 
-		return SetOffset(m_offset + addOffset);
+		fPixelPoint fPixPnt { Transform2fPixelSize(addOffset) };
+		return SetOffset(m_offset + fPixPnt);
 	}
 
-	fPixelPoint Transform2fPixelSize(CoordPos const& coordPos) const
+	fPixelPoint Transform2fPixelSize(BlokusCoordPos const& coordPos) const
 	{
 		return fPixelPoint
 		(
@@ -47,12 +45,21 @@ public:
 		);
 	}
 
-	fPixelPoint Transform2fPixelPos(CoordPos const& coordPos) const
+	fPixelRect Transform2fPixelRect(BlokusCoordRect const& rect) const
+	{
+		return fPixelRect
+		(
+			Transform2fPixelPos(rect.GetStartPoint()), 
+			Transform2fPixelPos(rect.GetEndPoint  ()) 
+		);
+	}
+
+	fPixelPoint Transform2fPixelPos(BlokusCoordPos const& coordPos) const
 	{
 		return Transform2fPixelSize(coordPos) + m_offset;
 	}
 
-    fPixelPoint GetCenter(CoordPos const& pos) const
+    fPixelPoint GetCenter(BlokusCoordPos const& pos) const
 	{
 		fPixel      const fPixHalfSize { m_cellSize * 0.5f };
 		fPixelPoint const fPos         { Transform2fPixelPos(pos) + fPixelPoint(fPixHalfSize) };

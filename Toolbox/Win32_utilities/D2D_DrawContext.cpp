@@ -36,11 +36,11 @@ void D2D_DrawContext::Reset() const
 
 void D2D_DrawContext::DrawLine
 (
-	MicroMeterPnt const& umStartPoint,
-	MicroMeterPnt const& umEndPoint,
-	MicroMeter    const   umWidth,
-	Color         const   col,
-	fPixel        const   fPixMin
+	MicroMeterPnt const &umStartPoint,
+	MicroMeterPnt const &umEndPoint,
+	MicroMeter    const  umWidth,
+	Color         const  col,
+	fPixel        const  fPixMin
 ) const
 {
 	if (umStartPoint != umEndPoint)

@@ -12,8 +12,8 @@ import Color;
 import Direct2D;
 import :Shape;
 import :ShapeId;
-import :CoordPos;
-import :BlokusCoordSys;
+import :BlokusCoords;
+import :BlokusDrawContext;
 
 using std::vector;
 
@@ -29,12 +29,12 @@ public:
 		m_initialPos.SetY(Coord(Cast2SignedChar(y))); 
 	}
 
-	void SetPos(CoordPos const& newPos) { m_initialPos = newPos; }
-	CoordPos GetInitialPos() const { return m_initialPos; }
+	void SetPos(BlokusCoordPos const& newPos) { m_initialPos = newPos; }
+	BlokusCoordPos GetInitialPos() const { return m_initialPos; }
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(D2D_driver const&, BlokusCoordSys&, CoordPos const&, Color const) const;
+	void Draw(BlokusDrawContext&, BlokusCoordPos const&, Color const) const;
 
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 
@@ -67,7 +67,7 @@ private:
 	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 
-	unsigned int  m_iNrOfCells { 0 };
-    vector<Shape> m_shapes;
-	CoordPos      m_initialPos;
+	unsigned int   m_iNrOfCells { 0 };
+    vector<Shape>  m_shapes;
+	BlokusCoordPos m_initialPos;
 };

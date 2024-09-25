@@ -32,13 +32,13 @@ export constexpr PIXEL operator"" _PIXEL(unsigned long long ull)
 
 /////////////////// fPixel ///////////////////////////////////
 
-export using fPixel         = NamedType   < float, struct fPixel_Parameter >;
-export using fPixelPoint    = PosType     < fPixel >;
-export using fPixelLine     = LineType    < fPixel >;
-export using fPixelRectSize = SizeType    < fPixel >;
-export using fPixelRect     = RectType    < fPixel >;
-export using fPixelCircle   = CircleType  < fPixel >;
-export using fPixelEllipse  = EllipseType < fPixel >;
+export using fPixel         = NamedType   <float, struct fPixel_Parameter>;
+export using fPixelPoint    = PosType     <fPixel>;
+export using fPixelLine     = LineType    <fPixel>;
+export using fPixelRectSize = SizeType    <fPixel>;
+export using fPixelRect     = RectType    <fPixel>;
+export using fPixelCircle   = CircleType  <fPixel>;
+export using fPixelEllipse  = EllipseType <fPixel>;
 
 export fPixelPoint const fPP_NULL(fPixelPoint::NULL_VAL());   // compiler generates call!
 export fPixelPoint const fPP_ZERO(fPixelPoint::ZERO_VAL());   // compiler generates call!

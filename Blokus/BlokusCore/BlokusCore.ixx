@@ -4,6 +4,7 @@
 
 export module BlokusCore;
 
+export import :BlokusDrawContext;
 export import :BlokusCoordSys;
 export import :BlokusPreferences;
 export import :BoardMap;
@@ -17,7 +18,6 @@ export import :PlayerId;
 export import :Piece;
 export import :PieceType;
 export import :PieceTypeId;
-export import :CoordPos;
+export import :BlokusCoords;
 export import :Shape;
 export import :ShapeId;
-export import :Util;
