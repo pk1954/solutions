@@ -29,16 +29,16 @@ public:
 	fPixel             CellSize() const { return m_coord.CellSize(); }
 	fPixelPoint const& Offset  () const { return m_coord.Offset(); }
 
-	fPixelPoint SetOffset (fPixelPoint    const &o) { return m_coord.SetOffset(o); }
-	fPixelPoint Add2Offset(BlokusCoordPos const &o) { return m_coord.Add2Offset(o); }
+	fPixelPoint SetOffset (fPixelPoint const &fPixPnt) { return m_coord.SetOffset(fPixPnt); }
+	fPixelPoint Add2Offset(fCoordPos   const &pos)     { return m_coord.Add2Offset(pos); }
 
-    fPixelPoint GetCenter (BlokusCoordPos const &p) const { return m_coord.GetCenter(p); }
+    fPixelPoint GetCenter (fCoordPos const &pos) const { return m_coord.GetCenter(pos); }
 
 	void DrawLine
     (
-        BlokusCoordPos const &startPos,
-        BlokusCoordPos const &endPos,
-        Color          const  color
+        fCoordPos const &startPos,
+        fCoordPos const &endPos,
+        Color      const  color
     ) const
     {
 		m_pGraphics->DrawLine
@@ -52,9 +52,9 @@ public:
 
 	void DisplayText
 	(
-		BlokusCoordRect  const &rect,
-		wstring          const &text,
-		TextFormatHandle const hTextFormat
+		fCoordRect  const &rect,
+		wstring           const &text,
+		TextFormatHandle  const  hTextFormat
 	)
 	{
 		m_pGraphics->DisplayText(m_coord.Transform2fPixelRect(rect), text, hTextFormat);
@@ -62,22 +62,24 @@ public:
 
 	void SmallDot
 	(
-		BlokusCoordPos const &pos,
-		Color          const  col
+		CoordPos const &pos,
+		Color    const  col
 	)
 	{
-		fPixelPoint const center { GetCenter(pos) };
+		fCoordPos   const fPos   { Convert2fCoord(pos) };
+		fPixelPoint const center { GetCenter(fPos) };
 		fPixel      const size   { CellSize() };
 		m_pGraphics->FillCircle(fPixelCircle(center, size * 0.2f), col);
 	}
 
 	void ShapeSquare
 	(
-		BlokusCoordPos const &pos,
-		Color          const  col
+		CoordPos const &pos,
+		Color    const  col
 	)
 	{
-		fPixelPoint const center { GetCenter(pos) };
+		fCoordPos   const fPos   { Convert2fCoord(pos) };
+		fPixelPoint const center { GetCenter(fPos) };
 		fPixel      const size   { CellSize() };
 		colSquare(center,  col,        size       );
 		colSquare(center,  col * 0.6f, size * 0.8f);

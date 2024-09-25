@@ -16,7 +16,7 @@ using std::vector;
 
 export using SHAPE = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
-using ShapeCoordPos = BlokusCoordPos;
+using ShapeCoordPos = CoordPos;
 
 export class Shape
 {
@@ -31,7 +31,7 @@ public:
 
     void Apply2AllCornerPntsC(auto const& func) const
     {
-        for (BlokusCoordPos const& pos : m_cornerPnts)
+        for (CoordPos const& pos : m_cornerPnts)
             func(pos);
     }
 
@@ -64,7 +64,7 @@ private:
     SHAPE                 m_shape;
 	vector<ShapeCoordPos> m_cornerPnts;
 
-	bool isCornerPnt  (BlokusCoordPos const&) const;
+	bool isCornerPnt  (CoordPos const&) const;
 	bool isPartOfShape(ShapeCoordPos const&) const;
 
 	bool spaceAtTop() const;

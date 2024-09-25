@@ -26,12 +26,12 @@ public:
 	    	m_map[y][x] = true;
     }
 
-    bool IsValidPos(BlokusCoordPos const& pos) const
+    bool IsValidPos(CoordPos const& pos) const
     {
         return IsOnBoard(pos) && getCell(pos);
     }
 
-    void SetCell(BlokusCoordPos const& pos,  bool const bVal)
+    void SetCell(CoordPos const& pos,  bool const bVal)
     {
         if (IsOnBoard(pos))
             m_map[pos.GetYvalue()][pos.GetXvalue()] = bVal;
@@ -39,7 +39,7 @@ public:
 
 private:
 
-    bool getCell(BlokusCoordPos const& pos) const
+    bool getCell(CoordPos const& pos) const
     {
         return m_map[pos.GetYvalue()][pos.GetXvalue()];
     }

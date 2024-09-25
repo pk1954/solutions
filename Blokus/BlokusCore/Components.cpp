@@ -11,7 +11,7 @@ void Components::Initialize()
 	(
 		[](PieceType& pt)
 		{
-			BlokusCoordPos pos = pt.GetInitialPos();
+			CoordPos pos = pt.GetInitialPos();
 			pos.Move2Horz(COORD_BOARD_SIZE + 1);
 			pt.SetPos(pos);
 		}

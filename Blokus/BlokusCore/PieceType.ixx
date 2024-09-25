@@ -29,12 +29,12 @@ public:
 		m_initialPos.SetY(Coord(Cast2SignedChar(y))); 
 	}
 
-	void SetPos(BlokusCoordPos const& newPos) { m_initialPos = newPos; }
-	BlokusCoordPos GetInitialPos() const { return m_initialPos; }
+	void SetPos(CoordPos const& newPos) { m_initialPos = newPos; }
+	CoordPos GetInitialPos() const { return m_initialPos; }
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(BlokusDrawContext&, BlokusCoordPos const&, Color const) const;
+	void Draw(BlokusDrawContext&, fCoordPos const&, Color const) const;
 
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 
@@ -69,5 +69,5 @@ private:
 
 	unsigned int   m_iNrOfCells { 0 };
     vector<Shape>  m_shapes;
-	BlokusCoordPos m_initialPos;
+	CoordPos m_initialPos;
 };

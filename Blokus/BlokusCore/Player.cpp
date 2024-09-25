@@ -12,7 +12,7 @@ using std::vector;
 
 void Player::Initialize
 (
-    BlokusCoordPos const  startPoint,
+    CoordPos const  startPoint,
     Color          const  col,
 	wstring        const &wstrColor
 )
@@ -36,10 +36,10 @@ void Player::DrawResult
 	TextFormatHandle const hTextFormat
 ) const
 {
-	BlokusCoordRect rect
+	fCoordRect rect
 	{ 
-		BlokusCoordPos(COORD_BOARD_SIZE,           -1_COORD),
-		BlokusCoordPos(COORD_BOARD_SIZE + 13_COORD, 0_COORD)
+		fCoordPos(fCOORD_BOARD_SIZE,             -1._fCOORD),
+		fCoordPos(fCOORD_BOARD_SIZE + 13._fCOORD, 0._fCOORD)
 	};
 	context.DisplayText
 	(
@@ -58,7 +58,7 @@ void Player::DrawFreePieces(BlokusDrawContext &context) const
 			piece.GetPieceTypeC().Draw
 			(
 				context,
-				piece.GetPos(),
+				Convert2fCoord(piece.GetPiecePos()),
 				m_color
 			);
 		}
@@ -67,8 +67,8 @@ void Player::DrawFreePieces(BlokusDrawContext &context) const
 
 void Player::DrawCell
 (
-	BlokusDrawContext    &context,
-	BlokusCoordPos const &pos
+	BlokusDrawContext &context,
+	CoordPos    const &pos
 ) const
 {
 	context.ShapeSquare(pos, m_color );
@@ -78,7 +78,7 @@ void Player::DrawContactPnts(BlokusDrawContext &context) const
 {
 	Apply2AllContactPntsC
 	(
-		[this, &context](BlokusCoordPos const& pos)
+		[this, &context](CoordPos const& pos)
 		{
 			context.SmallDot(pos, m_color);
 		}
@@ -104,7 +104,7 @@ void Player::reduceValidMoves
     (
         [this, &move](ShapeCoordPos const &shapePos)
         { 
-            BlokusCoordPos const coordPos { move.m_boardPos + shapePos };
+            CoordPos const coordPos { move.m_boardPos + shapePos };
             m_validPositions.SetCell(coordPos, false);
             m_validPositions.SetCell(NorthPos(coordPos), false);
             m_validPositions.SetCell(EastPos (coordPos), false);

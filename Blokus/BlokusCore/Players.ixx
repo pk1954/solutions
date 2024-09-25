@@ -19,10 +19,10 @@ class Players
 public:
     void Initialize()
     {
-        m_players[0].Initialize(BlokusCoordPos(  0_COORD,   0_COORD), COL_RED,    L"RED"   );
-        m_players[1].Initialize(BlokusCoordPos(MAX_COORD,   0_COORD), COL_GREEN,  L"GREEN" ); 
-        m_players[2].Initialize(BlokusCoordPos(MAX_COORD, MAX_COORD), COL_BLUE,   L"BLUE"  );
-        m_players[3].Initialize(BlokusCoordPos(  0_COORD, MAX_COORD), COL_YELLOW, L"YELLOW"); 
+        m_players[0].Initialize(CoordPos(  0_COORD,   0_COORD), COL_RED,    L"RED"   );
+        m_players[1].Initialize(CoordPos(MAX_COORD,   0_COORD), COL_GREEN,  L"GREEN" ); 
+        m_players[2].Initialize(CoordPos(MAX_COORD, MAX_COORD), COL_BLUE,   L"BLUE"  );
+        m_players[3].Initialize(CoordPos(  0_COORD, MAX_COORD), COL_YELLOW, L"YELLOW"); 
     }
 
     void Apply2AllPlayersC(auto const& func) const

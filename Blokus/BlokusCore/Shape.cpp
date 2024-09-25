@@ -15,7 +15,7 @@ bool Shape::isPartOfShape(ShapeCoordPos const& pos) const
 	return IsInShapeRange(pos) && m_shape[pos.GetYvalue()][pos.GetXvalue()];
 }
 
-bool Shape::isCornerPnt(BlokusCoordPos const& pos) const
+bool Shape::isCornerPnt(CoordPos const& pos) const
 {
 	return (!isPartOfShape(NorthPos(pos)) && !isPartOfShape(EastPos (pos))) ||
 		   (!isPartOfShape(EastPos (pos)) && !isPartOfShape(SouthPos(pos))) ||
@@ -27,7 +27,7 @@ void Shape::CollectCornerPnts()
 {
 	Apply2AllShapeCellsC
 	(
-		[this](BlokusCoordPos const& pos)
+		[this](CoordPos const& pos)
 		{
 			if (isCornerPnt(pos))
 			   m_cornerPnts.push_back(pos);

@@ -13,7 +13,7 @@ void Game::DrawSetPieces(BlokusDrawContext &context) const
 {
     Apply2AllBoardCells
     (
-        [this, &context](BlokusCoordPos const& pos)
+        [this, &context](CoordPos const& pos)
         {
 		    PlayerId const idPlayer { m_board.GetPlayerId(pos) };
 		    if (idPlayer != NO_PLAYER)
@@ -85,7 +85,7 @@ void Game::FindContactPnts()
         player.ClearContactPnts();
         Apply2AllBoardCells
         (
-            [this, &player](BlokusCoordPos const& pos)
+            [this, &player](CoordPos const& pos)
             {
                 if (m_board.IsContactPnt(pos, m_activePlayer))
                 {
@@ -127,7 +127,7 @@ void Game::FindValidMoves(PlayerId const idPlayer)
                         { 
                             m_players.GetPlayerC(move.m_idPlayer).Apply2AllContactPntsC
                             (
-                                [this, &move, &posCorner](BlokusCoordPos const& posContact)
+                                [this, &move, &posCorner](CoordPos const& posContact)
                                 {
                                     move.m_boardPos = posContact - posCorner;
                                     ++g_iNrOfMoves;

@@ -49,9 +49,9 @@ PieceType& PieceType::operator=(const SHAPE& shape)
 
 void PieceType::Draw
 (
-	BlokusDrawContext    &context,
-	BlokusCoordPos const &pos, 
-	Color          const  col
+	BlokusDrawContext &context,
+	fCoordPos   const &pos, 
+	Color       const  col
 ) const
 {
 	fPixelPoint const offsetSave = context.Add2Offset(pos);

@@ -15,5 +15,5 @@ export struct Move
     PlayerId       m_idPlayer    { UndefinedPlayerId()};
     PieceTypeId    m_idPieceType { UndefinedPieceTypeId };
     ShapeId        m_idShape     { UndefinedShapeId };
-    BlokusCoordPos m_boardPos    { UndefinedCoordPos };
+    CoordPos m_boardPos    { UndefinedCoordPos };
 };

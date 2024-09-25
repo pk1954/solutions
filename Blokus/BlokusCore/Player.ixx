@@ -24,7 +24,7 @@ using std::wstring;
 export class Player
 {
 public:
-    void Initialize(BlokusCoordPos const, Color const, wstring const&);
+    void Initialize(CoordPos const, Color const, wstring const&);
 
     bool IsFirstMove() const { return m_bFirstMove; }
 
@@ -36,7 +36,7 @@ public:
     void DrawFreePieces (BlokusDrawContext&) const;
     void DrawContactPnts(BlokusDrawContext&) const;
     void DrawResult     (BlokusDrawContext&, TextFormatHandle const) const;
-    void DrawCell       (BlokusDrawContext&, BlokusCoordPos const&) const;
+    void DrawCell       (BlokusDrawContext&, CoordPos const&) const;
 
     Move const& SelectMove(vector<Move> const&) const;
     void PerformMove(Move const&);
@@ -62,7 +62,7 @@ public:
 
     void Apply2AllContactPntsC(auto const& func) const
     {
-        for (BlokusCoordPos const& pos : m_contactPntsOnBoard)
+        for (CoordPos const& pos : m_contactPntsOnBoard)
             func(pos);
     }
 
@@ -71,12 +71,12 @@ public:
         m_contactPntsOnBoard.clear();
     }
 
-    void AddContactPnt(BlokusCoordPos const &pos)
+    void AddContactPnt(CoordPos const &pos)
     {
         m_contactPntsOnBoard.push_back(pos);
     }
 
-    bool IsValidPos(BlokusCoordPos const &pos) const 
+    bool IsValidPos(CoordPos const &pos) const 
     { 
         return m_validPositions.IsValidPos(pos); 
     }
@@ -96,7 +96,7 @@ private:
     bool                            m_bFirstMove;      
     Color                           m_color;
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
-    vector<BlokusCoordPos>          m_contactPntsOnBoard;
+    vector<CoordPos>          m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
     wstring                         m_wstrColor;
 

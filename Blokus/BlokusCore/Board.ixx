@@ -27,17 +27,17 @@ public:
             m_cells[i][j] = NO_PLAYER;
     }
 
-    PlayerId GetPlayerId(BlokusCoordPos const& pos) const
+    PlayerId GetPlayerId(CoordPos const& pos) const
     {
         return m_cells[pos.GetYvalue()][pos.GetXvalue()];
     }
 
-    void SetPlayerId(BlokusCoordPos const& pos, PlayerId const id)
+    void SetPlayerId(CoordPos const& pos, PlayerId const id)
     {
         m_cells[pos.GetYvalue()][pos.GetXvalue()] = id;
     }
 
-    bool IsFreeCell(BlokusCoordPos const& pos) const
+    bool IsFreeCell(CoordPos const& pos) const
     {
         return IsOnBoard(pos) && (GetPlayerId(pos) == NO_PLAYER);
     }
@@ -67,13 +67,13 @@ public:
         (
             [this, &move, &player](ShapeCoordPos const &shapePos)
             {
-                BlokusCoordPos const coordPos { move.m_boardPos + shapePos };
+                CoordPos const coordPos { move.m_boardPos + shapePos };
                 return IsFreeCell(coordPos) && player.IsValidPos(coordPos);
             }
         );
     }
 
-    bool IsContactPnt(BlokusCoordPos const& pos, PlayerId const id)
+    bool IsContactPnt(CoordPos const& pos, PlayerId const id)
     {
 	    if (!IsFreeCell(pos))
             return false;
@@ -94,7 +94,7 @@ public:
         (
             [this, &move](ShapeCoordPos const &shapePos)
             {
-                BlokusCoordPos const coordPos { move.m_boardPos + shapePos };
+                CoordPos const coordPos { move.m_boardPos + shapePos };
                 Assert(IsOnBoard(coordPos));
                 SetPlayerId(coordPos, move.m_idPlayer);
             }
@@ -106,12 +106,12 @@ private:
     // if at least one diagonal neighbour of the cell belongs to the same player
     // and no orthogonal (horz or vert) neighbour of the cell belongs to the same player
 
-    bool hasPlayerId(BlokusCoordPos const& pos, PlayerId const id) const
+    bool hasPlayerId(CoordPos const& pos, PlayerId const id) const
     {
         return IsOnBoard(pos) && (GetPlayerId(pos) == id);
     }
 
-    bool hasDiagContact(BlokusCoordPos const& pos, PlayerId const id) const
+    bool hasDiagContact(CoordPos const& pos, PlayerId const id) const
     {
 	    return (hasPlayerId(NorthEastPos(pos), id)) || 
                (hasPlayerId(SouthEastPos(pos), id)) ||
@@ -119,7 +119,7 @@ private:
                (hasPlayerId(SouthWestPos(pos), id));
     }
 
-    bool hasOrthoContact(BlokusCoordPos const& pos, PlayerId const id) const
+    bool hasOrthoContact(CoordPos const& pos, PlayerId const id) const
     {
         return (hasPlayerId(NorthPos(pos), id)) ||
                (hasPlayerId(EastPos (pos), id)) ||

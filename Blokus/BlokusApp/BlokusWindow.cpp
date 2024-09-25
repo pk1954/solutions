@@ -108,28 +108,28 @@ void BlokusWindow::paintBoard() const
 	m_upGraphics->FillRectangle(fPixBoardRect, BOARD_COLOR);
 
 	Color const LINE_COLOR { Color(0.6f, 0.6f, 0.6f) };
-	for (Coord x = 0_COORD; x <= COORD_BOARD_SIZE; ++x)
+	for (fCoord x = 0._fCOORD; x <= fCOORD_BOARD_SIZE; ++x)
 		m_context.DrawLine
 		(
-			BlokusCoordPos(x, 0_COORD),
-			BlokusCoordPos(x, COORD_BOARD_SIZE),
+			fCoordPos(x, 0._fCOORD),
+			fCoordPos(x, fCOORD_BOARD_SIZE),
 			LINE_COLOR
 		);
-	for (Coord y = 0_COORD; y <= COORD_BOARD_SIZE; ++y)
+	for (fCoord y = 0._fCOORD; y <= fCOORD_BOARD_SIZE; ++y)
 		m_context.DrawLine
 		(
-			BlokusCoordPos(         0_COORD, y),
-			BlokusCoordPos(COORD_BOARD_SIZE, y),
+			fCoordPos(        0._fCOORD, y),
+			fCoordPos(fCOORD_BOARD_SIZE, y),
 			LINE_COLOR
 		);
 };
 
 void BlokusWindow::drawFinishedMsg()
 {
-	BlokusCoordRect rect
+	fCoordRect rect
 	{
-		BlokusCoordPos(          0_COORD, -1_COORD),
-		BlokusCoordPos( COORD_BOARD_SIZE,  0_COORD)
+		fCoordPos(         0._fCOORD, -1._fCOORD),
+		fCoordPos( fCOORD_BOARD_SIZE,  0._fCOORD)
 	};
 	m_context.DisplayText
 	(

@@ -30,13 +30,13 @@ public:
 		return oldOffset; 
 	}
 
-	fPixelPoint Add2Offset(BlokusCoordPos const &addOffset) 
+	fPixelPoint Add2Offset(fCoordPos const &addOffset) 
 	{ 
 		fPixelPoint fPixPnt { Transform2fPixelSize(addOffset) };
 		return SetOffset(m_offset + fPixPnt);
 	}
 
-	fPixelPoint Transform2fPixelSize(BlokusCoordPos const& coordPos) const
+	fPixelPoint Transform2fPixelSize(fCoordPos const& coordPos) const
 	{
 		return fPixelPoint
 		(
@@ -45,7 +45,7 @@ public:
 		);
 	}
 
-	fPixelRect Transform2fPixelRect(BlokusCoordRect const& rect) const
+	fPixelRect Transform2fPixelRect(fCoordRect const& rect) const
 	{
 		return fPixelRect
 		(
@@ -54,12 +54,12 @@ public:
 		);
 	}
 
-	fPixelPoint Transform2fPixelPos(BlokusCoordPos const& coordPos) const
+	fPixelPoint Transform2fPixelPos(fCoordPos const& coordPos) const
 	{
 		return Transform2fPixelSize(coordPos) + m_offset;
 	}
 
-    fPixelPoint GetCenter(BlokusCoordPos const& pos) const
+    fPixelPoint GetCenter(fCoordPos const& pos) const
 	{
 		fPixel      const fPixHalfSize { m_cellSize * 0.5f };
 		fPixelPoint const fPos         { Transform2fPixelPos(pos) + fPixelPoint(fPixHalfSize) };
