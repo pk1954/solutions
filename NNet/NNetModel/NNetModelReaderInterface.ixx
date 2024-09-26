@@ -102,7 +102,7 @@ public:
 	RasterPoint             GetScanAreaSize()                      const { return GetScanRaster().Size(); }
 	RasterIndex             GetScanAreaWidth()                     const { return GetScanRaster().RasterWidth(); }
 	RasterIndex             GetScanAreaHeight()                    const { return GetScanRaster().RasterHeight(); }
-	MicroMeterRect          GetScanArea()                          const { return GetScanRaster().GetScanArea(); }
+	MicroMeterRect          GetScanArea()                          const { return GetScanRaster().GetArea(); }
 	MicroMeterRect          GetRasterRect()                        const { return GetScanRaster().GetRasterRect(); }
 	RawImage         const* GetScanImageC()                        const { return m_pModel->m_upRawImage.get(); }
 	RawImage         const* GetRawImageC()                         const { return m_pModel->m_upRawImage.get(); }

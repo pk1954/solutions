@@ -42,7 +42,7 @@ MicroMeterRect Raster::GetRasterRect() const
     return rect;
 }
 
-void Raster::SetScanArea
+void Raster::SetArea
 (
     CardPoint     const  cardPnt,
     MicroMeterPnt const& pos

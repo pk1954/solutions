@@ -309,7 +309,7 @@ void Model::DumpModel
 
 void Model::SetScanArea(MicroMeterRect const& rect)
 {
-	m_upRaster->SetScanArea(rect);
+	m_upRaster->SetArea(rect);
 	PrepareScanMatrix();
 }
 
