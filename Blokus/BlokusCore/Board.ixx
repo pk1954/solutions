@@ -5,9 +5,8 @@
 export module BlokusCore:Board;
 
 import std;
-import :Player;
-import :Players;
 import :Components;
+import :BlokusUtilities;
 
 using std::array;
 using std::vector;
@@ -42,37 +41,6 @@ public:
         return IsOnBoard(pos) && (GetPlayerId(pos) == NO_PLAYER);
     }
 
-    Shape const& GetShapeC
-    (
-        Move    const& move,
-        Players const& players
-    )
-    {
-        Player    const& player    { players    .GetPlayerC   (move.m_idPlayer) };
-        PieceType const& pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
-        Shape     const& shape     { pieceType  .GetShapeC    (move.m_idShape) };
-        return shape;
-    }
-
-    bool IsValidMove
-    (
-        Move    const& move,
-        Players const& players
-    )
-    {
-        Player    const& player    { players    .GetPlayerC   (move.m_idPlayer) };
-        PieceType const& pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
-        Shape     const& shape     { pieceType  .GetShapeC    (move.m_idShape) };
-        return shape.Apply2AllShapeCellsB
-        (
-            [this, &move, &player](ShapeCoordPos const &shapePos)
-            {
-                CoordPos const coordPos { move.m_boardPos + shapePos };
-                return IsFreeCell(coordPos) && player.IsValidPos(coordPos);
-            }
-        );
-    }
-
     bool IsContactPnt(CoordPos const& pos, PlayerId const id)
     {
 	    if (!IsFreeCell(pos))
@@ -84,13 +52,9 @@ public:
         return true;
     }
 
-    void PerformMove
-    (
-        Move    const& move,
-        Players const& players
-    )
+    void PerformMove(Move const& move)
     {
-        GetShapeC(move, players).Apply2AllShapeCellsC
+        GetShapeC(move).Apply2AllShapeCellsC
         (
             [this, &move](ShapeCoordPos const &shapePos)
             {

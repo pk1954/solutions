@@ -13,9 +13,10 @@ using std::vector;
 
 void Player::Initialize
 (
-    CoordPos const  startPoint,
-    Color    const  col,
-	wstring  const &wstrColor
+    CoordPos   const  startPoint,
+    Color      const  col,
+	wstring    const &wstrColor,
+	Strategy * const  pStrategy
 )
 {
     PieceTypeId id { 0 };
@@ -25,6 +26,7 @@ void Player::Initialize
     AddContactPnt(startPoint);
     m_color           = col;
 	m_wstrColor       = wstrColor;
+	m_pStrategy       = pStrategy;
 	m_pieceTypeIdMove = UndefinedPieceTypeId;
 	m_remainingPieces = NR_OF_PIECE_TYPES;
     m_bFinished       = false;
@@ -84,14 +86,6 @@ void Player::DrawContactPnts(DrawContext &context) const
 			SmallDot(context, pos, m_color);
 		}
 	);
-}
-
-Move const& Player::SelectMove(vector<Move> const& moves) const
-{
-    //unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };
-    //unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
-    //return moves[uiSel];
-    return moves[0];
 }
 
 void Player::reduceValidMoves

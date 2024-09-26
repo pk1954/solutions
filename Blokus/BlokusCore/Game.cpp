@@ -65,9 +65,9 @@ bool Game::NextMove()
         playerFinished(player);
         return false;
     }
-    Move const &move { ActivePlayerC().SelectMove(m_validMoves) };
+    Move const &move { player.SelectMove(m_validMoves, m_board) };
     player.PerformMove(move);
-    m_board.PerformMove(move, m_players);
+    m_board.PerformMove(move);
     if (player.HasFinished())
     {
         playerFinished(player);
@@ -100,6 +100,24 @@ void Game::FindContactPnts()
     wcout << L"FindContactPnts:"<< PerfCounter::Ticks2wstring(ticks) << endl;
 }
 
+bool Game::isValidMove
+(
+    Move   const& move,
+    Player const& player
+)
+{
+    PieceType const& pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
+    Shape     const& shape     { pieceType  .GetShapeC    (move.m_idShape) };
+    return shape.Apply2AllShapeCellsB
+    (
+        [this, &move, &player](ShapeCoordPos const &shapePos)
+        {
+            CoordPos const coordPos { move.m_boardPos + shapePos };
+            return m_board.IsFreeCell(coordPos) && player.IsValidPos(coordPos);
+        }
+    );
+}
+
 void Game::FindValidMoves(PlayerId const idPlayer)
 {
     g_iNrOfPieces = 0;
@@ -121,17 +139,18 @@ void Game::FindValidMoves(PlayerId const idPlayer)
 			    {
                     move.m_idShape = idShape;
                     ++g_iNrOfShapes;
-				    m_board.GetShapeC(move, m_players).Apply2AllCornerPntsC
+				    GetShapeC(move).Apply2AllCornerPntsC
 				    (
 					    [this, &move](ShapeCoordPos const &posCorner) 
                         { 
-                            m_players.GetPlayerC(move.m_idPlayer).Apply2AllContactPntsC
+                            Player const& player { m_players.GetPlayerC(move.m_idPlayer) };
+                            player.Apply2AllContactPntsC
                             (
-                                [this, &move, &posCorner](CoordPos const& posContact)
+                                [this, &player, &move, &posCorner](CoordPos const& posContact)
                                 {
                                     move.m_boardPos = posContact - posCorner;
                                     ++g_iNrOfMoves;
-                                    if (m_board.IsValidMove(move, m_players))
+                                    if (isValidMove(move, player))
                                     {
                                         m_validMoves.push_back(move);
                                     }

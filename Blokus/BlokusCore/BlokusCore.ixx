@@ -20,3 +20,6 @@ export import :PieceType;
 export import :PieceTypeId;
 export import :Shape;
 export import :ShapeId;
+export import :Strategy;
+export import :StrategyTakeFirst;
+export import :StrategyRandom;

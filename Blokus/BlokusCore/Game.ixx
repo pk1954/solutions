@@ -67,5 +67,6 @@ private:
     PlayerId     m_activePlayer { 0 };
     vector<Move> m_validMoves;
 
+    bool isValidMove(Move const&, Player const&);
     void playerFinished(Player&);
 };

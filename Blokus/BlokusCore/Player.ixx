@@ -9,12 +9,14 @@ import Types;
 import Color;
 import Direct2D;
 import DrawContext;
+import :Board;
 import :BoardMap;
 import :Piece;
 import :PlayerId;
 import :PieceTypeId;
 import :Components;
 import :BlokusCoords;
+import :Strategy;
 import :Move;
 
 using std::array;
@@ -24,7 +26,7 @@ using std::wstring;
 export class Player
 {
 public:
-    void Initialize(CoordPos const, Color const, wstring const&);
+    void Initialize(CoordPos const, Color const, wstring const&, Strategy * const);
 
     bool IsFirstMove() const { return m_bFirstMove; }
 
@@ -38,7 +40,11 @@ public:
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
 
-    Move const& SelectMove(vector<Move> const&) const;
+    Move const& SelectMove(vector<Move> const &move, Board const &board)
+    {
+       return  m_pStrategy->SelectMove(move, board);
+    }
+
     void PerformMove(Move const&);
 
     void Apply2AllPieces(auto const& func)
@@ -87,16 +93,16 @@ public:
     int  Result()      const { return m_iResult; }
 
 private:
-   // static Random m_random;
 
     PieceTypeId                     m_pieceTypeIdMove; 
+    Strategy                      * m_pStrategy;
     unsigned int                    m_remainingPieces; 
     int                             m_iResult;
     bool                            m_bFinished;       
     bool                            m_bFirstMove;      
     Color                           m_color;
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
-    vector<CoordPos>          m_contactPntsOnBoard;
+    vector<CoordPos>                m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
     wstring                         m_wstrColor;
 

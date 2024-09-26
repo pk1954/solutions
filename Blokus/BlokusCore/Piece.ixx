@@ -35,7 +35,7 @@ public:
     }
 
 private:
-    PieceTypeId    m_idPieceType { UndefinedPieceTypeId };
-    CoordPos m_pos         { -1_COORD, -1_COORD };
-    ShapeId        m_idShape     { ShapeId(0) };
+    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
+    CoordPos    m_pos         { -1_COORD, -1_COORD };
+    ShapeId     m_idShape     { ShapeId(0) };
 };

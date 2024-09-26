@@ -42,6 +42,9 @@
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Shape.ixx" />
     <ClCompile Include="ShapeId.ixx" />
+    <ClCompile Include="Strategy.ixx" />
+    <ClCompile Include="StrategyRandom.ixx" />
+    <ClCompile Include="StrategyTakeFirst.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toolbox\BasicUtils\BasicUtils.vcxproj">
