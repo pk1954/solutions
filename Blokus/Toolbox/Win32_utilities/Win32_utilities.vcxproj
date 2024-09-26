@@ -194,6 +194,8 @@
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ColLutDesigner.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ColorDialog.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\CoordAnimationCmd.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\D2D_DrawContext.cpp" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\D2D_DrawContext.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\DescriptionWindow.cpp" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\DescriptionWindow.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\HiResClockGen.ixx" />

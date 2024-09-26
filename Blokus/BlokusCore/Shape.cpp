@@ -6,6 +6,7 @@ module BlokusCore:Shape;
 
 import Color;
 import :BlokusPreferences;
+import :BlokusUtilities;
 import :Components;
 
 using std::swap;
@@ -103,7 +104,7 @@ void Shape::Rotate()
 
 void Shape::Draw
 (
-	BlokusDrawContext &context,
+	DrawContext &context,
 	Color       const  col
 ) const
 {
@@ -111,7 +112,7 @@ void Shape::Draw
 	(
 		[this, &context, &col](ShapeCoordPos const& shapePos)
 		{
-			context.ShapeSquare(shapePos, col);
+			ShapeSquare(context, shapePos, col);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
@@ -120,7 +121,7 @@ void Shape::Draw
 		(
 			[this, &context](ShapeCoordPos const& shapePos)
 			{
-				context.SmallDot(shapePos, Color(0.0f, 0.0f, 0.0f));
+				SmallDot(context, shapePos, Color(0.0f, 0.0f, 0.0f));
 			}
 		);
 	}

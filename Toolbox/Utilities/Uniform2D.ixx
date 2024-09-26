@@ -19,11 +19,17 @@ public:
 
 	void Reset()
 	{
-		m_xDim.SetPixelSizeLimits(MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE);
+		SetPixelSizeLimits(MINIMUM_PIXEL_SIZE, MAXIMUM_PIXEL_SIZE);
 		m_xDim.SetPixelSize(DEFAULT_PIXEL_SIZE);
 		m_yDim.SetPixelSize(DEFAULT_PIXEL_SIZE);
 		m_xDim.SetOffset(0.0_fPixel);
 		m_yDim.SetOffset(0.0_fPixel);
+	}
+
+	void SetPixelSizeLimits(LOG_UNIT const fMin, LOG_UNIT const fMax)
+	{
+		m_xDim.SetPixelSizeLimits(fMin, fMax);
+		m_yDim.SetPixelSizeLimits(fMin, fMax);
 	}
 
 	//////// transformations LOG_UNIT <---> fPixel ////////

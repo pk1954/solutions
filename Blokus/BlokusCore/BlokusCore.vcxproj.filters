@@ -75,13 +75,13 @@
     <ClCompile Include="BoardMap.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlokusCoordSys.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlokusPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlokusDrawContext.ixx">
+    <ClCompile Include="BlokusUtilities.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlokusCoords.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

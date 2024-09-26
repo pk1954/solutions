@@ -9,7 +9,7 @@ import PerfCounter;
 using std::wcout;
 using std::endl;
 
-void Game::DrawSetPieces(BlokusDrawContext &context) const
+void Game::DrawSetPieces(DrawContext &context) const
 {
     Apply2AllBoardCells
     (

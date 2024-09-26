@@ -8,6 +8,7 @@ import std;
 import HiResTimer;
 import WinBasics;
 import GraphicsWindow;
+import D2D_DrawContext;
 import BlokusAppMenu;
 import BlokusCore;
 
@@ -22,10 +23,10 @@ public:
 
 private:
 
-    HiResTimer        m_timer;
-	Game              m_game;
-	BlokusDrawContext m_context;
-	TextFormatHandle  m_hTextFormat { nullptr };
+    HiResTimer       m_timer;
+	Game             m_game;
+	D2D_DrawContext  m_context;
+	TextFormatHandle m_hTextFormat { nullptr };
 
 	void paintBoard() const;
 

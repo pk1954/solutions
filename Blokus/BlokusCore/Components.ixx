@@ -15,8 +15,6 @@ export inline int   const BOARD_SIZE       { 20 };
 export inline Coord const COORD_BOARD_SIZE { BOARD_SIZE };
 export inline Coord const MAX_COORD        { BOARD_SIZE - 1 };
 
-export inline constexpr fCoord const fCOORD_BOARD_SIZE { static_cast<float>(BOARD_SIZE) };
-
 export CoordPos NorthPos(CoordPos const& pos) { return CoordPos(pos.GetX(),           pos.GetY() - 1_COORD); }
 export CoordPos EastPos (CoordPos const& pos) { return CoordPos(pos.GetX() + 1_COORD, pos.GetY()          ); }
 export CoordPos SouthPos(CoordPos const& pos) { return CoordPos(pos.GetX(),           pos.GetY() + 1_COORD); }

@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlokusCoordSys.ixx" />
+    <ClCompile Include="BlokusCoords.cpp" />
     <ClCompile Include="BlokusCore.ixx" />
-    <ClCompile Include="BlokusDrawContext.ixx" />
     <ClCompile Include="BlokusPreferences.ixx" />
+    <ClCompile Include="BlokusUtilities.ixx" />
     <ClCompile Include="BoardMap.ixx" />
     <ClCompile Include="Board.ixx" />
     <ClCompile Include="Components.cpp" />

@@ -9,11 +9,10 @@ import Debug;
 import SaveCast;
 import Types;
 import Color;
-import Direct2D;
+import DrawContext;
 import :Shape;
 import :ShapeId;
 import :BlokusCoords;
-import :BlokusDrawContext;
 
 using std::vector;
 
@@ -34,7 +33,7 @@ public:
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(BlokusDrawContext&, fCoordPos const&, Color const) const;
+	void Draw(DrawContext&, MicroMeterPnt const&, Color const) const;
 
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 

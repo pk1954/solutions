@@ -8,8 +8,8 @@ import std;
 import Types;
 import Color;
 import Direct2D;
+import DrawContext;
 import :BlokusCoords;
-import :BlokusDrawContext;
 
 using std::array;
 using std::vector;
@@ -39,7 +39,7 @@ public:
 	{
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
-		for (pos.SetX(0_COORD); pos.GetX() <= MAX_ROW; pos.IncX())
+		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
 			if (isPartOfShape(pos))
 				func(pos);
 	}
@@ -48,7 +48,7 @@ public:
 	{
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
-		for (pos.SetX(0_COORD); pos.GetX() <= MAX_ROW; pos.IncX())
+		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
 			if (isPartOfShape(pos) && !func(pos))
 				return false;
 		return true;
@@ -57,7 +57,7 @@ public:
 	void Flip();
 	void Rotate();
 
-	void Draw(BlokusDrawContext&, Color const) const;
+	void Draw(DrawContext&, Color const) const;
 
 private:
 

@@ -4,7 +4,7 @@
 
 module BlokusCore:PieceType;
 
-import :BlokusDrawContext;
+import DrawContext;
 
 using std::array;
 
@@ -49,12 +49,13 @@ PieceType& PieceType::operator=(const SHAPE& shape)
 
 void PieceType::Draw
 (
-	BlokusDrawContext &context,
-	fCoordPos   const &pos, 
-	Color       const  col
+	DrawContext         &context,
+	MicroMeterPnt const &pos, 
+	Color         const  col
 ) const
 {
-	fPixelPoint const offsetSave = context.Add2Offset(pos);
+	fPixelPoint const offsetSave { context.GetPixelOffset() };
+	context.Move(pos);
 	m_shapes.at(0).Draw(context, col);
-	context.SetOffset(offsetSave);
+	context.SetPixelOffset(offsetSave);
 }

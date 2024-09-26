@@ -8,7 +8,7 @@ import Color;
 import Types;
 import IoUtil;
 import SaveCast;
-import Direct2D;
+import DrawContext;
 import Resource;
 
 using std::min;
@@ -48,9 +48,12 @@ void BlokusWindow::nextPlayer()
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
-	fPixel const fPixAvailable { GetClientHeight() - BORDER * 2.0f };
-	fPixel const fPixFieldSize { fPixAvailable / Cast2Float(BOARD_SIZE + 2) }; // board height + top and bottom reserve
-	m_context.Reset(fPixelPoint(BORDER, BORDER + fPixFieldSize), fPixFieldSize);
+	fPixel     const fPixAvailable { GetClientHeight() - BORDER * 2.0f };
+	fPixel     const fPixFieldSize { fPixAvailable / Cast2Float(BOARD_SIZE + 2) }; // board height + top and bottom reserve
+	MicroMeter const umHeightAvail { UM_CELL_SIZE * static_cast<float>(BOARD_SIZE + 2) };
+	MicroMeter const umPixelSize   { umHeightAvail / fPixAvailable.GetValue() };
+	m_context.SetPixelOffset(fPixelPoint(-BORDER, -(BORDER + fPixFieldSize)));
+	m_context.SetPixelSize(umPixelSize);
 	Notify(false);
 	return true;
 }
@@ -101,35 +104,35 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 }
 void BlokusWindow::paintBoard() const
 {
-	Color          const BOARD_COLOR       { Color(0.8f, 0.8f, 0.8f) };
-	fPixel         const fPixBoardSize     { m_context.CellSize() * Cast2Float(BOARD_SIZE) };
-	fPixelRectSize const fPixRectSizeBoard { fPixelRectSize(fPixBoardSize, fPixBoardSize) };
-	fPixelRect     const fPixBoardRect     { m_context.Offset(), fPixRectSizeBoard };
-	m_upGraphics->FillRectangle(fPixBoardRect, BOARD_COLOR);
+	Color     const BOARD_COLOR { Color(0.8f, 0.8f, 0.8f) };
+	CoordRect const rect        { CoordPos(0_COORD, 0_COORD), CoordPos(COORD_BOARD_SIZE, COORD_BOARD_SIZE) };
+	m_context.FillRectangle(Convert2fCoord(rect), BOARD_COLOR);
 
 	Color const LINE_COLOR { Color(0.6f, 0.6f, 0.6f) };
-	for (fCoord x = 0._fCOORD; x <= fCOORD_BOARD_SIZE; ++x)
+	for (Coord x = 0_COORD; x <= COORD_BOARD_SIZE; ++x)
 		m_context.DrawLine
 		(
-			fCoordPos(x, 0._fCOORD),
-			fCoordPos(x, fCOORD_BOARD_SIZE),
+			Convert2fCoord(CoordPos(x, 0_COORD)),
+			Convert2fCoord(CoordPos(x, COORD_BOARD_SIZE)),
+			0._MicroMeter,
 			LINE_COLOR
 		);
-	for (fCoord y = 0._fCOORD; y <= fCOORD_BOARD_SIZE; ++y)
+	for (Coord y = 0_COORD; y <= COORD_BOARD_SIZE; ++y)
 		m_context.DrawLine
 		(
-			fCoordPos(        0._fCOORD, y),
-			fCoordPos(fCOORD_BOARD_SIZE, y),
+			Convert2fCoord(CoordPos(0_COORD, y)),
+			Convert2fCoord(CoordPos(COORD_BOARD_SIZE, y)),
+			0._MicroMeter,
 			LINE_COLOR
 		);
 };
 
 void BlokusWindow::drawFinishedMsg()
 {
-	fCoordRect rect
+	MicroMeterRect rect
 	{
-		fCoordPos(         0._fCOORD, -1._fCOORD),
-		fCoordPos( fCOORD_BOARD_SIZE,  0._fCOORD)
+		MicroMeterPnt( 0._MicroMeter, -UM_CELL_SIZE),
+		MicroMeterPnt( UM_BOARD_SIZE, 0._MicroMeter)
 	};
 	m_context.DisplayText
 	(

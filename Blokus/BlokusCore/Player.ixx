@@ -8,7 +8,7 @@ import std;
 import Types;
 import Color;
 import Direct2D;
-import :BlokusDrawContext;
+import DrawContext;
 import :BoardMap;
 import :Piece;
 import :PlayerId;
@@ -33,10 +33,10 @@ public:
     Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (BlokusDrawContext&) const;
-    void DrawContactPnts(BlokusDrawContext&) const;
-    void DrawResult     (BlokusDrawContext&, TextFormatHandle const) const;
-    void DrawCell       (BlokusDrawContext&, CoordPos const&) const;
+    void DrawFreePieces (DrawContext&) const;
+    void DrawContactPnts(DrawContext&) const;
+    void DrawResult     (DrawContext&, TextFormatHandle const) const;
+    void DrawCell       (DrawContext&, CoordPos const&) const;
 
     Move const& SelectMove(vector<Move> const&) const;
     void PerformMove(Move const&);

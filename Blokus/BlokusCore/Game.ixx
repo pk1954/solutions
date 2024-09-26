@@ -51,7 +51,7 @@ public:
 
     bool GameFinished() { return m_bGameFinished; }
 
-    void DrawSetPieces(BlokusDrawContext&) const;
+    void DrawSetPieces(DrawContext&) const;
     void NextPlayer();
     bool NextMove();
     void FindContactPnts();

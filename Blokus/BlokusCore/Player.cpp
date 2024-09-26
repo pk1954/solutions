@@ -4,7 +4,8 @@
 
 module BlokusCore:Player;
 
-import :BlokusDrawContext;
+import DrawContext;
+import :BlokusUtilities;
 
 using std::wstring;
 using std::to_wstring;
@@ -13,8 +14,8 @@ using std::vector;
 void Player::Initialize
 (
     CoordPos const  startPoint,
-    Color          const  col,
-	wstring        const &wstrColor
+    Color    const  col,
+	wstring  const &wstrColor
 )
 {
     PieceTypeId id { 0 };
@@ -32,14 +33,14 @@ void Player::Initialize
 
 void Player::DrawResult
 (
-	BlokusDrawContext     &context,
+	DrawContext     &context,
 	TextFormatHandle const hTextFormat
 ) const
 {
-	fCoordRect rect
+	MicroMeterRect rect
 	{ 
-		fCoordPos(fCOORD_BOARD_SIZE,             -1._fCOORD),
-		fCoordPos(fCOORD_BOARD_SIZE + 13._fCOORD, 0._fCOORD)
+		MicroMeterPnt(UM_BOARD_SIZE,                       -UM_CELL_SIZE),
+		MicroMeterPnt(UM_BOARD_SIZE + UM_CELL_SIZE * 13.f, 0._MicroMeter)
 	};
 	context.DisplayText
 	(
@@ -49,7 +50,7 @@ void Player::DrawResult
 	);
 }
 
-void Player::DrawFreePieces(BlokusDrawContext &context) const
+void Player::DrawFreePieces(DrawContext &context) const
 {
 	Apply2FreePiecesC
 	(
@@ -67,20 +68,20 @@ void Player::DrawFreePieces(BlokusDrawContext &context) const
 
 void Player::DrawCell
 (
-	BlokusDrawContext &context,
+	DrawContext &context,
 	CoordPos    const &pos
 ) const
 {
-	context.ShapeSquare(pos, m_color );
+	ShapeSquare(context, pos, m_color );
 }
 
-void Player::DrawContactPnts(BlokusDrawContext &context) const
+void Player::DrawContactPnts(DrawContext &context) const
 {
 	Apply2AllContactPntsC
 	(
 		[this, &context](CoordPos const& pos)
 		{
-			context.SmallDot(pos, m_color);
+			SmallDot(context, pos, m_color);
 		}
 	);
 }
