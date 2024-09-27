@@ -119,8 +119,8 @@ bool Game::NextMove()
     m_board.PerformMove(move);
     if (player.HasFinished())  
     {
-		Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
-		wcout << L"all moves:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+		//Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
+		//wcout << L"all moves:"<< PerfCounter::Ticks2wstring(ticks) << endl;
         playerFinished(player);
         return false;
     }

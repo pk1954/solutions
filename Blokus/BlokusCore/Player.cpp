@@ -151,5 +151,5 @@ void Player::DoFinish()
 		m_bFinished = true;
 	}
     Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
-    wcout << m_wstrColor << SPACE << PerfCounter::Ticks2wstring(ticks) << endl;
+    wcout << PerfCounter::Ticks2wstring(ticks) << SPACE << m_wstrColor << endl;
 }
