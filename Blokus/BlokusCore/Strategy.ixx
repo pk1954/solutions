@@ -7,6 +7,7 @@ export module BlokusCore:Strategy;
 import std;
 import :Move;
 import :Board;
+import :RuleServerInterface;
 
 using std::vector;
 
@@ -14,5 +15,5 @@ export class Strategy
 {
 public:
 
-    virtual Move const& SelectMove(vector<Move> const&, Board const&) = 0;
+    virtual Move SelectMove(RuleServerInterface const&) = 0;
 };

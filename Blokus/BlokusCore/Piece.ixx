@@ -30,8 +30,8 @@ public:
 
     void PerformMove(Move const& move)
     {
-        SetPiecePos(move.m_boardPos);
-        SetShapeId (move.m_idShape);
+        SetPiecePos(move.GetCoordPos());
+        SetShapeId (move.GetShapeId());
     }
 
 private:

@@ -9,6 +9,7 @@ import Random;
 import :Move;
 import :Board;
 import :Strategy;
+import :RuleServerInterface;
 
 using std::vector;
 
@@ -16,11 +17,17 @@ export class StrategyRandom : public Strategy
 {
 public:
 
-    Move const& SelectMove(vector<Move> const& moves, Board const& board) final
+    Move SelectMove(RuleServerInterface const &rs) final
     {
-       unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };
-       unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
-       return moves[uiSel];
+        Move move;  // initialized to everything Undefined
+        vector<Move> const& moves { rs.GetListOfValidMoves() };
+        if (!moves.empty())
+        {
+            unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };
+            unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
+            return moves[uiSel];
+        }
+        return move;
     }
 
 private:

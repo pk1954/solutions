@@ -93,5 +93,14 @@
     <ClCompile Include="StrategyRandom.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameProtocol.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tournament.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RuleServerInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

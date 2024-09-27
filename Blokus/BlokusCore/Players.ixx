@@ -47,12 +47,12 @@ public:
 
     Player const& GetPlayerC(PlayerId const id) const
     {
-        return m_players[id.GetValue()];
+        return m_players.at(id.GetValue()-1);
     }
 
     Player& GetPlayer(PlayerId const id)
     {
-        return m_players[id.GetValue()];
+        return m_players.at(id.GetValue()-1);
     }
 
 private:

@@ -28,12 +28,12 @@ public:
 
     PlayerId GetPlayerId(CoordPos const& pos) const
     {
-        return m_cells[pos.GetYvalue()][pos.GetXvalue()];
+        return m_cells.at(pos.GetYvalue()).at(pos.GetXvalue());
     }
 
     void SetPlayerId(CoordPos const& pos, PlayerId const id)
     {
-        m_cells[pos.GetYvalue()][pos.GetXvalue()] = id;
+        m_cells.at(pos.GetYvalue()).at(pos.GetXvalue()) = id;
     }
 
     bool IsFreeCell(CoordPos const& pos) const
@@ -58,9 +58,9 @@ public:
         (
             [this, &move](ShapeCoordPos const &shapePos)
             {
-                CoordPos const coordPos { move.m_boardPos + shapePos };
+                CoordPos const coordPos { move.GetCoordPos() + shapePos };
                 Assert(IsOnBoard(coordPos));
-                SetPlayerId(coordPos, move.m_idPlayer);
+                SetPlayerId(coordPos, move.GetPlayerId());
             }
         );
     }

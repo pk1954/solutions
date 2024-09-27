@@ -30,21 +30,6 @@ void BlokusWindow::Start(HWND const hwndParent)
 	m_hTextFormat = m_upGraphics->NewTextFormat(24.f);
 }
 
-void BlokusWindow::nextPlayer()
-{
-	if (!m_game.ActivePlayer().HasFinished())
-	{
-		m_timer.BeforeAction();
-		m_game.NextMove();
-		m_timer.AfterAction();
-		Ticks const ticks { m_timer.GetSingleActionTicks() };
-		wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-	}
-	m_game.NextPlayer();
-	m_game.FindContactPnts();
-	Notify(true);
-}
-
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
@@ -87,7 +72,8 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		break;
 
 	case IDM_NEXT_PLAYER:
-		nextPlayer();
+		m_game.NextPlayer();
+		Notify(false);
 		break;
 
 	case IDM_RUN_TIL_END:

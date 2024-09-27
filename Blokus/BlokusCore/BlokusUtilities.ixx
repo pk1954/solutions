@@ -62,7 +62,7 @@ export void ShapeSquare
 
 Shape const& GetShapeC(Move const &move)
 {
-    PieceType const& pieceType { Components::GetPieceTypeC(move.m_idPieceType) };
-    Shape     const& shape     { pieceType  .GetShapeC    (move.m_idShape) };
+    PieceType const& pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
+    Shape     const& shape     { pieceType  .GetShapeC    (move.GetShapeId()) };
     return shape;
 }

@@ -9,6 +9,7 @@ import Types;
 import Color;
 import Direct2D;
 import DrawContext;
+import HiResTimer;
 import :Board;
 import :BoardMap;
 import :Piece;
@@ -40,9 +41,12 @@ public:
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
 
-    Move const& SelectMove(vector<Move> const &move, Board const &board)
+    Move SelectMove(RuleServerInterface const &ruleServer)
     {
-       return  m_pStrategy->SelectMove(move, board);
+		m_timer.BeforeAction();
+        Move moveSelected { m_pStrategy->SelectMove(ruleServer) };
+		m_timer.AfterAction();
+        return moveSelected;
     }
 
     void PerformMove(Move const&);
@@ -105,6 +109,7 @@ private:
     vector<CoordPos>                m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
     wstring                         m_wstrColor;
+    HiResTimer                      m_timer;
 
     void reduceValidMoves(Move const&, PieceType const&);
 };

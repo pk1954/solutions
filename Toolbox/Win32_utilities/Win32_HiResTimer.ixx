@@ -56,9 +56,19 @@ public:
 		return m_ticksSingleAction;
 	}
 
+	Ticks GetAccumulatedActionTicks() const
+	{
+		return m_ticksAccMeasured;
+	}
+
 	Ticks GetAverageActionTicks() const
 	{
 		return m_ticksAccMeasured / m_ulActionCounter;
+	}
+
+	unsigned long GetNrOfActions() const
+	{
+		return m_ulActionCounter;
 	}
 
 	wstring Average2wstring() const

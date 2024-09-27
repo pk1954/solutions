@@ -4,9 +4,12 @@
 
 module BlokusCore:Player;
 
+import IoConstants;
 import DrawContext;
 import :BlokusUtilities;
 
+using std::wcout;
+using std::endl;
 using std::wstring;
 using std::to_wstring;
 using std::vector;
@@ -24,6 +27,7 @@ void Player::Initialize
 	m_validPositions.Initialize();
 	ClearContactPnts();
     AddContactPnt(startPoint);
+    m_timer.Reset();
     m_color           = col;
 	m_wstrColor       = wstrColor;
 	m_pStrategy       = pStrategy;
@@ -94,12 +98,12 @@ void Player::reduceValidMoves
 	PieceType const &pieceType
 )
 {
-    Shape const &shape { pieceType.GetShapeC(move.m_idShape)};
+    Shape const &shape { pieceType.GetShapeC(move.GetShapeId())};
     shape.Apply2AllShapeCellsC
     (
         [this, &move](ShapeCoordPos const &shapePos)
         { 
-            CoordPos const coordPos { move.m_boardPos + shapePos };
+            CoordPos const coordPos { move.GetCoordPos() + shapePos };
             m_validPositions.SetCell(coordPos, false);
             m_validPositions.SetCell(NorthPos(coordPos), false);
             m_validPositions.SetCell(EastPos (coordPos), false);
@@ -112,9 +116,9 @@ void Player::reduceValidMoves
 
 void Player::PerformMove(Move const& move)
 {
-	m_pieceTypeIdMove = move.m_idPieceType;
+	m_pieceTypeIdMove = move.GetPieceTypeId();
     PieceType const &pieceType { Components::GetPieceTypeC(m_pieceTypeIdMove) };
-    Piece           &piece     { GetPiece(move.m_idPieceType) };
+    Piece           &piece     { GetPiece(m_pieceTypeIdMove) };
     piece.PerformMove(move);
     m_bFirstMove = false;
 	if (--m_remainingPieces == 0)
@@ -141,9 +145,11 @@ void Player::DoFinish()
 	);
     if (m_remainingPieces == 0)
 	{
-		m_iResult = 15;
+		m_iResult += 15;
 		if (Components::GetPieceTypeC(m_pieceTypeIdMove).NrOfCells() == 1)
 			m_iResult += 5;
 		m_bFinished = true;
 	}
+    Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
+    wcout << m_wstrColor << SPACE << PerfCounter::Ticks2wstring(ticks) << endl;
 }
