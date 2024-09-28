@@ -15,6 +15,7 @@ import :BoardMap;
 import :Piece;
 import :PlayerId;
 import :PieceTypeId;
+import :RuleServerInterface;
 import :Components;
 import :BlokusCoords;
 import :Strategy;
@@ -41,10 +42,10 @@ public:
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
 
-    Move SelectMove(RuleServerInterface const &ruleServer)
+    Move SelectMove(RuleServerInterface const &rs)
     {
 		m_timer.BeforeAction();
-        Move moveSelected { m_pStrategy->SelectMove(ruleServer) };
+        Move moveSelected { m_pStrategy->SelectMove(rs) };
 		m_timer.AfterAction();
         return moveSelected;
     }

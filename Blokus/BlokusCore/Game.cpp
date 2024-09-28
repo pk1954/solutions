@@ -5,21 +5,37 @@
 module BlokusCore:Game;
 
 import PerfCounter;
-import :RuleServerInterface;
 
 using std::wcout;
 using std::endl;
-using std::make_unique;
 using std::vector;
+using std::make_unique;
 
-vector<Move> const& RuleServer::GetListOfValidMoves() const
+class RuleServer : public RuleServerInterface
+{
+public:
+    RuleServer(Game &game)
+        : m_game(game)
+    {}
+
+vector<Move> const& GetListOfValidMoves() const final
 {
     return m_game.FindValidMoves();
 }
 
-Board const & RuleServer::GetBoard() const
+Board const& GetBoard() const final
 {
     return m_game.GetBoard();
+}
+
+private:
+    Game &m_game;
+};
+
+Game::Game()
+{
+    Initialize();
+    m_upRuleServer = make_unique<RuleServer>(*this);
 }
 
 void Game::Initialize()
@@ -28,11 +44,10 @@ void Game::Initialize()
     m_players.Initialize();
     m_protocol.Initialize();
     m_bGameFinished = false;
+    m_bGameStarted  = false;
     m_uiPlayersLeft = NR_OF_PLAYERS;
     m_activePlayer  = FIRST_PLAYER;
     m_timer.Reset();
-
-    m_upRuleServer = make_unique<RuleServer>(*this);
 }
 
 void Game::DrawSetPieces(DrawContext &context) const

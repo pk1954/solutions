@@ -14,6 +14,7 @@ import :Players;
 import :PlayerId;
 import :Components;
 import :GameProtocol;
+import :RuleServerInterface;
 
 using std::vector;
 using std::unique_ptr;
@@ -22,35 +23,19 @@ int g_iNrOfPieces;
 int g_iNrOfShapes;
 int g_iNrOfMoves;
 
-class Game;
-
-class RuleServer : public RuleServerInterface
-{
-public:
-    RuleServer(Game &game)
-        : m_game(game)
-    {}
-
-    vector<Move> const &GetListOfValidMoves() const final;
-    Board        const &GetBoard()            const final;
-
-private:
-    Game &m_game;
-};
-
 export class Game
 {
 public:
-    Game()
-    {
-        Initialize();
-    }
+    Game();
 
     void Initialize();
     vector<Move> const& FindValidMoves();
 
     Player       &ActivePlayer ()       { return m_players.GetPlayer(m_activePlayer); }
     Player const &ActivePlayerC() const { return m_players.GetPlayerC(m_activePlayer); }
+
+    Player const &GetPlayerC(PlayerId const id) const { return m_players.GetPlayerC(id); }
+    Player       &GetPlayer (PlayerId const id)       { return m_players.GetPlayer(id); }
 
     bool          GameFinished() { return m_bGameFinished; }
     Player const &Winner()       { return m_players.GetPlayerC(WinnerId()); }
@@ -64,19 +49,20 @@ public:
     Board const &GetBoard() const { return m_board; }
 
 private:
+
     bool         m_bGameStarted  { false };
     bool         m_bGameFinished { false };
     unsigned int m_uiPlayersLeft { NR_OF_PLAYERS };
-    HiResTimer   m_timerFindContactPnts;
-    HiResTimer   m_timerFindValidMoves;
     Board        m_board;
     Players      m_players;
     PlayerId     m_activePlayer { 0 };
     vector<Move> m_validMoves;
     GameProtocol m_protocol;
+    HiResTimer   m_timerFindContactPnts;
+    HiResTimer   m_timerFindValidMoves;
     HiResTimer   m_timer;
 
-    unique_ptr<RuleServer> m_upRuleServer; 
+    unique_ptr<RuleServerInterface> m_upRuleServer; 
 
     bool isValidMove(Move const&, Player const&);
     void playerFinished(Player&);

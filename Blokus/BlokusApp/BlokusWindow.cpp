@@ -57,6 +57,11 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 			SendCommand(IDM_RUN_TIL_END);
 			break;
 
+		case 't':
+		case 'T':
+			SendCommand(IDD_TOURNAMENT);
+			break;
+
 		default:
 			SendCommand(IDM_NEXT_PLAYER);
 	}
@@ -80,6 +85,11 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		SendCommand(IDM_NEXT_PLAYER);
 		if (!m_game.GameFinished())
 			PostCommand(wParam);
+		break;
+
+	case IDD_TOURNAMENT:
+		m_tournament.Start(100);
+		Notify(false);
 		break;
 
 	default:

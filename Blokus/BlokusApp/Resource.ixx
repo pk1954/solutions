@@ -13,4 +13,4 @@ export inline int const IDM_RUN_TIL_END  { 102 };
 export inline int const IDM_INITIALIZE   { 103 };
 export inline int const IDD_CONTACT_PNTS { 104 };
 export inline int const IDD_CORNER_CELLS { 105 };
-								   	         		  
+export inline int const IDD_TOURNAMENT   { 106 };								   	         		  
