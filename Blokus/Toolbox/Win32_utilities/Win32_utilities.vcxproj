@@ -185,7 +185,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\ActionTimer.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Animation.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\AnimationCommand.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\AppStartProtocol.ixx" />

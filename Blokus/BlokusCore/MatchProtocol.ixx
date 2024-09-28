@@ -1,8 +1,8 @@
-// GameProtocol.ixx
+// MatchProtocol.ixx
 //
 // BlokusCore
 
-export module BlokusCore:GameProtocol;
+export module BlokusCore:MatchProtocol;
 
 import std;
 import :Move;
@@ -13,7 +13,7 @@ using std::array;
 
 using ROUND = array<Move, NR_OF_PLAYERS>;
 
-export class GameProtocol
+export class MatchProtocol
 {
 public:
     void Initialize()

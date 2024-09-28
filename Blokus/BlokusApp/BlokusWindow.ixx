@@ -22,7 +22,7 @@ public:
 
 private:
 
-	Game             m_game;
+	Match             m_match;
 	Tournament       m_tournament;
 	D2D_DrawContext  m_context;
 	TextFormatHandle m_hTextFormat { nullptr };

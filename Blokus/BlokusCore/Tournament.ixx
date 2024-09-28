@@ -8,7 +8,7 @@ import std;
 import IoConstants;
 import :Player;
 import :PlayerId;
-import :Game;
+import :Match;
 
 using std::array;
 using std::wcout;
@@ -17,32 +17,32 @@ using std::endl;
 export class Tournament
 {
 public:
-    void Start(int const iNrOfGames)
+    void Start(int const iNrOfMatchs)
     {
         for (auto &it : m_wins)
             it = 0;
 
-        Game game;
-        for (int i = 0; i < iNrOfGames; ++i)
+        Match match;
+        for (int i = 0; i < iNrOfMatchs; ++i)
         {
-            game.Initialize();
-            while (game.NextPlayer()) {};
-            PlayerId idWinner { game.WinnerId() };
+            match.Initialize();
+            while (match.NextPlayer()) {};
+            PlayerId idWinner { match.WinnerId() };
             ++m_wins[idWinner.GetValue() - 1]; 
         }
 
         Apply2AllPlayerIds
         (
-            [this, &game](PlayerId const id)
+            [this, &match](PlayerId const id)
             {
-                Player const &player { game.GetPlayerC(id) };
+                Player const &player { match.GetPlayerC(id) };
                 wcout << m_wins[id.GetValue()-1] << SPACE << player.GetName() << endl;
             }
         );
     }
 
 private:
-    int m_iNrOfGames { 0 };
+    int m_iNrOfMatchs { 0 };
 
     array<int, NR_OF_PLAYERS> m_wins;
 };

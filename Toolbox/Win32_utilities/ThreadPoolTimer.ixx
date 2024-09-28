@@ -2,11 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module ThreadPoolTimer;
+
+import WinBasics;
 
 export class ThreadPoolTimer
 {
@@ -31,8 +29,8 @@ public:
     {
         if (m_pTpTimer)
         {
-            SetThreadpoolTimer(m_pTpTimer, NULL, 0, 0);
-            WaitForThreadpoolTimerCallbacks(m_pTpTimer, TRUE);
+            SetThreadpoolTimer(m_pTpTimer, nullptr, 0, 0);
+            WaitForThreadpoolTimerCallbacks(m_pTpTimer, true);
             CloseThreadpoolTimer(m_pTpTimer);
             m_pTpTimer = nullptr;
         }

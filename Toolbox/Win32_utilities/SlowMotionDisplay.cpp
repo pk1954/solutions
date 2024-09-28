@@ -4,16 +4,13 @@
 //
 // Displays slow motion ratio in status bar field
 
-module;
-
-#include <Windows.h>
-
 module SlowMotionDisplay;
 
 import std;
 import Util;
 import Types;
 import SaveCast;
+import WinBasics;
 import SlowMotionRatio;
 import StatusBar;
 

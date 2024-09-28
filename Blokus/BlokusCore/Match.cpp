@@ -1,8 +1,8 @@
-// Game.cpp
+// Match.cpp
 //
 // BlokusCore
 
-module BlokusCore:Game;
+module BlokusCore:Match;
 
 import PerfCounter;
 
@@ -14,43 +14,43 @@ using std::make_unique;
 class RuleServer : public RuleServerInterface
 {
 public:
-    RuleServer(Game &game)
-        : m_game(game)
+    RuleServer(Match &match)
+        : m_match(match)
     {}
 
 vector<Move> const& GetListOfValidMoves() const final
 {
-    return m_game.FindValidMoves();
+    return m_match.FindValidMoves();
 }
 
 Board const& GetBoard() const final
 {
-    return m_game.GetBoard();
+    return m_match.GetBoard();
 }
 
 private:
-    Game &m_game;
+    Match &m_match;
 };
 
-Game::Game()
+Match::Match()
 {
     Initialize();
     m_upRuleServer = make_unique<RuleServer>(*this);
 }
 
-void Game::Initialize()
+void Match::Initialize()
 {
     m_board.Initialize();
     m_players.Initialize();
     m_protocol.Initialize();
-    m_bGameFinished = false;
-    m_bGameStarted  = false;
+    m_bMatchFinished = false;
+    m_bMatchStarted  = false;
     m_uiPlayersLeft = NR_OF_PLAYERS;
     m_activePlayer  = FIRST_PLAYER;
     m_timer.Reset();
 }
 
-void Game::DrawSetPieces(DrawContext &context) const
+void Match::DrawSetPieces(DrawContext &context) const
 {
     Apply2AllBoardCells
     (
@@ -66,7 +66,7 @@ void Game::DrawSetPieces(DrawContext &context) const
     );
 }
 
-PlayerId Game::WinnerId()
+PlayerId Match::WinnerId()
 {
     PlayerId idBestPlayer { NO_PLAYER };
     int      iBestResult { (std::numeric_limits<int>::min)() };
@@ -85,23 +85,23 @@ PlayerId Game::WinnerId()
     return idBestPlayer;
 }
 
-void Game::playerFinished(Player& player)
+void Match::playerFinished(Player& player)
 {
     player.DoFinish();
     if (--m_uiPlayersLeft == 0)
     {
-        m_bGameFinished = true;
+        m_bMatchFinished = true;
     	m_timer.AfterAction();
 		Ticks const ticks { m_timer.GetSingleActionTicks() };
-		wcout << L"Complete game:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+		wcout << L"Complete match:"<< PerfCounter::Ticks2wstring(ticks) << endl;
     }
 }
 
-bool Game::NextPlayer()
+bool Match::NextPlayer()
 {
-    if (!m_bGameStarted)
+    if (!m_bMatchStarted)
     {
-        m_bGameStarted = true;
+        m_bMatchStarted = true;
      	m_timer.BeforeAction();
    }
 	if (!ActivePlayer().HasFinished())
@@ -110,7 +110,7 @@ bool Game::NextPlayer()
 		//Ticks const ticks { m_timer.GetSingleActionTicks() };
 		//wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
 	}
-    if (GameFinished())
+    if (MatchFinished())
         return false;
 
     if (++m_activePlayer > PlayerId(NR_OF_PLAYERS))
@@ -120,7 +120,7 @@ bool Game::NextPlayer()
     return true;
 }
 
-bool Game::NextMove()
+bool Match::NextMove()
 {
     Player &player { ActivePlayer() };
     Move move { player.SelectMove(*m_upRuleServer.get()) };
@@ -142,7 +142,7 @@ bool Game::NextMove()
     return true;
 }
 
-void Game::FindContactPnts()
+void Match::FindContactPnts()
 {
     //m_timerFindContactPnts.BeforeAction();
     Player &player { m_players.GetPlayer(m_activePlayer) };
@@ -166,7 +166,7 @@ void Game::FindContactPnts()
     //wcout << L"FindContactPnts:"<< PerfCounter::Ticks2wstring(ticks) << endl;
 }
 
-bool Game::isValidMove
+bool Match::isValidMove
 (
     Move   const& move,
     Player const& player
@@ -184,7 +184,7 @@ bool Game::isValidMove
     );
 }
 
-vector<Move> const & Game::FindValidMoves()
+vector<Move> const & Match::FindValidMoves()
 {
     g_iNrOfPieces = 0;
     g_iNrOfShapes = 0;

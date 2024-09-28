@@ -27,9 +27,9 @@
     <ClCompile Include="Board.ixx" />
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="Components.ixx" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Game.ixx" />
-    <ClCompile Include="GameProtocol.ixx" />
+    <ClCompile Include="Match.cpp" />
+    <ClCompile Include="Match.ixx" />
+    <ClCompile Include="MatchProtocol.ixx" />
     <ClCompile Include="Move.ixx" />
     <ClCompile Include="Piece.ixx" />
     <ClCompile Include="PieceTypeId.ixx" />

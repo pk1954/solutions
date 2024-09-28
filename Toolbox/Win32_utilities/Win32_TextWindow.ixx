@@ -2,23 +2,18 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module TextWindow;
 
 import std;
 import Util;
 import TextBuffer;
 import Types;
+import WinBasics;
 import Win32_TextBuffer;
 import BaseWindow;
 
 using std::unique_ptr;
 using std::wstring;
-
-class TextWindowThread;
 
 export class TextWindow : public BaseWindow
 {

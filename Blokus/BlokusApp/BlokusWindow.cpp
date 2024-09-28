@@ -25,7 +25,7 @@ void BlokusWindow::Start(HWND const hwndParent)
 		L"ClassBlokusWindow", 
 	    WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
-	m_game.Initialize();
+	m_match.Initialize();
 	m_context.Start(m_upGraphics.get());
 	m_hTextFormat = m_upGraphics->NewTextFormat(24.f);
 }
@@ -72,18 +72,18 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	switch (int const wmId { LoWord(wParam) } )
 	{
 	case IDM_INITIALIZE:
-		m_game.Initialize();
+		m_match.Initialize();
 		Notify(false);
 		break;
 
 	case IDM_NEXT_PLAYER:
-		m_game.NextPlayer();
+		m_match.NextPlayer();
 		Notify(false);
 		break;
 
 	case IDM_RUN_TIL_END:
 		SendCommand(IDM_NEXT_PLAYER);
-		if (!m_game.GameFinished())
+		if (!m_match.MatchFinished())
 			PostCommand(wParam);
 		break;
 
@@ -133,21 +133,21 @@ void BlokusWindow::drawFinishedMsg()
 	m_context.DisplayText
 	(
 		rect, 
-		L"Game finished. The winner is " + m_game.Winner().GetName() + L".",
+		L"Match finished. The winner is " + m_match.Winner().GetName() + L".",
 		m_hTextFormat
 	);
 }
 
 void BlokusWindow::PaintGraphics()
 {
-	Player const& player { m_game.ActivePlayerC() };
+	Player const& player { m_match.ActivePlayerC() };
 	player.DrawFreePieces(m_context);
  	paintBoard();
-	m_game.DrawSetPieces(m_context);
+	m_match.DrawSetPieces(m_context);
 	if (BlokusPreferences::m_bShowContactPnts.Get())
-		m_game.ActivePlayerC().DrawContactPnts(m_context);
+		m_match.ActivePlayerC().DrawContactPnts(m_context);
 	if (player.HasFinished())
 		player.DrawResult(m_context, m_hTextFormat);
-	if (m_game.GameFinished())
+	if (m_match.MatchFinished())
 		drawFinishedMsg();
 };

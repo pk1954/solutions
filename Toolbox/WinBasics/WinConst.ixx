@@ -161,6 +161,9 @@ export
     const UINT    WM_TIMER            = 0x0113;
 
     const DWORD   ERROR_CLASS_ALREADY_EXISTS = 1410L;
+    const DWORD   SRCCOPY                    = 0x00CC0020; // dest = source
+    const DWORD   CC_RGBINIT                 = 0x00000001;
+    const DWORD   CC_FULLOPEN                = 0x00000002;
 
     const UINT    PM_REMOVE           = PM_REMOVE_CONST;
     const UINT    CP_UTF8             = CP_UTF8_CONST;

@@ -2,12 +2,9 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h> 
-
 export module ColorDialog;
 
+import WinBasics;
 export import Color;
 
 export bool ColorDialog
@@ -18,15 +15,16 @@ export bool ColorDialog
 {
 	static COLORREF acrCustClr[16]; // array of custom colors 
 	CHOOSECOLOR cc;                 // common dialog box structure 
-	ZeroMemory(&cc, sizeof(cc));
-	cc.lStructSize  = sizeof(cc);
-	cc.hwndOwner    = hwndOwner;
-	cc.lpCustColors = (LPDWORD)acrCustClr;
-	cc.rgbResult    = colorRef;
-	cc.Flags        = CC_FULLOPEN | CC_RGBINIT; // | CC_ENABLEHOOK;
-	cc.lpfnHook     = 0;
+	cc.lStructSize    = sizeof(cc);
+	cc.hwndOwner      = hwndOwner;
+	cc.hInstance      = 0;
+	cc.rgbResult      = colorRef;
+	cc.lpCustColors   = (LPDWORD)acrCustClr;
+	cc.Flags          = CC_FULLOPEN | CC_RGBINIT; // | CC_ENABLEHOOK;
+	cc.lpfnHook       = 0;
+	cc.lpTemplateName = 0;
 
-	bool bRes { ChooseColor(&cc) == TRUE };
+	bool bRes { ChooseColorW(&cc) == TRUE };
 	if (bRes)
 		colorRef = cc.rgbResult;
 	return bRes;

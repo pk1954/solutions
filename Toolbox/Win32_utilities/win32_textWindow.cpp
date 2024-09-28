@@ -2,17 +2,11 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module TextWindow;
 
-import std;
 import Debug;
 import Win32_Util_Resource;
 import Win32_Util;
-import BaseWindow;
 
 using std::function;
 using std::make_unique;

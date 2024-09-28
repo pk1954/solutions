@@ -48,7 +48,7 @@
     <ClCompile Include="Player.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.ixx">
+    <ClCompile Include="Match.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Board.ixx">
@@ -63,7 +63,7 @@
     <ClCompile Include="PlayerId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp">
+    <ClCompile Include="Match.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShapeId.ixx">
@@ -93,7 +93,7 @@
     <ClCompile Include="StrategyRandom.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameProtocol.ixx">
+    <ClCompile Include="MatchProtocol.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tournament.ixx">
