@@ -2,10 +2,6 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module Win32_TextBuffer;
 
 import std;
@@ -23,7 +19,7 @@ Win32_TextBuffer::Win32_TextBuffer(HDC const hdc, PixelRectSize const & pixSize)
 	m_hDC(hdc)
 { 
 	TEXTMETRIC textMetric;
-	(void)GetTextMetrics(m_hDC, &textMetric);
+	GetTextMetricsW(m_hDC, &textMetric);
 	PIXEL cxChar     = PIXEL(PIXEL(textMetric.tmAveCharWidth));
 	PIXEL horRaster  = cxChar * 3 * (textMetric.tmPitchAndFamily & TMPF_FIXED_PITCH ? 3 : 2);
 	PIXEL vertRaster = PIXEL(PIXEL(textMetric.tmHeight + textMetric.tmExternalLeading));
@@ -59,7 +55,7 @@ void Win32_TextBuffer::PrintBuffer
 )
 {
 	wstring const wstr { pwBuffer->str() };
-    (void)TextOut
+    TextOutW
 	(
 		m_hDC, 
 		xPos.GetValue(), 

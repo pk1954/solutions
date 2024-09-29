@@ -57,6 +57,7 @@ export
     using PTP_TIMER             = PTP_TIMER;
     using PVOID                 = PVOID;
     using SRWLOCK               = SRWLOCK;
+    using TEXTMETRIC            = TEXTMETRIC;
     using TRACKMOUSEEVENT       = TRACKMOUSEEVENT;
     using UINT                  = UINT;
     using WNDCLASSEX            = WNDCLASSEX;
@@ -91,6 +92,7 @@ export
     using ::EndDialog;
     using ::EndPaint;
     using ::EnumDisplayMonitors;
+    using ::GetBkColor;
     using ::GetCapture;
     using ::GetClientRect;
     using ::GetDC;
@@ -103,6 +105,7 @@ export
     using ::GetMonitorInfoW;
     using ::GetStockObject;
     using ::GetSystemMetrics;
+    using ::GetTextMetricsW;
     using ::GetWindowLong;
     using ::GetWindowTextW;
     using ::GetWindowTextLengthW;

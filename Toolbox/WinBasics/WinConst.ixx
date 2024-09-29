@@ -90,6 +90,8 @@ extern const DWORD DT_LEFT_CONST;
 extern const DWORD ES_RIGHT_CONST;
 
 extern const DWORD TA_CENTER_CONST;
+extern const DWORD TA_LEFT_CONST;
+extern const DWORD TA_RIGHT_CONST;
 
 extern const DWORD TME_HOVER_CONST;
 extern const DWORD TME_LEAVE_CONST;
@@ -101,6 +103,7 @@ extern const DWORD TPM_TOPALIGN_CONST;
 extern const DWORD TPM_LEFTALIGN_CONST;
 extern const DWORD TPM_RETURNCMD_CONST;
 extern const DWORD TPM_NONOTIFY_CONST;
+extern const DWORD TMPF_FIXED_PITCH_CONST;
 
 extern const BYTE  FVIRTKEY_CONST; 
 extern const BYTE  FCONTROL_CONST; 
@@ -249,6 +252,8 @@ export
     const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
                   
     const DWORD   TA_CENTER           = TA_CENTER_CONST;
+    const DWORD   TA_LEFT             = TA_LEFT_CONST;
+    const DWORD   TA_RIGHT            = TA_RIGHT_CONST;
                   
     const DWORD   TME_HOVER           = TME_HOVER_CONST;
     const DWORD   TME_LEAVE           = TME_LEAVE_CONST;
@@ -260,6 +265,7 @@ export
     const DWORD   TPM_LEFTALIGN       = TPM_LEFTALIGN_CONST;
     const DWORD   TPM_RETURNCMD       = TPM_RETURNCMD_CONST;
     const DWORD   TPM_NONOTIFY        = TPM_NONOTIFY_CONST;
+    const DWORD   TMPF_FIXED_PITCH    = TMPF_FIXED_PITCH_CONST;
 
     const BYTE    FVIRTKEY            = FVIRTKEY_CONST; 
     const BYTE    FCONTROL            = FCONTROL_CONST; 

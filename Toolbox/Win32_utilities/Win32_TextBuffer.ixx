@@ -2,13 +2,10 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module Win32_TextBuffer;
 
 import std;
+import WinBasics;
 import TextBuffer;
 import Types;
 
