@@ -94,7 +94,6 @@ void DescriptionWindow::Start(HWND const hwndParent)
     HWND const hwndDlg = StartBaseWindow
     (
         hwndParent, 
-        CS_OWNDC|CS_DBLCLKS,
         L"ModelDescWindow",
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION|WS_SIZEBOX,
         & rect,

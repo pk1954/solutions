@@ -26,7 +26,6 @@ HWND GraphicsWindow::Initialize
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
-		CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, 
 		szClass,
 		dwWindowStyle,
 		nullptr,

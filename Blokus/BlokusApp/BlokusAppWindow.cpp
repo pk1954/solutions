@@ -21,7 +21,6 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_hwndApp = StartBaseWindow
 	(
 		nullptr, 
-		CS_HREDRAW | CS_VREDRAW, 
 		L"ClassAppWindow", 
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		nullptr,

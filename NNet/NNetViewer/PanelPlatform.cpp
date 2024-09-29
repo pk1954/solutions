@@ -28,7 +28,6 @@ PanelPlatform::PanelPlatform(HWND const hwndParent)
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
-		CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		L"ClassPanelPlatform",
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE,
 		nullptr,

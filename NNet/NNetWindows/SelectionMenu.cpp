@@ -19,7 +19,6 @@ void SelectionMenu::Start(HWND const hwndParent)
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
-		0,
 		L"ClassSelectionMenu",
 		WS_CHILD | WS_CAPTION | WS_OVERLAPPED,
 		&pixRect,

@@ -27,7 +27,6 @@ NNetViewerWindow::NNetViewerWindow()
 	HWND hwnd = StartBaseWindow
 	(
 		nullptr,
-		CS_HREDRAW | CS_VREDRAW,
 		L"ClassScanViewerWindow",
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		nullptr,

@@ -21,7 +21,6 @@ using std::wostringstream;
 HWND BaseWindow::StartBaseWindow
 (
     HWND      const   hwndParent,
-    UINT      const   uiClassStyle,
     LPCTSTR   const   szClass,
     DWORD     const   dwWindowStyle,
 	PixelRect const * pRect,
@@ -35,7 +34,7 @@ HWND BaseWindow::StartBaseWindow
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style		   = uiClassStyle;
+    wcex.style		   = CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS;;
     wcex.lpfnWndProc   = BaseWndProc;
     wcex.cbClsExtra	   = 0;
     wcex.cbWndExtra	   = sizeof(void *);	

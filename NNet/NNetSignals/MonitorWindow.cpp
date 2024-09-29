@@ -37,7 +37,6 @@ void MonitorWindow::Start
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
-		CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		L"ClassMonitorWindow",
 		WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_CAPTION|WS_SIZEBOX|WS_VISIBLE,
 		nullptr,

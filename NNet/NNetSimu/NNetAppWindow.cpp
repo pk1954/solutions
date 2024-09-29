@@ -70,7 +70,6 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 	m_hwndApp = StartBaseWindow
 	(
 		nullptr, 
-		CS_HREDRAW | CS_VREDRAW, 
 		L"ClassAppWindow", 
 		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
 		nullptr,

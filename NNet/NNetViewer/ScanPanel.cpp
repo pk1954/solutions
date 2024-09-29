@@ -31,7 +31,6 @@ ScanPanel::ScanPanel
 	HWND hwnd = StartBaseWindow
 	(
 		hwndParent,
-		CS_OWNDC|CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		L"ClassScanPanel",
 		WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE,
 		nullptr,

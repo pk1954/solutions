@@ -29,7 +29,6 @@ void TextWindow::StartTextWindow
     HWND const hwnd = StartBaseWindow
     (
         hwndParent,
-        CS_OWNDC | CS_DBLCLKS,
         szClass,
         WS_POPUPWINDOW | WS_CLIPSIBLINGS | WS_CAPTION,
 		& rect,
