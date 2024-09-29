@@ -2,11 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module DialogTemplate;
+
+import WinBasics;
 
 struct DlgTemplate
 {

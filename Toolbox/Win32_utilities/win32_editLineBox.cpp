@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module EditLineBox;
 
 import std;
+import WinBasics;
 import Win32_Util_Resource;
 import StdDialogBox;
 import Win32_Controls;
@@ -48,8 +45,8 @@ void EditLineBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const l
 	CreateStaticField(hDlg, m_wstrUnit.c_str(), 195, 40, 200, 20);
 	CreateButton     (hDlg, L"OK",              100, 92,  50, 30, IDOK, WS_GROUP);
 	CreateButton     (hDlg, L"Cancel",          200, 92,  50, 30, IDOK, WS_GROUP);
-	::SetWindowText(m_hwndEditCtl, m_wstrValue.c_str());
-	::SetWindowText(hDlg, m_wstrTitle.c_str());
-	::SendMessage(hDlg, DM_SETDEFID, IDOK, 0);
-	::SendMessage(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
+	SetWindowTextW(m_hwndEditCtl, m_wstrValue.c_str());
+	SetWindowTextW(hDlg, m_wstrTitle.c_str());
+	SendMessageW(hDlg, DM_SETDEFID, IDOK, 0);
+	SendMessageW(GetDlgItem(hDlg, IDCANCEL), BM_SETSTYLE, BS_PUSHBUTTON, 0);
 }

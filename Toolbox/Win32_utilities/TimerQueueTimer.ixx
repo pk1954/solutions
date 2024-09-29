@@ -2,14 +2,11 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module TimerQueueTimer;
 
 import std;
 import Debug;
+import WinBasics;
 
 using std::bit_cast;
 using std::wstring;
@@ -48,15 +45,15 @@ private:
 	void startTimer(milliseconds const msTimer)
 	{
 		auto dwTime = static_cast<DWORD>(msTimer.count());
-		(void)CreateTimerQueueTimer
+		CreateTimerQueueTimer
 		(
 			& m_hTimer,                     // output parameter 
 			nullptr,                        // use default timer queue
-			(WAITORTIMERCALLBACK)timerProc, // the timer procedure
+			(WAITORTIMERCALLBACK)timerProc,          // the timer procedure
 			static_cast<void *>(this),      // pointer to this object as parameter to TimerProc
-			dwTime,                         // timer is signaled the first time after dwTime msecs
-			dwTime,                         // timer is signaled periodically every dwTime msecs
-			0                               // no flags
+			dwTime,                           // timer is signaled the first time after dwTime msecs
+			dwTime,                            // timer is signaled periodically every dwTime msecs
+			0                                        // no flags
 		);
 		Assert(m_hTimer != nullptr);
 	}
@@ -65,12 +62,12 @@ private:
 	{
 		if (m_hTimer != nullptr)
 		{
-			(void)DeleteTimerQueueTimer(nullptr, m_hTimer, INVALID_HANDLE_VALUE);
+			DeleteTimerQueueTimer(nullptr, m_hTimer, InvalidHandle());
 			m_hTimer = nullptr;
 		}
 	}
 
-	static void CALLBACK timerProc(void * const lpParam, bool const TimerOrWaitFired)
+	static void __stdcall timerProc(void * const lpParam, bool const TimerOrWaitFired)
 	{
 		auto const pTimerQueueTimer = bit_cast<TimerQueueTimer *>(lpParam);
 		pTimerQueueTimer->TimerProc();

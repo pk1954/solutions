@@ -7,9 +7,11 @@ export module WinBasics:WinConst;
 import :WinDefs;
 
 extern const UINT  PM_REMOVE_CONST;
+extern const UINT  PM_QS_INPUT_CONST;
 extern const UINT  CP_UTF8_CONST;
 extern const UINT  FIXED_PITCH_CONST;
 extern const UINT  GWL_STYLE_CONST;
+extern const UINT  DM_SETDEFID_CONST;
 
 extern const DWORD WS_BORDER_CONST;
 extern const DWORD WS_CHILD_CONST;
@@ -71,6 +73,8 @@ extern const DWORD MK_SHIFT_CONST;
 extern const DWORD MK_CONTROL_CONST;
 extern const DWORD MK_LBUTTON_CONST;
 
+extern const DWORD BM_SETSTYLE_CONST;
+
 extern const DWORD BS_PUSHBUTTON_CONST;
 extern const DWORD BS_DEFPUSHBUTTON_CONST;
 extern const DWORD BS_AUTOCHECKBOX_CONST;
@@ -94,6 +98,7 @@ extern const DWORD EM_GETSEL_CONST;
 extern const DWORD EM_SETSEL_CONST;
 extern const DWORD EM_GETLINECOUNT_CONST;
 
+extern const DWORD ES_LEFT_CONST;
 extern const DWORD ES_RIGHT_CONST;
 extern const DWORD ES_MULTILINE_CONST;  
 extern const DWORD ES_WANTRETURN_CONST; 
@@ -154,6 +159,7 @@ export
     const UINT    WM_DRAWITEM         = 0x002B;
     const UINT    WM_HSCROLL          = 0x0114;
     const UINT    WM_INITDIALOG       = 0x0110;
+    const UINT    WM_KEYDOWN          = 0x0100;
     const UINT    WM_LBUTTONDBLCLK    = 0x0203;
     const UINT    WM_LBUTTONDOWN      = 0x0201;
     const UINT    WM_LBUTTONUP        = 0x0202;
@@ -182,9 +188,11 @@ export
     const DWORD   CC_FULLOPEN                = 0x00000002;
 
     const UINT    PM_REMOVE           = PM_REMOVE_CONST;
+    const UINT    PM_QS_INPUT         = PM_QS_INPUT_CONST;
     const UINT    CP_UTF8             = CP_UTF8_CONST;
     const UINT    FIXED_PITCH         = FIXED_PITCH_CONST;
     const UINT    GWL_STYLE           = GWL_STYLE_CONST;
+    const UINT    DM_SETDEFID         = DM_SETDEFID_CONST;
 
     const DWORD   WS_BORDER           = WS_BORDER_CONST;
     const DWORD   WS_CHILD            = WS_CHILD_CONST;
@@ -246,6 +254,8 @@ export
     const DWORD   MK_CONTROL          = MK_CONTROL_CONST;
     const DWORD   MK_LBUTTON          = MK_LBUTTON_CONST;
                                       
+    const DWORD   BM_SETSTYLE         = BM_SETSTYLE_CONST;
+                                      
     const DWORD   BS_PUSHBUTTON       = BS_PUSHBUTTON_CONST;
     const DWORD   BS_DEFPUSHBUTTON    = BS_DEFPUSHBUTTON_CONST;
     const DWORD   BS_AUTOCHECKBOX     = BS_AUTOCHECKBOX_CONST;
@@ -269,6 +279,7 @@ export
     const DWORD   EM_SETSEL           = EM_SETSEL_CONST;
     const DWORD   EM_GETLINECOUNT     = EM_GETLINECOUNT_CONST;
 
+    const DWORD   ES_LEFT             = ES_LEFT_CONST;
     const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
     const DWORD   ES_MULTILINE        = ES_MULTILINE_CONST;  
     const DWORD   ES_WANTRETURN       = ES_WANTRETURN_CONST; 

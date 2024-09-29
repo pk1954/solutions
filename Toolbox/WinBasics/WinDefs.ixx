@@ -27,6 +27,7 @@ export
     using DWORD_PTR             = DWORD_PTR;
     using FILETIME              = FILETIME;
     using HACCEL                = HACCEL;
+    using HANDLE                = HANDLE;
     using HBITMAP               = HBITMAP;
     using HDC                   = HDC;
     using HCURSOR               = HCURSOR;
@@ -63,6 +64,7 @@ export
     using TEXTMETRIC            = TEXTMETRIC;
     using TRACKMOUSEEVENT       = TRACKMOUSEEVENT;
     using UINT                  = UINT;
+    using WCHAR                 = WCHAR;
     using WNDCLASSEX            = WNDCLASSEX;
     using WORD                  = WORD;
     using WPARAM                = WPARAM;
@@ -85,9 +87,11 @@ export
     using ::CreateMenu;
     using ::CreatePopupMenu;
     using ::CreateThreadpoolTimer;
+    using ::CreateTimerQueueTimer;
     using ::CreateWindowExW;
     using ::DefWindowProcW;
     using ::DeleteObject;
+    using ::DeleteTimerQueueTimer;
     using ::DestroyMenu;
     using ::DestroyWindow;
     using ::DispatchMessageW;
@@ -171,6 +175,8 @@ export
 	long CrsrYpos(LPARAM const lParam) { return GET_Y_LPARAM(lParam); }
 
     long MakeLong(auto a, auto b) { return MAKELONG(a, b); }
+
+    HANDLE InvalidHandle() { return INVALID_HANDLE_VALUE; }
 
     void EditGetLine(HWND hwnd, int iLineNr, wstring &wstrDst) 
     { 

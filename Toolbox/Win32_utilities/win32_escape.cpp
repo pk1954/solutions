@@ -2,11 +2,9 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module Win32_Util;
+
+import WinBasics;
 
 // EscapeKeyPressed - Peek message queue of current thread for ESC key pressed
 //
@@ -16,7 +14,7 @@ module Win32_Util;
 bool ::EscapeKeyPressed()
 {
 	MSG msg;
-	if (PeekMessage(&msg, NULL, WM_KEYDOWN, WM_KEYDOWN, PM_REMOVE | PM_QS_INPUT) != 0)
+	if (PeekMessageW(&msg, nullptr, WM_KEYDOWN, WM_KEYDOWN, PM_REMOVE | PM_QS_INPUT) != 0)
 	{
 		if (msg.wParam == VK_ESCAPE)
 			return true;

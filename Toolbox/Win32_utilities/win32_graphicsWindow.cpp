@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module GraphicsWindow;
 
 import std;
+import WinBasics;
 import Direct2D;
 import Types;
 import BaseWindow;

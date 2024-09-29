@@ -2,11 +2,9 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module Win32_Controls;
+
+import WinBasics;
 
 export HWND CreateOwnerDrawButton(HWND const,                        int const, int const, int const, int const, INT_PTR const);
 export HWND CreateButton         (HWND const, wchar_t const * const, int const, int const, int const, int const, INT_PTR const, DWORD const = 0);

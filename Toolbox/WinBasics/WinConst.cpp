@@ -9,9 +9,11 @@ module;
 module WinBasics:WinConst;
 
 const UINT  PM_REMOVE_CONST           = PM_REMOVE;
+const UINT  PM_QS_INPUT_CONST         = PM_QS_INPUT;
 const UINT  CP_UTF8_CONST             = CP_UTF8;
 const UINT  FIXED_PITCH_CONST         = FIXED_PITCH;
 const UINT  GWL_STYLE_CONST           = GWL_STYLE;
+const UINT  DM_SETDEFID_CONST         = DM_SETDEFID;
 
 const DWORD WS_BORDER_CONST           = WS_BORDER;
 const DWORD WS_CHILD_CONST            = WS_CHILD;
@@ -79,7 +81,9 @@ const int   DC_BRUSH_CONST            = DC_BRUSH;
 const DWORD MK_SHIFT_CONST            = MK_SHIFT;
 const DWORD MK_CONTROL_CONST          = MK_CONTROL;
 const DWORD MK_LBUTTON_CONST          = MK_LBUTTON;
-                                     
+  
+const DWORD BM_SETSTYLE_CONST         = BM_SETSTYLE;
+
 const DWORD BS_PUSHBUTTON_CONST       = BS_PUSHBUTTON;
 const DWORD BS_DEFPUSHBUTTON_CONST    = BS_DEFPUSHBUTTON;
 const DWORD BS_AUTOCHECKBOX_CONST     = BS_AUTOCHECKBOX;
@@ -97,8 +101,9 @@ const DWORD DT_LEFT_CONST             = DT_LEFT;
 const DWORD EN_CHANGE_CONST           = EN_CHANGE;
 const DWORD EM_GETSEL_CONST           = EM_GETSEL;
 const DWORD EM_SETSEL_CONST           = EM_SETSEL;
-const DWORD   EM_GETLINECOUNT_CONST     = EM_GETLINECOUNT;
+const DWORD EM_GETLINECOUNT_CONST     = EM_GETLINECOUNT;
 
+const DWORD ES_LEFT_CONST             = ES_LEFT;
 const DWORD ES_RIGHT_CONST            = ES_RIGHT;
 const DWORD ES_MULTILINE_CONST        = ES_MULTILINE;  
 const DWORD ES_WANTRETURN_CONST       = ES_WANTRETURN; 

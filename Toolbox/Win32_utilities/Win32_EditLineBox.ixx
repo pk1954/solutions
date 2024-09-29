@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module EditLineBox;
 
 import std;
+import WinBasics;
 import StdDialogBox;
 
 using std::wstring;

@@ -2,13 +2,10 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h> 
-
 export module BaseScale;
 
 import std;
+import WinBasics;
 import Win32_Util_Resource;
 import BoolOp;
 import Types;
