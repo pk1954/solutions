@@ -48,5 +48,5 @@ void SelectionMenu::OnPaint()
 	PAINTSTRUCT   ps;
 	HDC           hDC { BeginPaint(&ps) };
 	FillBackground(hDC, m_colBackground);
-	(void)EndPaint(&ps);
+	EndPaint(&ps);
 }

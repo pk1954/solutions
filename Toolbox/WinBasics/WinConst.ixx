@@ -32,6 +32,8 @@ extern const DWORD WS_EX_STATICEDGE_CONST;
 extern const DWORD WS_VSCROLL_CONST;
 extern const DWORD WS_HSCROLL_CONST;
 
+extern const DWORD INFINITE_CONST;
+
 extern const DWORD SW_HIDE_CONST;
 extern const DWORD SW_SHOW_CONST;
 extern const DWORD SW_RESTORE_CONST;
@@ -68,6 +70,7 @@ extern const DWORD MB_OK_CONST;
 extern const DWORD MB_ICONWARNING_CONST;
 extern const DWORD MB_YESNOCANCEL_CONST;
 extern const DWORD MB_YESNO_CONST;
+extern const DWORD MB_SYSTEMMODAL_CONST;
 
 extern const DWORD MK_SHIFT_CONST;
 extern const DWORD MK_CONTROL_CONST;
@@ -213,6 +216,8 @@ export
     const DWORD   WS_VSCROLL          = WS_VSCROLL_CONST;
     const DWORD   WS_HSCROLL          = WS_HSCROLL_CONST;
                                       
+    const DWORD   INFINITE            = INFINITE_CONST;
+                                      
     const DWORD   SW_HIDE             = SW_HIDE_CONST;
     const DWORD   SW_SHOW             = SW_SHOW_CONST;
     const DWORD   SW_RESTORE          = SW_RESTORE_CONST;
@@ -249,6 +254,7 @@ export
     const DWORD   MB_ICONWARNING      = MB_ICONWARNING_CONST;
     const DWORD   MB_YESNOCANCEL      = MB_YESNOCANCEL_CONST;
     const DWORD   MB_YESNO            = MB_YESNO_CONST;
+    const DWORD   MB_SYSTEMMODAL      = MB_SYSTEMMODAL_CONST;
                                       
     const DWORD   MK_SHIFT            = MK_SHIFT_CONST;
     const DWORD   MK_CONTROL          = MK_CONTROL_CONST;

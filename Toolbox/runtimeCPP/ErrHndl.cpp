@@ -157,5 +157,5 @@ void ScriptErrorHandler::PrintErrorInfo
     if (!scanner.GetExpectedToken().empty())
         PrintNL(L"expected \"" + scanner.GetExpectedToken() + L"\"");
 
-    (void)m_pScriptTrace->flush();
+    m_pScriptTrace->flush();
 }

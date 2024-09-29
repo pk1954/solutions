@@ -244,7 +244,7 @@ void RootWindow::OnContextMenu(WPARAM const wParam, LPARAM const lParam) // crsr
 	// TODO
 	//if (m_bShowRefreshRateDlg && (m_upRefreshRate->GetRefreshRate() > 0ms))
 	//{
-	//	(void)AppendMenuW(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
+	//	AppendMenuW(hPopupMenu, MF_STRING, IDD_REFRESH_RATE_DIALOG, L"Window refresh rate");
 	//}
 
 	::SetForegroundWindow(GetWindowHandle());

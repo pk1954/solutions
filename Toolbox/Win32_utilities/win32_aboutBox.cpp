@@ -25,6 +25,6 @@ void AboutBox::OnInitDlg(HWND const hDlg, WPARAM const wParam, LPARAM const lPar
 
 bool AboutBox::OnOK(HWND const hDlg)
 {
-    (void)EndDialog(hDlg, 0);
+    EndDialog(hDlg, 0);
     return true;
 }

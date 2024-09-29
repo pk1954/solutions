@@ -118,7 +118,7 @@ void DescriptionWindow::Start(HWND const hwndParent)
         nullptr
     );
 
-    (void)SetWindowSubclass(m_hwndEdit, OwnerDrawEditBox, 0, (DWORD_PTR)this) ;
+    SetWindowSubclass(m_hwndEdit, OwnerDrawEditBox, 0, (DWORD_PTR)this) ;
 
     Preferences::AddWrapper(make_unique<WrapDescWinFontSize>(L"DescWinFontSize", *this));
     fontSize();

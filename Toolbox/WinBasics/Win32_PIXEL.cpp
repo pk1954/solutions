@@ -36,7 +36,7 @@ wostream & operator<< (wostream & out, RECT const & rect)
 PixelRect CalcWindowRect(PixelRect pixRect, DWORD const dwStyle)
 {
 	RECT rect = ::PixelRect2RECT(pixRect);
-	(void)AdjustWindowRect(&rect, dwStyle, false);	
+	AdjustWindowRect(&rect, dwStyle, false);	
 	pixRect = ::RECT2PixelRect(rect);
 	return pixRect;
 }
@@ -48,14 +48,14 @@ void AdjustRight(HWND const hwnd, PIXEL const pixYpos)
 	PIXEL const pixWidth       = GetWindowWidth(hwnd);
 	PIXEL const pixHeight      = GetWindowHeight(hwnd);
 	MoveWindow(hwnd, (pixWidthParent - pixWidth), pixYpos, pixWidth, pixHeight, true);
-	(void)BringWindowToTop(hwnd);
+	BringWindowToTop(hwnd);
 }
 
 void AdjustLeft(HWND const hwnd, PIXEL const pixYpos)
 {
 	PixelRectSize pnt = GetWindowSize(hwnd);
 	MoveWindow(hwnd, 0_PIXEL, pixYpos, pnt.GetX(), pnt.GetY(), true);
-	(void)BringWindowToTop(hwnd);
+	BringWindowToTop(hwnd);
 }
 
 bool MoveWindowAbsolute  // move window to given screen coordinates and set size

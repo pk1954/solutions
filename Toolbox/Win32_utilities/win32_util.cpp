@@ -92,7 +92,7 @@ void MakeLayered(HWND const hwnd, bool const bMode, COLORREF const crKey, UINT c
     Assert(bRes);
 }
 
-DWORD GetNrOfCPUs(void)
+DWORD GetNrOfCPUs()
 {
     SYSTEM_INFO siSysInfo;
     GetSystemInfo(&siSysInfo); 

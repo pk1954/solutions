@@ -2,13 +2,10 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module FatalErrorMB;
 
 import std;
+import WinBasics;
 import FatalError;
 
 using std::wstring;
@@ -24,7 +21,7 @@ public:
 		wBuffer << L"Error number:  " << errnr << endl;
 		wBuffer << errText << endl;
 		wBuffer << L"Press OK to exit application" << endl;
-		MessageBox(nullptr, wBuffer.str().c_str(), L"Fatal error", MB_OK|MB_SYSTEMMODAL);
+		MessageBoxW(nullptr, wBuffer.str().c_str(), L"Fatal error", MB_OK|MB_SYSTEMMODAL);
 		FatalError::Happened(errnr, errText);
 	}
 };

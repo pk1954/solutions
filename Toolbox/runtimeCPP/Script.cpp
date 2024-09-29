@@ -182,7 +182,7 @@ unsigned long Script::numeric
 
 //  ScrReadFloat: Try to read a float from open test script
 
-double Script::ScrReadFloat(void)
+double Script::ScrReadFloat()
 { 
     bool   fNeg { false };
     double dRes { 0.0 };
@@ -272,7 +272,7 @@ double Script::ScrReadFloat(void)
 
 // ScrReadUlong: Try to read an unsigned long from open test script
    
-unsigned long Script::ScrReadUlong(void)
+unsigned long Script::ScrReadUlong()
 { 
     bool                fNeg    { false };
     unsigned long const ulValue { numeric(L"unsigned long", ULONG_MAX, &fNeg) };
@@ -281,7 +281,7 @@ unsigned long Script::ScrReadUlong(void)
 
 //  ScrReadLong: Try to read a long from open test script
    
-long Script::ScrReadLong(void)
+long Script::ScrReadLong()
 { 
     bool fNeg { true };
     auto lRes { static_cast<long>(numeric(L"long", LONG_MAX, &fNeg)) };
@@ -294,7 +294,7 @@ long Script::ScrReadLong(void)
 
 //  ScrReadInt: Try to read an integer from open test script
    
-int Script::ScrReadInt(void)
+int Script::ScrReadInt()
 { 
    bool fNeg { true };
    auto iRes { static_cast<int>(numeric(L"int", INT_MAX, &fNeg)) };
@@ -307,7 +307,7 @@ int Script::ScrReadInt(void)
 
 // ScrReadUint: Try to read an unsigned integer from open test script
    
-unsigned int Script::ScrReadUint(void)
+unsigned int Script::ScrReadUint()
 { 
    bool       fNeg  { false };
    auto const uiRes { static_cast<unsigned int>(numeric(L"unsigned int", UINT_MAX, &fNeg)) };
@@ -331,7 +331,7 @@ ScriptErrorHandler::ScriptException Script::ScrReadUint(unsigned int* pui)
 
 //  ScrReadShort: Try to read a short from open test script
    
-short Script::ScrReadShort(void)
+short Script::ScrReadShort()
 { 
     bool fNeg { true };
     auto sRes { static_cast<short>(numeric(L"short", SHRT_MAX, &fNeg)) };
@@ -344,7 +344,7 @@ short Script::ScrReadShort(void)
 
 //  ScrReadUshort: Try to read an unsigned short from open test script
    
-unsigned short Script::ScrReadUshort(void)
+unsigned short Script::ScrReadUshort()
 { 
     bool       fNeg  { false };
     auto const usRes { static_cast<unsigned short>(numeric(L"unsigned short", USHRT_MAX, &fNeg)) };
@@ -353,7 +353,7 @@ unsigned short Script::ScrReadUshort(void)
 
 //  ScrReadUchar: Try to read an unsigned character from open test script
    
-unsigned char Script::ScrReadUchar(void)
+unsigned char Script::ScrReadUchar()
 { 
     bool       fNeg   { false };
     auto const uchRes { static_cast<unsigned char>(numeric(L"unsigned char", UCHAR_MAX, &fNeg)) };
@@ -362,7 +362,7 @@ unsigned char Script::ScrReadUchar(void)
 
 // ScrReadChar: Try to read a character from open test script
    
-wchar_t Script::ScrReadChar(void)
+wchar_t Script::ScrReadChar()
 { 
     bool    fNeg   { false };
     wchar_t wchRes { L'\0' }; 
@@ -408,7 +408,7 @@ wchar_t Script::ScrReadChar(void)
 //                  Return code is a pointer to a string in an internal buffer 
 //                  This pointer is valid until next call of a Scr.. function
    
-wstring Script::ScrReadString(void)
+wstring Script::ScrReadString()
 { 
    m_scanner.SetExpectedToken(L"string");
 

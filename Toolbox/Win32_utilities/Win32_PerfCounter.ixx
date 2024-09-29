@@ -2,13 +2,10 @@
 //
 // win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module PerfCounter;
 
 import std;
+import WinBasics;
 import Types;
 import SaveCast;
 
@@ -23,7 +20,7 @@ public:
 	static void Initialize()
 	{                                // frequency is constant for given CPU
         LARGE_INTEGER value;                       
-        (void)QueryPerformanceFrequency(&value);
+        QueryPerformanceFrequency(&value);
         m_frequency  = Hertz(Cast2UnsignedLong(value.QuadPart));
 		m_fFrequency = fHertz(static_cast<float>(m_frequency.GetValue()));
     }
@@ -54,20 +51,20 @@ public:
 	static Ticks Read()
 	{
 		LARGE_INTEGER value;
-		(void)QueryPerformanceCounter(&value);
+		QueryPerformanceCounter(&value);
 		return Ticks(value.QuadPart);
 	}
 
 	static Ticks MicrosecondsToTicks(microseconds const time)
 	{
-		Assert(time.count() < LLONG_MAX / m_frequency.GetValue());
+	//	Assert(time.count() < LLONG_MAX / m_frequency.GetValue());
 		auto ullTime = static_cast<unsigned long long>(time.count());
 		return Ticks((ullTime * m_frequency.GetValue()) / MICROSECONDS_TO_SECONDS); 
 	}
 
 	static microseconds TicksToMicroseconds(Ticks const ticks)
 	{
-		Assert(ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS);
+	//	Assert(ticks.GetValue() < LLONG_MAX / MICROSECONDS_TO_SECONDS);
 		auto ullTicks = static_cast<unsigned long long>(ticks.GetValue());
 		microseconds result
 		(                                                 

@@ -225,7 +225,7 @@ public:
             {                           
                 do                                                  // skip remaining monitor descriptions in m_script
                 {
-                    (void)ScrReadMonitorInfo(script);
+                    ScrReadMonitorInfo(script);
                 } while (script.ScrReadInt() != 0);
                 monStruct.m_bCheckResult = false;                   // this is not the right configuration
             }

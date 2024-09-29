@@ -91,7 +91,7 @@ void ScanPanel::OnPaint()
 	PAINTSTRUCT   ps;
 	HDC           hDC { BeginPaint(&ps) };
 	FillBackground(hDC, D2D1::ColorF::Green); 
-	(void)EndPaint(&ps);
+	EndPaint(&ps);
 }
 
 bool ScanPanel::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

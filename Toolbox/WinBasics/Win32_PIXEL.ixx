@@ -93,7 +93,7 @@ export inline bool MoveWindow(HWND const hwnd, PixelPoint const &pos)
 export inline RECT GetClRect(HWND const hwnd) // left / top always 0
 {
     RECT rect;
-    (void)GetClientRect(hwnd, &rect);
+    GetClientRect(hwnd, &rect);
     return rect;
 }
 
@@ -155,21 +155,21 @@ export inline bool IsInClientRect(HWND const hwnd, PixelRect const & pixRect)  /
 export inline PixelPoint Client2Screen(HWND const hwnd, PixelPoint const & pixPoint)
 {
     POINT pnt { PixelPoint2POINT(pixPoint) };
-    (void)ClientToScreen(hwnd, &pnt);
+    ClientToScreen(hwnd, &pnt);
     return POINT2PixelPoint(pnt);
 }
 
 export inline PixelPoint Screen2Client(HWND const hwnd, PixelPoint const & pixPoint)
 {
     POINT pnt { PixelPoint2POINT(pixPoint) };
-    (void)ScreenToClient(hwnd, &pnt);
+    ScreenToClient(hwnd, &pnt);
     return POINT2PixelPoint(pnt);
 }
 
 export inline PixelPoint GetRelativeCrsrPosition(HWND const hwnd)   // Delivers cursor position relative to client area 
 {
     POINT pnt;
-    (void)GetCursorPos(&pnt);
+    GetCursorPos(&pnt);
     ScreenToClient(hwnd, &pnt);
     return POINT2PixelPoint(pnt);
 }
@@ -257,7 +257,7 @@ export inline bool CrsrInClientRect(HWND const hwnd)  // Is cursor position in c
 
 export inline void FastFill(HDC const hDC, RECT const & rect)
 {
-    (void)ExtTextOut(hDC, 0, 0, ETO_OPAQUE, & rect, L"", 0, 0);
+    ExtTextOut(hDC, 0, 0, ETO_OPAQUE, & rect, L"", 0, 0);
 }
 
 export inline void FastFill(HDC const hDC, PixelRect const & pixRect)

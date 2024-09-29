@@ -2,13 +2,10 @@
 //
 // Toolbox\win32_utilities
 
-module;
-
-#include "Windows.h"
-
 export module Win32_Event;
 
 import EventInterface;
+import WinBasics;
 
 export class Win32_Event : public EventInterface
 {
@@ -16,7 +13,7 @@ public:
 	Win32_Event()
 	{ 
 		m_eventHandle =
-			CreateEvent
+			CreateEventW
 			(
 				nullptr, // no security attributes
 				true,    // manual reset event 

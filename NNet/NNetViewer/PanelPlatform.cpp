@@ -170,7 +170,7 @@ void PanelPlatform::OnPaint()
 	PAINTSTRUCT   ps;
 	HDC           hDC { BeginPaint(&ps) };
 	FillBackground(hDC, D2D1::ColorF::DarkGray); 
-	(void)EndPaint(&ps);
+	EndPaint(&ps);
 }
 
 bool PanelPlatform::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)

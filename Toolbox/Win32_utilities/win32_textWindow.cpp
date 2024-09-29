@@ -69,7 +69,7 @@ void TextWindow::OnPaint()
 		m_hDC_Memory, 
 		0, 0, SRCCOPY
 	);
-	(void)EndPaint(&ps);
+	EndPaint(&ps);
 }
 
 LPARAM TextWindow::AddContextMenuEntries(HMENU const hPopupMenu)

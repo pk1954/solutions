@@ -30,10 +30,12 @@ const DWORD WS_GROUP_CONST            = WS_GROUP;
 const DWORD WS_TABSTOP_CONST          = WS_TABSTOP;
 const DWORD WS_SYSMENU_CONST          = WS_SYSMENU;
 const DWORD WS_EX_TOPMOST_CONST       = WS_EX_TOPMOST;
-const DWORD WS_EX_STATICEDGE_CONST    = WS_EX_STATICEDGE_CONST;
+const DWORD WS_EX_STATICEDGE_CONST    = WS_EX_STATICEDGE;
 const DWORD WS_VSCROLL_CONST          = WS_VSCROLL;
 const DWORD WS_HSCROLL_CONST          = WS_HSCROLL;
 
+const DWORD INFINITE_CONST            = INFINITE;
+                                      
 const DWORD SW_HIDE_CONST             = SW_HIDE;
 const DWORD SW_SHOW_CONST             = SW_SHOW;
 const DWORD SW_RESTORE_CONST          = SW_RESTORE;
@@ -70,6 +72,7 @@ const DWORD MB_OK_CONST               = MB_OK;
 const DWORD MB_ICONWARNING_CONST      = MB_ICONWARNING;
 const DWORD MB_YESNOCANCEL_CONST      = MB_YESNOCANCEL;
 const DWORD MB_YESNO_CONST            = MB_YESNO;
+const DWORD MB_SYSTEMMODAL_CONST      = MB_SYSTEMMODAL;
                                      
 const int   IDYES_CONST               = IDYES; 
 const int   IDNO_CONST                = IDNO; 

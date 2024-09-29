@@ -22,6 +22,7 @@ export
     using BITMAPFILEHEADER      = BITMAPFILEHEADER;
     using BITMAPINFOHEADER      = BITMAPINFOHEADER;
     using CHOOSECOLOR           = CHOOSECOLOR;
+    using COLORREF              = COLORREF;
     using DRAWITEMSTRUCT        = DRAWITEMSTRUCT;
     using DWORD                 = DWORD;
     using DWORD_PTR             = DWORD_PTR;
@@ -38,10 +39,10 @@ export
     using HGDIOBJ               = HGDIOBJ;
     using HWND                  = HWND;
     using INT_PTR               = INT_PTR;
+    using LARGE_INTEGER         = LARGE_INTEGER;
     using LRESULT               = LRESULT;
     using LPARAM                = LPARAM;
     using LPACCEL               = LPACCEL;
-    using COLORREF              = COLORREF;
     using LPCWSTR               = LPCWSTR;
     using LPCSTR                = LPCSTR;
     using LPWSTR                = LPWSTR;
@@ -77,12 +78,14 @@ export
     using ::BringWindowToTop;
     using ::CheckRadioButton;
     using ::ChooseColorW;
+    using ::CloseHandle;
     using ::CloseThreadpoolTimer;
     using ::CreateAcceleratorTableW;
     using ::CreateCompatibleBitmap;
     using ::CreateCompatibleDC;
     using ::CreateDialogIndirectParamW;
     using ::CreateDIBSection;
+    using ::CreateEventW;
     using ::CreateFontW;
     using ::CreateMenu;
     using ::CreatePopupMenu;
@@ -136,11 +139,14 @@ export
     using ::PeekMessageW;
     using ::PostMessageW;
     using ::PostQuitMessage;
+    using ::QueryPerformanceCounter;
+    using ::QueryPerformanceFrequency;
     using ::RegisterClassEx;
     using ::ReleaseCapture;
     using ::ReleaseDC;
     using ::ReleaseSRWLockExclusive;
     using ::ReleaseSRWLockShared;
+    using ::ResetEvent;
     using ::SelectObject;
     using ::SendDlgItemMessageW;
     using ::SendMessageW;
@@ -149,6 +155,8 @@ export
     using ::SetCapture;
     using ::SetConsoleOutputCP;
     using ::SetCursor;
+    using ::ResetEvent;
+    using ::SetEvent;
     using ::SetFocus;
     using ::SetForegroundWindow;
     using ::SetLastError;
@@ -165,6 +173,7 @@ export
     using ::TranslateAcceleratorW;
     using ::TranslateMessage;
     using ::TryAcquireSRWLockExclusive;
+    using ::WaitForSingleObject;
     using ::WaitForThreadpoolTimerCallbacks;
     using ::UpdateWindow;
 
