@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module BaseRefreshRate;
 
 import std;
+import WinBasics;
 import Win32_Util;
 import TimerQueueTimer;
 
@@ -41,5 +38,5 @@ private:
 	void deleteTimer();
 	void trigger(bool const);
 
-	static void CALLBACK TimerProc(void * const, bool const);
+	static void __stdcall TimerProc(void * const, bool const);
 };

@@ -27,6 +27,8 @@ extern const DWORD WS_TABSTOP_CONST;
 extern const DWORD WS_SYSMENU_CONST;
 extern const DWORD WS_EX_TOPMOST_CONST;
 extern const DWORD WS_EX_STATICEDGE_CONST;
+extern const DWORD WS_VSCROLL_CONST;
+extern const DWORD WS_HSCROLL_CONST;
 
 extern const DWORD SW_HIDE_CONST;
 extern const DWORD SW_SHOW_CONST;
@@ -87,7 +89,16 @@ extern const DWORD DS_SHELLFONT_CONST;
 
 extern const DWORD DT_LEFT_CONST;
 
+extern const DWORD EN_CHANGE_CONST;
+extern const DWORD EM_GETSEL_CONST;
+extern const DWORD EM_SETSEL_CONST;
+extern const DWORD EM_GETLINECOUNT_CONST;
+
 extern const DWORD ES_RIGHT_CONST;
+extern const DWORD ES_MULTILINE_CONST;  
+extern const DWORD ES_WANTRETURN_CONST; 
+extern const DWORD ES_AUTOHSCROLL_CONST;
+extern const DWORD ES_AUTOVSCROLL_CONST;
 
 extern const DWORD TA_CENTER_CONST;
 extern const DWORD TA_LEFT_CONST;
@@ -131,6 +142,7 @@ export
 
     const UINT    WM_APP              = 0x8000;
     const UINT    WM_CHAR             = 0x0102;
+    const UINT    WM_CLEAR            = 0x0303;
     const UINT    WM_CLOSE            = 0x0010;
     const UINT    WM_COMMAND          = 0x0111;
     const UINT    WM_CTLCOLOREDIT     = 0x0133;
@@ -190,6 +202,8 @@ export
     const DWORD   WS_SYSMENU          = WS_SYSMENU_CONST;
     const DWORD   WS_EX_TOPMOST       = WS_EX_TOPMOST_CONST;
     const DWORD   WS_EX_STATICEDGE    = WS_EX_STATICEDGE_CONST;
+    const DWORD   WS_VSCROLL          = WS_VSCROLL_CONST;
+    const DWORD   WS_HSCROLL          = WS_HSCROLL_CONST;
                                       
     const DWORD   SW_HIDE             = SW_HIDE_CONST;
     const DWORD   SW_SHOW             = SW_SHOW_CONST;
@@ -250,7 +264,16 @@ export
                   
     const DWORD   DT_LEFT             = DT_LEFT_CONST;
 
+    const DWORD   EN_CHANGE           = EN_CHANGE_CONST;
+    const DWORD   EM_GETSEL           = EM_GETSEL_CONST;
+    const DWORD   EM_SETSEL           = EM_SETSEL_CONST;
+    const DWORD   EM_GETLINECOUNT     = EM_GETLINECOUNT_CONST;
+
     const DWORD   ES_RIGHT            = ES_RIGHT_CONST;
+    const DWORD   ES_MULTILINE        = ES_MULTILINE_CONST;  
+    const DWORD   ES_WANTRETURN       = ES_WANTRETURN_CONST; 
+    const DWORD   ES_AUTOHSCROLL      = ES_AUTOHSCROLL_CONST;
+    const DWORD   ES_AUTOVSCROLL      = ES_AUTOVSCROLL_CONST;
                   
     const DWORD   TA_CENTER           = TA_CENTER_CONST;
     const DWORD   TA_LEFT             = TA_LEFT_CONST;

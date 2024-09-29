@@ -2,11 +2,6 @@
 //
 // win32_utilities
 
-module;
-
-#include <Windows.h>
-#include <Windowsx.h>
-
 module NNetWin32:DescriptionWindow;
 
 import std;
@@ -15,7 +10,7 @@ import WinBasics;
 import Commands;
 import IoUtil;
 
-using std::array;
+using std::abs;
 using std::bit_cast;
 using std::wstring;
 using std::wostream;
@@ -64,7 +59,7 @@ static LRESULT __stdcall OwnerDrawEditBox
     switch (uMsg)
     {
     case WM_MOUSEWHEEL:
-        if (LOWORD(wParam) & MK_CONTROL)
+        if (LoWord(wParam) & MK_CONTROL)
         {
             pDescWin->OnMouseWheel(wParam, lParam);
             return 1;
@@ -106,7 +101,7 @@ void DescriptionWindow::Start(HWND const hwndParent)
         nullptr
     );
 
-    m_hwndEdit = CreateWindowEx
+    m_hwndEdit = CreateWindowExW
     (
         0,
         L"EDIT",                 // predefined class 
@@ -135,7 +130,7 @@ void DescriptionWindow::fontSize()
     if (m_hFont)
         DeleteObject(m_hFont);
 
-    m_hFont = CreateFontA
+    m_hFont = CreateFontW
     (
         m_iFontSize,  //[in] int    cHeight,
         0,            //[in] int    cWidth,
@@ -153,39 +148,29 @@ void DescriptionWindow::fontSize()
         nullptr       //[in] LPCSTR pszFaceName
     );
 
-    ::SendMessage(m_hwndEdit, WM_SETFONT, (WPARAM)m_hFont, true);
+    SendMessageW(m_hwndEdit, WM_SETFONT, (WPARAM)m_hFont, true);
 }
 
 void DescriptionWindow::ClearDescription()
 {
-    ::Edit_SetText(m_hwndEdit, L"");
+    ::SetWindowTextW(m_hwndEdit, L"");
 }
 
 void DescriptionWindow::SetDescription(wstring const & wstrDesc)
 {
-    ::Edit_SetText(m_hwndEdit, wstrDesc.c_str());
+    ::SetWindowTextW(m_hwndEdit, wstrDesc.c_str());
 }
 
 int DescriptionWindow::GetLineCount() const
 {
-    return Edit_GetLineCount(m_hwndEdit);
+    return Cast2Int(SendMessageW(m_hwndEdit, EM_GETLINECOUNT, 0, 0));
 }
 
-bool DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring & wstrDst) const
+bool DescriptionWindow::GetDescriptionLine(int const iLineNr, wstring &wstrDst) const
 {
     if (iLineNr < GetLineCount())
     {
-        static const int BUFLEN { 1024 };
-        alignas(int) array <wchar_t, BUFLEN> buffer;
-        int iCharsRead { Edit_GetLine(m_hwndEdit, iLineNr, &buffer, BUFLEN) };
-        wstrDst.clear();
-        for (int i = 0; i < iCharsRead; ++i)  // copy line to wstrDst 
-        {                                     // removing CR and LF characters
-            wchar_t c { buffer[i] };
-            if ((c != L'\r') &&(c != L'\n'))
-                wstrDst += c;
-        }
-            
+        EditGetLine(m_hwndEdit, iLineNr, wstrDst);
         return true;
     }
     return false;
@@ -195,7 +180,7 @@ bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixe
 {
     // control notifications
 
-    if ((LOWORD(wParam) == ID_EDIT_CTRL) && (HIWORD(wParam) == EN_CHANGE))
+    if ((LoWord(wParam) == ID_EDIT_CTRL) && (HiWord(wParam) == EN_CHANGE))
     {
         m_bDirty = true;
         return true; 
@@ -203,10 +188,10 @@ bool DescriptionWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, Pixe
 
     // other commands
 
-    switch (int const wmId = LOWORD(wParam)) 
+    switch (int const wmId = LoWord(wParam)) 
     { 
     case IDM_SELECT_ALL:
-        Edit_SetSel(m_hwndEdit, 0, -1); 
+        SendMessageW(m_hwndEdit, EM_SETSEL, 0, -1); 
         return true; 
 
     case IDM_DELETE: 
@@ -225,14 +210,14 @@ bool DescriptionWindow::delChar()
 {
     DWORD dwSelStart { 0L };
     DWORD dwSelEnd   { 0L };
-    ::SendMessage(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
+    SendMessageW(m_hwndEdit, EM_GETSEL, (WPARAM)&dwSelStart, (LPARAM)&dwSelEnd);
     if (dwSelStart == dwSelEnd)
     {
-        if (dwSelStart == ::Edit_GetTextLength(m_hwndEdit))  // if cursor is at end
+        if (dwSelStart == GetWindowTextLengthW(m_hwndEdit))  // if cursor is at end
             return false;                                     // nothing to delete
-        Edit_SetSel(m_hwndEdit, dwSelStart, dwSelStart + 1); 
+        SendMessageW(m_hwndEdit, EM_SETSEL, dwSelStart, dwSelStart + 1); 
     }
-    ::SendMessage(m_hwndEdit, WM_CLEAR, 0, 0); 
+    SendMessageW(m_hwndEdit, WM_CLEAR, 0, 0); 
     return true;
 }
 

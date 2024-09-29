@@ -2,13 +2,10 @@
 //
 // Toolbox\Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module BaseRefreshRate;
 
 import std;
+import WinBasics;
 import Win32_Util_Resource;
 import Win32_Util;
 import EditLineBox;
@@ -30,7 +27,7 @@ void BaseRefreshRate::RefreshRateDialog(HWND const hwndParent)
 		if (m_fValue < MIN_REFRESH_RATE)
 		{
 			wstring text { L"Minimum refresh rate is " + to_wstring(MIN_REFRESH_RATE) + L" ms" };
-			MessageBox(nullptr, text.c_str(), nullptr, MB_OK);
+			MessageBoxW(nullptr, text.c_str(), nullptr, MB_OK);
 			m_fValue = MIN_REFRESH_RATE;
 		}
 		SetRefreshRate(static_cast<milliseconds>(static_cast<long long>(m_fValue)));

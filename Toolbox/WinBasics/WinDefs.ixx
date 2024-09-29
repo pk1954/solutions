@@ -12,6 +12,7 @@ export module WinBasics:WinDefs;
 import std;
 
 using std::wstring;
+using std::array;
 
 export 
 {
@@ -86,6 +87,7 @@ export
     using ::CreateThreadpoolTimer;
     using ::CreateWindowExW;
     using ::DefWindowProcW;
+    using ::DeleteObject;
     using ::DestroyMenu;
     using ::DestroyWindow;
     using ::DispatchMessageW;
@@ -122,6 +124,7 @@ export
     using ::IsZoomed;
     using ::LoadCursorW;
     using ::MapWindowPoints;
+    using ::MessageBeep;
     using ::MessageBoxW;
     using ::MoveWindow;
     using ::MulDiv;
@@ -168,6 +171,20 @@ export
 	long CrsrYpos(LPARAM const lParam) { return GET_Y_LPARAM(lParam); }
 
     long MakeLong(auto a, auto b) { return MAKELONG(a, b); }
+
+    void EditGetLine(HWND hwnd, int iLineNr, wstring &wstrDst) 
+    { 
+        static const int BUFLEN { 1024 };
+        alignas(int) array <wchar_t, BUFLEN> buffer;
+        int iCharsRead { Edit_GetLine(hwnd, iLineNr, &buffer, BUFLEN) };
+        wstrDst.clear();
+        for (int i = 0; i < iCharsRead; ++i)  // copy line to wstrDst 
+        {                                     // removing CR and LF characters
+            wchar_t c { buffer[i] };
+            if ((c != L'\r') &&(c != L'\n'))
+                wstrDst += c;
+        }
+    }
 
     int MouseWheelDelta(WPARAM const wParam) 
     { 
