@@ -115,10 +115,8 @@ public:
 	void SetDlgText(int const iItem, wchar_t const* const wstrText) const {	::SetText(GetDlgItem(iItem), wstrText);	}
 
 	short       GetTrackBarPos       (int    const idTbar) const { return Cast2Short(SendDlgItemMessage(idTbar, TBM_GETPOS, 0, 0)); }
-	PixelPoint  GetCrsrPosFromLparam (LPARAM const lParam) const { return PixelPoint { CrsrXpos(lParam), CrsrYpos(lParam) }; }
+	PixelPoint  GetCrsrPosFromLparam (LPARAM const lParam) const { return PixelPoint(PIXEL(CrsrXpos(lParam)), PIXEL(CrsrYpos(lParam))); }
 	fPixelPoint GetCrsrPosFromLparamF(LPARAM const lParam) const { return Convert2fPixelPoint(GetCrsrPosFromLparam(lParam)); }
-	PIXEL       CrsrXpos             (LPARAM const lParam) const { return PIXEL(GetXlparam(lParam)); }
-	PIXEL       CrsrYpos             (LPARAM const lParam) const { return PIXEL(GetYlparam(lParam)); }
 
 	virtual LPARAM AddContextMenuEntries(HMENU const) { return 0L; }
 

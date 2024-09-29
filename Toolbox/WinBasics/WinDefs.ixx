@@ -5,6 +5,7 @@
 module;
 
 #include <Windows.h>
+#include <Windowsx.h>
 
 export module WinBasics:WinDefs;
 
@@ -154,15 +155,15 @@ export
     using ::WaitForThreadpoolTimerCallbacks;
     using ::UpdateWindow;
 
-    constexpr WORD LoWord(DWORD_PTR const lp) { return static_cast<WORD>( lp        & 0xffff); }
-    constexpr WORD HiWord(DWORD_PTR const lp) { return static_cast<WORD>((lp >> 16) & 0xffff); }
+    WORD LoWord(DWORD_PTR const lp) { return static_cast<WORD>( lp        & 0xffff); }
+    WORD HiWord(DWORD_PTR const lp) { return static_cast<WORD>((lp >> 16) & 0xffff); }
 
-    constexpr WORD GetXlparam(LPARAM const lp) { return LoWord(lp); }
-    constexpr WORD GetYlparam(LPARAM const lp) { return HiWord(lp); }
+    long CrsrXpos(LPARAM const lParam) { return GET_X_LPARAM(lParam); }
+	long CrsrYpos(LPARAM const lParam) { return GET_Y_LPARAM(lParam); }
 
-    constexpr long MakeLong(auto a, auto b) { return MAKELONG(a, b); }
+    long MakeLong(auto a, auto b) { return MAKELONG(a, b); }
 
-    constexpr int MouseWheelDelta(WPARAM const wParam) 
+    int MouseWheelDelta(WPARAM const wParam) 
     { 
         return GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA; 
     };
