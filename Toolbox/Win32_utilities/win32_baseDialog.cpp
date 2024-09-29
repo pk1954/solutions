@@ -2,13 +2,10 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 module BaseDialog;
 
 import std;
+import WinBasics;
 import Win32_Util;
 import RootWindow;
 import DialogTemplate;
@@ -23,7 +20,7 @@ HWND BaseDialog::StartBaseDialog
 	VisCrit const & visibilityCriterion
 )
 {
-    HWND hwnd = CreateDialogIndirectParam
+    HWND hwnd = CreateDialogIndirectParamW
     (
         nullptr,
         (LPCDLGTEMPLATEW) & EMPTY_TEMPLATE,
@@ -46,7 +43,7 @@ bool BaseDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM const 
 	return RootWindow::CommonMessageHandler(message, wParam, lParam);
 }
 
-static INT_PTR CALLBACK BaseDialogProc
+static INT_PTR __stdcall BaseDialogProc
 (
     HWND   const hDlg,
     UINT   const message, 

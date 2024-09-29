@@ -2,15 +2,12 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module BaseDialog;
 
+import WinBasics;
 import GraphicsWindow;
 
-static INT_PTR CALLBACK BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
+static INT_PTR __stdcall BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 
 export class BaseDialog: public GraphicsWindow
 {
@@ -22,5 +19,5 @@ public:
 
 private:
 
-	friend static INT_PTR CALLBACK BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
+	friend static INT_PTR __stdcall BaseDialogProc(HWND const, UINT const, WPARAM const, LPARAM const);
 };

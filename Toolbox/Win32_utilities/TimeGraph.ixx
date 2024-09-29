@@ -2,10 +2,6 @@
 //
 // Win32_utilities
 
-module;
-
-#include <Windows.h>
-
 export module TimeGraph;
 
 import std;

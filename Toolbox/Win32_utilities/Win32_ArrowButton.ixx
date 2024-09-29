@@ -2,14 +2,11 @@
 //
 // NNetWindows
 
-module;
-
-#include <Windows.h>
-
 export module ArrowButton;
 
 import Color;
 import Direct2D;
+import WinBasics;
 import Win32_Controls;
 import GraphicsWindow;
 

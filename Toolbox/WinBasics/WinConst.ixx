@@ -141,6 +141,7 @@ export
     const UINT    WM_DESTROY          = 0x0002;
     const UINT    WM_DRAWITEM         = 0x002B;
     const UINT    WM_HSCROLL          = 0x0114;
+    const UINT    WM_INITDIALOG       = 0x0110;
     const UINT    WM_LBUTTONDBLCLK    = 0x0203;
     const UINT    WM_LBUTTONDOWN      = 0x0201;
     const UINT    WM_LBUTTONUP        = 0x0202;

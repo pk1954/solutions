@@ -44,9 +44,11 @@ export
     using LPCSTR                = LPCSTR;
     using LPWSTR                = LPWSTR;
     using LPCTSTR               = LPCTSTR;
+    using LPCTSTR               = LPCTSTR;
     using LPDWORD               = LPDWORD;
-    using LPPAINTSTRUCT         = LPPAINTSTRUCT;
+    using LPCDLGTEMPLATEW       = LPCDLGTEMPLATEW;
     using LPCREATESTRUCT        = LPCREATESTRUCT;
+    using LPPAINTSTRUCT         = LPPAINTSTRUCT;
     using LPPOINT               = LPPOINT;
     using LPRECT                = LPRECT;
     using LONG_PTR              = LONG_PTR;
@@ -76,6 +78,7 @@ export
     using ::CreateAcceleratorTableW;
     using ::CreateCompatibleBitmap;
     using ::CreateCompatibleDC;
+    using ::CreateDialogIndirectParamW;
     using ::CreateDIBSection;
     using ::CreateFontW;
     using ::CreateMenu;
