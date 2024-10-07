@@ -16,7 +16,7 @@ using ROUND = array<Move, NR_OF_PLAYERS>;
 export class MatchProtocol
 {
 public:
-    void Initialize()
+    void Reset()
     {
         m_round = 0;
     }

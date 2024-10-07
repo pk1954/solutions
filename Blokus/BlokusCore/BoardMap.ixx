@@ -16,10 +16,10 @@ public:
 
     BoardMap()
     {
-        Initialize();
+        Reset();
     }
 
-    void Initialize()
+    void Reset()
     {
     	for (int y = 0; y < BOARD_SIZE; ++y)
     	for (int x = 0; x < BOARD_SIZE; ++x)

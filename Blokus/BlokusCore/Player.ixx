@@ -29,11 +29,13 @@ using std::wstring;
 export class Player
 {
 public:
-    void Initialize(PlayerType const& type, Strategy * const);
+    void Reset(PlayerType const& type, Strategy * const);
+
+    void ResetTimer() { m_timer.Reset(); }
 
     bool IsFirstMove() const { return m_bFirstMove; }
 
-    wstring const& GetName() const { return m_pPlayerType->m_wstrName; }
+    wstring const &GetName() const { return m_pPlayerType->m_wstrName; }
 
     Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
@@ -43,14 +45,7 @@ public:
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
 
-    Move SelectMove(RuleServerInterface const &rs)
-    {
-		m_timer.BeforeAction();
-        Move moveSelected { m_pStrategy->SelectMove(rs) };
-		m_timer.AfterAction();
-        return moveSelected;
-    }
-
+    Move SelectMove(RuleServerInterface const&);
     void PerformMove(Move const&);
 
     void Apply2AllPieces(auto const& func)
@@ -88,29 +83,35 @@ public:
         m_contactPntsOnBoard.push_back(pos);
     }
 
+    void AddInitialContactPnt()
+    {
+        AddContactPnt(m_pPlayerType->m_startPoint);
+    }
+
     bool IsValidPos(CoordPos const &pos) const 
     { 
         return m_validPositions.IsValidPos(pos); 
     }
 
-    void DoFinish();
-
-    bool HasFinished() const { return m_bFinished; }
-    int  Result()      const { return m_iResult; }
+    bool            HasFinished() const { return m_bFinished; }
+    int             Result()      const { return m_iResult; }
+    Ticks           GetTicks()    const { return m_timer.GetAccumulatedActionTicks(); }
+    Strategy const &GetStrategy() const { return *m_pStrategy; }
 
 private:
+    using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;
 
-    PieceTypeId                     m_pieceTypeIdMove; 
-    PlayerType              const * m_pPlayerType;
-    Strategy                      * m_pStrategy;
-    unsigned int                    m_remainingPieces; 
-    int                             m_iResult;
-    bool                            m_bFinished;       
-    bool                            m_bFirstMove;      
-    array<Piece, NR_OF_PIECE_TYPES> m_pieces;
-    vector<CoordPos>                m_contactPntsOnBoard;
-    BoardMap                        m_validPositions;
-    HiResTimer                      m_timer;
+    PlayerType const * m_pPlayerType;
+    Strategy         * m_pStrategy;
+    unsigned int       m_remainingPieces; 
+    int                m_iResult;
+    bool               m_bFinished;       
+    bool               m_bFirstMove;      
+    PIECE_TYPE_SET     m_pieces;
+    vector<CoordPos>   m_contactPntsOnBoard;
+    BoardMap           m_validPositions;
+    HiResTimer         m_timer;
 
-    void reduceValidMoves(Move const&, PieceType const&);
+    void reduceValidMoves(Move const&);
+    void finalize        (Move const&);
 };

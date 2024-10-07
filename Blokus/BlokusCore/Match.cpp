@@ -18,15 +18,15 @@ public:
         : m_match(match)
     {}
 
-vector<Move> const& GetListOfValidMoves() const final
-{
-    return m_match.FindValidMoves();
-}
+    vector<Move> const& GetListOfValidMoves() const final
+    {
+        return m_match.FindValidMoves();
+    }
 
-Board const& GetBoard() const final
-{
-    return m_match.GetBoard();
-}
+    Board const& GetBoard() const final
+    {
+        return m_match.GetBoard();
+    }
 
 private:
     Match &m_match;
@@ -34,19 +34,17 @@ private:
 
 Match::Match()
 {
-    Initialize();
     m_upRuleServer = make_unique<RuleServer>(*this);
 }
 
-void Match::Initialize()
+void Match::Reset()
 {
-    m_board.Initialize();
-    m_players.Initialize();
-    m_protocol.Initialize();
-    m_bMatchFinished = false;
-    m_bMatchStarted  = false;
-    m_uiPlayersLeft = NR_OF_PLAYERS;
-    m_activePlayer  = FIRST_PLAYER;
+    m_board.Reset();
+    m_players.Reset();
+    m_protocol.Reset();
+    m_uiPlayersLeft  = NR_OF_PLAYERS;
+    m_idActivePlayer = FIRST_PLAYER;
+    findContactPnts();
     m_timer.Reset();
 }
 
@@ -66,7 +64,7 @@ void Match::DrawSetPieces(DrawContext &context) const
     );
 }
 
-PlayerId Match::WinnerId()
+PlayerId Match::WinnerId() const
 {
     PlayerId idBestPlayer { NO_PLAYER };
     int      iBestResult  { (std::numeric_limits<int>::min)() };
@@ -85,86 +83,36 @@ PlayerId Match::WinnerId()
     return idBestPlayer;
 }
 
-void Match::playerFinished(Player& player)
-{
-    player.DoFinish();
-    if (--m_uiPlayersLeft == 0)
-    {
-        m_bMatchFinished = true;
-    	m_timer.AfterAction();
-		Ticks const ticks { m_timer.GetSingleActionTicks() };
-		wcout << L"Complete match:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-    }
-}
-
-bool Match::NextPlayer()
-{
-    if (!m_bMatchStarted)
-    {
-        m_bMatchStarted = true;
-     	m_timer.BeforeAction();
-   }
-	if (!ActivePlayer().HasFinished())
-	{
-		NextMove();
-		//Ticks const ticks { m_timer.GetSingleActionTicks() };
-		//wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-	}
-    if (MatchFinished())
-        return false;
-
-    if (++m_activePlayer > LAST_PLAYER)
-        m_activePlayer = FIRST_PLAYER;
-	FindContactPnts();
-    
-    return true;
-}
-
-bool Match::NextMove()
+void Match::NextMove()
 {
     Player &player { ActivePlayer() };
-    Move move { player.SelectMove(*m_upRuleServer.get()) };
-    if (move.Undefined())
+    if (!player.HasFinished())
     {
-        playerFinished(player);
-        return false;
+        Move move { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
+        if (move.Defined())
+        {
+            m_protocol.Add(move);
+            player.PerformMove(move);
+            m_board.PerformMove(move);  // may finish, if all pieces set
+        }
+        if (player.HasFinished())       // by one of two reasons
+            --m_uiPlayersLeft;
     }
-    m_protocol.Add(move);
-    player.PerformMove(move);
-    m_board.PerformMove(move);
-    if (player.HasFinished())  
-    {
-		//Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
-		//wcout << L"all moves:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-        playerFinished(player);
-        return false;
-    }
-    return true;
+    if (++m_idActivePlayer > LAST_PLAYER)
+        m_idActivePlayer = FIRST_PLAYER;    
+    findContactPnts();
 }
 
-void Match::FindContactPnts()
-{
-    //m_timerFindContactPnts.BeforeAction();
-    Player &player { m_players.GetPlayer(m_activePlayer) };
-    if (!player.IsFirstMove())
-    {
-        player.ClearContactPnts();
-        Apply2AllBoardCells
-        (
-            [this, &player](CoordPos const& pos)
-            {
-                if (m_board.IsContactPnt(pos, m_activePlayer))
-                {
-                    player.AddContactPnt(pos);
-                    m_board.IsContactPnt(pos, m_activePlayer);
-                }
-            }
-        );
-    }
-    //m_timerFindContactPnts.AfterAction();
-    //Ticks const ticks { m_timerFindContactPnts.GetSingleActionTicks() };
-    //wcout << L"FindContactPnts:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-}
+//Ticks const ticks { m_timer.GetSingleActionTicks() };
+//wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+//if (MatchFinished())
+//{
+//    m_timer.AfterAction();
+//	Ticks const ticks { m_timer.GetSingleActionTicks() };
+//	wcout << L"Complete match:"<< PerfCounter::Ticks2wstring(ticks) << endl;
+//}
+//Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
+//wcout << L"all moves:"<< PerfCounter::Ticks2wstring(ticks) << endl;
 
 bool Match::isValidMove
 (
@@ -184,16 +132,40 @@ bool Match::isValidMove
     );
 }
 
+void Match::findContactPnts()
+{
+    Player &player { ActivePlayer() };
+    player.ClearContactPnts();
+    if (player.IsFirstMove())
+    {
+        player.AddInitialContactPnt();
+    }
+    else
+    {
+        Apply2AllBoardCells
+        (
+            [this, &player](CoordPos const& pos)
+            {
+                if (m_board.IsContactPnt(pos, m_idActivePlayer))
+                {
+                    player.AddContactPnt(pos);
+                }
+            }
+        );
+    }
+}
+
 vector<Move> const & Match::FindValidMoves()
 {
     g_iNrOfPieces = 0;
     g_iNrOfShapes = 0;
     g_iNrOfMoves  = 0;
     m_timerFindValidMoves.BeforeAction();
+    Player player { ActivePlayer() };
+    Move   move;
     m_validMoves.clear();
-    Move move;
-    move.SetPlayerId(m_activePlayer);
-    ActivePlayer().Apply2FreePiecesC
+    move.SetPlayerId(m_idActivePlayer);
+    player.Apply2FreePiecesC
     (
         [this, &move](Piece const& piece)
         {

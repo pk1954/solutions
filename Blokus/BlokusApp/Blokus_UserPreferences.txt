@@ -3,5 +3,5 @@ SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  ON
 ShowContactPnts  ON
-ShowCornerCells  ON
+ShowCornerCells  OFF
 # ***  End of Preferences

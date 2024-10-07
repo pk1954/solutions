@@ -24,7 +24,11 @@ export class BlokusAppWindow : public BaseWindow
 public:
 	BlokusAppWindow(wstring const&, MessagePump&);
 
-	void DoGameStuff() { }
+	void DoGameStuff() 
+	{
+		if (m_tournament.IsActive())
+			m_tournament.NextMove();
+	}
 
 	BlokusAppWindow            (BlokusAppWindow const&) = delete;  // noncopyable class 
 	BlokusAppWindow& operator= (BlokusAppWindow const&) = delete;  // noncopyable class 

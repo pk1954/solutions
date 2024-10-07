@@ -23,6 +23,8 @@ MicroMeterPnt GetCenter(CoordPos const& coordPos)
 	return umPosCenter;
 }
 
+Color darker(Color const col)  { return col * 0.6f; }
+
 export void SmallDot
 (
 	DrawContext const &context,
@@ -30,7 +32,8 @@ export void SmallDot
 	Color       const  col
 )
 {
-	context.FillCircle(MicroMeterCircle(GetCenter(pos), UM_CELL_SIZE * 0.2f), col);
+	context.FillCircle(MicroMeterCircle(GetCenter(pos), UM_CELL_SIZE * 0.3f), col);
+	context.FillCircle(MicroMeterCircle(GetCenter(pos), UM_CELL_SIZE * 0.2f), darker(col));
 }
 
 void colSquare
@@ -56,8 +59,8 @@ export void ShapeSquare
 	MicroMeterPnt const umPos       { Convert2fCoord(coordPos) };
 	MicroMeter    const umHalfSize  { UM_CELL_SIZE * 0.5f };
 	MicroMeterPnt const umPosCenter { umPos + MicroMeterPnt(umHalfSize) };
-	colSquare(context, umPosCenter, col,        umHalfSize       );
-	colSquare(context, umPosCenter, col * 0.6f, umHalfSize * 0.8f);
+	colSquare(context, umPosCenter, col,         umHalfSize       );
+	colSquare(context, umPosCenter, darker(col), umHalfSize * 0.8f);
 }
 
 Shape const& GetShapeC(Move const &move)

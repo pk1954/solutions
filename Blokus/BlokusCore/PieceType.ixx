@@ -66,7 +66,7 @@ private:
 	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 
-	unsigned int   m_iNrOfCells { 0 };
-    vector<Shape>  m_shapes;
-	CoordPos m_initialPos;
+	unsigned int  m_iNrOfCells { 0 };
+    vector<Shape> m_shapes;
+	CoordPos      m_initialPos;
 };

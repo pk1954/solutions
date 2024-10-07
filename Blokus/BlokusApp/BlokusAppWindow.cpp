@@ -29,7 +29,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_tournament                         .RegisterObserver(m_tournamentWindow);
 	configureStatusBar();
 
-	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 500_PIXEL, 200_PIXEL }, true);
+	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 500_PIXEL, 250_PIXEL }, true);
 
 	m_mainWindow.Show(true);
 	m_statusBar .Show(true);
@@ -108,6 +108,7 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	case IDD_START_TOURNAMENT:
 		m_tournamentWindow.Show(true);
 		m_tournamentWindow.BringWindowToTop();
+		m_tournament.Start(100);
 		break;
 
 	case IDM_EXIT:

@@ -13,20 +13,20 @@ import :Move;
 export class Piece
 {
 public:
-    void Initialize(PieceTypeId const id)
+    void Reset(PieceTypeId const id)
     {
         m_idPieceType = id;
-        m_pos = GetPieceTypeC().GetInitialPos();
+        SetPiecePos(GetPieceTypeC().GetInitialPos());
     }
 
     void SetPiecePos(CoordPos const& pos) { m_pos = pos; }
-    void SetShapeId (ShapeId        const  id)  { m_idShape = id; }
+    void SetShapeId (ShapeId  const  id)  { m_idShape = id; }
 
     bool IsAvailable() const { return m_pos.GetXvalue() > BOARD_SIZE;}
 
-    CoordPos const& GetPiecePos()    const { return m_pos; }
-    PieceTypeId           GetPieceTypeId() const { return m_idPieceType; }
-    PieceType      const& GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
+    CoordPos  const& GetPiecePos()    const { return m_pos; }
+    PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
+    PieceType const& GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
 
     void PerformMove(Move const& move)
     {

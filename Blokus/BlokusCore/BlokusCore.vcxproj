@@ -49,6 +49,7 @@
     <ClCompile Include="Strategy.ixx" />
     <ClCompile Include="StrategyRandom.ixx" />
     <ClCompile Include="StrategyTakeFirst.ixx" />
+    <ClCompile Include="Tournament.cpp" />
     <ClCompile Include="Tournament.ixx" />
   </ItemGroup>
   <ItemGroup>

@@ -11,10 +11,14 @@ import :Strategy;
 import :RuleServerInterface;
 
 using std::vector;
+using std::wstring;
 
 export class StrategyTakeFirst : public Strategy
 {
 public:
+
+    wstring const& GetName() const final { return NAME; }
+
 
     Move SelectMove(RuleServerInterface const &rs) final
     {
@@ -24,4 +28,8 @@ public:
             move = moves[0];
         return move;
     }
+
+private:
+
+    wstring const NAME { L"TakeFirst" };
 };

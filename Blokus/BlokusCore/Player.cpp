@@ -14,29 +14,26 @@ using std::wstring;
 using std::to_wstring;
 using std::vector;
 
-void Player::Initialize
+void Player::Reset
 (
     PlayerType const &type,
 	Strategy * const  pStrategy
 )
 {
     PieceTypeId id { 0 };
-    Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
-	m_validPositions.Initialize();
+    Apply2AllPieces([&id](Piece& p){ p.Reset(id++); });
+	m_validPositions.Reset();
 	ClearContactPnts();
-    m_timer.Reset();
 	m_pPlayerType     = &type;
 	m_pStrategy       = pStrategy;
-	m_pieceTypeIdMove = UndefinedPieceTypeId;
 	m_remainingPieces = NR_OF_PIECE_TYPES;
     m_bFinished       = false;
     m_bFirstMove      = true;
-    AddContactPnt(m_pPlayerType->m_startPoint);
 }
 
 void Player::DrawResult
 (
-	DrawContext     &context,
+	DrawContext           &context,
 	TextFormatHandle const hTextFormat
 ) const
 {
@@ -91,13 +88,10 @@ void Player::DrawContactPnts(DrawContext &context) const
 	);
 }
 
-void Player::reduceValidMoves
-(
-	Move      const &move,
-	PieceType const &pieceType
-)
+void Player::reduceValidMoves(Move const &move)
 {
-    Shape const &shape { pieceType.GetShapeC(move.GetShapeId())};
+	PieceType const &pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
+    Shape     const &shape     { pieceType.GetShapeC(move.GetShapeId())};
     shape.Apply2AllShapeCellsC
     (
         [this, &move](ShapeCoordPos const &shapePos)
@@ -110,29 +104,35 @@ void Player::reduceValidMoves
             m_validPositions.SetCell(WestPos (coordPos), false);
         }
     );
-    m_bFirstMove = false;
+}
+
+Move Player::SelectMove(RuleServerInterface const &rs)
+{
+	m_timer.BeforeAction();
+    Move moveSelected { m_pStrategy->SelectMove(rs) };
+    if (moveSelected.Undefined())
+        finalize(moveSelected);    // no more valid moves
+ 	m_timer.AfterAction();
+    return moveSelected;
 }
 
 void Player::PerformMove(Move const& move)
 {
-	m_pieceTypeIdMove = move.GetPieceTypeId();
-    PieceType const &pieceType { Components::GetPieceTypeC(m_pieceTypeIdMove) };
-    Piece           &piece     { GetPiece(m_pieceTypeIdMove) };
-    piece.PerformMove(move);
+    GetPiece(move.GetPieceTypeId()).PerformMove(move);
     m_bFirstMove = false;
 	if (--m_remainingPieces == 0)
 	{
-		m_bFinished = true;
+		finalize(move);     // all pieces set
 	}
 	else
 	{
-		reduceValidMoves(move, pieceType);
+		reduceValidMoves(move);
 	}
 }
 
-void Player::DoFinish()
+void Player::finalize(Move const& move)
 {
-	m_bFinished = true;
+	m_bFinished = true;   
 	m_iResult = 0;
 	Apply2FreePiecesC
 	(
@@ -145,10 +145,8 @@ void Player::DoFinish()
     if (m_remainingPieces == 0)
 	{
 		m_iResult += 15;
-		if (Components::GetPieceTypeC(m_pieceTypeIdMove).NrOfCells() == 1)
+		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
 			m_iResult += 5;
-		m_bFinished = true;
 	}
-    Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
-    wcout << PerfCounter::Ticks2wstring(ticks) << SPACE << m_pPlayerType->m_wstrName << endl;
+    //Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
 }

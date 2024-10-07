@@ -16,10 +16,10 @@ export class Board
 public:
     Board()
     {
-        Initialize();
+        Reset();
     }
 
-    void Initialize()
+    void Reset()
     {
         for (int i = 0; i < BOARD_SIZE; ++i) 
         for (int j = 0; j < BOARD_SIZE; ++j) 

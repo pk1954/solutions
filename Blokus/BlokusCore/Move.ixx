@@ -24,6 +24,7 @@ public:
     void SetShapeId    (ShapeId     const idShape    ) { m_idShape     = idShape;     }
     void SetCoordPos   (CoordPos    const coordPos   ) { m_boardPos    = coordPos;    }
 
+    bool Defined()   { return m_idPlayer != NO_PLAYER; }
     bool Undefined() { return m_idPlayer == NO_PLAYER; }
 
 private:

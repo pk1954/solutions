@@ -26,12 +26,17 @@ StrategyRandom    StrategyYellow;
 export class Players
 {
 public:
-    void Initialize()
+    void Reset()
     {
-        m_players[0].Initialize(PlayerTypes::GetPlayerType(PlayerId(0)), &StrategyRed);
-        m_players[1].Initialize(PlayerTypes::GetPlayerType(PlayerId(1)), &StrategyGreen); 
-        m_players[2].Initialize(PlayerTypes::GetPlayerType(PlayerId(2)), &StrategyBlue);
-        m_players[3].Initialize(PlayerTypes::GetPlayerType(PlayerId(3)), &StrategyYellow); 
+        m_players[0].Reset(PlayerTypes::GetPlayerType(PlayerId(0)), &StrategyRed);
+        m_players[1].Reset(PlayerTypes::GetPlayerType(PlayerId(1)), &StrategyGreen); 
+        m_players[2].Reset(PlayerTypes::GetPlayerType(PlayerId(2)), &StrategyBlue);
+        m_players[3].Reset(PlayerTypes::GetPlayerType(PlayerId(3)), &StrategyYellow); 
+    }
+
+    void ResetTimers()
+    {
+        Apply2AllPlayers([](Player &player) { player.ResetTimer(); });
     }
 
     void Apply2AllPlayersC(auto const& func) const

@@ -12,10 +12,13 @@ import :Strategy;
 import :RuleServerInterface;
 
 using std::vector;
+using std::wstring;
 
 export class StrategyRandom : public Strategy
 {
 public:
+
+    wstring const& GetName() const final { return NAME; }
 
     Move SelectMove(RuleServerInterface const &rs) final
     {
@@ -31,5 +34,8 @@ public:
     }
 
 private:
+
+    wstring const NAME { L"Random" };
+
     Random m_random;
 };
