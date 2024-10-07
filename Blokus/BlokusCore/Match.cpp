@@ -103,17 +103,6 @@ void Match::NextMove()
     findContactPnts();
 }
 
-//Ticks const ticks { m_timer.GetSingleActionTicks() };
-//wcout << L"complete move:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-//if (MatchFinished())
-//{
-//    m_timer.AfterAction();
-//	Ticks const ticks { m_timer.GetSingleActionTicks() };
-//	wcout << L"Complete match:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-//}
-//Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
-//wcout << L"all moves:"<< PerfCounter::Ticks2wstring(ticks) << endl;
-
 bool Match::isValidMove
 (
     Move   const& move,
@@ -155,52 +144,71 @@ void Match::findContactPnts()
     }
 }
 
-vector<Move> const & Match::FindValidMoves()
+void Match::testPosition(Move &move, ShapeCoordPos const &posCorner) 
+{ 
+    Player const& player { m_players.GetPlayerC(move.GetPlayerId()) };
+    player.Apply2AllContactPntsC
+    (
+        [this, &player, &move, &posCorner](CoordPos const& posContact)
+        {
+            move.SetCoordPos(posContact - posCorner);
+            if (isValidMove(move, player))
+            {
+                m_validMoves.push_back(move);
+            }
+        }
+	);
+}
+
+void Match::testShape(Move &move, ShapeId const idShape)
 {
-    g_iNrOfPieces = 0;
-    g_iNrOfShapes = 0;
-    g_iNrOfMoves  = 0;
-    m_timerFindValidMoves.BeforeAction();
+    //++g_iNrOfShapes;
+    move.SetShapeId(idShape);
+	GetShapeC(move).Apply2AllCornerPntsC
+	(
+		[this, &move](ShapeCoordPos const &pos) 
+        { 
+            testPosition(move, pos);
+		}
+	);
+}
+
+void Match::testPiece(Move &move, Piece const& piece)
+{
+    PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
+    PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
+    move.SetPieceTypeId(pieceTypeId);
+    //++g_iNrOfPieces;
+	pieceType.Apply2AllShapeIdsC
+	(
+		[this, &move](ShapeId const& id)
+		{
+            testShape(move, id);
+        }
+    );
+}
+
+vector<Move> const &Match::FindValidMoves()
+{
     Player player { ActivePlayer() };
     Move   move;
     m_validMoves.clear();
     move.SetPlayerId(m_idActivePlayer);
-    player.Apply2FreePiecesC
+    player.Apply2AvailablePiecesC
     (
         [this, &move](Piece const& piece)
         {
-            move.SetPieceTypeId(piece.GetPieceTypeId());
-            ++g_iNrOfPieces;
-		    Components::GetPieceTypeC(move.GetPieceTypeId()).Apply2AllShapeIdsC
-		    (
-			    [this, &move](ShapeId const& idShape)
-			    {
-                    move.SetShapeId(idShape);
-                    ++g_iNrOfShapes;
-				    GetShapeC(move).Apply2AllCornerPntsC
-				    (
-					    [this, &move](ShapeCoordPos const &posCorner) 
-                        { 
-                            Player const& player { m_players.GetPlayerC(move.GetPlayerId()) };
-                            player.Apply2AllContactPntsC
-                            (
-                                [this, &player, &move, &posCorner](CoordPos const& posContact)
-                                {
-                                    move.SetCoordPos(posContact - posCorner);
-                                    ++g_iNrOfMoves;
-                                    if (isValidMove(move, player))
-                                    {
-                                        m_validMoves.push_back(move);
-                                    }
-                                }
-				            );
-			            }
-		            );
-                }
-            );
+            testPiece(move, piece);
         }
     );
+    return m_validMoves;
+}
 
+    //g_iNrOfPieces = 0;
+    //g_iNrOfShapes = 0;
+    //g_iNrOfMoves  = 0;
+    //m_timerFindValidMoves.BeforeAction();
+    // 
     //m_timerFindValidMoves.AfterAction();
     //Ticks const ticks        { m_timerFindValidMoves.GetSingleActionTicks() };
     //Ticks const ticksPerMove {ticks / g_iNrOfMoves };
@@ -213,6 +221,3 @@ vector<Move> const & Match::FindValidMoves()
     //wcout << PerfCounter::Ticks2wstring(ticks) 
     //      << L"(" << PerfCounter::Ticks2wstring(ticksPerMove) << L" per move)" 
     //      << endl;
-
-    return m_validMoves;
-}

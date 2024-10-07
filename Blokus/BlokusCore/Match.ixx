@@ -19,10 +19,10 @@ import :RuleServerInterface;
 using std::vector;
 using std::unique_ptr;
 
-int g_iNrOfPieces;
-int g_iNrOfShapes;
-int g_iNrOfMoves;
-
+//int g_iNrOfPieces;
+//int g_iNrOfShapes;
+//int g_iNrOfMoves;
+//
 export class Match
 {
 public:
@@ -58,12 +58,14 @@ private:
     vector<Move>  m_validMoves;
     MatchProtocol m_protocol;
     HiResTimer    m_timerFindContactPnts;
-    HiResTimer    m_timerFindValidMoves;
+    //HiResTimer    m_timerFindValidMoves;
     HiResTimer    m_timer;
                   
     unique_ptr<RuleServerInterface> m_upRuleServer; 
 
-    bool isValidMove(Move const&, Player const&);
+    bool isValidMove (Move const&, Player const&);
+    void testPosition(Move&, ShapeCoordPos const&);
+    void testShape   (Move&, ShapeId       const);
+    void testPiece   (Move&, Piece         const&);
     void findContactPnts();
 };
-

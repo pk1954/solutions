@@ -60,7 +60,14 @@ public:
             func(piece);
     }
 
-    void Apply2FreePiecesC(auto const& func) const
+    void Apply2AvailablePieces(auto const& func)
+    {
+        for (Piece &piece: m_pieces)
+            if (piece.IsAvailable())
+                func(piece);
+    }
+
+    void Apply2AvailablePiecesC(auto const& func) const
     {
         for (Piece const& piece: m_pieces)
             if (piece.IsAvailable())

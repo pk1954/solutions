@@ -54,16 +54,13 @@ void Player::DrawResult
 
 void Player::DrawFreePieces(DrawContext &context) const
 {
-	Apply2FreePiecesC
+	Apply2AvailablePiecesC
 	(
 		[this, &context](Piece const& piece)
 		{
-			piece.GetPieceTypeC().Draw
-			(
-				context,
-				Convert2fCoord(piece.GetPiecePos()),
-				m_pPlayerType->m_color
-			);
+			MicroMeterPnt const umPos { Convert2fCoord(piece.GetPiecePos()) };
+			Color         const col   { m_pPlayerType->m_color };
+			piece.GetPieceTypeC().Draw(context, umPos, col);
 		}
 	);
 }
@@ -134,12 +131,11 @@ void Player::finalize(Move const& move)
 {
 	m_bFinished = true;   
 	m_iResult = 0;
-	Apply2FreePiecesC
+	Apply2AvailablePiecesC
 	(
 		[this](Piece const& piece)
 		{
-			PieceType const& pt { piece.GetPieceTypeC() };
-			m_iResult -= pt.NrOfCells();
+			m_iResult -= piece.GetPieceTypeC().NrOfCells();
 		}
 	);
     if (m_remainingPieces == 0)
@@ -148,5 +144,4 @@ void Player::finalize(Move const& move)
 		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
 			m_iResult += 5;
 	}
-    //Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
 }

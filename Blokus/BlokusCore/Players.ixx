@@ -19,8 +19,8 @@ using std::array;
 using std::wstring;
 
 StrategyTakeFirst StrategyRed;
-StrategyRandom    StrategyGreen;
-StrategyRandom    StrategyBlue;
+StrategyTakeFirst    StrategyGreen;
+StrategyTakeFirst    StrategyBlue;
 StrategyRandom    StrategyYellow;
 
 export class Players

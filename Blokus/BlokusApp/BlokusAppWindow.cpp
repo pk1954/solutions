@@ -108,7 +108,7 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	case IDD_START_TOURNAMENT:
 		m_tournamentWindow.Show(true);
 		m_tournamentWindow.BringWindowToTop();
-		m_tournament.Start(100);
+		m_tournament.Start(1000);
 		break;
 
 	case IDM_EXIT:
