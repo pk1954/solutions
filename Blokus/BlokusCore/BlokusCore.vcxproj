@@ -40,6 +40,8 @@
     <ClCompile Include="Player.ixx" />
     <ClCompile Include="PlayerId.ixx" />
     <ClCompile Include="Players.ixx" />
+    <ClCompile Include="PlayerTypes.cpp" />
+    <ClCompile Include="PlayerTypes.ixx" />
     <ClCompile Include="RuleServerInterface.ixx" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Shape.ixx" />

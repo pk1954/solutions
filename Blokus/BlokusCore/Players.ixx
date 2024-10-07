@@ -9,8 +9,9 @@ import Color;
 import :Components;
 import :Strategy;
 import :BlokusCoords;
-import :PlayerId;
 import :Player;
+import :PlayerId;
+import :PlayerTypes;
 import :StrategyRandom;
 import :StrategyTakeFirst;
 
@@ -27,10 +28,10 @@ export class Players
 public:
     void Initialize()
     {
-        m_players[0].Initialize(CoordPos(  0_COORD,   0_COORD), COL_RED,    L"RED",    &StrategyRed);
-        m_players[1].Initialize(CoordPos(MAX_COORD,   0_COORD), COL_GREEN,  L"GREEN",  &StrategyGreen); 
-        m_players[2].Initialize(CoordPos(MAX_COORD, MAX_COORD), COL_BLUE,   L"BLUE",   &StrategyBlue);
-        m_players[3].Initialize(CoordPos(  0_COORD, MAX_COORD), COL_YELLOW, L"YELLOW", &StrategyYellow); 
+        m_players[0].Initialize(PlayerTypes::GetPlayerType(PlayerId(0)), &StrategyRed);
+        m_players[1].Initialize(PlayerTypes::GetPlayerType(PlayerId(1)), &StrategyGreen); 
+        m_players[2].Initialize(PlayerTypes::GetPlayerType(PlayerId(2)), &StrategyBlue);
+        m_players[3].Initialize(PlayerTypes::GetPlayerType(PlayerId(3)), &StrategyYellow); 
     }
 
     void Apply2AllPlayersC(auto const& func) const
@@ -47,20 +48,15 @@ public:
 
     Player const& GetPlayerC(PlayerId const id) const
     {
-        return m_players.at(id.GetValue()-1);
+        return m_players.at(id.GetValue());
     }
 
     Player& GetPlayer(PlayerId const id)
     {
-        return m_players.at(id.GetValue()-1);
+        return m_players.at(id.GetValue());
     }
 
 private:
-
-    Color const COL_RED    { Color(1.0f, 0.2f, 0.2f) };
-    Color const COL_GREEN  { Color(0.0f, 1.0f, 0.0f) };
-    Color const COL_BLUE   { Color(0.4f, 0.4f, 1.0f) };
-    Color const COL_YELLOW { Color(0.8f, 0.8f, 0.0f) };
 
     array<Player, NR_OF_PLAYERS> m_players;
 };

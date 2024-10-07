@@ -23,10 +23,10 @@ public:
 
     void Add(Move const& move)
     {
-        int iPlayerIndex { move.GetPlayerId().GetValue() };
-        m_list[m_round][iPlayerIndex-1] = move;
-        if (iPlayerIndex == NR_OF_PLAYERS)
-            ++m_round;
+        //PlayerId const id { move.GetPlayerId() };
+        //m_list[m_round][id.GetValue()] = move;
+        //if (i == LAST_PLAYER)
+        //    ++m_round;
     }
 
 private:

@@ -157,6 +157,33 @@ void D2D_driver::SetStdFontSize(float const fSize)
 
 // functions called per frame
 
+fPixelRectSize D2D_driver::CalcRect(wstring const& wstr) const
+{
+	fPixelRectSize     fPixRectSizeResult { fPixel::NULL_VAL(), fPixel::NULL_VAL() };
+	IDWriteTextLayout* textLayout         { nullptr };
+	m_hr = m_pDWriteFactory->CreateTextLayout
+	(
+		wstr.c_str(),
+		static_cast<UINT32>(wstr.length()),
+		m_pTextFormat,
+		300.0f, // maxWidth
+		100.0f, // maxHeight
+		&textLayout
+	);
+
+	if (SUCCEEDED(m_hr) && textLayout)
+	{
+		DWRITE_TEXT_METRICS textMetrics;
+		m_hr = textLayout->GetMetrics(&textMetrics);
+
+		if (SUCCEEDED(m_hr))
+			fPixRectSizeResult = fPixelRectSize(fPixel(textMetrics.width), fPixel(textMetrics.height));
+
+		textLayout->Release();
+	}
+	return fPixRectSizeResult;
+}
+
 void D2D_driver::DisplayText
 (
 	fPixelRect       const& rect,

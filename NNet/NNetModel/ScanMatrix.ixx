@@ -37,7 +37,7 @@ public:
 
     optional<CardPoint> SelectScanAreaHandle(DrawContext const&, Raster const&, MicroMeterPnt const&) const;
 
-    void Clear() { m_scanPixels.Apply2AllPixels([](auto &p) { p.Clear(); }); }
+    void Clear() { m_scanPixels.Apply2AllCells([](auto &p) { p.Clear(); }); }
 
     RasterPoint      Size  ()                                   const { return m_scanPixels.Size(); }
     RasterIndex      Width ()                                   const { return m_scanPixels.Width(); }

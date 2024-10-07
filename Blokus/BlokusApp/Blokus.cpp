@@ -47,6 +47,7 @@ int wWinMain
 	MessagePump  pump;
 	pump.SetAccelTable(acc.Get());
 
+	PlayerTypes::Initialize();
 	Components::Initialize();
 	BlokusPreferences::Initialize();
 

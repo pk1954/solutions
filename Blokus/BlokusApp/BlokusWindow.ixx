@@ -16,15 +16,16 @@ using std::array;
 export class BlokusWindow : public GraphicsWindow
 {
 public:
-	void Start(HWND const);
+	void Start(HWND const, Tournament *);
 
 	void OnChar(WPARAM const, LPARAM const) final;
 
 private:
 
-	Match             m_match;
-	Tournament       m_tournament;
 	D2D_DrawContext  m_context;
+	Match            m_match;
+    Tournament     * m_pTournament { nullptr };
+	bool             m_bAutoRun    { false };
 	TextFormatHandle m_hTextFormat { nullptr };
 
 	void paintBoard() const;

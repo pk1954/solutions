@@ -12,8 +12,10 @@ import MessagePump;
 import StatusBar;
 import ScriptHook;
 import StatusBarDisplayFunctor;
+import BlokusCore;
 import BlokusAppMenu;
 import BlokusWindow;
+import TournamentWindow;
 
 using std::wstring;
 
@@ -45,6 +47,8 @@ private:
 	BlokusWindow            m_mainWindow;
 	ScriptHook              m_ScriptHook;
 	BlokusAppMenu           m_appMenu;
+	Tournament              m_tournament;
+	TournamentWindow        m_tournamentWindow;
 	StatusBarDisplayFunctor m_statusBarDispFunctor;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;

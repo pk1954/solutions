@@ -59,7 +59,7 @@ void ScanMatrix::DensityCorrection(RawImage &image) const
 size_t ScanMatrix::NrOfDataPntsInMatrix() const
 {
     size_t nr { 0 };
-    m_scanPixels.Apply2AllPixelsC([&nr](ScanPixel const& p) { nr += p.NrOfDataPnts(); });
+    m_scanPixels.Apply2AllCellsC([&nr](ScanPixel const& p) { nr += p.NrOfDataPnts(); });
     return nr;
 }
 
@@ -74,7 +74,7 @@ float ScanMatrix::DivideByArea(size_t const nrOfPoints) const
 void ScanMatrix::findMaxNrOfDataPoints()
 {
     m_maxNrOfDataPnts = 0;
-    m_scanPixels.Apply2AllPixelsC
+    m_scanPixels.Apply2AllCellsC
     (
         [this](ScanPixel const& p)
         {
@@ -88,7 +88,7 @@ float ScanMatrix::DataPointVariance()
 {
     float  fCenter   { AverageDataPointsPerPixel() };
     float  fVariance { 0.0f };
-    m_scanPixels.Apply2AllPixelsC
+    m_scanPixels.Apply2AllCellsC
     (
         [this, fCenter, &fVariance](ScanPixel const& p)
         {

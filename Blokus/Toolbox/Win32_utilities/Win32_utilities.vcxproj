@@ -260,6 +260,8 @@
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_WinManager.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WinCommand.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WrapSetGrid.ixx" />
+    <ClCompile Include="TableWindow.cpp" />
+    <ClCompile Include="TableWindow.ixx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

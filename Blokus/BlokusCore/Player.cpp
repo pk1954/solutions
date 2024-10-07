@@ -16,9 +16,7 @@ using std::vector;
 
 void Player::Initialize
 (
-    CoordPos   const  startPoint,
-    Color      const  col,
-	wstring    const &wstrColor,
+    PlayerType const &type,
 	Strategy * const  pStrategy
 )
 {
@@ -26,15 +24,14 @@ void Player::Initialize
     Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
 	m_validPositions.Initialize();
 	ClearContactPnts();
-    AddContactPnt(startPoint);
     m_timer.Reset();
-    m_color           = col;
-	m_wstrColor       = wstrColor;
+	m_pPlayerType     = &type;
 	m_pStrategy       = pStrategy;
 	m_pieceTypeIdMove = UndefinedPieceTypeId;
 	m_remainingPieces = NR_OF_PIECE_TYPES;
     m_bFinished       = false;
     m_bFirstMove      = true;
+    AddContactPnt(m_pPlayerType->m_startPoint);
 }
 
 void Player::DrawResult
@@ -51,7 +48,9 @@ void Player::DrawResult
 	context.DisplayText
 	(
 		rect, 
-		L"Player " + m_wstrColor + L" finished with " + to_wstring(m_iResult) + L" points",
+		L"Player "         + m_pPlayerType->m_wstrName + 
+		L" finished with " + to_wstring(m_iResult) + 
+		L" points",
 		hTextFormat
 	);
 }
@@ -66,7 +65,7 @@ void Player::DrawFreePieces(DrawContext &context) const
 			(
 				context,
 				Convert2fCoord(piece.GetPiecePos()),
-				m_color
+				m_pPlayerType->m_color
 			);
 		}
 	);
@@ -78,7 +77,7 @@ void Player::DrawCell
 	CoordPos    const &pos
 ) const
 {
-	ShapeSquare(context, pos, m_color );
+	ShapeSquare(context, pos, m_pPlayerType->m_color );
 }
 
 void Player::DrawContactPnts(DrawContext &context) const
@@ -87,7 +86,7 @@ void Player::DrawContactPnts(DrawContext &context) const
 	(
 		[this, &context](CoordPos const& pos)
 		{
-			SmallDot(context, pos, m_color);
+			SmallDot(context, pos, m_pPlayerType->m_color);
 		}
 	);
 }
@@ -151,5 +150,5 @@ void Player::DoFinish()
 		m_bFinished = true;
 	}
     Ticks const ticks { m_timer.GetAccumulatedActionTicks() };
-    wcout << PerfCounter::Ticks2wstring(ticks) << SPACE << m_wstrColor << endl;
+    wcout << PerfCounter::Ticks2wstring(ticks) << SPACE << m_pPlayerType->m_wstrName << endl;
 }

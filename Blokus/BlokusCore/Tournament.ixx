@@ -5,6 +5,7 @@
 export module BlokusCore:Tournament;
 
 import std;
+import Observable;
 import IoConstants;
 import :Player;
 import :PlayerId;
@@ -14,35 +15,43 @@ using std::array;
 using std::wcout;
 using std::endl;
 
-export class Tournament
+export class Tournament : public Observable
 {
 public:
-    void Start(int const iNrOfMatchs)
+    void Start(int const iNrOfMatches)
     {
         for (auto &it : m_wins)
             it = 0;
-
-        Match match;
-        for (int i = 0; i < iNrOfMatchs; ++i)
-        {
-            match.Initialize();
-            while (match.NextPlayer()) {};
-            PlayerId idWinner { match.WinnerId() };
-            ++m_wins[idWinner.GetValue() - 1]; 
-        }
-
-        Apply2AllPlayerIds
-        (
-            [this, &match](PlayerId const id)
-            {
-                Player const &player { match.GetPlayerC(id) };
-                wcout << m_wins[id.GetValue()-1] << SPACE << player.GetName() << endl;
-            }
-        );
+        m_iNrOfMatches = iNrOfMatches;
+        m_iMatch = 1;
+        m_active = true;
     }
 
+    void MatchFinished(PlayerId const idWinner)
+    {
+        ++wins(idWinner);
+        NotifyAll(true);
+        if (++m_iMatch > m_iNrOfMatches)
+        {
+            m_active = false;
+            m_iMatch = 0;
+        }
+    }
+
+    bool Finished()    const { return m_iMatch >= m_iNrOfMatches; }
+    bool Active()      const { return m_active; }
+    int  MatchNumber() const { return m_iMatch; }
+    int  NrOfMatches() const { return m_iNrOfMatches; }
+
+    int  NrOfWins(PlayerId const id) const { return winsC(id); }
+
 private:
-    int m_iNrOfMatchs { 0 };
+    int m_iNrOfMatches { 0 };
+    int m_iMatch       { 0 };
+    bool m_active      { false };
+
+    int const &winsC(PlayerId const id) const { return m_wins.at(id.GetValue()); }
+    int       &wins (PlayerId const id)       { return m_wins.at(id.GetValue()); }
 
     array<int, NR_OF_PLAYERS> m_wins;
 };

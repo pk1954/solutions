@@ -7,7 +7,8 @@ export module Vector2D;
 import std;
 import Debug;
 import SaveCast;
-import Raster;
+
+export import Raster;
 
 using std::vector;
 using std::unique_ptr;
@@ -67,12 +68,15 @@ public:
 
     void Set(UNIT const newVal)
     {
-        Apply2AllPixels([newVal](UNIT& val) { val = newVal; });
+        Apply2AllCells([newVal](UNIT& val) { val = newVal; });
     }
 
     UNIT& GetRef(RasterPoint const& rp)
     {
-        Assert(IsValid(rp));
+        if (!IsValid(rp))
+        {
+            int x = 42;
+        }
         return m_data[rp.m_y * Width() + rp.m_x];
     }
 
@@ -137,13 +141,13 @@ public:
 	    );
     }
 
-    void Apply2AllPixels(auto const& func)
+    void Apply2AllCells(auto const& func)
     {
         for (auto& it : m_data)
             func(it);
     }
 
-    void Apply2AllPixelsC(auto const& func) const
+    void Apply2AllCellsC(auto const& func) const
     {
         for (auto const& it : m_data)
             func(it);

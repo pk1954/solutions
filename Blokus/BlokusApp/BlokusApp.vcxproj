@@ -28,6 +28,7 @@
     <ClCompile Include="BlokusWindow.cpp" />
     <ClCompile Include="BlokusWindow.ixx" />
     <ClCompile Include="Resource.ixx" />
+    <ClCompile Include="TournamentWindow.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlokusCore\BlokusCore.vcxproj">
@@ -105,10 +106,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>D:\SW-projects\Solutions\NNet\\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\SW-projects\Solutions\Blokus\x64\Debug;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>$(SolutionDir)\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\SW-projects\Solutions\Blokus\x64\Release;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -151,7 +152,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Utilities.lib;Win32_utilities.lib;ModelIO.lib;IoUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Utilities.lib;Win32_utilities.lib;IoUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -69,7 +69,7 @@ void Match::DrawSetPieces(DrawContext &context) const
 PlayerId Match::WinnerId()
 {
     PlayerId idBestPlayer { NO_PLAYER };
-    int      iBestResult { (std::numeric_limits<int>::min)() };
+    int      iBestResult  { (std::numeric_limits<int>::min)() };
     Apply2AllPlayerIds
     (
         [this, &idBestPlayer, &iBestResult](PlayerId const idPlayer)
@@ -113,8 +113,8 @@ bool Match::NextPlayer()
     if (MatchFinished())
         return false;
 
-    if (++m_activePlayer > PlayerId(NR_OF_PLAYERS))
-        m_activePlayer = PlayerId(FIRST_PLAYER);
+    if (++m_activePlayer > LAST_PLAYER)
+        m_activePlayer = FIRST_PLAYER;
 	FindContactPnts();
     
     return true;

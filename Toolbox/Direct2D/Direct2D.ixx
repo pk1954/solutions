@@ -94,6 +94,8 @@ public:
     void DisplayText(wstring const&, Color       const, TextFormatHandle = nullptr) const;
     void DisplayText(wstring const&,                    TextFormatHandle = nullptr) const;
 
+    fPixelRectSize CalcRect(wstring const&) const;
+
     fPixelRect     GetClRect      () const { return Convert2fPixelRect    (::GetClPixelRect      (m_hwnd)); }
     fPixelRectSize GetClRectSize  () const { return Convert2fPixelRectSize(::GetClRectSize       (m_hwnd)); }
     fPixel         GetClRectWidth () const { return Convert2fPixel        (::GetClientWindowWidth(m_hwnd)); }
@@ -107,6 +109,8 @@ public:
 
     Color GetForegroundColor() const;
     Color GetBackgroundColor() const;
+
+    float GetFontSize() const { return m_pTextFormat->GetFontSize(); }
 
 private:
     HWND m_hwnd { nullptr };

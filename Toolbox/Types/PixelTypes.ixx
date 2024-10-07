@@ -15,12 +15,12 @@ import :RectType;
 
 /////////////////// PIXEL ///////////////////////////////////
 
-export using PIXEL         = NamedType  < long, struct PIXEL_Parameter >;
-export using PixelPoint    = PosType    < PIXEL >;
-export using PixelRectSize = SizeType   < PIXEL >;
-export using PixelRect     = RectType   < PIXEL >;
-export using PixelCircle   = CircleType < PIXEL >;
-export using PixelEllipse  = EllipseType< PIXEL >;
+export using PIXEL         = NamedType  <long, struct PIXEL_Parameter>;
+export using PixelPoint    = PosType    <PIXEL>;
+export using PixelRectSize = SizeType   <PIXEL>;
+export using PixelRect     = RectType   <PIXEL>;
+export using PixelCircle   = CircleType <PIXEL>;
+export using PixelEllipse  = EllipseType<PIXEL>;
 
 export PixelPoint const PP_NULL(PixelPoint::NULL_VAL());   // compiler generates call!
 export PixelPoint const PP_ZERO(PixelPoint::ZERO_VAL());   // compiler generates call!

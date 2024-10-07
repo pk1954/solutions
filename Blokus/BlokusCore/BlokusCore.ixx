@@ -16,6 +16,7 @@ export import :Move;
 export import :Player;
 export import :Players;
 export import :PlayerId;
+export import :PlayerTypes;
 export import :Piece;
 export import :PieceType;
 export import :PieceTypeId;

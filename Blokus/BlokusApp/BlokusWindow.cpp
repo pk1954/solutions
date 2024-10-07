@@ -17,8 +17,13 @@ using std::endl;
 
 fPixel const BORDER { 10.0_fPixel };
 
-void BlokusWindow::Start(HWND const hwndParent)
+void BlokusWindow::Start
+(
+	HWND   const hwndParent,
+	Tournament * pTournament
+)
 {
+	m_pTournament = pTournament;
 	GraphicsWindow::Initialize
 	(
 		hwndParent, 
@@ -49,21 +54,22 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	{
 		case 'i':
 		case 'I':
-			SendCommand(IDM_INITIALIZE);
+			PostCommand(IDD_INITIALIZE);
 			break;
 
 		case 'r':
 		case 'R':
-			SendCommand(IDM_RUN_TIL_END);
+			PostCommand(IDD_RUN_TIL_END);
 			break;
 
 		case 't':
 		case 'T':
-			SendCommand(IDD_TOURNAMENT);
+			SendCommand2Parent(IDD_START_TOURNAMENT);
+			PostCommand(IDD_START_TOURNAMENT);
 			break;
 
 		default:
-			SendCommand(IDM_NEXT_PLAYER);
+			PostCommand(IDD_NEXT_PLAYER);
 	}
 }
 
@@ -71,25 +77,49 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 {
 	switch (int const wmId { LoWord(wParam) } )
 	{
-	case IDM_INITIALIZE:
+	case IDD_INITIALIZE:
 		m_match.Initialize();
 		Notify(false);
 		break;
 
-	case IDM_NEXT_PLAYER:
+	case IDD_RUN_TIL_END:
+		m_bAutoRun = true;
+		SendCommand(IDD_NEXT_PLAYER);
+		break;
+
+	case IDD_NEXT_PLAYER:
 		m_match.NextPlayer();
-		Notify(false);
+		Notify(true);
+		if (m_match.MatchFinished())
+			PostCommand(IDD_MATCH_FINISHED);
+		else if (m_bAutoRun)
+			PostCommand(IDD_NEXT_PLAYER);
 		break;
 
-	case IDM_RUN_TIL_END:
-		SendCommand(IDM_NEXT_PLAYER);
-		if (!m_match.MatchFinished())
-			PostCommand(wParam);
+	case IDD_START_TOURNAMENT:
+		m_bAutoRun = true;
+		m_pTournament->Start(100);
+		PostCommand(IDD_NEXT_MATCH);
 		break;
 
-	case IDD_TOURNAMENT:
-		m_tournament.Start(100);
-		Notify(false);
+	case IDD_NEXT_MATCH:
+		m_match.Initialize();
+		PostCommand(IDD_NEXT_PLAYER);
+		break;
+
+	case IDD_MATCH_FINISHED:
+		if (m_pTournament->Active())
+		{
+			m_pTournament->MatchFinished(m_match.WinnerId());
+			if (m_pTournament->Finished())
+				PostCommand(IDD_TOURNAMENT_FINISHED);
+			else
+				PostCommand(IDD_NEXT_MATCH);
+		}
+		break;
+
+	case IDD_TOURNAMENT_FINISHED:
+		m_bAutoRun = false;
 		break;
 
 	default:
@@ -140,14 +170,22 @@ void BlokusWindow::drawFinishedMsg()
 
 void BlokusWindow::PaintGraphics()
 {
-	Player const& player { m_match.ActivePlayerC() };
-	player.DrawFreePieces(m_context);
- 	paintBoard();
-	m_match.DrawSetPieces(m_context);
-	if (BlokusPreferences::m_bShowContactPnts.Get())
-		m_match.ActivePlayerC().DrawContactPnts(m_context);
-	if (player.HasFinished())
-		player.DrawResult(m_context, m_hTextFormat);
-	if (m_match.MatchFinished())
-		drawFinishedMsg();
+	if (m_pTournament->Active())
+	{
+ 	//	paintBoard();
+		//m_match.DrawSetPieces(m_context);
+	}
+	else
+	{
+		Player const& player { m_match.ActivePlayerC() };
+		player.DrawFreePieces(m_context);
+ 		paintBoard();
+		m_match.DrawSetPieces(m_context);
+		if (BlokusPreferences::m_bShowContactPnts.Get())
+			m_match.ActivePlayerC().DrawContactPnts(m_context);
+		if (player.HasFinished())
+			player.DrawResult(m_context, m_hTextFormat);
+		if (m_match.MatchFinished())
+			drawFinishedMsg();
+	}
 };

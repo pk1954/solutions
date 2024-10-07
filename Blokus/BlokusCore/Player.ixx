@@ -14,6 +14,7 @@ import :Board;
 import :BoardMap;
 import :Piece;
 import :PlayerId;
+import :PlayerTypes;
 import :PieceTypeId;
 import :RuleServerInterface;
 import :Components;
@@ -28,11 +29,11 @@ using std::wstring;
 export class Player
 {
 public:
-    void Initialize(CoordPos const, Color const, wstring const&, Strategy * const);
+    void Initialize(PlayerType const& type, Strategy * const);
 
     bool IsFirstMove() const { return m_bFirstMove; }
 
-    wstring const& GetName() const { return m_wstrColor; }
+    wstring const& GetName() const { return m_pPlayerType->m_wstrName; }
 
     Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
@@ -100,16 +101,15 @@ public:
 private:
 
     PieceTypeId                     m_pieceTypeIdMove; 
+    PlayerType              const * m_pPlayerType;
     Strategy                      * m_pStrategy;
     unsigned int                    m_remainingPieces; 
     int                             m_iResult;
     bool                            m_bFinished;       
     bool                            m_bFirstMove;      
-    Color                           m_color;
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
     vector<CoordPos>                m_contactPntsOnBoard;
     BoardMap                        m_validPositions;
-    wstring                         m_wstrColor;
     HiResTimer                      m_timer;
 
     void reduceValidMoves(Move const&, PieceType const&);

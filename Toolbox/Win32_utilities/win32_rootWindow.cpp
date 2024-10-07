@@ -384,9 +384,13 @@ void ArrangeVertical
 	if (!pWinTop || !pWinBottom)
 		return;
 
-	//HWND hwnd1 = pWinTop->GetParent();
-	//HWND hwnd2 = pWinBottom->GetParent();
-	Assert(pWinTop->GetParent() == pWinBottom->GetParent());
+	HWND hwnd1 = pWinTop->GetParent();
+	HWND hwnd2 = pWinBottom->GetParent();
+	if (pWinTop->GetParent() != pWinBottom->GetParent())
+	{
+		int x = 42;
+	}
+ 	Assert(pWinTop->GetParent() == pWinBottom->GetParent());
 
 	PixelRectSize const size         { ::GetClRectSize(pWinTop->GetParent()) };
 	PIXEL         const pixNetHeight { size.GetY() - pixFrameWidth * 3 };
