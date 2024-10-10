@@ -7,7 +7,6 @@ module StatisticsWindow;
 import Resource;
 import Strsafe;
 import EvoCoreLib;
-import EvoStatistics;
 import EvoReadBuffer;
 import BaseWindow
 

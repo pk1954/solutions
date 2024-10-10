@@ -9,7 +9,6 @@ import BoolOp;
 import EvoCoreLib;
 import EvolutionTypes;
 import ColorManager;
-import ActionTimer;
 import EventInterface;
 import ObserverInterface;
 import EvoHistorySysGlue;
@@ -26,7 +25,6 @@ public:
     (
 		HWND                const,
 		ColorManager      * const,
-		ActionTimer       * const,
 		EventInterface    * const,
 		ObserverInterface * const, 
 	    EvoHistorySysGlue * const

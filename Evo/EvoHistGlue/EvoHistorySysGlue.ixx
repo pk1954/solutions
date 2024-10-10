@@ -45,7 +45,7 @@ public:
 private:
 	EvolutionCore const * getEvolutionCore(HistGeneration const) const;
 
-	//HistAllocThread  m_HistAllocThread;
+	HistAllocThread  m_HistAllocThread;
 	EvoModelFactory  m_EvoModelFactory;
 	HistorySystem  * m_pHistorySystem;
 };

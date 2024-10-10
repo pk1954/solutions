@@ -114,5 +114,29 @@
     <ClCompile Include="Statistics.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AppMenu.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppWindowInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAppWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAppWindow.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedControl.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkThreadInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkThreadInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

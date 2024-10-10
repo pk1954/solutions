@@ -32,7 +32,7 @@ import PerformanceWindow;
 import GenerationDisplay;
 import StatusBar;
 import ScriptHook;
-import GraphicsInterface;
+import D3D_driver;
 import EvoModelDataGlue;
 import EvolutionCore;
 import DspOptWindow;
@@ -79,7 +79,7 @@ private:
 	PerformanceWindow      * m_pPerfWindow;
 	CrsrWindow             * m_pCrsrWindow;
 	StatisticsWindow       * m_pStatistics;
-	GraphicsInterface      * m_pGraphics;
+	D3D_driver             * m_pGraphics;
 	FocusPoint             * m_pFocusPoint;
 	GenerationDisplay      * m_pGenerationDisplay;
 };

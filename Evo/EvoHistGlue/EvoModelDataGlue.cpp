@@ -4,6 +4,7 @@
 
 module EvoHistGlueLib:EvoModelDataGlue;
 
+import Debug;
 import EvoCoreLib;
 import :EvoGenerationCmd;
 

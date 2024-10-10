@@ -41,7 +41,7 @@ public:
 		ThreadMsgDispatcher(MSG{0,0,0,0});
 	}
 
-	void ThreadMsgDispatcher(MSG msg)
+	void ThreadMsgDispatcher(MSG const &msg)
 	{
 		if (m_pHistorySys->AddHistorySlot())                    // if allocation of slot 
 		{                                                       // was successfull,

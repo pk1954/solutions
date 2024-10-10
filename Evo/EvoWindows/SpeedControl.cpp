@@ -1,9 +1,10 @@
 // SpeedControl.cpp
 //
-// Win32_appFramework
+// EvoWindows
 
 module SpeedControl;
 
+import WinBasics;
 import Win32_Util_Resource;
 
 StatusBar     * SpeedControl::m_pStatusBar     = nullptr;

@@ -6,7 +6,6 @@ module PerformanceWindow;
 
 import std;
 import Strsafe;
-import ActionTimer;
 
 using std::chrono::milliseconds;
 using std::chrono::microseconds;

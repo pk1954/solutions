@@ -1,6 +1,6 @@
 // WorkThreadInterface.cpp
 //
-// Win32_appFramework
+// EvoWindows
 
 module WorkThreadInterface;
 
@@ -8,11 +8,11 @@ module WorkThreadInterface;
 import std;
 import Debug;
 import SaveCast;
+import Resource;
 import RunTime;
 import Win32_Util_Resource;
 import EventInterface;
 import Thread;
-import ActionTimer;
 
 using std::wostream;
 using std::wcout;
@@ -21,7 +21,6 @@ using std::endl;
 WorkThread::WorkThread
 (
 	HWND                  const hwndApplication,
-	//ActionTimer         * const pActionTimer,   //TODO
 	EventInterface      * const pEvent,
 	ObserverInterface   * const pObserver,
 	HistorySystem       * const pHistSystem,
@@ -29,7 +28,7 @@ WorkThread::WorkThread
 	WorkThreadInterface * const pWorkThreadInterface,
 	bool                  const bAsync
 ) :
-	m_pComputeTimer       (pActionTimer),
+	//m_pComputeTimer       (pActionTimer),
 	m_pEventPOI           (pEvent),   
 	m_pObserver           (pObserver),   
 	m_pHistorySystem      (pHistSystem),
@@ -48,7 +47,7 @@ WorkThread::~WorkThread()
 {
 	m_hwndApplication      = nullptr;
 	m_pWorkThreadInterface = nullptr;
-	m_pComputeTimer        = nullptr;
+	//m_pComputeTimer        = nullptr;
 	m_pEventPOI            = nullptr;
 	m_pObserver            = nullptr;
 	m_pHistorySystem       = nullptr;
@@ -213,13 +212,13 @@ void WorkThread::GotoGeneration(HistGeneration const gen)
 				(m_pHistorySystem->GetCurrentGeneration() == m_pHistorySystem->GetYoungestGeneration())
 			)     
 		{                                                    // Normal case: Compute next generation
-			if (m_pComputeTimer != nullptr)
-				m_pComputeTimer->TimerStart();               // prepare for time measurement
+			//if (m_pComputeTimer != nullptr)
+			//	m_pComputeTimer->TimerStart();               // prepare for time measurement
 
 			m_pHistorySystem->CreateAppCommand(GenerationCmd::NextGenCmd());  //////// here the real work is done! ////////////////
 
-			if (m_pComputeTimer != nullptr)
-				m_pComputeTimer->TimerStop();                     // measure computation time
+			//if (m_pComputeTimer != nullptr)
+			//	m_pComputeTimer->TimerStop();                     // measure computation time
 		}
 		else  // we are somewhere in history
 		{

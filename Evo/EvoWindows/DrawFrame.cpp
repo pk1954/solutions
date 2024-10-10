@@ -4,7 +4,7 @@
 
 import EvoCoreLib;
 import EvoReadBuffer;
-import GraphicsInterface;
+import D3D_driver;
 import DisplayOptions;
 import ColorManager;
 
@@ -27,12 +27,12 @@ DrawFrame::DrawFrame()
 
 void DrawFrame::Start
 (
-	HWND                const hwnd,
-	EvoReadBuffer     * const pReadBuffer,
-	EvoPixelCoords    * const pEvoPixelCoords, 
-	GraphicsInterface * const pGraphics,
-	DspOptWindow      * const pDspOptWindow,
-	ColorManager      * const pColorManager
+	HWND             const hwnd,
+	EvoReadBuffer  * const pReadBuffer,
+	EvoPixelCoords * const pEvoPixelCoords, 
+	D3D_driver     * const pGraphics,
+	DspOptWindow   * const pDspOptWindow,
+	ColorManager   * const pColorManager
 ) 
 {
 	m_hwnd            = hwnd;

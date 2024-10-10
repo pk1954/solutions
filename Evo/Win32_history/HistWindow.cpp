@@ -40,12 +40,10 @@ void HistWindow::Start
     HWND const hwndHistory = StartBaseWindow
     (
         hwndParent,
-        CS_OWNDC | CS_DBLCLKS,
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,
-		nullptr
-		//[&]() { return ! m_pWorkThreadInterface->IsRunning(); }
+		nullptr  // [&]() { return ! m_pWorkThreadInterface->IsRunning(); }
    );
 
     AddWindowExStyle(hwndHistory, WS_EX_STATICEDGE);
@@ -110,7 +108,7 @@ PixelRect HistWindow::getGenerationRect  // position is relative to client area
 
 HistGeneration HistWindow::getGenFromXpos(LPARAM const lParam) const
 {
-    PIXEL          const pixXpos  { PIXEL(GetXlparam(lParam)) };
+    PIXEL          const pixXpos  { PIXEL(CrsrXpos(lParam)) };
     PIXEL          const pixWidth { GetClientWindowWidth() };
     long           const lNrOfGens{ m_pHistSys->GetNrOfGenerations().GetLong() };
     HistGeneration const genMax   { lNrOfGens - 1 };

@@ -1,6 +1,6 @@
 // AppWindowInterface.ixx
 //
-// Win32_appFramework
+// EvoWindows
 
 export module AppWindowInterface;
 

@@ -1,6 +1,6 @@
 // BaseAppWindow.cpp
 //
-// Win32_appFramework
+// EvoWindows
 
 module BaseAppWindow;
 
@@ -10,6 +10,7 @@ import HistoryLib;
 import WinBasics;
 import Win32_Util_Resource;
 //import UtilityWrappers;
+import Resource;
 import AboutBox;
 import BaseWindow;
 import AppMenu;
@@ -61,7 +62,6 @@ void BaseAppWindow::Initialize
 	m_hwndApp = StartBaseWindow
 	(
 		nullptr, 
-		CS_HREDRAW | CS_VREDRAW, 
 		L"ClassAppWindow", 
 		WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,
 		nullptr,
@@ -234,7 +234,7 @@ bool BaseAppWindow::ProcessFrameworkCommand(WPARAM const wParam, LPARAM const lP
 	case IDM_HIST_INFO:
 	case IDM_HIST_WINDOW:
 		Assert(m_bUseHistorySystem);
-		::SendMessage(m_WinManager.GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
+		::SendMessageW(m_WinManager.GetHWND(wmId), WM_COMMAND, IDM_WINDOW_ON, 0);
 		break;
 
 	case IDM_FORWARD:

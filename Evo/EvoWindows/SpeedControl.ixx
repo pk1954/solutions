@@ -5,7 +5,6 @@
 export module SpeedControl;
 
 import WorkThreadInterface;
-import LogarithmicTrackbar;
 import StatusBar;
 import HistoryLib;
 

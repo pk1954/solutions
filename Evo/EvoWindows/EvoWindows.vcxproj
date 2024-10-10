@@ -148,6 +148,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppMenu.ixx" />
+    <ClCompile Include="AppWindowInterface.ixx" />
+    <ClCompile Include="BaseAppWindow.cpp" />
+    <ClCompile Include="BaseAppWindow.ixx" />
     <ClCompile Include="ColorManager.ixx" />
     <ClCompile Include="CrsrWindow.ixx" />
     <ClCompile Include="DrawFrame.ixx" />
@@ -164,6 +168,8 @@
     <ClCompile Include="PerformanceWindow.ixx" />
     <ClCompile Include="ProtocolServer.ixx" />
     <ClCompile Include="Resource.ixx" />
+    <ClCompile Include="SpeedControl.cpp" />
+    <ClCompile Include="SpeedControl.ixx" />
     <ClCompile Include="Statistics.ixx" />
     <ClCompile Include="TextDisplay.ixx" />
     <ClCompile Include="ColorManager.cpp" />
@@ -179,6 +185,8 @@
     <ClCompile Include="StatisticsWindow.cpp" />
     <ClCompile Include="EvoWorkThread.cpp" />
     <ClCompile Include="EvoWorkThreadInterface.cpp" />
+    <ClCompile Include="WorkThreadInterface.cpp" />
+    <ClCompile Include="WorkThreadInterface.ixx" />
     <ClCompile Include="Wrappers.cpp" />
     <ClCompile Include="Wrappers.ixx" />
   </ItemGroup>
@@ -198,8 +206,8 @@
     <ProjectReference Include="..\Toolbox\History\History.vcxproj">
       <Project>{0bfc7d59-a231-449a-90c2-eb64c59289ba}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
-      <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
+    <ProjectReference Include="..\Win32_history\Win32_history.vcxproj">
+      <Project>{1f07043f-bc80-42a8-ac9e-ff92cacda7e4}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,6 @@
 // WorkThreadInterface.ixx
 //
-// Win32_appFramework
+// EvoWindows
 
 export module WorkThreadInterface;
 
@@ -48,7 +48,6 @@ public:
 	WorkThread
 	(
 		HWND                  const,
-		//ActionTimer         * const,   //TODO
 		EventInterface      * const,
 		ObserverInterface   * const,
 		HistorySystem       * const,
@@ -127,7 +126,6 @@ private:
 
 	bool userWantsHistoryCut() const;
 
-	//ActionTimer         * m_pComputeTimer;   //TODO
     EventInterface      * m_pEventPOI;
 	ObserverInterface   * m_pObserver;
     HistorySystem       * m_pHistorySystem;   // if HistorySystem is not used: nullptr 

@@ -288,9 +288,6 @@
     <ProjectReference Include="..\EvoWindows\EvoWindows.vcxproj">
       <Project>{8830da2b-c953-4702-a9e7-3bce05366f1b}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Win32_appFramework\Win32_appFramework.vcxproj">
-      <Project>{094eda97-b901-45f1-9735-dac22c5bc699}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

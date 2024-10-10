@@ -10,7 +10,7 @@ import Types;
 import TextDisplay;
 import EvoCoreLib;
 import EvoReadBuffer;
-import GraphicsInterface;
+import D3D_driver;
 import ColorManager;
 import DspOptWindow;
 
@@ -23,12 +23,12 @@ public:
 
     void Start
 	(
-		HWND                const, 
-		EvoReadBuffer     * const, 
-		EvoPixelCoords    * const, 
-		GraphicsInterface * const,
-		DspOptWindow      * const, 
-		ColorManager      * const
+		HWND             const, 
+		EvoReadBuffer  * const, 
+		EvoPixelCoords * const, 
+		D3D_driver     * const,
+		DspOptWindow   * const, 
+		ColorManager   * const
 	);
 
     void ResizeDrawFrame(EvolutionCore const * const);
@@ -45,17 +45,17 @@ private:
     DrawFrame             (DrawFrame const &);  // noncopyable class 
     DrawFrame & operator= (DrawFrame const &);  // noncopyable class 
 
-	HWND                m_hwnd;
-	GridPoint           m_gpHighlight;
-	TextDisplay         m_TextDisplay;
-	GridPointShape      m_GridPointShape;
+	HWND             m_hwnd;
+	GridPoint        m_gpHighlight;
+	TextDisplay      m_TextDisplay;
+	GridPointShape   m_GridPointShape;
 	
-	EvoReadBuffer     * m_pReadBuffer;
-    EvoPixelCoords    * m_pEvoPixelCoords;
-    DspOptWindow      * m_pDspOptWindow;
-	ColorManager      * m_pColorManager;  
-    GraphicsInterface * m_pGraphics;
-	Shape const       * m_pShapeHighlight;
+	EvoReadBuffer  * m_pReadBuffer;
+    EvoPixelCoords * m_pEvoPixelCoords;
+    DspOptWindow   * m_pDspOptWindow;
+	ColorManager   * m_pColorManager;  
+    D3D_driver     * m_pGraphics;
+	Shape const    * m_pShapeHighlight;
 
 	static ColIndex const MAX_BG_COLOR()
 	{

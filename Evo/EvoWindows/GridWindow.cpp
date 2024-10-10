@@ -12,7 +12,7 @@ import EvoReadBuffer;
 import ColorManager;
 import FocusPoint;
 import CrsrWindow;:
-import GraphicsInterface;
+import D3D_driver;
 import EvoWorkThreadInterface;
 import PackGridPoint;
 import DspOptWindow;
@@ -35,7 +35,6 @@ void GridWindow::InitClass
     EvoWorkThreadInterface * const pWorkThreadInterface,
     FocusPoint             * const pFocusPoint,
     DspOptWindow           * const pDspOptWindow,
-	//ActionTimer            * const pActionTimer,  //TODO
 	ColorManager           * const pColorManager
 )
 {
@@ -59,11 +58,11 @@ GridWindow::GridWindow() :
 
 void GridWindow::Start
 (
-	HWND                const hwndApp, 
-	GraphicsInterface * const pGraphics,
-    DWORD               const dwStyle,
-    PIXEL               const pixFieldSize,
-	function<bool()>    const visibilityCriterion
+	HWND             const hwndApp, 
+	D3D_driver     * const pGraphics,
+    DWORD            const dwStyle,
+    PIXEL            const pixFieldSize,
+	function<bool()> const visibilityCriterion
 )
 {
     Assert(pixFieldSize > 0_PIXEL);
@@ -76,7 +75,6 @@ void GridWindow::Start
 	HWND hwnd = StartBaseWindow
     (
         hwndApp,
-        CS_OWNDC | CS_DBLCLKS,
         L"ClassGridWindow",
         dwStyle,
 		nullptr,

@@ -26,6 +26,7 @@ export inline int const IDM_CHANGE_GRID_TYPE_WIDTH              { 154 };
 export inline int const IDM_CHANGE_GRID_TYPE_HEIGHT             { 155 };
 export inline int const IDM_GRID_TYPE_RECT                      { 156 };
 export inline int const IDM_GRID_TYPE_HEX                       { 157 };
+export inline int const IDM_HIST_BUFFER_FULL                    { 158 };
 
 export inline int const IDM_CHOOSE_SELECTION_COLOR              { 161 };
 export inline int const IDM_CHOOSE_HIGHLIGHT_COLOR              { 162 };

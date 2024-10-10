@@ -9,7 +9,7 @@ import Types;
 import WinBasics;
 import D3D_driver;
 import EvoCoreLib;
-import GraphicsInterface;
+import D3D_driver;
 
 using std::wostringstream;
 
@@ -24,7 +24,7 @@ public:
 
 	void Start
 	(
-		GraphicsInterface* pGgraphicsInterface,
+		D3D_driver* pGgraphicsInterface,
 		wostringstream* pBuffer,
 		EvoPixelCoords* pEvoPixelCoords
 	)
@@ -73,7 +73,7 @@ public:
 private:
 	static COLORREF const CLR_WHITE = MakeRGB(255, 255, 255);
 
-	GraphicsInterface * m_pGraphics;
+	D3D_driver * m_pGraphics;
 	wostringstream    * m_pBuffer;
 	EvoPixelCoords    * m_pEvoPixelCoords;
 };

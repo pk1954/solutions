@@ -17,7 +17,7 @@ export GridPoint UnpackFromLParam(LPARAM const lParam)
 {
 	return GridPoint
 	(
-		GridCoord(Cast2Short(GetXlparam(lParam))), 
-		GridCoord(Cast2Short(GetYlparam(lParam))) 
+		GridCoord(Cast2Short(CrsrXpos(lParam))), 
+		GridCoord(Cast2Short(CrsrYpos(lParam))) 
 	);
 }

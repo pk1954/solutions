@@ -8,7 +8,7 @@ import WinBasics;
 import EvoCoreLib;
 import EvoReadBuffer;
 import TextWindow;
-import EvoStatistics;
+import EvoCoreLib;
 
 export class StatisticsWindow : public TextWindow
 {

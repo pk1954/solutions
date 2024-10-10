@@ -1,6 +1,6 @@
 // BaseAppWindow.ixx
 //
-// Win32_appFramework
+// EvoWindows
 
 export module BaseAppWindow;
 

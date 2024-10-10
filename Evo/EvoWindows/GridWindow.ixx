@@ -10,10 +10,9 @@ import EvoCoreLib;
 import EvoReadBuffer:
 import BaseWindow;
 import DrawFrame;
-import GraphicsInterface;
+import D3D_driver;
 import EvoWorkThreadInterface;
 import DspOptWindow;
-//import ActionTimer;  //TODO
 import FocusPoint;
 import ColorManager;
 
@@ -26,7 +25,6 @@ public:
         EvoWorkThreadInterface * const,
         FocusPoint             * const,
         DspOptWindow           * const,
-        //ActionTimer            * const, //TODO
 		ColorManager           * const 
 	);
 
@@ -34,11 +32,11 @@ public:
 
     void Start
 	(
-		HWND                const, 
-		GraphicsInterface * const, 
-		DWORD               const, 
-		PIXEL               const, 
-		function<bool()>    const
+		HWND             const, 
+		D3D_driver     * const, 
+		DWORD            const, 
+		PIXEL            const, 
+		function<bool()> const
 	);
 	void Stop();
 
@@ -73,7 +71,7 @@ private:
 	EvoPixelCoords m_EvoPixelCoords; 
 	DrawFrame      m_DrawFrame;
 
-	GraphicsInterface * m_pGraphics;
+	D3D_driver        * m_pGraphics;
     GridWindow        * m_pGridWindowObserved; // Observed GridWindow (or nullptr)
     ObserverInterface * m_pObserverInterface;
     PixelPoint 	        m_ptLast;	 	   // Last cursor position during selection 
