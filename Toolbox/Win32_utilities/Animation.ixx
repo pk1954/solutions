@@ -84,6 +84,8 @@ public:
         m_uiMsPeriod = uiMsPeriod;
     }
 
+    bool TargetReached() { return m_bTargetReached; }
+
 private:
     ANIM_TYPE * m_pAnimated {};
     ANIM_TYPE   m_actual    {};
@@ -113,7 +115,7 @@ private:
         m_rootWindow.PostMsg  // calls AnimationUpdate from UI thread
         (
             WM_APP_UI_CALL, 
-            0, 
+            static_cast<WPARAM>(m_bTargetReached),
             bit_cast<LPARAM>(m_pCmd)
         );
     }

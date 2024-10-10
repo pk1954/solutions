@@ -9,6 +9,7 @@ import IoUtil;
 import WinBasics;
 import Win32_Util_Resource;
 import MessagePump;
+import WinManager;
 import BlokusCore;
 import Resource;
 
@@ -18,12 +19,21 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 {
 	m_pwstrProductName = &wstrProductName;
 	m_aboutBox.SetProductName(wstrProductName);
-	m_hwndApp = StartBaseWindow(nullptr, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
+
+	WinManager::Initialize();
+
+	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
 	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
 	m_mainWindow.Start(m_hwndApp, &m_tournament);
 	m_statusBar .Start(m_hwndApp);
 	m_appMenu   .Start(m_hwndApp);
 	m_tournamentWindow.Start(&m_tournament);
+
+	WinManager::AddWindow(L"IDM_APPL_WINDOW",       RootWinId(IDM_APPL_WINDOW      ), m_hwndApp,                     true,  true );
+	WinManager::AddWindow(L"IDM_STATUS_BAR",        RootWinId(IDM_STATUS_BAR       ), m_statusBar.GetWindowHandle(), false, false);
+	WinManager::AddWindow(L"IDM_MAIN_WINDOW",       RootWinId(IDM_MAIN_WINDOW      ), m_mainWindow,                  true,  false);
+	WinManager::AddWindow(L"IDM_TOURNAMENT_WINDOW", RootWinId(IDM_TOURNAMENT_WINDOW), m_hwndApp,                     true,  true );
+
 	BlokusPreferences::m_bShowContactPnts.RegisterObserver(m_mainWindow);
 	BlokusPreferences::m_bShowCornerCells.RegisterObserver(m_mainWindow);
 	m_tournament                         .RegisterObserver(m_tournamentWindow);
@@ -72,7 +82,7 @@ void BlokusAppWindow::configureStatusBar()
 	m_statusBarDispFunctor.Initialize(& m_statusBar, iPart);
 	m_statusMessagePart = iPart;
 	m_statusBar.LastPart();
-	::ArrangeVertical(&m_mainWindow,       &m_statusBar);
+	::ArrangeVertical(&m_mainWindow, &m_statusBar);
 }
 
 void BlokusAppWindow::OnClose()
