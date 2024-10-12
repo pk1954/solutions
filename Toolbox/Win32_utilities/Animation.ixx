@@ -5,16 +5,14 @@
 export module Animation;
 
 import std;
-import Win32_Util_Resource;
 import WinBasics;
-import RootWindow;
-import WinCommand;
 import SmoothMoveFp;
 import ThreadPoolTimer;
 
-using std::bit_cast;
 using std::move;
-using std::same_as;
+using std::bit_cast;
+using std::function;
+//using std::same_as;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
 
@@ -32,14 +30,8 @@ public:
 
     //static_assert(IsLinearCombinable<ANIM_TYPE>, "ANIM_TYPE must be linear combinable");
 
-    Animation
-    (
-        RootWindow & rootWindow,
-        WinCommand * pCmd, 
-        DWORD  const dwFlags = 0
-    )
-      : m_rootWindow(rootWindow),
-        m_pCmd(pCmd),
+    Animation(auto const &func, DWORD const dwFlags = 0)
+      : m_func(func),
         m_dwFlags(dwFlags)
     {}
 
@@ -61,7 +53,9 @@ public:
             m_uiMsPeriod, 
             [](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
             {
-                bit_cast<Animation<ANIM_TYPE>*>(pContext)->next();
+                Animation<ANIM_TYPE>* pAnim { bit_cast<Animation<ANIM_TYPE>*>(pContext) };
+                if (! pAnim->m_bTargetReached)
+                    pAnim->next();
             },
             this
         );
@@ -87,14 +81,15 @@ public:
     bool TargetReached() { return m_bTargetReached; }
 
 private:
+
+    function<void(bool const)> m_func; 
+
     ANIM_TYPE * m_pAnimated {};
     ANIM_TYPE   m_actual    {};
     ANIM_TYPE   m_start     {};
     ANIM_TYPE   m_distance  {};
 
-    RootWindow & m_rootWindow;
     SmoothMoveFp m_smoothMove;
-    WinCommand * m_pCmd           { nullptr };
     DWORD  const m_dwFlags        { 0 };
     SRWLOCK      m_srwlData       { 0 };
     unsigned int m_uiMsPeriod     { 50 };
@@ -110,39 +105,17 @@ private:
         ReleaseSRWLockExclusive(& m_srwlData);
     }
 
-    void callUI() // runs in animation thread
-    {
-        m_rootWindow.PostMsg  // calls AnimationUpdate from UI thread
-        (
-            WM_APP_UI_CALL, 
-            static_cast<WPARAM>(m_bTargetReached),
-            bit_cast<LPARAM>(m_pCmd)
-        );
-    }
-
     void next() // runs in animation thread
     {
-        if (! m_bTargetReached)
+        m_bTargetReached = m_smoothMove.Next();
+        setActual(m_start + m_distance * m_smoothMove.GetPos());
+        if (m_bTargetReached)
         {
-            m_bTargetReached = m_smoothMove.Next();
-            setActual(m_start + m_distance * m_smoothMove.GetPos());
-            if (m_bTargetReached)
-            {
-                if (m_dwFlags & ANIMATION_RECURRING)
-                {
-                    setActual(m_start);
-                    callUI();
-                }
-                else
-                {
-                    callUI();
-                    m_timer.StopTimer();
-                }
-            }
+            if (m_dwFlags & ANIMATION_RECURRING)
+                setActual(m_start);
             else
-            { 
-                callUI();
-            }
+                m_timer.StopTimer();
         }
+        m_func(m_bTargetReached);
     }
 };

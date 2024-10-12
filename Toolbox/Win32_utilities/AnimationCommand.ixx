@@ -8,10 +8,12 @@ import std;
 import RootWindow;
 import Animation;
 import WinCommand;
+import Win32_Util_Resource;
 
 export import Commands;
 
 using std::unique_ptr;
+using std::bit_cast;
 
 export using std::wstring;
 export using std::make_unique;
@@ -32,7 +34,18 @@ public:
         m_start (start),
         m_target(target)
     {
-        m_upAnimation = make_unique<Animation<ANIM_TYPE>>(m_rootWinAnim, this);
+        m_upAnimation = make_unique<Animation<ANIM_TYPE>>
+        (
+            [this](bool const bTargetReached)
+            {
+                m_rootWinAnim.PostMsg  // calls AnimationUpdate from UI thread
+                (
+                    WM_APP_UI_CALL, 
+                    static_cast<WPARAM>(bTargetReached),
+                    bit_cast<LPARAM>(this)
+                );
+            }
+        );
     }
 
     void SetNrOfSteps(unsigned int const  uiNrOfSteps)
