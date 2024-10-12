@@ -756,8 +756,8 @@ void D2D_driver::Pop()
 	m_pRenderTarget->SetTransform(m_originalTransform);
 }
 
-void D2D_driver::Rotation(fPixelPoint const center, float const angle)
+void D2D_driver::Rotation(fPixelPoint const center, float const fAngle)
 {
-	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(angle, D2D1::Point2F(center.GetXvalue(), center.GetYvalue())));
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(fAngle, D2D1::Point2F(center.GetXvalue(), center.GetYvalue())));
 }
 

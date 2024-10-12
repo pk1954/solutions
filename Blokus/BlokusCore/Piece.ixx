@@ -15,6 +15,7 @@ export class Piece
 public:
     void Reset(PieceTypeId const id)
     {
+        m_bAvailable  = true;
         m_idPieceType = id;
         SetPiecePos(GetPieceTypeC().GetInitialPos());
     }
@@ -22,7 +23,7 @@ public:
     void SetPiecePos(CoordPos const& pos) { m_pos = pos; }
     void SetShapeId (ShapeId  const  id)  { m_idShape = id; }
 
-    bool IsAvailable() const { return m_pos.GetXvalue() > BOARD_SIZE;}
+    bool IsAvailable() const { return m_bAvailable; }
 
     CoordPos  const& GetPiecePos()    const { return m_pos; }
     PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
@@ -30,12 +31,14 @@ public:
 
     void PerformMove(Move const& move)
     {
+        m_bAvailable = false;
         SetPiecePos(move.GetCoordPos());
         SetShapeId (move.GetShapeId());
     }
 
 private:
-    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
     CoordPos    m_pos         { -1_COORD, -1_COORD };
     ShapeId     m_idShape     { ShapeId(0) };
+    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
+    bool        m_bAvailable  { true };
 };

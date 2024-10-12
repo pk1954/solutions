@@ -89,6 +89,7 @@ void Shape::Flip()
 	for (int y = 1; y < MAX_SHAPE_EXTENSION; ++y)
 		for (int x = 0; x < y; ++x)
 			swap(m_shape[y][x], m_shape[x][y]);
+	m_bFlipped = !m_bFlipped;
 	normalize();
 }
 
@@ -99,6 +100,7 @@ void Shape::Rotate()
 		for (int x = 0; x < MAX_SHAPE_EXTENSION; ++x)
 			rotShape[y][x] = m_shape[(MAX_SHAPE_EXTENSION-1)-x][y];
 	m_shape = rotShape;
+	m_rotation += 90.0_Degrees; 
 	normalize();
 }
 

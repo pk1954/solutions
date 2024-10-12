@@ -11,7 +11,22 @@ import :PieceTypeId;
 
 using std::array;
 
-using ROUND = array<Move, NR_OF_PLAYERS>;
+struct PlayerMove
+{
+    PlayerMove() = default;
+
+    PlayerMove(Move const &move) :
+        m_boardPos   (move.GetCoordPos()),
+        m_idShape    (move.GetShapeId()),
+        m_idPieceType(move.GetPieceTypeId())
+    {}
+
+    CoordPos    m_boardPos;
+    ShapeId     m_idShape;
+    PieceTypeId m_idPieceType;
+};
+
+using ROUND = array<PlayerMove, NR_OF_PLAYERS>;
 
 export class MatchProtocol
 {
@@ -23,10 +38,10 @@ public:
 
     void Add(Move const& move)
     {
-        //PlayerId const id { move.GetPlayerId() };
-        //m_list[m_round][id.GetValue()] = move;
-        //if (i == LAST_PLAYER)
-        //    ++m_round;
+        PlayerId const id { move.GetPlayerId() };
+        m_list[m_round][id.GetValue()] = move;
+        if (id == LAST_PLAYER)
+            ++m_round;
     }
 
 private:

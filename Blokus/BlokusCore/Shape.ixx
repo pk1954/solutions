@@ -63,6 +63,8 @@ private:
 
     SHAPE                 m_shape;
 	vector<ShapeCoordPos> m_cornerPnts;
+	Degrees               m_rotation  { 0.0_Degrees };
+	bool                  m_bFlipped  { false };
 
 	bool isCornerPnt  (CoordPos const&) const;
 	bool isPartOfShape(ShapeCoordPos const&) const;
