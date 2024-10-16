@@ -5,10 +5,11 @@
 export module BlokusCore:Piece;
 
 import Debug;
+import Types;
 import :BlokusCoords;
 import :PieceTypeId;
 import :Components;
-import :Move;
+import :BlokusMove;
 
 export class Piece
 {
@@ -20,16 +21,17 @@ public:
         SetPiecePos(GetPieceTypeC().GetInitialPos());
     }
 
-    void SetPiecePos(CoordPos const& pos) { m_pos = pos; }
+    void SetPiecePos(CoordPos const& pos) { m_umPos = Convert2fCoord(pos); }
     void SetShapeId (ShapeId  const  id)  { m_idShape = id; }
 
     bool IsAvailable() const { return m_bAvailable; }
 
-    CoordPos  const& GetPiecePos()    const { return m_pos; }
-    PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
-    PieceType const& GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
+	MicroMeterPnt       &GetMicroMeterPos()        { return m_umPos; }
+	MicroMeterPnt const &GetMicroMeterPosC() const { return m_umPos; }
+    PieceTypeId          GetPieceTypeId()    const { return m_idPieceType; }
+    PieceType     const  GetPieceTypeC()     const { return Components::GetPieceTypeC(m_idPieceType); }
 
-    void PerformMove(Move const& move)
+    void PerformMove(BlokusMove const& move)
     {
         m_bAvailable = false;
         SetPiecePos(move.GetCoordPos());
@@ -37,8 +39,11 @@ public:
     }
 
 private:
-    CoordPos    m_pos         { -1_COORD, -1_COORD };
-    ShapeId     m_idShape     { ShapeId(0) };
-    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
-    bool        m_bAvailable  { true };
+	MicroMeterPnt m_umPos       { NP_NULL };
+    CoordPos      m_coordPos    { -1_COORD, -1_COORD };
+    ShapeId       m_idShape     { ShapeId(0) };
+    PieceTypeId   m_idPieceType { UndefinedPieceTypeId };
+	Degrees       m_rotation    { 0.0_Degrees };
+	bool          m_bFlipped    { false };
+    bool          m_bAvailable  { true };
 };

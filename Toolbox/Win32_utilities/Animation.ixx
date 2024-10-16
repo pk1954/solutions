@@ -30,16 +30,23 @@ public:
 
     //static_assert(IsLinearCombinable<ANIM_TYPE>, "ANIM_TYPE must be linear combinable");
 
-    Animation(auto const &func, DWORD const dwFlags = 0)
+    Animation() = default;
+
+    Animation(auto const &func = nullptr, DWORD const dwFlags = 0)
       : m_func(func),
         m_dwFlags(dwFlags)
     {}
 
+    void SetUpdateLambda(auto const &func)
+    {
+        m_func = func;
+    }
+
     void Start     // runs in UI thread
     (
-        ANIM_TYPE      * pAnimated, 
-        ANIM_TYPE const& start,
-        ANIM_TYPE const& target
+        ANIM_TYPE       *pAnimated, 
+        ANIM_TYPE const &start,
+        ANIM_TYPE const &target
     )
     {
         m_pAnimated      = pAnimated;
@@ -82,7 +89,7 @@ public:
 
 private:
 
-    function<void(bool const)> m_func; 
+    function<void(bool const)> m_func { nullptr };
 
     ANIM_TYPE * m_pAnimated {};
     ANIM_TYPE   m_actual    {};

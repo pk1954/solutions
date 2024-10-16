@@ -1,18 +1,24 @@
-// Move.ixx
+// BlokusMove.ixx
 //
 // BlokusCore
 
-export module BlokusCore:Move;
+export module BlokusCore:BlokusMove;
 
 import :PlayerId;
 import :PieceTypeId;
 import :BlokusCoords;
 import :ShapeId;
-import :Shape;
 
-export class Move
+export class BlokusMove
 {
 public:
+    void Reset()
+    {
+        m_idPlayer    = NO_PLAYER;
+        m_idPieceType = UndefinedPieceTypeId;
+        m_idShape     = UndefinedShapeId;
+        m_boardPos    = UndefinedCoordPos;
+    }
 
     PlayerId    GetPlayerId   () const { return m_idPlayer;    }
     PieceTypeId GetPieceTypeId() const { return m_idPieceType; }
@@ -24,8 +30,8 @@ public:
     void SetShapeId    (ShapeId     const idShape    ) { m_idShape     = idShape;     }
     void SetCoordPos   (CoordPos    const coordPos   ) { m_boardPos    = coordPos;    }
 
-    bool Defined()   { return m_idPlayer != NO_PLAYER; }
-    bool Undefined() { return m_idPlayer == NO_PLAYER; }
+    bool Defined()   const { return m_idPlayer != NO_PLAYER; }
+    bool Undefined() const { return m_idPlayer == NO_PLAYER; }
 
 private:
 

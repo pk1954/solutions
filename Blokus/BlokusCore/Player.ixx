@@ -20,7 +20,7 @@ import :RuleServerInterface;
 import :Components;
 import :BlokusCoords;
 import :Strategy;
-import :Move;
+import :BlokusMove;
 
 using std::array;
 using std::vector;
@@ -45,8 +45,8 @@ public:
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
 
-    Move SelectMove(RuleServerInterface const&);
-    void PerformMove(Move const&);
+    BlokusMove SelectMove(RuleServerInterface const&);
+    void       PerformMove(BlokusMove&);
 
     void Apply2AllPieces(auto const& func)
     {
@@ -119,6 +119,6 @@ private:
     BoardMap           m_validPositions;
     HiResTimer         m_timer;
 
-    void reduceValidMoves(Move const&);
-    void finalize        (Move const&);
+    void reduceValidMoves(BlokusMove const&);
+    void finalize        (BlokusMove&);
 };

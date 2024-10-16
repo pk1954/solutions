@@ -9,10 +9,11 @@ import Types;
 import Color;
 import Direct2D;
 import DrawContext;
+import :BlokusMove;
 import :BlokusCoords;
 import :Components;
 import :PieceType;
-import :Move;
+import :PlayerId;
 import :Shape;
 
 MicroMeterPnt GetCenter(CoordPos const& coordPos)
@@ -63,7 +64,7 @@ export void ShapeSquare
 	colSquare(context, umPosCenter, darker(col), umHalfSize * 0.8f);
 }
 
-Shape const& GetShapeC(Move const &move)
+Shape const& GetShapeC(BlokusMove const &move)
 {
     PieceType const& pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
     Shape     const& shape     { pieceType  .GetShapeC    (move.GetShapeId()) };

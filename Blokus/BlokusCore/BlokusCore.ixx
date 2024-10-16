@@ -12,7 +12,7 @@ export import :Components;
 export import :Board;
 export import :Match;
 export import :MatchProtocol;
-export import :Move;
+export import :BlokusMove;
 export import :Player;
 export import :Players;
 export import :PlayerId;

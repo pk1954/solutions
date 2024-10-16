@@ -58,7 +58,7 @@ void Player::DrawFreePieces(DrawContext &context) const
 	(
 		[this, &context](Piece const& piece)
 		{
-			MicroMeterPnt const umPos { Convert2fCoord(piece.GetPiecePos()) };
+			MicroMeterPnt const umPos { piece.GetMicroMeterPosC() };
 			Color         const col   { m_pPlayerType->m_color };
 			piece.GetPieceTypeC().Draw(context, umPos, col);
 		}
@@ -85,7 +85,7 @@ void Player::DrawContactPnts(DrawContext &context) const
 	);
 }
 
-void Player::reduceValidMoves(Move const &move)
+void Player::reduceValidMoves(BlokusMove const &move)
 {
 	PieceType const &pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
     Shape     const &shape     { pieceType.GetShapeC(move.GetShapeId())};
@@ -103,19 +103,18 @@ void Player::reduceValidMoves(Move const &move)
     );
 }
 
-Move Player::SelectMove(RuleServerInterface const &rs)
+BlokusMove Player::SelectMove(RuleServerInterface const &rs)
 {
 	m_timer.BeforeAction();
-    Move moveSelected { m_pStrategy->SelectMove(rs) };
+    BlokusMove moveSelected { m_pStrategy->SelectMove(rs) };
     if (moveSelected.Undefined())
         finalize(moveSelected);    // no more valid moves
  	m_timer.AfterAction();
     return moveSelected;
 }
 
-void Player::PerformMove(Move const& move)
+void Player::PerformMove(BlokusMove &move)
 {
-    GetPiece(move.GetPieceTypeId()).PerformMove(move);
     m_bFirstMove = false;
 	if (--m_remainingPieces == 0)
 	{
@@ -127,7 +126,7 @@ void Player::PerformMove(Move const& move)
 	}
 }
 
-void Player::finalize(Move const& move)
+void Player::finalize(BlokusMove &move)
 {
 	m_bFinished = true;   
 	m_iResult = 0;
@@ -143,5 +142,6 @@ void Player::finalize(Move const& move)
 		m_iResult += 15;
 		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
 			m_iResult += 5;
+		move.Reset();
 	}
 }

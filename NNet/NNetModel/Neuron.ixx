@@ -89,7 +89,6 @@ public:
     static unsigned int Size() { return sizeof(Neuron); }
 
 private:
-//	MicroMeterCircle m_circle;
 	MicroMeterPnt m_pos;
 
 	PipeList m_inPipes;

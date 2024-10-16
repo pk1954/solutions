@@ -5,7 +5,6 @@
 module BlokusWindow;
 
 import Color;
-import Types;
 import IoUtil;
 import SaveCast;
 import DrawContext;
@@ -14,6 +13,8 @@ import Resource;
 using std::min;
 using std::wcout;
 using std::endl;
+using std::unique_ptr;
+using std::make_unique;
 
 fPixel const BORDER { 10.0_fPixel };
 
@@ -92,7 +93,32 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		break;
 
 	case IDD_NEXT_PLAYER:
-        m_match.NextMove();
+		{
+			BlokusMove move { m_match.NextMove() };
+			if (move.Defined())
+			{
+				Player        &player      { m_match.GetPlayer(move.GetPlayerId()) };
+				Piece         &piece       { player.GetPiece  (move.GetPieceTypeId()) };
+				MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
+				MicroMeterPnt  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
+				m_move = move;
+				m_posAnimation.SetUpdateLambda
+				(
+					[this](bool const bTargetReached)
+					{
+						m_posAnimation.Update();
+						Notify(true);
+						if (bTargetReached)
+							PostCommand(IDD_FINISH_MOVE);
+					}
+				);
+				m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
+			}
+		}
+		break;
+
+	case IDD_FINISH_MOVE:
+		m_match.FinishMove(m_move);
 		Notify(true);
 		if (m_bAutoRun && !m_match.HasFinished())
 			PostCommand(IDD_NEXT_PLAYER);
@@ -154,8 +180,8 @@ void BlokusWindow::PaintGraphics()
 	else
 	{
 		Player const& player { m_match.ActivePlayerC() };
-		player.DrawFreePieces(m_context);
  		paintBoard();
+		player.DrawFreePieces(m_context);
 		m_match.DrawSetPieces(m_context);
 		if (BlokusPreferences::m_bShowContactPnts.Get())
 			m_match.ActivePlayerC().DrawContactPnts(m_context);

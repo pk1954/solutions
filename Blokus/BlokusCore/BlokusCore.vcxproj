@@ -30,7 +30,7 @@
     <ClCompile Include="Match.cpp" />
     <ClCompile Include="Match.ixx" />
     <ClCompile Include="MatchProtocol.ixx" />
-    <ClCompile Include="Move.ixx" />
+    <ClCompile Include="BlokusMove.ixx" />
     <ClCompile Include="Piece.ixx" />
     <ClCompile Include="PieceTypeId.ixx" />
     <ClCompile Include="BlokusCoords.ixx" />

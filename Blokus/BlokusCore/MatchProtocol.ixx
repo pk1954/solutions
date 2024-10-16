@@ -5,7 +5,7 @@
 export module BlokusCore:MatchProtocol;
 
 import std;
-import :Move;
+import :BlokusMove;
 import :PlayerId;
 import :PieceTypeId;
 
@@ -15,7 +15,7 @@ struct PlayerMove
 {
     PlayerMove() = default;
 
-    PlayerMove(Move const &move) :
+    PlayerMove(BlokusMove const &move) :
         m_boardPos   (move.GetCoordPos()),
         m_idShape    (move.GetShapeId()),
         m_idPieceType(move.GetPieceTypeId())
@@ -36,7 +36,7 @@ public:
         m_round = 0;
     }
 
-    void Add(Move const& move)
+    void Add(BlokusMove const& move)
     {
         PlayerId const id { move.GetPlayerId() };
         m_list[m_round][id.GetValue()] = move;

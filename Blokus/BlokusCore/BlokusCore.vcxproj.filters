@@ -54,7 +54,7 @@
     <ClCompile Include="Board.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Move.ixx">
+    <ClCompile Include="BlokusMove.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">

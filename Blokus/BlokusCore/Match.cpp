@@ -5,6 +5,7 @@
 module BlokusCore:Match;
 
 import PerfCounter;
+import :Components;
 
 using std::wcout;
 using std::endl;
@@ -18,7 +19,7 @@ public:
         : m_match(match)
     {}
 
-    vector<Move> const& GetListOfValidMoves() const final
+    vector<BlokusMove> const& GetListOfValidMoves() const final
     {
         return m_match.FindValidMoves();
     }
@@ -83,21 +84,29 @@ PlayerId Match::WinnerId() const
     return idBestPlayer;
 }
 
-void Match::NextMove()
+BlokusMove Match::NextMove()
 {
-    Player &player { ActivePlayer() };
-    if (!player.HasFinished())
+    BlokusMove move;
+    Player    &player { ActivePlayer() };
+    if (player.HasFinished())
+        return move;
+    move = player.SelectMove(*m_upRuleServer.get());  // may finish if no more valid moves
+    if (move.Defined())
     {
-        Move move { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
-        if (move.Defined())
-        {
-            m_protocol.Add(move);
-            player.PerformMove(move);
-            m_board.PerformMove(move);  // may finish, if all pieces set
-        }
-        if (player.HasFinished())       // by one of two reasons
-            --m_uiPlayersLeft;
+        m_protocol.Add(move);
+        player.PerformMove(move);      // may finish, if all pieces set
     }
+    if (ActivePlayer().HasFinished())       // by one of two reasons
+        --m_uiPlayersLeft;
+    return move;
+}
+
+void Match::FinishMove(BlokusMove const move)
+{
+	Player &player { GetPlayer(move.GetPlayerId()) };
+	Piece  &piece  { player.GetPiece(move.GetPieceTypeId()) };
+	piece  .PerformMove(move);
+    m_board.PerformMove(move);
     if (++m_idActivePlayer > LAST_PLAYER)
         m_idActivePlayer = FIRST_PLAYER;    
     findContactPnts();
@@ -105,8 +114,8 @@ void Match::NextMove()
 
 bool Match::isValidMove
 (
-    Move   const& move,
-    Player const& player
+    BlokusMove const& move,
+    Player     const& player
 )
 {
     PieceType const& pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
@@ -144,7 +153,7 @@ void Match::findContactPnts()
     }
 }
 
-void Match::testPosition(Move &move, ShapeCoordPos const &posCorner) 
+void Match::testPosition(BlokusMove &move, ShapeCoordPos const &posCorner) 
 { 
     Player const& player { m_players.GetPlayerC(move.GetPlayerId()) };
     player.Apply2AllContactPntsC
@@ -160,7 +169,7 @@ void Match::testPosition(Move &move, ShapeCoordPos const &posCorner)
 	);
 }
 
-void Match::testShape(Move &move, ShapeId const idShape)
+void Match::testShape(BlokusMove &move, ShapeId const idShape)
 {
     //++g_iNrOfShapes;
     move.SetShapeId(idShape);
@@ -173,7 +182,7 @@ void Match::testShape(Move &move, ShapeId const idShape)
 	);
 }
 
-void Match::testPiece(Move &move, Piece const& piece)
+void Match::testPiece(BlokusMove &move, Piece const& piece)
 {
     PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
     PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
@@ -188,10 +197,10 @@ void Match::testPiece(Move &move, Piece const& piece)
     );
 }
 
-vector<Move> const &Match::FindValidMoves()
+vector<BlokusMove> const &Match::FindValidMoves()
 {
     Player player { ActivePlayer() };
-    Move   move;
+    BlokusMove   move;
     m_validMoves.clear();
     move.SetPlayerId(m_idActivePlayer);
     player.Apply2AvailablePiecesC

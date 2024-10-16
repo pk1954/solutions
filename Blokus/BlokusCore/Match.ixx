@@ -9,11 +9,12 @@ import Types;
 import Color;
 import HiResTimer;
 import :Board;
-import :Player;
-import :Players;
-import :PlayerId;
 import :Components;
 import :MatchProtocol;
+import :BlokusMove;
+import :Player;
+import :PlayerId;
+import :Players;
 import :RuleServerInterface;
 
 using std::vector;
@@ -31,7 +32,7 @@ public:
     void Reset();
     void ResetTimers() { m_players.ResetTimers(); }
 
-    vector<Move> const& FindValidMoves();
+    vector<BlokusMove> const& FindValidMoves();
 
     Player       &ActivePlayer ()       { return m_players.GetPlayer(m_idActivePlayer); }
     Player const &ActivePlayerC() const { return m_players.GetPlayerC(m_idActivePlayer); }
@@ -46,26 +47,27 @@ public:
 
     PlayerId WinnerId() const;
 
-    void DrawSetPieces(DrawContext&) const;
-    void NextMove();
+    void       DrawSetPieces(DrawContext&) const;
+    BlokusMove NextMove();
+    void       FinishMove(BlokusMove const);
 
 private:
 
-    unsigned int  m_uiPlayersLeft  { NR_OF_PLAYERS };
-    Board         m_board;
-    Players       m_players;
-    PlayerId      m_idActivePlayer { 0 };
-    vector<Move>  m_validMoves;
-    MatchProtocol m_protocol;
-    HiResTimer    m_timerFindContactPnts;
-    //HiResTimer    m_timerFindValidMoves;
-    HiResTimer    m_timer;
+    vector<BlokusMove> m_validMoves;
+    unsigned int       m_uiPlayersLeft  { NR_OF_PLAYERS };
+    Board              m_board;
+    Players            m_players;
+    PlayerId           m_idActivePlayer { 0 };
+    MatchProtocol      m_protocol;
+    HiResTimer         m_timerFindContactPnts;
+  //HiResTimer         m_timerFindValidMoves;
+    HiResTimer         m_timer;
                   
     unique_ptr<RuleServerInterface> m_upRuleServer; 
 
-    bool isValidMove (Move const&, Player const&);
-    void testPosition(Move&, ShapeCoordPos const&);
-    void testShape   (Move&, ShapeId       const);
-    void testPiece   (Move&, Piece         const&);
+    bool isValidMove (BlokusMove const&, Player const&);
+    void testPosition(BlokusMove&, ShapeCoordPos const&);
+    void testShape   (BlokusMove&, ShapeId       const);
+    void testPiece   (BlokusMove&, Piece         const&);
     void findContactPnts();
 };

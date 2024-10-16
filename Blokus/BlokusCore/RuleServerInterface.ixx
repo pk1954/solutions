@@ -5,7 +5,7 @@
 export module BlokusCore:RuleServerInterface;
 
 import std;
-import :Move;
+import :BlokusMove;
 import :Board;
 
 using std::vector;
@@ -13,6 +13,6 @@ using std::vector;
 export class RuleServerInterface
 {
 public:
-    virtual vector<Move> const &GetListOfValidMoves() const = 0;
-    virtual Board        const &GetBoard()            const = 0;
+    virtual vector<BlokusMove> const &GetListOfValidMoves() const = 0;
+    virtual Board              const &GetBoard()            const = 0;
 };

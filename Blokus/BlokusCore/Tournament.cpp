@@ -23,7 +23,9 @@ void Tournament::Start(int const iNrOfMatches)
 
 void Tournament::NextMove()
 {
-    m_match.NextMove();
+    BlokusMove move { m_match.NextMove() };
+    if (move.Defined())
+        m_match.FinishMove(move);
     if (m_match.HasFinished())
     {
         PlayerId const idWinner { m_match.WinnerId() };

@@ -52,7 +52,7 @@ public:
         return true;
     }
 
-    void PerformMove(Move const& move)
+    void PerformMove(BlokusMove const& move)
     {
         GetShapeC(move).Apply2AllShapeCellsC
         (
