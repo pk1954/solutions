@@ -29,7 +29,8 @@ void BlokusAppMenu::Start(HWND const hwndApp)
 
     HMENU hMenuFile = ::PopupMenu(m_hMenu, L"&File");
     {
-        ::AddMenu(hMenuFile, MF_STRING, IDM_EXIT,          L"&Exit");
+        ::AddMenu(hMenuFile, MF_STRING, IDD_RESET, L"&Reset");
+        ::AddMenu(hMenuFile, MF_STRING, IDM_EXIT,  L"&Exit");
     }
 
     HMENU hMenuView = ::PopupMenu(m_hMenu, L"&View");

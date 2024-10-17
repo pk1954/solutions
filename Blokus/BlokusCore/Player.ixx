@@ -100,7 +100,10 @@ public:
         return m_validPositions.IsValidPos(pos); 
     }
 
-    bool            HasFinished() const { return m_bFinished; }
+    bool            HasFinished() const 
+    { 
+        return m_bFinished; 
+    }
     int             Result()      const { return m_iResult; }
     Ticks           GetTicks()    const { return m_timer.GetAccumulatedActionTicks(); }
     Strategy const &GetStrategy() const { return *m_pStrategy; }

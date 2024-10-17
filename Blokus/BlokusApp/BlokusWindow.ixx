@@ -18,6 +18,7 @@ using std::unique_ptr;
 export class BlokusWindow : public GraphicsWindow
 {
 public:
+	void Reset();
 	void Start(HWND const, Tournament *);
 
 	void OnChar(WPARAM const, LPARAM const) final;
@@ -33,11 +34,12 @@ private:
 
     Animation<MicroMeterPnt> m_posAnimation;
 
-	void paintBoard() const;
-
 	bool OnSize   (PIXEL  const, PIXEL  const) final;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 
 	void PaintGraphics() final;
 	void drawFinishedMsg();
+	void paintBoard() const;
+	void finishMove();
+	void nextMove();
 };

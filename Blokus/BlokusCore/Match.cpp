@@ -94,9 +94,9 @@ BlokusMove Match::NextMove()
     if (move.Defined())
     {
         m_protocol.Add(move);
-        player.PerformMove(move);      // may finish, if all pieces set
+        player.PerformMove(move);                     // may finish, if all pieces set
     }
-    if (ActivePlayer().HasFinished())       // by one of two reasons
+    if (ActivePlayer().HasFinished())                 // by one of two reasons
         --m_uiPlayersLeft;
     return move;
 }
@@ -107,6 +107,10 @@ void Match::FinishMove(BlokusMove const move)
 	Piece  &piece  { player.GetPiece(move.GetPieceTypeId()) };
 	piece  .PerformMove(move);
     m_board.PerformMove(move);
+}
+
+void Match::NextPlayer()
+{
     if (++m_idActivePlayer > LAST_PLAYER)
         m_idActivePlayer = FIRST_PLAYER;    
     findContactPnts();

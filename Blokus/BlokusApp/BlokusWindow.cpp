@@ -34,6 +34,15 @@ void BlokusWindow::Start
 	m_context.Start(m_upGraphics.get());
 	m_hTextFormat = m_upGraphics->NewTextFormat(24.f);
    	m_match.Reset();
+	m_posAnimation.SetUpdateLambda
+	(
+		[this](bool const bTargetReached)
+		{
+			PostCommand(IDD_ANIMATION_UPDATE);
+			if (bTargetReached)
+				PostCommand(IDD_FINISH_MOVE);
+		}
+	);
 }
 
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
@@ -55,7 +64,7 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	{
 		case 'n':
 		case 'N':
-			PostCommand(IDD_NEXT_PLAYER);
+			nextMove();
 			break;
 
 		case 'a':
@@ -78,41 +87,61 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
+static bool const bAnimation { false };
+
+void BlokusWindow::Reset()
+{
+	m_match.Reset();
+	Notify(false);
+}
+
+void BlokusWindow::nextMove()
+{
+	if (m_move = m_match.NextMove(), m_move.Defined())
+	{
+		Player        &player      { m_match.GetPlayer(m_move.GetPlayerId()) };
+		Piece         &piece       { player.GetPiece  (m_move.GetPieceTypeId()) };
+		MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
+		MicroMeterPnt  umPosTarget { Convert2fCoord(m_move.GetCoordPos()) };
+		if (bAnimation)
+			m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
+		else
+		{
+			umPosAct = umPosTarget;
+			finishMove();
+		}
+	}
+	else
+	{
+		m_match.NextPlayer();
+		Notify(true);
+	}
+}
+
+void BlokusWindow::finishMove()
+{
+	m_match.FinishMove(m_move);
+	m_match.NextPlayer();
+	Notify(true);
+	if (m_match.HasFinished())
+		m_bAutoRun = false;
+	else if (m_bAutoRun)
+		nextMove();
+	else 
+		; // wait for next user input
+}
+
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (int const wmId { LoWord(wParam) } )
 	{
 	case IDD_RESET:
-		m_match.Reset();
-		Notify(false);
+		Reset();
 		break;
 
 	case IDD_AUTO_RUN:
 		m_bAutoRun = true;
-		SendCommand(IDD_NEXT_PLAYER);
-		break;
-
-	case IDD_NEXT_PLAYER:
-		{
-			BlokusMove move { m_match.NextMove() };
-			if (!move.Defined())
-				break;
-			Player        &player      { m_match.GetPlayer(move.GetPlayerId()) };
-			Piece         &piece       { player.GetPiece  (move.GetPieceTypeId()) };
-			MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
-			MicroMeterPnt  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
-			m_move = move;
-			m_posAnimation.SetUpdateLambda
-			(
-				[this](bool const bTargetReached)
-				{
-					PostCommand(IDD_ANIMATION_UPDATE);
-					if (bTargetReached)
-						PostCommand(IDD_FINISH_MOVE);
-				}
-			);
-			m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
-		}
+		nextMove();
 		break;
 
 	case IDD_ANIMATION_UPDATE:
@@ -121,10 +150,7 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		break;
 
 	case IDD_FINISH_MOVE:
-		m_match.FinishMove(m_move);
-		Notify(true);
-		if (m_bAutoRun && !m_match.HasFinished())
-			PostCommand(IDD_NEXT_PLAYER);
+		finishMove();
 		break;
 
 	default:
@@ -133,6 +159,7 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 	return true;
 }
+
 void BlokusWindow::paintBoard() const
 {
 	Color     const BOARD_COLOR { Color(0.8f, 0.8f, 0.8f) };
