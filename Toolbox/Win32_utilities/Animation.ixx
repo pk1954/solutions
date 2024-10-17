@@ -12,6 +12,8 @@ import ThreadPoolTimer;
 using std::move;
 using std::bit_cast;
 using std::function;
+using std::unique_ptr;
+using std::make_unique;
 //using std::same_as;
 
 DWORD const ANIMATION_RECURRING { 0x1L };
@@ -30,12 +32,17 @@ public:
 
     //static_assert(IsLinearCombinable<ANIM_TYPE>, "ANIM_TYPE must be linear combinable");
 
-    Animation() = default;
+    Animation()
+    {
+        createTimer();
+    };
 
     Animation(auto const &func = nullptr, DWORD const dwFlags = 0)
       : m_func(func),
         m_dwFlags(dwFlags)
-    {}
+    {
+        createTimer();
+    }
 
     void SetUpdateLambda(auto const &func)
     {
@@ -55,20 +62,10 @@ public:
         m_bTargetReached = false;
         setActual(m_start);
         m_smoothMove.Start(m_uiNrOfSteps);
-        m_timer.StartTimer
-        (
-            m_uiMsPeriod, 
-            [](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
-            {
-                Animation<ANIM_TYPE>* pAnim { bit_cast<Animation<ANIM_TYPE>*>(pContext) };
-                if (! pAnim->m_bTargetReached)
-                    pAnim->next();
-            },
-            this
-        );
+        m_upTimer->StartTimer(m_uiMsPeriod);
     }
 
-    void Update()
+    void Update()  // runs in UI thread
     {
         AcquireSRWLockExclusive(& m_srwlData);
         *m_pAnimated = m_actual;
@@ -103,7 +100,21 @@ private:
     unsigned int m_uiNrOfSteps    { 20 };
     bool         m_bTargetReached { false };
 
-    ThreadPoolTimer m_timer;
+    unique_ptr<ThreadPoolTimer> m_upTimer;
+
+    void createTimer()
+    {
+        m_upTimer = make_unique<ThreadPoolTimer>
+        (
+            [](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
+            {
+                Animation<ANIM_TYPE>* pAnim { bit_cast<Animation<ANIM_TYPE>*>(pContext) };
+                if (! pAnim->m_bTargetReached)
+                    pAnim->next();
+            },
+            this
+        );
+    }
 
     void setActual(ANIM_TYPE const newVal)
     {
@@ -121,7 +132,7 @@ private:
             if (m_dwFlags & ANIMATION_RECURRING)
                 setActual(m_start);
             else
-                m_timer.StopTimer();
+                m_upTimer->StopTimer();  // stops timer, but doesn't close it
         }
         m_func(m_bTargetReached);
     }

@@ -4,28 +4,22 @@
 
 export module ThreadPoolTimer;
 
+import Debug;
 import WinBasics;
 
 export class ThreadPoolTimer
 {
 public:
-    ThreadPoolTimer()
-    : m_pTpTimer(nullptr)
-    {}
-
-    void StartTimer  // runs in UI thread
+    ThreadPoolTimer
     (
-        unsigned int uiMsPeriod,
         auto const & timerProc,
         PVOID        pv
     )
     {
-        FILETIME fileTime { uiMsPeriod, 0 };
         m_pTpTimer = CreateThreadpoolTimer(timerProc, pv, nullptr);
-        SetThreadpoolTimer(m_pTpTimer, &fileTime, uiMsPeriod, uiMsPeriod);
     }
 
-    void StopTimer()  // runs in animation thread
+    ~ThreadPoolTimer() 
     {
         if (m_pTpTimer)
         {
@@ -34,6 +28,21 @@ public:
             CloseThreadpoolTimer(m_pTpTimer);
             m_pTpTimer = nullptr;
         }
+    }
+
+    void StartTimer  // runs in UI thread
+    (
+        unsigned int uiMsPeriod
+    )
+    {
+        FILETIME fileTime { uiMsPeriod, 0 };
+        SetThreadpoolTimer(m_pTpTimer, &fileTime, uiMsPeriod, uiMsPeriod);
+    }
+
+    void StopTimer()  // runs in animation thread
+    {
+        Assert(m_pTpTimer);
+        SetThreadpoolTimer(m_pTpTimer, nullptr, 0, 0);
     }
 
     bool IsRunning()

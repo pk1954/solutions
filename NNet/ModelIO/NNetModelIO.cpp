@@ -114,9 +114,8 @@ void NNetModelIO::importModel()
     bool                  bSuccess { false };
 
     IO_STRUCT uiStruct { m_upImportUI.get(), &script };
-    m_timer.StartTimer
+    ThreadPoolTimer timerProgressReport
     (
-        200, // period in ms
         [](PTP_CALLBACK_INSTANCE, PVOID pContext, PTP_TIMER)
         {
             IO_STRUCT* pIoStruct { bit_cast<IO_STRUCT*>(pContext) };
@@ -124,6 +123,8 @@ void NNetModelIO::importModel()
         },
         & uiStruct
     );
+
+    timerProgressReport.StartTimer(200); // period in ms
 
     if (! m_wstrFile2Read.empty())
     {
@@ -177,7 +178,7 @@ void NNetModelIO::importModel()
     }
 
     m_upImportedNMWI->PrintModelSize();
-    m_timer.StopTimer();
+    timerProgressReport.StopTimer();
     m_upImportUI->JobFinished(res, m_wstrFile2Read);
 }
 

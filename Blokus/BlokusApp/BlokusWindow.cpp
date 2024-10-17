@@ -95,26 +95,29 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	case IDD_NEXT_PLAYER:
 		{
 			BlokusMove move { m_match.NextMove() };
-			if (move.Defined())
-			{
-				Player        &player      { m_match.GetPlayer(move.GetPlayerId()) };
-				Piece         &piece       { player.GetPiece  (move.GetPieceTypeId()) };
-				MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
-				MicroMeterPnt  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
-				m_move = move;
-				m_posAnimation.SetUpdateLambda
-				(
-					[this](bool const bTargetReached)
-					{
-						m_posAnimation.Update();
-						Notify(true);
-						if (bTargetReached)
-							PostCommand(IDD_FINISH_MOVE);
-					}
-				);
-				m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
-			}
+			if (!move.Defined())
+				break;
+			Player        &player      { m_match.GetPlayer(move.GetPlayerId()) };
+			Piece         &piece       { player.GetPiece  (move.GetPieceTypeId()) };
+			MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
+			MicroMeterPnt  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
+			m_move = move;
+			m_posAnimation.SetUpdateLambda
+			(
+				[this](bool const bTargetReached)
+				{
+					PostCommand(IDD_ANIMATION_UPDATE);
+					if (bTargetReached)
+						PostCommand(IDD_FINISH_MOVE);
+				}
+			);
+			m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
 		}
+		break;
+
+	case IDD_ANIMATION_UPDATE:
+		m_posAnimation.Update();
+		Notify(true);
 		break;
 
 	case IDD_FINISH_MOVE:
