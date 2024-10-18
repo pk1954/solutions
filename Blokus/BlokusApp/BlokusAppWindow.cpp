@@ -36,6 +36,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	BlokusPreferences::m_bShowContactPnts.RegisterObserver(m_mainWindow);
 	BlokusPreferences::m_bShowCornerCells.RegisterObserver(m_mainWindow);
+	BlokusPreferences::m_bShowAnimation  .RegisterObserver(m_mainWindow);
 	m_tournament                         .RegisterObserver(m_tournamentWindow);
 	configureStatusBar();
 
@@ -112,6 +113,11 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 
 	case IDD_CORNER_CELLS:
 		BlokusPreferences::m_bShowCornerCells.Toggle();
+		Preferences::WritePreferences();
+		break;
+
+	case IDD_ANIMATION:
+		BlokusPreferences::m_bShowAnimation.Toggle();
 		Preferences::WritePreferences();
 		break;
 

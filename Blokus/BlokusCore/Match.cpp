@@ -96,7 +96,7 @@ BlokusMove Match::NextMove()
         m_protocol.Add(move);
         player.PerformMove(move);                     // may finish, if all pieces set
     }
-    if (ActivePlayer().HasFinished())                 // by one of two reasons
+    if (player.HasFinished())                 // by one of two reasons
         --m_uiPlayersLeft;
     return move;
 }

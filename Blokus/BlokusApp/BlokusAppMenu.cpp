@@ -14,7 +14,8 @@ using std::make_unique;
 
 BlokusAppMenu::BlokusAppMenu()
   : m_upOnOffShowContactPnts(make_unique<OnOffPair>(IDD_CONTACT_PNTS)),
-    m_upOnOffShowCornerCells(make_unique<OnOffPair>(IDD_CORNER_CELLS))
+    m_upOnOffShowCornerCells(make_unique<OnOffPair>(IDD_CORNER_CELLS)),
+    m_upOnOffAnimation      (make_unique<OnOffPair>(IDD_ANIMATION))
 {}
 
 void BlokusAppMenu::Start(HWND const hwndApp)
@@ -39,10 +40,10 @@ void BlokusAppMenu::Start(HWND const hwndApp)
         m_upOnOffShowCornerCells->AppendOnOffMenu(hMenuView, L"Corner cells");
     }
 
-//    HMENU hMenuOptions = ::PopupMenu(m_hMenu, L"&Options");
-//    {
-////        m_upOnOffSound         ->AppendOnOffMenu(hMenuOptions, L"&Sound");
-//    }
+    HMENU hMenuOptions = ::PopupMenu(m_hMenu, L"&Options");
+    {
+        m_upOnOffAnimation->AppendOnOffMenu(hMenuOptions, L"&Animation");
+    }
     HMENU hMenuHelp = ::PopupMenu(m_hMenu, L"&Help");
     {
   //      ::AddMenu(hMenuHelp, MF_STRING, IDM_DOCU,  L"&Documentation");
@@ -59,4 +60,5 @@ void BlokusAppMenu::Notify(bool const bImmediately)
 {
 	m_upOnOffShowContactPnts->EnableOnOff(m_hMenu, BlokusPreferences::m_bShowContactPnts.Get());
 	m_upOnOffShowCornerCells->EnableOnOff(m_hMenu, BlokusPreferences::m_bShowCornerCells.Get());
+	m_upOnOffAnimation      ->EnableOnOff(m_hMenu, BlokusPreferences::m_bShowAnimation.Get());
 }

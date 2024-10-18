@@ -64,7 +64,7 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	{
 		case 'n':
 		case 'N':
-			nextMove();
+			PostCommand(IDD_NEXT_MOVE);
 			break;
 
 		case 'a':
@@ -87,8 +87,6 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
-static bool const bAnimation { false };
-
 void BlokusWindow::Reset()
 {
 	m_match.Reset();
@@ -97,24 +95,53 @@ void BlokusWindow::Reset()
 
 void BlokusWindow::nextMove()
 {
-	if (m_move = m_match.NextMove(), m_move.Defined())
+	if (!m_match.HasFinished())
 	{
-		Player        &player      { m_match.GetPlayer(m_move.GetPlayerId()) };
-		Piece         &piece       { player.GetPiece  (m_move.GetPieceTypeId()) };
-		MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
-		MicroMeterPnt  umPosTarget { Convert2fCoord(m_move.GetCoordPos()) };
-		if (bAnimation)
-			m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
+		m_move = m_match.NextMove();
+		if (m_move.Defined())
+		{
+			performMove();
+			return;
+		}
+	}
+	m_match.NextPlayer();
+	Notify(true);
+}
+
+void BlokusWindow::autoRun()
+{
+	while (m_move = m_match.NextMove(), !m_move.Defined())
+	{
+		if (m_match.HasFinished())
+		{
+			m_bAutoRun = false;
+			Notify(true);
+			return;
+		}
 		else
 		{
-			umPosAct = umPosTarget;
-			finishMove();
+			m_match.NextPlayer();
+			Notify(true);
 		}
+	}
+
+	performMove();
+}
+
+void BlokusWindow::performMove()
+{
+	Player        &player      { m_match.GetPlayer(m_move.GetPlayerId()) };
+	Piece         &piece       { player.GetPiece  (m_move.GetPieceTypeId()) };
+	MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
+	MicroMeterPnt  umPosTarget { Convert2fCoord(m_move.GetCoordPos()) };
+	if (BlokusPreferences::m_bShowAnimation.Get())
+	{
+		m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
 	}
 	else
 	{
-		m_match.NextPlayer();
-		Notify(true);
+		umPosAct = umPosTarget;
+		finishMove();
 	}
 }
 
@@ -123,12 +150,8 @@ void BlokusWindow::finishMove()
 	m_match.FinishMove(m_move);
 	m_match.NextPlayer();
 	Notify(true);
-	if (m_match.HasFinished())
-		m_bAutoRun = false;
-	else if (m_bAutoRun)
-		nextMove();
-	else 
-		; // wait for next user input
+	if (m_bAutoRun)
+		PostCommand(IDD_AUTO_RUN);
 }
 
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
@@ -141,12 +164,17 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 	case IDD_AUTO_RUN:
 		m_bAutoRun = true;
-		nextMove();
+		autoRun();
 		break;
 
 	case IDD_ANIMATION_UPDATE:
 		m_posAnimation.Update();
 		Notify(true);
+		break;
+
+	case IDD_NEXT_MOVE:
+		if (!m_bAutoRun)
+			nextMove();
 		break;
 
 	case IDD_FINISH_MOVE:

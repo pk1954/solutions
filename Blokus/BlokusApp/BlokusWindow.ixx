@@ -41,5 +41,7 @@ private:
 	void drawFinishedMsg();
 	void paintBoard() const;
 	void finishMove();
+	void performMove();
+	void autoRun();
 	void nextMove();
 };
