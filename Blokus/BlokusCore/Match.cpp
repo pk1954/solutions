@@ -5,7 +5,6 @@
 module BlokusCore:Match;
 
 import PerfCounter;
-import :Components;
 
 using std::wcout;
 using std::endl;
@@ -40,6 +39,7 @@ Match::Match()
 
 void Match::Reset()
 {
+    Components::Initialize();
     m_board.Reset();
     m_players.Reset();
     m_protocol.Reset();

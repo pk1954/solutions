@@ -84,6 +84,8 @@ public:
 
     bool TargetReached() { return m_bTargetReached; }
 
+    bool IsRunning() { return m_upTimer && m_upTimer->IsRunning(); }
+
 private:
 
     function<void(bool const)> m_func { nullptr };

@@ -41,10 +41,7 @@ public:
     Player       &GetPlayer (PlayerId const id)       { return m_players.GetPlayer(id); }
 
     bool          PlayerHasFinished() { return ActivePlayer().HasFinished(); }
-    bool          HasFinished()       
-    { 
-        return m_uiPlayersLeft == 0; 
-    }
+    bool          HasFinished()       { return m_uiPlayersLeft == 0; }
     Player const &Winner()            { return m_players.GetPlayerC(WinnerId()); }
     Board  const &GetBoard() const    { return m_board; }
 

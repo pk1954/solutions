@@ -38,9 +38,9 @@ void BlokusWindow::Start
 	(
 		[this](bool const bTargetReached)
 		{
-			PostCommand(IDD_ANIMATION_UPDATE);
+			PostCommand(IDX_ANIMATION_UPDATE);
 			if (bTargetReached)
-				PostCommand(IDD_FINISH_MOVE);
+				PostCommand(IDX_FINISH_MOVE);
 		}
 	);
 }
@@ -69,7 +69,7 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 
 		case 'a':
 		case 'A':
-			PostCommand(IDD_AUTO_RUN);
+			PostCommand(IDD_START_AUTO_RUN);
 			break;
 
 		case 'r':
@@ -124,7 +124,6 @@ void BlokusWindow::autoRun()
 			Notify(true);
 		}
 	}
-
 	performMove();
 }
 
@@ -141,7 +140,7 @@ void BlokusWindow::performMove()
 	else
 	{
 		umPosAct = umPosTarget;
-		finishMove();
+		PostCommand(IDX_FINISH_MOVE);
 	}
 }
 
@@ -150,8 +149,6 @@ void BlokusWindow::finishMove()
 	m_match.FinishMove(m_move);
 	m_match.NextPlayer();
 	Notify(true);
-	if (m_bAutoRun)
-		PostCommand(IDD_AUTO_RUN);
 }
 
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
@@ -159,26 +156,36 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	switch (int const wmId { LoWord(wParam) } )
 	{
 	case IDD_RESET:
-		Reset();
+		if (!m_bAutoRun && !m_posAnimation.IsRunning())
+			Reset();
 		break;
 
-	case IDD_AUTO_RUN:
-		m_bAutoRun = true;
+	case IDD_START_AUTO_RUN:
+		if (!m_bAutoRun && !m_posAnimation.IsRunning())
+		{
+			m_bAutoRun = true;
+			autoRun();
+		}
+		break;
+
+	case IDD_NEXT_MOVE:
+		if (!m_bAutoRun && !m_posAnimation.IsRunning())
+			nextMove();
+		break;
+
+	case IDX_NEXT_AUTO_MOVE:
 		autoRun();
 		break;
 
-	case IDD_ANIMATION_UPDATE:
+	case IDX_ANIMATION_UPDATE:
 		m_posAnimation.Update();
 		Notify(true);
 		break;
 
-	case IDD_NEXT_MOVE:
-		if (!m_bAutoRun)
-			nextMove();
-		break;
-
-	case IDD_FINISH_MOVE:
+	case IDX_FINISH_MOVE:
 		finishMove();
+		if (m_bAutoRun)
+			PostCommand(IDX_NEXT_AUTO_MOVE);
 		break;
 
 	default:
