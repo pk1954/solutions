@@ -28,6 +28,7 @@
     <ClCompile Include="BlokusWindow.cpp" />
     <ClCompile Include="BlokusWindow.ixx" />
     <ClCompile Include="Resource.ixx" />
+    <ClCompile Include="TournamentWindow.cpp" />
     <ClCompile Include="TournamentWindow.ixx" />
   </ItemGroup>
   <ItemGroup>

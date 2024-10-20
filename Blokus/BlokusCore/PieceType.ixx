@@ -20,15 +20,11 @@ export class PieceType
 {
 public:
 
-	PieceType& operator=(const SHAPE&);
+	void SetShape(const SHAPE&);
 
-	void SetPos(int const x, int const y) 
-	{ 
-		m_initialPos.SetX(Coord(Cast2SignedChar(x))); 
-		m_initialPos.SetY(Coord(Cast2SignedChar(y))); 
-	}
-
+	void SetPos(int const, int const);
 	void SetPos(CoordPos const& newPos) { m_initialPos = newPos; }
+
 	CoordPos GetInitialPos() const { return m_initialPos; }
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }

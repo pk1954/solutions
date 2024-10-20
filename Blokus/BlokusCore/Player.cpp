@@ -14,18 +14,23 @@ using std::wstring;
 using std::to_wstring;
 using std::vector;
 
-void Player::Reset
+void Player::Initialize
 (
     PlayerType const &type,
 	Strategy * const  pStrategy
 )
 {
+	m_pPlayerType = &type;
+	m_pStrategy   = pStrategy;
+	Reset();
+}
+
+void Player::Reset()
+{
     PieceTypeId id { 0 };
     Apply2AllPieces([&id](Piece& p){ p.Reset(id++); });
 	m_validPositions.Reset();
 	ClearContactPnts();
-	m_pPlayerType     = &type;
-	m_pStrategy       = pStrategy;
 	m_remainingPieces = NR_OF_PIECE_TYPES;
     m_bFinished       = false;
     m_bFirstMove      = true;

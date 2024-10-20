@@ -22,12 +22,15 @@ export class Shape
 {
 public:
 	Shape() = default;
-
 	Shape(SHAPE const&);
+	bool operator==(Shape const&) const = default;
+
+	int CountCells() const;
+	void Draw(DrawContext&, Color const) const;
 
 	void CollectCornerPnts();
-
-	bool operator==(Shape const&) const = default;
+	void Flip();
+	void Rotate();
 
     void Apply2AllCornerPntsC(auto const& func) const
     {
@@ -53,11 +56,6 @@ public:
 				return false;
 		return true;
 	}
-
-	void Flip();
-	void Rotate();
-
-	void Draw(DrawContext&, Color const) const;
 
 private:
 

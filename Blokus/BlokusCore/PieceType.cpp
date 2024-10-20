@@ -8,6 +8,12 @@ import DrawContext;
 
 using std::array;
 
+void PieceType::SetPos(int const x, int const y) 
+{ 
+	m_initialPos.SetX(Coord(Cast2SignedChar(x))); 
+	m_initialPos.SetY(Coord(Cast2SignedChar(y))); 
+}
+
 void PieceType::addIfNew(Shape const &shape)
 {
 	for (Shape const& s : m_shapes)
@@ -27,24 +33,16 @@ void PieceType::addOrientations(Shape &shape)
 	addIfNew(shape);
 }
 
-void PieceType::initialize(SHAPE const &shape)
+void PieceType::SetShape(const SHAPE& shape)
 {
 	Shape shapeNew(shape);
+	m_iNrOfCells = shapeNew.CountCells();
+	m_shapes.clear();
 	addOrientations(shapeNew);
 	shapeNew.Flip();
 	addOrientations(shapeNew);
 	for (Shape &shape : m_shapes)
 		shape.CollectCornerPnts();
-	shapeNew.Apply2AllShapeCellsC
-	(
-		[this](ShapeCoordPos const&){++m_iNrOfCells;}
-	);
-}
-
-PieceType& PieceType::operator=(const SHAPE& shape)
-{
-	initialize(shape);
-	return *this;
 }
 
 void PieceType::Draw

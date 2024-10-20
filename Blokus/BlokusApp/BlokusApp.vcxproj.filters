@@ -45,5 +45,8 @@
     <ClCompile Include="TournamentWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TournamentWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

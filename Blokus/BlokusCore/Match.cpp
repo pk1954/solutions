@@ -35,13 +35,13 @@ private:
 Match::Match()
 {
     m_upRuleServer = make_unique<RuleServer>(*this);
+    m_players.Initialize();
 }
 
 void Match::Reset()
 {
-    Components::Initialize();
     m_board.Reset();
-    m_players.Reset();
+    m_players.Apply2AllPlayers([](Player &p){ p.Reset(); });
     m_protocol.Reset();
     m_uiPlayersLeft  = NR_OF_PLAYERS;
     m_idActivePlayer = FIRST_PLAYER;

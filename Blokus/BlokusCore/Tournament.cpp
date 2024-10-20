@@ -23,11 +23,16 @@ void Tournament::Start(int const iNrOfMatches)
 
 void Tournament::NextMove()
 {
+	m_timer.BeforeAction();
     BlokusMove move { m_match.NextMove() };
+   	//m_timer.AfterAction();
+    //wcout << L"m_match::NextMove() " << m_timer.Average2wstring() << endl;
     if (move.Defined())
     {
+    	//m_timer.BeforeAction();
         m_match.FinishMove(move);
-		m_match.NextPlayer();
+       	//m_timer.AfterAction();
+        //wcout << L"m_match::FinishMove() " << m_timer.Average2wstring() << endl;
     }
     if (m_match.HasFinished())
     {
@@ -40,8 +45,17 @@ void Tournament::NextMove()
             m_iMatch = 0;
             m_ticksAtEnd = PerfCounter::Read();
         }
-        NotifyAll(true);
+        NotifyAll(false);
     }
+    else
+    {
+    	//m_timer.BeforeAction();
+    	m_match.NextPlayer();
+       	//m_timer.AfterAction();
+        //wcout << L"m_match::NextPlayer() " << m_timer.Average2wstring() << endl;
+    }
+    m_timer.AfterAction();
+    wcout << L"Tournament NextMove " << m_timer.Average2wstring() << endl;
 }
 
 wstring const &Tournament::GetStrategyName(PlayerId const id) const 

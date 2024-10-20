@@ -26,6 +26,7 @@ bool Shape::isCornerPnt(CoordPos const& pos) const
 
 void Shape::CollectCornerPnts()
 {
+	m_cornerPnts.clear();
 	Apply2AllShapeCellsC
 	(
 		[this](CoordPos const& pos)
@@ -34,6 +35,13 @@ void Shape::CollectCornerPnts()
 			   m_cornerPnts.push_back(pos);
 		}
 	);
+}
+
+int Shape::CountCells() const
+{
+	int iCount = 0;
+	Apply2AllShapeCellsC([&iCount](ShapeCoordPos const&){ ++iCount; });
+	return iCount;
 }
 
 Shape::Shape(SHAPE const &shape)

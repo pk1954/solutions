@@ -5,6 +5,7 @@
 export module BlokusCore:Tournament;
 
 import std;
+import HiResTimer;
 import Observable;
 import IoConstants;
 import PerfCounter;
@@ -32,6 +33,8 @@ public:
     Ticks          GetTournamentTime()                const; 
 
 private:
+    HiResTimer m_timer;
+
     int   m_iNrOfMatches { 0 };
     int   m_iMatch       { 0 };
     bool  m_active       { false };

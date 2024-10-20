@@ -29,10 +29,9 @@ using std::wstring;
 export class Player
 {
 public:
-    void Reset(PlayerType const& type, Strategy * const);
-
+    void Initialize(PlayerType const& type, Strategy * const);
+    void Reset();
     void ResetTimer() { m_timer.Reset(); }
-
     bool IsFirstMove() const { return m_bFirstMove; }
 
     wstring const &GetName() const { return m_pPlayerType->m_wstrName; }
@@ -100,10 +99,7 @@ public:
         return m_validPositions.IsValidPos(pos); 
     }
 
-    bool            HasFinished() const 
-    { 
-        return m_bFinished; 
-    }
+    bool            HasFinished() const { return m_bFinished; }
     int             Result()      const { return m_iResult; }
     Ticks           GetTicks()    const { return m_timer.GetAccumulatedActionTicks(); }
     Strategy const &GetStrategy() const { return *m_pStrategy; }

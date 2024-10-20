@@ -65,5 +65,6 @@ private:
 
     inline static array<PieceType, NR_OF_PIECE_TYPES> m_pieceTypes;
 
-    static void initPieceTypes();
+    static void initShapes();
+    static void initPositions();
 };

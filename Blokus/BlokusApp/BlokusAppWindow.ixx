@@ -5,6 +5,7 @@
 export module BlokusAppWindow;
 
 import std;
+import HiResTimer;
 import WinBasics;
 import BaseWindow;
 import AboutBox;
@@ -18,6 +19,8 @@ import BlokusWindow;
 import TournamentWindow;
 
 using std::wstring;
+using std::wcout;
+using std::endl;
 
 export class BlokusAppWindow : public BaseWindow
 {
@@ -27,7 +30,12 @@ public:
 	void DoGameStuff() 
 	{
 		if (m_tournament.IsActive())
+		{
+			m_timer.BeforeAction();
 			m_tournament.NextMove();
+		 	m_timer.AfterAction();
+			//wcout << L"DoGameStuff " << m_timer.Average2wstring() << endl;
+		}
 	}
 
 	BlokusAppWindow            (BlokusAppWindow const&) = delete;  // noncopyable class 
@@ -46,6 +54,7 @@ private:
 	HWND            m_hwndApp           { nullptr };
 	wstring const * m_pwstrProductName  { nullptr };
 
+    HiResTimer              m_timer;
 	AboutBox                m_aboutBox;
 	StatusBar               m_statusBar;
 	BlokusWindow            m_mainWindow;

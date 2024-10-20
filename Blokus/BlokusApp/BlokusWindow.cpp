@@ -144,13 +144,6 @@ void BlokusWindow::performMove()
 	}
 }
 
-void BlokusWindow::finishMove()
-{
-	m_match.FinishMove(m_move);
-	m_match.NextPlayer();
-	Notify(true);
-}
-
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (int const wmId { LoWord(wParam) } )
@@ -183,7 +176,9 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		break;
 
 	case IDX_FINISH_MOVE:
-		finishMove();
+		m_match.FinishMove(m_move);
+		m_match.NextPlayer();
+		Notify(true);
 		if (m_bAutoRun)
 			PostCommand(IDX_NEXT_AUTO_MOVE);
 		break;
