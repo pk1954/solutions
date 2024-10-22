@@ -2,7 +2,7 @@
 SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  ON
-ShowContactPnts  ON
+ShowContactPnts  OFF
 ShowCornerCells  OFF
 ShowAnimation  ON
 # ***  End of Preferences

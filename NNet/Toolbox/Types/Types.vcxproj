@@ -35,6 +35,7 @@
     <ClCompile Include="..\..\..\Toolbox\Types\Percent.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Types\PixelTypes.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Types\PointType.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Types\PosDir.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Types\RectType.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Types\SpeedType.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Types\Types.ixx" />

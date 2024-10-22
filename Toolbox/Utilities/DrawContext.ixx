@@ -21,6 +21,9 @@ public:
 		m_coord.Reset();
 	}
 
+	virtual void Push() = 0;
+    virtual void Pop () = 0;
+
 	virtual void DrawLine
 	(
 		MicroMeterPnt const &, 

@@ -34,7 +34,7 @@ void BlokusWindow::Start
 	m_context.Start(m_upGraphics.get());
 	m_hTextFormat = m_upGraphics->NewTextFormat(24.f);
    	m_match.Reset();
-	m_posAnimation.SetUpdateLambda
+	m_posDirAnimation.SetUpdateLambda
 	(
 		[this](bool const bTargetReached)
 		{
@@ -127,19 +127,31 @@ void BlokusWindow::autoRun()
 	performMove();
 }
 
+PieceType const& BlokusWindow::getPieceTypeC() const
+{
+	Player    const &player    { m_match.GetPlayerC(m_move.GetPlayerId()) };
+	Piece     const &piece     { player.GetPieceC  (m_move.GetPieceTypeId()) };
+	PieceType const &pieceType { piece.GetPieceTypeC() };
+	return pieceType;
+}
+
 void BlokusWindow::performMove()
 {
-	Player        &player      { m_match.GetPlayer(m_move.GetPlayerId()) };
-	Piece         &piece       { player.GetPiece  (m_move.GetPieceTypeId()) };
-	MicroMeterPnt &umPosAct    { piece.GetMicroMeterPos() };
-	MicroMeterPnt  umPosTarget { Convert2fCoord(m_move.GetCoordPos()) };
+	Player          &player    { m_match.GetPlayer(m_move.GetPlayerId()) };
+	Piece           &piece     { player.GetPiece  (m_move.GetPieceTypeId()) };
+	PieceType const &pieceType { piece.GetPieceTypeC() };
+	Shape     const &shape     { pieceType.GetShapeC(m_move.GetShapeId()) };
+	PosDir          &posDirAct { piece.GetPosDir() };
+//	m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), shape.GetRotation());
+	m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), 0._Degrees);
 	if (BlokusPreferences::m_bShowAnimation.Get())
 	{
-		m_posAnimation.Start(&umPosAct, umPosAct, umPosTarget);
+		m_iAnimationPhase = 1;
+		m_posDirAnimation.Start(&posDirAct, posDirAct, m_posDirTarget);
 	}
 	else
 	{
-		umPosAct = umPosTarget;
+		posDirAct = m_posDirTarget;
 		PostCommand(IDX_FINISH_MOVE);
 	}
 }
@@ -149,12 +161,12 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	switch (int const wmId { LoWord(wParam) } )
 	{
 	case IDD_RESET:
-		if (!m_bAutoRun && !m_posAnimation.IsRunning())
+		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
 			Reset();
 		break;
 
 	case IDD_START_AUTO_RUN:
-		if (!m_bAutoRun && !m_posAnimation.IsRunning())
+		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
 		{
 			m_bAutoRun = true;
 			autoRun();
@@ -162,7 +174,7 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		break;
 
 	case IDD_NEXT_MOVE:
-		if (!m_bAutoRun && !m_posAnimation.IsRunning())
+		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
 			nextMove();
 		break;
 
@@ -171,16 +183,42 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		break;
 
 	case IDX_ANIMATION_UPDATE:
-		m_posAnimation.Update();
+		m_posDirAnimation.Update();
 		Notify(true);
 		break;
 
 	case IDX_FINISH_MOVE:
-		m_match.FinishMove(m_move);
-		m_match.NextPlayer();
-		Notify(true);
-		if (m_bAutoRun)
-			PostCommand(IDX_NEXT_AUTO_MOVE);
+		if (m_iAnimationPhase == 1)
+		{
+			Player          &player    { m_match.GetPlayer(m_move.GetPlayerId()) };
+			Piece           &piece     { player.GetPiece  (m_move.GetPieceTypeId()) };
+			PieceType const &pieceType { piece.GetPieceTypeC() };
+			Shape     const &shape     { pieceType.GetShapeC(m_move.GetShapeId()) };
+			PosDir          &posDirAct { piece.GetPosDir() };
+			Degrees   const  degrees   { shape.GetRotation() };
+			if (degrees == 0._Degrees)
+			{
+				m_match.FinishMove(m_move);
+				m_match.NextPlayer();
+				Notify(true);
+				if (m_bAutoRun)
+					PostCommand(IDX_NEXT_AUTO_MOVE);
+			}
+			else
+			{
+				m_posDirTarget    = PosDir(Convert2fCoord(m_move.GetCoordPos()), degrees);
+				m_posDirAnimation.Start(&posDirAct, posDirAct, m_posDirTarget);
+				m_iAnimationPhase = 2;
+			}
+		}
+		else
+		{
+			m_match.FinishMove(m_move);
+			m_match.NextPlayer();
+			Notify(true);
+			if (m_bAutoRun)
+				PostCommand(IDX_NEXT_AUTO_MOVE);
+		}
 		break;
 
 	default:
@@ -239,10 +277,13 @@ void BlokusWindow::PaintGraphics()
 	}
 	else
 	{
+		Color const COL_GRAY { Color(0.5f, 0.5f, 0.5f) };
 		Player const& player { m_match.ActivePlayerC() };
  		paintBoard();
-		player.DrawFreePieces(m_context);
 		m_match.DrawSetPieces(m_context);
+		if (m_posDirAnimation.IsRunning())
+			getPieceTypeC().Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
+		player.DrawFreePieces(m_context);
 		if (BlokusPreferences::m_bShowContactPnts.Get())
 			m_match.ActivePlayerC().DrawContactPnts(m_context);
 		if (player.HasFinished())

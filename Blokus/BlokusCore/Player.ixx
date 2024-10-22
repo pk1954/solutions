@@ -36,8 +36,8 @@ public:
 
     wstring const &GetName() const { return m_pPlayerType->m_wstrName; }
 
-    Piece const& GetPieceC(PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
-    Piece      & GetPiece (PieceTypeId const id)  { return m_pieces.at(id.GetValue()); }
+    Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
+    Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
     void DrawFreePieces (DrawContext&) const;
     void DrawContactPnts(DrawContext&) const;

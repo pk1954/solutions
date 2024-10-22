@@ -17,7 +17,7 @@ void PieceType::SetPos(int const x, int const y)
 void PieceType::addIfNew(Shape const &shape)
 {
 	for (Shape const& s : m_shapes)
-		if (shape == s)
+		if (shape.Equals(s))
 			return;
 	m_shapes.push_back(shape);
 }
@@ -33,9 +33,9 @@ void PieceType::addOrientations(Shape &shape)
 	addIfNew(shape);
 }
 
-void PieceType::SetShape(const SHAPE& shape)
+void PieceType::SetShape(const ShapeCells& shapeCells)
 {
-	Shape shapeNew(shape);
+	Shape shapeNew(shapeCells);
 	m_iNrOfCells = shapeNew.CountCells();
 	m_shapes.clear();
 	addOrientations(shapeNew);
@@ -47,13 +47,28 @@ void PieceType::SetShape(const SHAPE& shape)
 
 void PieceType::Draw
 (
+	DrawContext   &context,
+	ShapeId const  idShape,
+	PosDir  const &posDir, 
+	Color   const  col
+) const
+{
+	fPixelPoint const offsetSave { context.GetPixelOffset() };
+	context.Move(posDir.m_umPos);
+	GetShapeC(idShape).Draw(context, posDir.m_degrees, col);
+	context.SetPixelOffset(offsetSave);
+}
+
+void PieceType::Draw
+(
 	DrawContext         &context,
-	MicroMeterPnt const &pos, 
+	ShapeId       const  idShape,
+	MicroMeterPnt const &umPos, 
 	Color         const  col
 ) const
 {
 	fPixelPoint const offsetSave { context.GetPixelOffset() };
-	context.Move(pos);
-	m_shapes.at(0).Draw(context, col);
+	context.Move(umPos);
+	GetShapeC(idShape).Draw(context, col);
 	context.SetPixelOffset(offsetSave);
 }

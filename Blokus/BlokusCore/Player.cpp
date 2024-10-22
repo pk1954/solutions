@@ -63,9 +63,9 @@ void Player::DrawFreePieces(DrawContext &context) const
 	(
 		[this, &context](Piece const& piece)
 		{
-			MicroMeterPnt const umPos { piece.GetMicroMeterPosC() };
-			Color         const col   { m_pPlayerType->m_color };
-			piece.GetPieceTypeC().Draw(context, umPos, col);
+			PosDir const posDir { piece.GetPosDirC() };
+			Color  const col    { m_pPlayerType->m_color };
+			piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col);
 		}
 	);
 }

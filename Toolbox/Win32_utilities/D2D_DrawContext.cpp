@@ -26,7 +26,7 @@ void D2D_DrawContext::SetStdFontSize(MicroMeter const & size)
 
 void D2D_DrawContext::SetRotation(Degrees const degrees, MicroMeterPnt const& umPntCenter) const
 {
-	m_pGraphics->SetRotation(degrees.GetValue(), m_coord.Transform2fPixelPos(umPntCenter));
+	m_pGraphics->SetRotation(degrees, m_coord.Transform2fPixelPos(umPntCenter));
 }
 
 void D2D_DrawContext::Reset() const

@@ -14,6 +14,7 @@ import Color;
 import Types;
 import WinBasics;
 
+using std::vector;
 using std::function;
 using std::wstring;
 using std::unique_ptr;
@@ -48,8 +49,7 @@ public:
     void ShutDown();
     void Push();
     void Pop();
-    void Rotation(fPixelPoint const, float const);
-    void SetStdFontSize(float const);
+    void SetStdFontSize      (float const);
     void Resize              (PIXEL const, PIXEL const);
     void DrawRectangle       (fPixelRect    const&, Color const, fPixel const)                                         const;
     void FillRectangle       (fPixelRect    const&, Color const)                                                       const;
@@ -74,12 +74,12 @@ public:
     void DrawEllipse         (fPixelEllipse const&, ID2D1Brush* const,  fPixel const)                                  const;
     void DrawEllipse         (fPixelEllipse const&, Color const,        fPixel const)                                  const;
     void DrawEllipse         (fPixelEllipse const&,                     fPixel const)                                  const;
-    void FillArrow           (fPixelPoint const,    fPixelPoint const,  fPixel const, fPixel const, Color const)       const;
-    void FillDiamond         (fPixelPoint const,    fPixel const,       Color  const)                                  const;
-    void DrawRoundedRectangle(fPixelRect const&,    Color const,        fPixel const, fPixel const)                    const;
-    void FillRoundedRectangle(fPixelRect const&,    Color const,        fPixel const)                                  const;
-    void UpDownArrow         (bool  const,          fPixelRect  const &, Color const)                                  const;
-    void SetRotation         (float const,          fPixelPoint const &)                                               const;
+    void FillArrow           (fPixelPoint   const,  fPixelPoint const,  fPixel const, fPixel const, Color const)       const;
+    void FillDiamond         (fPixelPoint   const,  fPixel const,       Color  const)                                  const;
+    void DrawRoundedRectangle(fPixelRect    const&, Color const,        fPixel const, fPixel const)                    const;
+    void FillRoundedRectangle(fPixelRect    const&, Color const,        fPixel const)                                  const;
+    void UpDownArrow         (bool          const,  fPixelRect  const &, Color const)                                  const;
+    void SetRotation         (Degrees       const,  fPixelPoint const &)                                               const;
     void Reset               () const;
 
     void DrawBezier(fPixelPoint const&, fPixelPoint const&, fPixelPoint const&, fPixelPoint const&,              fPixel const) const;
@@ -125,6 +125,8 @@ private:
     IDWriteTextFormat     * m_pTextFormat      { nullptr };
     ID2D1SolidColorBrush  * m_pBrushForeground { nullptr };
     ID2D1SolidColorBrush  * m_pBrushBackground { nullptr };
+
+    vector<D2D1_MATRIX_3X2_F> m_transformStack;
 
     ID2D1SolidColorBrush* createBrush(Color const) const;
     

@@ -55,7 +55,6 @@
     <ClCompile Include="..\..\..\Toolbox\Utilities\Raster.cpp" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\Raster.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\SimulationTime.ixx" />
-    <ClCompile Include="..\..\..\Toolbox\Utilities\SlowMotionRatio.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\SmoothMoveFp.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\SoundInterface.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Utilities\TextBuffer.cpp" />

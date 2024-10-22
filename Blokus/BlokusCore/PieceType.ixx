@@ -20,7 +20,7 @@ export class PieceType
 {
 public:
 
-	void SetShape(const SHAPE&);
+	void SetShape(const ShapeCells&);
 
 	void SetPos(int const, int const);
 	void SetPos(CoordPos const& newPos) { m_initialPos = newPos; }
@@ -29,7 +29,8 @@ public:
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(DrawContext&, MicroMeterPnt const&, Color const) const;
+	void Draw(DrawContext&, ShapeId const, PosDir const&, Color const) const;
+	void Draw(DrawContext&, ShapeId const, MicroMeterPnt const&, Color const) const;
 
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 
@@ -58,7 +59,7 @@ public:
 	unsigned int NrOfCells() const { return m_iNrOfCells; }
 
 private:
-	void initialize(SHAPE const&);
+	void initialize(ShapeCells const&);
 	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 

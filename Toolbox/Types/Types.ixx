@@ -15,5 +15,6 @@ export import :LinCombVector;
 export import :LineType;
 export import :Percent;
 export import :PixelTypes;
+export import :PosDir;
 export import :SpeedType;
 export import :U64Bit;

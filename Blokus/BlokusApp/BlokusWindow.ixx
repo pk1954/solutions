@@ -24,20 +24,23 @@ public:
 	void OnChar(WPARAM const, LPARAM const) final;
 
 private:
-	BlokusMove m_move;
-
 	D2D_DrawContext  m_context;
+	BlokusMove       m_move;
 	Match            m_match;
+	PosDir           m_posDirTarget;
     Tournament     * m_pTournament { nullptr };
 	bool             m_bAutoRun    { false };
 	TextFormatHandle m_hTextFormat { nullptr };
 
-    Animation<MicroMeterPnt> m_posAnimation;
+    Animation<PosDir> m_posDirAnimation;
+	int               m_iAnimationPhase;
 
 	bool OnSize   (PIXEL  const, PIXEL  const) final;
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
-
 	void PaintGraphics() final;
+
+	PieceType const &getPieceTypeC() const;
+
 	void drawFinishedMsg();
 	void paintBoard() const;
 	void performMove();

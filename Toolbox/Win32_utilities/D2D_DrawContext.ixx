@@ -19,6 +19,9 @@ public:
 
 	void SetStdFontSize(MicroMeter const &);
 
+	void Push() override { m_pGraphics->Push(); }
+    void Pop () override { m_pGraphics->Pop(); }
+
 	void SetRotation(Degrees const, MicroMeterPnt const&) const override;
 	void Reset() const override;
 

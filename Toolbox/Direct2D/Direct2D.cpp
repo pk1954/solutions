@@ -9,11 +9,8 @@ module;
 
 module Direct2D;
 
-import std;
 import Debug;
-import Color;
 import Util;
-import WinBasics;
 
 using std::array;
 using std::wstring;
@@ -654,11 +651,11 @@ Color D2D_driver::GetBackgroundColor() const
 	return *reinterpret_cast<Color*>(&colF);
 }
 
-void D2D_driver::SetRotation(float const fAngle, fPixelPoint const& ptCenter) const
+void D2D_driver::SetRotation(Degrees const angle, fPixelPoint const& ptCenter) const
 {
 	m_pRenderTarget->SetTransform
 	(
-		D2D1::Matrix3x2F::Rotation(fAngle, convertD2D(ptCenter))
+		D2D1::Matrix3x2F::Rotation(angle.GetValue(), convertD2D(ptCenter))
 	);
 }
 
@@ -744,20 +741,16 @@ void D2D_driver::DrawBezier
 	SafeRelease(&hBrush);
 }
 
-D2D1_MATRIX_3X2_F m_originalTransform;
 
 void D2D_driver::Push()
 {
-	m_pRenderTarget->GetTransform(&m_originalTransform);
+	D2D1_MATRIX_3X2_F activeTransform;
+	m_pRenderTarget->GetTransform(&activeTransform);
+	m_transformStack.push_back(activeTransform);
 }
 
 void D2D_driver::Pop()
 {
-	m_pRenderTarget->SetTransform(m_originalTransform);
+	m_pRenderTarget->SetTransform(m_transformStack.back());
+	m_transformStack.pop_back();
 }
-
-void D2D_driver::Rotation(fPixelPoint const center, float const fAngle)
-{
-	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(fAngle, D2D1::Point2F(center.GetXvalue(), center.GetYvalue())));
-}
-

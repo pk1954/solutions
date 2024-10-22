@@ -185,6 +185,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Toolbox\Utilities\SlowMotionRatio.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Animation.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\AnimationCommand.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\AppStartProtocol.ixx" />

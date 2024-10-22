@@ -7,14 +7,14 @@ export module BlokusCore:Shape;
 import std;
 import Types;
 import Color;
-import Direct2D;
+import SaveCast;
 import DrawContext;
 import :BlokusCoords;
 
 using std::array;
 using std::vector;
 
-export using SHAPE = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
+export using ShapeCells = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
 using ShapeCoordPos = CoordPos;
 
@@ -22,15 +22,23 @@ export class Shape
 {
 public:
 	Shape() = default;
-	Shape(SHAPE const&);
-	bool operator==(Shape const&) const = default;
+	Shape(ShapeCells const&);
+	//bool operator==(Shape const&) const = default;
 
-	int CountCells() const;
+	bool Equals(Shape const &other) const
+	{
+		return m_shapeCells == other.m_shapeCells;
+	}
+
+	int  CountCells() const;
 	void Draw(DrawContext&, Color const) const;
+	void Draw(DrawContext&, Degrees const, Color const) const;
 
 	void CollectCornerPnts();
 	void Flip();
 	void Rotate();
+
+	Degrees GetRotation() const { return m_degRotation; }
 
     void Apply2AllCornerPntsC(auto const& func) const
     {
@@ -57,9 +65,25 @@ public:
 		return true;
 	}
 
+	MicroMeterPnt CenterOfGravity()
+	{
+		MicroMeterPnt umPntCenter { NP_ZERO };
+		Apply2AllShapeCellsC
+		(
+			[&umPntCenter](ShapeCoordPos const &pos)
+			{
+				umPntCenter += Convert2fCoord(pos);
+			}
+		);
+		umPntCenter /= Cast2Float(m_shapeCells.size());
+		return umPntCenter;
+	}
+
 private:
 
-    SHAPE                 m_shape;
+    ShapeCells            m_shapeCells;
+	Degrees               m_degRotation { 0._Degrees };
+	MicroMeterPnt         m_umPntCenter;
 	vector<ShapeCoordPos> m_cornerPnts;
 
 	bool isCornerPnt  (CoordPos const&) const;
