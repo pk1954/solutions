@@ -20,9 +20,9 @@ public:
     void SetPlayerId (CoordPos const&, PlayerId const);
     void PerformMove(BlokusMove const&);
 
-    PlayerId GetPlayerId(CoordPos const&)              const;
-    bool IsFreeCell  (CoordPos const&)                 const;
-    bool IsContactPnt(CoordPos const&, PlayerId const) const;
+    PlayerId GetPlayerId (CoordPos const&)                 const;
+    bool     IsFreeCell  (CoordPos const&)                 const;
+    bool     IsContactPnt(CoordPos const&, PlayerId const) const;
 
 private:
     bool hasPlayerId    (CoordPos const&, PlayerId const) const;

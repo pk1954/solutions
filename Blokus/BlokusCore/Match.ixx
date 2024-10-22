@@ -54,10 +54,10 @@ public:
 
 private:
 
-    unsigned int  m_uiPlayersLeft  { NR_OF_PLAYERS };
     Board         m_board;
     Players       m_players;
     PlayerId      m_idActivePlayer { 0 };
+    unsigned int  m_uiPlayersLeft  { NR_OF_PLAYERS };
     MatchProtocol m_protocol;
     HiResTimer    m_timerFindContactPnts;
   //HiResTimer    m_timerFindValidMoves;

@@ -24,7 +24,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
 	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
-	m_mainWindow.Start(m_hwndApp, &m_tournament);
+	m_mainWindow.Start(m_hwndApp);
 	m_statusBar .Start(m_hwndApp);
 	m_appMenu   .Start(m_hwndApp);
 	m_tournamentWindow.Start(&m_tournament);

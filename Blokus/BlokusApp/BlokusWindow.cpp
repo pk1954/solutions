@@ -18,13 +18,8 @@ using std::make_unique;
 
 fPixel const BORDER { 10.0_fPixel };
 
-void BlokusWindow::Start
-(
-	HWND   const hwndParent,
-	Tournament * pTournament
-)
+void BlokusWindow::Start(HWND const hwndParent)
 {
-	m_pTournament = pTournament;
 	GraphicsWindow::Initialize
 	(
 		hwndParent, 
@@ -270,25 +265,17 @@ void BlokusWindow::drawFinishedMsg()
 
 void BlokusWindow::PaintGraphics()
 {
-	if (m_pTournament->IsActive())
-	{
- 		paintBoard();
-		m_match.DrawSetPieces(m_context);
-	}
-	else
-	{
-		Color const COL_GRAY { Color(0.5f, 0.5f, 0.5f) };
-		Player const& player { m_match.ActivePlayerC() };
- 		paintBoard();
-		m_match.DrawSetPieces(m_context);
-		if (m_posDirAnimation.IsRunning())
-			getPieceTypeC().Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
-		player.DrawFreePieces(m_context);
-		if (BlokusPreferences::m_bShowContactPnts.Get())
-			m_match.ActivePlayerC().DrawContactPnts(m_context);
-		if (player.HasFinished())
-			player.DrawResult(m_context, m_hTextFormat);
-		if (m_match.HasFinished())
-			drawFinishedMsg();
-	}
+	Color const COL_GRAY { Color(0.5f, 0.5f, 0.5f) };
+	Player const& player { m_match.ActivePlayerC() };
+ 	paintBoard();
+	m_match.DrawSetPieces(m_context);
+	if (m_posDirAnimation.IsRunning())
+		getPieceTypeC().Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
+	player.DrawFreePieces(m_context);
+	if (BlokusPreferences::m_bShowContactPnts.Get())
+		m_match.ActivePlayerC().DrawContactPnts(m_context);
+	if (player.HasFinished())
+		player.DrawResult(m_context, m_hTextFormat);
+	if (m_match.HasFinished())
+		drawFinishedMsg();
 };

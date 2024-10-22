@@ -13,6 +13,11 @@ export import :BlokusMove;
 //export import :StrategyRandom;
 export import :Tournament;
 
+import :PlayerTypes;
+import :Components;
+import :BlokusPreferences;
+
+
 export void InitializeBlokusCore()
 {
 	PlayerTypes::Initialize();
