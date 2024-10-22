@@ -22,8 +22,9 @@ public:
 
     BlokusMove SelectMove(RuleServerInterface const &rs) final
     {
-        BlokusMove move;  // initialized to everything Undefined
-        vector<BlokusMove> const& moves { rs.GetListOfValidMoves() };
+        BlokusMove         move;  // initialized to everything Undefined
+        vector<BlokusMove> moves;
+        rs.GetListOfValidMoves(moves);
         if (!moves.empty())
             move = moves[0];
         return move;

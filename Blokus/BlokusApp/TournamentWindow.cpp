@@ -5,6 +5,7 @@
 module TournamentWindow;
 
 import std;
+import Types;
 
 using std::wcout;
 using std::endl;
@@ -43,15 +44,17 @@ void TournamentWindow::PaintGraphics()
         }
     );
 
-    Ticks ticksTournament { m_pTournament->GetTournamentTime() };
-    Ticks ticksOverhead   { ticksTournament - ticksAllPlayers };
-    Set(RasterPoint(2, 5), L"overhead");
-    Set(RasterPoint(3, 5), PerfCounter::Ticks2wstring(ticksOverhead));
-    Set(RasterPoint(2, 6), L"tournament");
-    Set(RasterPoint(3, 6), PerfCounter::Ticks2wstring(ticksTournament));
+    Ticks   ticksTournament { m_pTournament->GetTournamentTime() };
+    Ticks   ticksOverhead   { ticksTournament - ticksAllPlayers };
+    PERCENT percentOverhead { CalcPercent(ticksOverhead, ticksTournament) };
+    Set(RasterPoint(2, 5), L"tournament");
+    Set(RasterPoint(3, 5), PerfCounter::Ticks2wstring(ticksTournament));
+    Set(RasterPoint(2, 6), L"overhead");
+    Set(RasterPoint(3, 6), PerfCounter::Ticks2wstring(ticksOverhead) + L" " + 
+                           Percent2wstring(percentOverhead));
 
     TableWindow::CalcRowsAndCols();
     TableWindow::PaintGraphics();
  	m_timer.AfterAction();
-    wcout << L"Graphics " << m_timer.Average2wstring() << endl;
+    //wcout << L"Graphics " << m_timer.Average2wstring() << endl;
 }

@@ -6,7 +6,7 @@ export module RunTime:Script;
 
 import std;
 import std.compat;
-
+import Types;
 import :Scanner;
 import :ErrHndl;
 import :Input;
@@ -61,7 +61,7 @@ public:
 
 	Scanner& GetScanner() { return m_scanner; }
 
-	long      GetPercentRead();
+	PERCENT   GetPercentRead();
 	long long GetFilePos() { return m_scanner.GetFilePos(); };
 	uintmax_t GetFileSize() const { return m_fileSize; };
 
@@ -90,7 +90,7 @@ private:
 	Scanner   m_scanner;
 	tTOKEN    m_token       { tTOKEN::End };
 	bool      m_bEchoScript { true };
-	uintmax_t m_fileSize    { 0 };
+	long long m_fileSize    { 0 };
 
 	inline static bool                  m_bStop       { false };
 	inline static ScriptFunctor const* m_pWrapHook    { nullptr };

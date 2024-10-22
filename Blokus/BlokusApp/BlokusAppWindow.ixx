@@ -32,7 +32,7 @@ public:
 		if (m_tournament.IsActive())
 		{
 			m_timer.BeforeAction();
-			m_tournament.NextMove();
+			m_tournament.NextTournamentMove();
 		 	m_timer.AfterAction();
 			//wcout << L"DoGameStuff " << m_timer.Average2wstring() << endl;
 		}

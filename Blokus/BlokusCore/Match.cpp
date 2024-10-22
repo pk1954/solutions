@@ -18,9 +18,9 @@ public:
         : m_match(match)
     {}
 
-    vector<BlokusMove> const& GetListOfValidMoves() const final
+    void GetListOfValidMoves(vector<BlokusMove> &validMoves) const final
     {
-        return m_match.FindValidMoves();
+        m_match.FindValidMoves(validMoves);
     }
 
     Board const& GetBoard() const final
@@ -157,36 +157,51 @@ void Match::findContactPnts()
     }
 }
 
-void Match::testPosition(BlokusMove &move, ShapeCoordPos const &posCorner) 
+void Match::testPosition
+(
+    vector<BlokusMove>  &validMoves,
+    BlokusMove          &move, 
+    ShapeCoordPos const &posCorner
+)
 { 
     Player const& player { m_players.GetPlayerC(move.GetPlayerId()) };
     player.Apply2AllContactPntsC
     (
-        [this, &player, &move, &posCorner](CoordPos const& posContact)
+        [this, &validMoves, &player, &move, &posCorner](CoordPos const& posContact)
         {
             move.SetCoordPos(posContact - posCorner);
             if (isValidMove(move, player))
             {
-                m_validMoves.push_back(move);
+                validMoves.push_back(move);
             }
         }
 	);
 }
 
-void Match::testShape(BlokusMove &move, ShapeId const idShape)
+void Match::testShape
+(
+    vector<BlokusMove> &validMoves,
+    BlokusMove         &move, 
+    ShapeId const      idShape
+)
 {
     //++g_iNrOfShapes;
     move.SetShapeId(idShape);
 	GetShapeC(move).Apply2AllCornerPntsC
 	(
-		[this, &move](ShapeCoordPos const &pos) 
+		[this, &validMoves, &move](ShapeCoordPos const &pos) 
         { 
-            testPosition(move, pos);
+            testPosition(validMoves, move, pos);
 		}
 	);
 }
 
-void Match::testPiece(BlokusMove &move, Piece const& piece)
+void Match::testPiece
+(
+    vector<BlokusMove> &validMoves,
+    BlokusMove         &move, 
+    Piece const        &piece
+)
 {
     PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
     PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
@@ -194,27 +209,26 @@ void Match::testPiece(BlokusMove &move, Piece const& piece)
     //++g_iNrOfPieces;
 	pieceType.Apply2AllShapeIdsC
 	(
-		[this, &move](ShapeId const& id)
+		[this, &validMoves, &move](ShapeId const& id)
 		{
-            testShape(move, id);
+            testShape(validMoves, move, id);
         }
     );
 }
 
-vector<BlokusMove> const &Match::FindValidMoves()
+void Match::FindValidMoves(vector<BlokusMove> &validMoves)
 {
-    Player player { ActivePlayer() };
-    BlokusMove   move;
-    m_validMoves.clear();
+    Player     player { ActivePlayer() };
+    BlokusMove move;
+    validMoves.clear();
     move.SetPlayerId(m_idActivePlayer);
     player.Apply2AvailablePiecesC
     (
-        [this, &move](Piece const& piece)
+        [this, &validMoves, &move](Piece const& piece)
         {
-            testPiece(move, piece);
+            testPiece(validMoves, move, piece);
         }
     );
-    return m_validMoves;
 }
 
     //g_iNrOfPieces = 0;

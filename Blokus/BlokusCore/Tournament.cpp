@@ -21,7 +21,7 @@ void Tournament::Start(int const iNrOfMatches)
     m_match.ResetTimers();
 }
 
-void Tournament::NextMove()
+void Tournament::NextTournamentMove()
 {
 	//m_timer.BeforeAction();
     BlokusMove move { m_match.NextMove() };

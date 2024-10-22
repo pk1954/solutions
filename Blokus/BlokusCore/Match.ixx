@@ -32,7 +32,7 @@ public:
     void Reset();
     void ResetTimers() { m_players.ResetTimers(); }
 
-    vector<BlokusMove> const& FindValidMoves();
+    void FindValidMoves(vector<BlokusMove>&);
 
     Player       &ActivePlayer ()       { return m_players.GetPlayer(m_idActivePlayer); }
     Player const &ActivePlayerC() const { return m_players.GetPlayerC(m_idActivePlayer); }
@@ -54,21 +54,20 @@ public:
 
 private:
 
-    vector<BlokusMove> m_validMoves;
-    unsigned int       m_uiPlayersLeft  { NR_OF_PLAYERS };
-    Board              m_board;
-    Players            m_players;
-    PlayerId           m_idActivePlayer { 0 };
-    MatchProtocol      m_protocol;
-    HiResTimer         m_timerFindContactPnts;
-  //HiResTimer         m_timerFindValidMoves;
-    HiResTimer         m_timer;
+    unsigned int  m_uiPlayersLeft  { NR_OF_PLAYERS };
+    Board         m_board;
+    Players       m_players;
+    PlayerId      m_idActivePlayer { 0 };
+    MatchProtocol m_protocol;
+    HiResTimer    m_timerFindContactPnts;
+  //HiResTimer    m_timerFindValidMoves;
+    HiResTimer    m_timer;
                   
     unique_ptr<RuleServerInterface> m_upRuleServer; 
 
     bool isValidMove (BlokusMove const&, Player const&);
-    void testPosition(BlokusMove&, ShapeCoordPos const&);
-    void testShape   (BlokusMove&, ShapeId       const);
-    void testPiece   (BlokusMove&, Piece         const&);
+    void testPosition(vector<BlokusMove>&, BlokusMove&, ShapeCoordPos const&);
+    void testShape   (vector<BlokusMove>&, BlokusMove&, ShapeId       const);
+    void testPiece   (vector<BlokusMove>&, BlokusMove&, Piece         const&);
     void findContactPnts();
 };

@@ -40,7 +40,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_tournament                         .RegisterObserver(m_tournamentWindow);
 	configureStatusBar();
 
-	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 500_PIXEL, 250_PIXEL }, true);
+	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);
 
 	m_mainWindow.Show(true);
 	m_statusBar .Show(true);

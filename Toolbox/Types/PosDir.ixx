@@ -20,6 +20,8 @@ public:
         m_degrees(degrees)
     {}
 
+	bool operator==(PosDir const& rhs) const = default;
+
     PosDir operator+= (PosDir const a) { m_umPos += a.m_umPos; m_degrees += a.m_degrees; return * this; }
 	PosDir operator-= (PosDir const a) { m_umPos -= a.m_umPos; m_degrees -= a.m_degrees; return * this; }
 

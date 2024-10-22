@@ -20,7 +20,7 @@ export class Tournament : public Observable
 {
 public:
     void Start(int const);
-    void NextMove();
+    void NextTournamentMove();
 
     bool HasFinished() const { return m_iMatch >= m_iNrOfMatches; }
     bool IsActive()    const { return m_active; }

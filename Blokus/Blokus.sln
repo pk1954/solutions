@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlokusApp", "BlokusApp\Blok
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlokusCore", "BlokusCore\BlokusCore.vcxproj", "{BDDCDE96-932C-4D9F-A7AA-ECFC505727A1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlokusCommands", "BlokusCommands\BlokusCommands.vcxproj", "{70B926D0-3348-4C03-BB12-1D6AD052A8A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -123,6 +125,14 @@ Global
 		{BDDCDE96-932C-4D9F-A7AA-ECFC505727A1}.Release|x64.Build.0 = Release|x64
 		{BDDCDE96-932C-4D9F-A7AA-ECFC505727A1}.Release|x86.ActiveCfg = Release|Win32
 		{BDDCDE96-932C-4D9F-A7AA-ECFC505727A1}.Release|x86.Build.0 = Release|Win32
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Debug|x64.ActiveCfg = Debug|x64
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Debug|x64.Build.0 = Debug|x64
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Debug|x86.ActiveCfg = Debug|Win32
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Debug|x86.Build.0 = Debug|Win32
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Release|x64.ActiveCfg = Release|x64
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Release|x64.Build.0 = Release|x64
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Release|x86.ActiveCfg = Release|Win32
+		{70B926D0-3348-4C03-BB12-1D6AD052A8A5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,13 +8,9 @@ module;
 
 module RunTime:Script;
 
-import std;
-import std.compat;
 import SaveCast;
-import :ErrHndl;
-import :Symtab;
-import :Scanner;
 import IoConstants;
+import :Symtab;
 
 using std::endl;
 using std::wcout;
@@ -571,13 +567,13 @@ void Script::Clear()
 	SymbolTable::Clear();
 }
 
-long Script::GetPercentRead()
+PERCENT Script::GetPercentRead()
 {
     long long const filePos { GetFilePos() };
     if ((filePos < 0) || (numeric_limits<long>::max() / 100 < filePos))
-        return 100L;
+        return 100_PERCENT;
     else if (m_fileSize == 0)
-        return 0L;
+        return 0_PERCENT;
     else
-        return Cast2Long(filePos * 100 / m_fileSize);
+        return CalcPercent(filePos, m_fileSize);
 }

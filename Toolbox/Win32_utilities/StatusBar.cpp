@@ -169,14 +169,14 @@ void StatusBar::ClearPart(int const iPart) const
 
 void StatusBar::ReadProgressReport(int const iPart, Script * pScript) const
 {
-	long const lPercentage { pScript->GetPercentRead() };
+	PERCENT percentage { pScript->GetPercentRead() };
 	DisplayInPart
 	(
 		iPart, 
 		L"Reading " +
 		pScript->GetActPath() + 
 		L" : " + 
-		to_wstring(lPercentage) + 
+		Percent2wstring(percentage) + 
 		L'%'
 	);
 }
