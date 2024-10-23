@@ -29,7 +29,7 @@ public:
     void UpdateUI() final
     {
         PanelRectsAnimationCmd::UpdateUI();
-        m_rootWinAnim.SendCommand(IDD_ANIMATE_PANELS);
+        SendCommand2AnimWin(IDD_ANIMATE_PANELS);
     }
 
     static void Push

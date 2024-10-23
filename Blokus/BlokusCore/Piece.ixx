@@ -19,6 +19,7 @@ public:
         m_bAvailable  = true;
         m_idPieceType = id;
         SetPiecePos(GetPieceTypeC().GetInitialPos());
+        m_posDir.m_degrees = 0._Degrees;
     }
 
     void SetPiecePos(CoordPos const& pos) { m_posDir.m_umPos = Convert2fCoord(pos); }

@@ -31,7 +31,7 @@ public:
     void UpdateUI() final
     {
         fPixelPointAnimationCmd::UpdateUI();
-        m_rootWinAnim.SendCommand(IDD_SCALES_UPDATE);
+        SendCommand2AnimWin(IDD_SCALES_UPDATE);
     }
 
     static void Push

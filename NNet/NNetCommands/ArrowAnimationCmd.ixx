@@ -22,7 +22,7 @@ public:
     void UpdateUI() final
     {
         MicroMeterAnimationCmd::UpdateUI();
-        m_rootWinAnim.Notify(true);
+        NotifyAnimWin(true);
     };
 
     static void Register()

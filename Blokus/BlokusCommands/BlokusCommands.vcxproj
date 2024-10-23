@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="BlokusCommands.ixx" />
     <ClCompile Include="NextMoveCmd.ixx" />
+    <ClCompile Include="Resource.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlokusCore\BlokusCore.vcxproj">

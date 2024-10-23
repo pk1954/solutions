@@ -8,10 +8,10 @@ import std;
 import Types;
 import Color;
 import HiResTimer;
+import :BlokusMove;
 import :Board;
 import :Components;
 import :MatchProtocol;
-import :BlokusMove;
 import :Player;
 import :PlayerId;
 import :Players;
@@ -44,6 +44,38 @@ public:
     bool          HasFinished()       { return m_uiPlayersLeft == 0; }
     Player const &Winner()            { return m_players.GetPlayerC(WinnerId()); }
     Board  const &GetBoard() const    { return m_board; }
+
+    Piece &GetPiece(BlokusMove const move)
+    {
+		Player &player { GetPlayer(move.GetPlayerId()) };
+		return player.GetPiece(move.GetPieceTypeId());
+    }
+
+    Piece const &GetPieceC(BlokusMove const move) const
+    {
+		Player const &player { GetPlayerC(move.GetPlayerId()) };
+		return player.GetPieceC(move.GetPieceTypeId());
+    }
+
+    PieceType const &GetPieceTypeC(BlokusMove const move) const
+    {
+	    Piece     const &piece     { GetPieceC(move) };
+	    PieceType const &pieceType { piece.GetPieceTypeC() };
+	    return pieceType;
+    }
+
+    PosDir &GetPosDir(BlokusMove const move)
+    {
+	    return GetPiece(move).GetPosDir();
+    }
+
+    Degrees GetRotation(BlokusMove const move)
+    {
+		Piece           &piece     { GetPiece(move) };
+		PieceType const &pieceType { piece.GetPieceTypeC() };
+		Shape     const &shape     { pieceType.GetShapeC(move.GetShapeId()) };
+		return shape.GetRotation();
+    }
 
     PlayerId WinnerId() const;
 

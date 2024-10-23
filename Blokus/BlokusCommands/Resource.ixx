@@ -1,6 +1,6 @@
 // Resource.ixx
 //
-// BlokusApp
+// BlokusCommands
 
 export module Resource;
 

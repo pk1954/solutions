@@ -37,11 +37,11 @@ private:
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
 	void PaintGraphics() final;
 
-	PieceType const &getPieceTypeC() const;
-
 	void drawFinishedMsg();
 	void paintBoard() const;
 	void performMove();
 	void autoRun();
 	void nextMove();
+	void startRotationPhase(Degrees const);
+	void finishMove();
 };

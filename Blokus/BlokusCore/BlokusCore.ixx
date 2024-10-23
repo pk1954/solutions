@@ -17,7 +17,6 @@ import :PlayerTypes;
 import :Components;
 import :BlokusPreferences;
 
-
 export void InitializeBlokusCore()
 {
 	PlayerTypes::Initialize();

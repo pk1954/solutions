@@ -27,11 +27,13 @@
     <ClCompile Include="BlokusAppWindow.ixx" />
     <ClCompile Include="BlokusWindow.cpp" />
     <ClCompile Include="BlokusWindow.ixx" />
-    <ClCompile Include="Resource.ixx" />
     <ClCompile Include="TournamentWindow.cpp" />
     <ClCompile Include="TournamentWindow.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BlokusCommands\BlokusCommands.vcxproj">
+      <Project>{70b926d0-3348-4c03-bb12-1d6ad052a8a5}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\BlokusCore\BlokusCore.vcxproj">
       <Project>{bddcde96-932c-4d9f-a7aa-ecfc505727a1}</Project>
     </ProjectReference>

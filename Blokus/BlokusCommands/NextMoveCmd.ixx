@@ -6,6 +6,8 @@ export module BlokusCommands:NextMoveCmd;
 
 import Types;
 import AnimationCommand;
+import BlokusCore;
+import Resource;
 
 using PosDirAnimationCmd = AnimationCommand<PosDir>;
 
@@ -25,7 +27,9 @@ public:
     void UpdateUI() final
     {
         PosDirAnimationCmd::UpdateUI();
-        m_rootWinAnim.Notify(true);
+        NotifyAnimWin(true);
+		if (TargetReached())
+			PostCommand2AnimWin(IDX_FINISH_MOVE);
     };
 
     static void Register()
@@ -35,13 +39,18 @@ public:
 
     static void Push
     (
-        PosDir       &posDirAnimated,
-        PosDir const &posDirTarget,
-        bool   const  bAnimation
+        Match           &match,
+        BlokusMove const move
     )
     {
-        if (posDirTarget == posDirAnimated)
-            return;
+        //Player          &player    { m_match.GetPlayer(m_move.GetPlayerId()) };
+        //Piece           &piece     { player.GetPiece  (m_move.GetPieceTypeId()) };
+        //PieceType const &pieceType { piece.GetPieceTypeC() };
+        //Shape     const &shape     { pieceType.GetShapeC(m_move.GetShapeId()) };
+        //PosDir          &posDirAct { piece.GetPosDir() };
+        //m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), 0._Degrees);
+        //if (posDirTarget == posDirAnimated)
+        //    return;
 
         //if (IsTraceOn())
         //    TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
@@ -59,10 +68,25 @@ public:
         //    );
         //else
         //    umAnimated = umTarget;
+    //static void Initialize()
+    //{
+	   // m_posDirAnimation.SetUpdateLambda
+	   // (
+		  //  [this](bool const bTargetReached)
+		  //  {
+			 //   PostCommand(IDX_ANIMATION_UPDATE);
+			 //   if (bTargetReached)
+				//    PostCommand(IDX_FINISH_MOVE);
+		  //  }
+	   // );
+    //}
+
     }
 
 private:
     inline static const wstring NAME { L"NextMoveCmd" };
+
+    BlokusMove m_move;
 
     inline static struct myWrapper : public Wrapper
     {

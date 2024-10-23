@@ -53,32 +53,29 @@ public:
         m_upAnimation->SetNrOfSteps(uiNrOfSteps);
     }
 
-    virtual void UpdateUI()
+    virtual void UpdateUI() { m_upAnimation->Update(); }
+
+    void Do  () final { m_upAnimation->Start(&m_animated, m_start,  m_target); }
+    void Undo() final { m_upAnimation->Start(&m_animated, m_target, m_start ); }
+
+    bool IsAsyncCommand() final { return true; };
+    bool TargetReached() { return m_upAnimation->TargetReached(); }
+
+    void NotifyAnimWin(bool const bImmediate) { m_rootWinAnim.Notify(bImmediate); }
+
+    void PostCommand2AnimWin(WPARAM const wParam, LPARAM const lParam = 0)
     {
-        m_upAnimation->Update();
+        m_rootWinAnim.PostCommand(wParam, lParam);
     }
 
-    void Do() final
+    void SendCommand2AnimWin(WPARAM const wParam, LPARAM const lParam = 0)
     {
-        m_upAnimation->Start(&m_animated, m_start, m_target);
+        m_rootWinAnim.SendCommand(wParam, lParam);
     }
-
-    void Undo() final
-    {
-        m_upAnimation->Start(&m_animated, m_target, m_start);
-    }
-
-    bool IsAsyncCommand() final
-    {
-        return true;
-    };
-
-protected:
-
-    RootWindow & m_rootWinAnim;
 
 private:
 
+    RootWindow    & m_rootWinAnim;
     ANIM_TYPE     & m_animated;
     ANIM_TYPE const m_start;
     ANIM_TYPE const m_target;

@@ -122,21 +122,9 @@ void BlokusWindow::autoRun()
 	performMove();
 }
 
-PieceType const& BlokusWindow::getPieceTypeC() const
-{
-	Player    const &player    { m_match.GetPlayerC(m_move.GetPlayerId()) };
-	Piece     const &piece     { player.GetPieceC  (m_move.GetPieceTypeId()) };
-	PieceType const &pieceType { piece.GetPieceTypeC() };
-	return pieceType;
-}
-
 void BlokusWindow::performMove()
 {
-	Player          &player    { m_match.GetPlayer(m_move.GetPlayerId()) };
-	Piece           &piece     { player.GetPiece  (m_move.GetPieceTypeId()) };
-	PieceType const &pieceType { piece.GetPieceTypeC() };
-	Shape     const &shape     { pieceType.GetShapeC(m_move.GetShapeId()) };
-	PosDir          &posDirAct { piece.GetPosDir() };
+	PosDir &posDirAct { m_match.GetPosDir(m_move) };
 //	m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), shape.GetRotation());
 	m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), 0._Degrees);
 	if (BlokusPreferences::m_bShowAnimation.Get())
@@ -185,35 +173,14 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	case IDX_FINISH_MOVE:
 		if (m_iAnimationPhase == 1)
 		{
-			Player          &player    { m_match.GetPlayer(m_move.GetPlayerId()) };
-			Piece           &piece     { player.GetPiece  (m_move.GetPieceTypeId()) };
-			PieceType const &pieceType { piece.GetPieceTypeC() };
-			Shape     const &shape     { pieceType.GetShapeC(m_move.GetShapeId()) };
-			PosDir          &posDirAct { piece.GetPosDir() };
-			Degrees   const  degrees   { shape.GetRotation() };
-			if (degrees == 0._Degrees)
+			Degrees const degrees { m_match.GetRotation(m_move) };
+			if (degrees != 0._Degrees)
 			{
-				m_match.FinishMove(m_move);
-				m_match.NextPlayer();
-				Notify(true);
-				if (m_bAutoRun)
-					PostCommand(IDX_NEXT_AUTO_MOVE);
-			}
-			else
-			{
-				m_posDirTarget    = PosDir(Convert2fCoord(m_move.GetCoordPos()), degrees);
-				m_posDirAnimation.Start(&posDirAct, posDirAct, m_posDirTarget);
-				m_iAnimationPhase = 2;
+				startRotationPhase(degrees);
+				break;
 			}
 		}
-		else
-		{
-			m_match.FinishMove(m_move);
-			m_match.NextPlayer();
-			Notify(true);
-			if (m_bAutoRun)
-				PostCommand(IDX_NEXT_AUTO_MOVE);
-		}
+		finishMove();
 		break;
 
 	default:
@@ -221,6 +188,23 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	}
 
 	return true;
+}
+
+void BlokusWindow::startRotationPhase(Degrees const degrees)
+{
+	PosDir &posDirAct { m_match.GetPosDir(m_move) };
+	m_posDirTarget    = PosDir(Convert2fCoord(m_move.GetCoordPos()), degrees);
+	m_iAnimationPhase = 2;
+	m_posDirAnimation.Start(&posDirAct, posDirAct, m_posDirTarget);
+}
+
+void BlokusWindow::finishMove()
+{
+	m_match.FinishMove(m_move);
+	m_match.NextPlayer();
+	Notify(true);
+	if (m_bAutoRun)
+		PostCommand(IDX_NEXT_AUTO_MOVE);
 }
 
 void BlokusWindow::paintBoard() const
@@ -270,7 +254,7 @@ void BlokusWindow::PaintGraphics()
  	paintBoard();
 	m_match.DrawSetPieces(m_context);
 	if (m_posDirAnimation.IsRunning())
-		getPieceTypeC().Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
+		m_match.GetPieceTypeC(m_move).Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
 	player.DrawFreePieces(m_context);
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		m_match.ActivePlayerC().DrawContactPnts(m_context);

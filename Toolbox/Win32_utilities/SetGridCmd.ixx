@@ -32,7 +32,7 @@ public:
     void UpdateUI() final
     {        
         FloatAnimationCmd::UpdateUI();
-        m_rootWinAnim.SendCommand(IDD_GRID_UPDATE);
+        SendCommand2AnimWin(IDD_GRID_UPDATE);
     }
 
     static void Push
