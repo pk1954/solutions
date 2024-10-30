@@ -2,6 +2,7 @@
 //
 // EvoWindows
 
+export module Resource;
 
 // identifiers below 100 are reserved for win32_utilities
 // identifiers for application start at 100

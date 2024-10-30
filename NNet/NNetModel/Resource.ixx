@@ -14,8 +14,6 @@ export inline int const IDD_APPLY                     { 105 };
 export inline int const IDD_RESET                     { 107 };
 										    		  
 export inline int const IDM_SCRIPT_DIALOG             { 110 };
-export inline int const IDM_UNDO                      { 115 };
-export inline int const IDM_REDO                      { 116 };
 export inline int const IDM_DUMP                      { 117 };
 								   	         		  
 export inline int const IDM_ESCAPE                    { 140 };

@@ -138,5 +138,8 @@
     <ClCompile Include="WorkThreadInterface.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReadBuffer.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

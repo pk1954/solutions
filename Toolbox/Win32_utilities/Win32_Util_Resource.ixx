@@ -85,6 +85,8 @@ export inline int const IDM_SIMULATION_SPEED      { 80 };
 export inline int const IDM_RUN_STOP_NOTIFY       { 81 };
 export inline int const IDM_DYNAMIC_MODEL_NOTIFY  { 82 };
 export inline int const IDM_PERFORMANCE_NOTIFY    { 83 };
+export inline int const IDM_UNDO                  { 85 };
+export inline int const IDM_REDO                  { 86 };
                                                   
 export inline int const IDM_MOVE                  { 90 };
 export inline int const IDM_APP_DATA_CHANGED      { 91 };

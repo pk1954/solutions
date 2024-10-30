@@ -5,13 +5,13 @@
 export module NNetWin32:NNetAppMenu;
 
 import std;
+import Commands;
 import ObserverInterface;
+import OnOffPair;
 import SoundInterface;
-import WinManager;
 import Win32_Util;
 import WinBasics;
-import OnOffPair;
-import Commands;
+import WinManager;
 import :Compute;
 
 using std::wstring;

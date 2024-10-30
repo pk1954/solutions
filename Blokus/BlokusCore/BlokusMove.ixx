@@ -12,13 +12,13 @@ import :ShapeId;
 export class BlokusMove
 {
 public:
-    void Reset()
-    {
-        m_idPlayer    = NO_PLAYER;
-        m_idPieceType = UndefinedPieceTypeId;
-        m_idShape     = UndefinedShapeId;
-        m_boardPos    = UndefinedCoordPos;
-    }
+    //void Reset()
+    //{
+    //    m_idPlayer    = NO_PLAYER;
+    //    m_idPieceType = UndefinedPieceTypeId;
+    //    m_idShape     = UndefinedShapeId;
+    //    m_boardPos    = UndefinedCoordPos;
+    //}
 
     PlayerId    GetPlayerId   () const { return m_idPlayer;    }
     PieceTypeId GetPieceTypeId() const { return m_idPieceType; }

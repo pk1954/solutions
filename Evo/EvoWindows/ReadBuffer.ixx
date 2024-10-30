@@ -93,7 +93,7 @@ public:
 				return;                                           // just continue your work.
 			}												 	  // Readers can synchronize with later version
 
-		  //m_pModel4Display->CopyModelData(m_pModelWork);        // We have exclusive access, copy Model
+		    m_pModel4Display->CopyModelData(m_pModelWork);        // We have exclusive access, copy Model
 			m_pModel4Display = *m_pModelWork;
 			ReleaseSRWLockExclusive(& m_SRWLock);                 // Release lock
 		}

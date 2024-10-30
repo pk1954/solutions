@@ -49,6 +49,9 @@
     <ProjectReference Include="..\Toolbox\Types\Types.vcxproj">
       <Project>{c1e2d8d5-65ed-4991-a962-45117c2a245e}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Toolbox\Utilities\Utilities.vcxproj">
+      <Project>{d6e82f0a-c93f-4fa0-aacf-910ef2f59fdc}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Toolbox\Win32_utilities\Win32_utilities.vcxproj">
       <Project>{7c1b51ed-011d-4b73-867c-ac23f0a9e6d1}</Project>
     </ProjectReference>
@@ -155,7 +158,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Types.lib;Utilities.lib;Win32_utilities.lib;IoUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Types.lib;Utilities.lib;Win32_utilities.lib;IoUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -175,7 +178,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Types.lib;Utilities.lib;Win32_utilities.lib;IoUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;d2d1.lib;Dwrite.lib;Direct2D.lib;ComCtl32.lib;msimg32.lib;runtimeCPP.lib;Types.lib;Utilities.lib;Win32_utilities.lib;IoUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

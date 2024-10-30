@@ -167,6 +167,7 @@
     <ClCompile Include="PackGridPoint.ixx" />
     <ClCompile Include="PerformanceWindow.ixx" />
     <ClCompile Include="ProtocolServer.ixx" />
+    <ClCompile Include="ReadBuffer.ixx" />
     <ClCompile Include="Resource.ixx" />
     <ClCompile Include="SpeedControl.cpp" />
     <ClCompile Include="SpeedControl.ixx" />

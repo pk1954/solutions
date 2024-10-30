@@ -5,11 +5,11 @@
 export module WinCommand;
 
 import std;
-import Win32_Util_Resource;
-import WinManager;
-import WinBasics;
-import RunTime;
 import Commands;
+import RunTime;
+import Win32_Util_Resource;
+import WinBasics;
+import WinManager;
 
 using std::bit_cast;
 using std::unique_ptr;

@@ -4,7 +4,7 @@
 
 module ShapeLib:GridPointShape;
 
-import EvoConfig;
+import EvoCoreLib;
 import TextDisplay;
 
 // Can be displayed, if at least IndividualShape has space

@@ -4,13 +4,9 @@
 
 module BlokusAppWindow;
 
-import std;
 import IoUtil;
-import WinBasics;
 import Win32_Util_Resource;
-import MessagePump;
 import WinManager;
-import BlokusCore;
 import Resource;
 
 using std::wstring;
@@ -21,6 +17,8 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_aboutBox.SetProductName(wstrProductName);
 
 	WinManager::Initialize();
+	WinCommand::Initialize(&m_cmdStack);
+	m_cmdStack.Initialize(&m_matchObservable);
 
 	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
 	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
@@ -37,7 +35,9 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	BlokusPreferences::m_bShowContactPnts.RegisterObserver(m_mainWindow);
 	BlokusPreferences::m_bShowCornerCells.RegisterObserver(m_mainWindow);
 	BlokusPreferences::m_bShowAnimation  .RegisterObserver(m_mainWindow);
+	Preferences::m_bSound                .RegisterObserver(m_appMenu);
 	m_tournament                         .RegisterObserver(m_tournamentWindow);
+	m_matchObservable                    .RegisterObserver(m_mainWindow);
 	configureStatusBar();
 
 	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);
@@ -106,6 +106,16 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		m_aboutBox.Show(m_mainWindow.GetWindowHandle());
 		return true;
 
+	case IDM_UNDO:
+		if (!m_cmdStack.UndoStackCommand())
+			m_sound.WarningSound();
+		return true;
+
+	case IDM_REDO:
+		if (!m_cmdStack.RedoStackCommand())
+			m_sound.WarningSound();
+		return true;
+
 	case IDD_CONTACT_PNTS:
 		BlokusPreferences::m_bShowContactPnts.Toggle();
 		Preferences::WritePreferences();
@@ -125,6 +135,10 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		m_tournamentWindow.Show(true);
 		m_tournamentWindow.BringWindowToTop();
 		m_tournament.Start(100);
+		break;
+
+	case IDD_SOUND:
+		Preferences::m_bSound.Toggle();
 		break;
 
 	case IDM_EXIT:

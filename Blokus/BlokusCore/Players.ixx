@@ -61,6 +61,20 @@ public:
         return m_players.at(id.GetValue());
     }
 
+    bool AllFinished()
+    {
+        bool bResult = true;
+        Apply2AllPlayersC
+        (
+            [&bResult](Player const& player)
+            {
+                if (!player.HasFinished())
+                    bResult = false;
+            }
+        );
+        return bResult;
+    }
+
 private:
 
     array<Player, NR_OF_PLAYERS> m_players;

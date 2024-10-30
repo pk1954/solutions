@@ -4,33 +4,20 @@
 
 module NNetAppWindow;
 
-import std;
-import Win32_Util_Resource;
 import Types;
 import Util;
 import Trace;
 import Direct2D;
 import Vector2D;
 import ObserverInterface;
-import WinBasics;
-import WinCommand;
-import AboutBox;
 import FatalErrorMB;
-import MessagePump;
-import ScriptFile;
-import BaseWindow;
 import Win32_Util;
-import WinBasics;
 import Signals;
-import RunTime;
 import NNetModel;
-import NNetCommands;
-import NNetSignals;
-import NNetPreferences;
 import CoordAnimationCmd;
-import StatusBar;
-import NNetWin32;
 import Resource;
+import Win32_Util_Resource;
+import WinCommand;
 
 using std::endl;
 using std::wcout;

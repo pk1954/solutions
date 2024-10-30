@@ -28,7 +28,7 @@ void Player::Initialize
 void Player::Reset()
 {
     PieceTypeId id { 0 };
-    Apply2AllPieces([&id](Piece& p){ p.Reset(id++); });
+    Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
 	m_validPositions.Reset();
 	ClearContactPnts();
 	m_remainingPieces = NR_OF_PIECE_TYPES;
@@ -90,7 +90,7 @@ void Player::DrawContactPnts(DrawContext &context) const
 	);
 }
 
-void Player::reduceValidMoves(BlokusMove const &move)
+void Player::reduceValidPositions(BlokusMove const move)
 {
 	PieceType const &pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
     Shape     const &shape     { pieceType.GetShapeC(move.GetShapeId())};
@@ -118,8 +118,10 @@ BlokusMove Player::SelectMove(RuleServerInterface const &rs)
     return moveSelected;
 }
 
-void Player::PerformMove(BlokusMove &move)
+void Player::DoMove(BlokusMove &move)
 {
+	if (!move.Defined())
+		return;
     m_bFirstMove = false;
 	if (--m_remainingPieces == 0)
 	{
@@ -127,8 +129,17 @@ void Player::PerformMove(BlokusMove &move)
 	}
 	else
 	{
-		reduceValidMoves(move);
+		reduceValidPositions(move);
 	}
+}
+
+void Player::UndoMove(BlokusMove &move)
+{
+	if (!move.Defined())
+		return;
+	if (HasFinished())
+		undoFinalize();
+	++m_remainingPieces;
 }
 
 void Player::finalize(BlokusMove &move)
@@ -147,6 +158,12 @@ void Player::finalize(BlokusMove &move)
 		m_iResult += 15;
 		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
 			m_iResult += 5;
-		move.Reset();
+		//move.Reset();
 	}
+}
+
+void Player::undoFinalize()
+{
+	m_bFinished = false;   
+	m_iResult = 0;
 }

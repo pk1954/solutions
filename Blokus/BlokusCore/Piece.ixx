@@ -9,21 +9,22 @@ import Types;
 import :BlokusCoords;
 import :PieceTypeId;
 import :Components;
-import :BlokusMove;
 
 export class Piece
 {
 public:
-    void Reset(PieceTypeId const id)
+    void Initialize(PieceTypeId const id)
     {
-        m_bAvailable  = true;
         m_idPieceType = id;
-        SetPiecePos(GetPieceTypeC().GetInitialPos());
-        m_posDir.m_degrees = 0._Degrees;
+        Reset();
     }
 
-    void SetPiecePos(CoordPos const& pos) { m_posDir.m_umPos = Convert2fCoord(pos); }
-    void SetShapeId (ShapeId  const  id)  { m_idShape = id; }
+    void Reset()
+    {
+        m_bAvailable = true;
+        setPiecePos(GetPieceTypeC().GetInitialPos());
+        m_posDir.m_degrees = 0._Degrees;
+    }
 
     bool IsAvailable() const { return m_bAvailable; }
 
@@ -32,18 +33,20 @@ public:
     PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
     PieceType const &GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
 
-    void PerformMove(BlokusMove const& move)
+    void DoMove(CoordPos const& pos)
     {
         m_bAvailable = false;
-        SetPiecePos(move.GetCoordPos());
-        SetShapeId (move.GetShapeId());
+        setPiecePos(pos);
     }
 
 private:
 	PosDir      m_posDir;
-    CoordPos    m_coordPos    { -1_COORD, -1_COORD };
-    ShapeId     m_idShape     { ShapeId(0) };
     PieceTypeId m_idPieceType { UndefinedPieceTypeId };
 	bool        m_bFlipped    { false };
     bool        m_bAvailable  { true };
+
+    void setPiecePos(CoordPos const& pos) 
+    { 
+        m_posDir.m_umPos = Convert2fCoord(pos); 
+    }
 };

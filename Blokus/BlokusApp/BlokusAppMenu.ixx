@@ -28,4 +28,5 @@ private:
 	unique_ptr<OnOffPair> m_upOnOffShowContactPnts;
 	unique_ptr<OnOffPair> m_upOnOffShowCornerCells;
 	unique_ptr<OnOffPair> m_upOnOffAnimation;
+	unique_ptr<OnOffPair> m_upOnOffSound;
 };

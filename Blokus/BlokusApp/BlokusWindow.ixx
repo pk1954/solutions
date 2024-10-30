@@ -27,7 +27,8 @@ private:
 	D2D_DrawContext   m_context;
 	BlokusMove        m_move;
 	Match             m_match;
-	PosDir            m_posDirTarget;
+	PlayerId          m_idPlayerVisible { PlayerId(0) };
+	//PosDir            m_posDirTarget;
 	bool              m_bAutoRun    { false };
 	TextFormatHandle  m_hTextFormat { nullptr };
     Animation<PosDir> m_posDirAnimation;
@@ -39,9 +40,7 @@ private:
 
 	void drawFinishedMsg();
 	void paintBoard() const;
-	void performMove();
-	void autoRun();
-	void nextMove();
-	void startRotationPhase(Degrees const);
-	void finishMove();
+	//void autoRun();
+	//void nextMove();
+	//void startRotationPhase(Degrees const);
 };

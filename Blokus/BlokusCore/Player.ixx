@@ -45,7 +45,8 @@ public:
     void DrawCell       (DrawContext&, CoordPos const&) const;
 
     BlokusMove SelectMove(RuleServerInterface const&);
-    void       PerformMove(BlokusMove&);
+    void       DoMove  (BlokusMove&);
+    void       UndoMove(BlokusMove&);
 
     void Apply2AllPieces(auto const& func)
     {
@@ -118,6 +119,7 @@ private:
     BoardMap           m_validPositions;
     HiResTimer         m_timer;
 
-    void reduceValidMoves(BlokusMove const&);
-    void finalize        (BlokusMove&);
+    void reduceValidPositions(BlokusMove const);
+    void finalize            (BlokusMove&);
+    void undoFinalize        ();
 };

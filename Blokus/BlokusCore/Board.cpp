@@ -42,7 +42,7 @@ bool Board::IsContactPnt(CoordPos const& pos, PlayerId const id) const
     return true;
 }
 
-void Board::PerformMove(BlokusMove const& move)
+void Board::DoMove(BlokusMove const& move)   // Set affected shape cells to player id
 {
     GetShapeC(move).Apply2AllShapeCellsC
     (
@@ -51,6 +51,19 @@ void Board::PerformMove(BlokusMove const& move)
             CoordPos const coordPos { move.GetCoordPos() + shapePos };
             Assert(IsOnBoard(coordPos));
             SetPlayerId(coordPos, move.GetPlayerId());
+        }
+    );
+}
+
+void Board::UndoMove(BlokusMove const& move)   // Set affected shape cells to NO_PLAYER
+{
+    GetShapeC(move).Apply2AllShapeCellsC
+    (
+        [this, &move](ShapeCoordPos const &shapePos)
+        {
+            CoordPos const coordPos { move.GetCoordPos() + shapePos };
+            Assert(IsOnBoard(coordPos));
+            SetPlayerId(coordPos, NO_PLAYER);
         }
     );
 }

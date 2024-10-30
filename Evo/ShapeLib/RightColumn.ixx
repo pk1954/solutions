@@ -5,7 +5,7 @@
 export module ShapeLib:RightColumn;
 
 import std;
-import EvolutionTypes;
+import EvoCoreLib;
 import :Shape;
 import :MemorySlot;
 

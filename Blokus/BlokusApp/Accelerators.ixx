@@ -25,13 +25,9 @@ private:
 
     inline static ACCEL m_acc[14]
     {
-        //ACCEL(FVIRTKEY | FCONTROL, WORD('z'), IDM_UNDO),
-        //ACCEL(FVIRTKEY | FCONTROL, WORD('y'), IDM_REDO),
-        //ACCEL(FVIRTKEY | FALT,     VK_BACK,   IDM_UNDO),
-        //ACCEL(FVIRTKEY,            VK_DELETE, IDM_DELETE),
-        //ACCEL(FVIRTKEY,            VK_ESCAPE, IDM_ESCAPE),
-        //ACCEL(FALT,                WORD('r'), IDM_RUN_TIL_END),
-        //ACCEL(FALT,                WORD('i'), IDM_INITIALIZE),
+        ACCEL(FVIRTKEY | FCONTROL, WORD('z'), IDM_UNDO),
+        ACCEL(FVIRTKEY | FCONTROL, WORD('y'), IDM_REDO),
+        ACCEL(FVIRTKEY | FALT,     VK_BACK,   IDM_UNDO),
         ACCEL(FALT,                WORD('?'), IDM_ABOUT),
         ACCEL(FALT,                WORD('n'), IDM_NEXT_SCRIPT_CMD)
     };

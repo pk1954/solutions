@@ -4,7 +4,7 @@
 
 export module ShapeLib:MemorySlot;
 
-import EvolutionTypes;
+import EvoCoreLib;
 import :Shape;
 
 class MemorySlot : public Shape

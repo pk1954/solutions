@@ -4,22 +4,16 @@
 
 module NNetWin32:NNetAppMenu;
 
-import std;
-import Debug;
-import Win32_Util_Resource;
-import WinBasics;
-import SoundInterface;
-import Bitmap;
-import IconUndo;
-import IconRedo;
-import WinManager;
 import BaseWindow;
-import Win32_Util;
-import OnOffPair;
+import Bitmap;
+import Debug;
+import IconRedo;
+import IconUndo;
 import IoUtil;
 import NNetPreferences;
-import :Compute;
 import Resource;
+import Win32_Util_Resource;
+import WinBasics;
 
 using std::make_unique;
 

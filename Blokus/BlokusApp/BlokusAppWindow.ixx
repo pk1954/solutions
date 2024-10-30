@@ -5,18 +5,22 @@
 export module BlokusAppWindow;
 
 import std;
-import HiResTimer;
-import WinBasics;
-import BaseWindow;
 import AboutBox;
-import MessagePump;
-import StatusBar;
-import ScriptHook;
-import StatusBarDisplayFunctor;
-import BlokusCore;
+import BaseWindow;
 import BlokusAppMenu;
+import BlokusCore;
 import BlokusWindow;
+import Commands;
+import HiResTimer;
+import MessagePump;
+import Observable;
+import ScriptHook;
+import StatusBar;
+import StatusBarDisplayFunctor;
 import TournamentWindow;
+import Win32_Sound;
+import WinBasics;
+import WinCommand;
 
 using std::wstring;
 using std::wcout;
@@ -54,15 +58,18 @@ private:
 	HWND            m_hwndApp           { nullptr };
 	wstring const * m_pwstrProductName  { nullptr };
 
-    HiResTimer              m_timer;
 	AboutBox                m_aboutBox;
-	StatusBar               m_statusBar;
-	BlokusWindow            m_mainWindow;
-	ScriptHook              m_ScriptHook;
 	BlokusAppMenu           m_appMenu;
+	BlokusWindow            m_mainWindow;
+	CommandStack            m_cmdStack;
+    HiResTimer              m_timer;
+	Observable              m_matchObservable;
+	ScriptHook              m_ScriptHook;
+	StatusBar               m_statusBar;
+	StatusBarDisplayFunctor m_statusBarDispFunctor;
 	Tournament              m_tournament;
 	TournamentWindow        m_tournamentWindow;
-	StatusBarDisplayFunctor m_statusBarDispFunctor;
+	WinSound                m_sound;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

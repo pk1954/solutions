@@ -18,7 +18,8 @@ public:
 
     void Reset();
     void SetPlayerId (CoordPos const&, PlayerId const);
-    void PerformMove(BlokusMove const&);
+    void DoMove  (BlokusMove const&);
+    void UndoMove(BlokusMove const&);
 
     PlayerId GetPlayerId (CoordPos const&)                 const;
     bool     IsFreeCell  (CoordPos const&)                 const;

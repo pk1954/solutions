@@ -24,28 +24,28 @@ void Tournament::Start(int const iNrOfMatches)
 void Tournament::NextTournamentMove()
 {
 	//m_timer.BeforeAction();
-    BlokusMove move { m_match.NextMove() };
-    if (move.Defined())
-    {
-        m_match.FinishMove(move);
-    }
-    if (m_match.HasFinished())
-    {
-        PlayerId const idWinner { m_match.WinnerId() };
-        ++wins(idWinner);
-        m_match.Reset();
-        if (++m_iMatch > m_iNrOfMatches)
-        {
-            m_active = false;
-            m_iMatch = 0;
-            m_ticksAtEnd = PerfCounter::Read();
-        }
-        NotifyAll(false);
-    }
-    else
-    {
-    	m_match.NextPlayer();
-    }
+    //BlokusMove move { m_match.NextMove() };
+    //if (move.Defined())
+    //{
+    //    m_match.DoMove(move);
+    //}
+    //if (m_match.HasFinished())
+    //{
+    //    PlayerId const idWinner { m_match.WinnerId() };
+    //    ++wins(idWinner);
+    //    m_match.Reset();
+    //    if (++m_iMatch > m_iNrOfMatches)
+    //    {
+    //        m_active = false;
+    //        m_iMatch = 0;
+    //        m_ticksAtEnd = PerfCounter::Read();
+    //    }
+    //    NotifyAll(false);
+    //}
+    //else
+    //{
+    //	m_match.NextPlayer();
+    //}
     //m_timer.AfterAction();
     //wcout << L"Tournament NextMove " << m_timer.Average2wstring() << endl;
 }

@@ -43,10 +43,43 @@ void Match::Reset()
     m_board.Reset();
     m_players.Apply2AllPlayers([](Player &p){ p.Reset(); });
     m_protocol.Reset();
-    m_uiPlayersLeft  = NR_OF_PLAYERS;
     m_idActivePlayer = FIRST_PLAYER;
     findContactPnts();
     m_timer.Reset();
+}
+
+//void Match::SetPosDir(BlokusMove const move)
+//{
+//	PosDir  posDirTarget { PosDir(Convert2fCoord(move.GetCoordPos()), 0._Degrees) };
+//	PosDir &posDirAct    { GetPosDir(move) };
+//	posDirAct = posDirTarget;
+//}
+
+Piece& Match::GetPiece(BlokusMove const move)
+{
+	Player &player { GetPlayer(move.GetPlayerId()) };
+	return player.GetPiece(move.GetPieceTypeId());
+}
+
+Piece const &Match::GetPieceC(BlokusMove const move) const
+{
+	Player const &player { GetPlayerC(move.GetPlayerId()) };
+	return player.GetPieceC(move.GetPieceTypeId());
+}
+
+PieceType const &Match::GetPieceTypeC(BlokusMove const move) const
+{
+	Piece     const &piece     { GetPieceC(move) };
+	PieceType const &pieceType { piece.GetPieceTypeC() };
+	return pieceType;
+}
+
+Degrees Match::GetRotation(BlokusMove const move) const
+{
+	Piece     const &piece     { GetPieceC(move) };
+	PieceType const &pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
+	Shape     const &shape     { pieceType.GetShapeC(move.GetShapeId()) };
+	return shape.GetRotation();
 }
 
 void Match::DrawSetPieces(DrawContext &context) const
@@ -84,36 +117,34 @@ PlayerId Match::WinnerId() const
     return idBestPlayer;
 }
 
-BlokusMove Match::NextMove()
+BlokusMove Match::DoMove()
 {
-    BlokusMove move;
     Player    &player { ActivePlayer() };
-    if (player.HasFinished())
-        return move;
-    move = player.SelectMove(*m_upRuleServer.get());  // may finish if no more valid moves
+    BlokusMove move   { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
+    player.DoMove(move);                                          // may finish, if all pieces set
     if (move.Defined())
     {
-        m_protocol.Add(move);
-        player.PerformMove(move);                     // may finish, if all pieces set
+	    GetPiece(move).DoMove(move.GetCoordPos());
+        m_board.DoMove(move);
     }
-    if (player.HasFinished())                 // by one of two reasons
-        --m_uiPlayersLeft;
     return move;
 }
 
-void Match::FinishMove(BlokusMove const move)
+void Match::UndoMove(BlokusMove const move)
 {
-	Player &player { GetPlayer(move.GetPlayerId()) };
-	Piece  &piece  { player.GetPiece(move.GetPieceTypeId()) };
-	piece  .PerformMove(move);
-    m_board.PerformMove(move);
+    if (move.Defined())
+    {
+	    GetPiece(move).Reset();
+        m_board.UndoMove(move);
+    }
 }
 
-void Match::NextPlayer()
+PlayerId Match::NextPlayer()
 {
     if (++m_idActivePlayer > LAST_PLAYER)
         m_idActivePlayer = FIRST_PLAYER;    
     findContactPnts();
+    return m_idActivePlayer;
 }
 
 bool Match::isValidMove
