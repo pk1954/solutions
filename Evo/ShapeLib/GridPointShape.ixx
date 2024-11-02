@@ -26,10 +26,10 @@ public:
 		m_indivShape.SetTextDisplay(pTextDisplay);
 	}
 
-	void          Draw(EvolutionCore const* const, GridPoint const);
-	Shape const* FindShape(EvolutionCore const* const, GridPoint const, PixelPoint const) const;
-	void          RefreshLayout(EvolutionCore const* const);
-	PIXEL         GetIndShapeSize();
+	void         Draw         (EvolutionCore const&, GridPoint const);
+	Shape const* FindShape    (EvolutionCore const&, GridPoint const, PixelPoint const) const;
+	void         RefreshLayout(EvolutionCore const&);
+	PIXEL        GetIndShapeSize();
 
 	IndividualShape const& GetIndividualShape() const
 	{

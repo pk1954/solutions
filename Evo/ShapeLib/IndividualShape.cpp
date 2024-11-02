@@ -4,10 +4,10 @@
 
 module ShapeLib:IndividualShape;
 
-PixelRectSize IndividualShape::MinimalSize(EvolutionCore const * const pCore)  
+PixelRectSize IndividualShape::MinimalSize(EvolutionCore const &core)  
 {       
-	PixelRectSize minLeft  { m_leftColumn .MinimalSize(pCore) };
-	PixelRectSize minRight { m_rightColumn.MinimalSize(pCore) };
+	PixelRectSize minLeft  { m_leftColumn .MinimalSize(core) };
+	PixelRectSize minRight { m_rightColumn.MinimalSize(core) };
 
 	return SetMinSize(minLeft);
 }                                     
@@ -37,29 +37,29 @@ void IndividualShape::PrepareShape(PixelPoint const ppOffset, PixelRectSize cons
 	}
 }
 
-void IndividualShape::Draw(EvolutionCore const * const pCore, GridPoint const gp, PixelPoint const ppGridPointOffset)
+void IndividualShape::Draw(EvolutionCore const &core, GridPoint const gp, PixelPoint const ppGridPointOffset)
 {
 	if (IsNotEmpty ())
 	{
-		m_leftColumn. Draw(pCore, gp, ppGridPointOffset);
-		m_rightColumn.Draw(pCore, gp, ppGridPointOffset);
+		m_leftColumn. Draw(core, gp, ppGridPointOffset);
+		m_rightColumn.Draw(core, gp, ppGridPointOffset);
 	}
 }
 
 Shape const * IndividualShape::FindShape
 (
-	EvolutionCore const * const pCore, 
-	PixelPoint    const         pnt, 
-	GridPoint     const         gp
+	EvolutionCore const &core, 
+	PixelPoint    const  pnt, 
+	GridPoint     const  gp
 ) const
 {
 	Shape const * pShapeRes = m_leftColumn.FindShape(pnt, gp);
 	if (pShapeRes != nullptr)
 		return pShapeRes;
 
-	if (pCore->GetStrategyId(gp) == Strategy::Id::tit4tat)
+	if (core.GetStrategyId(gp) == Strategy::Id::tit4tat)
 	{
-		pShapeRes = m_rightColumn.FindShape(pCore, pnt, gp);
+		pShapeRes = m_rightColumn.FindShape(core, pnt, gp);
 		if (pShapeRes != nullptr)
 			return pShapeRes;
 	}

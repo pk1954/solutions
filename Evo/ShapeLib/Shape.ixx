@@ -26,10 +26,10 @@ public:
 		m_pTextDisplay = pTextDisplay;
 	}
 
-	virtual PixelRectSize MinimalSize(EvolutionCore const* const pCore)
+	virtual PixelRectSize MinimalSize(EvolutionCore const &core)
 	{
 		m_pTextDisplay->Clear();
-		FillBuffer(pCore, GP_ZERO);
+		FillBuffer(&core, GP_ZERO);
 		return SetMinSize(m_pTextDisplay->CalcRectSize());
 	}
 
@@ -55,7 +55,7 @@ public:
 		return GP_NULL;
 	}
 
-	virtual void Draw(EvolutionCore const* const, GridPoint const, PixelPoint const);
+	virtual void Draw(EvolutionCore const&, GridPoint const, PixelPoint const);
 	virtual void AddContextMenuEntries(HMENU const) const {};
 
 	// PrepareShape: Rearrange shape according to new size

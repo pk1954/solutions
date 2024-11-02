@@ -192,5 +192,8 @@
     <ClCompile Include="EvoCoreLib.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleColLUT.ixx">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

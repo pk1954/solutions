@@ -17,8 +17,8 @@ public:
 		m_infoShape.SetTextDisplay(pTextDisplay);
 	}
 
-	virtual PixelRectSize MinimalSize (EvolutionCore const * const);
-	virtual void          Draw        (EvolutionCore const * const, GridPoint  const, PixelPoint const);
+	virtual PixelRectSize MinimalSize (EvolutionCore const&);
+	virtual void          Draw        (EvolutionCore const&, GridPoint  const, PixelPoint const);
 	virtual Shape const * FindShape   (PixelPoint const, GridPoint const) const;
 	virtual void          PrepareShape(PixelPoint const, PixelRectSize const);
 

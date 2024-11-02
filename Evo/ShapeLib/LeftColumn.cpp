@@ -9,9 +9,9 @@ import std;
 // Can be displayed, if at least InfoShape has space
 // If possible, display also IdShape
 
-PixelRectSize LeftColumn::MinimalSize(EvolutionCore const * const pCore)  
+PixelRectSize LeftColumn::MinimalSize(EvolutionCore const &core)  
 {       
-	PixelRectSize const minInfo = m_infoShape.MinimalSize(pCore);
+	PixelRectSize const minInfo = m_infoShape.MinimalSize(core);
 
 	return SetMinSize(minInfo);     
 }                                     
@@ -26,14 +26,14 @@ void LeftColumn::PrepareShape(PixelPoint const ppOffset, PixelRectSize const ppS
 
 void LeftColumn::Draw
 (
-	EvolutionCore const * const pCore, 
-	GridPoint             const gp, 
-	PixelPoint            const pntGridpointOffset 
+	EvolutionCore const &core, 
+	GridPoint     const  gp, 
+	PixelPoint    const  pntGridpointOffset 
 )
 {
 	if (IsNotEmpty ())
 	{
-		m_infoShape.Draw(pCore, gp, pntGridpointOffset);
+		m_infoShape.Draw(core, gp, pntGridpointOffset);
 	}
 }
 

@@ -2,19 +2,22 @@
 //
 // EvoWindows
 
-module EvoWindows:DrawFrame;
-
+export module DrawFrame;
 
 import std;
 import Types;
+import BoolOp;
+import ColorLUT;
+import WinBasics;
 import TextDisplay;
 import EvoCoreLib;
+import ShapeLib;
 import EvoReadBuffer;
 import D3D_driver;
 import ColorManager;
 import DspOptWindow;
 
-class DrawFrame
+export class DrawFrame
 {
 public:
 

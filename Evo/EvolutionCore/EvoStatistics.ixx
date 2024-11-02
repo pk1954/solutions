@@ -89,7 +89,7 @@ private:
 	}
 };
 
-class EvoStatistics
+export class EvoStatistics
 {
 public:
 	EvoStatistics();

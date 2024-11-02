@@ -4,10 +4,6 @@
 
 module ColorManager;
 
-import WinBasics;
-import ColorLUT;
-import EvoCoreLib;
-
 void ColorManager::Initialize()
 {
 	m_bDimmIndividuals = TRUE;
@@ -18,7 +14,7 @@ void ColorManager::Initialize()
 	for (auto & strategy : m_aClutStrat)
 		strategy.Allocate(clutSize);
 
-	setStrategyColor(Strategy::Id::defect,    MakeRGB(20, 150, 187));
+	setStrategyColor(Strategy::Id::defect,    MakeRGB( 20, 150, 187));
 	setStrategyColor(Strategy::Id::cooperate, MakeRGB(130, 147,  86));
 	setStrategyColor(Strategy::Id::tit4tat,   MakeRGB(192,  47,  29));
 

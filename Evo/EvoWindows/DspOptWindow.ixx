@@ -11,7 +11,7 @@ import EvoCoreLib;
 
 using std::function;
 
-class DspOptWindow : public BaseDialog
+export class DspOptWindow : public BaseDialog
 {
 public:
     DspOptWindow();

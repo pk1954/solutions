@@ -14,15 +14,15 @@ static COLORREF const CLR_WHITE  = MakeRGB(255, 255, 255);
 static COLORREF const CLR_YELLOW = MakeRGB(255, 255,   0);
 
 DrawFrame::DrawFrame()
- : 	m_hwnd             (nullptr),
-	m_pReadBuffer      (nullptr),
+ : 	m_hwnd           (nullptr),
+	m_pReadBuffer    (nullptr),
 	m_pEvoPixelCoords(nullptr),
-	m_pDspOptWindow    (nullptr),
-	m_pColorManager    (nullptr),
-	m_pGraphics        (nullptr), 
-	m_pShapeHighlight  (nullptr), 
-	m_clutBackground   (),
-	m_gpHighlight      (GP_NULL)
+	m_pDspOptWindow  (nullptr),
+	m_pColorManager  (nullptr),
+	m_pGraphics      (nullptr), 
+	m_pShapeHighlight(nullptr), 
+	m_clutBackground (),
+	m_gpHighlight    (GP_NULL)
 { }
 
 void DrawFrame::Start
@@ -49,7 +49,7 @@ void DrawFrame::Start
 
 	EvolutionCore const * pCore = m_pReadBuffer->LockReadBuffer();
 	Assert(pCore != nullptr);
-	m_GridPointShape.RefreshLayout(pCore);
+	m_GridPointShape.RefreshLayout(&pCore);
 	m_pReadBuffer->ReleaseReadBuffer();
 }
 
@@ -78,7 +78,7 @@ void DrawFrame::SetStripMode(tBoolOp const bOp)
 	m_pGraphics->SetStripMode(bOp); 
 };
 
-void DrawFrame::ResizeDrawFrame(EvolutionCore const * const pCore)
+void DrawFrame::ResizeDrawFrame(EvolutionCore const &core)
 {
 	int   const MAX_TEXT_LINES = 10;
 	PIXEL const pixFieldSize   = m_pEvoPixelCoords->GetFieldSize();
@@ -88,15 +88,15 @@ void DrawFrame::ResizeDrawFrame(EvolutionCore const * const pCore)
 	if (pixFontSize > 16_PIXEL)
 		pixFontSize = 16_PIXEL;
     m_pGraphics->SetFontSize(pixFontSize);
-	m_GridPointShape.RefreshLayout(pCore);
+	m_GridPointShape.RefreshLayout(core);
 }
 
-bool DrawFrame::SetHighlightPos(EvolutionCore const * const pCore, PixelPoint const ptCrsr)
+bool DrawFrame::SetHighlightPos(EvolutionCore const &core, PixelPoint const ptCrsr)
 {
 	GridPoint const   gpLast     = m_gpHighlight;
 	Shape     const * pShapeLast = m_pShapeHighlight;
 	m_gpHighlight     = GridDimensions::Wrap2Grid(m_pEvoPixelCoords->Pixel2GridPos(ptCrsr));
-	m_pShapeHighlight = m_GridPointShape.FindShape(pCore, m_gpHighlight, ptCrsr);
+	m_pShapeHighlight = m_GridPointShape.FindShape(core, m_gpHighlight, ptCrsr);
 	return (
 			  (m_pShapeHighlight != nullptr) && 
 		      ((pShapeLast != m_pShapeHighlight) || (gpLast != m_gpHighlight))
@@ -203,13 +203,13 @@ void DrawFrame::drawIndividuals(EvolutionCore const * const pCore, GridRect cons
     m_pGraphics->RenderForegroundObjects(); 
 }
 
-void DrawFrame::drawText(EvolutionCore const * const pCore, GridRect const & rect)
+void DrawFrame::drawText(EvolutionCore const &core, GridRect const & rect)
 {
     Apply2Rect
 	(
 		[&](GridPoint const gp)
 		{
-			m_GridPointShape.Draw(pCore, gp);
+			m_GridPointShape.Draw(core, gp);
 			return false;
 		},
 		rect
@@ -225,7 +225,7 @@ void DrawFrame::setIndividualColor(EvolutionCore const * const pCore, GridPoint 
 	Assert(energy >= 0_ENERGY_UNITS);
 
 	ColIndex const index { Cast2Int(energy.GetValue()) };
-	COLORREF   const color { m_pColorManager->GetColor(tColorObject::individual, strat, index) };
+	COLORREF const color { m_pColorManager->GetColor(tColorObject::individual, strat, index) };
     addPrimitive(gp, color, fHalfSize);
 }
 
@@ -238,10 +238,10 @@ COLORREF DrawFrame::getBackgroundColor(ColIndex index) const
     return m_clutBackground.GetColor(index);
 }
 
-void DrawFrame::AddContextMenuEntries(EvolutionCore const * const pCore, HMENU const hPopupMenu, PixelPoint const pnt)
+void DrawFrame::AddContextMenuEntries(EvolutionCore const &core, HMENU const hPopupMenu, PixelPoint const pnt)
 {
 	GridPoint     const gp     = GridDimensions::Wrap2Grid(m_pEvoPixelCoords->Pixel2GridPos(pnt));
-	Shape const * const pShape = m_GridPointShape.FindShape(pCore, gp, pnt);
+	Shape const * const pShape = m_GridPointShape.FindShape(core, gp, pnt);
 	if (pShape)
 		pShape->AddContextMenuEntries(hPopupMenu);
 }

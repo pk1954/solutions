@@ -12,26 +12,26 @@ import TextDisplay;
 
 PIXEL GridPointShape::GetIndShapeSize() // returns half of side length
 {
-	PIXEL const pixFieldSize = m_shape.GetFieldSize();
+	PIXEL const pixFieldSize { m_shape.GetFieldSize() };
 	return (pixFieldSize <   8_PIXEL) ?                           1_PIXEL   :
 		   (pixFieldSize <= 16_PIXEL) ? ((pixFieldSize * 3) / 8 - 1_PIXEL) : 
-								          ((pixFieldSize * 3) / 8   );
+							            ((pixFieldSize * 3) / 8   );
 }
 
-void GridPointShape::RefreshLayout(EvolutionCore const * const pCore)
+void GridPointShape::RefreshLayout(EvolutionCore const &core)
 {
-	static PIXEL constexpr MARGIN = 3_PIXEL;
+	static PIXEL constexpr MARGIN { 3_PIXEL };
 
-	PixelRectSize const minCoord     = m_coordShape.MinimalSize(pCore);
-	PixelRectSize const minIndiv     = m_indivShape.MinimalSize(pCore);
-	PixelRectSize const minSize      = m_shape.SetMinSize(minIndiv);     
-	PIXEL         const pixFieldSize = m_shape.GetFieldSize();
+	PixelRectSize const minCoord     { m_coordShape.MinimalSize(core) };
+	PixelRectSize const minIndiv     { m_indivShape.MinimalSize(core) };
+	PixelRectSize const minSize      { m_shape.SetMinSize(minIndiv) };
+	PIXEL         const pixFieldSize { m_shape.GetFieldSize() };
 
 	if (m_shape.SetShapeRect(PixelPoint(0_PIXEL), PixelRectSize(pixFieldSize)))
 	{
-		PIXEL pixSizeInd   = GetIndShapeSize() * 2;
-		PIXEL pixSizeFrame = pixFieldSize - pixSizeInd;
-		PIXEL pixHalfFrame = pixSizeFrame / 2;
+		PIXEL pixSizeInd   { GetIndShapeSize() * 2 };
+		PIXEL pixSizeFrame { pixFieldSize - pixSizeInd };
+		PIXEL pixHalfFrame { pixSizeFrame / 2 };
 
 		m_coordShape.PrepareShape
 		(
@@ -40,7 +40,7 @@ void GridPointShape::RefreshLayout(EvolutionCore const * const pCore)
 		);
 		m_indivShape.PrepareShape
 		(
-			PixelPoint   (pixSizeFrame) / 2 + MARGIN, 
+			PixelPoint   (pixSizeFrame) / 2 + MARGIN.GetValue(),
 			PixelRectSize(pixSizeInd  ) - MARGIN * 2
 		);
 	}
@@ -48,26 +48,26 @@ void GridPointShape::RefreshLayout(EvolutionCore const * const pCore)
 
 void GridPointShape::Draw
 (
-	EvolutionCore const * const pCore, 
-	GridPoint             const gp
+	EvolutionCore const &core, 
+	GridPoint     const  gp
 )
 {
-	if (pCore->IsAlive(gp))
+	if (core.IsAlive(gp))
 	{
 		PixelPoint const pntGridpointOffset = m_pTextDisplay->GetOffset(gp);
 		if (m_shape.IsNotEmpty ())
 		{
-			m_coordShape.Draw(pCore, gp, pntGridpointOffset);
-			m_indivShape.Draw(pCore, gp, pntGridpointOffset);
+			m_coordShape.Draw(core, gp, pntGridpointOffset);
+			m_indivShape.Draw(core, gp, pntGridpointOffset);
 		}
 	}
 }
 
 Shape const * GridPointShape::FindShape
 (
-	EvolutionCore const * const pCore, 
-	GridPoint             const gp,
-	PixelPoint            const pnt // client window coordinates
+	EvolutionCore const &core, 
+	GridPoint     const gp,
+	PixelPoint    const pnt // client window coordinates
 ) const
 {
 	PixelPoint pntShapeRelative = pnt - m_pTextDisplay->GetOffset(gp);
@@ -76,7 +76,7 @@ Shape const * GridPointShape::FindShape
 	if (pShapeRes != nullptr)
 		return pShapeRes;
 
-	pShapeRes = m_indivShape.FindShape(pCore, pntShapeRelative, gp);
+	pShapeRes = m_indivShape.FindShape(core, pntShapeRelative, gp);
 	if (pShapeRes != nullptr)
 		return pShapeRes;
 

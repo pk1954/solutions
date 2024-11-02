@@ -9,9 +9,9 @@ import Types;
 import WinBasics;
 import D3D_driver;
 import EvoCoreLib;
-import D3D_driver;
 
 using std::wostringstream;
+using std::wstring;
 
 export class TextDisplay
 {
@@ -24,19 +24,19 @@ public:
 
 	void Start
 	(
-		D3D_driver* pGgraphicsInterface,
+		D3D_driver    * pGraphicsInterface,
 		wostringstream* pBuffer,
 		EvoPixelCoords* pEvoPixelCoords
 	)
 	{
-		m_pGraphics = pGgraphicsInterface;
-		m_pBuffer = pBuffer;
+		m_pGraphics       = pGraphicsInterface;
+		m_pBuffer         = pBuffer;
 		m_pEvoPixelCoords = pEvoPixelCoords;
 	}
 
 	void Clear()
 	{
-		m_pBuffer->str(std::wstring());
+		m_pBuffer->str(wstring());
 		m_pBuffer->clear();
 	}
 
@@ -73,7 +73,7 @@ public:
 private:
 	static COLORREF const CLR_WHITE = MakeRGB(255, 255, 255);
 
-	D3D_driver * m_pGraphics;
-	wostringstream    * m_pBuffer;
-	EvoPixelCoords    * m_pEvoPixelCoords;
+	D3D_driver     * m_pGraphics;
+	wostringstream * m_pBuffer;
+	EvoPixelCoords * m_pEvoPixelCoords;
 };

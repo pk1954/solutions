@@ -26,7 +26,7 @@ import Observable;
 import ObserverInterface;
 import WinBasics;
 
-template <typename MODEL>
+export template <typename MODEL>
 class ReadBuffer : public ObserverInterface,  // Observes producer thread
 	               public Observable          // Can be observed by consumer threads
 {

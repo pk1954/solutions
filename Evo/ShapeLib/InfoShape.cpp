@@ -11,7 +11,7 @@ using std::wostringstream;
 using std::setw;
 using std::endl;
 
-void InfoShape::FillBuffer(EvolutionCore const * const pCore, GridPoint const gp)
+void InfoShape::FillBuffer(EvolutionCore const &core, GridPoint const gp)
 {
 	IND_ID          id       { 0x12345678 };
 	ENERGY_UNITS    energy   { 12345 };
@@ -21,15 +21,15 @@ void InfoShape::FillBuffer(EvolutionCore const * const pCore, GridPoint const gp
 
 	if (gp.IsNotZero())
 	{
-		id       = pCore->GetId          (gp);
-		energy   = pCore->GetEnergy      (gp);
-		evoGen   = pCore->GetAge         (gp);
-		origin   = pCore->GetOriginName  (gp);
-		strategy = pCore->GetStrategyName(gp);
+		id       = core.GetId          (gp);
+		energy   = core.GetEnergy      (gp);
+		evoGen   = core.GetAge         (gp);
+		origin   = core.GetOriginName  (gp);
+		strategy = core.GetStrategyName(gp);
 	}
 
-	wostringstream & buffer = m_pTextDisplay->Buffer();
-	buffer << id                                        << endl;
+	wostringstream &buffer {  m_pTextDisplay->Buffer() };
+	buffer << id                                      << endl;
 	buffer << L"En: " << setw(5) << energy.GetValue() << endl;
 	buffer << L"Age:" << setw(5) << evoGen.GetValue() << endl;
 	buffer << L"Or: " << setw(5) << origin            << endl;
