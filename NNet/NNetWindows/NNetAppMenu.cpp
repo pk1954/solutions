@@ -150,10 +150,3 @@ void NNetAppMenu::Notify(bool const bImmediately)
 
     DrawMenuBar(m_hwndApp);
 }
-
-void NNetAppMenu::AdjustUndoRedo()
-{
-    ::Enable(m_hMenu, IDM_UNDO, ! m_pCommandStack->UndoStackEmpty());
-    ::Enable(m_hMenu, IDM_REDO, ! m_pCommandStack->RedoStackEmpty());
-    DrawMenuBar(m_hwndApp);
-}

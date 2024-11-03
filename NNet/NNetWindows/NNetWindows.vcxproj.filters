@@ -45,9 +45,6 @@
     <ClCompile Include="SimulationControl.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UndoRedoMenu.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CrsrWindow.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

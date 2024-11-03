@@ -18,6 +18,7 @@ import ScriptHook;
 import StatusBar;
 import StatusBarDisplayFunctor;
 import TournamentWindow;
+import UndoRedoMenu;
 import Win32_Sound;
 import WinBasics;
 import WinCommand;
@@ -69,6 +70,7 @@ private:
 	StatusBarDisplayFunctor m_statusBarDispFunctor;
 	Tournament              m_tournament;
 	TournamentWindow        m_tournamentWindow;
+	UndoRedoMenu            m_undoRedoMenu;
 	WinSound                m_sound;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;

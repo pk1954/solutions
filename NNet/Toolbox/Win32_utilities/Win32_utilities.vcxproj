@@ -217,6 +217,7 @@
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\TimerQueueTimer.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Trace.cpp" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Trace.ixx" />
+    <ClCompile Include="..\..\..\Toolbox\Win32_utilities\UndoRedoMenu.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_AboutBox.cpp" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_AboutBox.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_ArrowButton.ixx" />

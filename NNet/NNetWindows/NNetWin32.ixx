@@ -22,4 +22,3 @@ export import :ParameterDialog;
 export import :PerformanceWindow;
 export import :SelectionMenu;
 export import :SimulationControl;
-export import :UndoRedoMenu;

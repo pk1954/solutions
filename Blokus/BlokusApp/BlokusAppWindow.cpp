@@ -22,9 +22,10 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
 	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
-	m_mainWindow.Start(m_hwndApp);
-	m_statusBar .Start(m_hwndApp);
-	m_appMenu   .Start(m_hwndApp);
+	m_mainWindow      .Start(m_hwndApp);
+	m_statusBar       .Start(m_hwndApp);
+	m_appMenu         .Start(m_hwndApp);
+	m_undoRedoMenu    .Start(m_hwndApp, &m_cmdStack);
 	m_tournamentWindow.Start(&m_tournament);
 
 	WinManager::AddWindow(L"IDM_APPL_WINDOW",       RootWinId(IDM_APPL_WINDOW      ), m_hwndApp,                     true,  true );
@@ -38,6 +39,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	Preferences::m_bSound                .RegisterObserver(m_appMenu);
 	m_tournament                         .RegisterObserver(m_tournamentWindow);
 	m_matchObservable                    .RegisterObserver(m_mainWindow);
+	m_matchObservable                    .RegisterObserver(m_undoRedoMenu);
 	configureStatusBar();
 
 	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);

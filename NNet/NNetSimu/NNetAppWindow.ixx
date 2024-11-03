@@ -29,6 +29,7 @@ import SlowMotionRatio;
 import StatusBar;
 import StatusBarDisplayFunctor;
 import TimeDisplay;
+import UndoRedoMenu;
 import Win32_Sound;
 import WinBasics;
 import WinManager;

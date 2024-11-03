@@ -114,6 +114,7 @@ export
     using ::GetModuleHandleW;
     using ::GetLastError;
     using ::GetParent;
+    using ::GetMenu;
     using ::GetMonitorInfoW;
     using ::GetStockObject;
     using ::GetSystemMetrics;
