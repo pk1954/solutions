@@ -145,14 +145,7 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	case IDD_NEXT_MOVE:
 //		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
 		{
-			if (m_match.HasFinished() || m_match.PlayerHasFinished())
-			{
-				m_idPlayerVisible = m_match.NextPlayer();
-			}
-			else
-			{
-				NextMoveCmd::Push(m_match);
-			}
+			NextMoveCmd::Push(m_match);
 			Notify(true);
 		}
 
@@ -247,14 +240,14 @@ void BlokusWindow::drawFinishedMsg()
 void BlokusWindow::PaintGraphics()
 {
 	Color const COL_GRAY { Color(0.5f, 0.5f, 0.5f) };
-	Player const& player { m_match.GetPlayerC(m_idPlayerVisible) };
+	Player const& player { m_match.ActivePlayerC() };
  	paintBoard();
 	m_match.DrawSetPieces(m_context);
 	//if (m_posDirAnimation.IsRunning())
 	//	m_match.GetPieceTypeC(m_move).Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
 	player.DrawFreePieces(m_context);
 	if (BlokusPreferences::m_bShowContactPnts.Get())
-		m_match.GetPlayerC(m_idPlayerVisible).DrawContactPnts(m_context);
+		m_match.ActivePlayerC().DrawContactPnts(m_context);
 	if (player.HasFinished())
 		player.DrawResult(m_context, m_hTextFormat);
 	if (m_match.HasFinished())

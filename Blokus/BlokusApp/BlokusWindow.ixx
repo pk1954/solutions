@@ -27,7 +27,6 @@ private:
 	D2D_DrawContext   m_context;
 	BlokusMove        m_move;
 	Match             m_match;
-	PlayerId          m_idPlayerVisible { PlayerId(0) };
 	//PosDir            m_posDirTarget;
 	bool              m_bAutoRun    { false };
 	TextFormatHandle  m_hTextFormat { nullptr };
