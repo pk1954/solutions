@@ -171,9 +171,6 @@
     <ClCompile Include="EvoStatistics.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="PixelCore.ixx">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="GridSelection.ixx">
       <Filter>Quelldateien</Filter>
     </ClCompile>

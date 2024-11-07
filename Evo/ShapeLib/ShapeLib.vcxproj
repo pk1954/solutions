@@ -179,6 +179,7 @@
     <ClCompile Include="RightColumn.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapeLib.ixx" />
+    <ClCompile Include="TextDisplay.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Toolbox\Types\Types.vcxproj">

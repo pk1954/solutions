@@ -6,6 +6,7 @@ export module ShapeLib:LeftColumn;
 
 import :Shape;
 import :InfoShape;
+import :TextDisplay;
 
 class LeftColumn : public Shape
 {

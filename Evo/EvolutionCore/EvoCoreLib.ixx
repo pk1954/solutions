@@ -34,6 +34,5 @@ export import :GridSelection;
 export import :Individual;
 export import :Interaction;
 export import :MortalityTable;
-export import :PixelCore;
 export import :Strategy;
 export import :StrategyData;

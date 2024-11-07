@@ -7,6 +7,7 @@ export module ShapeLib:IndividualShape;
 import :Shape;
 import :LeftColumn;
 import :RightColumn;
+import :TextDisplay;
 
 class IndividualShape : public Shape
 {

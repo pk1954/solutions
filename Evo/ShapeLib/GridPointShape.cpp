@@ -4,8 +4,8 @@
 
 module ShapeLib:GridPointShape;
 
+import Debug;
 import EvoCoreLib;
-import TextDisplay;
 
 // Can be displayed, if at least IndividualShape has space
 // If possible, display also CoordShape
@@ -20,7 +20,7 @@ PIXEL GridPointShape::GetIndShapeSize() // returns half of side length
 
 void GridPointShape::RefreshLayout(EvolutionCore const &core)
 {
-	static PIXEL constexpr MARGIN { 3_PIXEL };
+	static PIXEL  const MARGIN       { 3_PIXEL };
 
 	PixelRectSize const minCoord     { m_coordShape.MinimalSize(core) };
 	PixelRectSize const minIndiv     { m_indivShape.MinimalSize(core) };
@@ -40,7 +40,7 @@ void GridPointShape::RefreshLayout(EvolutionCore const &core)
 		);
 		m_indivShape.PrepareShape
 		(
-			PixelPoint   (pixSizeFrame) / 2 + MARGIN.GetValue(),
+			PixelPoint   (pixSizeFrame) / 2 + MARGIN,
 			PixelRectSize(pixSizeInd  ) - MARGIN * 2
 		);
 	}

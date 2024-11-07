@@ -33,8 +33,9 @@ private:
     Animation<PosDir> m_posDirAnimation;
 	int               m_iAnimationPhase;
 
-	bool OnSize   (PIXEL  const, PIXEL  const) final;
-	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	bool OnSize     (PIXEL  const, PIXEL  const)                                            final;
+	bool OnCommand  (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	void OnMouseMove(WPARAM const, LPARAM const)                                            final;
 	void PaintGraphics() final;
 
 	void drawFinishedMsg();

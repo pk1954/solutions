@@ -92,9 +92,7 @@ void Player::DrawContactPnts(DrawContext &context) const
 
 void Player::reduceValidPositions(BlokusMove const move)
 {
-	PieceType const &pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
-    Shape     const &shape     { pieceType.GetShapeC(move.GetShapeId())};
-    shape.Apply2AllShapeCellsC
+    GetShapeC(move).Apply2AllShapeCellsC
     (
         [this, &move](ShapeCoordPos const &shapePos)
         { 

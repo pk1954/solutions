@@ -57,7 +57,7 @@
     <ClCompile Include="PerformanceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextDisplay.ixx">
+    <ClCompile Include="EvoTextDisplay.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EvoReadBuffer.ixx">

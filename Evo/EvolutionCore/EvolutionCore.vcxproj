@@ -231,7 +231,6 @@
     <ClCompile Include="Individual.cpp" />
     <ClCompile Include="Interaction.cpp" />
     <ClCompile Include="MortalityTable.ixx" />
-    <ClCompile Include="PixelCore.ixx" />
     <ClCompile Include="SimpleColLUT.ixx" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="EvolutionCoreWrapperHelpers.cpp" />

@@ -12,3 +12,4 @@ export import :LeftColumn;
 export import :MemorySlot;
 export import :RightColumn;
 export import :Shape;
+export import :TextDisplay;

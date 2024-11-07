@@ -29,6 +29,9 @@ public:
 	PointType operator-= (PointType const a) { m_x -= a.m_x; m_y -= a.m_y; return * this; }
 	PointType operator%= (PointType const a) { m_x %= a.m_x; m_y %= a.m_y; return * this; }
 
+	PointType operator+= (BASE_TYPE const b) { m_x += b; m_y += b; return * this; }
+	PointType operator-= (BASE_TYPE const b) { m_x -= b; m_y -= b; return * this; }
+
 	PointType operator*= (int       const i) { m_x *= i; m_y *= i; return * this; }
 	PointType operator/= (int       const i) { m_x /= i; m_y /= i; return * this; }
 
@@ -139,6 +142,20 @@ public:
 	{ 
 		PointType res { a }; 
 		res %= b; 
+		return res; 
+	};
+
+	friend PointType operator+ (PointType const a, BASE_TYPE const b) 
+	{ 
+		PointType res { a }; 
+		res += b; 
+		return res; 
+	};
+
+	friend PointType operator- (PointType const a, BASE_TYPE const b) 
+	{ 
+		PointType res { a }; 
+		res -= b; 
 		return res; 
 	};
 

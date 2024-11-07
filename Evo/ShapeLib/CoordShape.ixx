@@ -4,7 +4,7 @@
 
 export module ShapeLib:CoordShape;
 
-import Resource;
+//import Resource;
 import WinBasics;
 import EvoCoreLib;
 import :Shape;
@@ -21,6 +21,7 @@ public:
 	virtual void AddContextMenuEntries(HMENU const hPopupMenu) const
 	{
 		UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
-		AppendMenuW(hPopupMenu, STD_FLAGS, IDD_TOGGLE_COORD_DISPLAY, L"Toggle coord display");
+		//AppendMenuW(hPopupMenu, STD_FLAGS, IDD_TOGGLE_COORD_DISPLAY, L"Toggle coord display");
+		// TODO
 	};
 };

@@ -1,13 +1,12 @@
-// TextDisplay.ixx
+// TextDisplay.ixx : 
 //
-// EvoWindows
-
-export module TextDisplay;
+// ShapeLib
+// 
+export module ShapeLib:TextDisplay;
 
 import std;
 import Types;
 import WinBasics;
-import D3D_driver;
 import EvoCoreLib;
 
 using std::wostringstream;
@@ -17,19 +16,16 @@ export class TextDisplay
 {
 public:
 	TextDisplay()
-	  : m_pGraphics(nullptr),
-		m_pBuffer(nullptr),
+	  : m_pBuffer(nullptr),
 		m_pEvoPixelCoords(nullptr)
 	{ }
 
 	void Start
 	(
-		D3D_driver    * pGraphicsInterface,
-		wostringstream* pBuffer,
-		EvoPixelCoords* pEvoPixelCoords
+		wostringstream *pBuffer,
+		EvoPixelCoords *pEvoPixelCoords
 	)
 	{
-		m_pGraphics       = pGraphicsInterface;
 		m_pBuffer         = pBuffer;
 		m_pEvoPixelCoords = pEvoPixelCoords;
 	}
@@ -60,20 +56,12 @@ public:
 		return m_pEvoPixelCoords->Grid2PixelPosCenter(gp);
 	}
 
-	PixelRectSize CalcRectSize()
-	{
-		return m_pGraphics->CalcGraphicsRect(m_pBuffer->str()).GetSize();
-	}
-
-	void DisplayText(PixelRect const& rect)
-	{
-		m_pGraphics->DisplayGraphicsText(rect, m_pBuffer->str(), DT_LEFT, CLR_WHITE);
-	}
-
+	virtual PixelRectSize CalcRectSize()                = 0;
+	virtual void          DisplayText(PixelRect const&) = 0;
+	
 private:
 	static COLORREF const CLR_WHITE = MakeRGB(255, 255, 255);
 
-	D3D_driver     * m_pGraphics;
 	wostringstream * m_pBuffer;
 	EvoPixelCoords * m_pEvoPixelCoords;
 };

@@ -9,7 +9,7 @@ import Types;
 import BoolOp;
 import ColorLUT;
 import WinBasics;
-import TextDisplay;
+import EvoTextDisplay;
 import EvoCoreLib;
 import ShapeLib;
 import EvoReadBuffer;
@@ -50,7 +50,7 @@ private:
 
 	HWND             m_hwnd;
 	GridPoint        m_gpHighlight;
-	TextDisplay      m_TextDisplay;
+	EvoTextDisplay      m_TextDisplay;
 	GridPointShape   m_GridPointShape;
 	
 	EvoReadBuffer  * m_pReadBuffer;

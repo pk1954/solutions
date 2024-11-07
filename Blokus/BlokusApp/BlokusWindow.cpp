@@ -180,6 +180,33 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	return true;
 }
 
+void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
+{
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
+	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
+
+	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
+	{
+		m_ptLast.Set2Null();                 // make m_ptLast invalid
+		return;
+	}
+
+	PixelPoint const ptLast { GetPtLast() };
+	m_ptLast = ptCrsr;
+	if (ptLast.IsNull())
+		return;
+
+	if (!(wParam & MK_LBUTTON))    // left mouse button
+		return;
+
+	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
+	m_umDelta = umCrsrPos - umLastPos;
+	if (m_umDelta.IsZero())
+		return;
+
+}
+
 //void BlokusWindow::startRotationPhase(Degrees const degrees)
 //{
 //	PosDir &posDirAct { m_match.GetPosDir(m_move) };

@@ -9,8 +9,8 @@ export module ShapeLib:Shape;
 
 import Types;
 import WinBasics;
-import TextDisplay;
 import EvoCoreLib;
+import :TextDisplay;
 
 export class Shape
 {
@@ -38,7 +38,7 @@ public:
 		return m_rect + m_pTextDisplay->GetOffset(gp);
 	}
 
-	PIXEL const GetMinWidth() const { return m_minSize.GetX(); }
+	PIXEL const GetMinWidth () const { return m_minSize.GetX(); }
 	PIXEL const GetMinHeight() const { return m_minSize.GetY(); }
 
 	virtual Shape const* FindShape  // for all shapes without subshapes

@@ -8,6 +8,7 @@ import std;
 import EvoCoreLib;
 import :Shape;
 import :MemorySlot;
+import :TextDisplay;
 
 class RightColumn : public Shape
 {
