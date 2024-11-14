@@ -8,7 +8,7 @@ import Types;
 import WinBasics;
 import EvoAppWindow;
 import StatusBar;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import EvoHistorySysGlue;
 import WinManager;
 import GridWindow;
@@ -32,8 +32,8 @@ public:
 
 	void Initialize
 	(
-		EvoAppWindow           * const,
-		EvoWorkThreadInterface * const
+		EvoAppWindow  * const,
+		EvoWorkThread * const
 	);
 
 	bool ProcessUIcommand   (int const, LPARAM const);
@@ -42,13 +42,13 @@ public:
 private:
 	void setSizeTrackBar(PIXEL const);
 
-	EvoAppWindow           * m_pAppWindow;
-	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
-	WinManager             * m_pWinManager;
-	EvoHistorySysGlue      * m_pEvoHistGlue;
-	StatusBar              * m_pStatusBar;
-	GridWindow             * m_pGridWindow;
-	EvoEditorWindow        * m_pEvoEditorWindow;
-	ColorManager           * m_pColorManager;
-	HCURSOR                  m_hCrsrWait;
+	EvoAppWindow      * m_pAppWindow;
+	EvoWorkThread     * m_pEvoWorkThread;
+	WinManager        * m_pWinManager;
+	EvoHistorySysGlue * m_pEvoHistGlue;
+	StatusBar         * m_pStatusBar;
+	GridWindow        * m_pGridWindow;
+	EvoEditorWindow   * m_pEvoEditorWindow;
+	ColorManager      * m_pColorManager;
+	HCURSOR             m_hCrsrWait;
 };

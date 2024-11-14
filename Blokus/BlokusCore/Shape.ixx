@@ -16,7 +16,7 @@ using std::vector;
 
 export using ShapeCells = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
-using ShapeCoordPos = CoordPos;
+export using ShapeCoordPos = CoordPos;
 
 export class Shape
 {
@@ -31,8 +31,8 @@ public:
 	}
 
 	int  CountCells() const;
-	void Draw(DrawContext&, Color const) const;
-	void Draw(DrawContext&, Degrees const, Color const) const;
+	void Draw(DrawContext&, Color const, bool const) const;
+	void Draw(DrawContext&, Degrees const, Color const, bool const) const;
 
 	void CollectCornerPnts();
 	void Flip();

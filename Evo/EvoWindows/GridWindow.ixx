@@ -11,7 +11,7 @@ import EvoReadBuffer:
 import BaseWindow;
 import DrawFrame;
 import D3D_driver;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import DspOptWindow;
 import FocusPoint;
 import ColorManager;
@@ -21,11 +21,11 @@ export class GridWindow : public BaseWindow
 public:
 	static void InitClass
 	(
-		EvoReadBuffer          * const,
-        EvoWorkThreadInterface * const,
-        FocusPoint             * const,
-        DspOptWindow           * const,
-		ColorManager           * const 
+		EvoReadBuffer * const,
+        EvoWorkThread * const,
+        FocusPoint    * const,
+        DspOptWindow  * const,
+		ColorManager  * const 
 	);
 
     GridWindow();
@@ -62,11 +62,11 @@ private:
     GridWindow             (GridWindow const &);  // noncopyable class 
     GridWindow & operator= (GridWindow const &);  // noncopyable class 
 
-	static EvoReadBuffer          * m_pReadBuffer;
-    static EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
-    static DspOptWindow           * m_pDspOptWindow;
-    static FocusPoint             * m_pFocusPoint;
-	static ColorManager           * m_pColorManager;
+	static EvoReadBuffer * m_pReadBuffer;
+    static EvoWorkThread * m_pEvoWorkThread;
+    static DspOptWindow  * m_pDspOptWindow;
+    static FocusPoint    * m_pFocusPoint;
+	static ColorManager  * m_pColorManager;
 
 	EvoPixelCoords m_EvoPixelCoords; 
 	DrawFrame      m_DrawFrame;

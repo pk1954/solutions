@@ -135,6 +135,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -156,6 +157,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>

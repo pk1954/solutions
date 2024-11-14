@@ -24,7 +24,19 @@ MicroMeterPnt GetCenter(CoordPos const& coordPos)
 	return umPosCenter;
 }
 
-Color darker(Color const col)  { return col * 0.6f; }
+export bool IsInShapeCell
+(
+	MicroMeterPnt const &umPos,
+	CoordPos      const &coordPos
+)
+{
+	MicroMeterPnt  const umPosCell { Convert2fCoord(coordPos) };
+	MicroMeterRect const umRect    { umPosCell, UM_CELL_SIZE };
+	return umRect.Includes(umPos);
+}
+
+Color darker  (Color const col)  { return col * 0.6f; }
+Color brighter(Color const col)  { return col * 2.0f; }
 
 export void SmallDot
 (
@@ -54,14 +66,15 @@ export void ShapeSquare
 (
 	DrawContext const &context, 
 	CoordPos    const &coordPos,
-	Color       const  col
+	Color       const  col,
+	bool        const  bHighlighted
 )
 {
 	MicroMeterPnt const umPos       { Convert2fCoord(coordPos) };
 	MicroMeter    const umHalfSize  { UM_CELL_SIZE * 0.5f };
 	MicroMeterPnt const umPosCenter { umPos + MicroMeterPnt(umHalfSize) };
-	colSquare(context, umPosCenter, col,         umHalfSize       );
-	colSquare(context, umPosCenter, darker(col), umHalfSize * 0.8f);
+	colSquare(context, umPosCenter, bHighlighted ? brighter(col) : col,         umHalfSize       );
+	colSquare(context, umPosCenter, bHighlighted ? col           : darker(col), umHalfSize * 0.8f);
 }
 
 Shape const& GetShapeC(BlokusMove const &move)

@@ -38,7 +38,7 @@ void SpeedControl::Add
 void SpeedControl::Adjust
 (
 	bool                  const bIsRunning,
-	WorkThreadInterface * const pWorkThreadInterface
+	WorkThread * const pWorkThread
 )
 {
 	EnableWindow(m_pStatusBar->GetDlgItem(IDM_RUN ),    ! bIsRunning);
@@ -47,7 +47,7 @@ void SpeedControl::Adjust
 
 	if (m_pHistorySystem)
 	{
-		bool bIsFirstGeneration = pWorkThreadInterface->GetCurrentGeneration() == 0;
+		bool bIsFirstGeneration = pWorkThread->GetCurrentGeneration() == 0;
 		EnableWindow(m_pStatusBar-> GetDlgItem(IDM_BACKWARDS), ! (bIsRunning || bIsFirstGeneration));
 	}
 }

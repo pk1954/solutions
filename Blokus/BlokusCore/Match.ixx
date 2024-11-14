@@ -38,7 +38,7 @@ public:
     bool             HasFinished()                          { return m_players.AllFinished(); }
     Player    const &Winner()                         const { return m_players.GetPlayerC(WinnerId()); }
     Board     const &GetBoard()                       const { return m_board; }
-    Player          &ActivePlayer ()                        { return m_players.GetPlayer(m_idActivePlayer); }
+    Player          &ActivePlayer ()                        { return m_players.GetPlayer (m_idActivePlayer); }
     Player    const &ActivePlayerC()                  const { return m_players.GetPlayerC(m_idActivePlayer); }
     Player    const &GetPlayerC   (PlayerId const id) const { return m_players.GetPlayerC(id); }
     Player          &GetPlayer    (PlayerId const id)       { return m_players.GetPlayer(id); }

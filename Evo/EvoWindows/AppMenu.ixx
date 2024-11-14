@@ -5,7 +5,7 @@
 export module AppMenu;
 
 import WinBasics;
-//import WorkThreadInterface;
+//import WorkThread;
 import WinManager;
 
 export class AppMenu
@@ -16,7 +16,7 @@ public:
 	virtual void Initialize
 	(
 		HWND const, 
-		//WorkThreadInterface const * const, 
+		//WorkThread const * const, 
 		WinManager const * const
 	) = 0;
 	virtual void AdjustVisibility() = 0;

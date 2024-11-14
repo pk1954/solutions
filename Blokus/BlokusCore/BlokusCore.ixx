@@ -4,10 +4,12 @@
 
 export module BlokusCore;
 
+export import :BlokusMove;
 export import :BlokusPreferences;
+export import :BlokusUtilities;
 export import :Components;
 export import :Match;
-export import :BlokusMove;
+export import :Shape;
 //export import :Strategy;
 //export import :StrategyTakeFirst;
 //export import :StrategyRandom;

@@ -7,7 +7,7 @@ export module EvoEditor;
 import EvolutionTypes;
 import EvoCoreLib;
 import BaseDialog;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import DspOptWindow;
 import StatusBar;
 
@@ -20,9 +20,9 @@ public:
     void Start
 	(
 		HWND const, 
-		EvoWorkThreadInterface * const, 
-		EvoReadBuffer          * const, 
-		DspOptWindow           * const
+		EvoWorkThread * const, 
+		EvoReadBuffer * const, 
+		DspOptWindow  * const
 	);
 
 	void Stop();
@@ -40,7 +40,7 @@ private:
 
 	void updateOperationButtons(tBrushMode const) const;
 
-	EvoReadBuffer          * m_pReadBuffer;
-    EvoWorkThreadInterface * m_pWorkThreadInterface;
-    DspOptWindow           * m_pDspOptWindow;
+	EvoReadBuffer * m_pReadBuffer;
+    EvoWorkThread * m_pWorkThread;
+    DspOptWindow  * m_pDspOptWindow;
 };

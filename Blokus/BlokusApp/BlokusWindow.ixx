@@ -24,22 +24,29 @@ public:
 	void OnChar(WPARAM const, LPARAM const) final;
 
 private:
-	D2D_DrawContext   m_context;
+	//PosDir            m_posDirTarget;
 	BlokusMove        m_move;
 	Match             m_match;
-	//PosDir            m_posDirTarget;
-	bool              m_bAutoRun    { false };
-	TextFormatHandle  m_hTextFormat { nullptr };
+	D2D_DrawContext   m_context;
+	PixelPoint        m_ptLast         { PP_NULL };	// Last cursor position during selection 
+	MicroMeterPnt     m_umDelta        { NP_ZERO };
+	Piece           * m_pPieceSelected { nullptr };
+	bool              m_bAutoRun       { false };
+	TextFormatHandle  m_hTextFormat    { nullptr };
     Animation<PosDir> m_posDirAnimation;
 	int               m_iAnimationPhase;
 
-	bool OnSize     (PIXEL  const, PIXEL  const)                                            final;
-	bool OnCommand  (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
-	void OnMouseMove(WPARAM const, LPARAM const)                                            final;
+	bool OnSize       (PIXEL  const, PIXEL  const)                                            final;
+	bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
+	void OnMouseMove  (WPARAM const, LPARAM const)                                            final;
+	bool OnLButtonUp  (WPARAM const, LPARAM const)                                            final;
+	bool OnLButtonDown(WPARAM const, LPARAM const)                                            final;
 	void PaintGraphics() final;
 
 	void drawFinishedMsg();
 	void paintBoard() const;
+	bool selectPiece(MicroMeterPnt const&);
+	void setPieceSelected(Piece * const);
 	//void autoRun();
 	//void nextMove();
 	//void startRotationPhase(Degrees const);

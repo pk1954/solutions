@@ -16,7 +16,7 @@ import GridWindow;
 import PackGridPoint;
 import ColorManager;
 import ResetDlg;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import LogarithmicTrackbar;
 import RunTime;
 import WinManager;
@@ -36,39 +36,39 @@ EvoController::EvoController
 	GridWindow        * const pGridWindow,
 	EvoEditorWindow   * const pEditorWindow
 ) :
-	m_pAppWindow              (nullptr),
-	m_pEvoWorkThreadInterface (nullptr),
-	m_pWinManager             (pWinManager  ),
-	m_pEvoHistGlue            (pEvoHistGlue ),
-	m_pColorManager           (pColorManager),
-	m_pStatusBar              (pStatusBar   ),
-	m_pGridWindow             (pGridWindow  ),
-	m_pEvoEditorWindow        (pEditorWindow),
-	m_hCrsrWait               (nullptr)
+	m_pAppWindow      (nullptr),
+	m_pEvoWorkThread  (nullptr),
+	m_pWinManager     (pWinManager  ),
+	m_pEvoHistGlue    (pEvoHistGlue ),
+	m_pColorManager   (pColorManager),
+	m_pStatusBar      (pStatusBar   ),
+	m_pGridWindow     (pGridWindow  ),
+	m_pEvoEditorWindow(pEditorWindow),
+	m_hCrsrWait       (nullptr)
 { }
 
 EvoController::~EvoController()
 {
-	m_pAppWindow              = nullptr;
-	m_pEvoWorkThreadInterface = nullptr;
-	m_pWinManager             = nullptr;
-	m_pEvoHistGlue            = nullptr;
-	m_pColorManager           = nullptr;
-    m_pStatusBar              = nullptr;
-	m_pGridWindow             = nullptr;
-	m_pEvoEditorWindow        = nullptr;
-	m_hCrsrWait               = nullptr;
+	m_pAppWindow       = nullptr;
+	m_pEvoWorkThread   = nullptr;
+	m_pWinManager      = nullptr;
+	m_pEvoHistGlue     = nullptr;
+	m_pColorManager    = nullptr;
+    m_pStatusBar       = nullptr;
+	m_pGridWindow      = nullptr;
+	m_pEvoEditorWindow = nullptr;
+	m_hCrsrWait        = nullptr;
 }
 
 void EvoController::Initialize
 (
- 	EvoAppWindow           * const pAppWindow,
-	EvoWorkThreadInterface * const pEvoWorkThreadInterface
+ 	EvoAppWindow  * const pAppWindow,
+	EvoWorkThread * const pEvoWorkThread
 )
 {
-	m_pEvoWorkThreadInterface = pEvoWorkThreadInterface;
-	m_pAppWindow              = pAppWindow;
-	m_hCrsrWait               = LoadCursor(NULL, IDC_WAIT);
+	m_pEvoWorkThread = pEvoWorkThread;
+	m_pAppWindow     = pAppWindow;
+	m_hCrsrWait     = LoadCursor(NULL, IDC_WAIT);
 }
 
 bool EvoController::ProcessUIcommand(int const wmId, LPARAM const lParam)
@@ -176,11 +176,11 @@ bool EvoController::ProcessModelCommand(int const wmId, LPARAM const lParam)
 	{
 	case IDM_RUN:
 		m_pEvoEditorWindow->SendClick(IDM_MOVE);   // change edit mode to move
-		SpeedControl::Adjust(TRUE, m_pEvoWorkThreadInterface);
+		SpeedControl::Adjust(TRUE, m_pEvoWorkThread);
 		return true;
 
 	case IDM_STOP:
-		SpeedControl::Adjust(FALSE, m_pEvoWorkThreadInterface);
+		SpeedControl::Adjust(FALSE, m_pEvoWorkThread);
 		return true;
 
 	case IDM_RESET:
@@ -190,11 +190,11 @@ bool EvoController::ProcessModelCommand(int const wmId, LPARAM const lParam)
 		switch (iRes)
 		{
 		case IDM_SOFT_RESET:
-			m_pEvoWorkThreadInterface->PostReset(FALSE);
+			m_pEvoWorkThread->PostReset(FALSE);
 			break;
 
 		case IDM_HISTORY_RESET:
-			m_pEvoWorkThreadInterface->PostReset(TRUE);
+			m_pEvoWorkThread->PostReset(TRUE);
 			break;
 
 		case IDM_HARD_RESET:
@@ -212,23 +212,23 @@ bool EvoController::ProcessModelCommand(int const wmId, LPARAM const lParam)
 	break;
 
 	case IDM_SOFT_RESET:
-		m_pEvoWorkThreadInterface->PostReset(FALSE);
+		m_pEvoWorkThread->PostReset(FALSE);
 		break;
 
 	case IDM_HISTORY_RESET:
-		m_pEvoWorkThreadInterface->PostReset(TRUE);
+		m_pEvoWorkThread->PostReset(TRUE);
 		break;
 
 	case IDM_GOTO_ORIGIN:
-		m_pEvoWorkThreadInterface->PostGotoOrigin(UnpackFromLParam(lParam));
+		m_pEvoWorkThread->PostGotoOrigin(UnpackFromLParam(lParam));
 		break;
 
 	case IDM_GOTO_DEATH:
-		m_pEvoWorkThreadInterface->PostGotoDeath(UnpackFromLParam(lParam));
+		m_pEvoWorkThread->PostGotoDeath(UnpackFromLParam(lParam));
 		break;
 
 	case IDM_SET_POI:
-		m_pEvoWorkThreadInterface->PostSetPOI(UnpackFromLParam(lParam));
+		m_pEvoWorkThread->PostSetPOI(UnpackFromLParam(lParam));
 		break;
 
 	case IDM_SCRIPT_DIALOG:

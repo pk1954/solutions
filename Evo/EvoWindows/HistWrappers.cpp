@@ -7,7 +7,7 @@ module HistWrappers;
 import Resource;
 import RunTime;
 
-static WorkThreadInterface * m_pWorkThreadInterface;
+static WorkThread * m_pWorkThread;
 
 class WrapPostGotoGeneration : public ScriptFunctor
 {
@@ -15,13 +15,13 @@ public:
 	virtual void operator() (Script & script) const
 	{
 		HistGeneration const gen = static_cast<HistGeneration>(script.ScrReadLong());
-		m_pWorkThreadInterface->PostGotoGeneration(gen);
+		m_pWorkThread->PostGotoGeneration(gen);
 	}
 };
 
-void DefineWin32HistWrapperFunctions(WorkThreadInterface * pWorkThreadInterface)
+void DefineWin32HistWrapperFunctions(WorkThread * pWorkThread)
 {
-    m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pWorkThread = pWorkThread;
 
     SymbolTable::ScrDefConst(L"PostGotoGeneration", new WrapPostGotoGeneration);
 

@@ -11,7 +11,7 @@ import Tooltip;
 import WinBasics;
 import Win32_Util;
 import WinManager;
-//import WorkThreadInterface;
+//import WorkThread;
 import :GenDisplayWindow;
 
 using std::min;
@@ -21,7 +21,7 @@ HistWindow::HistWindow() :
     BaseWindow(),
     m_pHistSys(nullptr),
     m_pGenDisplay(nullptr),
-	//m_pWorkThreadInterface(nullptr),
+	//m_pWorkThread(nullptr),
     m_trackStruct({ sizeof(TRACKMOUSEEVENT), TME_LEAVE, nullptr, 0L }),
     m_genSelected()
 { }
@@ -30,11 +30,11 @@ void HistWindow::Start
 (
     HWND                  const hwndParent,
     HistorySystem       *       pHistSys
-	//WorkThreadInterface * const pWorkThreadInterface
+	//WorkThread * const pWorkThread
 )
 {
     m_pHistSys             = pHistSys;
-	//m_pWorkThreadInterface = pWorkThreadInterface;
+	//m_pWorkThread = pWorkThread;
 	m_pGenDisplay          = new GenDisplayWindow();
 
     HWND const hwndHistory = StartBaseWindow
@@ -43,7 +43,7 @@ void HistWindow::Start
         L"ClassHistWindow",
         WS_CHILD | WS_CLIPSIBLINGS | WS_VISIBLE,
 		nullptr,
-		nullptr  // [&]() { return ! m_pWorkThreadInterface->IsRunning(); }
+		nullptr  // [&]() { return ! m_pWorkThread->IsRunning(); }
    );
 
     AddWindowExStyle(hwndHistory, WS_EX_STATICEDGE);
@@ -57,7 +57,7 @@ void HistWindow::Stop()
 {
 	DestroyWindow();
 	m_pHistSys = nullptr;
-	//m_pWorkThreadInterface = nullptr;
+	//m_pWorkThread = nullptr;
 }
 
 HistWindow::~HistWindow()
@@ -69,16 +69,16 @@ HistWindow::~HistWindow()
 
 void HistWindow::doPaint(HDC const hDC)
 {
-	//if (m_pWorkThreadInterface)
+	//if (m_pWorkThread)
 	//{
 	//	paintAllGenerations(hDC);
-	//	paintHighlightGenerations(hDC, m_pWorkThreadInterface->GetGenDemanded());
+	//	paintHighlightGenerations(hDC, m_pWorkThread->GetGenDemanded());
 	//}
 }
 
 void HistWindow::gotoGeneration(HistGeneration const gen) 
 { 
-	//m_pWorkThreadInterface->PostGotoGeneration(gen); 
+	//m_pWorkThread->PostGotoGeneration(gen); 
 }
 
 PixelRect HistWindow::getGenerationRect(HistGeneration const gen) const

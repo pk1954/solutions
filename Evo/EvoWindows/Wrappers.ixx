@@ -4,6 +4,6 @@
 
 export module Wrappers;
 
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 
-export void DefineWin32WrapperFunctions(EvoWorkThreadInterface * const);
+export void DefineWin32WrapperFunctions(EvoWorkThread * const);

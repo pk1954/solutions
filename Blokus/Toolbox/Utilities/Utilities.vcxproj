@@ -157,7 +157,7 @@
       </AdditionalOptions>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <ConformanceMode>Default</ConformanceMode>
       <EnableModules>true</EnableModules>
     </ClCompile>
@@ -203,6 +203,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <ConformanceMode>true</ConformanceMode>
       <EnableModules>true</EnableModules>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

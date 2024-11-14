@@ -160,7 +160,6 @@
     <ClCompile Include="EvoEditorWrappers.ixx" />
     <ClCompile Include="EvoReadBuffer.ixx" />
     <ClCompile Include="EvoWorkThread.ixx" />
-    <ClCompile Include="EvoWorkThreadInterface.ixx" />
     <ClCompile Include="FocusPoint.ixx" />
     <ClCompile Include="GridWindow.ixx" />
     <ClCompile Include="HistWrappers.ixx" />
@@ -185,13 +184,15 @@
     <ClCompile Include="ProtocolServer.cpp" />
     <ClCompile Include="StatisticsWindow.cpp" />
     <ClCompile Include="EvoWorkThread.cpp" />
-    <ClCompile Include="EvoWorkThreadInterface.cpp" />
     <ClCompile Include="WorkThreadInterface.cpp" />
     <ClCompile Include="WorkThreadInterface.ixx" />
     <ClCompile Include="Wrappers.cpp" />
     <ClCompile Include="Wrappers.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EvoHistGlue\EvoHistGlue.vcxproj">
+      <Project>{73c1d72a-48dc-4a70-960c-b09d1b55c920}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ShapeLib\ShapeLib.vcxproj">
       <Project>{f05986e5-5428-415c-aa6b-46de6e36806b}</Project>
     </ProjectReference>

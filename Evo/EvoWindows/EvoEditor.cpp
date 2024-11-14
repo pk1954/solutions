@@ -8,7 +8,7 @@ import std;
 import Tooltip;
 import EvoCoreLib;
 import EvoReadBuffer;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import DisplayOptions;
 
 import EvoConfig;
@@ -16,24 +16,24 @@ import Resource;
 
 EvoEditorWindow::EvoEditorWindow()
   : BaseDialog(),
-    m_pReadBuffer         (nullptr),
-    m_pWorkThreadInterface(nullptr),
-    m_pDspOptWindow       (nullptr)
+    m_pReadBuffer  (nullptr),
+    m_pWorkThread  (nullptr),
+    m_pDspOptWindow(nullptr)
 { }
 
 void EvoEditorWindow::Start
 ( 
-    HWND                     const hwndParent,
-    EvoWorkThreadInterface * const pWorkThreadInterface,
-	EvoReadBuffer          * const pReadBuffer,
-    DspOptWindow           * const pDspOptWindow
+    HWND            const hwndParent,
+    EvoWorkThread * const pWorkThread,
+	EvoReadBuffer * const pReadBuffer,
+    DspOptWindow  * const pDspOptWindow
 )
 {
-    m_pWorkThreadInterface = pWorkThreadInterface;
-    m_pReadBuffer          = pReadBuffer;
-    m_pDspOptWindow        = pDspOptWindow;
+    m_pWorkThread   = pWorkThread;
+    m_pReadBuffer   = pReadBuffer;
+    m_pDspOptWindow = pDspOptWindow;
 
-	StartBaseDialog(hwndParent, MAKEINTRESOURCE(IDD_EDITOR), nullptr);  //[&](){ return ! m_pWorkThreadInterface->IsRunning(); });
+	StartBaseDialog(hwndParent, MAKEINTRESOURCE(IDD_EDITOR), nullptr);  //[&](){ return ! m_pWorkThread->IsRunning(); });
 
     SetTrackBarRange(IDM_EDIT_SIZE,      1L,  50L);
     SetTrackBarRange(IDM_EDIT_INTENSITY, 0L, 100L);
@@ -49,14 +49,14 @@ void EvoEditorWindow::Start
 void EvoEditorWindow::Stop()
 {
 	DestroyWindow();
-	m_pWorkThreadInterface = nullptr;
+	m_pWorkThread = nullptr;
 	m_pReadBuffer          = nullptr;
 	m_pDspOptWindow        = nullptr;
 }
 
 EvoEditorWindow::~EvoEditorWindow()
 {
-    m_pWorkThreadInterface = nullptr;
+    m_pWorkThread = nullptr;
     m_pReadBuffer          = nullptr;
     m_pDspOptWindow        = nullptr;
 }
@@ -148,7 +148,7 @@ void EvoEditorWindow::setBrushMode(WORD const wId) const
 	};
 
 	tBrushMode const brushMode { mapModeTable.at(wId) };
-	m_pWorkThreadInterface->PostSetBrushMode(brushMode);
+	m_pWorkThread->PostSetBrushMode(brushMode);
 	m_pDspOptWindow->UpdateDspOptionsControls(brushMode);
 }
 
@@ -162,7 +162,7 @@ void EvoEditorWindow::setBrushShape(WORD const wId) const
 	};
 
 	tShape const brushShape { mapShapeTable.at(wId) };
-	m_pWorkThreadInterface->PostSetBrushShape(brushShape);
+	m_pWorkThread->PostSetBrushShape(brushShape);
 }
 
 void EvoEditorWindow::setBrushManipulator(WORD const wId) const
@@ -177,7 +177,7 @@ void EvoEditorWindow::setBrushManipulator(WORD const wId) const
 	};
 
 	tManipulator const brushOperator { mapOperationTable.at(wId) };
-	m_pWorkThreadInterface->PostSetBrushManipulator(brushOperator);
+	m_pWorkThread->PostSetBrushManipulator(brushOperator);
 }
 
 bool EvoEditorWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM const lParam)
@@ -192,10 +192,10 @@ bool EvoEditorWindow::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 			switch (iCtrlId)
 			{
 			case IDM_EDIT_INTENSITY:
-				m_pWorkThreadInterface->PostSetBrushIntensity(PERCENT(sLogicalPos));
+				m_pWorkThread->PostSetBrushIntensity(PERCENT(sLogicalPos));
 				break;
 			case IDM_EDIT_SIZE:
-				m_pWorkThreadInterface->PostSetBrushRadius(GridCoord(sLogicalPos));
+				m_pWorkThread->PostSetBrushRadius(GridCoord(sLogicalPos));
 				break;
 			default:
 				Assert(false);

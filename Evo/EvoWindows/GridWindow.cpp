@@ -13,7 +13,7 @@ import ColorManager;
 import FocusPoint;
 import CrsrWindow;:
 import D3D_driver;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import PackGridPoint;
 import DspOptWindow;
 import GridWindow;
@@ -23,27 +23,27 @@ import EvoConfig;
 import GridPOI;
 import Resource;
 
-EvoReadBuffer          * GridWindow::m_pReadBuffer             = nullptr;
-EvoWorkThreadInterface * GridWindow::m_pEvoWorkThreadInterface = nullptr;
-DspOptWindow           * GridWindow::m_pDspOptWindow           = nullptr;
-FocusPoint             * GridWindow::m_pFocusPoint             = nullptr;
-ColorManager           * GridWindow::m_pColorManager           = nullptr;
+EvoReadBuffer * GridWindow::m_pReadBuffer    = nullptr;
+EvoWorkThread * GridWindow::m_pEvoWorkThread = nullptr;
+DspOptWindow  * GridWindow::m_pDspOptWindow  = nullptr;
+FocusPoint    * GridWindow::m_pFocusPoint    = nullptr;
+ColorManager  * GridWindow::m_pColorManager  = nullptr;
 					      
 void GridWindow::InitClass
 (       
-	EvoReadBuffer          * const pReadBuffer, 
-    EvoWorkThreadInterface * const pWorkThreadInterface,
-    FocusPoint             * const pFocusPoint,
-    DspOptWindow           * const pDspOptWindow,
-	ColorManager           * const pColorManager
+	EvoReadBuffer * const pReadBuffer, 
+    EvoWorkThread * const pWorkThread,
+    FocusPoint    * const pFocusPoint,
+    DspOptWindow  * const pDspOptWindow,
+	ColorManager  * const pColorManager
 )
 {
 	BaseWindow::InitClass(pActionTimer);
-	m_pReadBuffer             = pReadBuffer;
-	m_pEvoWorkThreadInterface = pWorkThreadInterface;
-	m_pDspOptWindow           = pDspOptWindow;
-    m_pFocusPoint             = pFocusPoint;
-	m_pColorManager           = pColorManager;
+	m_pReadBuffer    = pReadBuffer;
+	m_pEvoWorkThread = pWorkThread;
+	m_pDspOptWindow = pDspOptWindow;
+    m_pFocusPoint   = pFocusPoint;
+	m_pColorManager = pColorManager;
 }
 
 GridWindow::GridWindow() :
@@ -109,16 +109,16 @@ void GridWindow::Stop()
 
 GridWindow::~GridWindow()
 {
-	m_pReadBuffer             = nullptr;
-	m_pEvoWorkThreadInterface = nullptr;
-	m_pGridWindowObserved     = nullptr;
+	m_pReadBuffer         = nullptr;
+	m_pEvoWorkThread      = nullptr;
+	m_pGridWindowObserved = nullptr;
 }
 
 long GridWindow::AddContextMenuEntries(HMENU const hPopupMenu, PixelPoint const pntPos)
 {
 	UINT const STD_FLAGS = MF_BYPOSITION | MF_STRING;
 
-	if (m_pEvoWorkThreadInterface->IsRunning())
+	if (m_pEvoWorkThread->IsRunning())
 		(void)AppendMenu(hPopupMenu, STD_FLAGS, IDM_STOP, L"Stop");
 	else
 		(void)AppendMenu(hPopupMenu, STD_FLAGS, IDM_RUN, L"Run");
@@ -194,7 +194,7 @@ void GridWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
     {
         if ((pCore->GetBrushMode() != tBrushMode::move) && (ptCrsr != m_ptLast))
         {
-            m_pEvoWorkThreadInterface->PostDoEdit(m_pFocusPoint->GetGridPoint());
+            m_pEvoWorkThread->PostDoEdit(m_pFocusPoint->GetGridPoint());
         }
         else if (m_ptLast.IsNotNull())  // last cursor pos stored in m_ptLast
         {

@@ -50,12 +50,13 @@ void PieceType::Draw
 	DrawContext   &context,
 	ShapeId const  idShape,
 	PosDir  const &posDir, 
-	Color   const  col
+	Color   const  col,
+	bool    const  bHighlighted
 ) const
 {
 	fPixelPoint const offsetSave { context.GetPixelOffset() };
 	context.Move(posDir.m_umPos);
-	GetShapeC(idShape).Draw(context, posDir.m_degrees, col);
+	GetShapeC(idShape).Draw(context, posDir.m_degrees, col, bHighlighted);
 	context.SetPixelOffset(offsetSave);
 }
 
@@ -64,11 +65,12 @@ void PieceType::Draw
 	DrawContext         &context,
 	ShapeId       const  idShape,
 	MicroMeterPnt const &umPos, 
-	Color         const  col
+	Color         const  col,
+	bool          const  bHighlighted
 ) const
 {
 	fPixelPoint const offsetSave { context.GetPixelOffset() };
 	context.Move(umPos);
-	GetShapeC(idShape).Draw(context, col);
+	GetShapeC(idShape).Draw(context, col, bHighlighted);
 	context.SetPixelOffset(offsetSave);
 }

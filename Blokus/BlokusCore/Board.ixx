@@ -17,7 +17,7 @@ public:
     Board();
 
     void Reset();
-    void SetPlayerId (CoordPos const&, PlayerId const);
+    void SetPlayerId(CoordPos const&, PlayerId const);
     void DoMove  (BlokusMove const&);
     void UndoMove(BlokusMove const&);
 

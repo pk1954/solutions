@@ -39,6 +39,9 @@ public:
         setPiecePos(pos);
     }
 
+    void SetPos(MicroMeterPnt const &umPos)   { m_posDir.m_umPos = umPos; }
+    void Move  (MicroMeterPnt const &umDelta) { m_posDir.m_umPos += umDelta; }
+
 private:
 	PosDir      m_posDir;
     PieceTypeId m_idPieceType { UndefinedPieceTypeId };

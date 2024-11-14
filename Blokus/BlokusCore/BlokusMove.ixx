@@ -30,8 +30,8 @@ public:
     void SetShapeId    (ShapeId     const idShape    ) { m_idShape     = idShape;     }
     void SetCoordPos   (CoordPos    const coordPos   ) { m_boardPos    = coordPos;    }
 
-    bool Defined()   const { return m_idPlayer != NO_PLAYER; }
-    bool Undefined() const { return m_idPlayer == NO_PLAYER; }
+    bool Defined()   const { return m_boardPos != UndefinedCoordPos; }
+    bool Undefined() const { return m_boardPos == UndefinedCoordPos; }
 
 private:
 

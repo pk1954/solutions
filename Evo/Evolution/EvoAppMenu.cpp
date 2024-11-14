@@ -6,7 +6,7 @@ export module EvoAppMenu;
 
 import Resource;
 import EvoCoreLib;
-import WorkThreadInterface;
+import WorkThread;
 import WinBasics;
 import WinManager;
 import EvoAppMenu;
@@ -14,13 +14,13 @@ import EvoAppMenu;
 void EvoAppMenu::Initialize
 (
 	HWND                        const hwndApp, 
-	WorkThreadInterface const * const pWworkThreadInterface,
+	WorkThread const * const pWworkThread,
 	WinManager          const * const pWinManager
 ) 
 {
     HINSTANCE const hInstance = GetModuleHandle(nullptr);
 
-	m_pWorkThreadInterface = pWworkThreadInterface;
+	m_pWorkThread = pWworkThread;
 	m_pWinManager          = pWinManager;
 
     SendMessage(hwndApp, WM_SETICON, ICON_BIG,   (LPARAM)LoadIcon(hInstance, MAKEINTRESOURCE(IDI_EVOLUTION)));
@@ -55,7 +55,7 @@ void EvoAppMenu::Stop()
 
 void EvoAppMenu::AdjustVisibility()
 {
-	bool const bRunning = m_pWorkThreadInterface->IsRunning();
+	bool const bRunning = m_pWorkThread->IsRunning();
 
 	EnableMenuItem(m_hMenu, IDM_FORWARD,          bRunning ? MF_GRAYED : MF_ENABLED);
 	EnableMenuItem(m_hMenu, IDM_BACKWARDS,        bRunning ? MF_GRAYED : MF_ENABLED);

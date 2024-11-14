@@ -7,17 +7,17 @@ module Wrappers;
 import RunTime;
 import Resource;
 import EvolutionCoreWrapperHelpers;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import EvoGenerationCmd;
 
-static EvoWorkThreadInterface * m_pWorkThreadInterface;
+static EvoWorkThread * m_pWorkThread;
 
 class WrapPostPrevGeneration : public ScriptFunctor
 {
 public:
     virtual void operator() (Script & script) const
     {
-        m_pWorkThreadInterface->PostPrevGeneration();
+        m_pWorkThread->PostPrevGeneration();
     }
 };
 
@@ -27,7 +27,7 @@ public:
     virtual void operator() (Script & script) const
     {
 		int iNrOfGenerations = script.ScrReadInt();
-        m_pWorkThreadInterface->PostBenchmark(iNrOfGenerations);
+        m_pWorkThread->PostBenchmark(iNrOfGenerations);
     }
 };
 
@@ -37,7 +37,7 @@ public:
 	virtual void operator() (Script & script) const
 	{
 		GridPoint gp = ScrReadGridPoint(script);
-		m_pWorkThreadInterface->PostDoEdit(gp);
+		m_pWorkThread->PostDoEdit(gp);
 	}
 };
 
@@ -47,7 +47,7 @@ public:
 	virtual void operator() (Script & script) const
 	{
 		GridPoint gp = ScrReadGridPoint(script);
-		m_pWorkThreadInterface->PostSetPOI(gp);
+		m_pWorkThread->PostSetPOI(gp);
 	}
 };
 
@@ -58,7 +58,7 @@ public:
     {
         ULONG      const ulCmd = script.ScrReadUlong();
         tBrushMode const mode  = static_cast<tBrushMode>(ulCmd);
-        m_pWorkThreadInterface->PostSetBrushMode(mode);
+        m_pWorkThread->PostSetBrushMode(mode);
     }
 };
 
@@ -69,7 +69,7 @@ public:
     {
         ULONG  const ulShape = script.ScrReadUlong();
         tShape const shape   = static_cast<tShape>(ulShape);
-        m_pWorkThreadInterface->PostSetBrushShape(shape);
+        m_pWorkThread->PostSetBrushShape(shape);
     }
 };
 
@@ -79,7 +79,7 @@ public:
     virtual void operator() (Script & script) const
     {
 		PERCENT const intensity { script.ScrReadShort() };
-        m_pWorkThreadInterface->PostSetBrushIntensity(intensity);
+        m_pWorkThread->PostSetBrushIntensity(intensity);
     }
 };
 
@@ -89,7 +89,7 @@ public:
 	virtual void operator() (Script & script) const
 	{
 		GridCoord const size = ScrReadGridCoord(script);
-		m_pWorkThreadInterface->PostSetBrushRadius(size);
+		m_pWorkThread->PostSetBrushRadius(size);
 	}
 };
 
@@ -100,7 +100,7 @@ public:
 	{
 		USHORT       const usValue     = script.ScrReadUshort();
 		tManipulator const manipulator = static_cast<tManipulator>(usValue);
-		m_pWorkThreadInterface->PostSetBrushManipulator(manipulator);
+		m_pWorkThread->PostSetBrushManipulator(manipulator);
 	}
 };
 
@@ -109,7 +109,7 @@ class WrapPostGenerationStep : public ScriptFunctor
 public:
     virtual void operator() (Script & script) const
     {
-        m_pWorkThreadInterface->PostGenerationStep();
+        m_pWorkThread->PostGenerationStep();
     }
 };
 
@@ -118,7 +118,7 @@ class WrapPostRunGenerations : public ScriptFunctor
 public:
     virtual void operator() (Script & script) const
     {
-        m_pWorkThreadInterface->PostGenerationStep();
+        m_pWorkThread->PostGenerationStep();
     }
 };
 
@@ -130,9 +130,9 @@ public:
     }
 };
 
-void DefineWin32WrapperFunctions(EvoWorkThreadInterface * const pWorkThreadInterface)
+void DefineWin32WrapperFunctions(EvoWorkThread * const pWorkThread)
 {
-    m_pWorkThreadInterface = pWorkThreadInterface;
+    m_pWorkThread = pWorkThread;
 
     SymbolTable::ScrDefConst(L"PostGotoGeneration",      new WrapPostGotoGeneration);
     SymbolTable::ScrDefConst(L"PostPrevGeneration",      new WrapPostPrevGeneration); 

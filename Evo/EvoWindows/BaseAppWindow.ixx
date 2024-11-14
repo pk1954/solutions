@@ -9,7 +9,7 @@ import WinBasics;
 import BaseWindow;
 import WinManager;
 import StatusBar;
-//import WorkThreadInterface;
+//import WorkThread;
 import HistoryLib;
 import WinHistLib;
 import AppMenu;
@@ -24,7 +24,7 @@ public:
 
 	void Initialize
 	(
-		//WorkThreadInterface * const, 
+		//WorkThread * const, 
 		bool const
 	);
 
@@ -54,7 +54,7 @@ private:
 	//HistInfoWindow m_HistInfoWindow;
 
 	BaseWindow          * m_pModelWindow;
-	//WorkThreadInterface * m_pWorkThreadInterface;
+	//WorkThread * m_pWorkThread;
 
 	wofstream m_traceStream;
 

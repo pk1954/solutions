@@ -2,7 +2,7 @@
 //
 // Evolution
 
-module;
+export module EvoAppWindow;
 
 import std;
 import D3D_driver;
@@ -14,7 +14,7 @@ import WppWindowInterface;
 import ProtocolServer;
 import ScriptHook;
 import ColorManager;
-import EvoWorkThreadInterface;
+import EvoWorkThread;
 import EvoHistorySysGlue;
 import EvoReadBuffer;
 
@@ -59,27 +59,26 @@ private:
 	void configureStatusBar();
 
 	Event              m_eventPOI;
-					         
-	EvoHistorySysGlue        m_EvoHistGlue;
-	ColorManager             m_ColorManager;
-	D3D_driver               m_D3d_driver;
-    ScriptHook               m_ScriptHook;
-	ProtocolServer           m_protocolServer;
+	EvoHistorySysGlue  m_EvoHistGlue;
+	ColorManager       m_ColorManager;
+	D3D_driver         m_D3d_driver;
+    ScriptHook         m_ScriptHook;
+	ProtocolServer     m_protocolServer;
 					       
-	EvoWorkThreadInterface * m_pEvoWorkThreadInterface;
-	EvoReadBuffer          * m_pEvoReadBuffer;
-	EvoController          * m_pEvoController;
-	EvolutionCore          * m_pEvoCore4Display;
-	GridWindow             * m_pMainGridWindow;
-	EvoModelDataGlue       * m_pModelDataWork;
-					     
-    GridWindow             * m_pMiniGridWindow;
-    EvoEditorWindow        * m_pEvoEditorWindow;
-	DspOptWindow           * m_pDspOptWindow;
-	PerformanceWindow      * m_pPerfWindow;
-	CrsrWindow             * m_pCrsrWindow;
-	StatisticsWindow       * m_pStatistics;
-	D3D_driver             * m_pGraphics;
-	FocusPoint             * m_pFocusPoint;
-	GenerationDisplay      * m_pGenerationDisplay;
+	EvoWorkThread     * m_pEvoWorkThread;
+	EvoReadBuffer     * m_pEvoReadBuffer;
+	EvoController     * m_pEvoController;
+	EvolutionCore     * m_pEvoCore4Display;
+	GridWindow        * m_pMainGridWindow;
+	EvoModelDataGlue  * m_pModelDataWork;
+					  
+    GridWindow        * m_pMiniGridWindow;
+    EvoEditorWindow   * m_pEvoEditorWindow;
+	DspOptWindow      * m_pDspOptWindow;
+	PerformanceWindow * m_pPerfWindow;
+	CrsrWindow        * m_pCrsrWindow;
+	StatisticsWindow  * m_pStatistics;
+	D3D_driver        * m_pGraphics;
+	FocusPoint        * m_pFocusPoint;
+	GenerationDisplay * m_pGenerationDisplay;
 };

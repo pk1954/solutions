@@ -57,15 +57,20 @@ void Player::DrawResult
 	);
 }
 
-void Player::DrawFreePieces(DrawContext &context) const
+void Player::DrawFreePieces
+(
+	DrawContext &context,
+	Piece const &pieceSelected
+) const
 {
 	Apply2AvailablePiecesC
 	(
-		[this, &context](Piece const& piece)
+		[this, &context, &pieceSelected](Piece const& piece)
 		{
-			PosDir const posDir { piece.GetPosDirC() };
-			Color  const col    { m_pPlayerType->m_color };
-			piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col);
+			PosDir const posDir    { piece.GetPosDirC() };
+			Color  const col       { m_pPlayerType->m_color };
+			bool   const bSelected { &piece == &pieceSelected };
+			piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, bSelected);
 		}
 	);
 }
@@ -76,7 +81,7 @@ void Player::DrawCell
 	CoordPos    const &pos
 ) const
 {
-	ShapeSquare(context, pos, m_pPlayerType->m_color );
+	ShapeSquare(context, pos, m_pPlayerType->m_color, false);
 }
 
 void Player::DrawContactPnts(DrawContext &context) const

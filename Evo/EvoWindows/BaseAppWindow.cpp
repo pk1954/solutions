@@ -18,7 +18,7 @@ import BaseWindow;
 import WinManager;
 import WinHistLib;
 import StatusBar;
-import WorkThreadInterface;
+import WorkThread;
 
 using namespace std::literals::chrono_literals;
 
@@ -30,20 +30,20 @@ BaseAppWindow::BaseAppWindow()
 	m_pAppMenu(nullptr),
 	m_pModelWindow(nullptr),
 	m_pHistorySystem(nullptr),
-	//m_pWorkThreadInterface(nullptr),
+	//m_pWorkThread(nullptr),
 	m_traceStream()
 {
 }
 
 void BaseAppWindow::Initialize
 (
-	//WorkThreadInterface * const pWorkThreadInterface,
+	//WorkThread * const pWorkThread,
 	bool                  const bUseHistorySystem
 )
 {
 	//	_CrtSetAllocHook(MyAllocHook);
 
-	//m_pWorkThreadInterface = pWorkThreadInterface;
+	//m_pWorkThread = pWorkThread;
 	m_bUseHistorySystem = bUseHistorySystem;
 
 	m_hwndConsole = GetConsoleWindow();
@@ -53,7 +53,7 @@ void BaseAppWindow::Initialize
 
 	m_traceStream = OpenTraceFile(L"main_trace.out");
 
-	m_pWorkThreadInterface->Initialize(& m_traceStream);
+	m_pWorkThread->Initialize(& m_traceStream);
 
 	m_StatusBar     .SetRefreshRate(300ms);
 	m_HistWindow    .SetRefreshRate(200ms); 
@@ -80,7 +80,7 @@ void BaseAppWindow::Start(BaseWindow * const pModelWindow)
 	m_pAppMenu->Start();
 	m_StatusBar.Start
 	(
-		m_hwndApp //, m_pWorkThreadInterface
+		m_hwndApp //, m_pWorkThread
 	);
 
 	m_WinManager.AddWindow(L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 TRUE,  TRUE );
@@ -90,7 +90,7 @@ void BaseAppWindow::Start(BaseWindow * const pModelWindow)
 	if (m_bUseHistorySystem)
 	{
 		m_pHistorySystem = HistorySystem::CreateHistorySystem();  // deleted in Stop function
-		m_HistWindow    .Start(m_hwndApp, m_pHistorySystem); //, m_pWorkThreadInterface);
+		m_HistWindow    .Start(m_hwndApp, m_pHistorySystem); //, m_pWorkThread);
 		m_HistInfoWindow.Start(m_hwndApp, nullptr);
 		m_WinManager.AddWindow(L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,     FALSE, FALSE); 
 		m_WinManager.AddWindow(L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow, TRUE,  FALSE);
@@ -238,30 +238,30 @@ bool BaseAppWindow::ProcessFrameworkCommand(WPARAM const wParam, LPARAM const lP
 		break;
 
 	case IDM_FORWARD:
-		m_pWorkThreadInterface->PostGenerationStep();
+		m_pWorkThread->PostGenerationStep();
 		break;
 
 	case IDM_BACKWARDS:
 		Assert(m_bUseHistorySystem);
-		m_pWorkThreadInterface->PostPrevGeneration();
+		m_pWorkThread->PostPrevGeneration();
 		break;
 
 	case IDM_EDIT_UNDO:
 		Assert(m_bUseHistorySystem);
-		m_pWorkThreadInterface->PostUndo();
+		m_pWorkThread->PostUndo();
 		break;
 
 	case IDM_EDIT_REDO:
 		Assert(m_bUseHistorySystem);
-		m_pWorkThreadInterface->PostRedo();
+		m_pWorkThread->PostRedo();
 		break;
 
 	case IDM_RUN:
-		m_pWorkThreadInterface->PostRunGenerations(true);
+		m_pWorkThread->PostRunGenerations(true);
 		break;
 
 	case IDM_STOP:
-		m_pWorkThreadInterface->PostStopComputation();
+		m_pWorkThread->PostStopComputation();
 		break;
 
 	case IDM_HIST_BUFFER_FULL:

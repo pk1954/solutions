@@ -121,17 +121,17 @@ public:
 
 	Color& operator*= (float const f)
 	{
-		r *= f;
-		g *= f;
-		b *= f;
+		r = min(1.0f, r*f);
+		g = min(1.0f, g*f);
+		b = min(1.0f, b*f);
 		return *this;
 	}
 
 	Color& operator/= (float const f)
 	{
-		r /= f;
-		g /= f;
-		b /= f;
+		r = min(1.0f, r/f);
+		g = min(1.0f, g/f);
+		b = min(1.0f, b/f);
 		return *this;
 	}
 

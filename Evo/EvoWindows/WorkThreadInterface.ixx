@@ -1,8 +1,8 @@
-// WorkThreadInterface.ixx
+// WorkThread.ixx
 //
 // EvoWindows
 
-export module WorkThreadInterface;
+export module WorkThread;
 
 import std;
 import BoolOp;
@@ -40,20 +40,17 @@ public:
 	static UINT const FIRST_APP_MESSAGE = static_cast<UINT>(Id::LAST) + 1;
 };
 
-class WorkThreadInterface;
-
 export class WorkThread: public Thread
 {
 public:
 	WorkThread
 	(
-		HWND                  const,
-		EventInterface      * const,
-		ObserverInterface   * const,
-		HistorySystem       * const,
-		EvolutionCore       * const,
-		WorkThreadInterface * const,
-		bool                  const
+		HWND                const,
+		EventInterface    * const,
+		ObserverInterface * const,
+		HistorySystem     * const,
+		EvolutionCore     * const,
+		bool                const
 	);
 	~WorkThread();
 
@@ -126,65 +123,63 @@ private:
 
 	bool userWantsHistoryCut() const;
 
-    EventInterface      * m_pEventPOI;
-	ObserverInterface   * m_pObserver;
-    HistorySystem       * m_pHistorySystem;   // if HistorySystem is not used: nullptr 
-	EvolutionCore       * m_pModel;           // if HistorySystem is     used: nullptr
-	WorkThreadInterface * m_pWorkThreadInterface;
-    HistGeneration        m_genDemanded;
-    bool                  m_bContinue;
-	HWND                  m_hwndApplication;
+    EventInterface    * m_pEventPOI;
+	ObserverInterface * m_pObserver;
+    HistorySystem     * m_pHistorySystem;   // if HistorySystem is not used: nullptr 
+	EvolutionCore     * m_pModel;           // if HistorySystem is     used: nullptr
+    HistGeneration      m_genDemanded;
+    bool                m_bContinue;
+	HWND                m_hwndApplication;
 };
 
-export class WorkThreadInterface
-{
-public:
-	WorkThreadInterface();
-    ~WorkThreadInterface();
-
-	void Initialize(wostream *);
-
-	void Start(WorkThread * const);
-	void Stop();
-
-	void PostUndo();
-	void PostRedo();
-	void PostReset(bool);
-	void PostRunGenerations(bool const);
-	void PostStopComputation();
-	void PostPrevGeneration();
-	void PostGotoGeneration(HistGeneration const);
-	void PostGenerationStep();
-	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
-
-	HistGeneration GetGenDemanded      () const { return m_pWorkThread->GetGenDemanded      (); }
-	HistGeneration GetCurrentGeneration() const { return m_pWorkThread->GetCurrentGeneration(); }
-
-	bool IsRunning    () const	{ return m_pWorkThread->IsRunning(); }
-	//bool IsAsyncThread() const	{ return true; }
-
-protected:
-
-	bool       IsTraceOn  () const { return   m_bTrace; }
-	wostream & TraceStream()       { return * m_pTraceStream; }
-
-	void WorkMessage
-	(
-		bool                  const isEditOperation,
-		WorkThreadMessage::Id const msg,
-		WPARAM                const wparam, 
-		LPARAM                const lparam
-	)
-	{
-		m_pWorkThread->WorkMessage(isEditOperation, msg, wparam, lparam);
-	}
-
-	void Continue() { m_pWorkThread->Continue(); }
-
-private:
-	void postGotoGeneration(HistGeneration const);
-
-	WorkThread * m_pWorkThread;
-    wostream   * m_pTraceStream;
-	bool         m_bTrace;
-}; 
+//export class WorkThread
+//{
+//public:
+//	WorkThread();
+//    ~WorkThread();
+//
+//	void Initialize(wostream *);
+//
+//	void Start(WorkThread * const);
+//	void Stop();
+//
+//	void PostUndo();
+//	void PostRedo();
+//	void PostReset(bool);
+//	void PostRunGenerations(bool const);
+//	void PostStopComputation();
+//	void PostPrevGeneration();
+//	void PostGotoGeneration(HistGeneration const);
+//	void PostGenerationStep();
+//	void PostRepeatGenerationStep();       // Do not call! Used by WorkThread only;
+//
+//	HistGeneration GetGenDemanded      () const { return m_pWorkThread->GetGenDemanded      (); }
+//	HistGeneration GetCurrentGeneration() const { return m_pWorkThread->GetCurrentGeneration(); }
+//
+//	bool IsRunning    () const	{ return m_pWorkThread->IsRunning(); }
+//	//bool IsAsyncThread() const	{ return true; }
+//
+//protected:
+//
+//	bool       IsTraceOn  () const { return   m_bTrace; }
+//	wostream & TraceStream()       { return * m_pTraceStream; }
+//
+//	void WorkMessage
+//	(
+//		bool                  const isEditOperation,
+//		WorkThreadMessage::Id const msg,
+//		WPARAM                const wparam, 
+//		LPARAM                const lparam
+//	)
+//	{
+//		m_pWorkThread->WorkMessage(isEditOperation, msg, wparam, lparam);
+//	}
+//
+//	void Continue() { m_pWorkThread->Continue(); }
+//
+//private:
+//	void postGotoGeneration(HistGeneration const);
+//
+//    wostream * m_pTraceStream;
+//	bool       m_bTrace;
+//}; 

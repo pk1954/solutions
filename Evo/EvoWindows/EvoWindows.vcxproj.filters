@@ -42,9 +42,6 @@
     <ClCompile Include="EvoWorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EvoWorkThreadInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EvoEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -88,9 +85,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EvoWorkThread.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EvoWorkThreadInterface.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FocusPoint.ixx">

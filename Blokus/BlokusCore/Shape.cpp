@@ -114,13 +114,18 @@ void Shape::Rotate()
 	normalize();
 }
 
-void Shape::Draw(DrawContext &context, Color const col) const
+void Shape::Draw
+(
+	DrawContext &context, 
+	Color const col,
+	bool  const bHighlighted
+) const
 {
 	Apply2AllShapeCellsC
 	(
-		[this, &context, &col](ShapeCoordPos const& shapePos)
+		[this, &context, &col, bHighlighted](ShapeCoordPos const& shapePos)
 		{
-			ShapeSquare(context, shapePos, col);
+			ShapeSquare(context, shapePos, col, bHighlighted);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
@@ -139,16 +144,17 @@ void Shape::Draw
 (
 	DrawContext  &context,
 	Degrees const degRotation,
-	Color   const col
+	Color   const col,
+	bool    const bHighlighted
 ) const
 {
 	if (degRotation == 0._Degrees)
-		Draw(context, col);
+		Draw(context, col, bHighlighted);
 	else
 	{
 		context.Push();
 		context.SetRotation(degRotation, m_umPntCenter);
-		Draw(context, col);
+		Draw(context, col, bHighlighted);
 		context.Pop();
 	}
 }

@@ -1,8 +1,8 @@
-// WorkThreadInterface.cpp
+// WorkThread.cpp
 //
 // EvoWindows
 
-module WorkThreadInterface;
+module WorkThread;
 
 //import StopWatch;
 import std;
@@ -20,23 +20,21 @@ using std::endl;
 
 WorkThread::WorkThread
 (
-	HWND                  const hwndApplication,
-	EventInterface      * const pEvent,
-	ObserverInterface   * const pObserver,
-	HistorySystem       * const pHistSystem,
-	EvolutionCore       * const pModel,
-	WorkThreadInterface * const pWorkThreadInterface,
-	bool                  const bAsync
+	HWND                const hwndApplication,
+	EventInterface    * const pEvent,
+	ObserverInterface * const pObserver,
+	HistorySystem     * const pHistSystem,
+	EvolutionCore     * const pModel,
+	bool                const bAsync
 ) :
 	//m_pComputeTimer       (pActionTimer),
-	m_pEventPOI           (pEvent),   
-	m_pObserver           (pObserver),   
-	m_pHistorySystem      (pHistSystem),
-	m_pModel              (pModel),
-	m_pWorkThreadInterface(pWorkThreadInterface),
-	m_hwndApplication     (hwndApplication),
-	m_bContinue           (FALSE),
-	m_genDemanded         (0)
+	m_pEventPOI      (pEvent),   
+	m_pObserver      (pObserver),   
+	m_pHistorySystem (pHistSystem),
+	m_pModel         (pModel),
+	m_hwndApplication(hwndApplication),
+	m_bContinue      (FALSE),
+	m_genDemanded    (0)
 {
 	Assert((m_pHistorySystem != nullptr) || (m_pModel != nullptr)); // one of them must be != nullptr
 	Assert((m_pHistorySystem == nullptr) || (m_pModel == nullptr)); // one of them must be == nullptr
@@ -46,7 +44,7 @@ WorkThread::WorkThread
 WorkThread::~WorkThread()
 {
 	m_hwndApplication      = nullptr;
-	m_pWorkThreadInterface = nullptr;
+	m_pWorkThread = nullptr;
 	//m_pComputeTimer        = nullptr;
 	m_pEventPOI            = nullptr;
 	m_pObserver            = nullptr;
@@ -228,7 +226,7 @@ void WorkThread::GotoGeneration(HistGeneration const gen)
 		WorkMessage(FALSE, WorkThreadMessage::Id::REFRESH, 0, 0);     // refresh all views
     
 		if (m_pHistorySystem->GetCurrentGeneration() != m_genDemanded) // still not done?
-			m_pWorkThreadInterface->PostRepeatGenerationStep();        // Loop! Will call indirectly GotoGeneration again
+			m_pWorkThread->PostRepeatGenerationStep();        // Loop! Will call indirectly GotoGeneration again
 	}
 }
 
@@ -261,9 +259,9 @@ void WorkThread::generationRun(bool const bFirst)
 
 		//WaitTilNextActivation();
 
-		//if (m_pWorkThreadInterface->IsAsyncThread())
+		//if (m_pWorkThread->IsAsyncThread())
 		//{
-		//	m_pWorkThreadInterface->PostRunGenerations(false);
+		//	m_pWorkThread->PostRunGenerations(false);
 		//}
 		//else
 		//{
@@ -282,25 +280,25 @@ void WorkThread::generationStop()
 
 ////////////////// Work thread interface /////////////////////////////
 
-WorkThreadInterface::WorkThreadInterface() :
+WorkThread::WorkThread() :
 	m_pWorkThread (nullptr),
 	m_pTraceStream(nullptr),
 	m_bTrace      (TRUE)
 { 
 }
 
-WorkThreadInterface::~WorkThreadInterface()
+WorkThread::~WorkThread()
 {
 	m_pWorkThread  = nullptr;
     m_pTraceStream = nullptr;
 }
 
-void WorkThreadInterface::Initialize(wostream * pTraceStream) 
+void WorkThread::Initialize(wostream * pTraceStream) 
 { 
 	m_pTraceStream = pTraceStream;
 }
 
-void WorkThreadInterface::Start
+void WorkThread::Start
 (
 	WorkThread * const pWorkThread
 )
@@ -308,13 +306,13 @@ void WorkThreadInterface::Start
 	m_pWorkThread = pWorkThread;
 }
 
-void WorkThreadInterface::Stop()
+void WorkThread::Stop()
 {
 	m_pWorkThread->Terminate();
 	m_pWorkThread = nullptr;
 }
 
-void WorkThreadInterface::postGotoGeneration(HistGeneration const gen)
+void WorkThread::postGotoGeneration(HistGeneration const gen)
 {
     Assert(gen >= 0);
 
@@ -323,14 +321,14 @@ void WorkThreadInterface::postGotoGeneration(HistGeneration const gen)
 
 // procedural interface of worker thread
 
-void WorkThreadInterface::PostReset(bool bResetHistSys)
+void WorkThread::PostReset(bool bResetHistSys)
 {
 	if (IsTraceOn())
 		* m_pTraceStream << __func__ << (bResetHistSys ? 1 : 0) << endl;
 	WorkMessage(TRUE, static_cast<WorkThreadMessage::Id>(WorkThreadMessage::Id::RESET_MODEL), bResetHistSys, 0);
 }
 
-void WorkThreadInterface::PostGenerationStep()
+void WorkThread::PostGenerationStep()
 {
     if (m_bTrace)
         * m_pTraceStream << __func__ << endl;
@@ -340,35 +338,35 @@ void WorkThreadInterface::PostGenerationStep()
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::NEXT_GENERATION, 0, 0);
 }
 
-void WorkThreadInterface::PostRunGenerations(bool const bFirst)
+void WorkThread::PostRunGenerations(bool const bFirst)
 {
     //if (m_bTrace)
     //    * m_pTraceStream << L"PostGenerationStep" << endl;
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::GENERATION_RUN, 0, bFirst);
 }
 
-void WorkThreadInterface::PostRepeatGenerationStep()
+void WorkThread::PostRepeatGenerationStep()
 {
     //if (m_bTrace)
     //    * m_pTraceStream << L"PostGenerationStep" << endl;
     m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::REPEAT_NEXT_GENERATION, 0, 0);
 }
 
-void WorkThreadInterface::PostRedo()
+void WorkThread::PostRedo()
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::REDO_OPERATION, 0, 0);
 }
 
-void WorkThreadInterface::PostUndo()
+void WorkThread::PostUndo()
 {
 	if (IsTraceOn())
 		TraceStream() << __func__ << endl;
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::UNDO_OPERATION, 0, 0);
 }
 
-void WorkThreadInterface::PostPrevGeneration()
+void WorkThread::PostPrevGeneration()
 {
     if (m_bTrace)
         * m_pTraceStream << __func__ << endl;
@@ -378,14 +376,14 @@ void WorkThreadInterface::PostPrevGeneration()
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::PREV_GENERATION, 0, 0);
 }
 
-void WorkThreadInterface::PostGotoGeneration(HistGeneration const gen)
+void WorkThread::PostGotoGeneration(HistGeneration const gen)
 {
     if (m_bTrace)
         * m_pTraceStream << __func__ << L" " << gen << endl;
 	postGotoGeneration(gen);
 }
 
-void WorkThreadInterface::PostStopComputation()
+void WorkThread::PostStopComputation()
 {
 	m_pWorkThread->WorkMessage(FALSE, WorkThreadMessage::Id::STOP, 0, 0);
 }

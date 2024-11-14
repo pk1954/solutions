@@ -4,6 +4,6 @@
 
 export module HistWrappers;
 
-import WorkThreadInterface;
+import WorkThread;
 
-export void DefineWin32HistWrapperFunctions(WorkThreadInterface *);
+export void DefineWin32HistWrapperFunctions(WorkThread *);

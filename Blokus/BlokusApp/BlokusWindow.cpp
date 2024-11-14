@@ -180,19 +180,57 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	return true;
 }
 
+void BlokusWindow::setPieceSelected(Piece * const pPiece)
+{
+	if (pPiece != m_pPieceSelected)
+	{
+		m_pPieceSelected = pPiece;
+		Notify(false);
+	}
+}
+
+bool BlokusWindow::selectPiece(MicroMeterPnt const &umCrsrPos)
+{
+	Player &player { m_match.ActivePlayer() };
+	setPieceSelected(nullptr);
+	player.Apply2AvailablePieces
+	(
+		[this, &umCrsrPos](Piece &piece)
+		{
+			PieceType const &pieceType    { piece.GetPieceTypeC() };
+			Shape     const &shape        { pieceType.GetShapeC(ShapeId(0)) };
+			CoordPos  const coordPosPiece { pieceType.GetInitialPos() };
+			shape.Apply2AllShapeCellsC
+			(
+				[this, &umCrsrPos, &piece, coordPosPiece](ShapeCoordPos const &coordPos)
+				{
+					CoordPos const coordPosCell { coordPosPiece + coordPos };
+					if (IsInShapeCell(umCrsrPos, coordPosCell))
+						setPieceSelected(&piece);
+				}
+			);
+		}
+	);
+	return m_pPieceSelected != nullptr;
+}
+
 void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
-	MicroMeterPnt const umCrsrPos { GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
+	MicroMeterPnt const umCrsrPos { m_context.GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
 
 	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
 	{
 		m_ptLast.Set2Null();                 // make m_ptLast invalid
+		if (selectPiece(umCrsrPos))
+			return;
+//      if (selectXYZ())
+//		    return;
 		return;
 	}
 
-	PixelPoint const ptLast { GetPtLast() };
+	PixelPoint const ptLast { m_ptLast };
 	m_ptLast = ptCrsr;
 	if (ptLast.IsNull())
 		return;
@@ -200,11 +238,33 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (!(wParam & MK_LBUTTON))    // left mouse button
 		return;
 
-	MicroMeterPnt const umLastPos { GetCoordC().Transform2logUnitPntPos(ptLast) };
+	MicroMeterPnt const umLastPos { m_context.GetCoordC().Transform2logUnitPntPos(ptLast) };
 	m_umDelta = umCrsrPos - umLastPos;
 	if (m_umDelta.IsZero())
 		return;
+	
+	if (m_pPieceSelected)
+	{
+		m_pPieceSelected->Move(m_umDelta);
+		Notify(false);
+	}
+}
 
+bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
+{
+	SetCapture();
+	return GraphicsWindow::OnLButtonDown(wParam, lParam);
+}
+
+bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+{
+	ReleaseCapture();
+	if (m_pPieceSelected)
+	{
+		m_pPieceSelected->Reset();
+		Notify(false);
+	}
+	return GraphicsWindow::OnLButtonUp(wParam, lParam);
 }
 
 //void BlokusWindow::startRotationPhase(Degrees const degrees)
@@ -272,7 +332,7 @@ void BlokusWindow::PaintGraphics()
 	m_match.DrawSetPieces(m_context);
 	//if (m_posDirAnimation.IsRunning())
 	//	m_match.GetPieceTypeC(m_move).Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
-	player.DrawFreePieces(m_context);
+	player.DrawFreePieces(m_context, *m_pPieceSelected);
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		m_match.ActivePlayerC().DrawContactPnts(m_context);
 	if (player.HasFinished())

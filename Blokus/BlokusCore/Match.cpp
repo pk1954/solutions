@@ -126,9 +126,8 @@ BlokusMove Match::DoMove()
     {
 	    GetPiece(move).DoMove(move.GetCoordPos());
         m_board.DoMove(move);
-        if (!PlayerHasFinished())
-            NextPlayer();
     }
+    move.SetPlayerId(NextPlayer());
     return move;
 }
 
@@ -138,8 +137,8 @@ void Match::UndoMove(BlokusMove const move)
     {
 	    GetPiece(move).Reset();
         m_board.UndoMove(move);
-        m_idActivePlayer = move.GetPlayerId();
     }
+    m_idActivePlayer = move.GetPlayerId();
 }
 
 PlayerId Match::NextPlayer()

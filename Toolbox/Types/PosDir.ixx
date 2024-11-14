@@ -42,7 +42,7 @@ public:
 		return res; 
 	};
 
-	friend PosDir operator* (PosDir const a,  float const d) 
+	friend PosDir operator* (PosDir const a, float const d) 
 	{ 
 		PosDir res { a }; 
 		res *= d; 

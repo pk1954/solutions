@@ -4,18 +4,17 @@
 
 export module EvoWorkThread;
 
+import Types;
+import WinBasics;
 import WorkThread;
-import GridPoint24;
+import EvoCoreLib;
 import HistoryLib;
 import ColorManager;
-import EvoEditorWindow;
 import RootWindow;
-import EvolutionCore;
 import WinManager;
 import HistoryLib;
+import EvoHistGlueLib;
 import EventInterface;
-import EvoHistorySysGlue;
-import EvoWorkThreadInterface;
 
 export class EvoWorkThreadMessage
 {
@@ -50,15 +49,35 @@ export class EvoWorkThread: public WorkThread
 public:
 	EvoWorkThread
 	(
-		HWND                     const,
-		ColorManager           * const,
-		EventInterface         * const,
-		ObserverInterface      * const,
-		EvoHistorySysGlue      * const,
-		EvoWorkThreadInterface * const
+		HWND                const,
+		ColorManager      * const,
+		EventInterface    * const,
+		ObserverInterface * const,
+		EvoHistorySysGlue * const
 	);
 	~EvoWorkThread();
 	
+	void Start
+    (
+		HWND                const,
+		ColorManager      * const,
+		EventInterface    * const,
+		ObserverInterface * const, 
+	    EvoHistorySysGlue * const
+   );
+
+    void PostDoEdit(GridPoint const);
+    void PostSetPOI(GridPoint const);
+    void PostSetBrushMode(tBrushMode const);
+    void PostSetBrushShape(tShape);
+	void PostSetBrushManipulator(tManipulator const);
+    void PostSetBrushIntensity(PERCENT const);
+    void PostSetColor(COLORREF const, tColorObject const, Strategy::Id const);
+    void PostSetBrushRadius(GridCoord const);
+	void PostBenchmark(int const);
+	void PostGotoOrigin(GridPoint const);
+	void PostGotoDeath (GridPoint const);
+
 private:
 	GenerationCmd EvoCmd(EvoGenerationCmd::Id const cmd, Int24 const param)
 	{ 
