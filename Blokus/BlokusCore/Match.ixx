@@ -38,6 +38,7 @@ public:
     bool             HasFinished()                          { return m_players.AllFinished(); }
     Player    const &Winner()                         const { return m_players.GetPlayerC(WinnerId()); }
     Board     const &GetBoard()                       const { return m_board; }
+    PlayerId         ActivePlayerId()                       { return m_idActivePlayer; }
     Player          &ActivePlayer ()                        { return m_players.GetPlayer (m_idActivePlayer); }
     Player    const &ActivePlayerC()                  const { return m_players.GetPlayerC(m_idActivePlayer); }
     Player    const &GetPlayerC   (PlayerId const id) const { return m_players.GetPlayerC(id); }
@@ -52,6 +53,7 @@ public:
     PlayerId         WinnerId()                       const;
     void             DrawSetPieces(DrawContext&)      const;
     PlayerId         NextPlayer();
+    bool             IsValidPosition(BlokusMove const&) const;
 
 private:
 
@@ -65,7 +67,6 @@ private:
                   
     unique_ptr<RuleServerInterface> m_upRuleServer; 
 
-    bool isValidMove (BlokusMove const&, Player const&);
     void testPosition(vector<BlokusMove>&, BlokusMove&, ShapeCoordPos const&);
     void testShape   (vector<BlokusMove>&, BlokusMove&, ShapeId       const);
     void testPiece   (vector<BlokusMove>&, BlokusMove&, Piece         const&);

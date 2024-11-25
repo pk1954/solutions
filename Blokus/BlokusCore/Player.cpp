@@ -115,7 +115,7 @@ BlokusMove Player::SelectMove(RuleServerInterface const &rs)
 {
 	m_timer.BeforeAction();
     BlokusMove moveSelected { m_pStrategy->SelectMove(rs) };
-    if (moveSelected.Undefined())
+    if (moveSelected.IsUndefined())
         finalize(moveSelected);    // no more valid moves
  	m_timer.AfterAction();
     return moveSelected;
@@ -123,7 +123,7 @@ BlokusMove Player::SelectMove(RuleServerInterface const &rs)
 
 void Player::DoMove(BlokusMove &move)
 {
-	if (!move.Defined())
+	if (!move.IsDefined())
 		return;
     m_bFirstMove = false;
 	if (--m_remainingPieces == 0)
@@ -138,7 +138,7 @@ void Player::DoMove(BlokusMove &move)
 
 void Player::UndoMove(BlokusMove &move)
 {
-	if (!move.Defined())
+	if (!move.IsDefined())
 		return;
 	if (HasFinished())
 		undoFinalize();

@@ -10,6 +10,7 @@ import Types;
 import SaveCast;
 
 using std::numeric_limits;
+using std::round;
 
 // integer coordinates
 
@@ -37,10 +38,7 @@ export inline CoordPos const UndefinedCoordPos { UndefinedCoord(), UndefinedCoor
 
 export using CoordRect = RectType<Coord>;
 
-bool IsInShapeRange(CoordPos const &pos)
-{
-    return IsInRange(pos.GetX(), 0_COORD, MAX_COL) && IsInRange(pos.GetY(), 0_COORD, MAX_ROW);
-}
+export bool IsInShapeRange(CoordPos const&);
 
 // float coordinates
 
@@ -50,3 +48,6 @@ export extern MicroMeter const UM_BOARD_SIZE;
 export MicroMeter     Convert2fCoord(Coord     const);
 export MicroMeterPnt  Convert2fCoord(CoordPos  const&);
 export MicroMeterRect Convert2fCoord(CoordRect const&);
+
+export Coord    Round2Coord   (MicroMeter const&);
+export CoordPos Round2CoordPos(MicroMeterPnt const&);

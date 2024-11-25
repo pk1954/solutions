@@ -91,7 +91,7 @@ void BlokusWindow::Reset()
 
 //void BlokusWindow::autoRun()
 //{
-//	while (m_move = m_match.NextMove(), !m_move.Defined())
+//	while (m_move = m_match.NextMove(), !m_move.IsDefined())
 //	{
 //		if (m_match.HasFinished())
 //		{
@@ -246,6 +246,17 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (m_pPieceSelected)
 	{
 		m_pPieceSelected->Move(m_umDelta);
+
+		PieceTypeId   const idPieceType  { m_pPieceSelected->GetPieceTypeId() };
+		fPixelPoint   const fPixPosCrsr  { GetCrsrPosFromLparamF(lParam) };
+		MicroMeterPnt const umPosCrsr    { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
+		CoordPos      const coordPosCrsr { Round2CoordPos(umPosCrsr) };
+
+		m_move.SetPlayerId   (m_match.ActivePlayerId());
+		m_move.SetPieceTypeId(idPieceType);
+		m_move.SetShapeId    (ShapeId(0));
+		m_move.SetCoordPos   (coordPosCrsr);
+
 		Notify(false);
 	}
 }
@@ -261,6 +272,23 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	ReleaseCapture();
 	if (m_pPieceSelected)
 	{
+		PieceTypeId   const idPieceType  { m_pPieceSelected->GetPieceTypeId() };
+		fPixelPoint   const fPixPosCrsr  { GetCrsrPosFromLparamF(lParam) };
+		MicroMeterPnt const umPosCrsr    { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
+		CoordPos      const coordPosCrsr { Round2CoordPos(umPosCrsr) };
+
+		m_move.SetPlayerId   (m_match.ActivePlayerId());
+		m_move.SetPieceTypeId(idPieceType);
+		m_move.SetShapeId    (ShapeId(0));
+		m_move.SetCoordPos   (coordPosCrsr);
+		if (!m_match.IsValidPosition(m_move))
+		{
+			PieceType const &pieceType { Components::GetPieceTypeC(idPieceType) };
+			m_move.SetCoordPos(pieceType.GetInitialPos());
+		}
+
+		//if (moveAllowed())
+		//	performMove( ???);
 		m_pPieceSelected->Reset();
 		Notify(false);
 	}
@@ -333,6 +361,14 @@ void BlokusWindow::PaintGraphics()
 	//if (m_posDirAnimation.IsRunning())
 	//	m_match.GetPieceTypeC(m_move).Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
 	player.DrawFreePieces(m_context, *m_pPieceSelected);
+	if (m_move.IsDefined() && m_match.IsValidPosition(m_move))
+	{
+		PieceTypeId   const idPieceType  { m_move.GetPieceTypeId() };
+		PieceType     const &pieceType   { Components::GetPieceTypeC(idPieceType) };
+		MicroMeterPnt const  umPosTarget { Convert2fCoord(m_move.GetCoordPos()) };
+		Color         const  COL_GREEN   { 0.0f, 1.0f, 0.0f, 1.0f };
+		pieceType.Draw(m_context, ShapeId(0), umPosTarget, COL_GREEN, false);
+	}
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		m_match.ActivePlayerC().DrawContactPnts(m_context);
 	if (player.HasFinished())

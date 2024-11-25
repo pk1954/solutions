@@ -122,7 +122,7 @@ BlokusMove Match::DoMove()
     Player    &player { ActivePlayer() };
     BlokusMove move   { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
     player.DoMove(move);                                          // may finish, if all pieces set
-    if (move.Defined())
+    if (move.IsDefined())
     {
 	    GetPiece(move).DoMove(move.GetCoordPos());
         m_board.DoMove(move);
@@ -133,7 +133,7 @@ BlokusMove Match::DoMove()
 
 void Match::UndoMove(BlokusMove const move)
 {
-    if (move.Defined())
+    if (move.IsDefined())
     {
 	    GetPiece(move).Reset();
         m_board.UndoMove(move);
@@ -147,24 +147,6 @@ PlayerId Match::NextPlayer()
         m_idActivePlayer = FIRST_PLAYER;    
     findContactPnts();
     return m_idActivePlayer;
-}
-
-bool Match::isValidMove
-(
-    BlokusMove const& move,
-    Player     const& player
-)
-{
-    PieceType const& pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
-    Shape     const& shape     { pieceType  .GetShapeC    (move.GetShapeId()) };
-    return shape.Apply2AllShapeCellsB
-    (
-        [this, &move, &player](ShapeCoordPos const &shapePos)
-        {
-            CoordPos const coordPos { move.GetCoordPos() + shapePos };
-            return m_board.IsFreeCell(coordPos) && player.IsValidPos(coordPos);
-        }
-    );
 }
 
 void Match::findContactPnts()
@@ -190,6 +172,21 @@ void Match::findContactPnts()
     }
 }
 
+bool Match::IsValidPosition(BlokusMove const& move) const
+{
+    PieceType const& pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
+    Shape     const& shape     { pieceType  .GetShapeC    (move.GetShapeId()) };
+    return shape.Apply2AllShapeCellsB
+    (
+        [this, &move](ShapeCoordPos const &shapePos)
+        {
+            CoordPos const  coordPos { move.GetCoordPos() + shapePos };
+            Player   const &player   { m_players.GetPlayerC(move.GetPlayerId()) };
+            return m_board.IsFreeCell(coordPos) && player.IsValidPos(coordPos);
+        }
+    );
+}
+
 void Match::testPosition
 (
     vector<BlokusMove>  &validMoves,
@@ -203,7 +200,7 @@ void Match::testPosition
         [this, &validMoves, &player, &move, &posCorner](CoordPos const& posContact)
         {
             move.SetCoordPos(posContact - posCorner);
-            if (isValidMove(move, player))
+            if (IsValidPosition(move))
             {
                 validMoves.push_back(move);
             }

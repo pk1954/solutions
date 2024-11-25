@@ -316,7 +316,7 @@ void GridWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 
 void GridWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
-	(void)ReleaseCapture();
+	ReleaseCapture();
 }
 
 void GridWindow::OnSetCursor(WPARAM const wParam, LPARAM const lParam)

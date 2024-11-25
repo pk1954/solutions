@@ -164,4 +164,4 @@ public:
 	}
 };
 
-export inline const Color COL_BLACK { 1.0f, 1.0f, 1.0f, 1.0f };
+export inline Color const COL_BLACK { 1.0f, 1.0f, 1.0f, 1.0f };
