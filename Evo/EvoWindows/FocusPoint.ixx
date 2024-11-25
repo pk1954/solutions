@@ -9,7 +9,7 @@ import Observable;
 import HistoryLib;
 import RootWindow;
 
-class FocusPoint: public Observable
+export class FocusPoint: public Observable
 {
 public:
 	FocusPoint() :

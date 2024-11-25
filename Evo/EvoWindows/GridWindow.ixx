@@ -4,10 +4,11 @@
 
 export module GridWindow;
 
+import std;
 import ObserverInterface;
 import WinBasics;
 import EvoCoreLib;
-import EvoReadBuffer:
+import EvoReadBuffer;
 import BaseWindow;
 import DrawFrame;
 import D3D_driver;
@@ -15,6 +16,8 @@ import EvoWorkThread;
 import DspOptWindow;
 import FocusPoint;
 import ColorManager;
+
+using std::function;
 
 export class GridWindow : public BaseWindow
 {
@@ -83,12 +86,12 @@ private:
 	virtual void OnLeftButtonDblClick(WPARAM const, LPARAM const) {};
 	virtual bool OnRButtonDown(WPARAM const, LPARAM const) { return false; };
 	virtual bool OnRButtonUp  (WPARAM const, LPARAM const) { return false; };
-	virtual void OnMouseWheel (WPARAM const, LPARAM const);
+	virtual bool OnMouseWheel (WPARAM const, LPARAM const);
 	virtual void OnMouseMove  (WPARAM const, LPARAM const);
 	virtual bool OnCommand    (WPARAM const, LPARAM const);
-	virtual void OnLButtonDown(WPARAM const, LPARAM const);
-	virtual void OnLButtonUp  (WPARAM const, LPARAM const);
-	virtual void OnSetCursor  (WPARAM const, LPARAM const);
+	virtual bool OnLButtonDown(WPARAM const, LPARAM const);
+	virtual bool OnLButtonUp  (WPARAM const, LPARAM const);
+	virtual bool OnSetCursor  (WPARAM const, LPARAM const);
 	virtual void OnSize       (WPARAM const, LPARAM const);
 	virtual void OnPaint();
 

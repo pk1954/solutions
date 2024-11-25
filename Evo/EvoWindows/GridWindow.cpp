@@ -277,7 +277,7 @@ void GridWindow::OnPaint()
 	}
 }
 
-void GridWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
+bool GridWindow::OnMouseWheel(WPARAM const wParam, LPARAM const lParam)
 {
 	int        iDelta     = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
 	bool const bDirection = (iDelta > 0);
@@ -298,7 +298,7 @@ bool GridWindow::IsFullGridVisible() const
 	return IsInClientRect(m_EvoPixelCoords.Grid2PixelRect(GridDimensions::GridRectFull()));
 }
 
-void GridWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
+bool GridWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
 	if (GridSelection::SelectionIsEmpty())
 	{
@@ -314,7 +314,7 @@ void GridWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 	SetFocus();
 }
 
-void GridWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+bool GridWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
 	ReleaseCapture();
 }

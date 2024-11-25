@@ -4,10 +4,10 @@
 
 export module EvoEditor;
 
-import EvolutionTypes;
 import EvoCoreLib;
 import BaseDialog;
 import EvoWorkThread;
+import EvoReadBuffer;
 import DspOptWindow;
 import StatusBar;
 

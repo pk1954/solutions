@@ -10,7 +10,7 @@ import HistoryLib;
 using std::wostream;
 using std::int8_t;
 
-class EvoGenerationCmd : public GenerationCmd
+export class EvoGenerationCmd : public GenerationCmd
 {
 public:
 
