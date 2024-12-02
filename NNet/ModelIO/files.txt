@@ -1,0 +1,40 @@
+
+    Directory: D:\SW-projects\Solutions\NNet\ModelIO
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          03.07.2024    12:11                x64
+-a---          11.11.2024    19:13            225 CMakeLists.txt
+-a---          11.11.2024    19:15              0 files.txt
+-a---          12.08.2024    16:14            529 InputOutputUI.ixx
+-a---          06.09.2024    19:06          10765 ModelIO.vcxproj
+-a---          15.06.2024    19:58           3074 ModelIO.vcxproj.filters
+-a---          06.06.2022    11:57            168 ModelIO.vcxproj.user
+-a---          16.10.2024    19:35           9339 NNetModelIO.cpp
+-a---          16.10.2024    19:35           2537 NNetModelIO.ixx
+-a---          15.08.2024    17:19            378 NNetModelStorage.ixx
+-a---          04.06.2022    21:12           1069 NNetModelWrapBase.h
+-a---          15.08.2024    17:20           4589 NNetPreferences.cpp
+-a---          15.08.2024    17:20           2238 NNetPreferences.ixx
+-a---          14.08.2024    16:08          13191 NobIo.cpp
+-a---          12.08.2024    16:25           2355 NobIo.ixx
+-a---          12.08.2024    17:24            772 WrapActiveSigGen.ixx
+-a---          15.08.2024    20:55           1787 WrapColorLUT.ixx
+-a---          12.08.2024    17:24            828 WrapDescription.ixx
+-a---          12.08.2024    17:24           1043 WrapEmphasized.ixx
+-a---          12.08.2024    17:24           1469 WrapEvent.ixx
+-a---          12.08.2024    17:24           1497 WrapGlobalParameter.ixx
+-a---          14.08.2024    13:42            792 WrapNrOfNobs.ixx
+-a---          12.08.2024    17:24            732 WrapNrOfTracks.ixx
+-a---          12.08.2024    17:24            877 WrapProtocol.ixx
+-a---          12.08.2024    17:24           1955 WrapScanImage.ixx
+-a---          12.08.2024    17:24            561 WrapSetScanArea.ixx
+-a---          12.08.2024    17:24           1936 WrapSetSigGen.ixx
+-a---          12.08.2024    17:24           2105 WrapSignalData.ixx
+-a---          12.08.2024    17:24           1829 WrapSignalGenerator.ixx
+-a---          14.08.2024    13:42           3863 WrapSIgnalInfo.ixx
+-a---          06.09.2024    17:57           1020 WrapTimeStamp.ixx
+-a---          08.08.2022    23:29           1344 WrapTriggerSound.h
+-a---          14.08.2024    13:42           3161 WrapVoltage.cpp
+-a---          12.08.2024    17:24           1185 WrapVoltage.ixx
+

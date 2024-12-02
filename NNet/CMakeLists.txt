@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.30) 
+project(NNetSimu)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+add_executable(MyExecutable ${SOURCES})
+target_link_libraries(MyExecutable PRIVATE SomeLibrary)
+set(CMAKE_BUILD_TYPE Debug)
