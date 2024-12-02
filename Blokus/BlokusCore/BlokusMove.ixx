@@ -4,10 +4,13 @@
 
 export module BlokusCore:BlokusMove;
 
+import :Components;
 import :PlayerId;
 import :PieceTypeId;
+import :PieceType;
 import :BlokusCoords;
 import :ShapeId;
+import :Shape;
 
 export class BlokusMove
 {
@@ -38,10 +41,16 @@ public:
         m_boardPos    = UndefinedCoordPos;
     }
 
-    PlayerId    GetPlayerId   () const { return m_idPlayer;    }
-    PieceTypeId GetPieceTypeId() const { return m_idPieceType; }
-    ShapeId     GetShapeId    () const { return m_idShape;     }
-    CoordPos    GetCoordPos   () const { return m_boardPos;    }
+    PlayerId     GetPlayerId   () const { return m_idPlayer;    }
+    PieceTypeId  GetPieceTypeId() const { return m_idPieceType; }
+    ShapeId      GetShapeId    () const { return m_idShape;     }
+    CoordPos     GetCoordPos   () const { return m_boardPos;    }
+    Shape const& GetShapeC     () const
+    {
+        PieceType const& pieceType { Components::GetPieceTypeC(GetPieceTypeId()) };
+        Shape     const& shape     { pieceType  .GetShapeC    (GetShapeId()) };
+        return shape;
+    }
 
     void SetPlayerId   (PlayerId    const idPlayer   ) { m_idPlayer    = idPlayer;    }
     void SetPieceTypeId(PieceTypeId const idPieceType) { m_idPieceType = idPieceType; }

@@ -10,8 +10,8 @@ import :Components;
 
 using std::array;
 
-export class BoardMap
-{
+export class BoardMap  // occupied cells and cells which have piece of same color 
+{                      // as neighbours, are false, otherwise true
 public:
 
     BoardMap()
@@ -26,7 +26,7 @@ public:
 	    	m_map[y][x] = true;
     }
 
-    bool IsValidPos(CoordPos const& pos) const
+    bool IsUnblockedPos(CoordPos const& pos) const
     {
         return IsOnBoard(pos) && getCell(pos);
     }

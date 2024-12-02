@@ -172,19 +172,46 @@ void Match::findContactPnts()
     }
 }
 
-bool Match::IsValidPosition(BlokusMove const& move) const
+bool Match::HasContact(BlokusMove const& move) const
 {
-    PieceType const& pieceType { Components::GetPieceTypeC(move.GetPieceTypeId()) };
-    Shape     const& shape     { pieceType  .GetShapeC    (move.GetShapeId()) };
-    return shape.Apply2AllShapeCellsB
+    return move.GetShapeC().IsTrueForAnyCornerPnt
+    (
+        [this, &move](ShapeCoordPos const& shapePosCorner)
+        {
+            return ActivePlayerC().IsTrue4AnyContactPnt
+            (
+                [&shapePosCorner, &move](CoordPos const &posContactPn)
+                {
+                    return move.GetCoordPos() + shapePosCorner == posContactPn;
+                }
+            );
+        }
+    );
+}
+
+bool Match::IsNotBlocked(BlokusMove const& move) const
+{
+    return move.GetShapeC().IsTrue4AllShapeCells
     (
         [this, &move](ShapeCoordPos const &shapePos)
         {
             CoordPos const  coordPos { move.GetCoordPos() + shapePos };
             Player   const &player   { m_players.GetPlayerC(move.GetPlayerId()) };
-            return m_board.IsFreeCell(coordPos) && player.IsValidPos(coordPos);
+            return player.IsUnblockedPos(coordPos);
         }
     );
+}
+
+bool Match::IsCompletelyOnBoard(BlokusMove const& move) const
+{
+    CoordPos const& pos   { move.GetCoordPos() };
+    Shape    const& shape { move.GetShapeC  () };
+    return shape.IsCompletelyOnBoard(pos);
+}
+
+bool Match::IsValidPosition(BlokusMove const& move) const
+{
+    return IsCompletelyOnBoard(move) && IsNotBlocked(move) && HasContact(move);
 }
 
 void Match::testPosition
@@ -200,7 +227,7 @@ void Match::testPosition
         [this, &validMoves, &player, &move, &posCorner](CoordPos const& posContact)
         {
             move.SetCoordPos(posContact - posCorner);
-            if (IsValidPosition(move))
+            if (IsNotBlocked(move))
             {
                 validMoves.push_back(move);
             }

@@ -80,6 +80,14 @@ public:
             func(pos);
     }
 
+    bool IsTrue4AnyContactPnt(auto const& func) const
+    {
+        for (CoordPos const& pos : m_contactPntsOnBoard)
+            if (func(pos))
+                return true;
+        return false;
+    }
+
     void ClearContactPnts()
     {
         m_contactPntsOnBoard.clear();
@@ -95,9 +103,9 @@ public:
         AddContactPnt(m_pPlayerType->m_startPoint);
     }
 
-    bool IsValidPos(CoordPos const &pos) const 
+    bool IsUnblockedPos(CoordPos const &pos) const 
     { 
-        return m_validPositions.IsValidPos(pos); 
+        return m_validPositions.IsUnblockedPos(pos); 
     }
 
     bool            HasFinished() const { return m_bFinished; }

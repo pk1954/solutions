@@ -28,6 +28,7 @@ private:
 	BlokusMove        m_move;
 	Match             m_match;
 	D2D_DrawContext   m_context;
+	ShapeCoordPos     m_shapeCoordPos  { UndefinedCoordPos };
 	PixelPoint        m_ptLast         { PP_NULL };	// Last cursor position during selection 
 	MicroMeterPnt     m_umDelta        { NP_ZERO };
 	Piece           * m_pPieceSelected { nullptr };

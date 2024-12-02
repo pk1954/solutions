@@ -53,7 +53,10 @@ public:
     PlayerId         WinnerId()                       const;
     void             DrawSetPieces(DrawContext&)      const;
     PlayerId         NextPlayer();
-    bool             IsValidPosition(BlokusMove const&) const;
+    bool             IsNotBlocked       (BlokusMove const&) const;
+    bool             IsValidPosition    (BlokusMove const&) const;
+    bool             HasContact         (BlokusMove const&) const;
+    bool             IsCompletelyOnBoard(BlokusMove const&) const;
 
 private:
 

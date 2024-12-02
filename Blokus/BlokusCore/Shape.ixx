@@ -38,12 +38,22 @@ public:
 	void Flip();
 	void Rotate();
 
+	MicroMeterPnt CenterOfGravity();
+
 	Degrees GetRotation() const { return m_degRotation; }
 
     void Apply2AllCornerPntsC(auto const& func) const
     {
         for (CoordPos const& pos : m_cornerPnts)
             func(pos);
+    }
+
+    bool IsTrueForAnyCornerPnt(auto const& func) const
+    {
+        for (ShapeCoordPos const& pos : m_cornerPnts)
+			if (func(pos))
+				return true;
+		return false;
     }
 
 	void Apply2AllShapeCellsC(auto const& func) const
@@ -55,8 +65,8 @@ public:
 				func(pos);
 	}
 
-	bool Apply2AllShapeCellsB(auto const& func) const
-	{
+	bool IsTrue4AllShapeCells(auto const& func) const   // returns true, if func delivers true 
+	{                                                   // for all shape cells, else false
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
 		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
@@ -65,19 +75,7 @@ public:
 		return true;
 	}
 
-	MicroMeterPnt CenterOfGravity()
-	{
-		MicroMeterPnt umPntCenter { NP_ZERO };
-		Apply2AllShapeCellsC
-		(
-			[&umPntCenter](ShapeCoordPos const &pos)
-			{
-				umPntCenter += Convert2fCoord(pos);
-			}
-		);
-		umPntCenter /= Cast2Float(m_shapeCells.size());
-		return umPntCenter;
-	}
+	bool IsCompletelyOnBoard(CoordPos const&) const;
 
 private:
 

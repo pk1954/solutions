@@ -206,7 +206,10 @@ bool BlokusWindow::selectPiece(MicroMeterPnt const &umCrsrPos)
 				{
 					CoordPos const coordPosCell { coordPosPiece + coordPos };
 					if (IsInShapeCell(umCrsrPos, coordPosCell))
+					{
 						setPieceSelected(&piece);
+						m_shapeCoordPos = coordPos;
+					}
 				}
 			);
 		}
@@ -220,15 +223,15 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
 	MicroMeterPnt const umCrsrPos { m_context.GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
 
-	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
-	{
-		m_ptLast.Set2Null();                 // make m_ptLast invalid
-		if (selectPiece(umCrsrPos))
-			return;
-//      if (selectXYZ())
-//		    return;
-		return;
-	}
+//	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
+//	{
+//		m_ptLast.Set2Null();                 // make m_ptLast invalid
+//		if (selectPiece(umCrsrPos))
+//			return;
+////      if (selectXYZ())
+////		    return;
+//		return;
+//	}
 
 	PixelPoint const ptLast { m_ptLast };
 	m_ptLast = ptCrsr;
@@ -246,24 +249,23 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if (m_pPieceSelected)
 	{
 		m_pPieceSelected->Move(m_umDelta);
-
-		PieceTypeId   const idPieceType  { m_pPieceSelected->GetPieceTypeId() };
-		fPixelPoint   const fPixPosCrsr  { GetCrsrPosFromLparamF(lParam) };
-		MicroMeterPnt const umPosCrsr    { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
-		CoordPos      const coordPosCrsr { Round2CoordPos(umPosCrsr) };
-
-		m_move.SetPlayerId   (m_match.ActivePlayerId());
-		m_move.SetPieceTypeId(idPieceType);
-		m_move.SetShapeId    (ShapeId(0));
-		m_move.SetCoordPos   (coordPosCrsr);
-
 		Notify(false);
 	}
 }
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
+	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
+	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
+	MicroMeterPnt const umCrsrPos { m_context.GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
+
 	SetCapture();
+	m_ptLast.Set2Null();                 // make m_ptLast invalid
+
+	selectPiece(umCrsrPos);
+//  if (selectXYZ())
+//    return;
+
 	return GraphicsWindow::OnLButtonDown(wParam, lParam);
 }
 
@@ -280,7 +282,7 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 		m_move.SetPlayerId   (m_match.ActivePlayerId());
 		m_move.SetPieceTypeId(idPieceType);
 		m_move.SetShapeId    (ShapeId(0));
-		m_move.SetCoordPos   (coordPosCrsr);
+		m_move.SetCoordPos   (coordPosCrsr - m_shapeCoordPos);
 		if (!m_match.IsValidPosition(m_move))
 		{
 			PieceType const &pieceType { Components::GetPieceTypeC(idPieceType) };
@@ -290,6 +292,7 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 		//if (moveAllowed())
 		//	performMove( ???);
 		m_pPieceSelected->Reset();
+		m_shapeCoordPos = UndefinedCoordPos;
 		Notify(false);
 	}
 	return GraphicsWindow::OnLButtonUp(wParam, lParam);

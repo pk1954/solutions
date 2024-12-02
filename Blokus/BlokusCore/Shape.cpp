@@ -11,6 +11,22 @@ import :Components;
 
 using std::swap;
 
+bool Shape::IsCompletelyOnBoard(CoordPos const& pos) const
+{
+	return IsTrueForAnyCornerPnt
+	(
+		[&pos](ShapeCoordPos const& posCorner)
+		{ 
+			CoordPos const& posXX = pos + posCorner;
+			if (IsOnBoard(pos + posCorner))
+				return true;
+			else
+				return false;
+
+		}
+	);
+}
+
 bool Shape::isPartOfShape(ShapeCoordPos const& pos) const
 {
 	return IsInShapeRange(pos) && m_shapeCells[pos.GetYvalue()][pos.GetXvalue()];
@@ -112,6 +128,20 @@ void Shape::Rotate()
 	m_shapeCells = rotShapeCells;
 	m_degRotation += 90._Degrees;
 	normalize();
+}
+
+MicroMeterPnt Shape::CenterOfGravity()
+{
+	MicroMeterPnt umPntCenter { NP_ZERO };
+	Apply2AllShapeCellsC
+	(
+		[&umPntCenter](ShapeCoordPos const &pos)
+		{
+			umPntCenter += Convert2fCoord(pos);
+		}
+	);
+	umPntCenter /= Cast2Float(m_shapeCells.size());
+	return umPntCenter;
 }
 
 void Shape::Draw
