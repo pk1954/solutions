@@ -59,6 +59,7 @@ public:
     PosDir          &GetPosDir    (BlokusMove const move)   { return GetPiece(move).GetPosDir(); }
     Piece     const &GetPieceC    (BlokusMove const)  const;
     PieceType const &GetPieceTypeC(BlokusMove const)  const;
+    Color            ActiveColor  ()                 const { return ActivePlayerC().GetColor(); }
     Piece           &GetPiece     (BlokusMove const);
     Degrees          GetRotation  (BlokusMove const)  const;
     BlokusMove       DoMove       ();
@@ -68,6 +69,7 @@ public:
     PlayerId         WinnerId()                                     const;
     void             DrawSetPieces (DrawContext&)                   const;
     void             DrawFreePieces(DrawContext&, BlokusMove const) const;
+    void             DrawMovePiece (DrawContext&, BlokusMove const) const;
     PlayerId         NextPlayer();
     bool             IsNotBlocked       (BlokusMove const&) const;
     bool             IsValidPosition    (BlokusMove const&) const;

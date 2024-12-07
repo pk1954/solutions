@@ -124,7 +124,7 @@ void BlokusWindow::Reset()
 //		PostCommand(IDX_FINISH_MOVE);
 //	}
 //}
-//
+
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (int const wmId { LoWord(wParam) } )
@@ -205,40 +205,23 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	
 	if (isPieceSelected())
 	{
-		CoordPos const coordPosCrsr { Round2CoordPos(umCrsrPos) };
-		m_move.SetCoordPos(coordPosCrsr - m_shapeCoordPos);
-		m_match.GetPiece(m_move).Move(m_umDelta);
+		CoordPos const coordPosCrsr  { Round2CoordPos(umCrsrPos) };
+		CoordPos const coordPosOld   { m_move.GetCoordPos() };
+		CoordPos const coordPosDelta { coordPosCrsr - coordPosOld };
+		m_move.MoveCoordPos(coordPosDelta);
 		Notify(false);
 	}
 }
 
-void BlokusWindow::selectPiece(MicroMeterPnt const &umCrsrPos)
+void BlokusWindow::selectPiece(MicroMeterPnt const &umPos)
 {
 	Player &player { m_match.ActivePlayer() };
+	m_move.SetPlayerId(m_match.ActivePlayerId());
+	m_move.SetShapeId (ShapeId(0));
 	m_move.ResetPieceTypeId();
-	Piece const *pPiece = player.FindPiece
-	(
-		[this, &umCrsrPos](Piece const &piece)
-		{
-			PieceType const &pieceType    { piece.GetPieceTypeC() };
-			Shape     const &shape        { pieceType.GetShapeC(ShapeId(0)) };
-			CoordPos  const coordPosPiece { pieceType.GetInitialPos() };
-			m_shapeCoordPos = shape.FindShapeCell
-			(
-				[this, &umCrsrPos, coordPosPiece](ShapeCoordPos const &coordPos)
-				{
-					return IsInShapeCell(umCrsrPos, coordPosPiece + coordPos);
-				}
-			);
-			return m_shapeCoordPos != UndefinedCoordPos;
-		}
-	);
+	Piece const *pPiece = player.FindPiece([&umPos](Piece const &piece){return IsInPiece(umPos, piece);});
 	if (pPiece != nullptr)
-	{
-		m_move.SetPlayerId(m_match.ActivePlayerId());
 		m_move.SetPieceType(pPiece->GetPieceTypeC());
-		m_move.SetShapeId (ShapeId(0));
-	}
 }
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
@@ -265,7 +248,6 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 		else
 			m_match.ResetPiece(m_move);
 		m_move.Reset();
-		m_shapeCoordPos = UndefinedCoordPos;
 		Notify(false);
 	}
 	return GraphicsWindow::OnLButtonUp(wParam, lParam);
@@ -335,6 +317,8 @@ void BlokusWindow::PaintGraphics()
 	m_match.DrawSetPieces(m_context);
 	//if (m_posDirAnimation.IsRunning())
 	//	m_match.GetPieceTypeC(m_move).Draw(m_context, m_move.GetShapeId(), m_posDirTarget.m_umPos, COL_GRAY);
+	if (m_move.IsDefined())
+		m_match.DrawMovePiece (m_context, m_move);
 	m_match.DrawFreePieces(m_context, m_move);
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		player.DrawContactPnts(m_context);

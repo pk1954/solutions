@@ -12,6 +12,7 @@ import DrawContext;
 import :BlokusMove;
 import :BlokusCoords;
 import :Components;
+import :Piece;
 import :PieceType;
 import :PlayerId;
 import :Shape;
@@ -27,12 +28,35 @@ MicroMeterPnt GetCenter(CoordPos const& coordPos)
 export bool IsInShapeCell
 (
 	MicroMeterPnt const &umPos,
+	MicroMeterPnt const &umPosCell
+)
+{
+	MicroMeterRect const umRect { umPosCell, UM_CELL_SIZE };
+	return umRect.Includes(umPos);
+}
+
+export bool IsInShapeCell
+(
+	MicroMeterPnt const &umPos,
 	CoordPos      const &coordPos
 )
 {
-	MicroMeterPnt  const umPosCell { Convert2fCoord(coordPos) };
-	MicroMeterRect const umRect    { umPosCell, UM_CELL_SIZE };
-	return umRect.Includes(umPos);
+	MicroMeterPnt const umPosCell { Convert2fCoord(coordPos) };
+	return IsInShapeCell(umPos, umPosCell);
+}
+
+export bool IsInPiece
+(
+	MicroMeterPnt const &umPos,
+	Piece         const &piece
+)
+{
+	PieceType     const &pieceType    { piece.GetPieceTypeC() };
+	Shape         const &shape        { pieceType.GetShapeC(ShapeId(0)) };
+	CoordPos      const coordPosPiece { pieceType.GetInitialPos() };
+	MicroMeterPnt const umPosPiece    { Convert2fCoord(coordPosPiece) };
+	MicroMeterPnt const umP           { umPos - umPosPiece };
+	return shape.IsTrue4AnyShapeCell([&umP](ShapeCoordPos const &cp){return IsInShapeCell(umP, cp);});
 }
 
 Color darker  (Color const col)  { return col * 0.6f; }

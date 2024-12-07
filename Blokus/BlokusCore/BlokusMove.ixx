@@ -53,6 +53,7 @@ public:
     void SetPlayerId     (PlayerId    const idPlayer   ) { m_idPlayer    = idPlayer;    }
     void SetShapeId      (ShapeId     const idShape    ) { m_idShape     = idShape;     }
     void SetCoordPos     (CoordPos    const coordPos   ) { m_boardPos    = coordPos;    }
+    void MoveCoordPos    (CoordPos    const coordPos   ) { m_boardPos   += coordPos;    }
     void SetPieceTypeId  (PieceTypeId const idPieceType) { m_idPieceType = idPieceType; }
     void ResetPieceTypeId()                              { m_idPieceType = UndefinedPieceTypeId; }
     void SetPieceType    (PieceType   const &pieceType ) { SetPieceTypeId(Components::GetPieceTypeId(pieceType)); }

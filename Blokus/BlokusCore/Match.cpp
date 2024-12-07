@@ -80,33 +80,34 @@ void Match::DrawSetPieces(DrawContext &context) const
     );
 }
 
+void Match::DrawMovePiece
+(
+    DrawContext     &context,
+    BlokusMove const move
+) const
+{
+    static Color  const  COL_GREY    { 0.5f, 0.5f, 0.5f, 0.5f };
+	MicroMeterPnt const  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
+	Color         const  color       { IsValidPosition(move) ? ActiveColor() : COL_GREY};
+    PieceType     const &pieceType   { move.GetPieceTypeC() };
+	pieceType.Draw(context, ShapeId(0), umPosTarget, color, false);
+}
+
 void Match::DrawFreePieces
 (
     DrawContext     &context,
     BlokusMove const move
 ) const
 {
-	if (m_idActivePlayer == NO_PLAYER)
-        return;
-    Player const &player { ActivePlayerC() };
-	if (move.IsDefined())
-	{
-        static Color const COL_GREY { 0.5f, 0.5f, 0.5f, 0.5f };
-        PieceType     const &pieceType   { move.GetPieceTypeC() };
-		MicroMeterPnt const  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
-		Color         const  color       { IsValidPosition(move) ? player.GetColor() : COL_GREY};
-		pieceType.Draw(context, ShapeId(0), umPosTarget, color, false);
-	}
-	{
-        PieceTypeId const  idPieceType   { move.GetPieceTypeId() };
-        Piece       const *pPieceSelected 
-        { 
-            (IsValidPieceTypeId(idPieceType)) 
-            ? &player.GetPieceC(idPieceType) 
-            : nullptr
-        };
-	    player.DrawFreePieces(context, pPieceSelected);
-	}
+    Player      const &player      { ActivePlayerC() };
+    PieceTypeId const  idPieceType { move.GetPieceTypeId() };
+    Piece       const *pPieceSelected 
+    { 
+        (IsValidPieceTypeId(idPieceType)) 
+        ? &player.GetPieceC(idPieceType) 
+        : nullptr
+    };
+	player.DrawFreePieces(context, pPieceSelected);
 }
 
 PlayerId Match::WinnerId() const
