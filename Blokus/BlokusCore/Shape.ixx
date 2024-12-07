@@ -75,6 +75,16 @@ public:
 		return true;
 	}
 
+	ShapeCoordPos FindShapeCell(auto const& crit) const // returns first shape cell satisfying crit
+	{                                                  
+		ShapeCoordPos pos;
+		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
+		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
+			if (isPartOfShape(pos) && crit(pos))
+				return pos;
+		return UndefinedCoordPos;
+	}
+
 	bool IsCompletelyOnBoard(CoordPos const&) const;
 
 private:

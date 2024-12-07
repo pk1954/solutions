@@ -45,11 +45,10 @@ private:
 
 	void          drawFinishedMsg();
 	void          paintBoard() const;
-	bool          selectPiece(MicroMeterPnt const&);
+	void          selectPiece(MicroMeterPnt const&);
 	bool          isPieceSelected() { return IsValidPieceTypeId(m_move.GetPieceTypeId()); }
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
 
-	//void setPieceSelected(Piece * const);
 	//void autoRun();
 	//void nextMove();
 	//void startRotationPhase(Degrees const);

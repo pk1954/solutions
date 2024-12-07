@@ -66,6 +66,14 @@ public:
                 func(piece);
     }
 
+    Piece const *FindPiece(auto const& crit) const // returns first piece satisfying crit
+    {
+        for (Piece const &piece: m_pieces)
+            if (piece.IsAvailable() && crit(piece))
+                return &piece;
+        return nullptr;
+    }
+
     void Apply2AvailablePiecesC(auto const& func) const
     {
         for (Piece const& piece: m_pieces)

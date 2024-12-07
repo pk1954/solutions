@@ -180,45 +180,6 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	return true;
 }
 
-//void BlokusWindow::setPieceSelected(Piece * const pPiece)
-//{
-//	if (pPiece != m_pPieceSelected)
-//	{
-//		m_pPieceSelected = pPiece;
-//		Notify(false);
-//	}
-//}
-
-bool BlokusWindow::selectPiece(MicroMeterPnt const &umCrsrPos)
-{
-	Player &player { m_match.ActivePlayer() };
-	m_move.ResetPieceTypeId();
-	player.Apply2AvailablePieces
-	(
-		[this, &umCrsrPos](Piece &piece)
-		{
-			PieceType const &pieceType    { piece.GetPieceTypeC() };
-			Shape     const &shape        { pieceType.GetShapeC(ShapeId(0)) };
-			CoordPos  const coordPosPiece { pieceType.GetInitialPos() };
-			shape.Apply2AllShapeCellsC
-			(
-				[this, &umCrsrPos, &pieceType, coordPosPiece](ShapeCoordPos const &coordPos)
-				{
-					CoordPos const coordPosCell { coordPosPiece + coordPos };
-					if (IsInShapeCell(umCrsrPos, coordPosCell))
-					{
-						m_move.SetPlayerId(m_match.ActivePlayerId());
-						m_move.SetPieceType(pieceType);
-						m_move.SetShapeId (ShapeId(0));
-						m_shapeCoordPos = coordPos;
-					}
-				}
-			);
-		}
-	);
-	return isPieceSelected();
-}
-
 MicroMeterPnt BlokusWindow::getCrsrPos(LPARAM const lParam) const
 {
 	fPixelPoint   const fPixPosCrsr { GetCrsrPosFromLparamF(lParam) };
@@ -248,6 +209,35 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 		m_move.SetCoordPos(coordPosCrsr - m_shapeCoordPos);
 		m_match.GetPiece(m_move).Move(m_umDelta);
 		Notify(false);
+	}
+}
+
+void BlokusWindow::selectPiece(MicroMeterPnt const &umCrsrPos)
+{
+	Player &player { m_match.ActivePlayer() };
+	m_move.ResetPieceTypeId();
+	Piece const *pPiece = player.FindPiece
+	(
+		[this, &umCrsrPos](Piece const &piece)
+		{
+			PieceType const &pieceType    { piece.GetPieceTypeC() };
+			Shape     const &shape        { pieceType.GetShapeC(ShapeId(0)) };
+			CoordPos  const coordPosPiece { pieceType.GetInitialPos() };
+			m_shapeCoordPos = shape.FindShapeCell
+			(
+				[this, &umCrsrPos, coordPosPiece](ShapeCoordPos const &coordPos)
+				{
+					return IsInShapeCell(umCrsrPos, coordPosPiece + coordPos);
+				}
+			);
+			return m_shapeCoordPos != UndefinedCoordPos;
+		}
+	);
+	if (pPiece != nullptr)
+	{
+		m_move.SetPlayerId(m_match.ActivePlayerId());
+		m_move.SetPieceType(pPiece->GetPieceTypeC());
+		m_move.SetShapeId (ShapeId(0));
 	}
 }
 
