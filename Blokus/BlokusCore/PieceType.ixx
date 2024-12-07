@@ -13,6 +13,7 @@ import DrawContext;
 import :Shape;
 import :ShapeId;
 import :BlokusCoords;
+import :PieceTypeId;
 
 using std::vector;
 

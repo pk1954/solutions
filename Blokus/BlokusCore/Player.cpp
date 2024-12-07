@@ -59,18 +59,18 @@ void Player::DrawResult
 
 void Player::DrawFreePieces
 (
-	DrawContext &context,
-	Piece const &pieceSelected
+	DrawContext        &context,
+	Piece const * const pPieceSelected
 ) const
 {
 	Apply2AvailablePiecesC
 	(
-		[this, &context, &pieceSelected](Piece const& piece)
+		[this, &context, pPieceSelected](Piece const& piece)
 		{
-			PosDir const posDir    { piece.GetPosDirC() };
-			Color  const col       { m_pPlayerType->m_color };
-			bool   const bSelected { &piece == &pieceSelected };
-			piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, bSelected);
+			PosDir const posDir { piece.GetPosDirC() };
+			Color  const col    { m_pPlayerType->m_color };
+			if (&piece != pPieceSelected)
+				piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, false);
 		}
 	);
 }
@@ -161,7 +161,6 @@ void Player::finalize(BlokusMove &move)
 		m_iResult += 15;
 		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
 			m_iResult += 5;
-		//move.Reset();
 	}
 }
 

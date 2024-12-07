@@ -11,7 +11,7 @@ export int const NR_OF_PIECE_TYPES    { 21 };
 
 export using PieceTypeId = NamedType<unsigned char, struct PieceTypeId_Parameter>;
 
-export bool IsValidPiecTypeId(PieceTypeId const id)
+export bool IsValidPieceTypeId(PieceTypeId const id)
 {
     return id.GetValue() < NR_OF_PIECE_TYPES;
 }

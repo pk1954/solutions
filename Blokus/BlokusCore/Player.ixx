@@ -39,7 +39,7 @@ public:
     Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (DrawContext&, Piece const&) const;
+    void DrawFreePieces (DrawContext&, Piece const * const) const;
     void DrawContactPnts(DrawContext&) const;
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
@@ -112,6 +112,7 @@ public:
     int             Result()      const { return m_iResult; }
     Ticks           GetTicks()    const { return m_timer.GetAccumulatedActionTicks(); }
     Strategy const &GetStrategy() const { return *m_pStrategy; }
+    Color           GetColor()    const { return m_pPlayerType->m_color; }
 
 private:
     using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;

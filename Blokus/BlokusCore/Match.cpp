@@ -35,17 +35,22 @@ private:
 Match::Match()
 {
     m_upRuleServer = make_unique<RuleServer>(*this);
-    m_players.Initialize();
+    Initialize();
 }
 
 void Match::Reset()
 {
     m_board.Reset();
-    m_players.Apply2AllPlayers([](Player &p){ p.Reset(); });
+    Apply2AllPlayers([](Player &p){ p.Reset(); });
     m_protocol.Reset();
     m_idActivePlayer = FIRST_PLAYER;
     findContactPnts();
     m_timer.Reset();
+}
+
+void Match::ResetTimers()
+{
+    Apply2AllPlayers([](Player &player) { player.ResetTimer(); });
 }
 
 //void Match::SetPosDir(BlokusMove const move)
@@ -91,11 +96,40 @@ void Match::DrawSetPieces(DrawContext &context) const
 		    PlayerId const idPlayer { m_board.GetPlayerId(pos) };
 		    if (idPlayer != NO_PLAYER)
 		    {
-                Player const& player { m_players.GetPlayerC(idPlayer) };
+                Player const& player { GetPlayerC(idPlayer) };
                 player.DrawCell(context, pos);
 		    }
         }
     );
+}
+
+void Match::DrawFreePieces
+(
+    DrawContext     &context,
+    BlokusMove const move
+) const
+{
+	if (m_idActivePlayer == NO_PLAYER)
+        return;
+    Player const &player { ActivePlayerC() };
+	if (move.IsDefined())
+	{
+        static Color const COL_GREY { 0.5f, 0.5f, 0.5f, 0.5f };
+        PieceType     const &pieceType   { move.GetPieceTypeC() };
+		MicroMeterPnt const  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
+		Color         const  color       { IsValidPosition(move) ? player.GetColor() : COL_GREY};
+		pieceType.Draw(context, ShapeId(0), umPosTarget, color, false);
+	}
+	{
+        PieceTypeId const  idPieceType   { move.GetPieceTypeId() };
+        Piece       const *pPieceSelected 
+        { 
+            (IsValidPieceTypeId(idPieceType)) 
+            ? &player.GetPieceC(idPieceType) 
+            : nullptr
+        };
+	    player.DrawFreePieces(context, pPieceSelected);
+	}
 }
 
 PlayerId Match::WinnerId() const
@@ -106,7 +140,7 @@ PlayerId Match::WinnerId() const
     (
         [this, &idBestPlayer, &iBestResult](PlayerId const idPlayer)
         {
-            Player const &player { m_players.GetPlayerC(idPlayer) };
+            Player const &player { GetPlayerC(idPlayer) };
             if (player.Result() > iBestResult)
             {
                 iBestResult = player.Result();
@@ -117,17 +151,23 @@ PlayerId Match::WinnerId() const
     return idBestPlayer;
 }
 
-BlokusMove Match::DoMove()
+BlokusMove Match::DoMove(BlokusMove move)
 {
-    Player    &player { ActivePlayer() };
-    BlokusMove move   { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
-    player.DoMove(move);                                          // may finish, if all pieces set
+    ActivePlayer().DoMove(move);     // may finish, if all pieces set
     if (move.IsDefined())
     {
 	    GetPiece(move).DoMove(move.GetCoordPos());
         m_board.DoMove(move);
     }
     move.SetPlayerId(NextPlayer());
+    return move;
+}
+
+BlokusMove Match::DoMove()
+{
+    Player    &player { ActivePlayer() };
+    BlokusMove move   { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
+    move = DoMove(move);        
     return move;
 }
 
@@ -196,7 +236,7 @@ bool Match::IsNotBlocked(BlokusMove const& move) const
         [this, &move](ShapeCoordPos const &shapePos)
         {
             CoordPos const  coordPos { move.GetCoordPos() + shapePos };
-            Player   const &player   { m_players.GetPlayerC(move.GetPlayerId()) };
+            Player   const &player   { GetPlayerC(move.GetPlayerId()) };
             return player.IsUnblockedPos(coordPos);
         }
     );
@@ -221,7 +261,7 @@ void Match::testPosition
     ShapeCoordPos const &posCorner
 )
 { 
-    Player const& player { m_players.GetPlayerC(move.GetPlayerId()) };
+    Player const& player { GetPlayerC(move.GetPlayerId()) };
     player.Apply2AllContactPntsC
     (
         [this, &validMoves, &player, &move, &posCorner](CoordPos const& posContact)
@@ -287,6 +327,21 @@ void Match::FindValidMoves(vector<BlokusMove> &validMoves)
         }
     );
 }
+
+bool Match::AllFinished() const
+{
+    bool bResult = true;
+    Apply2AllPlayersC
+    (
+        [&bResult](Player const& player)
+        {
+            if (!player.HasFinished())
+                bResult = false;
+        }
+    );
+    return bResult;
+}
+
 
     //g_iNrOfPieces = 0;
     //g_iNrOfShapes = 0;

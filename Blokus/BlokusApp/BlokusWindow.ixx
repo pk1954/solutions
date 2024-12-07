@@ -31,7 +31,7 @@ private:
 	ShapeCoordPos     m_shapeCoordPos  { UndefinedCoordPos };
 	PixelPoint        m_ptLast         { PP_NULL };	// Last cursor position during selection 
 	MicroMeterPnt     m_umDelta        { NP_ZERO };
-	Piece           * m_pPieceSelected { nullptr };
+	//Piece           * m_pPieceSelected { nullptr };
 	bool              m_bAutoRun       { false };
 	TextFormatHandle  m_hTextFormat    { nullptr };
     Animation<PosDir> m_posDirAnimation;
@@ -47,7 +47,8 @@ private:
 	void drawFinishedMsg();
 	void paintBoard() const;
 	bool selectPiece(MicroMeterPnt const&);
-	void setPieceSelected(Piece * const);
+	bool isPieceSelected() { return IsValidPieceTypeId(m_move.GetPieceTypeId()); }
+	//void setPieceSelected(Piece * const);
 	//void autoRun();
 	//void nextMove();
 	//void startRotationPhase(Degrees const);

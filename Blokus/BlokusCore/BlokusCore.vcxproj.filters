@@ -69,9 +69,6 @@
     <ClCompile Include="ShapeId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Players.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BoardMap.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>

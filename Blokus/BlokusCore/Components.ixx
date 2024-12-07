@@ -5,6 +5,7 @@
 export module BlokusCore:Components;
 
 import std;
+import SaveCast;
 import :BlokusCoords;
 import :PieceType;
 import :PieceTypeId;
@@ -59,6 +60,16 @@ public:
     static PieceType const& GetPieceTypeC(PieceTypeId const id) 
     { 
         return m_pieceTypes.at(id.GetValue());
+    }
+
+    static PieceType &GetPieceType(PieceTypeId const id) 
+    { 
+        return m_pieceTypes.at(id.GetValue());
+    }
+
+    static PieceTypeId GetPieceTypeId(PieceType const &pt) 
+    { 
+        return PieceTypeId(Cast2Byte(&pt - &m_pieceTypes[0]));
     }
 
 private:
