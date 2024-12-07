@@ -224,18 +224,8 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
 	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
 	MicroMeterPnt const umCrsrPos { m_context.GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
+	PixelPoint    const ptLast    { m_ptLast };
 
-//	if (wParam == 0)   // no mouse buttons or special keyboard keys pressed
-//	{
-//		m_ptLast.Set2Null();                 // make m_ptLast invalid
-//		if (selectPiece(umCrsrPos))
-//			return;
-////      if (selectXYZ())
-////		    return;
-//		return;
-//	}
-
-	PixelPoint const ptLast { m_ptLast };
 	m_ptLast = ptCrsr;
 	if (ptLast.IsNull())
 		return;
@@ -261,9 +251,8 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
-	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
-	MicroMeterPnt const umCrsrPos { m_context.GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
+	fPixelPoint   const fPixPosCrsr { GetCrsrPosFromLparamF(lParam) };
+	MicroMeterPnt const umCrsrPos   { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
 
 	SetCapture();
 	m_ptLast.Set2Null();    // make m_ptLast invalid

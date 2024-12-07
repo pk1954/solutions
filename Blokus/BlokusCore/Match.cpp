@@ -9,32 +9,9 @@ import PerfCounter;
 using std::wcout;
 using std::endl;
 using std::vector;
-using std::make_unique;
-
-class RuleServer : public RuleServerInterface
-{
-public:
-    RuleServer(Match &match)
-        : m_match(match)
-    {}
-
-    void GetListOfValidMoves(vector<BlokusMove> &validMoves) const final
-    {
-        m_match.FindValidMoves(validMoves);
-    }
-
-    Board const& GetBoard() const final
-    {
-        return m_match.GetBoard();
-    }
-
-private:
-    Match &m_match;
-};
 
 Match::Match()
 {
-    m_upRuleServer = make_unique<RuleServer>(*this);
     Initialize();
 }
 
@@ -165,8 +142,7 @@ BlokusMove Match::DoMove(BlokusMove move)
 
 BlokusMove Match::DoMove()
 {
-    Player    &player { ActivePlayer() };
-    BlokusMove move   { player.SelectMove(*m_upRuleServer.get()) };  // may finish if no more valid moves
+    BlokusMove move { ActivePlayer().SelectMove(*this) };  // may finish if no more valid moves
     move = DoMove(move);        
     return move;
 }
@@ -259,7 +235,7 @@ void Match::testPosition
     vector<BlokusMove>  &validMoves,
     BlokusMove          &move, 
     ShapeCoordPos const &posCorner
-)
+) const
 { 
     Player const& player { GetPlayerC(move.GetPlayerId()) };
     player.Apply2AllContactPntsC
@@ -280,7 +256,7 @@ void Match::testShape
     vector<BlokusMove> &validMoves,
     BlokusMove         &move, 
     ShapeId const      idShape
-)
+) const
 {
     //++g_iNrOfShapes;
     move.SetShapeId(idShape);
@@ -293,12 +269,12 @@ void Match::testShape
 	);
 }
 
-void Match::testPiece
+void Match::testPiece 
 (
     vector<BlokusMove> &validMoves,
     BlokusMove         &move, 
     Piece const        &piece
-)
+) const
 {
     PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
     PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
@@ -313,9 +289,9 @@ void Match::testPiece
     );
 }
 
-void Match::FindValidMoves(vector<BlokusMove> &validMoves)
+void Match::GetListOfValidMoves(vector<BlokusMove> &validMoves) const
 {
-    Player     player { ActivePlayer() };
+    Player     player { ActivePlayerC() };
     BlokusMove move;
     validMoves.clear();
     move.SetPlayerId(m_idActivePlayer);
@@ -337,7 +313,7 @@ void Match::FindValidMoves(vector<BlokusMove> &validMoves)
     //Ticks const ticks        { m_timerFindValidMoves.GetSingleActionTicks() };
     //Ticks const ticksPerMove {ticks / g_iNrOfMoves };
     //
-    //wcout << L"FindValidMoves:"                     << endl;
+    //wcout << L"GetListOfValidMoves:"                << endl;
     //wcout << g_iNrOfPieces       << L" pieces"      << endl;
     //wcout << g_iNrOfShapes       << L" shapes"      << endl;
     //wcout << g_iNrOfMoves        << L" moves"       << endl;

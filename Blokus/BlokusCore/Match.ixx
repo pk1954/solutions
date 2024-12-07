@@ -31,14 +31,14 @@ StrategyRandom    StrategyYellow;
 //int g_iNrOfShapes;
 //int g_iNrOfMoves;
 //
-export class Match
+export class Match  : public RuleServerInterface
 {
 public:
     Match();
 
     void Reset();
     void ResetTimers();
-    void FindValidMoves(vector<BlokusMove>&);
+    void GetListOfValidMoves(vector<BlokusMove>&) const;
 
     void Initialize()
     {
@@ -105,10 +105,10 @@ private:
   //HiResTimer    m_timerFindValidMoves;
     HiResTimer    m_timer;
                   
-    unique_ptr<RuleServerInterface> m_upRuleServer; 
+    //unique_ptr<RuleServerInterface> m_upRuleServer; 
 
-    void testPosition(vector<BlokusMove>&, BlokusMove&, ShapeCoordPos const&);
-    void testShape   (vector<BlokusMove>&, BlokusMove&, ShapeId       const);
-    void testPiece   (vector<BlokusMove>&, BlokusMove&, Piece         const&);
+    void testPosition(vector<BlokusMove>&, BlokusMove&, ShapeCoordPos const&) const;
+    void testShape   (vector<BlokusMove>&, BlokusMove&, ShapeId       const ) const;
+    void testPiece   (vector<BlokusMove>&, BlokusMove&, Piece         const&) const;
     void findContactPnts();
 };
