@@ -219,30 +219,32 @@ bool BlokusWindow::selectPiece(MicroMeterPnt const &umCrsrPos)
 	return isPieceSelected();
 }
 
+MicroMeterPnt BlokusWindow::getCrsrPos(LPARAM const lParam) const
+{
+	fPixelPoint   const fPixPosCrsr { GetCrsrPosFromLparamF(lParam) };
+	MicroMeterPnt const umCrsrPos   { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
+	return umCrsrPos;
+}
+	
 void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	PixelPoint    const ptCrsr    { GetCrsrPosFromLparam(lParam) };
-	fPixelPoint   const fPixCrsr  { Convert2fPixelPoint(ptCrsr) };
-	MicroMeterPnt const umCrsrPos { m_context.GetCoordC().Transform2logUnitPntPos(fPixCrsr) };
-	PixelPoint    const ptLast    { m_ptLast };
+	MicroMeterPnt const umCrsrPos { getCrsrPos(lParam) };
+	MicroMeterPnt const umPosLast { m_umPosLast };
 
-	m_ptLast = ptCrsr;
-	if (ptLast.IsNull())
+	m_umPosLast = umCrsrPos;
+	if (umPosLast.IsNull())
 		return;
 
 	if (!(wParam & MK_LBUTTON))    // left mouse button
 		return;
 
-	MicroMeterPnt const umLastPos { m_context.GetCoordC().Transform2logUnitPntPos(ptLast) };
-	m_umDelta = umCrsrPos - umLastPos;
+	m_umDelta = umCrsrPos - umPosLast;
 	if (m_umDelta.IsZero())
 		return;
 	
 	if (isPieceSelected())
 	{
-		fPixelPoint   const fPixPosCrsr  { GetCrsrPosFromLparamF(lParam) };
-		MicroMeterPnt const umCrsrPos    { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
-		CoordPos      const coordPosCrsr { Round2CoordPos(umCrsrPos) };
+		CoordPos const coordPosCrsr { Round2CoordPos(umCrsrPos) };
 		m_move.SetCoordPos(coordPosCrsr - m_shapeCoordPos);
 		m_match.GetPiece(m_move).Move(m_umDelta);
 		Notify(false);
@@ -251,11 +253,10 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	fPixelPoint   const fPixPosCrsr { GetCrsrPosFromLparamF(lParam) };
-	MicroMeterPnt const umCrsrPos   { m_context.GetCoordC().Transform2logUnitPntPos(fPixPosCrsr) };
+	MicroMeterPnt const umCrsrPos { getCrsrPos(lParam) };
 
 	SetCapture();
-	m_ptLast.Set2Null();    // make m_ptLast invalid
+	m_umPosLast.Set2Null();    // make m_umPosLast invalid
 
 	selectPiece(umCrsrPos);
 //  if (selectXYZ())

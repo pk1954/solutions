@@ -29,9 +29,8 @@ private:
 	Match             m_match;
 	D2D_DrawContext   m_context;
 	ShapeCoordPos     m_shapeCoordPos  { UndefinedCoordPos };
-	PixelPoint        m_ptLast         { PP_NULL };	// Last cursor position during selection 
+	MicroMeterPnt     m_umPosLast      { NP_ZERO };	// Last cursor position during selection 
 	MicroMeterPnt     m_umDelta        { NP_ZERO };
-	//Piece           * m_pPieceSelected { nullptr };
 	bool              m_bAutoRun       { false };
 	TextFormatHandle  m_hTextFormat    { nullptr };
     Animation<PosDir> m_posDirAnimation;
@@ -44,10 +43,12 @@ private:
 	bool OnLButtonDown(WPARAM const, LPARAM const)                                            final;
 	void PaintGraphics() final;
 
-	void drawFinishedMsg();
-	void paintBoard() const;
-	bool selectPiece(MicroMeterPnt const&);
-	bool isPieceSelected() { return IsValidPieceTypeId(m_move.GetPieceTypeId()); }
+	void          drawFinishedMsg();
+	void          paintBoard() const;
+	bool          selectPiece(MicroMeterPnt const&);
+	bool          isPieceSelected() { return IsValidPieceTypeId(m_move.GetPieceTypeId()); }
+	MicroMeterPnt getCrsrPos(LPARAM const) const;
+
 	//void setPieceSelected(Piece * const);
 	//void autoRun();
 	//void nextMove();
