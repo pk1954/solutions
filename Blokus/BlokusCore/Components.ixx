@@ -5,12 +5,15 @@
 export module BlokusCore:Components;
 
 import std;
+import Color;
 import SaveCast;
 import :BlokusCoords;
 import :PieceType;
 import :PieceTypeId;
+import :PlayerId;
 
 using std::array;
+using std::wstring;
 
 export inline int   const BOARD_SIZE       { 20 };
 export inline Coord const COORD_BOARD_SIZE { BOARD_SIZE };
@@ -38,6 +41,13 @@ void Apply2AllBoardCells(auto const& func)
 	for (Coord x = 0_COORD; x < COORD_BOARD_SIZE; ++x)
         func(CoordPos(x, y));
 }
+
+export struct PlayerType
+{
+    CoordPos m_startPoint;
+    Color    m_color;
+    wstring  m_wstrName;
+};
 
 export class Components
 {
@@ -72,10 +82,13 @@ public:
         return PieceTypeId(Cast2Byte(&pt - &m_pieceTypes[0]));
     }
 
+    static PlayerType const& GetPlayerType(PlayerId const id)
+    {
+        return m_playerTypes.at(id.GetValue());
+    }
+
 private:
 
-    inline static array<PieceType, NR_OF_PIECE_TYPES> m_pieceTypes;
-
-    static void initShapes();
-    static void initPositions();
+    inline static array<PieceType,  NR_OF_PIECE_TYPES> m_pieceTypes;
+    inline static array<PlayerType, NR_OF_PLAYERS>     m_playerTypes;
 };

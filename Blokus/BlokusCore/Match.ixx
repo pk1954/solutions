@@ -38,21 +38,19 @@ public:
 
     void Reset();
     void ResetTimers();
-    bool AllFinished() const;
     void FindValidMoves(vector<BlokusMove>&);
 
     void Initialize()
     {
-        m_players[0].Initialize(PlayerTypes::GetPlayerType(PlayerId(0)), &StrategyRed);
-        m_players[1].Initialize(PlayerTypes::GetPlayerType(PlayerId(1)), &StrategyGreen); 
-        m_players[2].Initialize(PlayerTypes::GetPlayerType(PlayerId(2)), &StrategyBlue);
-        m_players[3].Initialize(PlayerTypes::GetPlayerType(PlayerId(3)), &StrategyYellow); 
+        m_players[0].Initialize(Components::GetPlayerType(PlayerId(0)), &StrategyRed);
+        m_players[1].Initialize(Components::GetPlayerType(PlayerId(1)), &StrategyGreen); 
+        m_players[2].Initialize(Components::GetPlayerType(PlayerId(2)), &StrategyBlue);
+        m_players[3].Initialize(Components::GetPlayerType(PlayerId(3)), &StrategyYellow); 
     }
 
     Player    const &GetPlayerC(PlayerId const id)    const { return m_players.at(id.GetValue()); }
     Player          &GetPlayer (PlayerId const id)          { return m_players.at(id.GetValue()); }
-    bool             PlayerHasFinished()                    { return ActivePlayer().HasFinished(); }
-    bool             HasFinished()                          { return AllFinished(); }
+    bool             HasFinished()                          { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
     Player    const &Winner()                         const { return GetPlayerC(WinnerId()); }
     Board     const &GetBoard()                       const { return m_board; }
     PlayerId         ActivePlayerId()                       { return m_idActivePlayer; }
@@ -86,6 +84,14 @@ public:
     {
         for (Player &player: m_players)
             func(player);
+    }
+
+    bool IfAllPlayers(auto const& func) const
+    {
+        for (Player const& player: m_players)
+            if (func(player))
+                return false;
+        return true;
     }
 
 private:

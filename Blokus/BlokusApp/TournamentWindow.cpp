@@ -36,7 +36,7 @@ void TournamentWindow::PaintGraphics()
         {
             Ticks const ticksPlayer { m_pTournament->GetTimeUsed(id) };
             int   const yPos        { id.GetValue() + 1 };
-            Set(RasterPoint(0, yPos), PlayerTypes::GetPlayerType(id).m_wstrName);
+            Set(RasterPoint(0, yPos), Components::GetPlayerType(id).m_wstrName);
             Set(RasterPoint(1, yPos), m_pTournament->GetStrategyName(id));
             Set(RasterPoint(2, yPos), m_pTournament->NrOfWins(id));
             Set(RasterPoint(3, yPos), PerfCounter::Ticks2wstring(ticksPlayer));

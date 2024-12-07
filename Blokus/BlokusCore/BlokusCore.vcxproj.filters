@@ -99,12 +99,6 @@
     <ClCompile Include="RuleServerInterface.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerTypes.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tournament.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

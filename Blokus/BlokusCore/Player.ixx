@@ -14,7 +14,6 @@ import :Board;
 import :BoardMap;
 import :Piece;
 import :PlayerId;
-import :PlayerTypes;
 import :PieceTypeId;
 import :RuleServerInterface;
 import :Components;

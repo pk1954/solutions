@@ -15,13 +15,11 @@ export import :Shape;
 //export import :StrategyRandom;
 export import :Tournament;
 
-import :PlayerTypes;
 import :Components;
 import :BlokusPreferences;
 
 export void InitializeBlokusCore()
 {
-	PlayerTypes::Initialize();
 	Components::Initialize();
 	BlokusPreferences::Initialize();
 }

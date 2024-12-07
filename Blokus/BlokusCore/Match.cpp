@@ -328,21 +328,6 @@ void Match::FindValidMoves(vector<BlokusMove> &validMoves)
     );
 }
 
-bool Match::AllFinished() const
-{
-    bool bResult = true;
-    Apply2AllPlayersC
-    (
-        [&bResult](Player const& player)
-        {
-            if (!player.HasFinished())
-                bResult = false;
-        }
-    );
-    return bResult;
-}
-
-
     //g_iNrOfPieces = 0;
     //g_iNrOfShapes = 0;
     //g_iNrOfMoves  = 0;
