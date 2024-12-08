@@ -57,28 +57,23 @@ void Player::DrawResult
 	);
 }
 
-void Player::DrawFreePieces
-(
-	DrawContext        &context,
-	Piece const * const pPieceSelected
-) const
+void Player::DrawFreePieces(DrawContext &context) const
 {
 	Apply2AvailablePiecesC
 	(
-		[this, &context, pPieceSelected](Piece const& piece)
+		[this, &context](Piece const& piece)
 		{
 			PosDir const posDir { piece.GetPosDirC() };
 			Color  const col    { m_pPlayerType->m_color };
-			if (&piece != pPieceSelected)
-				piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, false);
+			piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, false);
 		}
 	);
 }
 
 void Player::DrawCell
 (
-	DrawContext &context,
-	CoordPos    const &pos
+	DrawContext    &context,
+	CoordPos const &pos
 ) const
 {
 	ShapeSquare(context, pos, m_pPlayerType->m_color, false);

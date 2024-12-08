@@ -18,15 +18,15 @@ public:
 
     Piece const *SelectPiece
     (
-        Player        const &player,
+        Player             &player,
         MicroMeterPnt const &umPos
     )
     {
-	    Piece const *pPiece { player.FindPiece([&umPos](Piece const& piece) { return IsInPiece(umPos, piece); }) };
+	    Piece *pPiece { player.FindPiece([&umPos](Piece &piece) { return IsInPiece(umPos, piece); }) };
 	    if (pPiece != nullptr)
 	    {
-		    PieceType const &pieceType { pPiece->GetPieceTypeC() };
-		    m_boardPos = pieceType.GetInitialPos();
+            pPiece->StartMotion();
+		    m_boardPos = pPiece->GetPieceTypeC().GetInitialPos();
 	        m_umOffset = umPos - Convert2fCoord(m_boardPos);
 	    }
         return pPiece;

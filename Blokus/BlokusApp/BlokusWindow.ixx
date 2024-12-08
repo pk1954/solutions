@@ -43,7 +43,6 @@ private:
 
 	void          drawFinishedMsg();
 	void          paintBoard() const;
-	bool          isPieceSelected() { return IsValidPieceTypeId(m_move.GetPieceTypeId()); }
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
 
 	//void autoRun();

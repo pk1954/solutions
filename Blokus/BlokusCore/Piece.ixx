@@ -33,6 +33,8 @@ public:
     PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
     PieceType const &GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
 
+    void StartMotion() { m_bAvailable = false; }
+
     void DoMove(CoordPos const& pos)
     {
         m_bAvailable = false;

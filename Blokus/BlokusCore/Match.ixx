@@ -68,7 +68,6 @@ public:
     void             UndoMove     (BlokusMove const);
     PlayerId         WinnerId()                                     const;
     void             DrawSetPieces (DrawContext&)                   const;
-    void             DrawFreePieces(DrawContext&, BlokusMove const) const;
     void             DrawMovePiece (DrawContext&, BlokusMove const) const;
     PlayerId         NextPlayer();
     bool             IsNotBlocked       (BlokusMove const&) const;
@@ -90,7 +89,7 @@ public:
     bool IfAllPlayers(auto const& func) const
     {
         for (Player const& player: m_players)
-            if (func(player))
+            if (!func(player))
                 return false;
         return true;
     }

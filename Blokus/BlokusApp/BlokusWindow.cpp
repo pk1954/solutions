@@ -204,7 +204,7 @@ bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 
 void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 {
-	if ((wParam & MK_LBUTTON) && isPieceSelected())
+	if ((wParam & MK_LBUTTON) && m_pieceMotion.IsActive())
 	{
 		if (m_pieceMotion.MovePiece(getCrsrPos(lParam)))
 		{
@@ -217,7 +217,7 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 {
 	ReleaseCapture();
-	if (isPieceSelected())
+	if (m_pieceMotion.IsActive())
 	{
 		if (m_match.IsValidPosition(m_move))
 			m_match.DoMove(m_move);
@@ -292,7 +292,7 @@ void BlokusWindow::PaintGraphics()
 	Player const& player { m_match.ActivePlayerC() };
  	paintBoard();
 	m_match.DrawSetPieces(m_context);
-	m_match.DrawFreePieces(m_context, m_move);
+	player.DrawFreePieces(m_context);
 	if (m_pieceMotion.IsActive())
 		m_match.DrawMovePiece(m_context, m_move);
 	if (BlokusPreferences::m_bShowContactPnts.Get())

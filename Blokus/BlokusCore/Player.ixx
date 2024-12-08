@@ -38,7 +38,7 @@ public:
     Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (DrawContext&, Piece const * const) const;
+    void DrawFreePieces (DrawContext&) const;
     void DrawContactPnts(DrawContext&) const;
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&) const;
@@ -66,9 +66,9 @@ public:
                 func(piece);
     }
 
-    Piece const *FindPiece(auto const& crit) const // returns first piece satisfying crit
+    Piece *FindPiece(auto const& crit) // returns first piece satisfying crit
     {
-        for (Piece const &piece: m_pieces)
+        for (Piece &piece: m_pieces)
             if (piece.IsAvailable() && crit(piece))
                 return &piece;
         return nullptr;
