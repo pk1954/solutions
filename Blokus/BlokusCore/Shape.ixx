@@ -65,24 +65,34 @@ public:
 				func(pos);
 	}
 
-	bool IsTrue4AllShapeCells(auto const& func) const   // returns true, if func delivers true 
+	bool IsTrue4AllShapeCells(auto const& crit) const   // returns true, if crit delivers true 
 	{                                                   // for all shape cells, else false
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
 		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
-			if (isPartOfShape(pos) && !func(pos))
+			if (isPartOfShape(pos) && !crit(pos))
 				return false;
 		return true;
 	}
 
-	bool IsTrue4AnyShapeCell(auto const& crit) const 
-	{                                                  
+	bool IsTrueForAnyShapeCell(auto const& crit) const 
+	{                                                   
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
 		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
 			if (isPartOfShape(pos) && crit(pos))
 				return true;
 		return false;
+	}
+
+	ShapeCoordPos FindShapeCell(auto const& crit) const // returns first shape cell satisfying crit
+	{                                                  
+		ShapeCoordPos pos;
+		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
+		for (pos.SetX(0_COORD); pos.GetX() <= MAX_COL; pos.IncX())
+			if (isPartOfShape(pos) && crit(pos))
+				return pos;
+		return UndefinedCoordPos;
 	}
 
 	bool IsCompletelyOnBoard(CoordPos const&) const;

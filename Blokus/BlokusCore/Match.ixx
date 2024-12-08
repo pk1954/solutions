@@ -74,7 +74,6 @@ public:
     bool             IsNotBlocked       (BlokusMove const&) const;
     bool             IsValidPosition    (BlokusMove const&) const;
     bool             HasContact         (BlokusMove const&) const;
-    bool             IsCompletelyOnBoard(BlokusMove const&) const;
 
     void Apply2AllPlayersC(auto const& func) const
     {

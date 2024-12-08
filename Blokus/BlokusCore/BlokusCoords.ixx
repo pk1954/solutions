@@ -35,6 +35,7 @@ const Coord MAX_ROW { MAX_SHAPE_EXTENSION - 1};
 export using CoordPos = PosType<Coord>;
 
 export inline CoordPos const UndefinedCoordPos { UndefinedCoord(), UndefinedCoord() };
+export inline CoordPos const CoordPosZero      { Coord(0), Coord(0) };
 
 export using CoordRect = RectType<Coord>;
 

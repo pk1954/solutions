@@ -9,6 +9,7 @@ export import :BlokusPreferences;
 export import :BlokusUtilities;
 export import :Components;
 export import :Match;
+export import :PieceMotion;
 export import :Shape;
 //export import :Strategy;
 //export import :StrategyTakeFirst;

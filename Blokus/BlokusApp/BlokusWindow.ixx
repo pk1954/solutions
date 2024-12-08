@@ -27,9 +27,8 @@ private:
 	//PosDir            m_posDirTarget;
 	BlokusMove        m_move;
 	Match             m_match;
+	PieceMotion       m_pieceMotion;
 	D2D_DrawContext   m_context;
-	MicroMeterPnt     m_umPosLast      { NP_ZERO };	// Last cursor position during selection 
-	MicroMeterPnt     m_umDelta        { NP_ZERO };
 	bool              m_bAutoRun       { false };
 	TextFormatHandle  m_hTextFormat    { nullptr };
     Animation<PosDir> m_posDirAnimation;
@@ -44,7 +43,6 @@ private:
 
 	void          drawFinishedMsg();
 	void          paintBoard() const;
-	void          selectPiece(MicroMeterPnt const&);
 	bool          isPieceSelected() { return IsValidPieceTypeId(m_move.GetPieceTypeId()); }
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
 

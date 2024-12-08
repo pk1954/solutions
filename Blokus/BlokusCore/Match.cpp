@@ -219,16 +219,9 @@ bool Match::IsNotBlocked(BlokusMove const& move) const
     );
 }
 
-bool Match::IsCompletelyOnBoard(BlokusMove const& move) const
-{
-    CoordPos const& pos   { move.GetCoordPos() };
-    Shape    const& shape { move.GetShapeC  () };
-    return shape.IsCompletelyOnBoard(pos);
-}
-
 bool Match::IsValidPosition(BlokusMove const& move) const
 {
-    return IsCompletelyOnBoard(move) && IsNotBlocked(move) && HasContact(move);
+    return move.IsCompletelyOnBoard() && IsNotBlocked(move) && HasContact(move);
 }
 
 void Match::testPosition
