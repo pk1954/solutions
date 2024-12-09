@@ -59,20 +59,6 @@ export bool IsInPiece
 	return shape.IsTrueForAnyShapeCell([&umP](ShapeCoordPos const &cp){ return IsInShapeCell(umP, cp); });
 }
 
-export ShapeCoordPos FindCell
-(
-	MicroMeterPnt const &umPos,
-	Piece         const &piece
-)
-{
-	PieceType     const &pieceType    { piece.GetPieceTypeC() };
-	Shape         const &shape        { pieceType.GetShapeC(ShapeId(0)) };
-	CoordPos      const coordPosPiece { pieceType.GetInitialPos() };
-	MicroMeterPnt const umPosPiece    { Convert2fCoord(coordPosPiece) };
-	MicroMeterPnt const umP           { umPos - umPosPiece };
-	return shape.FindShapeCell([&umP](ShapeCoordPos const &cp){return IsInShapeCell(umP, cp);});
-}
-
 Color darker  (Color const col)  { return col * 0.6f; }
 Color brighter(Color const col)  { return col * 2.0f; }
 

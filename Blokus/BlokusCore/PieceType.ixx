@@ -57,10 +57,10 @@ public:
 		//ActiveOrientation().Rotate();
 	}
 
-	unsigned int NrOfCells() const { return m_iNrOfCells; }
+	int NrOfCells () const { return m_iNrOfCells; }
+	int NrOfShapes() const { return Cast2Int(m_shapes.size()); }
 
 private:
-	void initialize(ShapeCells const&);
 	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 

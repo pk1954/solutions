@@ -15,6 +15,7 @@ export inline int const IDD_CONTACT_PNTS      { 107 };
 export inline int const IDD_CORNER_CELLS      { 108 };
 export inline int const IDD_START_TOURNAMENT  { 109 };
 export inline int const IDD_ANIMATION         { 110 };
+export inline int const IDD_NEXT_SHAPE        { 111 };
 
 export inline int const IDM_TOURNAMENT_WINDOW { 200 };
 

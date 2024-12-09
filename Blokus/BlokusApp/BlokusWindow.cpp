@@ -11,6 +11,7 @@ import DrawContext;
 import Resource;
 import BlokusCommands;
 
+using std::abs;
 using std::min;
 using std::wcout;
 using std::endl;
@@ -61,6 +62,10 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 		case 'n':
 		case 'N':
 			PostCommand(IDD_NEXT_MOVE);
+			break;
+
+		case ' ':
+			PostCommand(IDD_NEXT_SHAPE);
 			break;
 
 		//case 'a':
@@ -151,6 +156,15 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 		break;
 
+	case IDD_NEXT_SHAPE:
+//		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
+		{
+			m_move.NextShape();
+			Notify(true);
+		}
+
+		break;
+
 	//case IDX_NEXT_AUTO_MOVE:
 	//	autoRun();
 	//	break;
@@ -196,7 +210,7 @@ bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 		m_move.SetPieceType(pieceType);
 	    m_move.SetPlayerId(m_match.ActivePlayerId());
 		m_move.SetShapeId(ShapeId(0));
-		m_move.SetCoordPos(m_pieceMotion.GetPosition());
+		m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
 		SetCapture();
 	}
 	return GraphicsWindow::OnLButtonDown(wParam, lParam);
@@ -207,10 +221,8 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if ((wParam & MK_LBUTTON) && m_pieceMotion.IsActive())
 	{
 		if (m_pieceMotion.MovePiece(getCrsrPos(lParam)))
-		{
-			m_move.SetCoordPos(m_pieceMotion.GetPosition());
-			Notify(false);
-		}
+			m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
+		Notify(false);
 	}
 }
 
@@ -294,7 +306,12 @@ void BlokusWindow::PaintGraphics()
 	m_match.DrawSetPieces(m_context);
 	player.DrawFreePieces(m_context);
 	if (m_pieceMotion.IsActive())
-		m_match.DrawMovePiece(m_context, m_move);
+	{
+		if (m_move.IsCompletelyOnBoard())
+			m_match.DrawMovePiece(m_context, m_move);
+		if (BlokusPreferences::m_bShowMoveDetail.Get())
+			m_match.DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition());
+	}
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		player.DrawContactPnts(m_context);
 	if (player.HasFinished())

@@ -13,12 +13,12 @@ export class PieceMotion
 public:
     void Reset()
     {
-        m_boardPos = UndefinedCoordPos;
+        m_umPos = NP_NULL;
     }
 
     Piece const *SelectPiece
     (
-        Player             &player,
+        Player              &player,
         MicroMeterPnt const &umPos
     )
     {
@@ -26,25 +26,25 @@ public:
 	    if (pPiece != nullptr)
 	    {
             pPiece->StartMotion();
-		    m_boardPos = pPiece->GetPieceTypeC().GetInitialPos();
-	        m_umOffset = umPos - Convert2fCoord(m_boardPos);
+            m_umPos = Convert2fCoord(pPiece->GetPieceTypeC().GetInitialPos());
+	        m_umOffset   = umPos - m_umPos;
 	    }
         return pPiece;
     }
 
     bool MovePiece(MicroMeterPnt const& umPos)
     {
-        CoordPos      const boardPosOld { m_boardPos };
-        MicroMeterPnt const umPosPiece  { umPos - m_umOffset };
-        m_boardPos = Round2CoordPos(umPosPiece);
-        return m_boardPos != boardPosOld;
+        CoordPos const coordPosOld { GetCoordPos() };
+        m_umPos = umPos - m_umOffset;
+        return GetCoordPos() != coordPosOld;
     }
 
-    bool     IsActive   () const { return m_boardPos != UndefinedCoordPos; }
-    CoordPos GetPosition() const { return m_boardPos; }
+    bool          IsActive   () const { return m_umPos != NP_NULL; }
+    MicroMeterPnt GetPosition() const { return m_umPos; }
+    CoordPos      GetCoordPos() const { return Round2CoordPos(m_umPos); }
 
 private:
 
-    CoordPos      m_boardPos { UndefinedCoordPos };
+    MicroMeterPnt m_umPos { NP_NULL };
     MicroMeterPnt m_umOffset;
 };

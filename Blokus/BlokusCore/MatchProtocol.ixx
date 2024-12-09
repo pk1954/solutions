@@ -16,12 +16,12 @@ struct PlayerMove
     PlayerMove() = default;
 
     PlayerMove(BlokusMove const &move) :
-        m_boardPos   (move.GetCoordPos()),
+        m_coordPos   (move.GetCoordPos()),
         m_idShape    (move.GetShapeId()),
         m_idPieceType(move.GetPieceTypeId())
     {}
 
-    CoordPos    m_boardPos;
+    CoordPos    m_coordPos;
     ShapeId     m_idShape;
     PieceTypeId m_idPieceType;
 };

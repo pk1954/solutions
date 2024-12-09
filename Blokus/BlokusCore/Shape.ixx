@@ -48,6 +48,14 @@ public:
             func(pos);
     }
 
+    bool IsTrueForAllCornerPnts(auto const& func) const
+    {
+        for (ShapeCoordPos const& pos : m_cornerPnts)
+			if (!func(pos))
+				return false;
+		return true;
+    }
+
     bool IsTrueForAnyCornerPnt(auto const& func) const
     {
         for (ShapeCoordPos const& pos : m_cornerPnts)

@@ -13,7 +13,7 @@ using std::swap;
 
 bool Shape::IsCompletelyOnBoard(CoordPos const& pos) const
 {
-	return IsTrueForAnyCornerPnt
+	return IsTrueForAllCornerPnts
 	(
 		[&pos](ShapeCoordPos const& posCorner)
 		{ 

@@ -5,6 +5,7 @@
 module BlokusCore:Match;
 
 import PerfCounter;
+import :BlokusPreferences;
 
 using std::wcout;
 using std::endl;
@@ -82,11 +83,22 @@ void Match::DrawMovePiece
     BlokusMove const move
 ) const
 {
-    static Color  const  COL_GREY    { 0.5f, 0.5f, 0.5f, 0.5f };
 	MicroMeterPnt const  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
-	Color         const  color       { IsValidPosition(move) ? ActiveColor() : COL_GREY};
+	Color         const  color       { IsValidPosition(move) ? ActiveColor() : COL_BLACK};
     PieceType     const &pieceType   { move.GetPieceTypeC() };
-	pieceType.Draw(context, ShapeId(0), umPosTarget, color, false);
+	pieceType.Draw(context, move.GetShapeId(), umPosTarget, color * 0.5f, false);
+}
+
+void Match::DrawMovePiece
+(
+    DrawContext         &context,
+    BlokusMove    const  move,
+    MicroMeterPnt const &umPos
+) const
+{
+	Color         const  color       { ActiveColor()};
+    PieceType     const &pieceType   { move.GetPieceTypeC() };
+	pieceType.Draw(context, move.GetShapeId(), umPos, color, false);
 }
 
 PlayerId Match::WinnerId() const

@@ -66,9 +66,10 @@ public:
     BlokusMove       DoMove       (BlokusMove);
     void             ResetPiece   (BlokusMove const move)  { GetPiece(move).Reset(); }
     void             UndoMove     (BlokusMove const);
-    PlayerId         WinnerId()                                     const;
-    void             DrawSetPieces (DrawContext&)                   const;
-    void             DrawMovePiece (DrawContext&, BlokusMove const) const;
+    PlayerId         WinnerId()                                                           const;
+    void             DrawSetPieces (DrawContext&)                                         const;
+    void             DrawMovePiece (DrawContext&, BlokusMove const)                       const;
+    void             DrawMovePiece (DrawContext&, BlokusMove const, MicroMeterPnt const&) const;
     PlayerId         NextPlayer();
     bool             IsNotBlocked       (BlokusMove const&) const;
     bool             IsValidPosition    (BlokusMove const&) const;
