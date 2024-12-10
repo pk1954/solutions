@@ -108,5 +108,8 @@
     <ClCompile Include="PieceMotion.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StrategyHuman.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

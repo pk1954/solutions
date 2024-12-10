@@ -9,6 +9,7 @@ import Types;
 import Animation;
 import WinBasics;
 import GraphicsWindow;
+import SoundInterface;
 import D2D_DrawContext;
 import BlokusCore;
 
@@ -19,7 +20,7 @@ export class BlokusWindow : public GraphicsWindow
 {
 public:
 	void Reset();
-	void Start(HWND const);
+	void Start(HWND const, Sound&);
 
 	void OnChar(WPARAM const, LPARAM const) final;
 
@@ -29,8 +30,9 @@ private:
 	Match             m_match;
 	PieceMotion       m_pieceMotion;
 	D2D_DrawContext   m_context;
-	bool              m_bAutoRun       { false };
-	TextFormatHandle  m_hTextFormat    { nullptr };
+	Sound           * m_pSound      { nullptr };
+	bool              m_bAutoRun    { false };
+	TextFormatHandle  m_hTextFormat { nullptr };
     Animation<PosDir> m_posDirAnimation;
 	int               m_iAnimationPhase;
 

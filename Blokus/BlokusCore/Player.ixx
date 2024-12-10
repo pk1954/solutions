@@ -120,6 +120,7 @@ public:
     Ticks           GetTicks()    const { return m_timer.GetAccumulatedActionTicks(); }
     Strategy const &GetStrategy() const { return *m_pStrategy; }
     Color           GetColor()    const { return m_pPlayerType->m_color; }
+    bool            IsHuman()     const { return GetStrategy().IsHuman(); }
 
 private:
     using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;

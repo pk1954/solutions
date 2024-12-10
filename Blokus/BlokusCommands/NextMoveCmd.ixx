@@ -23,8 +23,13 @@ export class NextMoveCmd : public WinCommand  //PosDirAnimationCmd
 {
 public:
 
-    NextMoveCmd(Match &match)
-      : m_match(match)
+    NextMoveCmd
+    (
+        Match           &match,
+        BlokusMove const move
+    )
+      : m_match(match),
+        m_move(move)
     {}
 
     void UpdateUI() final
@@ -34,7 +39,7 @@ public:
 
 	void Do() final 
 	{
-   	    m_move = m_match.DoMove();
+   	    m_move = m_match.DoMove(m_move);
     }
 
 	void Undo() final 
@@ -47,12 +52,16 @@ public:
         SymbolTable::ScrDefConst(NAME, &m_wrapper);
     }
 
-    static void Push(Match &match)
+    static void Push
+    (
+        Match           &match,
+        BlokusMove const move
+    )
     {
         //if (IsTraceOn())
         //    TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
 
-        PushCommand(make_unique<NextMoveCmd>(match));
+        PushCommand(make_unique<NextMoveCmd>(match, move));
     }
 
 private:

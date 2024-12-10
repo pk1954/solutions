@@ -20,8 +20,13 @@ using std::make_unique;
 
 fPixel const BORDER { 10.0_fPixel };
 
-void BlokusWindow::Start(HWND const hwndParent)
+void BlokusWindow::Start
+(
+	HWND const hwndParent,
+	Sound     &sound
+)
 {
+	m_pSound = & sound;
 	GraphicsWindow::Initialize
 	(
 		hwndParent, 
@@ -149,20 +154,26 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 	case IDD_NEXT_MOVE:
 //		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
+		if (!m_match.ActivePlayer().IsHuman())
 		{
-			NextMoveCmd::Push(m_match);
+	        BlokusMove move { m_match.ActivePlayer().SelectMove(m_match) };  // may finish if no more valid moves
+			if (move.IsDefined())
+				NextMoveCmd::Push(m_match, move);
 			Notify(true);
 		}
-
+		else 
+			m_pSound->WarningSound();
 		break;
 
 	case IDD_NEXT_SHAPE:
 //		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
+		if (m_pieceMotion.IsActive())
 		{
 			m_move.NextShape();
 			Notify(true);
 		}
-
+		else 
+			m_pSound->WarningSound();
 		break;
 
 	//case IDX_NEXT_AUTO_MOVE:
@@ -232,7 +243,7 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_match.IsValidPosition(m_move))
-			m_match.DoMove(m_move);
+			NextMoveCmd::Push(m_match, m_move);
 		else
 			m_match.ResetPiece(m_move);
 		m_move.Reset();

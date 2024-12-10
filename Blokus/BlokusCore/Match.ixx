@@ -17,12 +17,13 @@ import :PlayerId;
 import :RuleServerInterface;
 import :StrategyRandom;
 import :StrategyTakeFirst;
+import :StrategyHuman;
 
 using std::array;
 using std::vector;
 using std::unique_ptr;
 
-StrategyTakeFirst StrategyRed;
+StrategyHuman     StrategyRed;
 StrategyTakeFirst StrategyGreen;
 StrategyTakeFirst StrategyBlue;
 StrategyRandom    StrategyYellow;
@@ -62,7 +63,7 @@ public:
     Color            ActiveColor  ()                 const { return ActivePlayerC().GetColor(); }
     Piece           &GetPiece     (BlokusMove const);
     Degrees          GetRotation  (BlokusMove const)  const;
-    BlokusMove       DoMove       ();
+    //BlokusMove       DoMove       ();
     BlokusMove       DoMove       (BlokusMove);
     void             ResetPiece   (BlokusMove const move)  { GetPiece(move).Reset(); }
     void             UndoMove     (BlokusMove const);

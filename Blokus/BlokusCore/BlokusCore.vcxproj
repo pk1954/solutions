@@ -46,6 +46,7 @@
     <ClCompile Include="Shape.ixx" />
     <ClCompile Include="ShapeId.ixx" />
     <ClCompile Include="Strategy.ixx" />
+    <ClCompile Include="StrategyHuman.ixx" />
     <ClCompile Include="StrategyRandom.ixx" />
     <ClCompile Include="StrategyTakeFirst.ixx" />
     <ClCompile Include="Tournament.cpp" />

@@ -132,13 +132,6 @@ BlokusMove Match::DoMove(BlokusMove move)
     return move;
 }
 
-BlokusMove Match::DoMove()
-{
-    BlokusMove move { ActivePlayer().SelectMove(*this) };  // may finish if no more valid moves
-    move = DoMove(move);        
-    return move;
-}
-
 void Match::UndoMove(BlokusMove const move)
 {
     if (move.IsDefined())
