@@ -27,7 +27,7 @@ public:
 	~MonitorWindow() final;
 
 	void Start(HWND const, SimuRunning const&, Sound&, Observable&);
-	void SetModelInterface(NNetModelWriterInterface* const) const;
+	void SetModelInterface(NNetModelReaderInterface const* const) const;
 	void ResetHorzCoord();
 
 	void SetHighSigObservable(Observable &obs) { m_upMonitorControl->SetHighSigObservable(obs); }

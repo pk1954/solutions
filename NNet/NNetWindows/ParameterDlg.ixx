@@ -21,7 +21,7 @@ public:
 	~ParameterDialog() final;
 
 	void Start(HWND const);
-	void SetModelInterface(NNetModelWriterInterface* const);
+	void SetModelInterface(NNetModelReaderInterface const * const);
 	void Notify(bool const) final;
 	void PaintGraphics() final;
 
@@ -35,10 +35,10 @@ private:
 	static int const VERT_BLOCK_SPACE {  30 };
 	static int const HEIGHT           {  16 };
 
-	TextFormatHandle          m_hTextFormatHeader  { nullptr };
-	NNetModelWriterInterface* m_pNMWI              { nullptr };
-	HWND                      m_hwndScanTime       { nullptr };
-	bool                      m_bEditParamsEnabled { true };
+	TextFormatHandle                 m_hTextFormatHeader  { nullptr };
+	NNetModelReaderInterface const * m_pNMRI              { nullptr };
+	HWND                             m_hwndScanTime       { nullptr };
+	bool                             m_bEditParamsEnabled { true };
 
 	fPixel m_fPixPosVert;      // helper for paintHeader
 

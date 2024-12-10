@@ -74,9 +74,9 @@ void MonitorWindow::ResetHorzCoord()
 	m_horzCoord.SetOffset(Convert2fPixel(RIGHT_BORDER - GetClientWindowWidth()));
 }
 
-void MonitorWindow::SetModelInterface(NNetModelWriterInterface * const pNMWI) const
+void MonitorWindow::SetModelInterface(NNetModelReaderInterface const * const pNMRI) const
 {
-	m_upMonitorControl->SetModelInterface(pNMWI);
+	m_upMonitorControl->SetModelInterface(pNMRI);
 }
 
 wstring MonitorWindow::GetCaption() const 

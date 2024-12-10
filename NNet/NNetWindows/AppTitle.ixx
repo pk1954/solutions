@@ -28,9 +28,9 @@ public:
 		m_pwstrProductName = &wstrProductName;
 	}
 
-	void SetModelInterface(NNetModelWriterInterface * const pNMWI)
+	void SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 	{
-		m_pNMWI = pNMWI;
+		m_pNMRI = pNMRI;
 	}
 
 	void Notify(bool const bImmediate) final 
@@ -53,18 +53,18 @@ private:
 	void setAppTitle()
 	{
 		wstring wstr { m_bUnsavedChanges ? L" * " : L"" };
-		if (m_pNMWI->ModelLocked())
+		if (m_pNMRI->ModelLocked())
 			wstr += L"  +++ model locked +++";
 		::SetApplicationTitle
 		(
 			m_hwndApp, 
 			*m_pwstrProductName,
-			m_pNMWI->GetModelFilePath() + wstr 
+			m_pNMRI->GetModelFilePath() + wstr 
 		);
 	}
 
-	HWND                       m_hwndApp          { nullptr };
-	wstring            const * m_pwstrProductName { nullptr };
-	NNetModelWriterInterface * m_pNMWI            { nullptr };
-	bool                       m_bUnsavedChanges  { false }; 
+	HWND                             m_hwndApp          { nullptr };
+	wstring                  const * m_pwstrProductName { nullptr };
+	NNetModelReaderInterface const * m_pNMRI            { nullptr };
+	bool                             m_bUnsavedChanges  { false }; 
 };

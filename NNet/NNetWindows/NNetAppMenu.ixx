@@ -30,7 +30,6 @@ public:
 		CommandStack const &
 	);
 	void SetModelInterface(NNetModelReaderInterface const * const);
-	void AdjustUndoRedo();
 	void Notify(bool const) final;
 
 private:

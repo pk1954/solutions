@@ -218,11 +218,11 @@ NNetAppWindow::NNetAppWindow(wstring const &wstrProductName, MessagePump & pump)
 void NNetAppWindow::setModelInterface()
 {
 	NNetCommand       ::SetModelInterface(&m_nmwi);
-	m_parameterDlg     .SetModelInterface(&m_nmwi);
+	m_parameterDlg     .SetModelInterface(m_pNMRI);
 	m_compute          .SetModelInterface(&m_nmwi);
-	m_monitorWindow    .SetModelInterface(&m_nmwi);
 	m_signalDesigner   .SetModelInterface(&m_nmwi);
-	m_appTitle         .SetModelInterface(&m_nmwi);
+	m_appTitle         .SetModelInterface(m_pNMRI);
+	m_monitorWindow    .SetModelInterface(m_pNMRI);
 	m_appMenu          .SetModelInterface(m_pNMRI);
 	m_NNetController   .SetModelInterface(m_pNMRI);
 	m_mainNNetWindow   .SetModelInterface(m_pNMRI);

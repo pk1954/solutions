@@ -35,12 +35,12 @@ void ParameterDialog::Notify(bool const bImmediate)
 
 void ParameterDialog::resetParameter(ParamField& field) const
 {
-	::SetWindowTextW(field.m_hwnd, Float2wstring(m_pNMWI->GetParams().GetParameterValue(field.m_type)));
+	::SetWindowTextW(field.m_hwnd, Float2wstring(m_pNMRI->GetParamsC().GetParameterValue(field.m_type)));
 }
 
 void ParameterDialog::applyParameter(ParamField &field)   // read out edit field and write data to model
 {
-	float const fOldValue { m_pNMWI->GetParams().GetParameterValue(field.m_type) }; 
+	float const fOldValue { m_pNMRI->GetParamsC().GetParameterValue(field.m_type) }; 
 	float       fValue    { fOldValue }; 
 	bool  const bOK       { ::Evaluate(field.m_hwnd, fValue) };
 	if (bOK && ! IsCloseToZero(fValue - fOldValue))
@@ -78,7 +78,7 @@ void ParameterDialog::applyParameters()  // read out edit field and write data t
 
 void ParameterDialog::enableAllEditFields()
 {
-	bool const bEnable { ! m_pNMWI->ModelLocked() };
+	bool const bEnable { ! m_pNMRI->ModelLocked() };
 	if (bEnable != m_bEditParamsEnabled)
 	{
 		m_bEditParamsEnabled = bEnable;
@@ -145,7 +145,7 @@ void ParameterDialog::PaintGraphics()
 	paintHeader(2, L"General");
 	paintHeader(7, L"Scan");
 	refreshParameters();
-	::SetWindowTextW(m_hwndScanTime, Format2wstring(m_pNMWI->TotalScanTime()));
+	::SetWindowTextW(m_hwndScanTime, Format2wstring(m_pNMRI->TotalScanTime()));
 }
 
 void ParameterDialog::paintHeader
@@ -172,9 +172,9 @@ void ParameterDialog::paintHeader
 	m_fPixPosVert += fPixBlockHeight + fPixel(VERT_BLOCK_SPACE);
 }
 
-void ParameterDialog::SetModelInterface(NNetModelWriterInterface * const pNMWI)
+void ParameterDialog::SetModelInterface(NNetModelReaderInterface const * const pNMRI)
 {
-	m_pNMWI = pNMWI;
+	m_pNMRI = pNMRI;
 }
 
 bool ParameterDialog::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
@@ -207,13 +207,13 @@ bool ParameterDialog::UserProc(UINT const message, WPARAM const wParam, LPARAM c
 	//}
 	if (message == WM_CTLCOLOREDIT)
 	{
-		SetBkColor(hdc, m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
+		SetBkColor(hdc, m_pNMRI->ModelLocked() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
 		HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 		return (INT_PTR)brush;
 	}
 	//if (message == WM_CTLCOLORBTN)       // is called, but no effect
 	//{
-	//	SetBkColor(hdc, m_pNMWI->ModelLocked() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
+	//	SetBkColor(hdc, m_pNMRI->ModelLocked() ? D2D1::ColorF::LightGray : D2D1::ColorF::LightGreen);
 	//	HGDIOBJ brush { GetStockObject(DC_BRUSH) };
 	//	return (INT_PTR)brush;
 	//}
