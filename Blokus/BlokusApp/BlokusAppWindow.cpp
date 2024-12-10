@@ -33,6 +33,9 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	WinManager::AddWindow(L"IDM_MAIN_WINDOW",       RootWinId(IDM_MAIN_WINDOW      ), m_mainWindow,                  true,  false);
 	WinManager::AddWindow(L"IDM_TOURNAMENT_WINDOW", RootWinId(IDM_TOURNAMENT_WINDOW), m_hwndApp,                     true,  true );
 
+	if (! WinManager::GetWindowConfiguration())
+		::Show(m_hwndApp, true);
+
 	BlokusPreferences::m_bShowContactPnts.RegisterObserver(m_mainWindow);
 	BlokusPreferences::m_bShowCornerCells.RegisterObserver(m_mainWindow);
 	BlokusPreferences::m_bShowAnimation  .RegisterObserver(m_mainWindow);
@@ -90,6 +93,7 @@ void BlokusAppWindow::configureStatusBar()
 
 void BlokusAppWindow::OnClose()
 {
+	WinManager::StoreWindowConfiguration();
 	BaseWindow::OnClose();
 }
 
