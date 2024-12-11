@@ -57,15 +57,22 @@ void Player::DrawResult
 	);
 }
 
-void Player::DrawFreePieces(DrawContext &context) const
+void Player::DrawFreePieces
+(
+	DrawContext        &context,
+	Piece const * const pPieceNoDraw
+) const
 {
 	Apply2AvailablePiecesC
 	(
-		[this, &context](Piece const& piece)
+		[this, &context, pPieceNoDraw](Piece const& piece)
 		{
-			PosDir const posDir { piece.GetPosDirC() };
-			Color  const col    { m_pPlayerType->m_color };
-			piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, false);
+			if (&piece != pPieceNoDraw)
+			{
+				PosDir const posDir { piece.GetPosDirC() };
+				Color  const col    { m_pPlayerType->m_color };
+				piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, false);
+			}
 		}
 	);
 }
@@ -140,7 +147,7 @@ void Player::UndoMove(BlokusMove &move)
 	++m_remainingPieces;
 }
 
-void Player::finalize(BlokusMove &move)
+void Player::finalize(BlokusMove const move)
 {
 	m_bFinished = true;   
 	m_iResult = 0;

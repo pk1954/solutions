@@ -32,6 +32,7 @@ public:
 	PosDir    const &GetPosDirC()     const { return m_posDir; }
     PieceTypeId      GetPieceTypeId() const { return m_idPieceType; }
     PieceType const &GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
+    CoordPos         GetInitialPos()  const { return GetPieceTypeC().GetInitialPos(); }
 
     void StartMotion() { m_bAvailable = false; }
 

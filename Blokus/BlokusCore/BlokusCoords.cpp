@@ -6,8 +6,9 @@ module BlokusCore:BlokusCoords;
 
 import :Components;
 
-MicroMeter const UM_CELL_SIZE  { 10000._MicroMeter };
-MicroMeter const UM_BOARD_SIZE { UM_CELL_SIZE * static_cast<float>(BOARD_SIZE) };
+MicroMeter const UM_CELL_SIZE      { 10000._MicroMeter };
+MicroMeter const UM_CELL_SIZE_HALF { UM_CELL_SIZE * 0.5f };
+MicroMeter const UM_BOARD_SIZE     { UM_CELL_SIZE * static_cast<float>(BOARD_SIZE) };
 
 bool IsInShapeRange(CoordPos const &pos)
 {
@@ -31,7 +32,7 @@ MicroMeterRect Convert2fCoord(CoordRect const& rect)
 
 Coord Round2Coord(MicroMeter const &um)
 {
-	return Coord(Cast2SignedChar((um / UM_CELL_SIZE)));
+	return Coord(Cast2SignedChar(((um + UM_CELL_SIZE_HALF) / UM_CELL_SIZE)));
 }
 
 CoordPos Round2CoordPos(MicroMeterPnt const& umPnt)

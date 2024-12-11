@@ -7,29 +7,31 @@ export module BlokusCore:PieceMotion;
 import Types;
 import DrawContext;
 import :Player;
+import :Piece;
 
 export class PieceMotion
 {
 public:
     void Reset()
     {
-        m_umPos = NP_NULL;
+        m_umPos  = NP_NULL;
+        m_pPiece = nullptr;
     }
 
-    Piece const *SelectPiece
+    bool FindPiece
     (
         Player              &player,
         MicroMeterPnt const &umPos
     )
     {
-	    Piece *pPiece { player.FindPiece([&umPos](Piece &piece) { return IsInPiece(umPos, piece); }) };
-	    if (pPiece != nullptr)
+	    m_pPiece = player.FindPiece([&umPos](Piece &piece) { return IsInPiece(umPos, piece); });
+	    if (m_pPiece != nullptr)
 	    {
-            pPiece->StartMotion();
-            m_umPos = Convert2fCoord(pPiece->GetPieceTypeC().GetInitialPos());
-	        m_umOffset   = umPos - m_umPos;
+            m_umPos    = Convert2fCoord(m_pPiece->GetInitialPos());
+	        m_umOffset = umPos - m_umPos;
+            return true;
 	    }
-        return pPiece;
+        return false;
     }
 
     bool MovePiece(MicroMeterPnt const& umPos)
@@ -39,12 +41,15 @@ public:
         return GetCoordPos() != coordPosOld;
     }
 
-    bool          IsActive   () const { return m_umPos != NP_NULL; }
-    MicroMeterPnt GetPosition() const { return m_umPos; }
-    CoordPos      GetCoordPos() const { return Round2CoordPos(m_umPos); }
+    bool             IsActive     () const { return m_umPos != NP_NULL; }
+    MicroMeterPnt    GetPosition  () const { return m_umPos; }
+    CoordPos         GetCoordPos  () const { return Round2CoordPos(m_umPos); }
+    Piece     const *GetPieceC    () const { return m_pPiece; }
+    PieceType const &GetPieceTypeC() const { return m_pPiece->GetPieceTypeC(); }
 
 private:
 
-    MicroMeterPnt m_umPos { NP_NULL };
+    Piece       * m_pPiece { nullptr };
+    MicroMeterPnt m_umPos  { NP_NULL };
     MicroMeterPnt m_umOffset;
 };

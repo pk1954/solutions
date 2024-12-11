@@ -38,10 +38,10 @@ public:
     Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (DrawContext&) const;
-    void DrawContactPnts(DrawContext&) const;
+    void DrawFreePieces (DrawContext&, Piece const * const)    const;
+    void DrawContactPnts(DrawContext&)                         const;
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
-    void DrawCell       (DrawContext&, CoordPos const&) const;
+    void DrawCell       (DrawContext&, CoordPos const&)        const;
 
     BlokusMove SelectMove(RuleServerInterface const&);
     void       DoMove  (BlokusMove&);
@@ -137,6 +137,6 @@ private:
     HiResTimer         m_timer;
 
     void reduceValidPositions(BlokusMove const);
-    void finalize            (BlokusMove&);
+    void finalize            (BlokusMove const);
     void undoFinalize        ();
 };

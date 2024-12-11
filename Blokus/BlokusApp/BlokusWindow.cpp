@@ -214,15 +214,16 @@ MicroMeterPnt BlokusWindow::getCrsrPos(LPARAM const lParam) const
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	Piece const * const pPiece { m_pieceMotion.SelectPiece(m_match.ActivePlayer(), getCrsrPos(lParam)) };
-	if (pPiece)
+	if (m_match.ActivePlayer().IsHuman())
 	{
-		PieceType const &pieceType { pPiece->GetPieceTypeC() };
-		m_move.SetPieceType(pieceType);
-	    m_move.SetPlayerId(m_match.ActivePlayerId());
-		m_move.SetShapeId(ShapeId(0));
-		m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
-		SetCapture();
+		if (m_pieceMotion.FindPiece(m_match.ActivePlayer(), getCrsrPos(lParam)))
+		{
+			m_move.SetPieceType(m_pieceMotion.GetPieceTypeC());
+			m_move.SetPlayerId (m_match.ActivePlayerId());
+			m_move.SetShapeId  (ShapeId(0));
+			m_move.SetCoordPos (m_pieceMotion.GetCoordPos());
+			SetCapture();
+		}
 	}
 	return GraphicsWindow::OnLButtonDown(wParam, lParam);
 }
@@ -244,8 +245,6 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	{
 		if (m_match.IsValidPosition(m_move))
 			NextMoveCmd::Push(m_match, m_move);
-		else
-			m_match.ResetPiece(m_move);
 		m_move.Reset();
 		m_pieceMotion.Reset();
 		Notify(false);
@@ -315,7 +314,7 @@ void BlokusWindow::PaintGraphics()
 	Player const& player { m_match.ActivePlayerC() };
  	paintBoard();
 	m_match.DrawSetPieces(m_context);
-	player.DrawFreePieces(m_context);
+	player.DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_move.IsCompletelyOnBoard())
