@@ -4,6 +4,7 @@
 
 export module BlokusCore:BlokusMove;
 
+import std;
 import :Components;
 import :PlayerId;
 import :PieceTypeId;
@@ -11,6 +12,8 @@ import :PieceType;
 import :BlokusCoords;
 import :ShapeId;
 import :Shape;
+
+using std::vector;
 
 export class BlokusMove
 {
@@ -76,3 +79,5 @@ private:
     ShapeId     m_idShape     { UndefinedShapeId };
     CoordPos    m_coordPos    { UndefinedCoordPos };
 };
+
+export using ListOfMoves = vector<BlokusMove>;

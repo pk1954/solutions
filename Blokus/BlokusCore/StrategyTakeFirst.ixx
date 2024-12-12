@@ -19,15 +19,12 @@ public:
 
     wstring const& GetName() const final { return NAME; }
 
-
-    BlokusMove SelectMove(RuleServerInterface const &rs) final
+    BlokusMove SelectMove(RuleServerInterface const &rsi) const final
     {
-        BlokusMove         move;  // initialized to everything Undefined
-        vector<BlokusMove> moves;
-        rs.GetListOfValidMoves(moves);
+        ListOfMoves const &moves { rsi.GetListOfValidMoves() };
         if (!moves.empty())
-            move = moves[0];
-        return move;
+            return moves[0];
+        return BlokusMove(); // initialized to everything Undefined
     }
 
 private:

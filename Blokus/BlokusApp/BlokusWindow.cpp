@@ -22,10 +22,12 @@ fPixel const BORDER { 10.0_fPixel };
 
 void BlokusWindow::Start
 (
-	HWND const hwndParent,
-	Sound     &sound
+	HWND                 const  hwndParent,
+	MatchReaderInterface const &mri,
+	Sound                      &sound
 )
 {
+	m_pMRI   = &mri;
 	m_pSound = & sound;
 	GraphicsWindow::Initialize
 	(
@@ -35,7 +37,6 @@ void BlokusWindow::Start
 	);
 	m_context.Start(m_upGraphics.get());
 	m_hTextFormat = m_upGraphics->NewTextFormat(24.f);
-   	m_match.Reset();
 	m_posDirAnimation.SetUpdateLambda
 	(
 		[this](bool const bTargetReached)
@@ -93,55 +94,13 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
-void BlokusWindow::Reset()
-{
-	m_match.Reset();
-	Notify(false);
-}
-
-//void BlokusWindow::autoRun()
-//{
-//	while (m_move = m_match.NextMove(), !m_move.IsDefined())
-//	{
-//		if (m_match.HasFinished())
-//		{
-//			m_bAutoRun = false;
-//			Notify(true);
-//			return;
-//		}
-//		else
-//		{
-//			m_match.NextPlayer();
-//			Notify(true);
-//		}
-//	}
-//	NextMoveCmd::Push(m_move, m_match);
-//}
-
-//void BlokusWindow::performMove()
-//{
-//	PosDir &posDirAct { m_match.GetPosDir(m_move) };
-////	m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), shape.GetRotation());
-//	m_posDirTarget = PosDir(Convert2fCoord(m_move.GetCoordPos()), 0._Degrees);
-//	if (BlokusPreferences::m_bShowAnimation.Get())
-//	{
-//		m_iAnimationPhase = 1;
-//		m_posDirAnimation.Start(&posDirAct, posDirAct, m_posDirTarget);
-//	}
-//	else
-//	{
-//		posDirAct = m_posDirTarget;
-//		PostCommand(IDX_FINISH_MOVE);
-//	}
-//}
-
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (int const wmId { LoWord(wParam) } )
 	{
 	case IDD_RESET:
 		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
-			Reset();
+			ResetMatchCmd::Push();
 		break;
 
 	case IDD_START_AUTO_RUN:
@@ -154,15 +113,15 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 	case IDD_NEXT_MOVE:
 //		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
-		if (!m_match.ActivePlayer().IsHuman())
+		if (m_pMRI->ActivePlayerC().IsHuman())
 		{
-	        BlokusMove move { m_match.ActivePlayer().SelectMove(m_match) };  // may finish if no more valid moves
-			if (move.IsDefined())
-				NextMoveCmd::Push(m_match, move);
+			m_pSound->WarningSound();    // no automatic move for human players
+		}
+		else if (!m_pMRI->ActivePlayerC().HasFinished())
+		{
+			NextMoveCmd::Push(m_pMRI->SelectMove());  // may finish if no more valid moves
 			Notify(true);
 		}
-		else 
-			m_pSound->WarningSound();
 		break;
 
 	case IDD_NEXT_SHAPE:
@@ -185,19 +144,6 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		Notify(true);
 		break;
 
-	//case IDX_FINISH_MOVE:
-	//	if (m_iAnimationPhase == 1)
-	//	{
-	//		Degrees const degrees { m_match.GetRotation(m_move) };
-	//		if (degrees != 0._Degrees)
-	//		{
-	//			startRotationPhase(degrees);
-	//			break;
-	//		}
-	//	}
-	//	finishMove();
-	//	break;
-
 	default:
 		return GraphicsWindow::OnCommand(wParam, lParam, pixPoint);
 	}
@@ -214,12 +160,12 @@ MicroMeterPnt BlokusWindow::getCrsrPos(LPARAM const lParam) const
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_match.ActivePlayer().IsHuman())
+	if (m_pMRI->ActivePlayerC().IsHuman())
 	{
-		if (m_pieceMotion.FindPiece(m_match.ActivePlayer(), getCrsrPos(lParam)))
+		if (m_pieceMotion.FindPiece(m_pMRI->ActivePlayerC(), getCrsrPos(lParam)))
 		{
 			m_move.SetPieceType(m_pieceMotion.GetPieceTypeC());
-			m_move.SetPlayerId (m_match.ActivePlayerId());
+			m_move.SetPlayerId (m_pMRI->ActivePlayerId());
 			m_move.SetShapeId  (ShapeId(0));
 			m_move.SetCoordPos (m_pieceMotion.GetCoordPos());
 			SetCapture();
@@ -243,31 +189,14 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	ReleaseCapture();
 	if (m_pieceMotion.IsActive())
 	{
-		if (m_match.IsValidPosition(m_move))
-			NextMoveCmd::Push(m_match, m_move);
+		if (m_pMRI->IsValidPosition(m_move))
+			NextMoveCmd::Push(m_move);
 		m_move.Reset();
 		m_pieceMotion.Reset();
 		Notify(false);
 	}
 	return GraphicsWindow::OnLButtonUp(wParam, lParam);
 }
-
-//void BlokusWindow::startRotationPhase(Degrees const degrees)
-//{
-//	PosDir &posDirAct { m_match.GetPosDir(m_move) };
-//	m_posDirTarget    = PosDir(Convert2fCoord(m_move.GetCoordPos()), degrees);
-//	m_iAnimationPhase = 2;
-//	m_posDirAnimation.Start(&posDirAct, posDirAct, m_posDirTarget);
-//}
-
-//void BlokusWindow::finishMove()
-//{
-//	m_match.FinishMove(m_move);
-//	m_match.NextPlayer();
-//	Notify(true);
-//	if (m_bAutoRun)
-//		PostCommand(IDX_NEXT_AUTO_MOVE);
-//}
 
 void BlokusWindow::paintBoard() const
 {
@@ -304,28 +233,28 @@ void BlokusWindow::drawFinishedMsg()
 	m_context.DisplayText
 	(
 		rect, 
-		L"Match finished. The winner is " + m_match.Winner().GetName() + L".",
+		L"Match finished. The winner is " + m_pMRI->Winner().GetName() + L".",
 		m_hTextFormat
 	);
 }
 
 void BlokusWindow::PaintGraphics()
 {
-	Player const& player { m_match.ActivePlayerC() };
+	Player const& player { m_pMRI->ActivePlayerC() };
  	paintBoard();
-	m_match.DrawSetPieces(m_context);
+	m_pMRI->DrawSetPieces(m_context);
 	player.DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_move.IsCompletelyOnBoard())
-			m_match.DrawMovePiece(m_context, m_move);
+			m_pMRI->DrawMovePiece(m_context, m_move);
 		if (BlokusPreferences::m_bShowMoveDetail.Get())
-			m_match.DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition());
+			m_pMRI->DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition());
 	}
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		player.DrawContactPnts(m_context);
 	if (player.HasFinished())
 		player.DrawResult(m_context, m_hTextFormat);
-	if (m_match.HasFinished())
+	if (m_pMRI->HasFinished())
 		drawFinishedMsg();
 };

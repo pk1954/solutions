@@ -13,6 +13,6 @@ using std::vector;
 export class RuleServerInterface
 {
 public:
-    virtual void         GetListOfValidMoves(vector<BlokusMove>&) const = 0;
-    virtual Board const &GetBoard()                               const = 0;
+    virtual ListOfMoves const &GetListOfValidMoves() const = 0;
+    virtual Board const &GetBoard()                  const = 0;
 };

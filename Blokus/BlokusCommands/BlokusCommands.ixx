@@ -4,4 +4,6 @@
 
 export module BlokusCommands;
 
+export import :BlokusCommand;
 export import :NextMoveCmd;
+export import :ResetMatchCmd;

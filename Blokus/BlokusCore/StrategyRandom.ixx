@@ -20,23 +20,21 @@ public:
 
     wstring const& GetName() const final { return NAME; }
 
-    BlokusMove SelectMove(RuleServerInterface const &rs) final
+    BlokusMove SelectMove(RuleServerInterface const &rsi) const final
     {
-        BlokusMove         move;  // initialized to everything Undefined
-        vector<BlokusMove> moves;
-        rs.GetListOfValidMoves(moves);
+        ListOfMoves const &moves { rsi.GetListOfValidMoves() };
         if (!moves.empty())
         {
             unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };
             unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
             return moves[uiSel];
         }
-        return move;
+        return BlokusMove(); // initialized to everything Undefined
     }
 
 private:
 
     wstring const NAME { L"Random" };
 
-    Random m_random;
+    mutable Random m_random;
 };

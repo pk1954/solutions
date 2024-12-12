@@ -19,22 +19,20 @@ using std::unique_ptr;
 export class BlokusWindow : public GraphicsWindow
 {
 public:
-	void Reset();
-	void Start(HWND const, Sound&);
+	void Start(HWND const, MatchReaderInterface const &, Sound&);
 
 	void OnChar(WPARAM const, LPARAM const) final;
 
 private:
-	//PosDir            m_posDirTarget;
-	BlokusMove        m_move;
-	Match             m_match;
-	PieceMotion       m_pieceMotion;
-	D2D_DrawContext   m_context;
-	Sound           * m_pSound      { nullptr };
-	bool              m_bAutoRun    { false };
-	TextFormatHandle  m_hTextFormat { nullptr };
-    Animation<PosDir> m_posDirAnimation;
-	int               m_iAnimationPhase;
+	BlokusMove                   m_move;
+	MatchReaderInterface const * m_pMRI;
+	PieceMotion                  m_pieceMotion;
+	D2D_DrawContext              m_context;
+	Sound                      * m_pSound      { nullptr };
+	bool                         m_bAutoRun    { false };
+	TextFormatHandle             m_hTextFormat { nullptr };
+    Animation<PosDir>            m_posDirAnimation;
+	int                          m_iAnimationPhase;
 
 	bool OnSize       (PIXEL  const, PIXEL  const)                                            final;
 	bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;

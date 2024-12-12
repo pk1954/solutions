@@ -1,8 +1,8 @@
-// BoardMap.ixx
+// MapOfValidCells.ixx
 //
 // BlokusCore
 
-export module BlokusCore:BoardMap;
+export module BlokusCore:MapOfValidCells;
 
 import std;
 import Debug;
@@ -10,11 +10,11 @@ import :Components;
 
 using std::array;
 
-export class BoardMap  // occupied cells and cells which have piece of same color 
-{                      // as neighbours, are false, otherwise true
+export class MapOfValidCells  // occupied cells and cells which have piece of same color 
+{                             // as neighbours, are false, otherwise true
 public:
 
-    BoardMap()
+    MapOfValidCells()
     {
         Reset();
     }

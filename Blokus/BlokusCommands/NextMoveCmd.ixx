@@ -5,46 +5,33 @@
 export module BlokusCommands:NextMoveCmd;
 
 import std;
-import Types;
-import Commands;
-import WinCommand;
-import WinManager;
-import Win32_Util_Resource;
 //import AnimationCommand;
-import BlokusCore;
-import Resource;
+import :BlokusCommand;
 
 //using PosDirAnimationCmd = AnimationCommand<PosDir>;
 
 using std::wstring;
 using std::make_unique;
 
-export class NextMoveCmd : public WinCommand  //PosDirAnimationCmd
+export class NextMoveCmd : public BlokusCommand  //PosDirAnimationCmd
 {
 public:
 
-    NextMoveCmd
-    (
-        Match           &match,
-        BlokusMove const move
-    )
-      : m_match(match),
-        m_move(move)
+    NextMoveCmd(BlokusMove const move)
+      : m_move(move)
     {}
-
-    void UpdateUI() final
-    {
-        WinManager::GetRootWindow(RootWinId(IDM_MAIN_WINDOW))->Notify(false);
-    };
 
 	void Do() final 
 	{
-   	    m_move = m_match.DoMove(m_move);
+		if (m_move.IsDefined())
+       	    m_move = m_pMWI->DoMove(m_move);
+        else 
+            m_pMWI->Finalize();
     }
 
 	void Undo() final 
 	{
-   	    m_match.UndoMove(m_move);
+   	    m_pMWI->UndoMove(m_move);
 	}
 
     static void Register()
@@ -52,23 +39,18 @@ public:
         SymbolTable::ScrDefConst(NAME, &m_wrapper);
     }
 
-    static void Push
-    (
-        Match           &match,
-        BlokusMove const move
-    )
+    static void Push(BlokusMove const move)
     {
         //if (IsTraceOn())
         //    TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
 
-        PushCommand(make_unique<NextMoveCmd>(match, move));
+        PushCommand(make_unique<NextMoveCmd>(move));
     }
 
 private:
     inline static const wstring NAME { L"NextMoveCmd" };
 
-    BlokusMove m_move;
-    Match    & m_match;
+    BlokusMove            m_move;
 
     inline static struct myWrapper : public Wrapper
     {

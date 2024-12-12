@@ -23,6 +23,7 @@ import Win32_Sound;
 import WinBasics;
 import WinCommand;
 
+using std::unique_ptr;;
 using std::wstring;
 using std::wcout;
 using std::endl;
@@ -64,6 +65,7 @@ private:
 	BlokusWindow            m_mainWindow;
 	CommandStack            m_cmdStack;
     HiResTimer              m_timer;
+	MatchWriterInterface    m_mwi;
 	Observable              m_matchObservable;
 	ScriptHook              m_ScriptHook;
 	StatusBar               m_statusBar;
@@ -72,6 +74,7 @@ private:
 	TournamentWindow        m_tournamentWindow;
 	UndoRedoMenu            m_undoRedoMenu;
 	WinSound                m_sound;
+	unique_ptr<Match>       m_upMatch;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

@@ -20,11 +20,11 @@ public:
 
     bool FindPiece
     (
-        Player              &player,
+        Player        const &player,
         MicroMeterPnt const &umPos
     )
     {
-	    m_pPiece = player.FindPiece([&umPos](Piece &piece) { return IsInPiece(umPos, piece); });
+	    m_pPiece = player.FindPiece([&umPos](Piece const &piece) { return IsInPiece(umPos, piece); });
 	    if (m_pPiece != nullptr)
 	    {
             m_umPos    = Convert2fCoord(m_pPiece->GetInitialPos());
@@ -49,7 +49,7 @@ public:
 
 private:
 
-    Piece       * m_pPiece { nullptr };
+    Piece const * m_pPiece { nullptr };
     MicroMeterPnt m_umPos  { NP_NULL };
     MicroMeterPnt m_umOffset;
 };

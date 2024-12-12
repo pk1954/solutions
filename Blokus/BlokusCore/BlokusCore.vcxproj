@@ -24,7 +24,7 @@
     <ClCompile Include="BlokusPreferences.ixx" />
     <ClCompile Include="BlokusUtilities.ixx" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="BoardMap.ixx" />
+    <ClCompile Include="MapOfValidCells.ixx" />
     <ClCompile Include="Board.ixx" />
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="Components.ixx" />
@@ -32,6 +32,10 @@
     <ClCompile Include="Match.ixx" />
     <ClCompile Include="MatchProtocol.ixx" />
     <ClCompile Include="BlokusMove.ixx" />
+    <ClCompile Include="MatchReaderInterface.cpp" />
+    <ClCompile Include="MatchReaderInterface.ixx" />
+    <ClCompile Include="MatchWriterInterface.cpp" />
+    <ClCompile Include="MatchWriterInterface.ixx" />
     <ClCompile Include="Piece.ixx" />
     <ClCompile Include="PieceMotion.ixx" />
     <ClCompile Include="PieceTypeId.ixx" />

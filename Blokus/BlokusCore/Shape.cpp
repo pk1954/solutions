@@ -17,12 +17,7 @@ bool Shape::IsCompletelyOnBoard(CoordPos const& pos) const
 	(
 		[&pos](ShapeCoordPos const& posCorner)
 		{ 
-			CoordPos const& posXX = pos + posCorner;
-			if (IsOnBoard(pos + posCorner))
-				return true;
-			else
-				return false;
-
+			return IsOnBoard(pos + posCorner);
 		}
 	);
 }

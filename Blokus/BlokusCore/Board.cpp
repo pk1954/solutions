@@ -80,15 +80,15 @@ bool Board::hasPlayerId(CoordPos const& pos, PlayerId const id) const
 bool Board::hasDiagContact(CoordPos const& pos, PlayerId const id) const
 {
 	return (hasPlayerId(NorthEastPos(pos), id)) || 
-            (hasPlayerId(SouthEastPos(pos), id)) ||
-		    (hasPlayerId(NorthWestPos(pos), id)) || 
-            (hasPlayerId(SouthWestPos(pos), id));
+           (hasPlayerId(SouthEastPos(pos), id)) ||
+		   (hasPlayerId(NorthWestPos(pos), id)) || 
+           (hasPlayerId(SouthWestPos(pos), id));
 }
 
 bool Board::hasOrthoContact(CoordPos const& pos, PlayerId const id) const
 {
     return (hasPlayerId(NorthPos(pos), id)) ||
-            (hasPlayerId(EastPos (pos), id)) ||
-		    (hasPlayerId(SouthPos(pos), id)) ||
-            (hasPlayerId(WestPos (pos), id));
+           (hasPlayerId(EastPos (pos), id)) ||
+		   (hasPlayerId(SouthPos(pos), id)) ||
+           (hasPlayerId(WestPos (pos), id));
 }

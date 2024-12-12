@@ -35,7 +35,7 @@ export bool IsOnBoard(CoordPos const& pos)
            IsInRange(pos.GetY(), 0_COORD, MAX_COORD);
 }
 
-void Apply2AllBoardCells(auto const& func)
+export void Apply2AllBoardCells(auto const& func)
 {
 	for (Coord y = 0_COORD; y < COORD_BOARD_SIZE; ++y)
 	for (Coord x = 0_COORD; x < COORD_BOARD_SIZE; ++x)

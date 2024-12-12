@@ -11,7 +11,7 @@ import Direct2D;
 import DrawContext;
 import HiResTimer;
 import :Board;
-import :BoardMap;
+import :MapOfValidCells;
 import :Piece;
 import :PlayerId;
 import :PieceTypeId;
@@ -28,7 +28,7 @@ using std::wstring;
 export class Player
 {
 public:
-    void Initialize(PlayerType const& type, Strategy * const);
+    void Initialize(Board const&, PlayerId const, Strategy * const);
     void Reset();
     void ResetTimer() { m_timer.Reset(); }
     bool IsFirstMove() const { return m_bFirstMove; }
@@ -43,9 +43,10 @@ public:
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
     void DrawCell       (DrawContext&, CoordPos const&)        const;
 
-    BlokusMove SelectMove(RuleServerInterface const&);
+    BlokusMove SelectMove(RuleServerInterface const&) const;
     void       DoMove  (BlokusMove&);
-    void       UndoMove(BlokusMove&);
+    void       UndoMove();
+    void       Finalize();
 
     void Apply2AllPieces(auto const& func)
     {
@@ -59,6 +60,14 @@ public:
             func(piece);
     }
 
+    Piece const *FindPiece(auto const& crit) const // returns first piece satisfying crit
+    {
+        for (Piece const &piece: m_pieces)
+            if (piece.IsAvailable() && crit(piece))
+                return &piece;
+        return nullptr;
+    }
+
     void Apply2AvailablePieces(auto const& func)
     {
         for (Piece &piece: m_pieces)
@@ -66,18 +75,17 @@ public:
                 func(piece);
     }
 
-    Piece *FindPiece(auto const& crit) // returns first piece satisfying crit
-    {
-        for (Piece &piece: m_pieces)
-            if (piece.IsAvailable() && crit(piece))
-                return &piece;
-        return nullptr;
-    }
-
     void Apply2AvailablePiecesC(auto const& func) const
     {
         for (Piece const& piece: m_pieces)
             if (piece.IsAvailable())
+                func(piece);
+    }
+
+    void Apply2SetPiecesC(auto const& func) const
+    {
+        for (Piece const& piece: m_pieces)
+            if (!piece.IsAvailable())
                 func(piece);
     }
 
@@ -95,25 +103,9 @@ public:
         return false;
     }
 
-    void ClearContactPnts()
-    {
-        m_contactPntsOnBoard.clear();
-    }
+    void RecalcListOfContactPnts();
 
-    void AddContactPnt(CoordPos const &pos)
-    {
-        m_contactPntsOnBoard.push_back(pos);
-    }
-
-    void AddInitialContactPnt()
-    {
-        AddContactPnt(m_pPlayerType->m_startPoint);
-    }
-
-    bool IsUnblockedPos(CoordPos const &pos) const 
-    { 
-        return m_validPositions.IsUnblockedPos(pos); 
-    }
+    bool IsUnblockedPos(CoordPos const &pos) const { return m_mapOfValidCells.IsUnblockedPos(pos); }
 
     bool            HasFinished() const { return m_bFinished; }
     int             Result()      const { return m_iResult; }
@@ -125,6 +117,8 @@ public:
 private:
     using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;
 
+    Board      const * m_pBoard;
+    PlayerId           m_idPlayer;
     PlayerType const * m_pPlayerType;
     Strategy         * m_pStrategy;
     unsigned int       m_remainingPieces; 
@@ -133,10 +127,12 @@ private:
     bool               m_bFirstMove;      
     PIECE_TYPE_SET     m_pieces;
     vector<CoordPos>   m_contactPntsOnBoard;
-    BoardMap           m_validPositions;
-    HiResTimer         m_timer;
+    MapOfValidCells    m_mapOfValidCells;
 
-    void reduceValidPositions(BlokusMove const);
-    void finalize            (BlokusMove const);
-    void undoFinalize        ();
+    mutable HiResTimer m_timer;
+
+    void blockPosition  (CoordPos const&);
+    void blockNeighbours(CoordPos const&);
+    void reduceValidPositions(Shape const&,	CoordPos const&);
+	void recalcMapOfValidCells();
 };

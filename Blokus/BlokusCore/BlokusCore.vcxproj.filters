@@ -69,7 +69,7 @@
     <ClCompile Include="ShapeId.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BoardMap.ixx">
+    <ClCompile Include="MapOfValidCells.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlokusPreferences.ixx">
@@ -109,6 +109,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StrategyHuman.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchReaderInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchWriterInterface.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchReaderInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchWriterInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

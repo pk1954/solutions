@@ -24,5 +24,11 @@
     <ClCompile Include="Resource.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BlokusCommand.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResetMatchCmd.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
