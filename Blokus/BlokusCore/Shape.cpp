@@ -146,6 +146,41 @@ MicroMeterPnt Shape::CenterOfGravity()
 	return umPntCenter;
 }
 
+void Shape::colSquare
+(
+	DrawContext   const &context, 
+	MicroMeterPnt const  center,
+	Color         const  col,
+	MicroMeter    const  umHalfSize
+) const
+{
+	MicroMeterPnt const umPntStartPos { center - MicroMeterPnt(umHalfSize) };
+	MicroMeterPnt const umPntEndPos   { center + MicroMeterPnt(umHalfSize) };
+	context.FillRectangle(MicroMeterRect(umPntStartPos, umPntEndPos), col);
+}
+
+void Shape::shapeSquare
+(
+	DrawContext      const &context, 
+	CoordPos         const &coordPos,
+	Color            const  col,
+	bool             const  bHighlighted,
+	wstring          const &text,
+	TextFormatHandle const  hTextFormat
+) const
+{
+	MicroMeterPnt  const umPos       { Convert2fCoord(coordPos) };
+	MicroMeter     const umHalfSize  { UM_CELL_SIZE * 0.5f };
+	MicroMeterPnt  const umPosCenter { umPos + MicroMeterPnt(umHalfSize) };
+	colSquare(context, umPosCenter, bHighlighted ? brighter(col) : col,         umHalfSize       );
+	colSquare(context, umPosCenter, bHighlighted ? col           : darker(col), umHalfSize * 0.8f);
+	if (BlokusPreferences::m_bShowPieceNumbers.Get())
+	{
+		MicroMeterRect umRect { umPos, UM_CELL_SIZE };
+		context.DisplayText(umRect.Move2Vert(umHalfSize), text, hTextFormat);
+	}
+}
+
 void Shape::Draw
 (
 	DrawContext           &context, 
@@ -159,7 +194,7 @@ void Shape::Draw
 	(
 		[this, &context, &col, bHighlighted, &text, hTextFormat](ShapeCoordPos const& shapePos)
 		{
-			ShapeSquare(context, shapePos, col, bHighlighted, text, hTextFormat);
+			shapeSquare(context, shapePos, col, bHighlighted, text, hTextFormat);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())

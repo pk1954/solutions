@@ -113,6 +113,22 @@ private:
 	MicroMeterPnt         m_umPntCenter;
 	vector<ShapeCoordPos> m_cornerPnts;
 
+	void colSquare
+	(
+		DrawContext   const&, 
+		MicroMeterPnt const,
+		Color         const,
+		MicroMeter    const
+	) const;
+	void shapeSquare
+	(
+		DrawContext      const&, 
+		CoordPos         const&,
+		Color            const,
+		bool             const,
+		wstring          const&,
+		TextFormatHandle const
+	) const;
 	bool isCornerPnt  (CoordPos const&) const;
 	bool isPartOfShape(ShapeCoordPos const&) const;
 

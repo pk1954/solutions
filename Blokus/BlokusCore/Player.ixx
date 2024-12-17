@@ -42,7 +42,6 @@ public:
     void DrawSetPieces  (DrawContext&,                      TextFormatHandle const)             const;
     void DrawContactPnts(DrawContext&)                                                          const;
     void DrawResult     (DrawContext&, TextFormatHandle const)                                  const;
-    void DrawCell       (DrawContext&, CoordPos const&, wstring const&, TextFormatHandle const) const;
 
     BlokusMove SelectMove(RuleServerInterface const&) const;
     void       DoMove  (BlokusMove&);

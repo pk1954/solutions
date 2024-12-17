@@ -115,17 +115,6 @@ void Player::DrawSetPieces
 	);
 }
 
-void Player::DrawCell
-(
-	DrawContext            &context,
-	CoordPos         const &pos,
-	wstring          const &text,
-	TextFormatHandle const  hTextFormat
-) const
-{
-	ShapeSquare(context, pos, m_pPlayerType->m_color, false, text, hTextFormat);
-}
-
 void Player::DrawContactPnts(DrawContext &context) const
 {
 	Apply2AllContactPntsC
