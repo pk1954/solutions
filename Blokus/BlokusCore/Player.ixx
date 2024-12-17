@@ -39,6 +39,7 @@ public:
     Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
     void DrawFreePieces (DrawContext&, Piece const * const, TextFormatHandle const)             const;
+    void DrawSetPieces  (DrawContext&,                      TextFormatHandle const)             const;
     void DrawContactPnts(DrawContext&)                                                          const;
     void DrawResult     (DrawContext&, TextFormatHandle const)                                  const;
     void DrawCell       (DrawContext&, CoordPos const&, wstring const&, TextFormatHandle const) const;

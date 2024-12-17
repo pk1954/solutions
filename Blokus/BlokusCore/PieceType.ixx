@@ -32,9 +32,6 @@ public:
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(DrawContext&, ShapeId const, PosDir        const&, Color const, bool const, TextFormatHandle const) const;
-	void Draw(DrawContext&, ShapeId const, MicroMeterPnt const&, Color const, bool const, TextFormatHandle const) const;
-
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 
 	void Apply2AllShapeIdsC(auto const& func) const

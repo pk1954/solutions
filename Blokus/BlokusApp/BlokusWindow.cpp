@@ -292,9 +292,9 @@ void BlokusWindow::PaintGraphics()
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_move.IsCompletelyOnBoard())
-			m_pMRI->DrawMovePiece(m_context, m_move, m_hTextFormatSmall);
+			m_pMRI->DrawMovePiece(m_context, m_move, m_hTextFormatSmall);  // The shadow
 		if (BlokusPreferences::m_bShowMoveDetail.Get())
-			m_pMRI->DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition(), m_hTextFormatSmall);
+			m_pMRI->DrawMovePiece(m_context, m_move, m_hTextFormatSmall, m_pieceMotion.GetPosition());  // the original piece
 	}
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		player.DrawContactPnts(m_context);

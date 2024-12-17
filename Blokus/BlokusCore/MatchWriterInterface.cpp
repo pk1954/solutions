@@ -10,9 +10,9 @@ void MatchWriterInterface::DoMove(BlokusMove move)
 {
     Assert(move.IsDefined());
     Assert(!activePlayer().HasFinished());
-	getPiece(move).DoMove(move.GetCoordPos()); // Set piece pos and mark as set
-    m_pMatch->m_board.DoMove(move);            // Set affected cells to player id
-    activePlayer().DoMove(move);               // may finish, if all pieces set
+	getPiece(move).DoMove(move);     // Set piece pos and mark as set
+    m_pMatch->m_board.DoMove(move);  // Set affected cells to player id
+    activePlayer().DoMove(move);     // may finish, if all pieces set
 }
 
 void MatchWriterInterface::UndoMove(BlokusMove move)

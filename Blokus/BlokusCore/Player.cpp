@@ -78,16 +78,39 @@ void Player::DrawFreePieces
 			{
 				PosDir const posDir { piece.GetPosDirC() };
 				Color  const col    { m_pPlayerType->m_color };
-				piece.GetPieceTypeC().Draw
+				piece.Draw
 				(
 					context, 
-					ShapeId(0), 
 					posDir, 
 					col, 
 					false, 
 					hTextFormat
 				);
 			}
+		}
+	);
+}
+
+void Player::DrawSetPieces
+(
+	DrawContext           &context,
+	TextFormatHandle const hTextFormat
+) const
+{
+	Apply2SetPiecesC
+	(
+		[this, &context, hTextFormat](Piece const& piece)
+		{
+			PosDir const posDir { piece.GetPosDirC() };
+			Color  const col    { m_pPlayerType->m_color };
+			piece.Draw
+			(
+				context, 
+				posDir, 
+				col, 
+				false, 
+				hTextFormat
+			);
 		}
 	);
 }

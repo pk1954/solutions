@@ -29,9 +29,9 @@ public:
     Piece       const &GetPieceC    (BlokusMove const) const;
     PieceType   const &GetPieceTypeC(BlokusMove const) const;
                                                        
-    void DrawSetPieces(DrawContext&,                                         TextFormatHandle const) const;
-    void DrawMovePiece(DrawContext&, BlokusMove const,                       TextFormatHandle const) const;
-    void DrawMovePiece(DrawContext&, BlokusMove const, MicroMeterPnt const&, TextFormatHandle const) const;
+    void DrawSetPieces(DrawContext&,                   TextFormatHandle const)                       const;
+    void DrawMovePiece(DrawContext&, BlokusMove const, TextFormatHandle const)                       const;
+    void DrawMovePiece(DrawContext&, BlokusMove const, TextFormatHandle const, MicroMeterPnt const&) const;
 
     bool HasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
 

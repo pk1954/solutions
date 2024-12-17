@@ -36,6 +36,7 @@
     <ClCompile Include="MatchReaderInterface.ixx" />
     <ClCompile Include="MatchWriterInterface.cpp" />
     <ClCompile Include="MatchWriterInterface.ixx" />
+    <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Piece.ixx" />
     <ClCompile Include="PieceMotion.ixx" />
     <ClCompile Include="PieceTypeId.ixx" />

@@ -6,6 +6,8 @@ export module BlokusCore:Piece;
 
 import Debug;
 import Types;
+import :ShapeId;
+import :BlokusMove;
 import :BlokusCoords;
 import :PieceTypeId;
 import :Components;
@@ -34,12 +36,17 @@ public:
     PieceType const &GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
     CoordPos         GetInitialPos()  const { return GetPieceTypeC().GetInitialPos(); }
 
+	void Draw(DrawContext&, PosDir        const&, Color const, bool const, TextFormatHandle const)                const;
+	void Draw(DrawContext&, MicroMeterPnt const&, Color const, bool const, TextFormatHandle const, ShapeId const) const;
+	//void Draw(DrawContext&, MicroMeterPnt const&, Color const, bool const, TextFormatHandle const)                const;
+
     void StartMotion() { m_bAvailable = false; }
 
-    void DoMove(CoordPos const& pos)
+    void DoMove(BlokusMove const& move)
     {
         m_bAvailable = false;
-        setPiecePos(pos);
+        m_idShape = move.GetShapeId();
+        setPiecePos(move.GetCoordPos());
     }
 
     void SetPos(MicroMeterPnt const &umPos)   { m_posDir.m_umPos = umPos; }
@@ -48,6 +55,7 @@ public:
 private:
 	PosDir      m_posDir;
     PieceTypeId m_idPieceType { UndefinedPieceTypeId };
+    ShapeId     m_idShape     { 0 };
 	bool        m_bFlipped    { false };
     bool        m_bAvailable  { true };
 

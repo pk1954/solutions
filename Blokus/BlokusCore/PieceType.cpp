@@ -45,35 +45,3 @@ void PieceType::SetShape(const ShapeCells& shapeCells)
 	for (Shape &shape : m_shapes)
 		shape.CollectCornerPnts();
 }
-
-void PieceType::Draw
-(
-	DrawContext            &context,
-	ShapeId          const  idShape,
-	PosDir           const &posDir, 
-	Color            const  col,
-	bool             const  bHighlighted,
-	TextFormatHandle const  hTextFormat
-) const
-{
-	fPixelPoint const offsetSave { context.GetPixelOffset() };
-	context.Move(posDir.m_umPos);
-	GetShapeC(idShape).Draw(context, posDir.m_degrees, col, bHighlighted, hTextFormat);
-	context.SetPixelOffset(offsetSave);
-}
-
-void PieceType::Draw
-(
-	DrawContext            &context,
-	ShapeId          const  idShape,
-	MicroMeterPnt    const &umPos, 
-	Color            const  col,
-	bool             const  bHighlighted,
-	TextFormatHandle const  hTextFormat
-) const
-{
-	fPixelPoint const offsetSave { context.GetPixelOffset() };
-	context.Move(umPos);
-	GetShapeC(idShape).Draw(context, col, bHighlighted, hTextFormat);
-	context.SetPixelOffset(offsetSave);
-}

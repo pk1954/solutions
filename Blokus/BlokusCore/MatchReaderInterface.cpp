@@ -30,17 +30,11 @@ Degrees MatchReaderInterface::GetRotation(BlokusMove const move) const
 
 void MatchReaderInterface::DrawSetPieces(DrawContext &context, TextFormatHandle const hTextFormat) const
 {
-    Apply2AllBoardCells
+    Apply2AllPlayersC
     (
-        [this, &context, hTextFormat](CoordPos const& pos)
-        {
-		    PlayerId const idPlayer { m_pMatch->m_board.GetPlayerId(pos) };
-            if (idPlayer != NO_PLAYER)
-            {
-                Player      const &player      { GetPlayerC(idPlayer) };
-                PieceTypeId const  idPieceType { m_pMatch->m_board.GetPieceTypeId(pos) };
-                player.DrawCell(context, pos, to_wstring(idPieceType.GetValue()), hTextFormat);
-            }
+        [this, &context, hTextFormat](Player const &player)
+        { 
+            player.DrawSetPieces(context, hTextFormat); 
         }
     );
 }
@@ -52,17 +46,16 @@ void MatchReaderInterface::DrawMovePiece
     TextFormatHandle const hTextFormat
 ) const
 {
-	MicroMeterPnt const  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
-	Color         const  color       { IsValidPosition(move) ? ActiveColor() : COL_BLACK};
-    PieceType     const &pieceType   { move.GetPieceTypeC() };
-	pieceType.Draw
+	MicroMeterPnt const umPosTarget { Convert2fCoord(move.GetCoordPos()) };
+	Color         const color       { IsValidPosition(move) ? ActiveColor() : COL_BLACK};
+	GetPieceC(move).Draw
     (
         context, 
-        move.GetShapeId(), 
         umPosTarget, 
         color * 0.5f, 
         false, 
-        hTextFormat
+        hTextFormat,
+        move.GetShapeId()
     );
 }
 
@@ -70,20 +63,19 @@ void MatchReaderInterface::DrawMovePiece
 (
     DrawContext            &context,
     BlokusMove       const  move,
-    MicroMeterPnt    const &umPos,
-    TextFormatHandle const hTextFormat
+    TextFormatHandle const hTextFormat,
+    MicroMeterPnt    const &umPos
 ) const
 {
-	Color     const  color     { ActiveColor()};
-    PieceType const &pieceType { move.GetPieceTypeC() };
-	pieceType.Draw
+	Color const  color { ActiveColor()};
+	GetPieceC(move).Draw
     (
         context, 
-        move.GetShapeId(), 
         umPos, 
         color, 
         false, 
-        hTextFormat
+        hTextFormat,
+        move.GetShapeId()
     );
 }
 
