@@ -7,6 +7,7 @@ module BlokusCore:PieceType;
 import DrawContext;
 
 using std::array;
+using std::wstring;
 
 void PieceType::SetPos(int const x, int const y) 
 { 
@@ -35,7 +36,7 @@ void PieceType::addOrientations(Shape &shape)
 
 void PieceType::SetShape(const ShapeCells& shapeCells)
 {
-	Shape shapeNew(shapeCells);
+	Shape shapeNew(shapeCells, m_idPieceType);
 	m_iNrOfCells = shapeNew.CountCells();
 	m_shapes.clear();
 	addOrientations(shapeNew);
@@ -47,30 +48,32 @@ void PieceType::SetShape(const ShapeCells& shapeCells)
 
 void PieceType::Draw
 (
-	DrawContext   &context,
-	ShapeId const  idShape,
-	PosDir  const &posDir, 
-	Color   const  col,
-	bool    const  bHighlighted
+	DrawContext            &context,
+	ShapeId          const  idShape,
+	PosDir           const &posDir, 
+	Color            const  col,
+	bool             const  bHighlighted,
+	TextFormatHandle const  hTextFormat
 ) const
 {
 	fPixelPoint const offsetSave { context.GetPixelOffset() };
 	context.Move(posDir.m_umPos);
-	GetShapeC(idShape).Draw(context, posDir.m_degrees, col, bHighlighted);
+	GetShapeC(idShape).Draw(context, posDir.m_degrees, col, bHighlighted, hTextFormat);
 	context.SetPixelOffset(offsetSave);
 }
 
 void PieceType::Draw
 (
-	DrawContext         &context,
-	ShapeId       const  idShape,
-	MicroMeterPnt const &umPos, 
-	Color         const  col,
-	bool          const  bHighlighted
+	DrawContext            &context,
+	ShapeId          const  idShape,
+	MicroMeterPnt    const &umPos, 
+	Color            const  col,
+	bool             const  bHighlighted,
+	TextFormatHandle const  hTextFormat
 ) const
 {
 	fPixelPoint const offsetSave { context.GetPixelOffset() };
 	context.Move(umPos);
-	GetShapeC(idShape).Draw(context, col, bHighlighted);
+	GetShapeC(idShape).Draw(context, col, bHighlighted, hTextFormat);
 	context.SetPixelOffset(offsetSave);
 }

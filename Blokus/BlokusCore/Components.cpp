@@ -18,6 +18,14 @@ void Components::Initialize()
     m_playerTypes[2] = { CoordPos(MAX_COORD, MAX_COORD), COL_BLUE,   L"BLUE"   };
     m_playerTypes[3] = { CoordPos(  0_COORD, MAX_COORD), COL_YELLOW, L"YELLOW" };
 
+	// Init piece types
+	
+	PieceTypeId id { 0 };
+	Apply2AllPieceTypes
+	(
+		[&id](PieceType &pt){ pt.SetPieceTypeId(id++); }
+	);
+
 	// Init shapes
 
 	m_pieceTypes[0].SetShape

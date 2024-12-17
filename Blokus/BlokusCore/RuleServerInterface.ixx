@@ -14,5 +14,5 @@ export class RuleServerInterface
 {
 public:
     virtual ListOfMoves const &GetListOfValidMoves() const = 0;
-    virtual Board const &GetBoard()                  const = 0;
+    virtual Board       const &GetBoard()            const = 0;
 };

@@ -10,9 +10,11 @@ import Color;
 import SaveCast;
 import DrawContext;
 import :BlokusCoords;
+import :PieceTypeId;
 
 using std::array;
 using std::vector;
+using std::wstring;
 
 export using ShapeCells = array<array<bool,MAX_SHAPE_EXTENSION>, MAX_SHAPE_EXTENSION>;
 
@@ -21,9 +23,7 @@ export using ShapeCoordPos = CoordPos;
 export class Shape
 {
 public:
-	Shape() = default;
-	Shape(ShapeCells const&);
-	//bool operator==(Shape const&) const = default;
+	Shape(ShapeCells const&, PieceTypeId const id);
 
 	bool Equals(Shape const &other) const
 	{
@@ -31,8 +31,8 @@ public:
 	}
 
 	int  CountCells() const;
-	void Draw(DrawContext&, Color const, bool const) const;
-	void Draw(DrawContext&, Degrees const, Color const, bool const) const;
+	void Draw(DrawContext&,                Color const, bool const, TextFormatHandle const) const;
+	void Draw(DrawContext&, Degrees const, Color const, bool const, TextFormatHandle const) const;
 
 	void CollectCornerPnts();
 	void Flip();
@@ -83,7 +83,7 @@ public:
 		return true;
 	}
 
-	bool IsTrueForAnyShapeCell(auto const& crit) const 
+	bool IsTrue4AnyShapeCell(auto const& crit) const 
 	{                                                   
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
@@ -107,6 +107,7 @@ public:
 
 private:
 
+	PieceTypeId           m_idPieceType { UndefinedPieceTypeId };
     ShapeCells            m_shapeCells;
 	Degrees               m_degRotation { 0._Degrees };
 	MicroMeterPnt         m_umPntCenter;

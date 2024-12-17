@@ -17,7 +17,7 @@ void Tournament::Start(int const iNrOfMatches)
     m_iNrOfMatches = iNrOfMatches;
     m_iMatch = 1;
     m_active = true;
-    m_mwi.SetMatch(&m_match);
+    //m_mwi.SetMatch(&m_match);
     m_mwi.Reset();
     m_mwi.ResetTimers();
 }
@@ -26,7 +26,7 @@ void Tournament::NextTournamentMove()
 {
 	m_timer.BeforeAction();
     BlokusMove move { m_mwi.SelectMove() };  // may finish if no more valid moves
-   if (move.IsDefined())
+    if (move.IsDefined())
     {
         m_mwi.DoMove(move);
     }
@@ -45,7 +45,7 @@ void Tournament::NextTournamentMove()
     }
     else
     {
-    	m_mwi.NextPlayer();
+//    	m_mwi.NextPlayer();
     }
     m_timer.AfterAction();
     wcout << L"Tournament NextMove " << m_timer.Average2wstring() << endl;

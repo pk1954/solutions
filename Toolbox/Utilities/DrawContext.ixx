@@ -62,6 +62,7 @@ public:
 	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&, BrushHandle, fPixel const = 1._fPixel) const = 0;
 	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,              fPixel const = 1._fPixel) const = 0;
 	virtual void DrawBezier(MicroMeterPnt const&, MicroMeterPnt const&,	MicroMeterPnt const&, MicroMeterPnt const&,	Color const, fPixel const = 1._fPixel) const = 0;
+	virtual void DrawRectangle(MicroMeterRect    const&, Color       const,                                                      fPixel const = 1._fPixel) const = 0;
 	virtual void DrawCircle   (MicroMeterCircle  const&, BrushHandle const,                                                      fPixel const = 1._fPixel) const = 0;
 	virtual void DrawCircle   (MicroMeterCircle  const&, Color       const,                                                      fPixel const = 1._fPixel) const = 0;
 	virtual void DrawCircle   (MicroMeterCircle  const&,                                                                         fPixel const = 1._fPixel) const = 0;

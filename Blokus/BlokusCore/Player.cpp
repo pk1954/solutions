@@ -34,11 +34,12 @@ void Player::Reset()
 {
     PieceTypeId id { 0 };
     Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
-	m_mapOfValidCells.Reset();
-	RecalcListOfContactPnts();
 	m_remainingPieces = NR_OF_PIECE_TYPES;
     m_bFinished       = false;
     m_bFirstMove      = true;
+	m_mapOfValidCells.Reset();
+	recalcListOfContactPnts();
+	recalcMapOfValidCells();
 }
 
 void Player::DrawResult
@@ -64,19 +65,28 @@ void Player::DrawResult
 
 void Player::DrawFreePieces
 (
-	DrawContext        &context,
-	Piece const * const pPieceNoDraw
+	DrawContext           &context,
+	Piece    const * const pPieceNoDraw,
+	TextFormatHandle const hTextFormat
 ) const
 {
 	Apply2AvailablePiecesC
 	(
-		[this, &context, pPieceNoDraw](Piece const& piece)
+		[this, &context, pPieceNoDraw, hTextFormat](Piece const& piece)
 		{
 			if (&piece != pPieceNoDraw)
 			{
 				PosDir const posDir { piece.GetPosDirC() };
 				Color  const col    { m_pPlayerType->m_color };
-				piece.GetPieceTypeC().Draw(context, ShapeId(0), posDir, col, false);
+				piece.GetPieceTypeC().Draw
+				(
+					context, 
+					ShapeId(0), 
+					posDir, 
+					col, 
+					false, 
+					hTextFormat
+				);
 			}
 		}
 	);
@@ -84,11 +94,13 @@ void Player::DrawFreePieces
 
 void Player::DrawCell
 (
-	DrawContext    &context,
-	CoordPos const &pos
+	DrawContext            &context,
+	CoordPos         const &pos,
+	wstring          const &text,
+	TextFormatHandle const  hTextFormat
 ) const
 {
-	ShapeSquare(context, pos, m_pPlayerType->m_color, false);
+	ShapeSquare(context, pos, m_pPlayerType->m_color, false, text, hTextFormat);
 }
 
 void Player::DrawContactPnts(DrawContext &context) const
@@ -104,34 +116,36 @@ void Player::DrawContactPnts(DrawContext &context) const
 
 void Player::blockPosition(CoordPos const &coordPos)
 {
-    m_mapOfValidCells.SetCell(coordPos, false);
+	if (IsOnBoard(coordPos))
+		m_mapOfValidCells.BlockCell(coordPos);
 }
 
 void Player::blockNeighbours(CoordPos const &coordPos)
 {
-    blockPosition(coordPos);
     blockPosition(NorthPos(coordPos));
     blockPosition(EastPos (coordPos));
     blockPosition(SouthPos(coordPos));
     blockPosition(WestPos (coordPos));
 }
 
-void Player::reduceValidPositions
-(
-	Shape    const &shape,
-	CoordPos const &coordPos
-)
-{
-    shape.Apply2AllShapeCellsC
-    (
-        [this, &coordPos](ShapeCoordPos const &shapePos)
-        { 
-            blockNeighbours(coordPos + shapePos);
-        }
-    );
-}
-
-void Player::RecalcListOfContactPnts()
+//void Player::reduceValidPositions
+//(
+//	Shape    const &shape,
+//	CoordPos const &coordPosShape
+//)
+//{
+//    shape.Apply2AllShapeCellsC
+//    (
+//        [this, &coordPosShape](ShapeCoordPos const &shapePos)
+//        { 
+//			CoordPos const coordPos { coordPosShape + shapePos };
+//			blockPosition  (coordPos);
+//            blockNeighbours(coordPos);
+//        }
+//    );
+//}
+//
+void Player::recalcListOfContactPnts()
 {
     m_contactPntsOnBoard.clear();
     if (IsFirstMove())
@@ -153,29 +167,64 @@ void Player::RecalcListOfContactPnts()
     }
 }
 
-BlokusMove Player::SelectMove(RuleServerInterface const &rsi) const
+bool Player::AnyShapeCellsBlocked(BlokusMove const& move) const
 {
-	m_timer.BeforeAction();
-    BlokusMove moveSelected { m_pStrategy->SelectMove(rsi) };
- 	m_timer.AfterAction();
-    return moveSelected;
+    return move.GetShapeC().IsTrue4AnyShapeCell
+    (
+        [this, &move](ShapeCoordPos const &cellPos)
+        {
+            return IsBlocked(move.GetCoordPos() + cellPos);
+        }
+    );
 }
 
-void Player::DoMove(BlokusMove &move)
+void Player::testPosition
+(
+    BlokusMove          &move, 
+    ShapeCoordPos const &posCorner
+) 
+{ 
+    Apply2AllContactPntsC
+    (
+        [this, &move, &posCorner](CoordPos const& posContact)
+        {
+            move.SetCoordPos(posContact - posCorner);
+            if (AnyShapeCellsBlocked(move))
+                return;
+             m_validMoves.push_back(move);
+             Assert(!AnyShapeCellsBlocked(move));
+        }
+	);
+}
+
+void Player::testShape(BlokusMove &move)
 {
-    Assert(move.IsDefined());
-	m_bFirstMove = false;
-	if (--m_remainingPieces == 0)
-	{
-		Finalize();     // all pieces set
-		m_iResult += 15;
-		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
-			m_iResult += 5;
-	}
-	else
-	{
-		reduceValidPositions(move.GetShapeC(), move.GetCoordPos());
-	}
+	GetShapeC(move).Apply2AllCornerPntsC
+	(
+		[this, &move](ShapeCoordPos const &pos) 
+        { 
+            testPosition(move, pos);
+		}
+	);
+}
+
+void Player::testPiece 
+(
+    BlokusMove  &move, 
+    Piece const &piece
+)
+{
+    PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
+    PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
+    move.SetPieceTypeId(pieceTypeId);
+	pieceType.Apply2AllShapeIdsC
+	(
+		[this, &move](ShapeId const& id)
+		{
+            move.SetShapeId(id);
+            testShape(move);
+        }
+    );
 }
 
 void Player::recalcMapOfValidCells()
@@ -185,12 +234,61 @@ void Player::recalcMapOfValidCells()
 		[this](CoordPos const& coordPos)
 		{
 			PlayerId idPlayer { m_pBoard->GetPlayerId(coordPos) };
+			if (idPlayer != NO_PLAYER)
+				blockPosition(coordPos);
 			if (idPlayer == m_idPlayer)
 				blockNeighbours(coordPos);
-			else if (idPlayer != NO_PLAYER)
-				blockPosition(coordPos);
 		}
 	);
+}
+
+void Player::calcListOfValidMoves()
+{
+    BlokusMove move;
+    move.SetPlayerId(m_idPlayer);
+	m_validMoves.clear();
+    Apply2AvailablePiecesC
+    (
+        [this, &move](Piece const& piece)
+        {
+            testPiece(move, piece);
+        }
+    );
+}
+
+void Player::CheckListOfValidMoves() 
+{
+    for (BlokusMove const& move : m_validMoves)
+        Assert(!AnyShapeCellsBlocked(move));
+}
+
+void Player::Prepare()
+{
+	recalcListOfContactPnts();
+	recalcMapOfValidCells();
+	calcListOfValidMoves();
+    CheckListOfValidMoves();
+}
+
+BlokusMove Player::SelectMove(RuleServerInterface const &rsi) const
+{
+	m_timer.BeforeAction();
+	BlokusMove moveSelected { m_pStrategy->SelectMove(rsi) };
+ 	m_timer.AfterAction();
+    return moveSelected;
+}
+
+void Player::DoMove(BlokusMove &move)
+{
+    Assert(move.IsDefined());
+	if (--m_remainingPieces == 0)
+	{
+		Finalize();     // all pieces set
+		m_iResult += 15;
+		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
+			m_iResult += 5;
+	}
+	m_bFirstMove = false;
 }
 
 void Player::UndoMove()
@@ -200,8 +298,6 @@ void Player::UndoMove()
 	++m_remainingPieces;
 	if (m_remainingPieces == NR_OF_PIECE_TYPES)
 		m_bFirstMove = true;
-	RecalcListOfContactPnts();
-	recalcMapOfValidCells();
 }
 
 void Player::Finalize()

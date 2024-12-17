@@ -6,6 +6,7 @@ export module BlokusCore:MatchReaderInterface;
 
 import std;
 import Types;
+import Color;
 import :Match;
 import :BlokusMove;
 import :Player;
@@ -23,17 +24,18 @@ public:
     Player      const &Winner()                        const { return GetPlayerC(WinnerId()); }
     Board       const &GetBoard()                      const { return m_pMatch->m_board; }
     PlayerId          ActivePlayerId()                 const { return m_pMatch->m_idActivePlayer; }
-    Player      const &ActivePlayerC()                 const { return GetPlayerC(ActivePlayerId()); }
-    ListOfMoves const &GetListOfValidMoves()           const { return m_pMatch->m_validMoves; };
-    BlokusMove         SelectMove()                    const { return ActivePlayerC().SelectMove(*this); }
+    Player      const &ActivePlayerC()                 const { return m_pMatch->ActivePlayerC(); }
+    ListOfMoves const &GetListOfValidMoves()           const { return ActivePlayerC().GetListOfValidMoves(); };
     Piece       const &GetPieceC    (BlokusMove const) const;
     PieceType   const &GetPieceTypeC(BlokusMove const) const;
                                                        
-    void DrawSetPieces(DrawContext&)                                         const;
-    void DrawMovePiece(DrawContext&, BlokusMove const)                       const;
-    void DrawMovePiece(DrawContext&, BlokusMove const, MicroMeterPnt const&) const;
+    void DrawSetPieces(DrawContext&,                                         TextFormatHandle const) const;
+    void DrawMovePiece(DrawContext&, BlokusMove const,                       TextFormatHandle const) const;
+    void DrawMovePiece(DrawContext&, BlokusMove const, MicroMeterPnt const&, TextFormatHandle const) const;
 
     bool HasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
+
+    BlokusMove SelectMove() const { return ActivePlayerC().SelectMove(*this); }
 
     bool    IsValidPosition(BlokusMove const) const;
     bool    HasContact     (BlokusMove const) const;

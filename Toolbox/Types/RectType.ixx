@@ -227,16 +227,18 @@ public:
 		};
 	}
 
-	void Move2Horz(BASE_TYPE const offset)
+	RectType Move2Horz(BASE_TYPE const offset)
 	{
 		m_Left  += offset;
 		m_Right += offset;
+		return *this;
 	}
 
-	void Move2Vert(BASE_TYPE const offset)
+	RectType Move2Vert(BASE_TYPE const offset)
 	{
-		m_Top += offset;
+		m_Top    += offset;
 		m_Bottom += offset;
+		return *this;
 	}
 
 	void Move(POS_TYPE const offPnt)

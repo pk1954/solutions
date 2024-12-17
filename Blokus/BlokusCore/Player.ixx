@@ -38,14 +38,15 @@ public:
     Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (DrawContext&, Piece const * const)    const;
-    void DrawContactPnts(DrawContext&)                         const;
-    void DrawResult     (DrawContext&, TextFormatHandle const) const;
-    void DrawCell       (DrawContext&, CoordPos const&)        const;
+    void DrawFreePieces (DrawContext&, Piece const * const, TextFormatHandle const)             const;
+    void DrawContactPnts(DrawContext&)                                                          const;
+    void DrawResult     (DrawContext&, TextFormatHandle const)                                  const;
+    void DrawCell       (DrawContext&, CoordPos const&, wstring const&, TextFormatHandle const) const;
 
     BlokusMove SelectMove(RuleServerInterface const&) const;
     void       DoMove  (BlokusMove&);
     void       UndoMove();
+    void       Prepare();
     void       Finalize();
 
     void Apply2AllPieces(auto const& func)
@@ -103,9 +104,9 @@ public:
         return false;
     }
 
-    void RecalcListOfContactPnts();
+    bool AnyShapeCellsBlocked(BlokusMove const&) const;
 
-    bool IsUnblockedPos(CoordPos const &pos) const { return m_mapOfValidCells.IsUnblockedPos(pos); }
+    bool IsBlocked(CoordPos const &pos) const { return m_mapOfValidCells.IsBlocked(pos); }
 
     bool            HasFinished() const { return m_bFinished; }
     int             Result()      const { return m_iResult; }
@@ -113,6 +114,10 @@ public:
     Strategy const &GetStrategy() const { return *m_pStrategy; }
     Color           GetColor()    const { return m_pPlayerType->m_color; }
     bool            IsHuman()     const { return GetStrategy().IsHuman(); }
+
+    ListOfMoves const &GetListOfValidMoves() const { return m_validMoves; }
+
+    void CheckListOfValidMoves();
 
 private:
     using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;
@@ -126,13 +131,21 @@ private:
     bool               m_bFinished;       
     bool               m_bFirstMove;      
     PIECE_TYPE_SET     m_pieces;
+
     vector<CoordPos>   m_contactPntsOnBoard;
     MapOfValidCells    m_mapOfValidCells;
+    ListOfMoves        m_validMoves;
 
     mutable HiResTimer m_timer;
 
     void blockPosition  (CoordPos const&);
     void blockNeighbours(CoordPos const&);
-    void reduceValidPositions(Shape const&,	CoordPos const&);
+
+    void testPosition(BlokusMove&, ShapeCoordPos const&);
+    void testShape   (BlokusMove&                      );
+    void testPiece   (BlokusMove&, Piece         const&);
+
+    void recalcListOfContactPnts();
 	void recalcMapOfValidCells();
+    void calcListOfValidMoves();
 };

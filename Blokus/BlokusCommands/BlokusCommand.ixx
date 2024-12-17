@@ -4,11 +4,15 @@
 
 export module BlokusCommands:BlokusCommand;
 
+import std;
+
 export import WinCommand;
 export import BlokusCore;
 
 import Win32_Util_Resource;
 import WinManager;
+
+export using std::make_unique;
 
 export class BlokusCommand: public WinCommand
 {

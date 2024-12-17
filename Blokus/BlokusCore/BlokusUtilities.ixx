@@ -11,11 +11,14 @@ import Direct2D;
 import DrawContext;
 import :BlokusMove;
 import :BlokusCoords;
+import :BlokusPreferences;
 import :Components;
 import :Piece;
 import :PieceType;
 import :PlayerId;
 import :Shape;
+
+using std::wstring;
 
 MicroMeterPnt GetCenter(CoordPos const& coordPos)
 {
@@ -56,7 +59,7 @@ export bool IsInPiece
 	CoordPos      const coordPosPiece { pieceType.GetInitialPos() };
 	MicroMeterPnt const umPosPiece    { Convert2fCoord(coordPosPiece) };
 	MicroMeterPnt const umP           { umPos - umPosPiece };
-	return shape.IsTrueForAnyShapeCell([&umP](ShapeCoordPos const &cp){ return IsInShapeCell(umP, cp); });
+	return shape.IsTrue4AnyShapeCell([&umP](ShapeCoordPos const &cp){ return IsInShapeCell(umP, cp); });
 }
 
 Color darker  (Color const col)  { return col * 0.6f; }
@@ -88,17 +91,24 @@ void colSquare
 
 export void ShapeSquare
 (
-	DrawContext const &context, 
-	CoordPos    const &coordPos,
-	Color       const  col,
-	bool        const  bHighlighted
+	DrawContext      const &context, 
+	CoordPos         const &coordPos,
+	Color            const  col,
+	bool             const  bHighlighted,
+	wstring          const &text,
+	TextFormatHandle const  hTextFormat
 )
 {
-	MicroMeterPnt const umPos       { Convert2fCoord(coordPos) };
-	MicroMeter    const umHalfSize  { UM_CELL_SIZE * 0.5f };
-	MicroMeterPnt const umPosCenter { umPos + MicroMeterPnt(umHalfSize) };
+	MicroMeterPnt  const umPos       { Convert2fCoord(coordPos) };
+	MicroMeter     const umHalfSize  { UM_CELL_SIZE * 0.5f };
+	MicroMeterPnt  const umPosCenter { umPos + MicroMeterPnt(umHalfSize) };
 	colSquare(context, umPosCenter, bHighlighted ? brighter(col) : col,         umHalfSize       );
 	colSquare(context, umPosCenter, bHighlighted ? col           : darker(col), umHalfSize * 0.8f);
+	if (BlokusPreferences::m_bShowPieceNumbers.Get())
+	{
+		MicroMeterRect umRect { umPos, UM_CELL_SIZE };
+		context.DisplayText(umRect.Move2Vert(umHalfSize), text, hTextFormat);
+	}
 }
 
 Shape const& GetShapeC(BlokusMove const &move)

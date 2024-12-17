@@ -239,6 +239,11 @@ void D2D_DrawContext::FillArrow
 	);
 }
 
+void D2D_DrawContext::DrawRectangle(MicroMeterRect const& umRect, Color const col, fPixel const fPixWidth) const
+{
+	m_pGraphics->DrawRectangle(m_coord.Transform2fPixelRect(umRect), col, fPixWidth);
+}
+
 void D2D_DrawContext::FillRectangle(MicroMeterRect const& umRect, BrushHandle const hBrush) const
 {
 	m_pGraphics->FillRectangle(m_coord.Transform2fPixelRect(umRect), hBrush);

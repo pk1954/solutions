@@ -148,6 +148,7 @@
     <ClCompile Include="BlokusCommand.ixx" />
     <ClCompile Include="BlokusCommands.ixx" />
     <ClCompile Include="NextMoveCmd.ixx" />
+    <ClCompile Include="NextPlayerCmd.ixx" />
     <ClCompile Include="ResetMatchCmd.ixx" />
     <ClCompile Include="Resource.ixx" />
   </ItemGroup>

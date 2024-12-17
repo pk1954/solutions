@@ -13,7 +13,10 @@ using std::vector;
 
 Match::Match()
 {
-    Initialize();
+    m_players[0].Initialize(m_board, PlayerId(0), &StrategyRed);
+    m_players[1].Initialize(m_board, PlayerId(1), &StrategyGreen); 
+    m_players[2].Initialize(m_board, PlayerId(2), &StrategyBlue);
+    m_players[3].Initialize(m_board, PlayerId(3), &StrategyYellow); 
     Reset();
 }
 
@@ -33,103 +36,23 @@ void Match::ResetTimers()
         player.ResetTimer(); 
 }
 
-bool Match::AllShapeCellsUnblocked(BlokusMove const& move) const
+PlayerId Match::NextPlayer()
 {
-    return move.GetShapeC().IsTrue4AllShapeCells
-    (
-        [this, &move](ShapeCoordPos const &cellPos)
-        {
-            CoordPos const  coordPos { move.GetCoordPos() + cellPos };
-            Player   const &player   { GetPlayerC(move.GetPlayerId()) };
-            return player.IsUnblockedPos(coordPos);
-        }
-    );
+    if (++m_idActivePlayer > LAST_PLAYER)
+        m_idActivePlayer = FIRST_PLAYER;    
+    ActivePlayer().Prepare();              // Prepare for selection of next move
+    return m_idActivePlayer;
 }
 
-void Match::testPosition
-(
-    BlokusMove          &move, 
-    ShapeCoordPos const &posCorner
-) 
-{ 
-    ActivePlayerC().Apply2AllContactPntsC
-    (
-        [this, &move, &posCorner](CoordPos const& posContact)
-        {
-            move.SetCoordPos(posContact - posCorner);
-            if (AllShapeCellsUnblocked(move))
-            {
-                m_validMoves.push_back(move);
-            }
-        }
-	);
-}
-
-void Match::testShape(BlokusMove &move)
+PlayerId Match::PrevPlayer()
 {
-	GetShapeC(move).Apply2AllCornerPntsC
-	(
-		[this, &move](ShapeCoordPos const &pos) 
-        { 
-            testPosition(move, pos);
-		}
-	);
+    if (--m_idActivePlayer <  FIRST_PLAYER)
+        m_idActivePlayer = LAST_PLAYER;    
+    return m_idActivePlayer;
 }
 
-void Match::testPiece 
-(
-    BlokusMove  &move, 
-    Piece const &piece
-)
+bool Match::AnyShapeCellsBlocked(BlokusMove const& move) const
 {
-    PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
-    PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
-    move.SetPieceTypeId(pieceTypeId);
-	pieceType.Apply2AllShapeIdsC
-	(
-		[this, &move](ShapeId const& id)
-		{
-            move.SetShapeId(id);
-            testShape(move);
-        }
-    );
+	Player const &player { GetPlayerC(move.GetPlayerId()) };
+    return player.AnyShapeCellsBlocked(move);
 }
-
-void Match::CalcListOfValidMoves() 
-{
-    BlokusMove move;
-    m_validMoves.clear();
-    move.SetPlayerId(m_idActivePlayer);
-    ActivePlayer().Apply2AvailablePiecesC
-    (
-        [this, &move](Piece const& piece)
-        {
-            testPiece(move, piece);
-        }
-    );
-}
-
-//void Match::SetPosDir(BlokusMove const move)
-//{
-//	PosDir  posDirTarget { PosDir(Convert2fCoord(move.GetCoordPos()), 0._Degrees) };
-//	PosDir &posDirAct    { GetPosDir(move) };
-//	posDirAct = posDirTarget;
-//}
-
-    //g_iNrOfPieces = 0;
-    //g_iNrOfShapes = 0;
-    //g_iNrOfMoves  = 0;
-    //m_timerFindValidMoves.BeforeAction();
-    // 
-    //m_timerFindValidMoves.AfterAction();
-    //Ticks const ticks        { m_timerFindValidMoves.GetSingleActionTicks() };
-    //Ticks const ticksPerMove {ticks / g_iNrOfMoves };
-    //
-    //wcout << L"GetListOfValidMoves:"                << endl;
-    //wcout << g_iNrOfPieces       << L" pieces"      << endl;
-    //wcout << g_iNrOfShapes       << L" shapes"      << endl;
-    //wcout << g_iNrOfMoves        << L" moves"       << endl;
-    //wcout << m_validMoves.size() << L" valid moves" << endl;
-    //wcout << PerfCounter::Ticks2wstring(ticks) 
-    //      << L"(" << PerfCounter::Ticks2wstring(ticksPerMove) << L" per move)" 
-    //      << endl;

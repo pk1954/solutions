@@ -41,7 +41,7 @@ private:
     bool                 m_active       { false };
     Ticks                m_ticksAtStart;
     Ticks                m_ticksAtEnd;
-	Match                m_match;
+	//Match                m_match;
     MatchWriterInterface m_mwi;
 
     int const &winsC(PlayerId const id) const { return m_wins.at(id.GetValue()); }

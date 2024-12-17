@@ -79,10 +79,11 @@ public:
 		Color         const  
 	) const override;
 
-	void FillRectangle       (MicroMeterRect const&, BrushHandle const)       const override;
-	void FillRectangle       (MicroMeterRect const&, Color)                   const override;
-	void FillRoundedRectangle(MicroMeterRect const&, Color, MicroMeter const) const override;
-	void DrawTranspRect      (MicroMeterRect const&, Color)                   const override;
+	void DrawRectangle       (MicroMeterRect const&, Color const, fPixel const) const override;
+	void FillRectangle       (MicroMeterRect const&, BrushHandle const)         const override;
+	void FillRectangle       (MicroMeterRect const&, Color)                     const override;
+	void FillRoundedRectangle(MicroMeterRect const&, Color, MicroMeter const)   const override;
+	void DrawTranspRect      (MicroMeterRect const&, Color)                     const override;
 
 	void DisplayText
 	(

@@ -12,18 +12,21 @@ Board::Board()
 void Board::Reset()
 {
     for (int i = 0; i < BOARD_SIZE; ++i) 
-    for (int j = 0; j < BOARD_SIZE; ++j) 
-        m_cells[i][j] = NO_PLAYER;
-}
+    for (int j = 0; j < BOARD_SIZE; ++j)
+        m_cells[i][j].reset();
+ }
 
-PlayerId Board::GetPlayerId(CoordPos const& pos) const
+void Board::SetCell
+(
+    CoordPos    const& pos, 
+    PlayerId    const  idPlayer,
+    PieceTypeId const  idPieceType
+)
 {
-    return m_cells.at(pos.GetYvalue()).at(pos.GetXvalue());
-}
-
-void Board::SetPlayerId(CoordPos const& pos, PlayerId const id)
-{
-    m_cells.at(pos.GetYvalue()).at(pos.GetXvalue()) = id;
+    Assert(IsFreeCell(pos));
+    Cell &cell { getCell(pos) };
+    cell.idPlayer    = idPlayer;
+    cell.idPieceType = idPieceType;
 }
 
 bool Board::IsFreeCell(CoordPos const& pos) const
@@ -49,8 +52,7 @@ void Board::DoMove(BlokusMove const& move)   // Set affected shape cells to play
         [this, &move](ShapeCoordPos const &shapePos)
         {
             CoordPos const coordPos { move.GetCoordPos() + shapePos };
-            Assert(IsOnBoard(coordPos));
-            SetPlayerId(coordPos, move.GetPlayerId());
+            SetCell(coordPos, move.GetPlayerId(), move.GetPieceTypeId());
         }
     );
 }
@@ -63,7 +65,7 @@ void Board::UndoMove(BlokusMove const& move)   // Set affected shape cells to NO
         {
             CoordPos const coordPos { move.GetCoordPos() + shapePos };
             Assert(IsOnBoard(coordPos));
-            SetPlayerId(coordPos, NO_PLAYER);
+            getCell(coordPos).reset();
         }
     );
 }

@@ -26,15 +26,15 @@ public:
 	    	m_map[y][x] = true;
     }
 
-    bool IsUnblockedPos(CoordPos const& pos) const
+    bool IsBlocked(CoordPos const& pos) const
     {
-        return IsOnBoard(pos) && getCell(pos);
+        return !(IsOnBoard(pos) && getCell(pos));
     }
 
-    void SetCell(CoordPos const& pos,  bool const bVal)
+    void BlockCell(CoordPos const& pos)
     {
-        if (IsOnBoard(pos))
-            m_map[pos.GetYvalue()][pos.GetXvalue()] = bVal;
+        Assert(IsOnBoard(pos));
+        m_map[pos.GetYvalue()][pos.GetXvalue()] = false;
     }
 
 private:

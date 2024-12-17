@@ -16,10 +16,12 @@ import :BlokusCoords;
 import :PieceTypeId;
 
 using std::vector;
+using std::wstring;
 
 export class PieceType
 {
 public:
+	void SetPieceTypeId(PieceTypeId const id) { m_idPieceType = id; }
 
 	void SetShape(const ShapeCells&);
 
@@ -30,8 +32,8 @@ public:
 
 	Shape const& GetShapeC(ShapeId const id) const { return m_shapes.at(id.GetValue()); }
 
-	void Draw(DrawContext&, ShapeId const, PosDir        const&, Color const, bool const) const;
-	void Draw(DrawContext&, ShapeId const, MicroMeterPnt const&, Color const, bool const) const;
+	void Draw(DrawContext&, ShapeId const, PosDir        const&, Color const, bool const, TextFormatHandle const) const;
+	void Draw(DrawContext&, ShapeId const, MicroMeterPnt const&, Color const, bool const, TextFormatHandle const) const;
 
 	Shape const& StdOrientation() const { return m_shapes.at(0); }
 
@@ -64,6 +66,7 @@ private:
 	void addIfNew  (Shape const&);
 	void addOrientations(Shape&);
 
+	PieceTypeId   m_idPieceType { UndefinedPieceTypeId };
 	unsigned int  m_iNrOfCells { 0 };
     vector<Shape> m_shapes;
 	CoordPos      m_initialPos;

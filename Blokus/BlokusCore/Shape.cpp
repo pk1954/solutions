@@ -10,6 +10,8 @@ import :BlokusUtilities;
 import :Components;
 
 using std::swap;
+using std::wstring;
+using std::to_wstring;
 
 bool Shape::IsCompletelyOnBoard(CoordPos const& pos) const
 {
@@ -55,8 +57,13 @@ int Shape::CountCells() const
 	return iCount;
 }
 
-Shape::Shape(ShapeCells const &shapeCells)
-	: m_shapeCells(shapeCells)
+Shape::Shape
+(
+	ShapeCells  const &shapeCells, 
+	PieceTypeId const  id
+)
+	: m_shapeCells(shapeCells),
+	  m_idPieceType(id)
 {}
 
 bool Shape::spaceAtTop() const
@@ -141,16 +148,18 @@ MicroMeterPnt Shape::CenterOfGravity()
 
 void Shape::Draw
 (
-	DrawContext &context, 
-	Color const col,
-	bool  const bHighlighted
+	DrawContext           &context, 
+	Color            const col,
+	bool             const bHighlighted,
+	TextFormatHandle const hTextFormat
 ) const
 {
+	wstring const text { to_wstring(m_idPieceType.GetValue()) };
 	Apply2AllShapeCellsC
 	(
-		[this, &context, &col, bHighlighted](ShapeCoordPos const& shapePos)
+		[this, &context, &col, bHighlighted, &text, hTextFormat](ShapeCoordPos const& shapePos)
 		{
-			ShapeSquare(context, shapePos, col, bHighlighted);
+			ShapeSquare(context, shapePos, col, bHighlighted, text, hTextFormat);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
@@ -167,19 +176,20 @@ void Shape::Draw
 
 void Shape::Draw
 (
-	DrawContext  &context,
-	Degrees const degRotation,
-	Color   const col,
-	bool    const bHighlighted
+	DrawContext           &context,
+	Degrees          const degRotation,
+	Color            const col,
+	bool             const bHighlighted,
+	TextFormatHandle const hTextFormat
 ) const
 {
 	if (degRotation == 0._Degrees)
-		Draw(context, col, bHighlighted);
+		Draw(context, col, bHighlighted, hTextFormat);
 	else
 	{
 		context.Push();
 		context.SetRotation(degRotation, m_umPntCenter);
-		Draw(context, col, bHighlighted);
+		Draw(context, col, bHighlighted, hTextFormat);
 		context.Pop();
 	}
 }

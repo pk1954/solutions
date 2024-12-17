@@ -20,12 +20,13 @@ public:
 
     void Reset()       { m_pMatch->Reset(); }
     void ResetTimers() { m_pMatch->ResetTimers(); }
+    void NextPlayer()  { m_pMatch->NextPlayer(); }
+    void PrevPlayer()  { m_pMatch->PrevPlayer(); }
 
-    void       ResetPiece(BlokusMove const move) { getPiece(move).Reset(); }
-    BlokusMove DoMove    (BlokusMove);
-    void       UndoMove  (BlokusMove const);
-    void       Finalize() { m_pMatch->ActivePlayer().Finalize(); }
-    PlayerId   NextPlayer();
+    void ResetPiece(BlokusMove const move) { getPiece(move).Reset(); }
+    void DoMove    (BlokusMove);
+    void UndoMove  (BlokusMove);
+    void Finalize() { m_pMatch->ActivePlayer().Finalize(); }
 
 private:
     Player &getPlayer (PlayerId const id) { return m_pMatch->GetPlayer(id); }

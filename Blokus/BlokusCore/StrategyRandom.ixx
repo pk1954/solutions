@@ -6,6 +6,7 @@ export module BlokusCore:StrategyRandom;
 
 import std;
 import Random;
+import SaveCast;
 import :Board;
 import :Strategy;
 import :BlokusMove;

@@ -5,6 +5,7 @@
 module BlokusCore:MatchReaderInterface;
 
 using std::vector;
+using std::to_wstring;
 
 Piece const &MatchReaderInterface::GetPieceC(BlokusMove const move) const
 {
@@ -27,40 +28,63 @@ Degrees MatchReaderInterface::GetRotation(BlokusMove const move) const
 	return shape.GetRotation();
 }
 
-void MatchReaderInterface::DrawSetPieces(DrawContext &context) const
+void MatchReaderInterface::DrawSetPieces(DrawContext &context, TextFormatHandle const hTextFormat) const
 {
     Apply2AllBoardCells
     (
-        [this, &context](CoordPos const& pos)
+        [this, &context, hTextFormat](CoordPos const& pos)
         {
-		    if (PlayerId const idPlayer { m_pMatch->m_board.GetPlayerId(pos) }; idPlayer != NO_PLAYER)
-                GetPlayerC(idPlayer).DrawCell(context, pos);
+		    PlayerId const idPlayer { m_pMatch->m_board.GetPlayerId(pos) };
+            if (idPlayer != NO_PLAYER)
+            {
+                Player      const &player      { GetPlayerC(idPlayer) };
+                PieceTypeId const  idPieceType { m_pMatch->m_board.GetPieceTypeId(pos) };
+                player.DrawCell(context, pos, to_wstring(idPieceType.GetValue()), hTextFormat);
+            }
         }
     );
 }
 
 void MatchReaderInterface::DrawMovePiece
 (
-    DrawContext     &context,
-    BlokusMove const move
+    DrawContext           &context,
+    BlokusMove       const move,
+    TextFormatHandle const hTextFormat
 ) const
 {
 	MicroMeterPnt const  umPosTarget { Convert2fCoord(move.GetCoordPos()) };
 	Color         const  color       { IsValidPosition(move) ? ActiveColor() : COL_BLACK};
     PieceType     const &pieceType   { move.GetPieceTypeC() };
-	pieceType.Draw(context, move.GetShapeId(), umPosTarget, color * 0.5f, false);
+	pieceType.Draw
+    (
+        context, 
+        move.GetShapeId(), 
+        umPosTarget, 
+        color * 0.5f, 
+        false, 
+        hTextFormat
+    );
 }
 
 void MatchReaderInterface::DrawMovePiece
 (
-    DrawContext         &context,
-    BlokusMove    const  move,
-    MicroMeterPnt const &umPos
+    DrawContext            &context,
+    BlokusMove       const  move,
+    MicroMeterPnt    const &umPos,
+    TextFormatHandle const hTextFormat
 ) const
 {
-	Color         const  color       { ActiveColor()};
-    PieceType     const &pieceType   { move.GetPieceTypeC() };
-	pieceType.Draw(context, move.GetShapeId(), umPos, color, false);
+	Color     const  color     { ActiveColor()};
+    PieceType const &pieceType { move.GetPieceTypeC() };
+	pieceType.Draw
+    (
+        context, 
+        move.GetShapeId(), 
+        umPos, 
+        color, 
+        false, 
+        hTextFormat
+    );
 }
 
 PlayerId MatchReaderInterface::WinnerId() const
@@ -101,5 +125,5 @@ bool MatchReaderInterface::HasContact(BlokusMove const move) const
 
 bool MatchReaderInterface::IsValidPosition(BlokusMove const move) const
 {
-    return m_pMatch->AllShapeCellsUnblocked(move) && HasContact(move);
+    return HasContact(move) && !m_pMatch->AnyShapeCellsBlocked(move);
 }

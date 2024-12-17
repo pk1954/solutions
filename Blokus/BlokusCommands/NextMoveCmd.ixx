@@ -11,7 +11,6 @@ import :BlokusCommand;
 //using PosDirAnimationCmd = AnimationCommand<PosDir>;
 
 using std::wstring;
-using std::make_unique;
 
 export class NextMoveCmd : public BlokusCommand  //PosDirAnimationCmd
 {
@@ -24,7 +23,7 @@ public:
 	void Do() final 
 	{
 		if (m_move.IsDefined())
-       	    m_move = m_pMWI->DoMove(m_move);
+       	    m_pMWI->DoMove(m_move);
         else 
             m_pMWI->Finalize();
     }
@@ -50,7 +49,7 @@ public:
 private:
     inline static const wstring NAME { L"NextMoveCmd" };
 
-    BlokusMove            m_move;
+    BlokusMove m_move;
 
     inline static struct myWrapper : public Wrapper
     {
