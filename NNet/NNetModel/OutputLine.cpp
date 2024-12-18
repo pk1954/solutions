@@ -98,7 +98,7 @@ void OutputLine::drawPlug
 	MicroMeterPnt const umCenter    { GetPos() - GetDirVector() * 0.1f };
 	MicroMeterPnt const umP         { umCenter - umDirVector * (M * 0.5f - 0.2f) };
 
-	context.DrawLine(umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,          colF);
+	context.DrawLine(umCenter + umDirVector * (V + 0.8f), umP, GetExtension() *  M,         colF);
 	context.DrawLine(umCenter + umDirVector *  V,         umP, GetExtension() * (M + 1.2f), colF);
 }
 

@@ -34,8 +34,8 @@ void TextBuffer::StartPainting()
 
 void TextBuffer::printBuffer()
 { 
-	PrintBuffer(& m_wBuffer, m_pixHorizontalPos, m_pixVerticalPos);
-	m_wBuffer.str(wstring());
+	PrintBuffer(&m_wBuffer, m_pixHorizontalPos, m_pixVerticalPos);
+	m_wBuffer.str(L"");
 	m_wBuffer.clear();
     m_pixHorizontalPos += m_pixHorRaster;
 };
