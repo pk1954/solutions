@@ -51,7 +51,7 @@ IDC_EVOLUTION_MAIN MENU
         POPUP "&Display Mode"
         {
             MENUITEM "Toggle Strip Mode", IDD_TOGGLE_STRIP_MODE
-            MENUITEM "Toggle Clut Mode", IDD_TOGGLE_CLUT_MODE
+            MENUITEM "Toggle Clut Mode",  IDD_TOGGLE_CLUT_MODE
         }
     }
     POPUP "&Help"

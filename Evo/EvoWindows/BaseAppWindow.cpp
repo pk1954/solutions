@@ -6,6 +6,7 @@ module BaseAppWindow;
 
 import std;
 import Trace;
+import IoUtil;
 import HistoryLib;
 import WinBasics;
 import Win32_Util_Resource;
@@ -53,11 +54,11 @@ void BaseAppWindow::Initialize
 
 	m_traceStream = OpenTraceFile(L"main_trace.out");
 
-	m_pWorkThread->Initialize(& m_traceStream);
+	//m_pWorkThread->Initialize(& m_traceStream);
 
 	m_StatusBar     .SetRefreshRate(300ms);
-	m_HistWindow    .SetRefreshRate(200ms); 
-	m_HistInfoWindow.SetRefreshRate(300ms);
+	//m_HistWindow    .SetRefreshRate(200ms); 
+	//m_HistInfoWindow.SetRefreshRate(300ms);
 
 	m_hwndApp = StartBaseWindow
 	(
@@ -83,18 +84,18 @@ void BaseAppWindow::Start(BaseWindow * const pModelWindow)
 		m_hwndApp //, m_pWorkThread
 	);
 
-	m_WinManager.AddWindow(L"IDM_CONS_WINDOW", IDM_CONS_WINDOW, m_hwndConsole,                 TRUE,  TRUE );
-	m_WinManager.AddWindow(L"IDM_APPL_WINDOW", IDM_APPL_WINDOW, m_hwndApp,                     TRUE,  TRUE );
-	m_WinManager.AddWindow(L"IDM_STATUS_BAR",  IDM_STATUS_BAR,  m_StatusBar.GetWindowHandle(), FALSE, FALSE);
+	m_WinManager.AddWindow(L"IDM_CONS_WINDOW", RootWinId(IDM_CONS_WINDOW), m_hwndConsole,                 TRUE,  TRUE );
+	m_WinManager.AddWindow(L"IDM_APPL_WINDOW", RootWinId(IDM_APPL_WINDOW), m_hwndApp,                     TRUE,  TRUE );
+	m_WinManager.AddWindow(L"IDM_STATUS_BAR",  RootWinId(IDM_STATUS_BAR),  m_StatusBar.GetWindowHandle(), FALSE, FALSE);
 
 	if (m_bUseHistorySystem)
 	{
-		m_pHistorySystem = HistorySystem::CreateHistorySystem();  // deleted in Stop function
-		m_HistWindow    .Start(m_hwndApp, m_pHistorySystem); //, m_pWorkThread);
-		m_HistInfoWindow.Start(m_hwndApp, nullptr);
-		m_WinManager.AddWindow(L"IDM_HIST_WINDOW", IDM_HIST_WINDOW, m_HistWindow,     FALSE, FALSE); 
-		m_WinManager.AddWindow(L"IDM_HIST_INFO",   IDM_HIST_INFO,   m_HistInfoWindow, TRUE,  FALSE);
-		m_HistInfoWindow.SetHistorySystem(m_pHistorySystem);
+		//m_pHistorySystem = HistorySystem::CreateHistorySystem();  // deleted in Stop function
+		//m_HistWindow    .Start(m_hwndApp, m_pHistorySystem); //, m_pWorkThread);
+		//m_HistInfoWindow.Start(m_hwndApp, nullptr);
+		//m_WinManager.AddWindow(L"IDM_HIST_WINDOW", RootWinId(IDM_HIST_WINDOW), m_HistWindow,     FALSE, FALSE); 
+		//m_WinManager.AddWindow(L"IDM_HIST_INFO",   RootWinId(IDM_HIST_INFO),   m_HistInfoWindow, TRUE,  FALSE);
+		//m_HistInfoWindow.SetHistorySystem(m_pHistorySystem);
 	}
 
 	m_StatusBar.Show(TRUE);
@@ -109,15 +110,14 @@ void BaseAppWindow::Stop()
 {
 	m_bStarted = FALSE;
 
-	m_StatusBar.Stop();
 	m_pAppMenu->Stop();
 
 	if (m_bUseHistorySystem)
 	{
 		//m_HistInfoWindow.Stop();
 		//m_HistWindow    .Stop();
-		delete m_pHistorySystem;   
-		m_pHistorySystem = nullptr;
+		//delete m_pHistorySystem;   
+		//m_pHistorySystem = nullptr;
 	}
 }
 
@@ -136,16 +136,16 @@ void BaseAppWindow::adjustChildWindows()
 
 		if (m_bUseHistorySystem)
 		{
-			static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
-			pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
-			m_HistWindow.Move   // adapt history window to new size
-			(
-				0_PIXEL, 
-				pixAppClientWinHeight, 
-				pixAppClientWinWidth, 
-				HIST_WINDOW_HEIGHT, 
-				TRUE 
-			); 
+			//static PIXEL const HIST_WINDOW_HEIGHT = 30_PIXEL;
+			//pixAppClientWinHeight -= HIST_WINDOW_HEIGHT, 
+			//m_HistWindow.Move   // adapt history window to new size
+			//(
+			//	0_PIXEL, 
+			//	pixAppClientWinHeight, 
+			//	pixAppClientWinWidth, 
+			//	HIST_WINDOW_HEIGHT, 
+			//	TRUE 
+			//); 
 		}
 
 		m_pModelWindow->Move  // use all available space for model window

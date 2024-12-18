@@ -33,9 +33,9 @@ public:
 			f(key, value);
 	}                        
 
-	static void AddWindow(wstring const &, RootWinId const, HWND,         bool const, bool const);
-	static void AddWindow(wstring const &, RootWinId const, BaseWindow &, bool const, bool const);
-	static void AddWindow(wstring const &, RootWinId const, BaseDialog &, bool const, bool const);
+	static void AddWindow(wstring const&, RootWinId const, HWND,        bool const, bool const);
+	static void AddWindow(wstring const&, RootWinId const, BaseWindow&, bool const, bool const);
+	static void AddWindow(wstring const&, RootWinId const, BaseDialog&, bool const, bool const);
 
 	static void RemoveWindow(RootWinId const id) { m_upMap->erase(id); }
 	static void RemoveAll   ()                   { m_upMap->clear(); }

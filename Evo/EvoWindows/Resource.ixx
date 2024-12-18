@@ -43,6 +43,7 @@ export inline int const IDM_EDIT_WINDOW                         { IDM_WINDOWS_BA
 export inline int const IDM_STAT_WINDOW                         { IDM_WINDOWS_BASE +  6 };
 export inline int const IDM_CRSR_WINDOW                         { IDM_WINDOWS_BASE +  8 };
 export inline int const IDM_PERF_WINDOW                         { IDM_WINDOWS_BASE + 10 };
+export inline int const IDM_HIST_WINDOW                         { IDM_WINDOWS_BASE + 11 };
 
 export inline int const IDM_INDIVIDUALS                         { 450 };
 

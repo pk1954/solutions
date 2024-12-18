@@ -81,6 +81,7 @@ export
     using ::CloseHandle;
     using ::CloseThreadpoolTimer;
     using ::CreateAcceleratorTableW;
+    using ::GetConsoleWindow;
     using ::CreateCompatibleBitmap;
     using ::CreateCompatibleDC;
     using ::CreateDialogIndirectParamW;
