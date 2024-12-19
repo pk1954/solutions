@@ -44,6 +44,7 @@ public:
     virtual ~D2D_driver();
 
     static UPD2D Create(HWND const hwnd);
+    static TextFormatHandle NewTextFormat(float const);
 
     void Display(function<void()>);
     void ShutDown();
@@ -101,8 +102,7 @@ public:
     fPixel         GetClRectWidth () const { return Convert2fPixel        (::GetClientWindowWidth(m_hwnd)); }
     fPixel         GetClRectHeight() const { return Convert2fPixel        (::GetClientWindowHeight(m_hwnd));}
 
-    TextFormatHandle NewTextFormat(float const) const;
-    BrushHandle      CreateBrushHandle(Color const) const;
+    BrushHandle CreateBrushHandle(Color const) const;
         
     void SetForegroundColor(Color const);
     void SetBackgroundColor(Color const);
@@ -117,11 +117,14 @@ private:
 
     mutable HRESULT m_hr { 0 };
 
-    mutable ID2D1GeometrySink * m_pSink        { nullptr };
+    mutable ID2D1GeometrySink * m_pSink { nullptr };
 
-    ID2D1Factory          * m_pD2DFactory      { nullptr };
+    static void initialize();
+
+    inline static ID2D1Factory   * m_pD2DFactory    { nullptr };
+    inline static IDWriteFactory * m_pDWriteFactory { nullptr };
+
     ID2D1HwndRenderTarget * m_pRenderTarget    { nullptr };
-    IDWriteFactory        * m_pDWriteFactory   { nullptr };
     IDWriteTextFormat     * m_pTextFormat      { nullptr };
     ID2D1SolidColorBrush  * m_pBrushForeground { nullptr };
     ID2D1SolidColorBrush  * m_pBrushBackground { nullptr };

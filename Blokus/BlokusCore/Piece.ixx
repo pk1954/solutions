@@ -6,6 +6,7 @@ export module BlokusCore:Piece;
 
 import Debug;
 import Types;
+import Direct2D;
 import :ShapeId;
 import :BlokusMove;
 import :BlokusCoords;
@@ -19,6 +20,8 @@ public:
     {
         m_idPieceType = id;
         Reset();
+        if (m_hTextFormat == nullptr)
+            m_hTextFormat = D2D_driver::NewTextFormat(12.f);
     }
 
     void Reset()
@@ -36,9 +39,8 @@ public:
     PieceType const &GetPieceTypeC()  const { return Components::GetPieceTypeC(m_idPieceType); }
     CoordPos         GetInitialPos()  const { return GetPieceTypeC().GetInitialPos(); }
 
-	void Draw(DrawContext&, PosDir        const&, Color const, bool const, TextFormatHandle const)                const;
-	void Draw(DrawContext&, MicroMeterPnt const&, Color const, bool const, TextFormatHandle const, ShapeId const) const;
-	//void Draw(DrawContext&, MicroMeterPnt const&, Color const, bool const, TextFormatHandle const)                const;
+	void Draw(DrawContext&, PosDir        const&, Color const, bool const)                const;
+	void Draw(DrawContext&, MicroMeterPnt const&, Color const, bool const, ShapeId const) const;
 
     void StartMotion() { m_bAvailable = false; }
 
@@ -53,6 +55,9 @@ public:
     void Move  (MicroMeterPnt const &umDelta) { m_posDir.m_umPos += umDelta; }
 
 private:
+
+    inline static TextFormatHandle m_hTextFormat { nullptr };
+
 	PosDir      m_posDir;
     PieceTypeId m_idPieceType { UndefinedPieceTypeId };
     ShapeId     m_idShape     { 0 };

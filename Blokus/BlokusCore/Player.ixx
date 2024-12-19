@@ -38,10 +38,10 @@ public:
     Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
     Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
 
-    void DrawFreePieces (DrawContext&, Piece const * const, TextFormatHandle const)             const;
-    void DrawSetPieces  (DrawContext&,                      TextFormatHandle const)             const;
-    void DrawContactPnts(DrawContext&)                                                          const;
-    void DrawResult     (DrawContext&, TextFormatHandle const)                                  const;
+    void DrawFreePieces (DrawContext&, Piece const * const)    const;
+    void DrawSetPieces  (DrawContext&)                         const;
+    void DrawContactPnts(DrawContext&)                         const;
+    void DrawResult     (DrawContext&, TextFormatHandle const) const;
 
     BlokusMove SelectMove(RuleServerInterface const&) const;
     void       DoMove  (BlokusMove&);

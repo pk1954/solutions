@@ -25,22 +25,28 @@ D2D_driver::~D2D_driver()
 	discardResources();
 }
 
-void D2D_driver::createResources()
+void D2D_driver::initialize()
 {
-	m_hr = D2D1CreateFactory
+	HRESULT hr = D2D1CreateFactory
 	(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED,
 		& m_pD2DFactory
 	);
-	Assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(hr));
 
-	m_hr = DWriteCreateFactory
+	hr = DWriteCreateFactory
 	(
 		DWRITE_FACTORY_TYPE_SHARED,
 		__uuidof(m_pDWriteFactory),
 		bit_cast<IUnknown **>(& m_pDWriteFactory)
 	);
-	Assert(SUCCEEDED(m_hr));
+	Assert(SUCCEEDED(hr));
+}
+
+void D2D_driver::createResources()
+{
+	if (m_pD2DFactory == nullptr)
+		initialize();
 
 	RECT rc { ::GetClRect(m_hwnd) };
 
@@ -124,11 +130,11 @@ void D2D_driver::ShutDown()
 	discardResources();
 }
 
-TextFormatHandle D2D_driver::NewTextFormat(float const fSize) const
+TextFormatHandle D2D_driver::NewTextFormat(float const fSize)
 {
 	IDWriteTextFormat * pTextFormat;
 
-	m_hr = m_pDWriteFactory->CreateTextFormat
+	HRESULT hr = m_pDWriteFactory->CreateTextFormat
 	(
 		L"",
 		nullptr,
@@ -141,7 +147,7 @@ TextFormatHandle D2D_driver::NewTextFormat(float const fSize) const
 	);
 	//(SUCCEEDED(m_hr));
 
-	m_hr = pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	hr = pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 
 	return pTextFormat;
 }

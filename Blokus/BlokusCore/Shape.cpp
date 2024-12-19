@@ -203,7 +203,7 @@ void Shape::Draw
 		(
 			[this, &context](ShapeCoordPos const& shapePos)
 			{
-				SmallDot(context, shapePos, Color(0.0f, 0.0f, 0.0f));
+				SmallDot(context, shapePos, COL_BLACK);
 			}
 		);
 	}

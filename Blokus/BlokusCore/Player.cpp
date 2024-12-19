@@ -65,52 +65,33 @@ void Player::DrawResult
 
 void Player::DrawFreePieces
 (
-	DrawContext           &context,
-	Piece    const * const pPieceNoDraw,
-	TextFormatHandle const hTextFormat
+	DrawContext        &context,
+	Piece const * const pPieceNoDraw
 ) const
 {
 	Apply2AvailablePiecesC
 	(
-		[this, &context, pPieceNoDraw, hTextFormat](Piece const& piece)
+		[this, &context, pPieceNoDraw](Piece const& piece)
 		{
 			if (&piece != pPieceNoDraw)
 			{
 				PosDir const posDir { piece.GetPosDirC() };
 				Color  const col    { m_pPlayerType->m_color };
-				piece.Draw
-				(
-					context, 
-					posDir, 
-					col, 
-					false, 
-					hTextFormat
-				);
+				piece.Draw(context, posDir, col, false);
 			}
 		}
 	);
 }
 
-void Player::DrawSetPieces
-(
-	DrawContext           &context,
-	TextFormatHandle const hTextFormat
-) const
+void Player::DrawSetPieces(DrawContext &context) const
 {
 	Apply2SetPiecesC
 	(
-		[this, &context, hTextFormat](Piece const& piece)
+		[this, &context](Piece const& piece)
 		{
 			PosDir const posDir { piece.GetPosDirC() };
 			Color  const col    { m_pPlayerType->m_color };
-			piece.Draw
-			(
-				context, 
-				posDir, 
-				col, 
-				false, 
-				hTextFormat
-			);
+			piece.Draw(context, posDir, col, false);
 		}
 	);
 }

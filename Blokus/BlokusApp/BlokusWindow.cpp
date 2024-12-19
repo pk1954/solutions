@@ -37,8 +37,8 @@ void BlokusWindow::Start
 	    WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN|WS_VISIBLE
 	);
 	m_context.Start(m_upGraphics.get());
-	m_hTextFormat      = m_upGraphics->NewTextFormat(24.f);
-	m_hTextFormatSmall = m_upGraphics->NewTextFormat(12.f);
+	m_hTextFormat      = D2D_driver::NewTextFormat(24.f);
+	m_hTextFormatSmall = D2D_driver::NewTextFormat(12.f);
 	m_posDirAnimation.SetUpdateLambda
 	(
 		[this](bool const bTargetReached)
@@ -277,7 +277,7 @@ void BlokusWindow::drawBlockedCells(Player const& player)
 			{
 				MicroMeterPnt  const umPos  { Convert2fCoord(coordPos) };
 				MicroMeterRect const umRect { umPos, UM_CELL_SIZE };
-				m_context.DrawRectangle(umRect, Color(0.0f, 0.0f, 0.0f), 2.0_fPixel);
+				m_context.DrawRectangle(umRect, COL_BLACK, 2.0_fPixel);
 			}
 		}
 	);
@@ -287,14 +287,14 @@ void BlokusWindow::PaintGraphics()
 {
 	Player const& player { m_pMRI->ActivePlayerC() };
  	paintBoard();
-	m_pMRI->DrawSetPieces(m_context, m_hTextFormatSmall);
-	player.DrawFreePieces(m_context, m_pieceMotion.GetPieceC(), m_hTextFormatSmall);
+	m_pMRI->DrawSetPieces(m_context);
+	player.DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_move.IsCompletelyOnBoard())
-			m_pMRI->DrawMovePiece(m_context, m_move, m_hTextFormatSmall);  // The shadow
+			m_pMRI->DrawMovePiece(m_context, m_move);  // The shadow
 		if (BlokusPreferences::m_bShowMoveDetail.Get())
-			m_pMRI->DrawMovePiece(m_context, m_move, m_hTextFormatSmall, m_pieceMotion.GetPosition());  // the original piece
+			m_pMRI->DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition());  // the original piece
 	}
 	if (BlokusPreferences::m_bShowContactPnts.Get())
 		player.DrawContactPnts(m_context);

@@ -28,22 +28,21 @@ Degrees MatchReaderInterface::GetRotation(BlokusMove const move) const
 	return shape.GetRotation();
 }
 
-void MatchReaderInterface::DrawSetPieces(DrawContext &context, TextFormatHandle const hTextFormat) const
+void MatchReaderInterface::DrawSetPieces(DrawContext &context) const
 {
     Apply2AllPlayersC
     (
-        [this, &context, hTextFormat](Player const &player)
+        [&context](Player const &player)
         { 
-            player.DrawSetPieces(context, hTextFormat); 
+            player.DrawSetPieces(context); 
         }
     );
 }
 
 void MatchReaderInterface::DrawMovePiece
 (
-    DrawContext           &context,
-    BlokusMove       const move,
-    TextFormatHandle const hTextFormat
+    DrawContext     &context,
+    BlokusMove const move
 ) const
 {
 	MicroMeterPnt const umPosTarget { Convert2fCoord(move.GetCoordPos()) };
@@ -54,17 +53,15 @@ void MatchReaderInterface::DrawMovePiece
         umPosTarget, 
         color * 0.5f, 
         false, 
-        hTextFormat,
         move.GetShapeId()
     );
 }
 
 void MatchReaderInterface::DrawMovePiece
 (
-    DrawContext            &context,
-    BlokusMove       const  move,
-    TextFormatHandle const hTextFormat,
-    MicroMeterPnt    const &umPos
+    DrawContext         &context,
+    BlokusMove    const  move,
+    MicroMeterPnt const &umPos
 ) const
 {
 	Color const  color { ActiveColor()};
@@ -74,7 +71,6 @@ void MatchReaderInterface::DrawMovePiece
         umPos, 
         color, 
         false, 
-        hTextFormat,
         move.GetShapeId()
     );
 }
