@@ -24,4 +24,5 @@ export void InitializeBlokusCore()
 {
 	Components::Initialize();
 	BlokusPreferences::Initialize();
+	Shape::Initialize();
 }

@@ -16,20 +16,9 @@ import :Components;
 export class Piece
 {
 public:
-    void Initialize(PieceTypeId const id)
-    {
-        m_idPieceType = id;
-        Reset();
-        if (m_hTextFormat == nullptr)
-            m_hTextFormat = D2D_driver::NewTextFormat(12.f);
-    }
-
-    void Reset()
-    {
-        m_bAvailable = true;
-        setPiecePos(GetPieceTypeC().GetInitialPos());
-        m_posDir.m_degrees = 0._Degrees;
-    }
+    void Initialize(PieceTypeId const);
+    void Reset();
+    void DoMove(BlokusMove const&);
 
     bool IsAvailable() const { return m_bAvailable; }
 
@@ -43,13 +32,6 @@ public:
 	void Draw(DrawContext&, MicroMeterPnt const&, Color const, bool const, ShapeId const) const;
 
     void StartMotion() { m_bAvailable = false; }
-
-    void DoMove(BlokusMove const& move)
-    {
-        m_bAvailable = false;
-        m_idShape = move.GetShapeId();
-        setPiecePos(move.GetCoordPos());
-    }
 
     void SetPos(MicroMeterPnt const &umPos)   { m_posDir.m_umPos = umPos; }
     void Move  (MicroMeterPnt const &umDelta) { m_posDir.m_umPos += umDelta; }

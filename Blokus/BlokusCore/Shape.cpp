@@ -13,6 +13,11 @@ using std::swap;
 using std::wstring;
 using std::to_wstring;
 
+void Shape::Initialize()
+{
+	m_hTextFormat = D2D_driver::NewTextFormat(12.f);
+}
+
 bool Shape::IsCompletelyOnBoard(CoordPos const& pos) const
 {
 	return IsTrueForAllCornerPnts
@@ -161,12 +166,11 @@ void Shape::colSquare
 
 void Shape::shapeSquare
 (
-	DrawContext      const &context, 
-	CoordPos         const &coordPos,
-	Color            const  col,
-	bool             const  bHighlighted,
-	wstring          const &text,
-	TextFormatHandle const  hTextFormat
+	DrawContext const &context, 
+	CoordPos    const &coordPos,
+	Color       const  col,
+	bool        const  bHighlighted,
+	wstring     const &text
 ) const
 {
 	MicroMeterPnt  const umPos       { Convert2fCoord(coordPos) };
@@ -177,24 +181,23 @@ void Shape::shapeSquare
 	if (BlokusPreferences::m_bShowPieceNumbers.Get())
 	{
 		MicroMeterRect umRect { umPos, UM_CELL_SIZE };
-		context.DisplayText(umRect.Move2Vert(umHalfSize), text, hTextFormat);
+		context.DisplayText(umRect.Move2Vert(umHalfSize), text, m_hTextFormat);
 	}
 }
 
 void Shape::Draw
 (
-	DrawContext           &context, 
-	Color            const col,
-	bool             const bHighlighted,
-	TextFormatHandle const hTextFormat
+	DrawContext &context, 
+	Color  const col,
+	bool   const bHighlighted
 ) const
 {
 	wstring const text { to_wstring(m_idPieceType.GetValue()) };
 	Apply2AllShapeCellsC
 	(
-		[this, &context, &col, bHighlighted, &text, hTextFormat](ShapeCoordPos const& shapePos)
+		[this, &context, &col, bHighlighted, &text](ShapeCoordPos const& shapePos)
 		{
-			shapeSquare(context, shapePos, col, bHighlighted, text, hTextFormat);
+			shapeSquare(context, shapePos, col, bHighlighted, text);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
@@ -211,20 +214,19 @@ void Shape::Draw
 
 void Shape::Draw
 (
-	DrawContext           &context,
-	Degrees          const degRotation,
-	Color            const col,
-	bool             const bHighlighted,
-	TextFormatHandle const hTextFormat
+	DrawContext  &context,
+	Degrees const degRotation,
+	Color   const col,
+	bool    const bHighlighted
 ) const
 {
 	if (degRotation == 0._Degrees)
-		Draw(context, col, bHighlighted, hTextFormat);
+		Draw(context, col, bHighlighted);
 	else
 	{
 		context.Push();
 		context.SetRotation(degRotation, m_umPntCenter);
-		Draw(context, col, bHighlighted, hTextFormat);
+		Draw(context, col, bHighlighted);
 		context.Pop();
 	}
 }

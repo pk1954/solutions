@@ -46,16 +46,6 @@ public:
 			func(s);
 	}
 
-	void Flip()
-	{
-		//ActiveOrientation().Flip();
-	}
-
-	void Rotate()
-	{
-		//ActiveOrientation().Rotate();
-	}
-
 	int NrOfCells () const { return m_iNrOfCells; }
 	int NrOfShapes() const { return Cast2Int(m_shapes.size()); }
 

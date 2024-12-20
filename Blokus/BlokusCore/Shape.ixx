@@ -7,6 +7,7 @@ export module BlokusCore:Shape;
 import std;
 import Types;
 import Color;
+import Direct2D;
 import SaveCast;
 import DrawContext;
 import :BlokusCoords;
@@ -23,6 +24,9 @@ export using ShapeCoordPos = CoordPos;
 export class Shape
 {
 public:
+
+	static void Initialize();
+
 	Shape(ShapeCells const&, PieceTypeId const id);
 
 	bool Equals(Shape const &other) const
@@ -31,8 +35,8 @@ public:
 	}
 
 	int  CountCells() const;
-	void Draw(DrawContext&,                Color const, bool const, TextFormatHandle const) const;
-	void Draw(DrawContext&, Degrees const, Color const, bool const, TextFormatHandle const) const;
+	void Draw(DrawContext&,                Color const, bool const) const;
+	void Draw(DrawContext&, Degrees const, Color const, bool const) const;
 
 	void CollectCornerPnts();
 	void Flip();
@@ -107,28 +111,24 @@ public:
 
 private:
 
+	inline static TextFormatHandle m_hTextFormat { nullptr };
+
 	PieceTypeId           m_idPieceType { UndefinedPieceTypeId };
     ShapeCells            m_shapeCells;
 	Degrees               m_degRotation { 0._Degrees };
 	MicroMeterPnt         m_umPntCenter;
 	vector<ShapeCoordPos> m_cornerPnts;
 
-	void colSquare
-	(
-		DrawContext   const&, 
-		MicroMeterPnt const,
-		Color         const,
-		MicroMeter    const
-	) const;
-	void shapeSquare
-	(
-		DrawContext      const&, 
-		CoordPos         const&,
-		Color            const,
-		bool             const,
-		wstring          const&,
-		TextFormatHandle const
-	) const;
+void colSquare(DrawContext const&, MicroMeterPnt const, Color const, MicroMeter const
+) const;
+void shapeSquare
+(
+DrawContext const&, 
+CoordPos    const&,
+Color       const,
+bool        const,
+wstring     const&
+) const;
 	bool isCornerPnt  (CoordPos const&) const;
 	bool isPartOfShape(ShapeCoordPos const&) const;
 

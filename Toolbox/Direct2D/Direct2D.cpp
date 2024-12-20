@@ -132,6 +132,9 @@ void D2D_driver::ShutDown()
 
 TextFormatHandle D2D_driver::NewTextFormat(float const fSize)
 {
+	if (m_pD2DFactory == nullptr)
+		initialize();
+
 	IDWriteTextFormat * pTextFormat;
 
 	HRESULT hr = m_pDWriteFactory->CreateTextFormat
