@@ -2,10 +2,10 @@
 SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  ON
-ShowPieceNumbers  ON
+ShowPieceNumbers  OFF
 ShowContactPnts  ON
-ShowCellNumbers  ON
-ShowBlockedCells  ON
+ShowCellNumbers  OFF
+ShowBlockedCells  OFF
 ShowCornerCells  OFF
 ShowMoveDetail  ON
 ShowAnimation  ON

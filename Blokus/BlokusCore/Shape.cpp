@@ -169,8 +169,7 @@ void Shape::shapeSquare
 	DrawContext const &context, 
 	CoordPos    const &coordPos,
 	Color       const  col,
-	bool        const  bHighlighted,
-	wstring     const &text
+	bool        const  bHighlighted
 ) const
 {
 	MicroMeterPnt  const umPos       { Convert2fCoord(coordPos) };
@@ -181,6 +180,7 @@ void Shape::shapeSquare
 	if (BlokusPreferences::m_bShowPieceNumbers.Get())
 	{
 		MicroMeterRect umRect { umPos, UM_CELL_SIZE };
+		wstring const  text   { to_wstring(m_idPieceType.GetValue()) };
 		context.DisplayText(umRect.Move2Vert(umHalfSize), text, m_hTextFormat);
 	}
 }
@@ -192,12 +192,11 @@ void Shape::Draw
 	bool   const bHighlighted
 ) const
 {
-	wstring const text { to_wstring(m_idPieceType.GetValue()) };
 	Apply2AllShapeCellsC
 	(
-		[this, &context, &col, bHighlighted, &text](ShapeCoordPos const& shapePos)
+		[this, &context, &col, bHighlighted](ShapeCoordPos const& shapePos)
 		{
-			shapeSquare(context, shapePos, col, bHighlighted, text);
+			shapeSquare(context, shapePos, col, bHighlighted);
 		}
 	);
 	if (BlokusPreferences::m_bShowCornerCells.Get())
