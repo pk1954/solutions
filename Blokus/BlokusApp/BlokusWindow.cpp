@@ -115,21 +115,22 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 	case IDD_NEXT_MOVE:
 //		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
-		if (m_pMRI->ActivePlayerC().IsHuman())
+		if (m_pMRI->ActivePlayerC().HasFinished())
+		{
+			NextPlayerCmd::Push();
+			Notify(true);
+		}
+		else if (m_pMRI->ActivePlayerC().IsHuman())
 		{
 			m_pSound->WarningSound();    // no automatic move for human players
 		}
-		else if (!m_pMRI->ActivePlayerC().HasFinished())
+		else  // AI player
 		{
 			BlokusMove move { m_pMRI->SelectMove() };
-			if (move.IsDefined())
-			{
-				Assert(m_pMRI->IsValidPosition(move));
-				NextMoveCmd::Push(move);  // may finish if no more valid moves
-			}
+			NextMoveCmd::Push(move);  // may finish if no more valid moves
+			NextPlayerCmd::Push();
+			Notify(true);
 		}
-		NextPlayerCmd::Push();
-		Notify(true);
 		break;
 
 	case IDD_NEXT_SHAPE:
