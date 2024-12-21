@@ -26,12 +26,17 @@ public:
        	    m_pMWI->DoMove(m_move);
         else 
             m_pMWI->Finalize();
-    }
+        m_pMWI->NextPlayer();
+}
 
 	void Undo() final 
 	{
-   	    m_pMWI->UndoMove(m_move);
-	}
+		if (m_move.IsDefined())
+       	    m_pMWI->UndoMove(m_move);
+        else 
+            m_pMWI->UndoFinalize();
+	    m_pMWI->PrevPlayer();
+    }
 
     static void Register()
     {

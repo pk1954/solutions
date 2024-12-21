@@ -26,7 +26,8 @@ public:
     void ResetPiece(BlokusMove const move) { getPiece(move).Reset(); }
     void DoMove    (BlokusMove);
     void UndoMove  (BlokusMove);
-    void Finalize() { m_pMatch->ActivePlayer().Finalize(); }
+    void Finalize()     { activePlayer().Finalize(); }
+    void UndoFinalize() { activePlayer().UndoFinalize(); }
 
 private:
     Player &getPlayer (PlayerId const id) { return m_pMatch->GetPlayer(id); }

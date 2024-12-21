@@ -48,6 +48,7 @@ PlayerId Match::PrevPlayer()
 {
     if (--m_idActivePlayer <  FIRST_PLAYER)
         m_idActivePlayer = LAST_PLAYER;    
+    ActivePlayer().Prepare();              // Prepare for selection of next move
     return m_idActivePlayer;
 }
 

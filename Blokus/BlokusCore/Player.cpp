@@ -121,23 +121,6 @@ void Player::blockNeighbours(CoordPos const &coordPos)
     blockPosition(WestPos (coordPos));
 }
 
-//void Player::reduceValidPositions
-//(
-//	Shape    const &shape,
-//	CoordPos const &coordPosShape
-//)
-//{
-//    shape.Apply2AllShapeCellsC
-//    (
-//        [this, &coordPosShape](ShapeCoordPos const &shapePos)
-//        { 
-//			CoordPos const coordPos { coordPosShape + shapePos };
-//			blockPosition  (coordPos);
-//            blockNeighbours(coordPos);
-//        }
-//    );
-//}
-//
 void Player::recalcListOfContactPnts()
 {
     m_contactPntsOnBoard.clear();
@@ -247,6 +230,8 @@ void Player::calcListOfValidMoves()
             testPiece(move, piece);
         }
     );
+	if (m_validMoves.empty())
+		Finalize();
 }
 
 void Player::CheckListOfValidMoves() 
@@ -304,4 +289,10 @@ void Player::Finalize()
 			m_iResult -= piece.GetPieceTypeC().NrOfCells();
 		}
 	);
+}
+
+void Player::UndoFinalize()
+{
+	m_bFinished = false;   
+	m_iResult   = 0;
 }

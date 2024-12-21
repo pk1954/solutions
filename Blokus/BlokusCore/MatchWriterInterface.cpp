@@ -21,5 +21,4 @@ void MatchWriterInterface::UndoMove(BlokusMove move)
     getPiece(move).Reset();             // Reset piece pos and mark as available
     m_pMatch->m_board.UndoMove(move);   // Set affected cells to NO_PLAYER
     m_pMatch->GetPlayer(move.GetPlayerId()).UndoMove();
-    m_pMatch->PrevPlayer();
 }

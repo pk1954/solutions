@@ -48,6 +48,7 @@ public:
     void       UndoMove();
     void       Prepare();
     void       Finalize();
+    void       UndoFinalize();
 
     void Apply2AllPieces(auto const& func)
     {

@@ -16,6 +16,7 @@ void Piece::Reset()
 {
     m_bAvailable = true;
     setPiecePos(GetPieceTypeC().GetInitialPos());
+    m_idShape = ShapeId(0);
     m_posDir.m_degrees = 0._Degrees;
 }
 

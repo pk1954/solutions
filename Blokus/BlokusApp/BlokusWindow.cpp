@@ -128,7 +128,6 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 		{
 			BlokusMove move { m_pMRI->SelectMove() };
 			NextMoveCmd::Push(move);  // may finish if no more valid moves
-			NextPlayerCmd::Push();
 			Notify(true);
 		}
 		break;
@@ -199,10 +198,7 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_pMRI->IsValidPosition(m_move))
-		{
 			NextMoveCmd::Push(m_move);
-			NextPlayerCmd::Push();
-		}
 		m_move.Reset();
 		m_pieceMotion.Reset();
 		Notify(false);
