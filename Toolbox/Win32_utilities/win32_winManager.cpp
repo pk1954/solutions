@@ -27,6 +27,7 @@ using std::wofstream;
 using std::to_wstring;
 using std::wstring;
 using std::make_unique;
+using std::unique_ptr;
 using std::map;
 using std::out_of_range;
 
@@ -335,7 +336,7 @@ void WinManager::StoreWindowConfiguration()
 
 void WinManager::Initialize()
 {
-    m_upMap            = make_unique<map<RootWinId, MAP_ELEMENT>>();
+    m_upMap            = make_unique<WIN_MAP>();
     m_upWrapMoveWindow = make_unique<WrapMoveWindow>(*m_upMap.get());
     m_upWrapShowWindow = make_unique<WrapShowWindow>(*m_upMap.get());
 

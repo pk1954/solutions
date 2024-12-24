@@ -18,15 +18,18 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_pwstrProductName = &wstrProductName;
 	m_aboutBox.SetProductName(wstrProductName);
 
+	InitializeBlokusCore();
+
+	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
+	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
+	m_appMenu .Initialize(m_hwndApp);
+	BlokusPreferences::Initialize(m_appMenu.m_hMenuView, m_appMenu.m_hMenuOptions);
 	WinManager::Initialize();
 	WinCommand::Initialize(&m_cmdStack);
 	m_cmdStack.Initialize(&m_matchObservable);
 
-	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
-	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
 	m_mainWindow      .Start(m_hwndApp, m_mwi, m_sound);
 	m_statusBar       .Start(m_hwndApp);
-	m_appMenu         .Start(m_hwndApp);
 	m_undoRedoMenu    .Start(m_hwndApp, &m_cmdStack);
 	m_tournamentWindow.Start(&m_tournament);
 
@@ -42,7 +45,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	if (! WinManager::GetWindowConfiguration())
 		::Show(m_hwndApp, true);
 
-	BoolPreferences::RegisterObserver(m_mainWindow);
+	BoolPreferences ::RegisterObserver(m_mainWindow);
 	m_tournament     .RegisterObserver(m_tournamentWindow);
 	m_matchObservable.RegisterObserver(m_mainWindow);
 	m_matchObservable.RegisterObserver(m_undoRedoMenu);

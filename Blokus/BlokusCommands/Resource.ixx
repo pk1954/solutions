@@ -7,7 +7,7 @@ export module Resource;
 import Win32_Util_Resource;
 
 // identifiers below IDM_APPL_CMD are reserved for win32_utilities
-// application identifiers start at 100
+// application identifiers start at IDM_APPL_CMD
 
 export inline int const IDD_NEXT_MOVE         { IDM_APPL_CMD + 1 };
 export inline int const IDD_START_AUTO_RUN    { IDM_APPL_CMD + 2 };

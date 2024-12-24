@@ -1,6 +1,6 @@
 // BlokusAppMenu.ixx
 //
-// Blokus
+// BlokusApp
 
 export module BlokusAppMenu;
 
@@ -16,11 +16,14 @@ export class BlokusAppMenu : public ObserverInterface
 public:
 	~BlokusAppMenu() = default;
 
-	void Start(HWND const);
+	void Initialize(HWND const);
+	void PreferenceMenus();
 	void Notify(bool const) final;
 
-private:
-
-	HWND  m_hwndApp { nullptr };
-	HMENU m_hMenu   { nullptr };
+	HWND  m_hwndApp      { nullptr };
+	HMENU m_hMenu        { nullptr };
+	HMENU m_hMenuFile    { nullptr };
+	HMENU m_hMenuView    { nullptr };
+	HMENU m_hMenuOptions { nullptr };
+	HMENU m_hMenuHelp    { nullptr };
 };

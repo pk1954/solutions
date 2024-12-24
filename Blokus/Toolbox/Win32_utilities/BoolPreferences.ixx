@@ -24,12 +24,18 @@ export class BoolPreferences
 {
 public:
 
-    static IdBoolPref CreateNew(wstring const& wstrExternalName)
+    static IdBoolPref CreateNew
+    (
+        wstring const& wstrExternalName,
+        HMENU   const  hMenu,
+        LPCTSTR const  menuName
+    )
     {
-        IdBoolPref const idResult(m_list.size());
-        m_list.emplace_back(make_unique<BOOL_PREF>());
-        Preferences::AddBoolWrapper(wstrExternalName, get(idResult).m_bFlag);
-        return idResult;
+        unique_ptr<BOOL_PREF> upBoolPref { make_unique<BOOL_PREF>() };       // create BOOL_PREF
+        upBoolPref->m_onOffPair.AppendOnOffMenu(hMenu, menuName);            // Append to menu
+        Preferences::AddBoolWrapper(wstrExternalName, upBoolPref->m_bFlag);  // Register for reference I/O
+        m_list.push_back(move(upBoolPref));                                  // Append to list
+        return IdBoolPref(m_list.size() - 1);                                // return index in list
     }
 
     static bool IsActive(IdBoolPref const id) 
@@ -48,20 +54,10 @@ public:
         get(IdBoolPref(iCmd - IDM_BIN_SWITCH_START)).m_bFlag.Toggle();
     }
 
-    static void AppendOnOffMenu
-    (
-        IdBoolPref const id,
-        HMENU            hMenu, 
-        LPCTSTR    const title
-    )
-    {
-        get(id).m_onOffPair.AppendOnOffMenu(hMenu, title);
-    }
-
     static void EnableOnOff(HMENU hMenu)
     {
         for (auto &up: m_list)
-            up->EnableOnOff(hMenu);
+            up->m_onOffPair.EnableOnOff(hMenu, up->m_bFlag.Get());
     }
 
 private:
@@ -70,18 +66,13 @@ private:
 
     struct BOOL_PREF
     {
-        OnOffPair m_onOffPair;
-        BoolType  m_bFlag;
-
         BOOL_PREF()
-          : m_onOffPair(m_iNextCmdId++),
-            m_bFlag(true)
+          : m_onOffPair(m_iNextCmdId++),  // generate command id
+            m_bFlag(false)
         {}
 
-        void EnableOnOff(HMENU hMenu)
-        {
-            m_onOffPair.EnableOnOff(hMenu, m_bFlag.Get());
-        }
+        OnOffPair m_onOffPair;
+        BoolType  m_bFlag;
     };
 
     inline static vector<unique_ptr<BOOL_PREF>> m_list;
