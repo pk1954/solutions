@@ -5,6 +5,7 @@
 module BlokusAppWindow;
 
 import IoUtil;
+import BoolPreferences;
 import Win32_Util_Resource;
 import WinManager;
 import Resource;
@@ -41,17 +42,10 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	if (! WinManager::GetWindowConfiguration())
 		::Show(m_hwndApp, true);
 
-	BlokusPreferences::m_bShowPieceNumbers.RegisterObserver(m_mainWindow);
-	BlokusPreferences::m_bShowContactPnts .RegisterObserver(m_mainWindow);
-	BlokusPreferences::m_bShowCellNumbers .RegisterObserver(m_mainWindow);
-	BlokusPreferences::m_bShowBlockedCells.RegisterObserver(m_mainWindow);
-	BlokusPreferences::m_bShowCornerCells .RegisterObserver(m_mainWindow);
-	BlokusPreferences::m_bShowMoveDetail  .RegisterObserver(m_mainWindow);
-	BlokusPreferences::m_bShowAnimation   .RegisterObserver(m_mainWindow);
-	Preferences::m_bSound                 .RegisterObserver(m_appMenu);
-	m_tournament                          .RegisterObserver(m_tournamentWindow);
-	m_matchObservable                     .RegisterObserver(m_mainWindow);
-	m_matchObservable                     .RegisterObserver(m_undoRedoMenu);
+	BoolPreferences::RegisterObserver(m_mainWindow);
+	m_tournament     .RegisterObserver(m_tournamentWindow);
+	m_matchObservable.RegisterObserver(m_mainWindow);
+	m_matchObservable.RegisterObserver(m_undoRedoMenu);
 	configureStatusBar();
 
 	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);
@@ -115,7 +109,12 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 {
 	int const wmId = LoWord(wParam);
 	
-	switch (wmId)
+	if (IsBinarySwitchCmd(wmId))
+	{
+		BoolPreferences::Toggle(wmId);
+		Preferences::WritePreferences();
+	}
+	else switch (wmId)
 	{
 	case IDM_ABOUT:
 		m_aboutBox.Show(m_mainWindow.GetWindowHandle());
@@ -130,36 +129,6 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		if (!m_cmdStack.RedoStackCommand())
 			m_sound.WarningSound();
 		return true;
-
-	case IDD_PIECE_NUMBERS:
-		BlokusPreferences::m_bShowPieceNumbers.Toggle();
-		Preferences::WritePreferences();
-		break;
-
-	case IDD_CONTACT_PNTS:
-		BlokusPreferences::m_bShowContactPnts.Toggle();
-		Preferences::WritePreferences();
-		break;
-
-	case IDD_BLOCKED_CELLS:
-		BlokusPreferences::m_bShowBlockedCells.Toggle();
-		Preferences::WritePreferences();
-		break;
-
-	case IDD_CELL_NUMBERS:
-		BlokusPreferences::m_bShowCellNumbers.Toggle();
-		Preferences::WritePreferences();
-		break;
-
-	case IDD_CORNER_CELLS:
-		BlokusPreferences::m_bShowCornerCells.Toggle();
-		Preferences::WritePreferences();
-		break;
-
-	case IDD_ANIMATION:
-		BlokusPreferences::m_bShowAnimation.Toggle();
-		Preferences::WritePreferences();
-		break;
 
 	case IDD_START_TOURNAMENT:
 		m_tournamentWindow.Show(true);

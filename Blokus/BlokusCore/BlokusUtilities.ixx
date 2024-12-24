@@ -11,7 +11,6 @@ import Direct2D;
 import DrawContext;
 import :BlokusMove;
 import :BlokusCoords;
-import :BlokusPreferences;
 import :Components;
 import :Piece;
 import :PieceType;

@@ -18,11 +18,9 @@ export import :Shape;
 export import :Tournament;
 
 import :Components;
-import :BlokusPreferences;
 
 export void InitializeBlokusCore()
 {
 	Components::Initialize();
-	BlokusPreferences::Initialize();
 	Shape::Initialize();
 }

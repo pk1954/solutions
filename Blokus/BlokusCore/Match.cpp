@@ -5,7 +5,6 @@
 module BlokusCore:Match;
 
 import PerfCounter;
-import :BlokusPreferences;
 
 using std::wcout;
 using std::endl;

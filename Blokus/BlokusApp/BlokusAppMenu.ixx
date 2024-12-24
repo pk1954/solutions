@@ -14,7 +14,6 @@ using std::unique_ptr;
 export class BlokusAppMenu : public ObserverInterface
 {
 public:
-	BlokusAppMenu();
 	~BlokusAppMenu() = default;
 
 	void Start(HWND const);
@@ -24,13 +23,4 @@ private:
 
 	HWND  m_hwndApp { nullptr };
 	HMENU m_hMenu   { nullptr };
-
-	unique_ptr<OnOffPair> m_upOnOffShowPieceNumbers;
-	unique_ptr<OnOffPair> m_upOnOffShowContactPnts;
-	unique_ptr<OnOffPair> m_upOnOffShowCellNumbers;
-	unique_ptr<OnOffPair> m_upOnOffShowBlockedCells;
-	unique_ptr<OnOffPair> m_upOnOffShowCornerCells;
-	unique_ptr<OnOffPair> m_upOnOffShowMoveDetail;
-	unique_ptr<OnOffPair> m_upOnOffAnimation;
-	unique_ptr<OnOffPair> m_upOnOffSound;
 };

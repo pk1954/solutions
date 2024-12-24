@@ -29,6 +29,7 @@ export inline int const IDD_EDIT_CTL              { 11 };
 export inline int const IDD_COLOR_CTL             { 12 };
 export inline int const IDM_DEFAULT_BK_COLOR      { 13 };
                                                   
+export inline int const IDD_FATAL_ERROR           { 14 };
 export inline int const IDX_FILE_NOT_FOUND        { 15 };
 export inline int const IDX_ERROR_IN_FILE         { 16 };
 export inline int const IDX_READ_PROGRESS_REPORT  { 17 };
@@ -94,4 +95,16 @@ export inline int const IDM_ADD_SUPPORT_PNT       { 92 };
 export inline int const IDM_EDIT_SUPPORT_PNT      { 93 };
 export inline int const IDM_REMOVE_SUPPORT_PNT    { 94 };
 
-// application identifiers start at 100
+// Binary user preference switches 
+
+export inline int const IDM_BIN_SWITCH_START    {  800 };
+
+// application identifiers start at 1024
+
+export inline int const IDM_APPL_CMD            { 1024 };
+
+export bool IsBinarySwitchCmd(int const iCmd)
+{
+    return (IDM_BIN_SWITCH_START <= iCmd) && (iCmd < IDM_APPL_CMD);
+}
+

@@ -27,6 +27,8 @@ public:
         ::CheckMenuItem(hMenu, m_uiCmdId, bCrit);
     }
 
+    unsigned int CmdId() const { return m_uiCmdId; }
+
 private:
     unsigned int m_uiCmdId;
 };

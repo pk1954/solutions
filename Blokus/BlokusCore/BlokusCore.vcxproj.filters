@@ -72,9 +72,6 @@
     <ClCompile Include="MapOfValidCells.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlokusPreferences.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BlokusUtilities.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -124,6 +121,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlokusPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

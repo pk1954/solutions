@@ -25,6 +25,7 @@ public:
 	static void AddWrapper(unique_ptr<Wrapper> upWrapper)
 	{
 		m_prefVector.push_back(move(upWrapper));
+		int x = 42;
 	}
 
 	static void AddBoolWrapper(wstring const& name, BoolType& boolType)

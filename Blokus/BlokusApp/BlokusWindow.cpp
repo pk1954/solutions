@@ -8,6 +8,7 @@ import Color;
 import IoUtil;
 import SaveCast;
 import DrawContext;
+import BoolPreferences;
 import Resource;
 import BlokusCommands;
 
@@ -290,17 +291,17 @@ void BlokusWindow::PaintGraphics()
 	{
 		if (m_move.IsCompletelyOnBoard())
 			m_pMRI->DrawMovePiece(m_context, m_move);  // The shadow
-		if (BlokusPreferences::m_bShowMoveDetail.Get())
+		if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowMoveDetail))
 			m_pMRI->DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition());  // the original piece
 	}
-	if (BlokusPreferences::m_bShowContactPnts.Get())
+	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowContactPnts))
 		player.DrawContactPnts(m_context);
 	if (player.HasFinished())
 		player.DrawResult(m_context, m_hTextFormat);
 	if (m_pMRI->HasFinished())
 		drawFinishedMsg();
-	if (BlokusPreferences::m_bShowCellNumbers.Get())
+	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowCellNumbers))
 		drawCellNumbers();
-	if (BlokusPreferences::m_bShowBlockedCells.Get())
+	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowBlockedCells))
 		drawBlockedCells(player);
 };

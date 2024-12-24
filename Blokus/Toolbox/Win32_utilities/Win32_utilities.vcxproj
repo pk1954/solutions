@@ -263,6 +263,7 @@
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\Win32_WinManager.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WinCommand.ixx" />
     <ClCompile Include="..\..\..\Toolbox\Win32_utilities\WrapSetGrid.ixx" />
+    <ClCompile Include="BoolPreferences.ixx" />
     <ClCompile Include="TableWindow.cpp" />
     <ClCompile Include="TableWindow.ixx" />
   </ItemGroup>

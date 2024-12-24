@@ -38,7 +38,7 @@ public:
         wstring const& wstrName,
         BoolType& boolType
     )
-        : Wrapper(wstrName),
+      : Wrapper(wstrName),
         m_boolType(boolType)
     {}
 

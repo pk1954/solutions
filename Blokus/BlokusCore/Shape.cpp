@@ -177,7 +177,7 @@ void Shape::shapeSquare
 	MicroMeterPnt  const umPosCenter { umPos + MicroMeterPnt(umHalfSize) };
 	colSquare(context, umPosCenter, bHighlighted ? brighter(col) : col,         umHalfSize       );
 	colSquare(context, umPosCenter, bHighlighted ? col           : darker(col), umHalfSize * 0.8f);
-	if (BlokusPreferences::m_bShowPieceNumbers.Get())
+	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowPieceNumbers))
 	{
 		MicroMeterRect umRect { umPos, UM_CELL_SIZE };
 		wstring const  text   { to_wstring(m_idPieceType.GetValue()) };
@@ -199,7 +199,7 @@ void Shape::Draw
 			shapeSquare(context, shapePos, col, bHighlighted);
 		}
 	);
-	if (BlokusPreferences::m_bShowCornerCells.Get())
+	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowCornerCells))
 	{
 		Apply2AllCornerPntsC
 		(
