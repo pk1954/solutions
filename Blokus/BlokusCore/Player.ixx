@@ -123,16 +123,20 @@ public:
 private:
     using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;
 
+    // directly affected by move
+    unsigned int       m_remainingPieces;  
+    int                m_iResult;          
+    bool               m_bFinished;        
+    bool               m_bFirstMove;       
+
+    // not directly affected by move
     Board      const * m_pBoard;
-    PlayerId           m_idPlayer;
     PlayerType const * m_pPlayerType;
     Strategy         * m_pStrategy;
-    unsigned int       m_remainingPieces; 
-    int                m_iResult;
-    bool               m_bFinished;       
-    bool               m_bFirstMove;      
+    PlayerId           m_idPlayer;
     PIECE_TYPE_SET     m_pieces;
 
+    // recalculated ín Prepare
     vector<CoordPos>   m_contactPntsOnBoard;
     MapOfValidCells    m_mapOfValidCells;
     ListOfMoves        m_validMoves;

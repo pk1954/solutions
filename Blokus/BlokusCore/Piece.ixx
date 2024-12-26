@@ -18,7 +18,8 @@ export class Piece
 public:
     void Initialize(PieceTypeId const);
     void Reset();
-    void DoMove(BlokusMove const&);
+    void DoMove  (BlokusMove const&);
+    void UndoMove(BlokusMove const&);
 
     bool IsAvailable() const { return m_bAvailable; }
 
@@ -40,11 +41,13 @@ private:
 
     inline static TextFormatHandle m_hTextFormat { nullptr };
 
-	PosDir      m_posDir;
-    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
-    ShapeId     m_idShape     { 0 };
-	bool        m_bFlipped    { false };
+    // directly affected by move
     bool        m_bAvailable  { true };
+    ShapeId     m_idShape     { 0 };
+	PosDir      m_posDir;
+
+    // not affected by move
+    PieceTypeId m_idPieceType { UndefinedPieceTypeId };
 
     void setPiecePos(CoordPos const& pos) 
     { 

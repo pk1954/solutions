@@ -11,7 +11,6 @@ import :PieceTypeId;
 import :PlayerId;
 
 using std::array;
-using std::vector;
 
 export class Board
 {
@@ -19,15 +18,41 @@ public:
     Board();
 
     void Reset();
-    void SetCell(CoordPos const&, PlayerId const, PieceTypeId const);
     void DoMove  (BlokusMove const&);
     void UndoMove(BlokusMove const&);
 
-    PlayerId    GetPlayerId   (CoordPos const& pos) const { return getCellC(pos).idPlayer; }
-    PieceTypeId GetPieceTypeId(CoordPos const& pos) const { return getCellC(pos).idPieceType; }
+    PlayerId    GetPlayerId   (CoordPos const& pos) const { return getCellC(pos).m_idPlayer; }
+    PieceTypeId GetPieceTypeId(CoordPos const& pos) const { return getCellC(pos).m_idPieceType; }
 
-    bool     IsFreeCell    (CoordPos const&)                 const;
-    bool     IsContactPnt  (CoordPos const&, PlayerId const) const;
+    bool IsFreeCell  (CoordPos const&)                 const;
+    bool IsContactPnt(CoordPos const&, PlayerId const) const;
+
+    void Apply2AllFreeCellsC(auto const& func) const
+    {
+    	Apply2AllBoardCells
+	    (
+		    [this, &func](CoordPos const& coordPos) 
+		    {  
+			    if (IsFreeCell(coordPos))
+                    func(coordPos);
+    		}
+	    );
+    }
+
+    void Apply2AllShapeCells
+    (
+        BlokusMove const& move,
+        auto       const& func
+    )
+    {
+        GetShapeC(move).Apply2AllShapeCellPositionsC
+        (
+            [this, &move, &func](ShapeCoordPos const &shapePos)
+            {
+                func(getCell(move, shapePos));
+            }
+        );
+    }
 
 private:
     bool hasPlayerId    (CoordPos const&, PlayerId const) const;
@@ -36,17 +61,33 @@ private:
 
     struct Cell
     {
-        PlayerId    idPlayer;
-        PieceTypeId idPieceType;
+        PlayerId    m_idPlayer;
+        PieceTypeId m_idPieceType;
         void reset()
         {
-            idPlayer    = NO_PLAYER;
-            idPieceType = UndefinedPieceTypeId;
+            m_idPlayer    = NO_PLAYER;
+            m_idPieceType = UndefinedPieceTypeId;
         }
-    };
+        void set
+        (
+            PlayerId    const idPlayer,
+            PieceTypeId const idPieceType
+        )
+        {
+            m_idPlayer    = idPlayer;
+            m_idPieceType = idPieceType;
+        }
+};
 
-    array<array<Cell, BOARD_SIZE>, BOARD_SIZE> m_cells;
+    array<array<Cell, BOARD_SIZE>, BOARD_SIZE> m_cells;  // affected by move
 
     Cell       &getCell (CoordPos const pos)       { return m_cells.at(pos.GetYvalue()).at(pos.GetXvalue()); }
     Cell const &getCellC(CoordPos const pos) const { return m_cells.at(pos.GetYvalue()).at(pos.GetXvalue()); }
+
+    Cell &getCell(BlokusMove const& move, ShapeCoordPos const &shapePos)
+    {
+        CoordPos const coordPos { move.GetCoordPos() + shapePos };
+        Assert(IsOnBoard(coordPos));
+        return getCell(coordPos);
+    }
 };

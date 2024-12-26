@@ -45,7 +45,7 @@ bool Shape::isCornerPnt(CoordPos const& pos) const
 void Shape::CollectCornerPnts()
 {
 	m_cornerPnts.clear();
-	Apply2AllShapeCellsC
+	Apply2AllShapeCellPositionsC
 	(
 		[this](CoordPos const& pos)
 		{
@@ -58,7 +58,7 @@ void Shape::CollectCornerPnts()
 int Shape::CountCells() const
 {
 	int iCount = 0;
-	Apply2AllShapeCellsC([&iCount](ShapeCoordPos const&){ ++iCount; });
+	Apply2AllShapeCellPositionsC([&iCount](ShapeCoordPos const&){ ++iCount; });
 	return iCount;
 }
 
@@ -140,7 +140,7 @@ void Shape::Rotate()
 MicroMeterPnt Shape::CenterOfGravity()
 {
 	MicroMeterPnt umPntCenter { NP_ZERO };
-	Apply2AllShapeCellsC
+	Apply2AllShapeCellPositionsC
 	(
 		[&umPntCenter](ShapeCoordPos const &pos)
 		{
@@ -192,7 +192,7 @@ void Shape::Draw
 	bool   const bHighlighted
 ) const
 {
-	Apply2AllShapeCellsC
+	Apply2AllShapeCellPositionsC
 	(
 		[this, &context, &col, bHighlighted](ShapeCoordPos const& shapePos)
 		{

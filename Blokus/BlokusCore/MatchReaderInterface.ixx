@@ -43,7 +43,12 @@ public:
 
     PlayerId WinnerId() const;
 
-    void Apply2AllPlayersC(auto const& func) const
+    void Apply2AllFreeCellsC(auto const& func) const
+    {
+    	GetBoard().Apply2AllFreeCellsC([&func](CoordPos const &p) { func(p); });
+    }
+
+   void Apply2AllPlayersC(auto const& func) const
     {
         for (Player const& player: m_pMatch->m_players)
             func(player);

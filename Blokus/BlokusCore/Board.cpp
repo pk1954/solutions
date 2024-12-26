@@ -16,19 +16,6 @@ void Board::Reset()
         m_cells[i][j].reset();
  }
 
-void Board::SetCell
-(
-    CoordPos    const& pos, 
-    PlayerId    const  idPlayer,
-    PieceTypeId const  idPieceType
-)
-{
-    Assert(IsFreeCell(pos));
-    Cell &cell { getCell(pos) };
-    cell.idPlayer    = idPlayer;
-    cell.idPieceType = idPieceType;
-}
-
 bool Board::IsFreeCell(CoordPos const& pos) const
 {
     return IsOnBoard(pos) && (GetPlayerId(pos) == NO_PLAYER);
@@ -47,26 +34,19 @@ bool Board::IsContactPnt(CoordPos const& pos, PlayerId const id) const
 
 void Board::DoMove(BlokusMove const& move)   // Set affected shape cells to player id
 {
-    GetShapeC(move).Apply2AllShapeCellsC
+    Apply2AllShapeCells
     (
-        [this, &move](ShapeCoordPos const &shapePos)
-        {
-            CoordPos const coordPos { move.GetCoordPos() + shapePos };
-            SetCell(coordPos, move.GetPlayerId(), move.GetPieceTypeId());
-        }
+        move, 
+        [&move](Cell &cell){ cell.set(move.GetPlayerId(), move.GetPieceTypeId()); }
     );
 }
 
 void Board::UndoMove(BlokusMove const& move)   // Set affected shape cells to NO_PLAYER
 {
-    GetShapeC(move).Apply2AllShapeCellsC
+    Apply2AllShapeCells
     (
-        [this, &move](ShapeCoordPos const &shapePos)
-        {
-            CoordPos const coordPos { move.GetCoordPos() + shapePos };
-            Assert(IsOnBoard(coordPos));
-            getCell(coordPos).reset();
-        }
+        move,
+        [](Cell &cell){ cell.reset(); }
     );
 }
 

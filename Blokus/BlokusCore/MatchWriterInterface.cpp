@@ -12,13 +12,13 @@ void MatchWriterInterface::DoMove(BlokusMove move)
     Assert(!activePlayer().HasFinished());
 	getPiece(move).DoMove(move);     // Set piece pos and mark as set
     m_pMatch->m_board.DoMove(move);  // Set affected cells to player id
-    activePlayer().DoMove(move);     // may finish, if all pieces set
+    activePlayer().DoMove(move);     // Set remaining pieces, etc. May finish, if all pieces set
 }
 
 void MatchWriterInterface::UndoMove(BlokusMove move)
 {
     Assert(move.IsDefined());
-    getPiece(move).Reset();             // Reset piece pos and mark as available
-    m_pMatch->m_board.UndoMove(move);   // Set affected cells to NO_PLAYER
-    m_pMatch->GetPlayer(move.GetPlayerId()).UndoMove();
+    m_pMatch->GetPlayer(move.GetPlayerId()).UndoMove();  // Reset remaining pieces, etc.
+    m_pMatch->m_board.UndoMove(move);                    // Set affected cells to NO_PLAYER
+    getPiece(move).UndoMove(move);                       // Reset piece pos and mark as available
 }

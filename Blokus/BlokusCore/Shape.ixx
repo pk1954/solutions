@@ -68,7 +68,7 @@ public:
 		return false;
     }
 
-	void Apply2AllShapeCellsC(auto const& func) const
+	void Apply2AllShapeCellPositionsC(auto const& func) const
 	{
 		ShapeCoordPos pos;
 		for (pos.SetY(0_COORD); pos.GetY() <= MAX_ROW; pos.IncY())
