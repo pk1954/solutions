@@ -18,7 +18,11 @@ public:
 
     wstring const& GetName() const final { return NAME; }
 
-    BlokusMove SelectMove(RuleServerInterface const &rs) const final
+    BlokusMove SelectMove
+    (
+        PlayerId            const  idPlayer, 
+        RuleServerInterface const &rs
+    ) const final
     {
         return BlokusMove();  // initialized to everything Undefined
     }

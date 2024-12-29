@@ -4,6 +4,7 @@
 
 module BlokusCore:MatchReaderInterface;
 
+using std::move;
 using std::vector;
 using std::to_wstring;
 
@@ -42,11 +43,11 @@ void MatchReaderInterface::DrawSetPieces(DrawContext &context) const
 void MatchReaderInterface::DrawMovePiece
 (
     DrawContext     &context,
-    BlokusMove const move
+    BlokusMove const move,
+    Color      const color
 ) const
 {
 	MicroMeterPnt const umPosTarget { Convert2fCoord(move.GetCoordPos()) };
-	Color         const color       { IsValidPosition(move) ? ActiveColor() : COL_BLACK};
 	GetPieceC(move).Draw
     (
         context, 
@@ -61,10 +62,10 @@ void MatchReaderInterface::DrawMovePiece
 (
     DrawContext         &context,
     BlokusMove    const  move,
+    Color         const  color,
     MicroMeterPnt const &umPos
 ) const
 {
-	Color const  color { ActiveColor()};
 	GetPieceC(move).Draw
     (
         context, 
@@ -100,7 +101,7 @@ bool MatchReaderInterface::HasContact(BlokusMove const move) const
     (
         [this, &move](ShapeCoordPos const& shapePosCorner)
         {
-            return ActivePlayerC().IsTrue4AnyContactPnt
+            return GetPlayerC(move.GetPlayerId()).IsTrue4AnyContactPnt
             (
                 [&shapePosCorner, &move](CoordPos const &posContactPn)
                 {

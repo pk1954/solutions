@@ -7,15 +7,11 @@ export module BlokusWindow;
 import std;
 import Types;
 import Color;
-import Animation;
 import WinBasics;
 import GraphicsWindow;
 import SoundInterface;
 import D2D_DrawContext;
 import BlokusCore;
-
-using std::array;
-using std::unique_ptr;
 
 export class BlokusWindow : public GraphicsWindow
 {
@@ -29,12 +25,10 @@ private:
 	MatchReaderInterface const * m_pMRI;
 	PieceMotion                  m_pieceMotion;
 	D2D_DrawContext              m_context;
+    PlayerId                     m_idVisiblePlayer  { 0 };
 	Sound                      * m_pSound           { nullptr };
-	bool                         m_bAutoRun         { false };
 	TextFormatHandle             m_hTextFormat      { nullptr };
 	TextFormatHandle             m_hTextFormatSmall { nullptr };
-    Animation<PosDir>            m_posDirAnimation;
-	int                          m_iAnimationPhase;
 
 	bool OnSize       (PIXEL  const, PIXEL  const)                                            final;
 	bool OnCommand    (WPARAM const, LPARAM const, PixelPoint const = PixelPoint::NULL_VAL()) final;
@@ -49,7 +43,6 @@ private:
 	void          paintBoard() const;
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
 
-	//void autoRun();
-	//void nextMove();
-	//void startRotationPhase(Degrees const);
+	Player const &visiblePlayerC   () const { return m_pMRI->GetPlayerC(m_idVisiblePlayer); }
+	void          nextVisiblePlayer()       { m_idVisiblePlayer = NextPlayer(m_idVisiblePlayer); }
 };

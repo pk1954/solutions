@@ -31,10 +31,18 @@ public:
         return !(IsOnBoard(pos) && getCell(pos));
     }
 
-    void BlockCell(CoordPos const& pos)
+    void BlockPosition(CoordPos const &pos)
     {
-        Assert(IsOnBoard(pos));
-        m_map[pos.GetYvalue()][pos.GetXvalue()] = false;
+	    if (IsOnBoard(pos))
+            m_map[pos.GetYvalue()][pos.GetXvalue()] = false;
+    }
+
+    void BlockNeighbours(CoordPos const &coordPos)
+    {
+        BlockPosition(NorthPos(coordPos));
+        BlockPosition(EastPos (coordPos));
+        BlockPosition(SouthPos(coordPos));
+        BlockPosition(WestPos (coordPos));
     }
 
 private:

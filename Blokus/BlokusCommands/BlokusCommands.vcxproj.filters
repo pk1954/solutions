@@ -30,8 +30,5 @@
     <ClCompile Include="ResetMatchCmd.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NextPlayerCmd.ixx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

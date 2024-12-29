@@ -10,6 +10,7 @@ import Color;
 import Direct2D;
 import DrawContext;
 import HiResTimer;
+import ObserverInterface;
 import :Board;
 import :MapOfValidCells;
 import :Piece;
@@ -25,7 +26,9 @@ using std::array;
 using std::vector;
 using std::wstring;
 
-export class Player
+export using ListOfContactPnts = vector<CoordPos>;
+
+export class Player : public ObserverInterface
 {
 public:
     void Initialize(Board const&, PlayerId const, Strategy * const);
@@ -33,22 +36,27 @@ public:
     void ResetTimer() { m_timer.Reset(); }
     bool IsFirstMove() const { return m_bFirstMove; }
 
+    void Notify(bool const) final;
+
     wstring const &GetName() const { return m_pPlayerType->m_wstrName; }
 
-    Piece const& GetPieceC(PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
-    Piece      & GetPiece (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
+    Piece const &GetPieceC (PieceTypeId const id) const { return m_pieces.at(id.GetValue()); }
+    Piece       &GetPiece  (PieceTypeId const id)       { return m_pieces.at(id.GetValue()); }
+    bool         IsMoveable(PieceTypeId const id) const { return m_mapOfMoveablePieces.at(id.GetValue()); }
 
     void DrawFreePieces (DrawContext&, Piece const * const)    const;
     void DrawSetPieces  (DrawContext&)                         const;
     void DrawContactPnts(DrawContext&)                         const;
     void DrawResult     (DrawContext&, TextFormatHandle const) const;
 
+    void Prepare() const;
+    ListOfMoves const &GetListOfValidMoves() const;
     BlokusMove SelectMove(RuleServerInterface const&) const;
-    void       DoMove  (BlokusMove&);
-    void       UndoMove();
-    void       Prepare();
-    void       Finalize();
-    void       UndoFinalize();
+
+    void DoMove  (BlokusMove&);
+    void UndoMove();
+    void Finalize();
+    void UndoFinalize();
 
     void Apply2AllPieces(auto const& func)
     {
@@ -93,13 +101,13 @@ public:
 
     void Apply2AllContactPntsC(auto const& func) const
     {
-        for (CoordPos const& pos : m_contactPntsOnBoard)
+        for (CoordPos const& pos : m_listOfContactPnts)
             func(pos);
     }
 
     bool IsTrue4AnyContactPnt(auto const& func) const
     {
-        for (CoordPos const& pos : m_contactPntsOnBoard)
+        for (CoordPos const& pos : m_listOfContactPnts)
             if (func(pos))
                 return true;
         return false;
@@ -116,41 +124,36 @@ public:
     Color           GetColor()    const { return m_pPlayerType->m_color; }
     bool            IsHuman()     const { return GetStrategy().IsHuman(); }
 
-    ListOfMoves const &GetListOfValidMoves() const { return m_validMoves; }
-
-    void CheckListOfValidMoves();
-
 private:
     using PIECE_TYPE_SET = array<Piece, NR_OF_PIECE_TYPES>;
 
     // directly affected by move
-    unsigned int       m_remainingPieces;  
-    int                m_iResult;          
-    bool               m_bFinished;        
-    bool               m_bFirstMove;       
+    unsigned int m_remainingPieces;  
+    int          m_iResult;          
+    bool         m_bFinished;        
+    bool         m_bFirstMove;       
 
     // not directly affected by move
     Board      const * m_pBoard;
     PlayerType const * m_pPlayerType;
-    Strategy         * m_pStrategy;
+    Strategy         * m_pStrategy;  //TODO: move from here to MatchReaderInterface?
     PlayerId           m_idPlayer;
     PIECE_TYPE_SET     m_pieces;
 
-    // recalculated ín Prepare
-    vector<CoordPos>   m_contactPntsOnBoard;
-    MapOfValidCells    m_mapOfValidCells;
-    ListOfMoves        m_validMoves;
+    // tables with lazy evaluation
+    mutable bool              m_bTablesValid { false };
+    mutable MapOfValidCells   m_mapOfValidCells;
+    mutable ListOfContactPnts m_listOfContactPnts;
+    mutable ListOfMoves       m_listOfValidMoves;
+    mutable array<bool, NR_OF_PIECE_TYPES> m_mapOfMoveablePieces;
 
     mutable HiResTimer m_timer;
 
-    void blockPosition  (CoordPos const&);
-    void blockNeighbours(CoordPos const&);
+    void testPosition(BlokusMove&, ShapeCoordPos const&) const;
+    void testShape   (BlokusMove&)                       const;
+    void testPiece   (BlokusMove&, Piece         const&) const;
 
-    void testPosition(BlokusMove&, ShapeCoordPos const&);
-    void testShape   (BlokusMove&                      );
-    void testPiece   (BlokusMove&, Piece         const&);
-
-    void recalcListOfContactPnts();
-	void recalcMapOfValidCells();
-    void calcListOfValidMoves();
+    void recalcListOfContactPnts() const;
+ 	void recalcMapOfValidCells  () const;
+ 	void calcListOfValidMoves   () const;
 };

@@ -7,6 +7,7 @@ export module BlokusCore:StrategyTakeFirst;
 import std;
 import :BlokusMove;
 import :Board;
+import :PlayerId;
 import :Strategy;
 import :RuleServerInterface;
 
@@ -19,9 +20,13 @@ public:
 
     wstring const& GetName() const final { return NAME; }
 
-    BlokusMove SelectMove(RuleServerInterface const &rsi) const final
+    BlokusMove SelectMove
+    (
+        PlayerId            const  idPlayer,
+        RuleServerInterface const &rsi
+    ) const final
     {
-        ListOfMoves const &moves { rsi.GetListOfValidMoves() };
+        ListOfMoves const &moves { rsi.GetListOfValidMoves(idPlayer) };
         if (!moves.empty())
             return moves[0];
         return BlokusMove(); // initialized to everything Undefined

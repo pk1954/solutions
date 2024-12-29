@@ -38,8 +38,11 @@ void Player::Reset()
     m_bFinished       = false;
     m_bFirstMove      = true;
 	m_mapOfValidCells.Reset();
-	recalcListOfContactPnts();
-	recalcMapOfValidCells();
+}
+
+void Player::Notify(bool const bImmediately)
+{
+	m_bTablesValid = false;
 }
 
 void Player::DrawResult
@@ -78,6 +81,8 @@ void Player::DrawFreePieces
 				PosDir const posDir { piece.GetPosDirC() };
 				Color  const col    { m_pPlayerType->m_color };
 				piece.Draw(context, posDir, col, false);
+				if (!IsMoveable(piece.GetPieceTypeId()))
+					piece.Draw(context, posDir, Color(0.0f, 0.0f, 0.0f, 0.3f), false);
 			}
 		}
 	);
@@ -107,26 +112,12 @@ void Player::DrawContactPnts(DrawContext &context) const
 	);
 }
 
-void Player::blockPosition(CoordPos const &coordPos)
+void Player::recalcListOfContactPnts() const
 {
-	if (IsOnBoard(coordPos))
-		m_mapOfValidCells.BlockCell(coordPos);
-}
-
-void Player::blockNeighbours(CoordPos const &coordPos)
-{
-    blockPosition(NorthPos(coordPos));
-    blockPosition(EastPos (coordPos));
-    blockPosition(SouthPos(coordPos));
-    blockPosition(WestPos (coordPos));
-}
-
-void Player::recalcListOfContactPnts()
-{
-    m_contactPntsOnBoard.clear();
+    m_listOfContactPnts.clear();
     if (IsFirstMove())
     {
-        m_contactPntsOnBoard.push_back(m_pPlayerType->m_startPoint);
+        m_listOfContactPnts.push_back(m_pPlayerType->m_startPoint);
     }
     else
     {
@@ -136,7 +127,7 @@ void Player::recalcListOfContactPnts()
             {
                 if (m_pBoard->IsContactPnt(pos, m_idPlayer))
                 {
-                    m_contactPntsOnBoard.push_back(pos);
+                    m_listOfContactPnts.push_back(pos);
                 }
             }
         );
@@ -154,11 +145,26 @@ bool Player::AnyShapeCellsBlocked(BlokusMove const& move) const
     );
 }
 
+void Player::recalcMapOfValidCells() const
+{
+	Apply2AllBoardCells
+	(
+		[this](CoordPos const& coordPos)
+		{
+			PlayerId idPlayer { m_pBoard->GetPlayerId(coordPos) };
+			if (idPlayer != NO_PLAYER)
+				m_mapOfValidCells.BlockPosition(coordPos);
+			if (idPlayer == m_idPlayer)
+				m_mapOfValidCells.BlockNeighbours(coordPos);
+		}
+	);
+}
+
 void Player::testPosition
 (
     BlokusMove          &move, 
     ShapeCoordPos const &posCorner
-) 
+) const
 { 
     Apply2AllContactPntsC
     (
@@ -167,13 +173,13 @@ void Player::testPosition
             move.SetCoordPos(posContact - posCorner);
             if (AnyShapeCellsBlocked(move))
                 return;
-             m_validMoves.push_back(move);
-             Assert(!AnyShapeCellsBlocked(move));
+            m_listOfValidMoves.push_back(move);
+			m_mapOfMoveablePieces[move.GetPieceTypeId().GetValue()] = true;
         }
 	);
 }
 
-void Player::testShape(BlokusMove &move)
+void Player::testShape(BlokusMove &move) const
 {
 	GetShapeC(move).Apply2AllCornerPntsC
 	(
@@ -188,7 +194,7 @@ void Player::testPiece
 (
     BlokusMove  &move, 
     Piece const &piece
-)
+) const
 {
     PieceTypeId const pieceTypeId { piece.GetPieceTypeId() };
     PieceType   const pieceType   { Components::GetPieceTypeC(pieceTypeId) };
@@ -203,26 +209,11 @@ void Player::testPiece
     );
 }
 
-void Player::recalcMapOfValidCells()
-{
-	Apply2AllBoardCells
-	(
-		[this](CoordPos const& coordPos)
-		{
-			PlayerId idPlayer { m_pBoard->GetPlayerId(coordPos) };
-			if (idPlayer != NO_PLAYER)
-				blockPosition(coordPos);
-			if (idPlayer == m_idPlayer)
-				blockNeighbours(coordPos);
-		}
-	);
-}
-
-void Player::calcListOfValidMoves()
+void Player::calcListOfValidMoves() const
 {
     BlokusMove move;
     move.SetPlayerId(m_idPlayer);
-	m_validMoves.clear();
+	m_listOfValidMoves.clear();
     Apply2AvailablePiecesC
     (
         [this, &move](Piece const& piece)
@@ -230,29 +221,33 @@ void Player::calcListOfValidMoves()
             testPiece(move, piece);
         }
     );
-	if (m_validMoves.empty())
-		Finalize();
-}
-
-void Player::CheckListOfValidMoves() 
-{
-    for (BlokusMove const& move : m_validMoves)
+	for (BlokusMove const& move : m_listOfValidMoves)
         Assert(!AnyShapeCellsBlocked(move));
 }
 
-void Player::Prepare()
+void Player::Prepare() const
 {
-	recalcListOfContactPnts();
-	recalcMapOfValidCells();
-	calcListOfValidMoves();
-    CheckListOfValidMoves();
+	if (!m_bTablesValid)
+	{
+		m_mapOfMoveablePieces.fill(false);
+		recalcListOfContactPnts();
+		recalcMapOfValidCells();
+		calcListOfValidMoves();
+		m_bTablesValid = true;
+	}
+}
+
+ListOfMoves const& Player::GetListOfValidMoves() const
+{
+	Prepare();
+	return m_listOfValidMoves;
 }
 
 BlokusMove Player::SelectMove(RuleServerInterface const &rsi) const
 {
-	m_timer.BeforeAction();
-	BlokusMove moveSelected { m_pStrategy->SelectMove(rsi) };
- 	m_timer.AfterAction();
+	//m_timer.BeforeAction();
+	BlokusMove moveSelected { m_pStrategy->SelectMove(m_idPlayer, rsi) };
+ 	//m_timer.AfterAction();
     return moveSelected;
 }
 

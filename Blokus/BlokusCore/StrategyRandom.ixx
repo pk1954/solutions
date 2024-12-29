@@ -8,6 +8,7 @@ import std;
 import Random;
 import SaveCast;
 import :Board;
+import :PlayerId;
 import :Strategy;
 import :BlokusMove;
 import :RuleServerInterface;
@@ -21,9 +22,13 @@ public:
 
     wstring const& GetName() const final { return NAME; }
 
-    BlokusMove SelectMove(RuleServerInterface const &rsi) const final
+    BlokusMove SelectMove
+    (
+        PlayerId            const  idPlayer,
+        RuleServerInterface const &rsi
+    ) const final
     {
-        ListOfMoves const &moves { rsi.GetListOfValidMoves() };
+        ListOfMoves const &moves { rsi.GetListOfValidMoves(idPlayer) };
         if (!moves.empty())
         {
             unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };

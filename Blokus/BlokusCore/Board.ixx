@@ -5,6 +5,7 @@
 export module BlokusCore:Board;
 
 import std;
+import Observable;
 import :Components;
 import :BlokusUtilities;
 import :PieceTypeId;
@@ -12,7 +13,7 @@ import :PlayerId;
 
 using std::array;
 
-export class Board
+export class Board : public Observable
 {
 public:
     Board();

@@ -29,7 +29,6 @@ public:
 		m_bPrefShowMoveDetail   = BoolPreferences::CreateNew(L"ShowMoveDetail",   hMenuView,    L"Move details"   );
 
 		m_bPrefAutoMove         = BoolPreferences::CreateNew(L"AutoMove",         hMenuOptions, L"Automatic moves");
-		m_bPrefShowAnimation    = BoolPreferences::CreateNew(L"ShowAnimation",    hMenuOptions, L"&Animation"     );
 		m_bPrefSound            = BoolPreferences::CreateNew(L"Sound",            hMenuOptions, L"&Sound"         );
     }
 
@@ -40,6 +39,5 @@ public:
 	inline static IdBoolPref m_bPrefShowCornerCells;
 	inline static IdBoolPref m_bPrefShowMoveDetail;
 	inline static IdBoolPref m_bPrefAutoMove;
-	inline static IdBoolPref m_bPrefShowAnimation;
 	inline static IdBoolPref m_bPrefSound;
 };

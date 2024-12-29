@@ -20,8 +20,6 @@ using std::to_wstring;
 using std::unique_ptr;
 using std::make_unique;
 
-fPixel const BORDER { 10.0_fPixel };
-
 void BlokusWindow::Start
 (
 	HWND                 const  hwndParent,
@@ -40,20 +38,12 @@ void BlokusWindow::Start
 	m_context.Start(m_upGraphics.get());
 	m_hTextFormat      = D2D_driver::NewTextFormat(24.f);
 	m_hTextFormatSmall = D2D_driver::NewTextFormat(12.f);
-	m_posDirAnimation.SetUpdateLambda
-	(
-		[this](bool const bTargetReached)
-		{
-			PostCommand(IDX_ANIMATION_UPDATE);
-			if (bTargetReached)
-				PostCommand(IDX_FINISH_MOVE);
-		}
-	);
 }
 
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
+	fPixel     const BORDER        { 10.0_fPixel };
 	fPixel     const fPixAvailable { GetClientHeight() - BORDER * 2.0f };
 	fPixel     const fPixFieldSize { fPixAvailable / Cast2Float(BOARD_SIZE + 2) }; // board height + top and bottom reserve
 	MicroMeter const umHeightAvail { UM_CELL_SIZE * static_cast<float>(BOARD_SIZE + 2) };
@@ -68,13 +58,11 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 {
 	switch (char cKeyPressed{ static_cast<char>(wParam) })
 	{
-		case 'n':
-		case 'N':
-			PostCommand(IDD_NEXT_MOVE);
-			break;
-
 		case ' ':
-			PostCommand(IDD_NEXT_SHAPE);
+			if (m_pieceMotion.IsActive())
+				PostCommand(IDD_NEXT_SHAPE);
+			else 
+				PostCommand(IDD_NEXT_MOVE);
 			break;
 
 		case 'r':
@@ -97,29 +85,8 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	switch (int const wmId { LoWord(wParam) } )
 	{
 	case IDD_RESET:
-		if (!m_bAutoRun && !m_posDirAnimation.IsRunning())
-			ResetMatchCmd::Push();
-		break;
-
-	case IDD_NEXT_MOVE:
-		if (m_pMRI->ActivePlayerC().IsHuman())
-		{
-			if (m_pMRI->ActivePlayerC().HasFinished())
-			{
-				NextPlayerCmd::Push();
-				Notify(true);
-			}
-			else
-				m_pSound->WarningSound();    // no automatic move for human players
-		}
-		else  // AI player
-		{
-			BlokusMove move { m_pMRI->SelectMove() };
-			NextMoveCmd::Push(move);  // may finish if no more valid moves
-			Notify(true);
-			if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))		
-				PostCommand(IDD_NEXT_MOVE);
-		}
+		ResetMatchCmd::Push();
+		m_idVisiblePlayer = 0;
 		break;
 
 	case IDD_NEXT_SHAPE:
@@ -132,9 +99,27 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 			m_pSound->WarningSound();
 		break;
 
-	case IDX_ANIMATION_UPDATE:
-		m_posDirAnimation.Update();
-		Notify(true);
+	case IDD_NEXT_MOVE:
+  		if (visiblePlayerC().HasFinished())
+		{
+			nextVisiblePlayer();
+		}
+		else if (visiblePlayerC().IsHuman())
+		{
+			m_pSound->WarningSound();    // no automatic move for human players
+		}
+		else // AI player not yet finished
+		{
+			BlokusMove move { m_pMRI->SelectMove(visiblePlayerC()) };
+			NextMoveCmd::Push(move);  // may finish if no more valid moves
+			if (!visiblePlayerC().HasFinished())
+			{
+  				nextVisiblePlayer();
+				if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))		
+					PostCommand(IDD_NEXT_MOVE);
+			}
+		}
+		Notify(false);
 		break;
 
 	default:
@@ -142,6 +127,28 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	}
 
 	return true;
+}
+
+bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
+{
+	ReleaseCapture();
+	if (m_pieceMotion.IsActive())
+	{
+		if (m_pMRI->IsValidPosition(m_move))
+		{
+			NextMoveCmd::Push(m_move);
+			if (!visiblePlayerC().HasFinished())
+			{
+  				nextVisiblePlayer();
+				if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))		
+					PostCommand(IDD_NEXT_MOVE);
+			}
+		}
+		m_move.Reset();
+		m_pieceMotion.Reset();
+		Notify(false);
+	}
+	return GraphicsWindow::OnLButtonUp(wParam, lParam);
 }
 
 MicroMeterPnt BlokusWindow::getCrsrPos(LPARAM const lParam) const
@@ -153,12 +160,12 @@ MicroMeterPnt BlokusWindow::getCrsrPos(LPARAM const lParam) const
 
 bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 {
-	if (m_pMRI->ActivePlayerC().IsHuman())
+	if (visiblePlayerC().IsHuman())
 	{
-		if (m_pieceMotion.FindPiece(m_pMRI->ActivePlayerC(), getCrsrPos(lParam)))
+		if (m_pieceMotion.FindPiece(visiblePlayerC(), getCrsrPos(lParam)))
 		{
 			m_move.SetPieceType(m_pieceMotion.GetPieceTypeC());
-			m_move.SetPlayerId (m_pMRI->ActivePlayerId());
+			m_move.SetPlayerId (m_idVisiblePlayer);
 			m_move.SetShapeId  (ShapeId(0));
 			m_move.SetCoordPos (m_pieceMotion.GetCoordPos());
 			SetCapture();
@@ -175,22 +182,6 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 			m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
 		Notify(false);
 	}
-}
-
-bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
-{
-	ReleaseCapture();
-	if (m_pieceMotion.IsActive())
-	{
-		if (m_pMRI->IsValidPosition(m_move))
-			NextMoveCmd::Push(m_move);
-		m_move.Reset();
-		m_pieceMotion.Reset();
-		Notify(false);
-		if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))		
-			PostCommand(IDD_NEXT_MOVE);
-	}
-	return GraphicsWindow::OnLButtonUp(wParam, lParam);
 }
 
 void BlokusWindow::paintBoard() const
@@ -262,8 +253,7 @@ void BlokusWindow::drawBlockedCells(Player const& player)
 				MicroMeterPnt  const umPos  { Convert2fCoord(coordPos) };
 				MicroMeterRect const umRect { umPos, UM_CELL_SIZE };
 				m_context.DrawRectangle(umRect, COL_BLACK, 2.0_fPixel);
-				m_context.FillRectangle(umRect, Color(0.0f, 0.0f, 0.0f, 0.3f) );
-
+				m_context.FillRectangle(umRect, Color(0.0f, 0.0f, 0.0f, 0.3f));
 			}
 		}
 	);
@@ -271,22 +261,26 @@ void BlokusWindow::drawBlockedCells(Player const& player)
 
 void BlokusWindow::PaintGraphics()
 {
-	Player const& player { m_pMRI->ActivePlayerC() };
+	Player const& player { visiblePlayerC() };
+	player.Prepare();
  	paintBoard();
 	m_pMRI->DrawSetPieces(m_context);
 	player.DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_move.IsCompletelyOnBoard())
-			m_pMRI->DrawMovePiece(m_context, m_move);  // The shadow
+		{
+			Color const color { m_pMRI->IsValidPosition(m_move) ? visiblePlayerC().GetColor() : COL_BLACK};
+			m_pMRI->DrawMovePiece(m_context, m_move, color);  // The shadow
+		}
 		if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowMoveDetail))
-			m_pMRI->DrawMovePiece(m_context, m_move, m_pieceMotion.GetPosition());  // the original piece
+			m_pMRI->DrawMovePiece(m_context, m_move, visiblePlayerC().GetColor(), m_pieceMotion.GetPosition());  // the original piece
 	}
 	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowContactPnts))
 		player.DrawContactPnts(m_context);
 	if (player.HasFinished())
 		player.DrawResult(m_context, m_hTextFormat);
-	if (m_pMRI->HasFinished())
+	if (m_pMRI->GameHasFinished())
 		drawFinishedMsg();
 	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowCellNumbers))
 		drawCellNumbers();

@@ -24,7 +24,13 @@ public:
         MicroMeterPnt const &umPos
     )
     {
-	    m_pPiece = player.FindPiece([&umPos](Piece const &piece) { return IsInPiece(umPos, piece); });
+	    m_pPiece = player.FindPiece
+        (
+            [&umPos, &player](Piece const &piece) 
+            { 
+                return IsInPiece(umPos, piece) && player.IsMoveable(piece.GetPieceTypeId()); 
+            }
+        );
 	    if (m_pPiece != nullptr)
 	    {
             m_umPos    = Convert2fCoord(m_pPiece->GetInitialPos());

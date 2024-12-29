@@ -35,9 +35,6 @@ public:
 
     static void Push()
     {
-        //if (IsTraceOn())
-        //    TraceStream() << NAME << umAnimated << SPACE << bOn << endl;
-
    	    m_pMWI->Reset();
 		ClearStack();
     }

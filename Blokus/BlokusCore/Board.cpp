@@ -14,6 +14,7 @@ void Board::Reset()
     for (int i = 0; i < BOARD_SIZE; ++i) 
     for (int j = 0; j < BOARD_SIZE; ++j)
         m_cells[i][j].reset();
+    NotifyAll(false);
  }
 
 bool Board::IsFreeCell(CoordPos const& pos) const
@@ -39,6 +40,7 @@ void Board::DoMove(BlokusMove const& move)   // Set affected shape cells to play
         move, 
         [&move](Cell &cell){ cell.set(move.GetPlayerId(), move.GetPieceTypeId()); }
     );
+    NotifyAll(false);
 }
 
 void Board::UndoMove(BlokusMove const& move)   // Set affected shape cells to NO_PLAYER
@@ -48,6 +50,7 @@ void Board::UndoMove(BlokusMove const& move)   // Set affected shape cells to NO
         move,
         [](Cell &cell){ cell.reset(); }
     );
+    NotifyAll(false);
 }
 
 // A cell in the environment of a cell is a contact point 

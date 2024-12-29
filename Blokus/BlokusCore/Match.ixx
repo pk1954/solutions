@@ -47,15 +47,9 @@ public:
 
     Player       &GetPlayer (PlayerId const id)       { return m_players.at(id.GetValue()); }
     Player const &GetPlayerC(PlayerId const id) const { return m_players.at(id.GetValue()); }
-    Player       &ActivePlayer ()                     { return GetPlayer (m_idActivePlayer); }
-    Player const &ActivePlayerC()               const { return GetPlayerC(m_idActivePlayer); }
-
-    PlayerId NextPlayer();
-    PlayerId PrevPlayer();
 
     bool AnyShapeCellsBlocked(BlokusMove const&) const;
 
-    PlayerId      m_idActivePlayer { 0 };
     PLAYERS       m_players;
     Board         m_board;
     MatchProtocol m_protocol;

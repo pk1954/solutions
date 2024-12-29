@@ -23,10 +23,10 @@ public:
     void Start(int const);
     void NextTournamentMove();
 
-    bool HasFinished() const { return m_iMatch >= m_iNrOfMatches; }
-    bool IsActive()    const { return m_active; }
-    int  MatchNumber() const { return m_iMatch; }
-    int  NrOfMatches() const { return m_iNrOfMatches; }
+    bool TournamentHasFinished() const { return m_iMatch >= m_iNrOfMatches; }
+    bool IsActive()              const { return m_active; }
+    int  MatchNumber()           const { return m_iMatch; }
+    int  NrOfMatches()           const { return m_iNrOfMatches; }
 
     int            NrOfWins       (PlayerId const id) const { return winsC(id); }
     wstring const &GetStrategyName(PlayerId const)    const;
@@ -36,12 +36,12 @@ public:
 private:
     HiResTimer m_timer;
 
-    int                  m_iNrOfMatches { 0 };
-    int                  m_iMatch       { 0 };
-    bool                 m_active       { false };
+    int                  m_iNrOfMatches   { 0 };
+    int                  m_iMatch         { 0 };
+    bool                 m_active         { false };
+    PlayerId             m_idActivePlayer { 0 };
     Ticks                m_ticksAtStart;
     Ticks                m_ticksAtEnd;
-	//Match                m_match;
     MatchWriterInterface m_mwi;
 
     int const &winsC(PlayerId const id) const { return m_wins.at(id.GetValue()); }

@@ -13,7 +13,7 @@ import :BlokusCoords;
 import :ShapeId;
 import :Shape;
 
-using std::vector;
+export using std::vector;
 
 export class BlokusMove
 {

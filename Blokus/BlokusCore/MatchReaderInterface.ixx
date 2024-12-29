@@ -19,23 +19,22 @@ export class MatchReaderInterface : public RuleServerInterface
 {
 public:
 
-    Color              ActiveColor()                   const { return ActivePlayerC().GetColor(); }
     Player      const &GetPlayerC(PlayerId const id)   const { return m_pMatch->m_players.at(id.GetValue()); }
     Player      const &Winner()                        const { return GetPlayerC(WinnerId()); }
     Board       const &GetBoard()                      const { return m_pMatch->m_board; }
-    PlayerId          ActivePlayerId()                 const { return m_pMatch->m_idActivePlayer; }
-    Player      const &ActivePlayerC()                 const { return m_pMatch->ActivePlayerC(); }
-    ListOfMoves const &GetListOfValidMoves()           const { return ActivePlayerC().GetListOfValidMoves(); };
     Piece       const &GetPieceC    (BlokusMove const) const;
     PieceType   const &GetPieceTypeC(BlokusMove const) const;
+    Player      const &GetPlayerC   (BlokusMove const move)  const { return GetPlayerC(move.GetPlayerId()); }
                                                        
-    void DrawSetPieces(DrawContext&)                                         const;
-    void DrawMovePiece(DrawContext&, BlokusMove const)                       const;
-    void DrawMovePiece(DrawContext&, BlokusMove const, MicroMeterPnt const&) const;
+    ListOfMoves const &GetListOfValidMoves(PlayerId const id) const { return GetPlayerC(id).GetListOfValidMoves(); }
 
-    bool HasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
+    void DrawSetPieces(DrawContext&)                                                      const;
+    void DrawMovePiece(DrawContext&, BlokusMove const, Color const)                       const;
+    void DrawMovePiece(DrawContext&, BlokusMove const, Color const, MicroMeterPnt const&) const;
 
-    BlokusMove SelectMove() const { return ActivePlayerC().SelectMove(*this); }
+    bool GameHasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
+
+    BlokusMove SelectMove(Player const &player) const { return player.SelectMove(*this); }
 
     bool    IsValidPosition(BlokusMove const) const;
     bool    HasContact     (BlokusMove const) const;
