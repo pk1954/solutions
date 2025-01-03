@@ -25,6 +25,10 @@ void BlokusAppMenu::Initialize(HWND const hwndApp)
     ::SetNotifyByPos(m_hMenu);
 
     m_hMenuFile    = ::PopupMenu(m_hMenu, L"&File");
+    {
+        ::AddMenu(m_hMenuFile, MF_STRING, IDM_DUMP,          L"&Dump match");
+        ::AddMenu(m_hMenuFile, MF_STRING, IDM_SCRIPT_DIALOG, L"&Run script");
+    }
     ::AddMenu(m_hMenu, MF_BITMAP, IDM_UNDO, (LPCTSTR)CreateBitmapFromIconData(*IconUndo_data.data()));
     ::AddMenu(m_hMenu, MF_BITMAP, IDM_REDO, (LPCTSTR)CreateBitmapFromIconData(*IconRedo_data.data()));
     m_hMenuView    = ::PopupMenu(m_hMenu, L"&View");

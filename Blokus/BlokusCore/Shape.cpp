@@ -71,6 +71,21 @@ Shape::Shape
 	  m_idPieceType(id)
 {}
 
+//int Shape::MinDistSquare(CoordPos const coordPosShape, CoordPos const coordPosX)
+//{
+//	int iMinDistSquare { (std::numeric_limits<int>::max)() };
+//	Apply2AllCornerPntsC
+//	(
+//		[&coordPosX, &iMinDistSquare](CoordPos const& posShapeCell)
+//		{
+//			int iDistSquare { DistSquare(coordPosX, posShapeCell) };
+//			if (iDistSquare < iMinDistSquare)
+//				iMinDistSquare = iDistSquare;
+//		}
+//	);
+//	return iMinDistSquare;
+//}
+
 bool Shape::spaceAtTop() const
 {
 	for (int x = 0; x < MAX_SHAPE_EXTENSION; ++x)

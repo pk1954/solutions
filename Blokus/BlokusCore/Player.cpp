@@ -15,6 +15,7 @@ using std::endl;
 using std::wstring;
 using std::to_wstring;
 using std::vector;
+using std::setw;
 
 void Player::Initialize
 (
@@ -30,14 +31,51 @@ void Player::Initialize
 	Reset();
 }
 
+void Player::dumpContactPnts() const
+{
+	wcout << L"** List of contact points" << endl;
+	Apply2AllContactPntsC([](CoordPos const& pos) { wcout << pos << endl; } );
+}
+
+void Player::dumpListOfValidMoves() const
+{
+	wcout << L"** List of valid moves" << endl;
+	if (m_listOfValidMoves.empty())
+		wcout << L"  -- no valid moves --" << endl;
+	else 
+		Apply2AllValidMoves([](BlokusMove const& move){ wcout << move << endl; });
+}
+
+void Player::dumpMapOfMoveablePieces() const
+{
+	wcout << L"** List of movable pieces:";
+	for (int i = 0; i < NR_OF_PIECE_TYPES; ++i)
+		if (m_mapOfMoveablePieces[i])
+			wcout << setw(2) << i << SPACE;
+	wcout << endl;
+}
+
+void Player::Dump() const
+{
+	wcout << L"*** Player " << m_idPlayer << endl;
+	wcout << L"Tables are " << (m_bTablesValid ? L"valid" : L"invalid") << endl;
+	if (m_bTablesValid)
+	{
+		m_mapOfValidCells.Dump();
+		dumpContactPnts();
+		dumpListOfValidMoves();
+		dumpMapOfMoveablePieces();
+	}
+}
+
 void Player::Reset()
 {
     PieceTypeId id { 0 };
     Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
-	m_remainingPieces = NR_OF_PIECE_TYPES;
-    m_bFinished       = false;
-    m_bFirstMove      = true;
+    m_bFirstMove   = true;
+	m_bTablesValid = false;
 	m_mapOfValidCells.Reset();
+	Prepare();
 }
 
 void Player::Notify(bool const bImmediately)
@@ -65,6 +103,8 @@ void Player::DrawResult
 		hTextFormat
 	);
 }
+
+
 
 void Player::DrawFreePieces
 (
@@ -134,13 +174,22 @@ void Player::recalcListOfContactPnts() const
     }
 }
 
-bool Player::AnyShapeCellsBlocked(BlokusMove const& move) const
+bool Player::AnyShapeCellsBlocked(BlokusMove const move) const
 {
-    return move.GetShapeC().IsTrue4AnyShapeCell
+    return AnyShapeCellsBlocked(move.GetShapeC(), move.GetCoordPos());
+}
+
+bool Player::AnyShapeCellsBlocked
+(
+	Shape    const &shape,
+	CoordPos const &posShape
+) const
+{
+    return shape.IsTrue4AnyShapeCell
     (
-        [this, &move](ShapeCoordPos const &cellPos)
+        [this, &posShape](ShapeCoordPos const &cellPos)
         {
-            return IsBlocked(move.GetCoordPos() + cellPos);
+            return IsBlocked(posShape + cellPos);
         }
     );
 }
@@ -251,43 +300,41 @@ BlokusMove Player::SelectMove(RuleServerInterface const &rsi) const
     return moveSelected;
 }
 
+int Player::calcResult(PieceTypeId const idPieceTypeLastMove) const
+{
+	int iResult = 0;
+	Apply2AvailablePiecesC
+	(
+		[this, &iResult](Piece const& piece)
+		{
+			iResult -= piece.GetPieceTypeC().NrOfCells();
+		}
+	);
+	if (iResult == 0)    // all pieces set
+	{
+		iResult += 15;
+		if (Components::GetPieceTypeC(idPieceTypeLastMove).NrOfCells() == 1)
+			iResult += 5;
+	}
+	return iResult;
+}
+
 void Player::DoMove(BlokusMove &move)
 {
     Assert(move.IsDefined());
-	if (--m_remainingPieces == 0)
-	{
-		Finalize();     // all pieces set
-		m_iResult += 15;
-		if (Components::GetPieceTypeC(move.GetPieceTypeId()).NrOfCells() == 1)
-			m_iResult += 5;
-	}
 	m_bFirstMove = false;
+	Prepare();
+	if (m_listOfValidMoves.empty())
+		m_iResult = calcResult(move.GetPieceTypeId());
 }
 
 void Player::UndoMove()
 {
-	m_bFinished = false;   
-	m_iResult   = 0;
-	++m_remainingPieces;
-	if (m_remainingPieces == NR_OF_PIECE_TYPES)
-		m_bFirstMove = true;
-}
-
-void Player::Finalize()
-{
-	m_bFinished = true;   
-	m_iResult   = 0;
-	Apply2AvailablePiecesC
-	(
-		[this](Piece const& piece)
-		{
-			m_iResult -= piece.GetPieceTypeC().NrOfCells();
-		}
-	);
+	m_iResult    = 0;
+	m_bFirstMove = true;
 }
 
 void Player::UndoFinalize()
 {
-	m_bFinished = false;   
-	m_iResult   = 0;
+	m_iResult = 0;
 }

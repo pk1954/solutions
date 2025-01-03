@@ -21,8 +21,18 @@ Match::Match()
     Reset();
 }
 
+void Match::Dump() const
+{
+    m_board.Dump();
+    Apply2AllPlayersC([](Player const &p) { p.Dump(); });
+    wcout << endl;
+    wcout << L"m_idPlayerActive: " << m_idPlayerActive << endl;
+    wcout << endl;
+}
+
 void Match::Reset()
 {
+    m_idPlayerActive = 0;
     m_board.Reset();
     for (Player &player: m_players)
         player.Reset(); 
@@ -36,8 +46,52 @@ void Match::ResetTimers()
         player.ResetTimer(); 
 }
 
-bool Match::AnyShapeCellsBlocked(BlokusMove const& move) const
+bool Match::AnyShapeCellsBlocked(BlokusMove const move) const
 {
-	Player const &player { GetPlayerC(move.GetPlayerId()) };
+	Player const &player { GetPlayerC(move) };
     return player.AnyShapeCellsBlocked(move);
+}
+
+void Match::SetActivePlayer()
+{
+    if (GameHasFinished())
+        m_idPlayerActive = NO_PLAYER;
+    else
+        do
+            m_idPlayerActive = NextPlayer(m_idPlayerActive);
+        while (GetPlayerC(m_idPlayerActive).HasFinished());
+}
+
+CoordPos Match::FindBestFit(BlokusMove const move) const
+{
+    CoordPos posShapeTargetBest { UndefinedCoordPos };
+	int      iMinDistSquare { 10 };
+
+    Shape    const &shape         { move.GetShapeC() };
+	Player   const &player        { GetPlayerC(move) };
+    CoordPos const  posShapeMouse { move.GetCoordPos() };  // shape position by mouse move
+    player.Apply2AllContactPntsC
+    (
+        [&shape, &posShapeTargetBest, &player, &posShapeMouse, &iMinDistSquare](CoordPos const& posContact)
+        {
+            shape.Apply2AllCornerPntsC
+            (
+                [&posContact, &posShapeTargetBest, &player, &posShapeMouse, &iMinDistSquare, &shape](CoordPos const& posCornerRel)
+                {
+                    CoordPos const posShapeCandidate { posContact - posCornerRel };  // posCornerAbsolute == posContact
+                    if (!player.AnyShapeCellsBlocked(shape, posShapeCandidate))
+                    {
+			            int iDistSquare { DistSquare(posShapeCandidate, posShapeMouse) };
+                        if (iDistSquare < iMinDistSquare)
+                        {
+				            iMinDistSquare     = iDistSquare;
+                            posShapeTargetBest = posShapeCandidate;
+                        }
+                    }
+                }
+            );
+        }
+    );
+
+    return posShapeTargetBest;
 }

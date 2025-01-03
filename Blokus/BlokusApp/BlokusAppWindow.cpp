@@ -5,6 +5,7 @@
 module BlokusAppWindow;
 
 import IoUtil;
+import ScriptFile;
 import BoolPreferences;
 import Win32_Util_Resource;
 import WinManager;
@@ -45,10 +46,11 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	if (! WinManager::GetWindowConfiguration())
 		::Show(m_hwndApp, true);
 
-	BoolPreferences ::RegisterObserver(m_mainWindow);
-	m_tournament     .RegisterObserver(m_tournamentWindow);
-	m_matchObservable.RegisterObserver(m_mainWindow);
-	m_matchObservable.RegisterObserver(m_undoRedoMenu);
+	m_upMatch->m_board.RegisterObserver(m_mainWindow);
+	BoolPreferences  ::RegisterObserver(m_mainWindow);
+	m_tournament      .RegisterObserver(m_tournamentWindow);
+	m_matchObservable .RegisterObserver(m_mainWindow);
+	m_matchObservable .RegisterObserver(m_undoRedoMenu);
 	configureStatusBar();
 
 	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);
@@ -121,6 +123,14 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	{
 	case IDM_ABOUT:
 		m_aboutBox.Show(m_mainWindow.GetWindowHandle());
+		return true;
+
+	case IDM_DUMP:
+		Dump();
+		return true;
+
+	case IDM_SCRIPT_DIALOG:
+		ProcessScript(nullptr);
 		return true;
 
 	case IDM_UNDO:

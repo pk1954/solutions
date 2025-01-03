@@ -372,7 +372,7 @@ bool NNetAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoi
 
 		case IDM_SCRIPT_DIALOG:
 			m_compute.StopComputation();
-			processScript();
+			ProcessScript(&m_ScriptHook);
 			return true;
 
 		case IDM_TRIGGER_STIMULUS:
@@ -543,13 +543,4 @@ void NNetAppWindow::replaceModel()
 	m_nmwi.GetParams().RegisterObserver(m_compute);
 	m_nmwi.GetParams().NotifyAll();
 	m_statusBar.ClearPart(m_statusMessagePart);
-}
-
-void NNetAppWindow::processScript() const
-{
-	wstring wstrFile { ScriptFile::AskForFileName(L"in", L"", L"Script files", tFileMode::read)};
-	if (!wstrFile.empty())
-		StartScript(wstrFile, m_ScriptHook);
-	if (!ScriptStack::GetScript()->ReadNextToken())
-		ScriptStack::CloseScript();
 }

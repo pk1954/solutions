@@ -196,14 +196,23 @@ wstring ScriptFile::AskForFileName
 void StartScript
 (
     wstring       const& wstrFile,
-    ScriptFunctor const& scriptHook
+    ScriptFunctor const * const pScriptHook
 )
 {
     wcout << COMMENT_START + L"Processing script file " << wstrFile << endl;
     Script* pScript { ScriptStack::OpenScript() };
     if (pScript && pScript->ScrOpen(wstrFile))
     {
-        pScript->ScrSetNewLineHook(&scriptHook);  // TODO: check if NextScriptCommand needed
+        pScript->ScrSetNewLineHook(pScriptHook);  // TODO: check if NextScriptCommand needed
   //      WinCommand::NextScriptCommand();  // start reading script file
     }
+}
+
+void ProcessScript(ScriptFunctor const * const pScriptHook)
+{
+	wstring wstrFile { ScriptFile::AskForFileName(L"in", L"", L"Script files", tFileMode::read)};
+	if (!wstrFile.empty())
+		StartScript(wstrFile, pScriptHook);
+	if (!ScriptStack::GetScript()->ReadNextToken())
+		ScriptStack::CloseScript();
 }

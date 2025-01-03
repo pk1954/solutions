@@ -9,6 +9,8 @@ import Debug;
 import :Components;
 
 using std::array;
+using std::endl;
+using std::wcout;
 
 export class MapOfValidCells  // occupied cells and cells which have piece of same color 
 {                             // as neighbours, are false, otherwise true
@@ -17,6 +19,17 @@ public:
     MapOfValidCells()
     {
         Reset();
+    }
+
+    void Dump()
+    {
+        wcout << L"*** Map of valid cells ***" << endl;
+        for (int i = 0; i < BOARD_SIZE; ++i)
+        {
+            for (int j = 0; j < BOARD_SIZE; ++j)
+                wcout << m_map[i][j];
+            wcout << endl;
+        }
     }
 
     void Reset()

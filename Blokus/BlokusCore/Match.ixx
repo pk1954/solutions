@@ -42,14 +42,40 @@ public:
         return upMatch;
     }
 
+    void Dump() const;
     void Reset();
     void ResetTimers();
+    void SetActivePlayer();
 
-    Player       &GetPlayer (PlayerId const id)       { return m_players.at(id.GetValue()); }
-    Player const &GetPlayerC(PlayerId const id) const { return m_players.at(id.GetValue()); }
+    Player       &GetPlayer (PlayerId   const id  )       { return m_players.at(id.GetValue()); }
+    Player const &GetPlayerC(PlayerId   const id  ) const { return m_players.at(id.GetValue()); }
+    Player const &GetPlayerC(BlokusMove const move) const { return GetPlayerC(move.GetPlayerId()); }
 
-    bool AnyShapeCellsBlocked(BlokusMove const&) const;
+    bool GameHasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
 
+    bool     AnyShapeCellsBlocked(BlokusMove const) const;
+    CoordPos FindBestFit         (BlokusMove const) const;
+
+    void Apply2AllFreeCellsC(auto const& func) const
+    {
+    	m_board.Apply2AllFreeCellsC([&func](CoordPos const &p) { func(p); });
+    }
+
+   void Apply2AllPlayersC(auto const& func) const
+    {
+        for (Player const& player: m_players)
+            func(player);
+    }
+
+    bool IfAllPlayers(auto const& func) const
+    {
+        for (Player const& player: m_players)
+            if (!func(player))
+                return false;
+        return true;
+    }
+
+    PlayerId      m_idPlayerActive { 0 };
     PLAYERS       m_players;
     Board         m_board;
     MatchProtocol m_protocol;

@@ -40,3 +40,4 @@ private:
 };
 
 export void StartScript(wstring const&, ScriptFunctor const&);
+export void ProcessScript(ScriptFunctor const * const);

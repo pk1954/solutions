@@ -4,6 +4,7 @@
 
 module BlokusWindow;
 
+import Debug;
 import Color;
 import IoUtil;
 import SaveCast;
@@ -80,6 +81,28 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
+void BlokusWindow::performMove(BlokusMove move)
+{
+	//Assert(!m_pMRI->HasFinished(move));
+	//NextMoveCmd::Push(move);               // may finish if no more valid moves
+	//m_idVisiblePlayer = m_pMRI->GetActivePlayerId();
+ //   if (m_pMRI->HasFinished(move))
+	//	return;
+	//if ( BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))
+	//{
+	//	while (!m_pMRI->GetActivePlayer().IsHuman() && !m_pMRI->HasFinished(move))
+	//	{
+	//		move = m_pMRI->SelectMove();
+	//		if (move.IsUndefined())
+	//		{
+	//			m_pMRI->Dump();
+	//		}
+	//		NextMoveCmd::Push(move);        // may finish if no more valid moves
+	//		m_idVisiblePlayer = m_pMRI->GetActivePlayerId();
+	//	}
+	//}
+}
+
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (int const wmId { LoWord(wParam) } )
@@ -99,26 +122,43 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 			m_pSound->WarningSound();
 		break;
 
-	case IDD_NEXT_MOVE:
-  		if (visiblePlayerC().HasFinished())
+	case IDD_NEXT_MOVE:   // user requests next move
+		if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))
 		{
-			nextVisiblePlayer();
+		  	//if (m_pMRI->GameHasFinished())
+			//	nextVisiblePlayer();
+			//else
+			//{
+			//	if (visiblePlayerC().IsHuman())
+			//		nextVisiblePlayer();
+			//	if (!visiblePlayerC().IsHuman())
+			//		performMove(m_pMRI->SelectMove());
+			//}
 		}
-		else if (visiblePlayerC().IsHuman())
+		else
 		{
-			m_pSound->WarningSound();    // no automatic move for human players
-		}
-		else // AI player not yet finished
-		{
-			BlokusMove move { m_pMRI->SelectMove(visiblePlayerC()) };
-			NextMoveCmd::Push(move);  // may finish if no more valid moves
-			if (!visiblePlayerC().HasFinished())
+  			if (m_pMRI->GameHasFinished())
+				nextVisiblePlayer();
+			else 
 			{
-  				nextVisiblePlayer();
-				if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))		
-					PostCommand(IDD_NEXT_MOVE);
+				if (visiblePlayerC().HasFinished())
+				{
+					nextVisiblePlayer();
+				}
+				else if (visiblePlayerC().IsHuman())
+				{
+					m_pSound->WarningSound();    // no automatic move for human players
+				}
+				else                             // AI move
+				{
+					BlokusMove move { m_pMRI->SelectMove() };
+					NextMoveCmd::Push(move);               // may finish if no more valid moves
+					if (!m_pMRI->HasFinished(move))
+						nextVisiblePlayer();
+				}
 			}
 		}
+
 		Notify(false);
 		break;
 
@@ -136,14 +176,18 @@ bool BlokusWindow::OnLButtonUp(WPARAM const wParam, LPARAM const lParam)
 	{
 		if (m_pMRI->IsValidPosition(m_move))
 		{
-			NextMoveCmd::Push(m_move);
-			if (!visiblePlayerC().HasFinished())
+			if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))
 			{
-  				nextVisiblePlayer();
-				if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefAutoMove))		
-					PostCommand(IDD_NEXT_MOVE);
+				// not yet implemented
+			}
+			else
+			{
+		  		NextMoveCmd::Push(m_move);               // may finish if no more valid moves
+				if (!m_pMRI->HasFinished(m_move))
+					nextVisiblePlayer();
 			}
 		}
+
 		m_move.Reset();
 		m_pieceMotion.Reset();
 		Notify(false);
@@ -179,7 +223,13 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	if ((wParam & MK_LBUTTON) && m_pieceMotion.IsActive())
 	{
 		if (m_pieceMotion.MovePiece(getCrsrPos(lParam)))
-			m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
+		{
+			CoordPos posRounded { m_pieceMotion.GetCoordPos() };
+			m_move.SetCoordPos(posRounded);
+			CoordPos const coordPosBestFit { m_pMRI->FindBestFit(m_move) };
+			if (IsDefined(coordPosBestFit))
+				m_move.SetCoordPos(coordPosBestFit);
+		}
 		Notify(false);
 	}
 }
@@ -261,24 +311,24 @@ void BlokusWindow::drawBlockedCells(Player const& player)
 
 void BlokusWindow::PaintGraphics()
 {
-	Player const& player { visiblePlayerC() };
-	player.Prepare();
+ 	Player const& player { visiblePlayerC() };
  	paintBoard();
 	m_pMRI->DrawSetPieces(m_context);
+	player.Prepare();
 	player.DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())
 	{
 		if (m_move.IsCompletelyOnBoard())
 		{
 			Color const color { m_pMRI->IsValidPosition(m_move) ? visiblePlayerC().GetColor() : COL_BLACK};
-			m_pMRI->DrawMovePiece(m_context, m_move, color);  // The shadow
+			m_pMRI->DrawMovePiece(m_context, m_move, color);                                                     // the shadow
 		}
 		if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowMoveDetail))
 			m_pMRI->DrawMovePiece(m_context, m_move, visiblePlayerC().GetColor(), m_pieceMotion.GetPosition());  // the original piece
 	}
 	if (BoolPreferences::IsActive(BlokusPreferences::m_bPrefShowContactPnts))
 		player.DrawContactPnts(m_context);
-	if (player.HasFinished())
+ 	if (player.HasFinished())
 		player.DrawResult(m_context, m_hTextFormat);
 	if (m_pMRI->GameHasFinished())
 		drawFinishedMsg();

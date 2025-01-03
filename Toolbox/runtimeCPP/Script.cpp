@@ -18,7 +18,7 @@ using std::wstring;
 using std::numeric_limits;
 using std::filesystem::file_size;
 
-//   ScrSetWrapHook: Set hook function, which will be called in processScript
+// ScrSetWrapHook: Set hook function, which will be called in ProcessScript
    
 void Script::ScrSetWrapHook(ScriptFunctor const * const pHook)
 {

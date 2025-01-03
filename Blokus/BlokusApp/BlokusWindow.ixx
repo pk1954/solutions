@@ -37,6 +37,7 @@ private:
 	bool OnLButtonDown(WPARAM const, LPARAM const)                                            final;
 	void PaintGraphics() final;
 
+	void          performMove(BlokusMove);
 	void          drawFinishedMsg();
 	void		  drawCellNumbers();
 	void          drawBlockedCells(Player const&);
@@ -45,4 +46,5 @@ private:
 
 	Player const &visiblePlayerC   () const { return m_pMRI->GetPlayerC(m_idVisiblePlayer); }
 	void          nextVisiblePlayer()       { m_idVisiblePlayer = NextPlayer(m_idVisiblePlayer); }
+	void          prevVisiblePlayer()       { m_idVisiblePlayer = PrevPlayer(m_idVisiblePlayer); }
 };

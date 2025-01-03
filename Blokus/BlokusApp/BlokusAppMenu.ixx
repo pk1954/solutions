@@ -17,7 +17,6 @@ public:
 	~BlokusAppMenu() = default;
 
 	void Initialize(HWND const);
-	void PreferenceMenus();
 	void Notify(bool const) final;
 
 	HWND  m_hwndApp      { nullptr };

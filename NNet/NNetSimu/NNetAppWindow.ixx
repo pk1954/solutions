@@ -57,7 +57,6 @@ private:
 	void OnClose  ()                                             final;
 
 	void configureStatusBar();
-	void processScript() const;
 	void setModelInterface();
 	void replaceModel();
 	void newModel();

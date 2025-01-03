@@ -7,14 +7,9 @@ export module Resource;
 // identifiers below 100 are reserved for win32_utilities
 // application identifiers start at 100
 
-export inline int const IDM_FATAL_ERROR  	          { 100 };
-								   	         		  
 export inline int const IDC_NNET_SIMU_MAIN  	      { 102 };
 export inline int const IDD_APPLY                     { 105 };
 export inline int const IDD_RESET                     { 107 };
-										    		  
-export inline int const IDM_SCRIPT_DIALOG             { 110 };
-export inline int const IDM_DUMP                      { 117 };
 								   	         		  
 export inline int const IDM_ESCAPE                    { 140 };
 export inline int const IDM_RESET_DYNAMIC_DATA        { 141 };

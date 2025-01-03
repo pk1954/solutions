@@ -4,9 +4,23 @@
 
 module BlokusCore:Board;
     
+using std::endl;
+using std::wcout;
+
 Board::Board()
 {
     Reset();
+}
+
+void Board::Dump() const
+{
+    wcout << L"***** Board *****" << endl;
+    for (int i = 0; i < BOARD_SIZE; ++i)
+    {
+        for (int j = 0; j < BOARD_SIZE; ++j)
+            m_cells[i][j].Dump();
+        wcout << endl;
+    }
 }
 
 void Board::Reset()
@@ -38,7 +52,7 @@ void Board::DoMove(BlokusMove const& move)   // Set affected shape cells to play
     Apply2AllShapeCells
     (
         move, 
-        [&move](Cell &cell){ cell.set(move.GetPlayerId(), move.GetPieceTypeId()); }
+        [move](Cell &cell){ cell.set(move.GetPlayerId(), move.GetPieceTypeId()); }
     );
     NotifyAll(false);
 }

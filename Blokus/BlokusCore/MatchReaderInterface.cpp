@@ -10,7 +10,7 @@ using std::to_wstring;
 
 Piece const &MatchReaderInterface::GetPieceC(BlokusMove const move) const
 {
-	Player const &player { GetPlayerC(move.GetPlayerId()) };
+	Player const &player { GetPlayerC(move) };
 	return player.GetPieceC(move.GetPieceTypeId());
 }
 
@@ -101,7 +101,7 @@ bool MatchReaderInterface::HasContact(BlokusMove const move) const
     (
         [this, &move](ShapeCoordPos const& shapePosCorner)
         {
-            return GetPlayerC(move.GetPlayerId()).IsTrue4AnyContactPnt
+            return GetPlayerC(move).IsTrue4AnyContactPnt
             (
                 [&shapePosCorner, &move](CoordPos const &posContactPn)
                 {

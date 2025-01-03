@@ -5,6 +5,9 @@
 export module BlokusCommands:NextMoveCmd;
 
 import std;
+import Debug;
+import SaveCast;
+import RunTime;
 import :BlokusCommand;
 
 using std::wstring;
@@ -19,23 +22,13 @@ public:
 
 	void Do() final 
 	{
-        if (m_move.IsDefined())
-        {
-            m_pMWI->DoMove(m_move);
-        }
-        else
-        {
-            m_pMWI->Finalize(m_pMWI->GetPlayer(m_move));
-        }
+        Assert(m_move.IsDefined());
+        m_pMWI->DoMove(m_move);
     }
 
 	void Undo() final 
 	{
-  //   if (m_move.IsDefined())
-  //       m_pMWI->UndoMove(m_move);
-  //   else 
-  //       m_pMWI->UndoFinalize();
-  //   m_pMWI->PrevPlayer();
+        m_pMWI->UndoMove(m_move);
     }
 
     static void Register()
@@ -45,6 +38,8 @@ public:
 
     static void Push(BlokusMove const move)
     {
+		if (IsTraceOn())
+			TraceStream() << NAME << SPACE << move << endl;
         PushCommand(make_unique<NextMoveCmd>(move));
     }
 
@@ -58,6 +53,12 @@ private:
         using Wrapper::Wrapper;
         void operator() (Script& script) const final
         {
+            PlayerId    const idPlayer    { Cast2SignedChar(script.ScrReadInt()) };
+            PieceTypeId const idPieceType { script.ScrReadUchar() };
+            ShapeId     const idShape     { Cast2SignedChar(script.ScrReadChar()) };
+            CoordPos    const coordPos    { ScrReadCoordPos(script) };
+            BlokusMove  const move(idPlayer, idPieceType, idShape, coordPos);
+            NextMoveCmd::Push(move);
         }
     } m_wrapper { NAME };
 };

@@ -18,17 +18,18 @@ export inline int const SC_LBUTTONDBLCLK          { 1 };
 
 // identifiers below 100 are reserved for win32_utilities
                                                 
+export inline int const IDM_FATAL_ERROR  	      { 2 };
 export inline int const IDM_ABOUT                 { 3 };
 export inline int const IDM_DOCU                  { 4 };
 export inline int const IDM_EXIT                  { 5 };
+export inline int const IDM_DUMP                  { 6 };
 export inline int const IDD_SOUND                 { 7 };
 export inline int const IDD_COLOR_MENU            { 8 };
 export inline int const IDD_REFRESH_RATE_DIALOG   { 9 };
-                                                  
+export inline int const IDM_SCRIPT_DIALOG         { 10 };
 export inline int const IDD_EDIT_CTL              { 11 };
 export inline int const IDD_COLOR_CTL             { 12 };
 export inline int const IDM_DEFAULT_BK_COLOR      { 13 };
-                                                  
 export inline int const IDD_FATAL_ERROR           { 14 };
 export inline int const IDX_FILE_NOT_FOUND        { 15 };
 export inline int const IDX_ERROR_IN_FILE         { 16 };

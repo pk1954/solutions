@@ -47,6 +47,8 @@ public:
 	BlokusAppWindow            (BlokusAppWindow const&) = delete;  // noncopyable class 
 	BlokusAppWindow& operator= (BlokusAppWindow const&) = delete;  // noncopyable class 
 
+	void Dump() const { m_upMatch->Dump(); }
+
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;

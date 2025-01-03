@@ -46,6 +46,8 @@ public:
 
 	Degrees GetRotation() const { return m_degRotation; }
 
+	//int MinDistSquare(CoordPos const, CoordPos const);
+
     void Apply2AllCornerPntsC(auto const& func) const
     {
         for (CoordPos const& pos : m_cornerPnts)

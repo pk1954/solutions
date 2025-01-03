@@ -6,18 +6,22 @@ export module BlokusCore:Board;
 
 import std;
 import Observable;
+import IoConstants;
 import :Components;
 import :BlokusUtilities;
 import :PieceTypeId;
 import :PlayerId;
 
 using std::array;
+using std::setw;
+using std::wcout;
 
 export class Board : public Observable
 {
 public:
     Board();
 
+    void Dump() const;
     void Reset();
     void DoMove  (BlokusMove const&);
     void UndoMove(BlokusMove const&);
@@ -64,11 +68,13 @@ private:
     {
         PlayerId    m_idPlayer;
         PieceTypeId m_idPieceType;
+
         void reset()
         {
             m_idPlayer    = NO_PLAYER;
             m_idPieceType = UndefinedPieceTypeId;
         }
+
         void set
         (
             PlayerId    const idPlayer,
@@ -78,7 +84,16 @@ private:
             m_idPlayer    = idPlayer;
             m_idPieceType = idPieceType;
         }
-};
+
+        void Dump() const
+        {
+            if (IsDefined(m_idPlayer))
+                wcout << setw(1) << m_idPlayer.GetValue();
+            else 
+                wcout << L".";
+        }
+
+    };
 
     array<array<Cell, BOARD_SIZE>, BOARD_SIZE> m_cells;  // affected by move
 

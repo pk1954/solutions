@@ -17,7 +17,7 @@ public:
     {
         bool const bOld { m_bValue };
         m_bValue = bNew;
-        NotifyAll(true);
+        NotifyAll(false);
         return bOld;
     }
 

@@ -8,9 +8,14 @@ import std;
 import Util;
 import Types;
 import SaveCast;
+import RunTime;
+import IoConstants;
 
 using std::numeric_limits;
 using std::round;
+using std::wostream;
+using std::right;
+using std::setw;
 
 // integer coordinates
 
@@ -37,9 +42,39 @@ export using CoordPos = PosType<Coord>;
 export inline CoordPos const UndefinedCoordPos { UndefinedCoord(), UndefinedCoord() };
 export inline CoordPos const CoordPosZero      { Coord(0), Coord(0) };
 
+export bool IsDefined(CoordPos pos) { return pos != UndefinedCoordPos; }
+
 export using CoordRect = RectType<Coord>;
 
 export bool IsInShapeRange(CoordPos const&);
+
+export int DistSquare(CoordPos const pntA, CoordPos const pntB)
+{
+	CoordPos delta { pntA - pntB };
+	return delta.GetXvalue() * delta.GetXvalue() + delta.GetYvalue() * delta.GetYvalue();
+}
+
+export wostream& operator<< (wostream& out, CoordPos const pnt)
+{
+    out << right
+        << SPACE
+        << OPEN_BRACKET
+        << setw(2) << pnt.GetXvalue()
+        << SEPARATOR
+        << setw(2) << pnt.GetYvalue()
+        << CLOSE_BRACKET;
+    return out;
+}
+
+export CoordPos ScrReadCoordPos(Script& script)
+{
+    script.ScrReadSpecial(OPEN_BRACKET);
+    Coord const x(Cast2Byte(script.ScrReadInt()));
+    script.ScrReadSpecial(SEPARATOR);
+    Coord const y(Cast2Byte(script.ScrReadInt()));
+    script.ScrReadSpecial(CLOSE_BRACKET);
+    return CoordPos(x, y);
+}
 
 // float coordinates
 

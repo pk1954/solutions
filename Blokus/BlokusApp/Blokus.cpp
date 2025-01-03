@@ -62,6 +62,7 @@ int wWinMain
 		FatalErrorMB::Happened(3, L"Caught C++ exception: " + ConvertToWideString(e.what()));
 		std::cerr << "Caught C++ exception: " << e.what() << std::endl;
 		iRes = -3;
+		upApp->Dump();
 	}
 	return iRes;
 }
