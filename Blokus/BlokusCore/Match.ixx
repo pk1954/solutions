@@ -77,7 +77,6 @@ public:
         return true;
     }
 
-    PlayerId      m_idPlayerActive { 0 };
     PLAYERS       m_players;
     Board         m_board;
     MatchProtocol m_protocol;

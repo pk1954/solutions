@@ -26,13 +26,10 @@ void Match::Dump() const
     m_board.Dump();
     Apply2AllPlayersC([](Player const &p) { p.Dump(); });
     wcout << endl;
-    wcout << L"m_idPlayerActive: " << m_idPlayerActive << endl;
-    wcout << endl;
 }
 
 void Match::Reset()
 {
-    m_idPlayerActive = 0;
     m_board.Reset();
     for (Player &player: m_players)
         player.Reset(); 
@@ -52,20 +49,10 @@ bool Match::AnyShapeCellsBlocked(BlokusMove const move) const
     return player.AnyShapeCellsBlocked(move);
 }
 
-void Match::SetActivePlayer()
-{
-    if (GameHasFinished())
-        m_idPlayerActive = NO_PLAYER;
-    else
-        do
-            m_idPlayerActive = ::NextPlayer(m_idPlayerActive);
-        while (GetPlayerC(m_idPlayerActive).HasFinished());
-}
-
 CoordPos Match::FindBestFit(BlokusMove const move) const
 {
     CoordPos posShapeTargetBest { UndefinedCoordPos };
-	int      iMinDistSquare { 10 };
+	int      iMinDistSquare     { 40 };
 
     Shape    const &shape         { move.GetShapeC() };
 	Player   const &player        { GetPlayerC(move) };

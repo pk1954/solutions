@@ -157,6 +157,10 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		PostMsg(WM_CLOSE, 0, 0);
 		return true;
 
+	case IDD_RESET:
+		m_mainWindow.PostCommand(IDD_RESET);
+		break;
+
 	default:
 		return true;
 	}

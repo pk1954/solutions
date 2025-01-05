@@ -14,7 +14,6 @@ void MatchWriterInterface::DoMove(BlokusMove move)
 	getPiece(move).DoMove(move);     // Set piece pos and mark as set
     m_pMatch->m_board.DoMove(move);  // Set affected cells to player id
     player.DoMove(move);             // Set remaining pieces, etc. May finish, if all pieces set
-    m_pMatch->SetActivePlayer();
 }
 
 void MatchWriterInterface::UndoMove(BlokusMove move)
