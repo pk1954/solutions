@@ -58,7 +58,7 @@ void Match::SetActivePlayer()
         m_idPlayerActive = NO_PLAYER;
     else
         do
-            m_idPlayerActive = NextPlayer(m_idPlayerActive);
+            m_idPlayerActive = ::NextPlayer(m_idPlayerActive);
         while (GetPlayerC(m_idPlayerActive).HasFinished());
 }
 

@@ -24,18 +24,15 @@ public:
     Board       const &GetBoard()                                 const { return m_pMatch->m_board; }
     CoordPos           FindBestFit        (BlokusMove const move) const { return m_pMatch->FindBestFit(move); }
     Player      const &GetPlayerC         (BlokusMove const move) const { return m_pMatch->GetPlayerC(move); }
-    bool              HasFinished         (BlokusMove const move) const { return GetPlayerC(move).HasFinished(); }
     Player      const &GetPlayerC         (PlayerId   const id)   const { return m_pMatch->m_players.at(id.GetValue()); }
+    Player      const &NextPlayerC        (Player     const &p)   const { return m_pMatch->NextPlayerC(p); }
     ListOfMoves const &GetListOfValidMoves(PlayerId   const id)   const { return GetPlayerC(id).GetListOfValidMoves(); }
-    bool               HasFinished        (PlayerId   const id)   const { return GetPlayerC(id).HasFinished(); }
-    Player      const &GetActivePlayer    ()                      const { return GetPlayerC(GetActivePlayerId()); }
-    BlokusMove         SelectMove         ()                      const { return GetActivePlayer().SelectMove(*this); }
+    BlokusMove         SelectMove         (Player     const &p)   const { return p.SelectMove(*this); }
 
     void      Apply2AllFreeCellsC(auto const& func) const { m_pMatch->Apply2AllFreeCellsC(func); }
     void      Apply2AllPlayersC  (auto const& func) const { m_pMatch->Apply2AllPlayersC(func); }
     bool      IfAllPlayers       (auto const& func) const { return m_pMatch->IfAllPlayers(func); }
     bool      GameHasFinished    ()                 const { return m_pMatch->GameHasFinished(); }
-    PlayerId  GetActivePlayerId  ()                 const { return m_pMatch->m_idPlayerActive; }
 
     void DrawSetPieces(DrawContext&)                                                      const;
     void DrawMovePiece(DrawContext&, BlokusMove const, Color const)                       const;

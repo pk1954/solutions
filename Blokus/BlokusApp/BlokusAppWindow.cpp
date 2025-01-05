@@ -29,14 +29,14 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	WinCommand::Initialize(&m_cmdStack);
 	m_cmdStack.Initialize(&m_matchObservable);
 
+	m_upMatch = Match::CreateNewMatch();
+	m_mwi.SetMatch(m_upMatch.get());
+	BlokusCommand::SetMatchInterface(&m_mwi);
+
 	m_mainWindow      .Start(m_hwndApp, m_mwi, m_sound);
 	m_statusBar       .Start(m_hwndApp);
 	m_undoRedoMenu    .Start(m_hwndApp, &m_cmdStack);
 	m_tournamentWindow.Start(&m_tournament);
-
-	m_upMatch = Match::CreateNewMatch();
-	m_mwi.SetMatch(m_upMatch.get());
-	BlokusCommand::SetMatchInterface(&m_mwi);
 
 	WinManager::AddWindow(L"IDM_APPL_WINDOW",       RootWinId(IDM_APPL_WINDOW      ), m_hwndApp,                     true,  true );
 	WinManager::AddWindow(L"IDM_STATUS_BAR",        RootWinId(IDM_STATUS_BAR       ), m_statusBar.GetWindowHandle(), false, false);

@@ -25,7 +25,7 @@ private:
 	MatchReaderInterface const * m_pMRI;
 	PieceMotion                  m_pieceMotion;
 	D2D_DrawContext              m_context;
-    PlayerId                     m_idVisiblePlayer  { 0 };
+    Player               const * m_pPlayerVisible   { nullptr };
 	Sound                      * m_pSound           { nullptr };
 	TextFormatHandle             m_hTextFormat      { nullptr };
 	TextFormatHandle             m_hTextFormatSmall { nullptr };
@@ -37,14 +37,14 @@ private:
 	bool OnLButtonDown(WPARAM const, LPARAM const)                                            final;
 	void PaintGraphics() final;
 
-	void          performMove(BlokusMove);
+	void          autoRun();
+	void          performMove();
 	void          drawFinishedMsg();
 	void		  drawCellNumbers();
 	void          drawBlockedCells(Player const&);
 	void          paintBoard() const;
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
 
-	Player const &visiblePlayerC   () const { return m_pMRI->GetPlayerC(m_idVisiblePlayer); }
-	void          nextVisiblePlayer()       { m_idVisiblePlayer = NextPlayer(m_idVisiblePlayer); }
-	void          prevVisiblePlayer()       { m_idVisiblePlayer = PrevPlayer(m_idVisiblePlayer); }
+	void          nextVisiblePlayer()       { m_pPlayerVisible = &m_pMRI->NextPlayerC(*m_pPlayerVisible); }
+	bool          humanPlayersTurn () const { return m_pPlayerVisible->IsHuman() && !m_pPlayerVisible->HasFinished(); }
 };

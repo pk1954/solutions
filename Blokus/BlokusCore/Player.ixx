@@ -61,6 +61,7 @@ public:
     Strategy const &GetStrategy()                      const { return *m_pStrategy; }
     Piece    const &GetPieceC (PieceTypeId const  id ) const { return m_pieces.at(id.GetValue()); }
     Piece          &GetPiece  (PieceTypeId const  id )       { return m_pieces.at(id.GetValue()); }
+    PlayerId        GetPlayerId()                      const { return m_idPlayer; }
 
     void DoMove  (BlokusMove&);
     void UndoMove();
@@ -128,12 +129,12 @@ public:
     }
 
 private:
-    int                m_iResult;          
-    bool               m_bFirstMove;       
-    Board      const * m_pBoard;
-    PlayerType const * m_pPlayerType;
-    Strategy         * m_pStrategy;  //TODO: move from here to MatchReaderInterface?
-    PlayerId           m_idPlayer;
+    bool                m_bFirstMove;       
+    Board       const * m_pBoard;
+    PlayerType  const * m_pPlayerType;
+    Strategy          * m_pStrategy;  //TODO: move from here to MatchReaderInterface?
+    PieceTypeId         m_idPieceTypeLastMove;
+    PlayerId            m_idPlayer;
 
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
 
@@ -145,12 +146,13 @@ private:
     mutable array<bool, NR_OF_PIECE_TYPES> m_mapOfMoveablePieces;
 
     mutable HiResTimer m_timer;
+    mutable int        m_iResult;          
 
     void testPosition(BlokusMove&, ShapeCoordPos const&) const;
     void testShape   (BlokusMove&)                       const;
     void testPiece   (BlokusMove&, Piece         const&) const;
 
-    int  calcResult(PieceTypeId const) const;
+    int  calcResult() const;
 
     void recalcListOfContactPnts() const;
  	void recalcMapOfValidCells  () const;

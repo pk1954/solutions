@@ -74,6 +74,7 @@ void Player::Reset()
     Apply2AllPieces([&id](Piece& p){ p.Initialize(id++); });
     m_bFirstMove   = true;
 	m_bTablesValid = false;
+	m_idPieceTypeLastMove = UndefinedPieceTypeId;
 	m_mapOfValidCells.Reset();
 	Prepare();
 }
@@ -270,6 +271,8 @@ void Player::calcListOfValidMoves() const
             testPiece(move, piece);
         }
     );
+	if (m_listOfValidMoves.empty())
+		m_iResult = calcResult();
 	for (BlokusMove const& move : m_listOfValidMoves)
         Assert(!AnyShapeCellsBlocked(move));
 }
@@ -300,7 +303,7 @@ BlokusMove Player::SelectMove(RuleServerInterface const &rsi) const
     return moveSelected;
 }
 
-int Player::calcResult(PieceTypeId const idPieceTypeLastMove) const
+int Player::calcResult() const
 {
 	int iResult = 0;
 	Apply2AvailablePiecesC
@@ -313,7 +316,7 @@ int Player::calcResult(PieceTypeId const idPieceTypeLastMove) const
 	if (iResult == 0)    // all pieces set
 	{
 		iResult += 15;
-		if (Components::GetPieceTypeC(idPieceTypeLastMove).NrOfCells() == 1)
+		if (Components::GetPieceTypeC(m_idPieceTypeLastMove).NrOfCells() == 1)
 			iResult += 5;
 	}
 	return iResult;
@@ -323,9 +326,8 @@ void Player::DoMove(BlokusMove &move)
 {
     Assert(move.IsDefined());
 	m_bFirstMove = false;
+	m_idPieceTypeLastMove = move.GetPieceTypeId();
 	Prepare();
-	if (m_listOfValidMoves.empty())
-		m_iResult = calcResult(move.GetPieceTypeId());
 }
 
 void Player::UndoMove()

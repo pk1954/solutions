@@ -47,9 +47,11 @@ public:
     void ResetTimers();
     void SetActivePlayer();
 
-    Player       &GetPlayer (PlayerId   const id  )       { return m_players.at(id.GetValue()); }
-    Player const &GetPlayerC(PlayerId   const id  ) const { return m_players.at(id.GetValue()); }
-    Player const &GetPlayerC(BlokusMove const move) const { return GetPlayerC(move.GetPlayerId()); }
+    Player       &GetPlayer  (PlayerId   const id  )       { return m_players.at(id.GetValue()); }
+    Player       &NextPlayer (Player     const &p  )       { return GetPlayer (::NextPlayer(p.GetPlayerId())); }
+    Player const &NextPlayerC(Player     const &p  ) const { return GetPlayerC(::NextPlayer(p.GetPlayerId())); }
+    Player const &GetPlayerC (PlayerId   const id  ) const { return m_players.at(id.GetValue()); }
+    Player const &GetPlayerC (BlokusMove const move) const { return GetPlayerC(move.GetPlayerId()); }
 
     bool GameHasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
 
