@@ -39,7 +39,6 @@ public:
 
     void Notify(bool const) final;
 
-
     void               Prepare()                                             const;
     ListOfMoves const &GetListOfValidMoves()                                 const;
     BlokusMove         SelectMove(RuleServerInterface const&)                const;

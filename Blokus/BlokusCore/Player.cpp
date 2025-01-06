@@ -291,7 +291,7 @@ void Player::Prepare() const
 
 ListOfMoves const& Player::GetListOfValidMoves() const
 {
-	Prepare();
+	Assert(m_bTablesValid);
 	return m_listOfValidMoves;
 }
 

@@ -44,7 +44,6 @@ private:
 	void          drawBlockedCells(Player const&);
 	void          paintBoard() const;
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
-
-	void          nextVisiblePlayer()       { m_pPlayerVisible = &m_pMRI->NextPlayerC(*m_pPlayerVisible); }
-	bool          humanPlayersTurn () const { return m_pPlayerVisible->IsHuman() && !m_pPlayerVisible->HasFinished(); }
+	bool          humanPlayersTurn () const;
+	void          nextVisiblePlayer();
 };

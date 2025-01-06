@@ -82,6 +82,18 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
+void BlokusWindow::nextVisiblePlayer()       
+{ 
+	m_pPlayerVisible = &m_pMRI->NextPlayerC(*m_pPlayerVisible);
+	m_pPlayerVisible->Prepare();
+}
+
+bool BlokusWindow::humanPlayersTurn () const 
+{ 
+	return m_pPlayerVisible->IsHuman() && 
+		  !m_pPlayerVisible->HasFinished(); 
+}
+
 void BlokusWindow::performMove()
 {
 	NextMoveCmd::Push(m_move);     // may finish if no more valid moves
@@ -119,6 +131,7 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	case IDD_RESET:
 		ResetMatchCmd::Push();
 		m_pPlayerVisible = &m_pMRI->GetPlayerC(PlayerId(0));
+		Notify(false);
 		break;
 
 	case IDD_NEXT_SHAPE:
@@ -296,7 +309,6 @@ void BlokusWindow::PaintGraphics()
 {
  	paintBoard();
 	m_pMRI->DrawSetPieces(m_context);
-	m_pPlayerVisible->Prepare();
 	m_pPlayerVisible->DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())
 	{
