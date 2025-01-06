@@ -28,7 +28,6 @@ public:
 
 	void Undo() final 
 	{
-        m_pMWI->UndoMove(m_move);
     }
 
     static void Register()

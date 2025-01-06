@@ -42,6 +42,11 @@ void BlokusWindow::Start
 	m_context.Start(m_upGraphics.get());
 }
 
+void BlokusWindow::ResetVisiblePlayer()
+{
+	m_pPlayerVisible = &m_pMRI->GetPlayerC(PlayerId(0));
+}
+
 bool BlokusWindow::OnSize(PIXEL const width, PIXEL const height)
 {
 	GraphicsWindow::OnSize(width, height);
@@ -69,7 +74,7 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 
 		case 'r':
 		case 'R':
-			PostCommand(IDD_RESET);
+			PostCommand2Parent(IDD_RESET);
 			break;
 
 		case 't':
@@ -85,6 +90,12 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 void BlokusWindow::nextVisiblePlayer()       
 { 
 	m_pPlayerVisible = &m_pMRI->NextPlayerC(*m_pPlayerVisible);
+	m_pPlayerVisible->Prepare();
+}
+
+void BlokusWindow::PrevVisiblePlayer()       
+{ 
+	m_pPlayerVisible = &m_pMRI->PrevPlayerC(*m_pPlayerVisible);
 	m_pPlayerVisible->Prepare();
 }
 
@@ -128,12 +139,6 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 {
 	switch (int const wmId { LoWord(wParam) } )
 	{
-	case IDD_RESET:
-		ResetMatchCmd::Push();
-		m_pPlayerVisible = &m_pMRI->GetPlayerC(PlayerId(0));
-		Notify(false);
-		break;
-
 	case IDD_NEXT_SHAPE:
 		if (m_pieceMotion.IsActive())
 		{

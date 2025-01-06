@@ -20,6 +20,11 @@ public:
 
 	void OnChar(WPARAM const, LPARAM const) final;
 
+	void ResetVisiblePlayer();
+
+	void nextVisiblePlayer();
+	void PrevVisiblePlayer();
+
 private:
 	BlokusMove                   m_move;
 	MatchReaderInterface const * m_pMRI;
@@ -45,5 +50,4 @@ private:
 	void          paintBoard() const;
 	MicroMeterPnt getCrsrPos(LPARAM const) const;
 	bool          humanPlayersTurn () const;
-	void          nextVisiblePlayer();
 };

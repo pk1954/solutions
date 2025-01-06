@@ -26,6 +26,7 @@ public:
     Player      const &GetPlayerC         (BlokusMove const move) const { return m_pMatch->GetPlayerC(move); }
     Player      const &GetPlayerC         (PlayerId   const id)   const { return m_pMatch->m_players.at(id.GetValue()); }
     Player      const &NextPlayerC        (Player     const &p)   const { return m_pMatch->NextPlayerC(p); }
+    Player      const &PrevPlayerC        (Player     const &p)   const { return m_pMatch->PrevPlayerC(p); }
     ListOfMoves const &GetListOfValidMoves(PlayerId   const id)   const { return GetPlayerC(id).GetListOfValidMoves(); }
     BlokusMove         SelectMove         (Player     const &p)   const { return p.SelectMove(*this); }
 

@@ -129,12 +129,22 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		Dump();
 		return true;
 
+	case IDD_RESET:
+		ResetMatchCmd::Push();
+		m_mainWindow.ResetVisiblePlayer();
+		WinCommand::ClearStack();
+		m_mainWindow.Notify(false);
+		break;
+
 	case IDM_SCRIPT_DIALOG:
 		ProcessScript(nullptr);
 		return true;
 
 	case IDM_UNDO:
-		if (!m_cmdStack.UndoStackCommand())
+		ResetMatchCmd::Push();
+		if (m_cmdStack.UndoByRedoFromStart())
+			m_mainWindow.PrevVisiblePlayer();
+		else
 			m_sound.WarningSound();
 		return true;
 
@@ -156,10 +166,6 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	case IDM_EXIT:
 		PostMsg(WM_CLOSE, 0, 0);
 		return true;
-
-	case IDD_RESET:
-		m_mainWindow.PostCommand(IDD_RESET);
-		break;
 
 	default:
 		return true;

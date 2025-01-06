@@ -6,8 +6,8 @@ export module Commands:CommandStack;
 
 import std;
 import RunTime;
-import :BaseCommand;
 import Observable;
+import :BaseCommand;
 
 using std::wstring;
 using std::vector;
@@ -30,6 +30,7 @@ public:
     void PushStackCommand(unique_ptr<BaseCommand>);
     bool UndoStackCommand();
     bool RedoStackCommand();
+    bool UndoByRedoFromStart();
     void Clear();
     void DoAll();
     void UndoAll();

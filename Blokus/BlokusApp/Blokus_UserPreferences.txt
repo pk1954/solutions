@@ -8,6 +8,6 @@ ShowCellNumbers  OFF
 ShowBlockedCells  OFF
 ShowCornerCells  OFF
 ShowMoveDetail  ON
-AutoMove  ON
+AutoMove  OFF
 Sound  ON
 # ***  End of Preferences

@@ -36,7 +36,6 @@ public:
     static void Push()
     {
    	    m_pMWI->Reset();
-		ClearStack();
     }
 
 private:

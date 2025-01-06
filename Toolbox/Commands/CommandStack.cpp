@@ -25,6 +25,16 @@ bool CommandStack::UndoStackEmpty() const
     return m_iIndex == 0; 
 }
 
+bool CommandStack::UndoByRedoFromStart()
+{ 
+    if (m_iIndex == 0)
+        return false;
+    size_t iTargetIndex { m_iIndex - 1 };
+    for (m_iIndex = 0; m_iIndex < iTargetIndex; ++m_iIndex)
+        currentCmd().Do();
+    return true;
+}
+
 bool CommandStack::RedoStackEmpty() const 
 { 
     return m_iIndex == m_CommandStack.size(); 
