@@ -47,11 +47,12 @@ public:
         return GetCoordPos() != coordPosOld;
     }
 
-    bool             IsActive     () const { return m_umPos != NP_NULL; }
-    MicroMeterPnt    GetPosition  () const { return m_umPos; }
-    CoordPos         GetCoordPos  () const { return Round2CoordPos(m_umPos); }
-    Piece     const *GetPieceC    () const { return m_pPiece; }
-    PieceType const &GetPieceTypeC() const { return m_pPiece->GetPieceTypeC(); }
+    bool             IsActive      () const { return m_umPos != NP_NULL; }
+    MicroMeterPnt    GetPosition   () const { return m_umPos; }
+    CoordPos         GetCoordPos   () const { return Round2CoordPos(m_umPos); }
+    Piece     const *GetPieceC     () const { return m_pPiece; }
+    PieceType const &GetPieceTypeC () const { return m_pPiece->GetPieceTypeC(); }
+    PieceTypeId      GetPieceTypeId() const { return Components::GetPieceTypeId(GetPieceTypeC());}
 
 private:
 

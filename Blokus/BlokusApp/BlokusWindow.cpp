@@ -135,6 +135,18 @@ void BlokusWindow::autoRun()
 	}
 }
 
+MoveIter BlokusWindow::nextShape()
+{
+	MoveIter iterLast { m_iterActShape };
+	MoveIter iterRun  { m_iterActShape };
+	do
+	{
+		if (++iterRun == m_subRangePiece.end())
+			iterRun = m_subRangePiece.begin();
+	} while ((iterRun != iterLast) && (iterRun->GetShapeId() == iterLast->GetShapeId()));
+	return iterRun;
+}
+
 bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoint const pixPoint)
 {
 	switch (int const wmId { LoWord(wParam) } )
@@ -142,7 +154,8 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 	case IDD_NEXT_SHAPE:
 		if (m_pieceMotion.IsActive())
 		{
-			m_move.NextShape();
+			m_iterActShape = nextShape();
+			m_move = *m_iterActShape;
 			Notify(true);
 		}
 		else 
@@ -209,10 +222,9 @@ bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 	{
 		if (m_pieceMotion.FindPiece(*m_pPlayerVisible, getCrsrPos(lParam)))
 		{
-			m_move.SetPieceType(m_pieceMotion.GetPieceTypeC());
-			m_move.SetPlayerId (m_pPlayerVisible->GetPlayerId());
-			m_move.SetShapeId  (ShapeId(0));
-			m_move.SetCoordPos (m_pieceMotion.GetCoordPos());
+			m_subRangePiece = m_pPlayerVisible->GetMoves(m_pieceMotion.GetPieceTypeId());
+			m_iterActShape  = m_subRangePiece.begin();
+			m_move = *m_iterActShape;
 			SetCapture();
 		}
 	}

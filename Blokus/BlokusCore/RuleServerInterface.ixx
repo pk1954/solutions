@@ -6,8 +6,9 @@ export module BlokusCore:RuleServerInterface;
 
 import std;
 import :BlokusMove;
-import :PlayerId;
 import :Board;
+import :PlayerId;
+import :ListOfMoves;
 
 export class RuleServerInterface
 {

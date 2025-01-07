@@ -25,6 +25,7 @@ import :BlokusMove;
 using std::array;
 using std::vector;
 using std::wstring;
+using std::ranges::subrange;
 
 export using ListOfContactPnts = vector<CoordPos>;
 
@@ -52,7 +53,7 @@ public:
     bool            IsMoveable(PieceTypeId const  id ) const { return m_mapOfMoveablePieces.at(id.GetValue()); }
     bool            IsBlocked (CoordPos    const &pos) const { return m_mapOfValidCells.IsBlocked(pos); }
     bool            IsHuman()                          const { return GetStrategy().IsHuman(); }
-    bool            HasFinished()                      const { return m_listOfValidMoves.empty(); }
+    bool            HasFinished()                      const { return m_listOfValidMoves.Empty(); }
     int             Result()                           const { return m_iResult; }
     Ticks           GetTicks()                         const { return m_timer.GetAccumulatedActionTicks(); }
     Color           GetColor()                         const { return m_pPlayerType->m_color; }
@@ -61,6 +62,10 @@ public:
     Piece    const &GetPieceC (PieceTypeId const  id ) const { return m_pieces.at(id.GetValue()); }
     Piece          &GetPiece  (PieceTypeId const  id )       { return m_pieces.at(id.GetValue()); }
     PlayerId        GetPlayerId()                      const { return m_idPlayer; }
+
+//    MoveIter           GetBegin(PieceTypeId const id)              const { return m_listOfValidMoves.GetBegin(id); }
+//    void               GetNext (PieceTypeId const id, MoveIter it) const { return m_listOfValidMoves.GetNext(id, it); }
+    subrange<MoveIter> GetMoves(PieceTypeId const id)              const { return m_listOfValidMoves.GetMoves(id); }
 
     void DoMove  (BlokusMove&);
     void UndoMove();
@@ -121,19 +126,13 @@ public:
         return false;
     }
 
-    void Apply2AllValidMoves(auto const& func) const
-    {
-        for (BlokusMove const& move : m_listOfValidMoves)
-            func(move);
-    }
-
 private:
-    bool                m_bFirstMove;       
-    Board       const * m_pBoard;
-    PlayerType  const * m_pPlayerType;
-    Strategy          * m_pStrategy;  //TODO: move from here to MatchReaderInterface?
-    PieceTypeId         m_idPieceTypeLastMove;
-    PlayerId            m_idPlayer;
+    bool               m_bFirstMove;       
+    Board      const * m_pBoard;
+    PlayerType const * m_pPlayerType;
+    Strategy         * m_pStrategy;  //TODO: move from here to MatchReaderInterface?
+    PieceTypeId        m_idPieceTypeLastMove;
+    PlayerId           m_idPlayer;
 
     array<Piece, NR_OF_PIECE_TYPES> m_pieces;
 

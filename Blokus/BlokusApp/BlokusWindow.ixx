@@ -13,6 +13,8 @@ import SoundInterface;
 import D2D_DrawContext;
 import BlokusCore;
 
+using std::ranges::subrange;
+
 export class BlokusWindow : public GraphicsWindow
 {
 public:
@@ -29,6 +31,8 @@ private:
 	BlokusMove                   m_move;
 	MatchReaderInterface const * m_pMRI;
 	PieceMotion                  m_pieceMotion;
+	MoveIter                     m_iterActShape;
+	subrange<MoveIter>           m_subRangePiece;
 	D2D_DrawContext              m_context;
     Player               const * m_pPlayerVisible   { nullptr };
 	Sound                      * m_pSound           { nullptr };
@@ -42,6 +46,7 @@ private:
 	bool OnLButtonDown(WPARAM const, LPARAM const)                                            final;
 	void PaintGraphics() final;
 
+	MoveIter      nextShape();
 	void          autoRun();
 	void          performMove();
 	void          drawFinishedMsg();

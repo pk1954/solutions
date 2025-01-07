@@ -2,12 +2,12 @@
 SetSound  OFF
 SetColorMenu  OFF
 SetAutoOpen  ON
-ShowPieceNumbers  OFF
+ShowPieceNumbers  ON
 ShowContactPnts  ON
 ShowCellNumbers  OFF
 ShowBlockedCells  OFF
 ShowCornerCells  OFF
 ShowMoveDetail  ON
-AutoMove  OFF
+AutoMove  ON
 Sound  ON
 # ***  End of Preferences

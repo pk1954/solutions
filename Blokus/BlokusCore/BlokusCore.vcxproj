@@ -24,6 +24,7 @@
     <ClCompile Include="BlokusPreferences.ixx" />
     <ClCompile Include="BlokusUtilities.ixx" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ListOfMoves.ixx" />
     <ClCompile Include="MapOfValidCells.ixx" />
     <ClCompile Include="Board.ixx" />
     <ClCompile Include="Components.cpp" />

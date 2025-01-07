@@ -29,9 +29,9 @@ public:
     ) const final
     {
         ListOfMoves const &moves { rsi.GetListOfValidMoves(idPlayer) };
-        if (!moves.empty())
+        if (!moves.Empty())
         {
-            unsigned int uiMax { Cast2UnsignedInt(moves.size()) - 1 };
+            unsigned int uiMax { Cast2UnsignedInt(moves.Size()) - 1 };
             unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
             return moves[uiSel];
         }

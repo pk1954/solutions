@@ -88,8 +88,6 @@ private:
     CoordPos    m_coordPos    { UndefinedCoordPos };
 };
 
-export using ListOfMoves = vector<BlokusMove>;
-
 export wostream& operator<< (wostream& out, BlokusMove const move)
 {
     out << right

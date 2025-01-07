@@ -15,6 +15,7 @@ using std::endl;
 using std::wstring;
 using std::to_wstring;
 using std::vector;
+using std::ranges::subrange;
 using std::setw;
 
 void Player::Initialize
@@ -40,10 +41,10 @@ void Player::dumpContactPnts() const
 void Player::dumpListOfValidMoves() const
 {
 	wcout << L"** List of valid moves" << endl;
-	if (m_listOfValidMoves.empty())
+	if (m_listOfValidMoves.Empty())
 		wcout << L"  -- no valid moves --" << endl;
 	else 
-		Apply2AllValidMoves([](BlokusMove const& move){ wcout << move << endl; });
+		m_listOfValidMoves.Apply2AllC([](BlokusMove const& move){ wcout << move << endl; });
 }
 
 void Player::dumpMapOfMoveablePieces() const
@@ -223,7 +224,7 @@ void Player::testPosition
             move.SetCoordPos(posContact - posCorner);
             if (AnyShapeCellsBlocked(move))
                 return;
-            m_listOfValidMoves.push_back(move);
+            m_listOfValidMoves.Add(move);
 			m_mapOfMoveablePieces[move.GetPieceTypeId().GetValue()] = true;
         }
 	);
@@ -263,7 +264,7 @@ void Player::calcListOfValidMoves() const
 {
     BlokusMove move;
     move.SetPlayerId(m_idPlayer);
-	m_listOfValidMoves.clear();
+	m_listOfValidMoves.Clear();
     Apply2AvailablePiecesC
     (
         [this, &move](Piece const& piece)
@@ -271,10 +272,9 @@ void Player::calcListOfValidMoves() const
             testPiece(move, piece);
         }
     );
-	if (m_listOfValidMoves.empty())
+	if (m_listOfValidMoves.Empty())
 		m_iResult = calcResult();
-	for (BlokusMove const& move : m_listOfValidMoves)
-        Assert(!AnyShapeCellsBlocked(move));
+	m_listOfValidMoves.Apply2AllC([this](BlokusMove const move){ Assert(!AnyShapeCellsBlocked(move)); });
 }
 
 void Player::Prepare() const
@@ -292,6 +292,7 @@ void Player::Prepare() const
 ListOfMoves const& Player::GetListOfValidMoves() const
 {
 	Assert(m_bTablesValid);
+    subrange<MoveIter> it = m_listOfValidMoves.GetMoves(PieceTypeId(8)); 
 	return m_listOfValidMoves;
 }
 

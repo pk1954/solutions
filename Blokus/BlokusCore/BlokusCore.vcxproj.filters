@@ -126,5 +126,8 @@
     <ClCompile Include="BlokusPreferences.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ListOfMoves.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
