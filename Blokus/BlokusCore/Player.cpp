@@ -323,7 +323,7 @@ int Player::calcResult() const
 	return iResult;
 }
 
-void Player::DoMove(BlokusMove &move)
+void Player::DoMove(BlokusMove move)
 {
     Assert(move.IsDefined());
 	m_bFirstMove = false;

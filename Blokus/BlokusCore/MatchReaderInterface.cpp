@@ -76,25 +76,6 @@ void MatchReaderInterface::DrawMovePiece
     );
 }
 
-PlayerId MatchReaderInterface::WinnerId() const
-{
-    PlayerId idBestPlayer { NO_PLAYER };
-    int      iBestResult  { (std::numeric_limits<int>::min)() };
-    Apply2AllPlayerIds
-    (
-        [this, &idBestPlayer, &iBestResult](PlayerId const idPlayer)
-        {
-            Player const &player { GetPlayerC(idPlayer) };
-            if (player.Result() > iBestResult)
-            {
-                iBestResult = player.Result();
-                idBestPlayer = idPlayer;
-            }
-        }
-    );
-    return idBestPlayer;
-}
-
 bool MatchReaderInterface::HasContact(BlokusMove const move) const
 {
     return move.GetShapeC().IsTrueForAnyCornerPnt

@@ -31,10 +31,15 @@ StrategyRandom    StrategyYellow;
 
 export using PLAYERS = array<Player, NR_OF_PLAYERS>;
 
-export class Match
+export class Match : public RuleServerInterface
 {
 public:
     Match();
+
+    ListOfMoves const &GetListOfValidMoves(PlayerId const id) const final { return GetPlayerC(id).GetListOfValidMoves(); }
+    Board       const &GetBoard()                             const final { return m_board; }
+
+    BlokusMove SelectMove(PlayerId const id)   const { return GetPlayerC(id).SelectMove(*this); }
 
     static unique_ptr<Match> CreateNewMatch()
     {
@@ -42,10 +47,12 @@ public:
         return upMatch;
     }
 
-    void Dump() const;
-    void Reset();
-    void ResetTimers();
-    void SetActivePlayer();
+    void     Dump() const;
+    void     Reset();
+    void     ResetTimers();
+    void     SetActivePlayer();
+    void     DoMove(BlokusMove);
+    PlayerId WinnerId() const;
 
     Player       &GetPlayer  (PlayerId   const id  )       { return m_players.at(id.GetValue()); }
     Player       &NextPlayer (Player     const &p  )       { return GetPlayer (::NextPlayer(p.GetPlayerId())); }
@@ -53,6 +60,8 @@ public:
     Player const &PrevPlayerC(Player     const &p  ) const { return GetPlayerC(::PrevPlayer(p.GetPlayerId())); }
     Player const &GetPlayerC (PlayerId   const id  ) const { return m_players.at(id.GetValue()); }
     Player const &GetPlayerC (BlokusMove const move) const { return GetPlayerC(move.GetPlayerId()); }
+    Player       &GetPlayer  (BlokusMove const move)       { return GetPlayer (move.GetPlayerId()); }
+    Piece        &GetPiece   (BlokusMove const move)       { return GetPlayer(move).GetPiece(move.GetPieceTypeId()); }
 
     bool GameHasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
 

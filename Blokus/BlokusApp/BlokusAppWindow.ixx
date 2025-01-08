@@ -35,10 +35,10 @@ public:
 
 	void DoGameStuff() 
 	{
-		if (m_tournament.IsActive())
+		if (m_upTournament && m_upTournament->IsActive())
 		{
 			m_timer.BeforeAction();
-			m_tournament.NextTournamentMove();
+			m_upTournament->NextTournamentMove();
 		 	m_timer.AfterAction();
 			//wcout << L"DoGameStuff " << m_timer.Average2wstring() << endl;
 		}
@@ -72,7 +72,7 @@ private:
 	ScriptHook              m_ScriptHook;
 	StatusBar               m_statusBar;
 	StatusBarDisplayFunctor m_statusBarDispFunctor;
-	Tournament              m_tournament;
+	unique_ptr<Tournament>  m_upTournament;
 	TournamentWindow        m_tournamentWindow;
 	UndoRedoMenu            m_undoRedoMenu;
 	WinSound                m_sound;

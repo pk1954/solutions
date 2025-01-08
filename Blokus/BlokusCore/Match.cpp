@@ -82,3 +82,33 @@ CoordPos Match::FindBestFit(BlokusMove const move) const
 
     return posShapeTargetBest;
 }
+
+void Match::DoMove(BlokusMove const move)
+{
+    Assert(move.IsDefined());
+    Player &player { GetPlayer(move) };
+    Assert(!player.HasFinished());
+	GetPiece(move).DoMove(move);     // Set piece pos and mark as set
+    m_board.DoMove(move);            // Set affected cells to player id
+    player.DoMove(move);             // Set remaining pieces, etc. May finish, if all pieces set
+}
+
+PlayerId Match::WinnerId() const
+{
+    PlayerId idBestPlayer { NO_PLAYER };
+    int      iBestResult  { (std::numeric_limits<int>::min)() };
+    Apply2AllPlayerIds
+    (
+        [this, &idBestPlayer, &iBestResult](PlayerId const idPlayer)
+        {
+            Player const &player { GetPlayerC(idPlayer) };
+            if (player.Result() > iBestResult)
+            {
+                iBestResult = player.Result();
+                idBestPlayer = idPlayer;
+            }
+        }
+    );
+    return idBestPlayer;
+}
+

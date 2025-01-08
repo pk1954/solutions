@@ -24,7 +24,7 @@ public:
 
 	void ResetVisiblePlayer();
 
-	void nextVisiblePlayer();
+	void NextVisiblePlayer();
 	void PrevVisiblePlayer();
 
 private:

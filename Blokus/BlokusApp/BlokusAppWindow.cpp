@@ -36,7 +36,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_mainWindow      .Start(m_hwndApp, m_mwi, m_sound);
 	m_statusBar       .Start(m_hwndApp);
 	m_undoRedoMenu    .Start(m_hwndApp, &m_cmdStack);
-	m_tournamentWindow.Start(&m_tournament);
+//	m_tournamentWindow.Start(&m_tournament);
 
 	WinManager::AddWindow(L"IDM_APPL_WINDOW",       RootWinId(IDM_APPL_WINDOW      ), m_hwndApp,                     true,  true );
 	WinManager::AddWindow(L"IDM_STATUS_BAR",        RootWinId(IDM_STATUS_BAR       ), m_statusBar.GetWindowHandle(), false, false);
@@ -48,7 +48,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	m_upMatch->m_board.RegisterObserver(m_mainWindow);
 	BoolPreferences  ::RegisterObserver(m_mainWindow);
-	m_tournament      .RegisterObserver(m_tournamentWindow);
+//	m_tournament      .RegisterObserver(m_tournamentWindow);
 	m_matchObservable .RegisterObserver(m_mainWindow);
 	m_matchObservable .RegisterObserver(m_undoRedoMenu);
 	configureStatusBar();
@@ -149,14 +149,16 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 		return true;
 
 	case IDM_REDO:
-		if (!m_cmdStack.RedoStackCommand())
+		if (m_cmdStack.RedoStackCommand())
+			m_mainWindow.NextVisiblePlayer();
+		else
 			m_sound.WarningSound();
 		return true;
 
 	case IDD_START_TOURNAMENT:
 		m_tournamentWindow.Show(true);
 		m_tournamentWindow.BringWindowToTop();
-		m_tournament.Start(100);
+//		m_tournament.Start(100);
 		break;
 
 	case IDD_SOUND:

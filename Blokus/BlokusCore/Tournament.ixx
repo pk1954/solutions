@@ -36,13 +36,15 @@ public:
 private:
     HiResTimer m_timer;
 
+    Match                m_match;
     int                  m_iNrOfMatches   { 0 };
     int                  m_iMatch         { 0 };
+    PlayerId             m_idPlayer       { 0 };
     bool                 m_active         { false };
     PlayerId             m_idActivePlayer { 0 };
     Ticks                m_ticksAtStart;
     Ticks                m_ticksAtEnd;
-    MatchWriterInterface m_mwi;
+    //MatchWriterInterface m_mwi;
 
     int const &winsC(PlayerId const id) const { return m_wins.at(id.GetValue()); }
     int       &wins (PlayerId const id)       { return m_wins.at(id.GetValue()); }

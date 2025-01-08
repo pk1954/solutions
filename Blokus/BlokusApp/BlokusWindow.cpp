@@ -87,16 +87,18 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 	}
 }
 
-void BlokusWindow::nextVisiblePlayer()       
+void BlokusWindow::NextVisiblePlayer()       
 { 
 	m_pPlayerVisible = &m_pMRI->NextPlayerC(*m_pPlayerVisible);
 	m_pPlayerVisible->Prepare();
+	Notify(false);
 }
 
 void BlokusWindow::PrevVisiblePlayer()       
 { 
 	m_pPlayerVisible = &m_pMRI->PrevPlayerC(*m_pPlayerVisible);
 	m_pPlayerVisible->Prepare();
+	Notify(false);
 }
 
 bool BlokusWindow::humanPlayersTurn () const 
@@ -109,7 +111,7 @@ void BlokusWindow::performMove()
 {
 	NextMoveCmd::Push(m_move);     // may finish if no more valid moves
 	if (!m_pPlayerVisible->HasFinished())
-		nextVisiblePlayer();
+		NextVisiblePlayer();
 }
 
 void BlokusWindow::autoRun()
@@ -122,12 +124,12 @@ void BlokusWindow::autoRun()
 			  )
 		{
 			if (m_pPlayerVisible->HasFinished())
-				nextVisiblePlayer();
+				NextVisiblePlayer();
 			else
 			{
 				m_move = m_pMRI->SelectMove(*m_pPlayerVisible);
 				if (m_pPlayerVisible->HasFinished())
-					nextVisiblePlayer();
+					NextVisiblePlayer();
 				else
 					performMove();
 			}
@@ -164,12 +166,12 @@ bool BlokusWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelPoin
 
 	case IDD_NEXT_MOVE:   // user requests next move
   		if (m_pMRI->GameHasFinished())
-			nextVisiblePlayer();
+			NextVisiblePlayer();
 		else 
 		{
 			if (m_pPlayerVisible->HasFinished())
 			{
-				nextVisiblePlayer();
+				NextVisiblePlayer();
 			}
 			else if (m_pPlayerVisible->IsHuman())
 			{
