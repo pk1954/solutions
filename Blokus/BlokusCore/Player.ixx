@@ -67,9 +67,7 @@ public:
 //    void               GetNext (PieceTypeId const id, MoveIter it) const { return m_listOfValidMoves.GetNext(id, it); }
     subrange<MoveIter> GetMoves(PieceTypeId const id)              const { return m_listOfValidMoves.GetMoves(id); }
 
-    void DoMove  (BlokusMove&);
-    void UndoMove();
-    void UndoFinalize();
+    void DoMove(BlokusMove&);
 
     void Apply2AllPieces(auto const& func)
     {

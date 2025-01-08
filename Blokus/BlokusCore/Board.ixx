@@ -23,8 +23,7 @@ public:
 
     void Dump() const;
     void Reset();
-    void DoMove  (BlokusMove const&);
-    void UndoMove(BlokusMove const&);
+    void DoMove(BlokusMove const&);
 
     PlayerId    GetPlayerId   (CoordPos const& pos) const { return getCellC(pos).m_idPlayer; }
     PieceTypeId GetPieceTypeId(CoordPos const& pos) const { return getCellC(pos).m_idPieceType; }

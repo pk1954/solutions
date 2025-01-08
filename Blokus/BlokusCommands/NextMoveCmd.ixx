@@ -26,10 +26,6 @@ public:
         m_pMWI->DoMove(m_move);
     }
 
-	void Undo() final 
-	{
-    }
-
     static void Register()
     {
         SymbolTable::ScrDefConst(NAME, &m_wrapper);

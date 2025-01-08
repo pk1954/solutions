@@ -27,11 +27,6 @@ void Piece::DoMove(BlokusMove const& move)
     setPiecePos(move.GetCoordPos());
 }
 
-void Piece::UndoMove(BlokusMove const& move)
-{
-	Reset();
-}
-
 void Piece::Draw
 (
 	DrawContext  &context,

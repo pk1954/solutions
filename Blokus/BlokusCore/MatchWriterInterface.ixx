@@ -23,7 +23,6 @@ public:
 
     void ResetPiece(BlokusMove const move) { getPiece(move).Reset(); }
     void DoMove    (BlokusMove);
-    void UndoMove  (BlokusMove);
 
     Player &GetPlayer(PlayerId   const id)   { return m_pMatch->GetPlayer(id); }
     Player &GetPlayer(BlokusMove const move) { return GetPlayer(move.GetPlayerId()); }

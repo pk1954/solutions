@@ -18,8 +18,7 @@ export class Piece
 public:
     void Initialize(PieceTypeId const);
     void Reset();
-    void DoMove  (BlokusMove const&);
-    void UndoMove(BlokusMove const&);
+    void DoMove(BlokusMove const&);
 
     bool IsAvailable() const { return m_bAvailable; }
 

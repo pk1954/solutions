@@ -330,14 +330,3 @@ void Player::DoMove(BlokusMove &move)
 	m_idPieceTypeLastMove = move.GetPieceTypeId();
 	Prepare();
 }
-
-void Player::UndoMove()
-{
-	m_iResult    = 0;
-	m_bFirstMove = true;
-}
-
-void Player::UndoFinalize()
-{
-	m_iResult = 0;
-}

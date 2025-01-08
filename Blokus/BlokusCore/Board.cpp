@@ -57,16 +57,6 @@ void Board::DoMove(BlokusMove const& move)   // Set affected shape cells to play
     NotifyAll(false);
 }
 
-void Board::UndoMove(BlokusMove const& move)   // Set affected shape cells to NO_PLAYER
-{
-    Apply2AllShapeCells
-    (
-        move,
-        [](Cell &cell){ cell.reset(); }
-    );
-    NotifyAll(false);
-}
-
 // A cell in the environment of a cell is a contact point 
 // if at least one diagonal neighbour of the cell belongs to the same player
 // and no orthogonal (horz or vert) neighbour of the cell belongs to the same player
