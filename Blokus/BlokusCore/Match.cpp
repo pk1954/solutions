@@ -52,7 +52,7 @@ bool Match::AnyShapeCellsBlocked(BlokusMove const move) const
 CoordPos Match::FindBestFit(BlokusMove const move) const
 {
     CoordPos posShapeTargetBest { UndefinedCoordPos };
-	int      iMinDistSquare     { 80 };
+	int      iMinDistSquare     { 40 };
 
     Shape    const &shape         { move.GetShapeC() };
 	Player   const &player        { GetPlayerC(move) };

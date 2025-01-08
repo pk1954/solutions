@@ -137,7 +137,7 @@ void BlokusWindow::autoRun()
 
 MoveIter BlokusWindow::nextShape()
 {
-	MoveIter iterLast { m_iterActShape };
+	MoveIter iterLast { m_iterActShape }; // stop after one complete roundtrip
 	MoveIter iterRun  { m_iterActShape };
 	do
 	{
@@ -225,6 +225,7 @@ bool BlokusWindow::OnLButtonDown(WPARAM const wParam, LPARAM const lParam)
 			m_subRangePiece = m_pPlayerVisible->GetMoves(m_pieceMotion.GetPieceTypeId());
 			m_iterActShape  = m_subRangePiece.begin();
 			m_move = *m_iterActShape;
+			m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
 			SetCapture();
 		}
 	}
@@ -237,8 +238,7 @@ void BlokusWindow::OnMouseMove(WPARAM const wParam, LPARAM const lParam)
 	{
 		if (m_pieceMotion.MovePiece(getCrsrPos(lParam)))
 		{
-			CoordPos posRounded { m_pieceMotion.GetCoordPos() };
-			m_move.SetCoordPos(posRounded);
+			m_move.SetCoordPos(m_pieceMotion.GetCoordPos());
 			CoordPos const coordPosBestFit { m_pMRI->FindBestFit(m_move) };
 			if (IsDefined(coordPosBestFit))
 				m_move.SetCoordPos(coordPosBestFit);
