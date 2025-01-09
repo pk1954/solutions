@@ -13,9 +13,11 @@ export import :MatchReaderInterface;
 export import :MatchWriterInterface;
 export import :PieceMotion;
 export import :Shape;
-//export import :Strategy;
-//export import :StrategyTakeFirst;
-//export import :StrategyRandom;
+export import :Strategy;
+export import :StrategyHuman;
+export import :StrategyTakeFirst;
+export import :StrategyRandom;
+export import :StrategyBigFirstRandom;
 export import :Tournament;
 
 export void InitializeBlokusCore()

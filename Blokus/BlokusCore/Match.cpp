@@ -9,13 +9,33 @@ import PerfCounter;
 using std::wcout;
 using std::endl;
 using std::vector;
+using std::unique_ptr;
+using std::make_unique;
 
-Match::Match()
+unique_ptr<Match> Match::CreateNewMatch
+(
+    Strategy * const pS1, 
+    Strategy * const pS2, 
+    Strategy * const pS3, 
+    Strategy * const pS4
+)
 {
-    m_players[0].Initialize(m_board, PlayerId(0), &StrategyRed);
-    m_players[1].Initialize(m_board, PlayerId(1), &StrategyGreen); 
-    m_players[2].Initialize(m_board, PlayerId(2), &StrategyBlue);
-    m_players[3].Initialize(m_board, PlayerId(3), &StrategyYellow);
+    unique_ptr<Match> upMatch { make_unique<Match>(pS1, pS2, pS3, pS4) };
+    return move(upMatch);
+}
+
+Match::Match
+(
+    Strategy * const pS1, 
+    Strategy * const pS2, 
+    Strategy * const pS3, 
+    Strategy * const pS4
+)
+{
+    m_players[0].Initialize(m_board, PlayerId(0), pS1);
+    m_players[1].Initialize(m_board, PlayerId(1), pS2); 
+    m_players[2].Initialize(m_board, PlayerId(2), pS3);
+    m_players[3].Initialize(m_board, PlayerId(3), pS4);
     for (int i = 0; i < NR_OF_PLAYERS; ++i)
     	m_board.RegisterObserver(m_players[i]);
     Reset();
@@ -41,6 +61,13 @@ void Match::ResetTimers()
 {
     for (Player &player: m_players)
         player.ResetTimer(); 
+}
+
+BlokusMove Match::SelectMove(PlayerId const id) const 
+{ 
+    Player const &player { GetPlayerC(id) };
+    Assert(!player.IsHuman());
+    return player.SelectMove(*this); 
 }
 
 bool Match::AnyShapeCellsBlocked(BlokusMove const move) const

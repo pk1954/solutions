@@ -27,9 +27,10 @@ public:
     ) const final
     {
         ListOfMoves const &moves { rsi.GetListOfValidMoves(idPlayer) };
-        if (!moves.Empty())
+        if (moves.Empty())
+            return BlokusMove(); // initialized to everything Undefined
+        else
             return moves[0];
-        return BlokusMove(); // initialized to everything Undefined
     }
 
 private:

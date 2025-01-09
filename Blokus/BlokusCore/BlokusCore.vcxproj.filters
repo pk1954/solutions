@@ -117,9 +117,6 @@
     <ClCompile Include="MatchReaderInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MatchWriterInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ListOfMoves.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyBigFirstRandom.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,8 +1,7 @@
-// StrategyRandom.ixx
 //
 // BlokusCore
 
-export module BlokusCore:StrategyRandom;
+export module BlokusCore:StrategyBigFirstRandom;
 
 import std;
 import Random;
@@ -15,8 +14,10 @@ import :RuleServerInterface;
 
 using std::vector;
 using std::wstring;
+using std::ranges::find_if;
+using std::ranges::subrange;
 
-export class StrategyRandom : public Strategy
+export class StrategyBigFirstRandom : public Strategy
 {
 public:
 
@@ -33,15 +34,16 @@ public:
             return BlokusMove(); // initialized to everything Undefined
         else
         {
-            unsigned int uiMax { Cast2UnsignedInt(moves.Size()) - 1 };
-            unsigned int uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
+            subrange<MoveIter> const sr    { moves.GetMovesWithMaxNrOfCells() };
+            unsigned int       const uiMax { Cast2UnsignedInt(sr.size()) - 1 };
+            unsigned int       const uiSel { m_random.NextRandomNumberScaledTo(uiMax) };
             return moves[uiSel];
         }
     }
 
 private:
 
-    wstring const NAME { L"Random" };
+    wstring const NAME { L"BigFirstRandom" };
 
     mutable Random m_random;
 };

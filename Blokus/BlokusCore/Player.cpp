@@ -292,7 +292,6 @@ void Player::Prepare() const
 ListOfMoves const& Player::GetListOfValidMoves() const
 {
 	Assert(m_bTablesValid);
-    subrange<MoveIter> it = m_listOfValidMoves.GetMoves(PieceTypeId(8)); 
 	return m_listOfValidMoves;
 }
 

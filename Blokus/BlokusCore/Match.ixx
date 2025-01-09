@@ -15,44 +15,29 @@ import :MatchProtocol;
 import :Player;
 import :PlayerId;
 import :RuleServerInterface;
-import :StrategyRandom;
-import :StrategyTakeFirst;
-import :StrategyHuman;
+import :Strategy;
 
 using std::array;
 using std::vector;
 using std::unique_ptr;
-using std::make_unique;
-
-StrategyHuman     StrategyRed;
-StrategyTakeFirst StrategyGreen;
-StrategyTakeFirst StrategyBlue;
-StrategyRandom    StrategyYellow;
 
 export using PLAYERS = array<Player, NR_OF_PLAYERS>;
 
 export class Match : public RuleServerInterface
 {
 public:
-    Match();
+    static unique_ptr<Match> CreateNewMatch(Strategy * const, Strategy * const, Strategy * const, Strategy * const);
+
+    Match(Strategy * const, Strategy * const, Strategy * const, Strategy * const);
 
     ListOfMoves const &GetListOfValidMoves(PlayerId const id) const final { return GetPlayerC(id).GetListOfValidMoves(); }
     Board       const &GetBoard()                             const final { return m_board; }
 
-    BlokusMove SelectMove(PlayerId const id)   const { return GetPlayerC(id).SelectMove(*this); }
-
-    static unique_ptr<Match> CreateNewMatch()
-    {
-        unique_ptr<Match> upMatch { make_unique<Match>() };
-        return upMatch;
-    }
-
-    void     Dump() const;
-    void     Reset();
-    void     ResetTimers();
-    void     SetActivePlayer();
-    void     DoMove(BlokusMove);
-    PlayerId WinnerId() const;
+    void Dump() const;
+    void Reset();
+    void ResetTimers();
+    void SetActivePlayer();
+    void DoMove(BlokusMove);
 
     Player       &GetPlayer  (PlayerId   const id  )       { return m_players.at(id.GetValue()); }
     Player       &NextPlayer (Player     const &p  )       { return GetPlayer (::NextPlayer(p.GetPlayerId())); }
@@ -65,8 +50,11 @@ public:
 
     bool GameHasFinished() const { return IfAllPlayers([](Player const &p){ return p.HasFinished(); }); }
 
-    bool     AnyShapeCellsBlocked(BlokusMove const) const;
-    CoordPos FindBestFit         (BlokusMove const) const;
+    bool       AnyShapeCellsBlocked(BlokusMove const) const;
+    CoordPos   FindBestFit         (BlokusMove const) const;
+    BlokusMove SelectMove          (PlayerId   const) const;
+    PlayerId   WinnerId            ()                 const;
+
 
     void Apply2AllFreeCellsC(auto const& func) const
     {

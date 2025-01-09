@@ -56,9 +56,10 @@ public:
     ShapeId     GetShapeId    () const { return m_idShape;     }
     CoordPos    GetCoordPos   () const { return m_coordPos;    }
 
-    PieceType      & GetPieceType       ()       { return Components::GetPieceType (GetPieceTypeId()); } 
-    PieceType const& GetPieceTypeC      () const { return Components::GetPieceType (GetPieceTypeId()); }
-    Shape     const& GetShapeC          () const { return GetPieceTypeC().GetShapeC(GetShapeId()); }
+    PieceType      & GetPieceType ()       { return Components::GetPieceType (GetPieceTypeId()); } 
+    PieceType const& GetPieceTypeC() const { return Components::GetPieceType (GetPieceTypeId()); }
+    Shape     const& GetShapeC    () const { return GetPieceTypeC().GetShapeC(GetShapeId()); }
+    int              NrOfCells    () const { return GetPieceTypeC().NrOfCells(); }
 
     bool             IsCompletelyOnBoard() const { return GetShapeC().IsCompletelyOnBoard(m_coordPos); }
 

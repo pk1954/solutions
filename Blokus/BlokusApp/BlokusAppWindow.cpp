@@ -11,8 +11,14 @@ import Win32_Util_Resource;
 import WinManager;
 import Resource;
 import BlokusCommands;
+import BlokusCore;
 
 using std::wstring;
+
+StrategyHuman          StrategyRed;
+StrategyRandom         StrategyGreen;
+StrategyTakeFirst      StrategyBlue;
+StrategyBigFirstRandom StrategyYellow;
 
 BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pump)
 {
@@ -29,14 +35,22 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	WinCommand::Initialize(&m_cmdStack);
 	m_cmdStack.Initialize(&m_matchObservable);
 
-	m_upMatch = Match::CreateNewMatch();
+	m_upMatch = Match::CreateNewMatch
+	(
+		&StrategyRed,
+		&StrategyGreen,
+		&StrategyBlue,
+		&StrategyYellow
+	);
 	m_mwi.SetMatch(m_upMatch.get());
 	BlokusCommand::SetMatchInterface(&m_mwi);
+
+	m_upTournament = make_unique<Tournament>();
 
 	m_mainWindow      .Start(m_hwndApp, m_mwi, m_sound);
 	m_statusBar       .Start(m_hwndApp);
 	m_undoRedoMenu    .Start(m_hwndApp, &m_cmdStack);
-//	m_tournamentWindow.Start(&m_tournament);
+	m_tournamentWindow.Start(m_upTournament.get());
 
 	WinManager::AddWindow(L"IDM_APPL_WINDOW",       RootWinId(IDM_APPL_WINDOW      ), m_hwndApp,                     true,  true );
 	WinManager::AddWindow(L"IDM_STATUS_BAR",        RootWinId(IDM_STATUS_BAR       ), m_statusBar.GetWindowHandle(), false, false);
@@ -48,7 +62,7 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	m_upMatch->m_board.RegisterObserver(m_mainWindow);
 	BoolPreferences  ::RegisterObserver(m_mainWindow);
-//	m_tournament      .RegisterObserver(m_tournamentWindow);
+	m_upTournament   ->RegisterObserver(m_tournamentWindow);
 	m_matchObservable .RegisterObserver(m_mainWindow);
 	m_matchObservable .RegisterObserver(m_undoRedoMenu);
 	configureStatusBar();
@@ -158,7 +172,23 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 	case IDD_START_TOURNAMENT:
 		m_tournamentWindow.Show(true);
 		m_tournamentWindow.BringWindowToTop();
-//		m_tournament.Start(100);
+		{
+			static StrategyTakeFirst StrategyRed;
+			static StrategyRandom StrategyGreen;
+			static StrategyRandom StrategyBlue;
+			static StrategyBigFirstRandom StrategyYellow;
+//			static StrategyTakeFirst StrategyYellow;
+//			static StrategyRandom    StrategyYellow;
+
+			m_upTournament->Start
+			(
+				&StrategyRed,
+				&StrategyGreen,
+				&StrategyBlue,
+				&StrategyYellow,
+				100
+			);
+		}
 		break;
 
 	case IDD_SOUND:

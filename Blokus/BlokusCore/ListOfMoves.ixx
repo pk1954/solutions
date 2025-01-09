@@ -61,6 +61,21 @@ public:
             actIter = start;
     }
 
+    subrange<MoveIter> GetMovesWithMaxNrOfCells() const 
+    { 
+        int      const iMaxSize { m_list.begin()->NrOfCells() };
+        MoveIter const start = m_list.begin();
+        MoveIter const end   = find_if
+        (
+            m_list, 
+            [iMaxSize](BlokusMove const &move) 
+            { 
+                return move.NrOfCells() != iMaxSize; 
+            }
+        );
+        return subrange(start, end); 
+    }
+
     subrange<MoveIter> GetMoves(PieceTypeId const idPieceType) const 
     { 
         auto start = GetBegin(idPieceType);

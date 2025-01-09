@@ -35,7 +35,6 @@
     <ClCompile Include="BlokusMove.ixx" />
     <ClCompile Include="MatchReaderInterface.cpp" />
     <ClCompile Include="MatchReaderInterface.ixx" />
-    <ClCompile Include="MatchWriterInterface.cpp" />
     <ClCompile Include="MatchWriterInterface.ixx" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Piece.ixx" />
@@ -52,6 +51,7 @@
     <ClCompile Include="Shape.ixx" />
     <ClCompile Include="ShapeId.ixx" />
     <ClCompile Include="Strategy.ixx" />
+    <ClCompile Include="StrategyBigFirstRandom.ixx" />
     <ClCompile Include="StrategyHuman.ixx" />
     <ClCompile Include="StrategyRandom.ixx" />
     <ClCompile Include="StrategyTakeFirst.ixx" />

@@ -63,9 +63,7 @@ public:
     Piece          &GetPiece  (PieceTypeId const  id )       { return m_pieces.at(id.GetValue()); }
     PlayerId        GetPlayerId()                      const { return m_idPlayer; }
 
-//    MoveIter           GetBegin(PieceTypeId const id)              const { return m_listOfValidMoves.GetBegin(id); }
-//    void               GetNext (PieceTypeId const id, MoveIter it) const { return m_listOfValidMoves.GetNext(id, it); }
-    subrange<MoveIter> GetMoves(PieceTypeId const id)              const { return m_listOfValidMoves.GetMoves(id); }
+    subrange<MoveIter> GetMoves(PieceTypeId const id)  const { return m_listOfValidMoves.GetMoves(id); }
 
     void DoMove(BlokusMove);
 
@@ -128,7 +126,7 @@ private:
     bool               m_bFirstMove;       
     Board      const * m_pBoard;
     PlayerType const * m_pPlayerType;
-    Strategy         * m_pStrategy;  //TODO: move from here to MatchReaderInterface?
+    Strategy         * m_pStrategy;
     PieceTypeId        m_idPieceTypeLastMove;
     PlayerId           m_idPlayer;
 

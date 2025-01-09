@@ -16,11 +16,12 @@ import :Match;
 
 using std::wstring;
 using std::array;
+using std::unique_ptr;
 
 export class Tournament : public Observable
 {
 public:
-    void Start(int const);
+    void Start(Strategy * const, Strategy * const, Strategy * const, Strategy * const, int const);
     void NextTournamentMove();
 
     bool TournamentHasFinished() const { return m_iMatch >= m_iNrOfMatches; }
@@ -36,15 +37,15 @@ public:
 private:
     HiResTimer m_timer;
 
-    Match                m_match;
-    int                  m_iNrOfMatches   { 0 };
-    int                  m_iMatch         { 0 };
-    PlayerId             m_idPlayer       { 0 };
-    bool                 m_active         { false };
-    PlayerId             m_idActivePlayer { 0 };
-    Ticks                m_ticksAtStart;
-    Ticks                m_ticksAtEnd;
-    //MatchWriterInterface m_mwi;
+    unique_ptr<Match> m_upMatch;
+    int               m_iNrOfMatches   { 0 };
+    int               m_iMatch         { 0 };
+    PlayerId          m_idPlayer       { 0 };
+    PlayerId          m_idStartPlayer  { 0 };
+    bool              m_active         { false };
+    PlayerId          m_idActivePlayer { 0 };
+    Ticks             m_ticksAtStart;
+    Ticks             m_ticksAtEnd;
 
     int const &winsC(PlayerId const id) const { return m_wins.at(id.GetValue()); }
     int       &wins (PlayerId const id)       { return m_wins.at(id.GetValue()); }
