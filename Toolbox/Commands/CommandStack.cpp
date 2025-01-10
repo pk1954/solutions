@@ -32,6 +32,7 @@ bool CommandStack::UndoByRedoFromStart()
     size_t iTargetIndex { m_iIndex - 1 };
     for (m_iIndex = 0; m_iIndex < iTargetIndex; ++m_iIndex)
         currentCmd().Do();
+    notify();
     return true;
 }
 
@@ -44,7 +45,6 @@ void CommandStack::Clear()
 {
     m_iIndex = 0;
     clearRedoStack();
-    notify();
 }
 
 void CommandStack::clearRedoStack()
