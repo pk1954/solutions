@@ -32,7 +32,7 @@ void Tournament::Start
 
 void Tournament::NextTournamentMove()
 {
-	m_timer.BeforeAction();
+	m_timerMoves.BeforeAction();
     BlokusMove move { m_upMatch->SelectMove(m_idPlayer) };  // may finish if no more valid moves
     if (move.IsDefined())
     {
@@ -40,6 +40,7 @@ void Tournament::NextTournamentMove()
     }
     if (m_upMatch->GameHasFinished())
     {
+        wcout << L"Prepare calls: " << Player::iNrOfPrepares << endl;
         PlayerId const idWinner { m_upMatch->WinnerId() };
         ++(wins(idWinner));
         m_upMatch->Reset();
@@ -61,10 +62,10 @@ void Tournament::NextTournamentMove()
         do
     	    m_idPlayer = NextPlayer(m_idPlayer);
         while (m_upMatch->GetPlayerC(m_idPlayer).HasFinished());
-        m_upMatch->GetPlayerC(m_idPlayer).Prepare();
+        //m_upMatch->GetPlayerC(m_idPlayer).Prepare();
     }
-    m_timer.AfterAction();
-    wcout << L"Tournament NextMove " << m_timer.Average2wstring() << endl;
+    m_timerMoves.AfterAction();
+    wcout << L"Tournament NextMove " << m_timerMoves.Average2wstring() << endl;
 }
 
 wstring const &Tournament::GetStrategyName(PlayerId const id) const 

@@ -35,7 +35,7 @@ public:
     Ticks          GetTournamentTime()                const; 
 
 private:
-    HiResTimer m_timer;
+    HiResTimer m_timerMoves;
 
     unique_ptr<Match> m_upMatch;
     int               m_iNrOfMatches   { 0 };

@@ -77,6 +77,7 @@ void Player::Reset()
 	m_bTablesValid = false;
 	m_idPieceTypeLastMove = UndefinedPieceTypeId;
 	m_mapOfValidCells.Reset();
+    iNrOfPrepares = 0;
 	Prepare();
 }
 
@@ -105,8 +106,6 @@ void Player::DrawResult
 		hTextFormat
 	);
 }
-
-
 
 void Player::DrawFreePieces
 (
@@ -286,20 +285,21 @@ void Player::Prepare() const
 		recalcMapOfValidCells();
 		calcListOfValidMoves();
 		m_bTablesValid = true;
+		++iNrOfPrepares;
 	}
 }
 
 ListOfMoves const& Player::GetListOfValidMoves() const
 {
-	Assert(m_bTablesValid);
+	Prepare();
 	return m_listOfValidMoves;
 }
 
 BlokusMove Player::SelectMove(RuleServerInterface const &rsi) const
 {
-	//m_timer.BeforeAction();
+	m_timerPlayer.BeforeAction();
 	BlokusMove moveSelected { m_pStrategy->SelectMove(m_idPlayer, rsi) };
- 	//m_timer.AfterAction();
+ 	m_timerPlayer.AfterAction();
     return moveSelected;
 }
 
@@ -327,5 +327,5 @@ void Player::DoMove(BlokusMove move)
     Assert(move.IsDefined());
 	m_bFirstMove = false;
 	m_idPieceTypeLastMove = move.GetPieceTypeId();
-	Prepare();
+//	Prepare();
 }

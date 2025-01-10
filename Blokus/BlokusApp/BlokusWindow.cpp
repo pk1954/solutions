@@ -326,7 +326,8 @@ void BlokusWindow::drawBlockedCells(Player const& player)
 
 void BlokusWindow::PaintGraphics()
 {
- 	paintBoard();
+	m_pPlayerVisible->Prepare();
+	paintBoard();
 	m_pMRI->DrawSetPieces(m_context);
 	m_pPlayerVisible->DrawFreePieces(m_context, m_pieceMotion.GetPieceC());
 	if (m_pieceMotion.IsActive())

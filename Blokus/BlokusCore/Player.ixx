@@ -35,7 +35,7 @@ public:
     void Initialize(Board const&, PlayerId const, Strategy * const);
     void Dump() const;
     void Reset();
-    void ResetTimer() { m_timer.Reset(); }
+    void ResetTimer() { m_timerPlayer.Reset(); }
     bool IsFirstMove() const { return m_bFirstMove; }
 
     void Notify(bool const) final;
@@ -55,7 +55,7 @@ public:
     bool            IsHuman()                          const { return GetStrategy().IsHuman(); }
     bool            HasFinished()                      const { return m_listOfValidMoves.Empty(); }
     int             Result()                           const { return m_iResult; }
-    Ticks           GetTicks()                         const { return m_timer.GetAccumulatedActionTicks(); }
+    Ticks           GetTicks()                         const { return m_timerPlayer.GetAccumulatedActionTicks(); }
     Color           GetColor()                         const { return m_pPlayerType->m_color; }
     wstring  const &GetName()                          const { return m_pPlayerType->m_wstrName; }
     Strategy const &GetStrategy()                      const { return *m_pStrategy; }
@@ -122,6 +122,9 @@ public:
         return false;
     }
 
+
+    inline static int iNrOfPrepares;
+
 private:
     bool               m_bFirstMove;       
     Board      const * m_pBoard;
@@ -139,7 +142,7 @@ private:
     mutable ListOfMoves                    m_listOfValidMoves;
     mutable array<bool, NR_OF_PIECE_TYPES> m_mapOfMoveablePieces;
 
-    mutable HiResTimer m_timer;
+    mutable HiResTimer m_timerPlayer;
     mutable int        m_iResult;          
 
     void testPosition(BlokusMove&, ShapeCoordPos const&) const;
