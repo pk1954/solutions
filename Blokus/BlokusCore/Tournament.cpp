@@ -66,15 +66,11 @@ void Tournament::Start
     {
         // start worker threads 
     }
-    else
-    {
-        // do computing here
-    }
 }
 
 void Tournament::DoGameStuff()
 {
-    if (m_iNrOfThreads == 0)
+    if ((m_iNrOfThreads == 0) && m_active)
     {
         NextTournamentMove();
     }

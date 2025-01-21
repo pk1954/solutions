@@ -25,6 +25,8 @@
     <ClCompile Include="BlokusAppMenu.ixx" />
     <ClCompile Include="BlokusAppWindow.cpp" />
     <ClCompile Include="BlokusAppWindow.ixx" />
+    <ClCompile Include="TournamentTable.cpp" />
+    <ClCompile Include="TournamentTable.ixx" />
     <ClCompile Include="TournamentThreadManager.cpp" />
     <ClCompile Include="TournamentThreadManager.ixx" />
     <ClCompile Include="BlokusWindow.cpp" />

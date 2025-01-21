@@ -108,6 +108,7 @@ export
     using ::GetBkColor;
     using ::GetCapture;
     using ::GetClientRect;
+    using ::GetCurrentThread;
     using ::GetDC;
     using ::GetDlgItem;
     using ::GetDlgCtrlID;
@@ -164,6 +165,7 @@ export
     using ::SetLastError;
     using ::SetMenu;
     using ::SetTextAlign;
+    using ::SetThreadAffinityMask;
     using ::SetThreadpoolTimer;
     using ::SetWindowPos;
     using ::SetWindowTextW;
@@ -211,5 +213,20 @@ export
     constexpr COLORREF MakeRGB(WORD const r, WORD const g, WORD const b)
     {
         return RGB(r, g, b);
+    }
+
+    LRESULT AddString(HWND const hwndComboBox, wstring const &text)
+    {
+        return SendMessage(hwndComboBox, CB_ADDSTRING, 0, (LPARAM)(text.c_str()));
+    }
+
+    void SetCurSel(HWND const hwndComboBox, int const iSel)
+    {
+        SendMessage(hwndComboBox, CB_SETCURSEL, iSel, 0);
+    }
+
+    LRESULT GetCurSel(HWND const hwndComboBox)
+    {
+        return SendMessage(hwndComboBox, CB_GETCURSEL, 0, 0);
     }
 }

@@ -83,6 +83,11 @@ extern const DWORD BS_DEFPUSHBUTTON_CONST;
 extern const DWORD BS_AUTOCHECKBOX_CONST;
 extern const DWORD BS_OWNERDRAW_CONST;
 
+extern const DWORD CB_GETCURSEL_CONST;
+extern const DWORD CB_SETCURSEL_CONST;
+
+extern const DWORD CBS_DROPDOWNLIST_CONST;
+
 extern const DWORD CS_OWNDC_CONST;     
 extern const DWORD CS_HREDRAW_CONST;
 extern const DWORD CS_VREDRAW_CONST;     
@@ -189,6 +194,8 @@ export
     const DWORD   SRCCOPY                    = 0x00CC0020; // dest = source
     const DWORD   CC_RGBINIT                 = 0x00000001;
     const DWORD   CC_FULLOPEN                = 0x00000002;
+    const DWORD   CBN_SELCHANGE              = 0x00000001;
+    const DWORD   BN_CLICKED                 = 0x00000001;
 
     const UINT    PM_REMOVE           = PM_REMOVE_CONST;
     const UINT    PM_QS_INPUT         = PM_QS_INPUT_CONST;
@@ -266,7 +273,12 @@ export
     const DWORD   BS_DEFPUSHBUTTON    = BS_DEFPUSHBUTTON_CONST;
     const DWORD   BS_AUTOCHECKBOX     = BS_AUTOCHECKBOX_CONST;
     const DWORD   BS_OWNERDRAW        = BS_OWNERDRAW_CONST;
-                                      
+    
+    const DWORD   CB_GETCURSEL        = CB_GETCURSEL_CONST;
+    const DWORD   CB_SETCURSEL        = CB_SETCURSEL_CONST;
+
+    const DWORD   CBS_DROPDOWNLIST    = CBS_DROPDOWNLIST_CONST;
+
     const DWORD   CS_OWNDC            = CS_OWNDC_CONST;     
     const DWORD   CS_HREDRAW          = CS_HREDRAW_CONST;
     const DWORD   CS_VREDRAW          = CS_VREDRAW_CONST;     

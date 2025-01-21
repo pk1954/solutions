@@ -38,6 +38,12 @@ public:
 
 	void Dump() const { m_upMatch->Dump(); }
 
+	void DoGameStuff() 
+	{ 
+		if (m_upTournamentWindow) 
+			m_upTournamentWindow->DoGameStuff(); 
+	}
+
 private:
 
 	bool OnCommand(WPARAM const, LPARAM const, PixelPoint const) final;

@@ -6,6 +6,35 @@ module Win32_Controls;
 
 import WinBasics;
 
+HWND CreateDropDownList
+(
+	HWND    const hwndParent, 
+	int     const x, 
+	int     const y, 
+	int     const w, 
+	int     const h, 
+	INT_PTR const id, 
+	DWORD   const dwStyle
+)
+{
+	DWORD style { CBS_DROPDOWNLIST|WS_TABSTOP|WS_CHILD|WS_VISIBLE|dwStyle };
+	HWND  hwnd  { 
+					CreateWindowExW
+					(
+						0,
+						L"COMBOBOX",
+						0, 
+						style, 
+						x, y, w, h, 
+						hwndParent, 
+						reinterpret_cast<HMENU>(id), 
+						GetModuleHandleW(nullptr), 
+						0
+					) 
+				};
+	return hwnd;
+}
+
 HWND CreateButton
 (
 	HWND            const hwndParent, 

@@ -59,8 +59,8 @@ int wWinMain
 	int iRes { 0 };
 	try 
 	{
-		iRes = pump.Run();
-//		iRes = pump.Run([&upApp]() { upApp->DoGameStuff(); });
+//		iRes = pump.Run();
+		iRes = pump.Run([&upApp]() { upApp->DoGameStuff(); });
 	} catch (const std::exception& e) 
 	{
 		FatalErrorMB::Happened(3, L"Caught C++ exception: " + ConvertToWideString(e.what()));

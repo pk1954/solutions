@@ -107,7 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -150,6 +150,7 @@
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

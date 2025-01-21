@@ -60,5 +60,11 @@
     <ClCompile Include="TournamentThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TournamentTable.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TournamentTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

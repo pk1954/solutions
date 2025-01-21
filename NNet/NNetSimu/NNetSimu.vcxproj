@@ -100,7 +100,7 @@
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <AdditionalBMIDirectories>$(SolutionDir)\..\Toolbox\Utilities;%(AdditionalBMIDirectories)</AdditionalBMIDirectories>
     </ClCompile>
     <Link>
@@ -162,6 +162,7 @@
       <ExceptionHandling>Async</ExceptionHandling>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <AdditionalBMIDirectories>$(SolutionDir)\..\Toolbox\Utilities;%(AdditionalBMIDirectories)</AdditionalBMIDirectories>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
