@@ -1,6 +1,6 @@
 // BlokusAppWindow.ixx
 //
-// Blokus
+// BlokusApp
 
 export module BlokusAppWindow;
 
@@ -33,17 +33,6 @@ export class BlokusAppWindow : public BaseWindow
 public:
 	BlokusAppWindow(wstring const&, MessagePump&);
 
-	void DoGameStuff() 
-	{
-		if (m_upTournament && m_upTournament->IsActive())
-		{
-			m_timer.BeforeAction();
-			m_upTournament->NextTournamentMove();
-		 	m_timer.AfterAction();
-			//wcout << L"DoGameStuff " << m_timer.Average2wstring() << endl;
-		}
-	}
-
 	BlokusAppWindow            (BlokusAppWindow const&) = delete;  // noncopyable class 
 	BlokusAppWindow& operator= (BlokusAppWindow const&) = delete;  // noncopyable class 
 
@@ -62,21 +51,20 @@ private:
 	HWND            m_hwndApp           { nullptr };
 	wstring const * m_pwstrProductName  { nullptr };
 
-	AboutBox                m_aboutBox;
-	BlokusAppMenu           m_appMenu;
-	BlokusWindow            m_mainWindow;
-	CommandStack            m_cmdStack;
-    HiResTimer              m_timer;
-	MatchWriterInterface    m_mwi;
-	Observable              m_matchObservable;
-	ScriptHook              m_ScriptHook;
-	StatusBar               m_statusBar;
-	StatusBarDisplayFunctor m_statusBarDispFunctor;
-	unique_ptr<Tournament>  m_upTournament;
-	TournamentWindow        m_tournamentWindow;
-	UndoRedoMenu            m_undoRedoMenu;
-	WinSound                m_sound;
-	unique_ptr<Match>       m_upMatch;
+	AboutBox                     m_aboutBox;
+	BlokusAppMenu                m_appMenu;
+	BlokusWindow                 m_mainWindow;
+	CommandStack                 m_cmdStack;
+    HiResTimer                   m_timer;
+	MatchWriterInterface         m_mwi;
+	Observable                   m_matchObservable;
+	ScriptHook                   m_ScriptHook;
+	StatusBar                    m_statusBar;
+	StatusBarDisplayFunctor      m_statusBarDispFunctor;
+	unique_ptr<TournamentWindow> m_upTournamentWindow;
+	UndoRedoMenu                 m_undoRedoMenu;
+	WinSound                     m_sound;
+	unique_ptr<Match>            m_upMatch;
 
 	bool UserProc(UINT const, WPARAM const, LPARAM const) override;
 };

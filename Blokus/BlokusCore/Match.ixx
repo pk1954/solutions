@@ -55,6 +55,10 @@ public:
     BlokusMove SelectMove          (PlayerId   const) const;
     PlayerId   WinnerId            ()                 const;
 
+    void SetStrategy(PlayerId const id, Strategy * const pStrategy) 
+    { 
+        GetPlayer(id).SetStrategy(pStrategy); 
+    };
 
     void Apply2AllFreeCellsC(auto const& func) const
     {
@@ -62,6 +66,12 @@ public:
     }
 
    void Apply2AllPlayersC(auto const& func) const
+    {
+        for (Player const& player: m_players)
+            func(player);
+    }
+
+   void Apply2AllPlayers(auto const& func)
     {
         for (Player const& player: m_players)
             func(player);

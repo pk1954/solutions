@@ -41,9 +41,9 @@ public:
         }
     }
 
-private:
+    inline static wstring const NAME { L"BigFirstRandom" };
 
-    wstring const NAME { L"BigFirstRandom" };
+private:
 
     mutable Random m_random;
 };

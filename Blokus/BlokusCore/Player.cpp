@@ -20,15 +20,13 @@ using std::setw;
 
 void Player::Initialize
 (
-	Board      const &board,
-	PlayerId   const  id,
-	Strategy * const  pStrategy
-)
+	Board    const &board,
+	PlayerId const  id)
 {
 	m_pBoard      = &board;
 	m_pPlayerType = &Components::GetPlayerType(id);
 	m_idPlayer    = id;
-	m_pStrategy   = pStrategy;
+	m_pStrategy   = nullptr;
 	Reset();
 }
 

@@ -48,6 +48,8 @@ void TableWindow::CalcRowsAndCols()
                 m_fPixMaxRowHeight = fPixSize.GetYvalue();
         }
     );
+    if (m_fPixMaxRowHeight < m_fPixMinRowHeight)
+        m_fPixMaxRowHeight = m_fPixMinRowHeight;
 }
     
 void TableWindow::PaintGraphics()

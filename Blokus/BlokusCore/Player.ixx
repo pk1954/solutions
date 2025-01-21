@@ -32,7 +32,8 @@ export using ListOfContactPnts = vector<CoordPos>;
 export class Player : public ObserverInterface
 {
 public:
-    void Initialize(Board const&, PlayerId const, Strategy * const);
+    void Initialize(Board const&, PlayerId const);
+    void SetStrategy(Strategy * const pStrategy) { m_pStrategy  = pStrategy; };
     void Dump() const;
     void Reset();
     void ResetTimer() { m_timerPlayer.Reset(); }

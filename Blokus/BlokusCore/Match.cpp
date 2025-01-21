@@ -32,12 +32,15 @@ Match::Match
     Strategy * const pS4
 )
 {
-    m_players[0].Initialize(m_board, PlayerId(0), pS1);
-    m_players[1].Initialize(m_board, PlayerId(1), pS2); 
-    m_players[2].Initialize(m_board, PlayerId(2), pS3);
-    m_players[3].Initialize(m_board, PlayerId(3), pS4);
     for (int i = 0; i < NR_OF_PLAYERS; ++i)
+    {
+        m_players[i].Initialize(m_board, PlayerId(i));
     	m_board.RegisterObserver(m_players[i]);
+    }
+    m_players[0].SetStrategy(pS1);
+    m_players[1].SetStrategy(pS2); 
+    m_players[2].SetStrategy(pS3);
+    m_players[3].SetStrategy(pS4);
     Reset();
 }
 

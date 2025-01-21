@@ -79,7 +79,7 @@ void BlokusWindow::OnChar(WPARAM const wParam, LPARAM const lParam)
 
 		case 't':
 		case 'T':
-			PostCommand2Parent(IDD_START_TOURNAMENT);
+			PostCommand2Parent(IDM_TOURNAMENT_WINDOW);
 			break;
 
 		default:

@@ -27,8 +27,8 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	InitializeBlokusCore();
 
-	m_hwndApp   = StartBaseWindow(  nullptr, L"ClassAppWindow",         WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
-	m_tournamentWindow.Initialize(m_hwndApp, L"ClasseTournamentWindow", WS_POPUPWINDOW|WS_CLIPSIBLINGS|WS_CAPTION| WS_SIZEBOX);
+	m_hwndApp            = StartBaseWindow(nullptr, L"ClassAppWindow", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, nullptr, nullptr);
+	m_upTournamentWindow = make_unique<TournamentWindow>(m_hwndApp);
 	m_appMenu .Initialize(m_hwndApp);
 	BlokusPreferences::Initialize(m_appMenu.m_hMenuView, m_appMenu.m_hMenuOptions);
 	WinManager::Initialize();
@@ -45,12 +45,11 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 	m_mwi.SetMatch(m_upMatch.get());
 	BlokusCommand::SetMatchInterface(&m_mwi);
 
-	m_upTournament = make_unique<Tournament>();
+	//m_upTournament = make_unique<Tournament>();
 
-	m_mainWindow      .Start(m_hwndApp, m_mwi, m_sound);
-	m_statusBar       .Start(m_hwndApp);
-	m_undoRedoMenu    .Start(m_hwndApp, &m_cmdStack);
-	m_tournamentWindow.Start(m_upTournament.get());
+	m_mainWindow  .Start(m_hwndApp, m_mwi, m_sound);
+	m_statusBar   .Start(m_hwndApp);
+	m_undoRedoMenu.Start(m_hwndApp, &m_cmdStack);
 
 	WinManager::AddWindow(L"IDM_APPL_WINDOW",       RootWinId(IDM_APPL_WINDOW      ), m_hwndApp,                     true,  true );
 	WinManager::AddWindow(L"IDM_STATUS_BAR",        RootWinId(IDM_STATUS_BAR       ), m_statusBar.GetWindowHandle(), false, false);
@@ -62,12 +61,12 @@ BlokusAppWindow::BlokusAppWindow(wstring const &wstrProductName, MessagePump &pu
 
 	m_upMatch->m_board.RegisterObserver(m_mainWindow);
 	BoolPreferences  ::RegisterObserver(m_mainWindow);
-	m_upTournament   ->RegisterObserver(m_tournamentWindow);
+	//m_upTournament   ->RegisterObserver(m_tournamentWindow);
 	m_matchObservable .RegisterObserver(m_mainWindow);
 	m_matchObservable .RegisterObserver(m_undoRedoMenu);
 	configureStatusBar();
 
-	m_tournamentWindow.Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);
+	m_upTournamentWindow->Move(PixelRect{ 200_PIXEL, 0_PIXEL, 550_PIXEL, 250_PIXEL }, true);
 
 	m_mainWindow.Show(true);
 	m_statusBar .Show(true);
@@ -169,26 +168,9 @@ bool BlokusAppWindow::OnCommand(WPARAM const wParam, LPARAM const lParam, PixelP
 			m_sound.WarningSound();
 		return true;
 
-	case IDD_START_TOURNAMENT:
-		m_tournamentWindow.Show(true);
-		m_tournamentWindow.BringWindowToTop();
-		{
-			static StrategyTakeFirst StrategyRed;
-			static StrategyRandom StrategyGreen;
-			static StrategyRandom StrategyBlue;
-			static StrategyBigFirstRandom StrategyYellow;
-//			static StrategyTakeFirst StrategyYellow;
-//			static StrategyRandom    StrategyYellow;
-
-			m_upTournament->Start
-			(
-				&StrategyRed,
-				&StrategyGreen,
-				&StrategyBlue,
-				&StrategyYellow,
-				100
-			);
-		}
+	case IDM_TOURNAMENT_WINDOW:
+		m_upTournamentWindow->Show(true);
+		m_upTournamentWindow->BringWindowToTop();
 		break;
 
 	case IDD_SOUND:

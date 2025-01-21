@@ -26,4 +26,6 @@ public:
 
     Player &GetPlayer(PlayerId   const id)   { return m_pMatch->GetPlayer(id); }
     Player &GetPlayer(BlokusMove const move) { return m_pMatch->GetPlayer(move); }
+
+    void Apply2AllPlayers(auto const& func) { m_pMatch->Apply2AllPlayers(func); }
 };

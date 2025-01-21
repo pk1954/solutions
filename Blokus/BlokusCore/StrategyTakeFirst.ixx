@@ -33,7 +33,7 @@ public:
             return moves[0];
     }
 
-private:
+    inline static wstring const NAME { L"TakeFirst" };
 
-    wstring const NAME { L"TakeFirst" };
+private:
 };

@@ -39,9 +39,9 @@ public:
         }
     }
 
-private:
+    inline static wstring const NAME { L"Random" };
 
-    wstring const NAME { L"Random" };
+private:
 
     mutable Random m_random;
 };

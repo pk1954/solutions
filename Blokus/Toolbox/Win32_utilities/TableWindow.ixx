@@ -42,14 +42,19 @@ public:
         Set(rp, to_wstring(iVal));
     }
 
+    void SetMinRowHeight(fPixel const h)
+    {
+        m_fPixMinRowHeight = h;
+    }
+
     void Clear();
     void CalcRowsAndCols();
     void PaintGraphics() override;
 
 private:
-    
-
+ 
     Vector2D<wstring> m_table;
     vector<fPixel>    m_fPixColWidths;
     fPixel            m_fPixMaxRowHeight { 0._fPixel };
+    fPixel            m_fPixMinRowHeight { 0._fPixel };
 };

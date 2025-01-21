@@ -29,7 +29,7 @@ public:
 
     bool IsHuman() const final { return true; }
 
-private:
+    inline static wstring const NAME { L"Human" };
 
-    wstring const NAME { L"Human" };
+private:
 };

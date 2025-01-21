@@ -3,6 +3,7 @@
 // Blokus
 
 import std;
+import Thread;
 import IoConstants;
 import WinBasics;
 import FatalErrorMB;
@@ -43,6 +44,8 @@ int wWinMain
 	SwitchWcoutTo(L"main_trace.out");
 	PrintAppStartProtocol(PRODUCT_NAME);
 
+	SetThreadAffinityMask(GetCurrentThread(), 0x0001);
+
 	Accelerators acc;
 	MessagePump  pump;
 	pump.SetAccelTable(acc.Get());
@@ -56,7 +59,8 @@ int wWinMain
 	int iRes { 0 };
 	try 
 	{
-		iRes = pump.Run([&upApp]() { upApp->DoGameStuff(); });
+		iRes = pump.Run();
+//		iRes = pump.Run([&upApp]() { upApp->DoGameStuff(); });
 	} catch (const std::exception& e) 
 	{
 		FatalErrorMB::Happened(3, L"Caught C++ exception: " + ConvertToWideString(e.what()));
